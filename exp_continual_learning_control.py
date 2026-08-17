@@ -78,14 +78,14 @@ def run_control_experiment(
             top_k=2,
             max_seq_len=seq_len + 64
         ).to(device)
-    elif model_type == "dendritic_static_moe":
-        model = DendriticStaticSoftmaxMoELM(
+    elif model_type == "static_moe_30exp": # Clean Capacity-Matched (128.09M params vs Hyperspace 128.92M)
+        model = StaticSoftmaxMoELM(
             vocab_size=vocab_size,
             d_model=d_model,
             n_layers=n_layers,
             n_heads=n_heads,
             d_ff=d_ff,
-            num_experts=16,
+            num_experts=30,
             top_k=2,
             max_seq_len=seq_len + 64
         ).to(device)
@@ -212,7 +212,7 @@ def run_control_experiment(
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Continual Learning Control Runner")
-    parser.add_argument("--model", type=str, choices=["dense", "static_moe", "dendritic_static_moe", "hyperspace"], default="dense")
+    parser.add_argument("--model", type=str, choices=["dense", "static_moe", "static_moe_30exp", "hyperspace"], default="dense")
     parser.add_argument("--steps", type=int, default=300)
     parser.add_argument("--ratio", type=float, default=0.20)
     args = parser.parse_args()
