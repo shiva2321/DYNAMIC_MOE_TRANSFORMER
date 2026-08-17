@@ -27,7 +27,7 @@ if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8")
 
 from model.nanogpt import HyperTransformerLM
-from model.baselines import DenseTransformerLM, StaticSoftmaxMoELM
+from model.baselines import DenseTransformerLM, StaticSoftmaxMoELM, DendriticStaticSoftmaxMoELM
 from train_scaled_production_engine import ScaledProductionDataStreamer
 from exp_sequential_exemplar_replay import TinyExemplarBuffer
 
@@ -69,6 +69,17 @@ def run_control_experiment(
         ).to(device)
     elif model_type == "static_moe":
         model = StaticSoftmaxMoELM(
+            vocab_size=vocab_size,
+            d_model=d_model,
+            n_layers=n_layers,
+            n_heads=n_heads,
+            d_ff=d_ff,
+            num_experts=16,
+            top_k=2,
+            max_seq_len=seq_len + 64
+        ).to(device)
+    elif model_type == "dendritic_static_moe":
+        model = DendriticStaticSoftmaxMoELM(
             vocab_size=vocab_size,
             d_model=d_model,
             n_layers=n_layers,
@@ -201,7 +212,7 @@ def run_control_experiment(
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Continual Learning Control Runner")
-    parser.add_argument("--model", type=str, choices=["dense", "static_moe", "hyperspace"], default="dense")
+    parser.add_argument("--model", type=str, choices=["dense", "static_moe", "dendritic_static_moe", "hyperspace"], default="dense")
     parser.add_argument("--steps", type=int, default=300)
     parser.add_argument("--ratio", type=float, default=0.20)
     args = parser.parse_args()
