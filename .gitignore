@@ -1,0 +1,18 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.benchmarks/
+
+# Checkpoints and Large Binaries
+experiments/checkpoints/*.pt
+data/**/*.bin
+data/**/*.mmap
+data/**/*.parquet
+
+# Virtual Environments
+venv/
+.env/
+env/
