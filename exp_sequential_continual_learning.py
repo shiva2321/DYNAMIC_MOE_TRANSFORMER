@@ -52,7 +52,7 @@ def run_sequential_continual_learning(
 
     streamer = ScaledProductionDataStreamer(cache_dir="data/scaled_real_corpus", seq_len=seq_len, batch_size=micro_batch_size)
     domains = ["fineweb_edu", "python_code", "wikitext_facts", "natural_stories"]
-    domain_titles = [streamer.meta["domains"][d]["title"] for d in domains]
+    domain_titles = [streamer.metadata["domains"][d]["title"] for d in domains]
 
     # Initialize Hyperspace MoE Model
     model = HyperTransformerLM(
