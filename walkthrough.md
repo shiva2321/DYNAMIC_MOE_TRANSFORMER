@@ -1,60 +1,59 @@
-# Universal Substrait v2.0: Canonical Architecture & Evaluation Walkthrough
+# Universal Substrait v2.0: Canonical Architecture, Baselines & Continual Learning Walkthrough
 
-## 1. Overview & Verification Summary
+## 1. Overview & Scientific Summary
 
-This document serves as the permanent, version-controlled record of empirical benchmarks, architectural specifications, and evaluation methodologies for **Universal Substrait v2.0**.
+This document serves as the permanent, version-controlled record of empirical benchmarks, matched-budget baseline comparisons, and rigorous continual learning evaluations for **Universal Substrait v2.0**.
 
-All evaluation is executed through the canonical [`evaluate.py`](evaluate.py) suite under strict mathematical bounds ($0 \le \mathcal{L} \le \ln(50304) \approx 10.826$). Synthetic heuristics (e.g. regex syntax scoring) have been purged.
-
----
-
-## 2. Dataset & Scale
-
-* **Source**: HuggingFace streaming across 4 diverse domains:
-  * `fineweb_edu`: Educational Web Reasoning (2.95M train / 150k val)
-  * `python_code`: Python Algorithms & Instructions (2.45M train / 150k val)
-  * `wikitext_facts`: Encyclopedic Knowledge & Science (2.95M train / 150k val)
-  * `natural_stories`: Narrative Dialogue & Causal Logic (2.45M train / 150k val)
-* **Total Volume**: 11,402,565 real tokens across 48,325 unique documents.
-* **Pretraining Steps**: 3,000 steps ($9,216,000\text{ tokens}$ processed) under cosine learning rate decay ($6 \times 10^{-4} \to 6 \times 10^{-5}$) with micro-batch gradient accumulation.
+All evaluations are executed through the canonical [`evaluate.py`](evaluate.py) suite under strict mathematical bounds ($0 \le \mathcal{L} \le \ln(50304) \approx 10.826$). Synthetic heuristics (e.g. regex syntax scoring) have been completely eliminated.
 
 ---
 
-## 3. Ground-Truth Multi-Domain Performance
+## 2. Matched-Budget Joint Training Benchmark (Identical 11.4M Corpus)
 
-*Evaluated on final master checkpoint: [`experiments/checkpoints/hyperspace_scaled_production_master.pt`](experiments/checkpoints/hyperspace_scaled_production_master.pt)*
+All models were trained under identical conditions: **1,500 steps (4,608,000 tokens)**, batch size 12, sequence length 256, AdamW optimizer with cosine decay ($6 \times 10^{-4} \to 6 \times 10^{-5}$) on the exact same multi-domain dataset (`data/scaled_real_corpus/`).
 
-| Domain Discipline | Validation Loss (nats) | Perplexity ($\exp(\mathcal{L})$) | Top-1 Accuracy | Top-5 Accuracy | Valid Bound ($\le 10.83$)? |
-| :--- | :---: | :---: | :---: | :---: | :---: |
-| **Python Algorithms & Code** (*Alpaca Instructions*) | **`2.6776`** | **`14.55`** | **`56.48%`** | **`73.77%`** | **YES** |
-| **Narrative Dialogue & Logic** (*TinyStories*) | **`3.0083`** | **`20.25`** | **`42.01%`** | **`67.43%`** | **YES** |
-| **Encyclopedic Facts** (*WikiText-103*) | **`5.7244`** | **`306.26`** | **`21.95%`** | **`38.58%`** | **YES** |
-| **Educational Web Reasoning** (*FineWeb-Edu*) | **`6.0457`** | **`422.31`** | **`19.27%`** | **`34.75%`** | **YES** |
+| Domain Discipline | Dense Transformer | Static Softmax MoE (16 Exp, Top-2) | Universal Substrait Dynamic MoE | Relative Advantage |
+| :--- | :---: | :---: | :---: | :---: |
+| **Python Code** (*Alpaca*) | `3.959` (40.0% Acc) | `2.966` (48.7% Acc) | **`2.790` (55.9% Acc)** | **-0.176 nats over Static MoE** |
+| **Narrative Dialogue** (*TinyStories*) | `3.410` (35.6% Acc) | `3.517` (34.0% Acc) | **`3.230` (38.6% Acc)** | **-0.180 nats over Dense** |
+| **Encyclopedic Knowledge** (*WikiText-103*) | `6.379` (15.3% Acc) | `6.368` (14.9% Acc) | **`5.947` (20.4% Acc)** | **-0.421 nats over Static MoE** |
+| **Web Reasoning** (*FineWeb-Edu*) | `6.633` (14.0% Acc) | `6.557` (16.0% Acc) | **`6.302` (17.5% Acc)** | **-0.255 nats over Static MoE** |
 
----
-
-## 4. Multi-Task Convergence vs. Sequential Catastrophic Forgetting
-
-### A. Interleaved Multi-Domain Streaming
-Under interleaved multi-task training (all 4 domains sampled concurrently per batch), all domains converged monotonically without cross-domain gradient interference:
-
-$$\Delta \mathcal{L}_{\text{interleaved}} = \mathcal{L}_{3000, i} - \mathcal{L}_{500, i}$$
-
-* **FineWeb-Edu**: $\mathcal{L}: 6.7263 \to 6.0457$ ($\Delta = -0.6806\text{ nats}$)
-* **Python Code**: $\mathcal{L}: 3.5558 \to 2.6776$ ($\Delta = -0.8783\text{ nats}$)
-* **WikiText-103**: $\mathcal{L}: 6.4297 \to 5.7244$ ($\Delta = -0.7052\text{ nats}$)
-* **TinyStories**: $\mathcal{L}: 3.8340 \to 3.0083$ ($\Delta = -0.8256\text{ nats}$)
-
-> [!NOTE]
-> **Methodological Note**: Interleaved streaming evaluates **multi-task gradient compatibility**, not sequential catastrophic forgetting, because earlier domains are never removed from the stream.
-
-### B. Isolated Sequential Continual Learning Benchmark
-To evaluate true catastrophic forgetting ($R_{\text{BWT}}$), domains must be trained in strict sequential isolation without revisiting earlier domains. This is implemented in [`exp_sequential_continual_learning.py`](exp_sequential_continual_learning.py):
-$$R_{\text{BWT}} = \frac{1}{T-1}\sum_{i=1}^{T-1}(\mathcal{L}_{T, i} - \mathcal{L}_{i, i})$$
+*Under an identical token budget and compute envelope, the Universal Substrait architecture achieves lower loss and higher top-1 accuracy across all four domains.*
 
 ---
 
-## 5. Hardware Efficiency & Disambiguation
+## 3. Strict Sequential Continual Learning: Capacity-Matched Attribution Benchmark
 
-* **Physical Peak CUDA VRAM Allocated**: **`760.38 MiB`** *(measured via `torch.cuda.max_memory_allocated` during active inference on RTX 3060)*.
-* **Theoretical MoE FLOP Sparsity**: **`87.5%`** *(Active $k=2$ experts routed out of $N=16$ total experts per layer)*.
+To isolate the contribution of the Universal Substrait architecture from raw parameter capacity and generic exemplar buffering, we evaluated four distinct models under the exact same 4-phase sequential protocol (1,200 steps total, $M=256$ buffer, $20\%$ exemplar replay ratio):
+
+1. **Monolithic Dense Transformer Baseline** ($28.9\text{M}$ params)
+2. **Standard Static Softmax MoE** ($78.5\text{M}$ params, 16 `MicroExpert`s per layer)
+3. **Capacity-Matched Static Softmax MoE** ($128.1\text{M}$ params, 30 `MicroExpert`s per layer — exact $0.64\%$ parameter match to Hyperspace)
+4. **Universal Substrait Dynamic MoE** ($128.9\text{M}$ params, 16 `TwoCompartmentDendriticExpert`s per layer + Complex Phasor Gating in $\mathbb{C}^{2048}$)
+
+### 4-Way Continual Learning Attribution Matrix
+
+$$\text{All models evaluated with 20% Exemplar Replay under identical 4-phase sequential protocol}$$
+
+| Architecture (+ 20% Replay) | Total Params | Mean $R_{\text{BWT}}$ | FineWeb $\Delta \mathcal{L}$ | Python $\Delta \mathcal{L}$ (Final Acc) | WikiText $\Delta \mathcal{L}$ | Continual Learning Outcome |
+| :--- | :---: | :---: | :---: | :---: | :---: | :--- |
+| **Dense Transformer Baseline** | $28.9\text{M}$ | `+0.3860 nats` | `+0.341 nats` | `+0.322 nats` (41.2% Acc) | `+0.494 nats` | Continuous past-domain degradation |
+| **Static Softmax MoE (16 Exp)** | $78.5\text{M}$ | `+0.3983 nats` | `+0.275 nats` | `+0.506 nats` (38.4% Acc) | `+0.414 nats` | Fixed-capacity expert cannibalization |
+| **Static Softmax MoE (30 Exp)** *(Capacity-Matched)* | **$128.1\text{M}$** | `+0.3605 nats` | `+0.312 nats` | `+0.511 nats` (37.4% Acc) | `+0.258 nats` | **Adding raw capacity only nudges $R_{\text{BWT}}$ by $0.038\text{ nats}$**; Python still suffers $+0.51\text{ nats}$ loss |
+| **Universal Substrait Dynamic MoE** | **$128.9\text{M}$** | **`+0.0131 nats`** | **`-0.180 nats`** | **`-0.012 nats` (44.4% Acc)** | **`+0.231 nats`** | **$27.5\times$ lower forgetting; Positive transfer on FineWeb; Python accuracy preserved** |
+
+---
+
+### 4. Key Scientific Findings & System-Level Attribution
+
+1. **Parameter Capacity Is Not the Driver**: Increasing Static MoE capacity by $+63\%$ (from 16 experts / 78.5M params to 30 experts / 128.1M params) only improved mean $R_{\text{BWT}}$ by a negligible $0.038\text{ nats}$. Python still degraded by $+0.511\text{ nats}$ (accuracy dropped to $37.4\%$).
+2. **Replay Alone Does Not Prevent Drift in Static Baselines**: In both monolithic Dense and Static MoE architectures, a $20\%$ replay buffer prevents catastrophic collapse, but all past tasks undergo continuous, uniform degradation ($\sim +0.36$ to $+0.40\text{ nats}$) as unconstrained weights shift across task boundaries.
+3. **The System-Level Advantage**: The Universal Substrait system—integrating **Complex Phasor Hyperspace Gating ($\mathbb{C}^{2048}$)**, **Two-Compartment Dendritic Experts**, **Global Workspace Bus**, and **Autonomous Neurogenesis** alongside a sparse exemplar buffer—achieves **$27.5\times$ lower backward transfer loss drift ($+0.0131\text{ nats}$ vs $+0.3605\text{ nats}$)**, preserves Python accuracy at **$44.4\%$**, and demonstrates positive backward transfer on FineWeb ($\Delta = -0.180\text{ nats}$).
+
+---
+
+## 5. Hardware Efficiency Profile
+
+* **Physical Peak CUDA VRAM Allocated**: **`760.38 MiB`** *(RTX 3060)*.
+* **Theoretical MoE FLOP Sparsity**: **`87.5%`** ($k=2$ active of $N=16$ total experts per layer).
