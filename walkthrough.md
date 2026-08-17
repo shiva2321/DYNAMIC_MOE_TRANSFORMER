@@ -43,13 +43,23 @@ $$\text{All models evaluated with 20% Exemplar Replay under identical 4-phase se
 | **Static Softmax MoE (30 Exp)** *(Capacity-Matched)* | **$128.1\text{M}$** | `+0.3605 nats` | `+0.312 nats` | `+0.511 nats` (37.4% Acc) | `+0.258 nats` | **Adding raw capacity only nudges $R_{\text{BWT}}$ by $0.038\text{ nats}$**; Python still suffers $+0.51\text{ nats}$ loss |
 | **Universal Substrait Dynamic MoE** | **$128.9\text{M}$** | **`+0.0131 nats`** | **`-0.180 nats`** | **`-0.012 nats` (44.4% Acc)** | **`+0.231 nats`** | **$27.5\times$ lower forgetting; Positive transfer on FineWeb; Python accuracy preserved** |
 
+### 4. Component-Level Ablation Decomposition
+
+| Architectural Configuration | Total Params | FineWeb $\Delta \mathcal{L}$ | Python $\Delta \mathcal{L}$ (Final Acc) | WikiText $\Delta \mathcal{L}$ | Mean $R_{\text{BWT}}$ | Relative Impact |
+| :--- | :---: | :---: | :---: | :---: | :---: | :--- |
+| **Static MoE (30 Exp Baseline)** | $128.1\text{M}$ | `+0.3129 nats` | `+0.5108 nats` (37.42%) | `+0.2577 nats` | **`+0.3605 nats`** | Baseline linear softmax gating |
+| **Ablation 2: No Spawning (Fixed 16 Exp)** | $128.9\text{M}$ | `+0.2089 nats` | `+0.2657 nats` (47.34%) | `+0.4250 nats` | **`+0.2999 nats`** | Phasor gating + bus improves drift by 16.8% |
+| **Ablation 1: No Global Bus (`use_bus=False`)** | $128.9\text{M}$ | `-0.0437 nats` | `+0.4235 nats` (42.99%) | `+0.2343 nats` | **`+0.2047 nats`** | Spawning alone improves drift by 43.2% |
+| **Full Universal Substrait System** | **$128.9\text{M}$** | **`-0.1804 nats`** | **`-0.0118 nats` (44.36%)** | **`+0.2314 nats`** | **`+0.0131 nats`** | **Full synergy: 27.5x lower drift than Static MoE** |
+
 ---
 
-### 4. Key Scientific Findings & System-Level Attribution
+### 5. Key Scientific Findings & Architectural Decomposition
 
 1. **Parameter Capacity Is Not the Driver**: Increasing Static MoE capacity by $+63\%$ (from 16 experts / 78.5M params to 30 experts / 128.1M params) only improved mean $R_{\text{BWT}}$ by a negligible $0.038\text{ nats}$. Python still degraded by $+0.511\text{ nats}$ (accuracy dropped to $37.4\%$).
-2. **Replay Alone Does Not Prevent Drift in Static Baselines**: In both monolithic Dense and Static MoE architectures, a $20\%$ replay buffer prevents catastrophic collapse, but all past tasks undergo continuous, uniform degradation ($\sim +0.36$ to $+0.40\text{ nats}$) as unconstrained weights shift across task boundaries.
-3. **The System-Level Advantage**: The Universal Substrait system—integrating **Complex Phasor Hyperspace Gating ($\mathbb{C}^{2048}$)**, **Two-Compartment Dendritic Experts**, **Global Workspace Bus**, and **Autonomous Neurogenesis** alongside a sparse exemplar buffer—achieves **$27.5\times$ lower backward transfer loss drift ($+0.0131\text{ nats}$ vs $+0.3605\text{ nats}$)**, preserves Python accuracy at **$44.4\%$**, and demonstrates positive backward transfer on FineWeb ($\Delta = -0.180\text{ nats}$).
+2. **Autonomous Neurogenesis Prevents Subspace Cannibalization**: Disabling dynamic spawning increases drift to $+0.2999\text{ nats}$. Spawning allocates clean, dedicated expert coordinates in $\mathbb{C}^{2048}$ when encountering novel domains.
+3. **The Global Workspace Bus Synchronizes Dendritic Gating**: Disabling the Global Bus (`use_bus=False`) increases drift to $+0.2047\text{ nats}$ and Python degradation to $+0.4235\text{ nats}$. Apical context broadcasting provides the top-down contextual synchronization that lets dendritic experts gate somatic firing.
+4. **The Multiplicative Synergy**: Combining **Complex Phasor Coordinates ($\mathbb{C}^{2048}$)**, **Two-Compartment Dendritic Experts**, **Global Workspace Broadcasting**, and **Autonomous Neurogenesis** over an exemplar-stabilized trunk ($20\%$ replay) achieves **$27.5\times$ lower backward loss drift ($+0.0131\text{ nats}$ vs $+0.3605\text{ nats}$)**, preserving domain competence and unlocking positive backward transfer on FineWeb ($\Delta = -0.180\text{ nats}$).
 
 ---
 
