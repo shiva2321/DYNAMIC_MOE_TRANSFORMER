@@ -67,3 +67,19 @@ $$\text{All models evaluated with 20% Exemplar Replay under identical 4-phase se
 
 * **Physical Peak CUDA VRAM Allocated**: **`760.38 MiB`** *(RTX 3060)*.
 * **Theoretical MoE FLOP Sparsity**: **`87.5%`** ($k=2$ active of $N=16$ total experts per layer).
+
+---
+
+## 6. Empirical Layer-Wise Routing Dynamics & Output Collapse
+
+| Layer | Python Code | Natural Language Prose (FineWeb, WikiText, Stories) | Architectural Observation |
+| :--- | :--- | :--- | :--- |
+| **Layer 0** | **E7: 40.7%**, E10: 16.3% | E5, E6, E12, E9 (17%–27% each) | **Code vs. Prose Split**: Python isolates on `E7`; general prose shares general vocabulary experts. |
+| **Layer 1** | **E7: 38.8%**, E2: 14.4% | Stories on **E12: 40.4%**; Web/Wiki on **E9: 22%–24%** | **Syntactic Differentiation**: Python and Stories show separate peaks; Web/Wiki overlap. |
+| **Layer 2** | **E7: 49.7%**, E5: 19.3% | Stories on **E6: 36.1%**; Web/Wiki on **E3: 27%–29%** | **Semantic Divergence**: Python peaks on `E7`; Stories on `E6`; Web/Wiki on `E3` and `E12`. |
+| **Layer 3** | **E5: 42.5%, E6: 37.4%, E12: 19.2%** | **E5 (42%–45%), E6 (34%–39%), E12 (18%–30%)** | **Output-Layer Collapse**: All 4 domains collapse onto 3 experts ($98.3\%\text{--}99.4\%$ mass). 13 of 16 experts unused. |
+
+### Key Diagnostic Findings:
+1. **Shallow/Mid Layers Separate Modalities (Code vs. Prose)**: Python consistently routes to `E7` (39%–50% of weight), while natural English prose partitions across `E12`, `E9`, `E6`, and `E3`.
+2. **Output-Layer Bottleneck Mechanism**: Because the LM head is weight-tied to the 50,304-token embedding matrix, Layer 3 receives the strongest and most direct vocabulary cross-entropy gradient flow. Learnable phasor keys in Layer 3 undergo a self-reinforcing winner-take-all collapse onto `E5`/`E6`/`E12`.
+3. **Engineering Roadmap**: Decoupling Layer 3 expert keys from unconstrained backpropagation using prototype drift-guards or key-freezing (analogous to `VSA_GROUND_REBUILD`) will prevent top-layer collapse in future scaling.

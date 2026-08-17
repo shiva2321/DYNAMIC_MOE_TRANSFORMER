@@ -1,0 +1,214 @@
+{
+  "epoch1_metrics": {
+    "fineweb_edu": {
+      "loss": 6.125603199005127,
+      "top1": 18.6767578125,
+      "top5": 34.21630859375,
+      "perplexity": 457.4205456877086
+    },
+    "python_code": {
+      "loss": 2.738905429840088,
+      "top1": 57.1044921875,
+      "top5": 72.42431640625,
+      "perplexity": 15.470042778555747
+    },
+    "wikitext_facts": {
+      "loss": 5.713345050811768,
+      "top1": 22.13134765625,
+      "top5": 39.05029296875,
+      "perplexity": 302.88253310226924
+    },
+    "natural_stories": {
+      "loss": 2.994316816329956,
+      "top1": 41.796875,
+      "top5": 67.73681640625,
+      "perplexity": 19.971710881261192
+    }
+  },
+  "epoch3_metrics": {
+    "fineweb_edu": {
+      "loss": 6.101930618286133,
+      "top1": 18.798828125,
+      "top5": 34.24072265625,
+      "perplexity": 446.7193827013683,
+      "delta_loss": -0.02367258071899414,
+      "delta_top1": 0.1220703125
+    },
+    "python_code": {
+      "loss": 2.5978000164031982,
+      "top1": 59.1796875,
+      "top5": 75.01220703125,
+      "perplexity": 13.434150590053253,
+      "delta_loss": -0.14110541343688965,
+      "delta_top1": 2.0751953125
+    },
+    "wikitext_facts": {
+      "loss": 5.653964996337891,
+      "top1": 22.86376953125,
+      "top5": 38.8916015625,
+      "perplexity": 285.42091810218517,
+      "delta_loss": -0.05938005447387695,
+      "delta_top1": 0.732421875
+    },
+    "natural_stories": {
+      "loss": 2.8468902111053467,
+      "top1": 44.71435546875,
+      "top5": 69.0673828125,
+      "perplexity": 17.234103995229223,
+      "delta_loss": -0.14742660522460938,
+      "delta_top1": 2.91748046875
+    }
+  },
+  "domain_gini": {
+    "fineweb_edu": 0.7400388975008811,
+    "python_code": 0.750903515193728,
+    "wikitext_facts": 0.7456613982834961,
+    "natural_stories": 0.7468639268255015
+  },
+  "expert_counts": [
+    16,
+    16,
+    16,
+    16
+  ],
+  "efficiency": {
+    "peak_vram_mb": 7083.48828125,
+    "generation_tokens_per_sec": 8.147485227634148,
+    "latency_ms_per_token": 122.73725843751892,
+    "sparsity_pct": 87.5
+  },
+  "generation_showcase": [
+    {
+      "domain": "python_code",
+      "prompt": "def binary_search(arr, target):",
+      "completion": "def binary_search(arr, target):\n        result = []\n    \n    for i in range(len(arr)):\n        if arr[i] == arr[j]:\n            list[i] = list[j], list[i]\n    return [1",
+      "latency_ms_per_token": 107.34956124942983,
+      "tokens_per_sec": 9.315361780347391,
+      "active_experts_sample": [
+        [
+          7,
+          7
+        ],
+        [
+          7,
+          7
+        ],
+        [
+          7,
+          7
+        ],
+        [
+          7,
+          7
+        ],
+        [
+          7,
+          7
+        ],
+        [
+          7,
+          7
+        ]
+      ]
+    },
+    {
+      "domain": "wikitext_facts",
+      "prompt": "In quantum mechanics, the wave function collapse represents",
+      "completion": "In quantum mechanics, the wave function collapse represents more than factor than those in the same way.\nThe next week ago, the majority of the people and the moon were also thrown out of the air and the sun.\nThe small numbers were found in the ocean's left members of the world, groups that were still in the world. This is, however, not the same as the world's brain, is the number of people who are",
+      "latency_ms_per_token": 122.51294375018915,
+      "tokens_per_sec": 8.16240283997303,
+      "active_experts_sample": [
+        [
+          6,
+          12
+        ],
+        [
+          5,
+          12
+        ],
+        [
+          5,
+          12
+        ],
+        [
+          11,
+          5
+        ],
+        [
+          5,
+          12
+        ],
+        [
+          5,
+          3
+        ]
+      ]
+    },
+    {
+      "domain": "natural_stories",
+      "prompt": "Once upon a time, a little girl named Mia found a golden key",
+      "completion": "Once upon a time, a little girl named Mia found a golden key that she loved to explore. She would take a nap too, but her mommy said no. She was scared but she didn't want to take it.\n\nWhen she got home, her mommy saw the key and said, \"Thank you, Mommy!\" Her mommy smiled and said, \"You're welcome, Lily. Let's keep her pretty dress up.\" They all played",
+      "latency_ms_per_token": 124.20620624980074,
+      "tokens_per_sec": 8.05112747738887,
+      "active_experts_sample": [
+        [
+          12,
+          6
+        ],
+        [
+          12,
+          6
+        ],
+        [
+          6,
+          6
+        ],
+        [
+          6,
+          12
+        ],
+        [
+          7,
+          12
+        ],
+        [
+          6,
+          12
+        ]
+      ]
+    },
+    {
+      "domain": "fineweb_edu",
+      "prompt": "To optimize query performance in relational databases, indexing is used because",
+      "completion": "To optimize query performance in relational databases, indexing is used because the data for the file without any). The output file is found is not written in the files, but the player can be used to import the first command line with an empty list and the function is P-oriented.\n#!/usr/bin/env python\n#\n#          if you don't have a copy.      ",
+      "latency_ms_per_token": 136.49673000036273,
+      "tokens_per_sec": 7.326182832345819,
+      "active_experts_sample": [
+        [
+          12,
+          12
+        ],
+        [
+          7,
+          3
+        ],
+        [
+          7,
+          5
+        ],
+        [
+          12,
+          9
+        ],
+        [
+          7,
+          3
+        ],
+        [
+          7,
+          5
+        ]
+      ]
+    }
+  ]
+}

@@ -494,6 +494,27 @@ $$\text{All models evaluated with 20% Exemplar Replay under identical 4-phase se
 ========================================================================================================
 ```
 
+### 5.5 Layer-Wise Routing Specialization & Architectural Failure Modes
+
+To understand how knowledge is actually distributed across the network, we evaluated the empirical per-layer routing mass distribution across all four domains (*FineWeb-Edu*, *Python Code*, *WikiText-103*, and *TinyStories*) on the master and extended checkpoints ([`experiments/checkpoints/hyperspace_scaled_production_master.pt`](experiments/checkpoints/hyperspace_scaled_production_master.pt)):
+
+#### Exact Empirical Weight-Based Routing Matrix Across All 4 Layers
+
+$$\text{Share of actual routing weight mass per domain in each transformer layer (Single-Seed Point Estimates)}$$
+
+| Layer | Domain | Top-5 Active Experts by Actual Routing Mass | Domain Separation Profile |
+| :--- | :--- | :--- | :--- |
+| **Layer 0** *(Input)* | **Python Code**<br>FineWeb-Edu<br>WikiText-103<br>TinyStories | **E7: 40.7%**, E10: 16.3%, E8: 9.2%, E11: 7.3%, E2: 6.2%<br>E5: 25.6%, E6: 19.7%, E12: 19.6%, E9: 17.1%, E11: 4.5%<br>E12: 27.3%, E5: 26.3%, E9: 20.6%, E6: 14.8%, E11: 3.3%<br>E6: 26.2%, E12: 25.9%, E9: 15.9%, E5: 11.0%, E8: 9.1% | **Code vs. Prose Split**:<br>Python isolates on `E7` ($40.7\%$), while natural prose shares `E5`/`E6`/`E12`/`E9`. |
+| **Layer 1** *(Early Mid)* | **Python Code**<br>TinyStories<br>FineWeb-Edu<br>WikiText-103 | **E7: 38.8%**, E2: 14.4%, E5: 13.7%, E12: 9.0%, E3: 7.6%<br>**E12: 40.4%**, E7: 12.6%, E6: 12.3%, E2: 10.7%, E11: 7.4%<br>E9: 22.3%, E6: 19.6%, E12: 13.3%, E7: 13.2%, E2: 13.0%<br>E9: 23.9%, E2: 15.0%, E6: 14.7%, E7: 13.1%, E12: 12.3% | **Code/Story Differentiation**:<br>Python maintains `E7` ($38.8\%$), Stories concentrates on `E12` ($40.4\%$), Web/Wiki share `E9` ($\sim 23\%$). |
+| **Layer 2** *(Late Mid)* | **Python Code**<br>TinyStories<br>FineWeb-Edu<br>WikiText-103 | **E7: 49.7%**, E5: 19.3%, E12: 5.5%, E9: 4.6%, E11: 4.2%<br>**E6: 36.1%**, E12: 19.9%, E11: 10.5%, E3: 10.8%, E5: 9.0%<br>**E3: 29.2%**, E12: 24.4%, E5: 20.6%, E6: 8.0%, E11: 6.8%<br>**E3: 27.3%**, E12: 27.0%, E5: 23.7%, E9: 5.7%, E6: 4.5% | **Divergence Across Modalities**:<br>Python locks on `E7` ($49.7\%$), Stories on `E6` ($36.1\%$), Web/Wiki on `E3` ($27\text{--}29\%$) and `E12` ($24\text{--}27\%$). |
+| **Layer 3** *(Output)* | **Python Code**<br>FineWeb-Edu<br>WikiText-103<br>TinyStories | **E5: 42.5%, E6: 37.4%, E12: 19.2%**, E3: 0.4%, E7: 0.3%<br>**E5: 41.8%, E6: 39.4%, E12: 17.9%**, E3: 0.9%, E7: 0.1%<br>**E5: 45.0%, E6: 34.1%, E12: 19.2%**, E3: 1.5%, E15: 0.1%<br>**E6: 34.6%, E5: 34.3%, E12: 30.5%**, E7: 0.3%, E3: 0.3% | **Severe Output Collapse**:<br>All 4 domains collapse onto **`E5`, `E6`, `E12`** ($98.3\%\text{--}99.4\%$ combined mass). 13 of 16 experts unused. |
+
+#### Analysis of Empirical Routing Dynamics:
+
+1. **Code vs. Prose Dichotomy in Layers 0–2**: Rather than a balanced 4-way domain partition, layers 0–2 primarily separate **code from natural language prose**. Python exhibits strong, persistent specialization on **`E7`** (38.8%–49.7% of routing mass across three layers), driven by shallow surface features (indentation, colons, brackets, syntax primitives). In contrast, *FineWeb-Edu*, *WikiText-103*, and *TinyStories* share broad lexical and grammatical expert subspaces (`E9`, `E12`, `E3`, `E6`), reflecting the shared statistical structure of English prose.
+2. **Layer 3 Output Collapse & Gradient Mechanism**: In the final transformer block immediately preceding the weight-tied `lm_head`, routing collapses completely onto just three experts (`E5`, `E6`, `E12`), with the remaining 13 experts receiving $<1.5\%$ combined mass across all domains. This collapse is driven by direct gradient pressure: because the `lm_head` is weight-tied to the 50,304-token embedding table, Layer 3's output feeds directly into vocabulary cross-entropy loss with no subsequent normalization or intermediate layers. In `SemanticHyperspaceMemory`, expert centroid coordinates are learnable parameters updated via backpropagation. Under heavy cross-entropy gradient flow, whichever experts gain an early routing advantage are aggressively pulled toward a shared representational optimum, producing a self-reinforcing winner-take-all collapse.
+3. **Proposed Architectural Mitigation (Drift-Guarded Key Updates)**: To prevent output-layer collapse in future iterations, expert key updates in the final block should be decoupling from direct unconstrained backpropagation. Adopting statistical outlier-gated EMA prototype updating or key-freezing (analogous to the drift-guard in `VSA_GROUND_REBUILD`) will prevent centroid coordinates from collapsing into a shared subspace while allowing expert feedforward weights to specialize.
+
 ---
 
 ## 6. Scientific Discussion & Architectural Decomposition
@@ -516,8 +537,10 @@ The single-variable ablations in §5.4 empirically decompose how the subsystems 
 
 1. **Single-Seed Point Estimates**: The empirical benchmarks reported in this paper reflect single-seed training runs. While mathematical loss bounds, code wiring, and exact arithmetic have been verified, evaluating multi-seed standard deviations and confidence intervals is a required next step for high-stakes deployment.
 2. **Small-Scale Research Regime**: All experiments operate in a controlled small-scale research regime ($28.9\text{M}\text{--}128.9\text{M}$ parameters, $11.4\text{M}$ tokens). Extrapolating these findings to frontier-scale foundation models ($>70\text{B}$ parameters, $>10\text{T}$ tokens) remains an open empirical question requiring massive distributed compute.
-3. **Residual Subsystem Ablations**: While single-variable ablations isolated the independent contributions of the Global Workspace Bus and Autonomous Neurogenesis (§5.4), other sub-mechanisms—such as dynamic-$k$ routing versus fixed-$k$ and criticality-based temperature scaling—remain present across all Hyperspace variants and have not been isolated independently.
-4. **Long Sequence Horizons**: The current experiments evaluate sequence lengths of $S=256\text{--}576$ tokens. Future work will scale Universal Substrait to ultra-long contexts ($S \ge 32\text{k}$) utilizing the dynamic landmark attention mechanism.
+3. **Output-Layer Routing Collapse**: While layers 0–2 exhibit distinct code-vs-prose routing separation, Layer 3 suffers from severe expert collapse onto three dominant experts (`E5`, `E6`, `E12`), leaving 13 of 16 experts underutilized. Mitigating this via prototype drift-guards or key-freezing is a critical open engineering direction.
+4. **Code-vs-Prose vs. Fine-Grained Domain Separation**: In the lower layers, routing primarily separates structured code from general natural language prose, while fine-grained distinction between different prose registers (educational web vs. encyclopedic vs. children's stories) remains partially entangled across shared experts.
+5. **Residual Subsystem Ablations**: While single-variable ablations isolated the independent contributions of the Global Workspace Bus and Autonomous Neurogenesis (§5.4), other sub-mechanisms—such as dynamic-$k$ routing versus fixed-$k$ and criticality-based temperature scaling—remain present across all Hyperspace variants and have not been isolated independently.
+6. **Long Sequence Horizons**: The current experiments evaluate sequence lengths of $S=256\text{--}576$ tokens. Future work will scale Universal Substrait to ultra-long contexts ($S \ge 32\text{k}$) utilizing the dynamic landmark attention mechanism.
 
 ---
 

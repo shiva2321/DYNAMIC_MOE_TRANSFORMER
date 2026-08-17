@@ -112,6 +112,23 @@ Ablation 1: No Global Bus (\texttt{use\_bus=False}) & $128.9\text{M}$ & $-0.0437
 \caption{Single-variable component ablations isolating the Global Workspace Bus and Autonomous Neurogenesis.}
 \end{table}
 
+\subsection{Layer-Wise Routing Dynamics \& Output Collapse}
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{lllc}
+\toprule
+\textbf{Layer} & \textbf{Python Code} & \textbf{Natural English Prose} & \textbf{Separation Dynamics} \\
+\midrule
+Layer 0 & E7: 40.7\%, E10: 16.3\% & E5, E6, E12, E9 (17\%--27\%) & Code vs. Prose dichotomy \\
+Layer 1 & E7: 38.8\%, E2: 14.4\% & Stories: E12 (40.4\%), Web/Wiki: E9 (23\%) & Surface syntactic split \\
+Layer 2 & E7: 49.7\%, E5: 19.3\% & Stories: E6 (36.1\%), Web/Wiki: E3 (28\%) & Modal divergence \\
+Layer 3 & \textbf{E5, E6, E12 (99.1\%)} & \textbf{E5, E6, E12 (98.3\%--99.4\%)} & \textbf{Severe Output Collapse} \\
+\bottomrule
+\end{tabular}
+\caption{Empirical per-layer routing mass distribution showing code-prose separation in shallow layers and winner-take-all collapse in Layer 3.}
+\end{table}
+
 \section{Conclusion}
 On a controlled small-scale testbed, the Universal Substrait system resolves catastrophic forgetting in continual language modeling by coupling Complex Phasor Hyperspace Gating ($\mathbb{C}^{2048}$), Two-Compartment Dendritic Experts, Global Workspace context broadcasting, and sparse exemplar rehearsal, achieving $27.5\times$ lower backward loss drift ($R_{\text{BWT}} = +0.0131\text{ nats}$) than capacity-matched static MoE baselines.
 
