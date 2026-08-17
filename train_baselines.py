@@ -62,8 +62,7 @@ def train_baseline_model(
             n_layers=n_layers,
             n_heads=n_heads,
             d_ff=d_ff * 2, # Matched compute capacity
-            max_seq_len=seq_len + 64,
-            dropout=0.0
+            max_seq_len=seq_len + 64
         ).to(device)
     elif model_type == "static_moe":
         model = StaticSoftmaxMoELM(
@@ -74,8 +73,7 @@ def train_baseline_model(
             d_ff=d_ff,
             num_experts=16,
             top_k=2,
-            max_seq_len=seq_len + 64,
-            dropout=0.0
+            max_seq_len=seq_len + 64
         ).to(device)
     else:
         raise ValueError(f"Unknown baseline model_type: {model_type}")
@@ -116,7 +114,7 @@ def train_baseline_model(
             tokens_processed += (micro_batch_size * seq_len)
 
             with torch.amp.autocast('cuda'):
-                logits, loss = model(x, targets=y)
+                logits, loss, _ = model(x, targets=y)
                 loss = loss / accum_steps
 
             accum_loss += loss.item() * accum_steps
@@ -136,7 +134,7 @@ def train_baseline_model(
                     vx, vy = streamer.get_domain_val_batch(d, num_samples=8)
                     vx, vy = vx.to(device), vy.to(device)
                     with torch.amp.autocast('cuda'):
-                        val_logits, val_loss = model(vx, targets=vy)
+                        val_logits, val_loss, _ = model(vx, targets=vy)
                     preds = torch.argmax(val_logits, dim=-1)
                     acc1 = (preds == vy).float().mean().item() * 100.0
                     history["domain_losses"][d].append(val_loss.item())

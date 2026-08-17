@@ -308,8 +308,104 @@ def run_canonical_evaluation(ckpt_path: str = "experiments/checkpoints/hyperspac
         print("=" * 80)
         print(f"[OUTPUT]:\n{s['full_text']}\n")
 
+    # 4. Backward Transfer (Catastrophic Forgetting) Comparison if reference checkpoint provided
+    if compare_ckpt_path and os.path.exists(compare_ckpt_path):
+        print("\n" + "=" * 95)
+        print(f"  [BACKWARD TRANSFER (BWT) FORGETTING ANALYSIS: {compare_ckpt_path} -> {ckpt_path}]")
+        print("=" * 95)
+        ref_model, _, _ = load_canonical_model(compare_ckpt_path, device)
+        ref_metrics = evaluate_multi_domain_ground_truth(ref_model, device=device)
+        
+        initial_losses = {k: v["cross_entropy_loss"] for k, v in ref_metrics.items()}
+        final_losses = {k: v["cross_entropy_loss"] for k, v in domain_metrics.items()}
+        bwt_res = compute_backward_transfer_forgetting(initial_losses, final_losses)
+
+        print(f"\nMean Backward Transfer Delta (R_BWT): {bwt_res['mean_bwt_delta_nats']:+.4f} nats ({bwt_res['overall_status']})")
+        print("-" * 95)
+        print(f"{'Domain Discipline':<35} | {'Initial (Step 500)':<18} | {'Final (Step 3000)':<18} | {'Delta (nats)':<14} | {'Status'}")
+        print("-" * 95)
+        for d_key, p_data in bwt_res["per_domain"].items():
+            print(f"{domain_metrics[d_key]['title']:<35} | {p_data['initial_loss']:<18.4f} | {p_data['final_loss']:<18.4f} | {p_data['delta_nats']:<+14.4f} | {p_data['status']}")
+        print("-" * 95)
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Canonical Ground-Truth Evaluation Suite")
-    parser.add_argument("--checkpoint", type=str, default="experiments/checkpoints/hyperspace_scaled_step500.pt")
+    parser.add_argument("--checkpoint", type=str, default="experiments/checkpoints/hyperspace_scaled_production_master.pt")
+    parser.add_argument("--compare-checkpoint", type=str, default=None, help="Reference checkpoint for BWT analysis")
     args = parser.parse_args()
-    run_canonical_evaluation(args.checkpoint)
+    
+    # Run evaluation with optional comparison
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    enc = tiktoken.get_encoding("gpt2")
+    ckpt_path = args.checkpoint
+
+    print("\n" + "=" * 95)
+    print("  [UNIVERSAL SUBSTRAIT: CANONICAL GROUND-TRUTH EVALUATION SUITE]")
+    print(f"  Evaluating Checkpoint: {ckpt_path}")
+    print("=" * 95)
+
+    model, config, total_exp = load_canonical_model(ckpt_path, device)
+    print(f"  Loaded Model: 4 Layers, {total_exp} Total Active Experts | Vocab Size: {model.vocab_size:,}")
+
+    # 1. Ground Truth Multi-Domain Evaluation
+    print("\n>>> Running Ground-Truth Multi-Domain Benchmark (Loss, PPL, Top-1, Top-5)...")
+    domain_metrics = evaluate_multi_domain_ground_truth(model, device=device)
+
+    print("\n" + "-" * 95)
+    print(f"{'Domain Discipline':<35} | {'Loss (nats)':<12} | {'Perplexity':<12} | {'Top-1 Acc':<11} | {'Top-5 Acc':<11} | {'Valid Bound?'}")
+    print("-" * 95)
+    for d_key, m in domain_metrics.items():
+        v_str = "YES (<= 10.83)" if m["loss_within_valid_bounds"] else "FAIL (Exceeded Ceiling)"
+        print(f"{m['title']:<35} | {m['cross_entropy_loss']:<12.4f} | {m['perplexity']:<12.2f} | {m['top1_accuracy']:<10.2f}% | {m['top5_accuracy']:<10.2f}% | {v_str}")
+    print("-" * 95)
+
+    # 2. Hardware Allocation vs FLOP Sparsity Disambiguation
+    torch.cuda.reset_peak_memory_stats(device)
+    dummy_x = torch.randint(0, model.vocab_size, (1, 256), device=device)
+    with torch.no_grad():
+        with torch.amp.autocast('cuda'):
+            _ = model(dummy_x)
+    peak_vram_mib = torch.cuda.max_memory_allocated(device) / (1024 * 1024)
+    active_k = model.blocks[0].hyper_moe.top_k
+    total_layer_exp = model.blocks[0].hyper_moe.num_experts
+    flop_sparsity = (1.0 - (active_k / max(1, total_layer_exp))) * 100.0
+
+    print("\n>>> Disambiguated Efficiency Metrics:")
+    print(f"  • Physical Peak CUDA VRAM Allocated:   {peak_vram_mib:.2f} MiB")
+    print(f"  • Theoretical MoE FLOP Sparsity:       {flop_sparsity:.1f}% (Active k={active_k} of N={total_layer_exp} experts per layer)")
+
+    # 3. Unfiltered Qualitative Generation Samples
+    prompts = [
+        {"domain": "Narrative Story", "prompt": "Once upon a time, a little girl named Lily found a puppy that had", "max_tokens": 50, "temp": 0.65},
+        {"domain": "Python Algorithm", "prompt": "def find_maximum_subarray(numbers):\n    \"\"\"Finds maximum sum contiguous subarray.\"\"\"\n", "max_tokens": 50, "temp": 0.65},
+        {"domain": "Wiki Science", "prompt": "The gravitational force between two massive bodies is directly proportional to", "max_tokens": 50, "temp": 0.65}
+    ]
+
+    print("\n>>> Unfiltered Qualitative Model Continuations (Zero Synthetic Heuristics):")
+    samples = generate_unfiltered_samples(model, prompts, enc, device)
+    for s in samples:
+        print("\n" + "=" * 80)
+        print(f"  DOMAIN: {s['domain']} | ROUTED EXPERTS: {', '.join(s['top_experts_fired'])}")
+        print(f"  PROMPT: {s['prompt']}")
+        print("=" * 80)
+        print(f"[OUTPUT]:\n{s['full_text']}\n")
+
+    # 4. Backward Transfer (Catastrophic Forgetting) Comparison
+    if args.compare_checkpoint and os.path.exists(args.compare_checkpoint):
+        print("\n" + "=" * 95)
+        print(f"  [BACKWARD TRANSFER (BWT) FORGETTING ANALYSIS: {args.compare_checkpoint} -> {ckpt_path}]")
+        print("=" * 95)
+        ref_model, _, _ = load_canonical_model(args.compare_checkpoint, device)
+        ref_metrics = evaluate_multi_domain_ground_truth(ref_model, device=device)
+        
+        initial_losses = {k: v["cross_entropy_loss"] for k, v in ref_metrics.items()}
+        final_losses = {k: v["cross_entropy_loss"] for k, v in domain_metrics.items()}
+        bwt_res = compute_backward_transfer_forgetting(initial_losses, final_losses)
+
+        print(f"\nMean Backward Transfer Delta (R_BWT): {bwt_res['mean_bwt_delta_nats']:+.4f} nats ({bwt_res['overall_status']})")
+        print("-" * 95)
+        print(f"{'Domain Discipline':<35} | {'Initial Loss':<14} | {'Final Loss':<14} | {'Delta (nats)':<14} | {'Status'}")
+        print("-" * 95)
+        for d_key, p_data in bwt_res["per_domain"].items():
+            print(f"{domain_metrics[d_key]['title']:<35} | {p_data['initial_loss']:<14.4f} | {p_data['final_loss']:<14.4f} | {p_data['delta_nats']:<+14.4f} | {p_data['status']}")
+        print("-" * 95)
