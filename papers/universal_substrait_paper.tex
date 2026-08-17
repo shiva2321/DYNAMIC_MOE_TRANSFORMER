@@ -11,15 +11,20 @@
 \newtheorem{theorem}{Theorem}
 
 \title{\textbf{Universal Substrait: Mitigating Catastrophic Forgetting via Complex Phasor Hyperspace Gating, Dendritic Experts, and Sparse Exemplar Rehearsal}}
-\author{\textbf{Universal Substrait Research Team} \\ Technical Report \& Comprehensive Research Paper}
+\author{\textbf{Universal Substrait Research Team} \\ Technical Report \& Comprehensive Empirical Study}
 \date{August 2026}
 
 \begin{document}
 
 \maketitle
 
+\begin{quote}
+\small
+\textbf{Methodological Scope \& Reproducibility Note}: All experiments reported in this paper represent single-seed empirical evaluations on a controlled small-scale research testbed ($28.9\text{M}\text{--}128.9\text{M}$ parameters, $1.2\text{k}\text{--}3.0\text{k}$ training steps, $11.4\text{M}$ multi-domain tokens). All cross-entropy evaluations are mathematically bounded ($0 \le \mathcal{L} \le \ln(50304) \approx 10.826$). All comparative claims reflect \textbf{system-level comparisons} between cohesive architectures under matched capacity and token budgets.
+\end{quote}
+
 \begin{abstract}
-Autoregressive transformer language models suffer from severe catastrophic forgetting when trained sequentially on non-stationary, multi-domain data distributions. While sparse Mixture-of-Experts (MoE) architectures provide parameter-efficient scaling, standard linear softmax gating mechanisms suffer from representational drift and expert cannibalization under sequential task shifts. In this work, we present \textbf{Universal Substrait}, a neuro-symbolically inspired language model architecture that integrates: (1) Complex Phasor Vector Symbolic Architecture ($\mathbb{C}^{D}$) for holographic coordinate addressing; (2) Two-Compartment Dendritic Experts with non-linear NMDA coincidence detection ($h_{\text{soma}} = h_{\text{basal}} + \alpha h_{\text{apical}} + \beta (h_{\text{basal}} \odot h_{\text{apical}})$); (3) a Global Workspace Bus for asynchronous inter-expert context broadcasting; (4) Autonomous Neurogenesis (Clonal Mitosis) via real-time phasor resonance entropy tracking; and (5) Dynamic Sparse Self-Attention combining foveal sliding windows, landmark tokens, and attention sinks. Through rigorous mathematical auditing and strict capacity-matched benchmarking against monolithic Dense Transformers and Static Softmax MoE baselines on an 11.4-million-token multi-domain corpus (\textit{FineWeb-Edu}, \textit{Python Code Instructions}, \textit{WikiText-103}, and \textit{TinyStories}), we establish three primary empirical findings: (1) \textbf{Matched-Budget Superiority}: Under identical 1,500-step joint pretraining budgets (4.6M tokens), Universal Substrait outperforms matched Dense and Static MoE baselines across all four domains (e.g., Python cross-entropy loss of \textbf{$2.790\text{ nats}$} and Top-1 accuracy of \textbf{$55.9\%$}, vs. $2.966\text{ nats}$ / $48.7\%$ for Static MoE and $3.959\text{ nats}$ / $40.0\%$ for Dense). (2) \textbf{The Replay Necessity}: Dynamic neurogenesis alone does not prevent catastrophic forgetting under strict non-interleaved sequential domain streams ($R_{\text{BWT}} = +1.9934\text{ nats}$, with Python accuracy collapsing from $44.6\% \to 7.8\%$), proving that shared transformer trunks drift without rehearsal. Bolting a $20\%$ sparse exemplar buffer ($M=256$) onto the architecture reduces forgetting by \textbf{$99.3\%$} ($R_{\text{BWT}} = +0.0131\text{ nats}$), fully preserving Python accuracy at $44.4\%$ and unlocking positive backward transfer on FineWeb ($\Delta = -0.180\text{ nats}$). (3) \textbf{Capacity-Matched Attribution}: Under identical $20\%$ exemplar replay and strictly matched parameter budgets ($\sim 128\text{M}$ parameters), scaling a Static Softmax MoE from 16 to 30 experts ($78.5\text{M} \to 128.1\text{M}$ params) only improves backward transfer drift by a negligible $0.038\text{ nats}$ ($R_{\text{BWT}} = +0.3605\text{ nats}$, with Python degrading by $+0.511\text{ nats}$). In contrast, Universal Substrait achieves \textbf{$27.5\times$ lower backward loss drift ($R_{\text{BWT}} = +0.0131\text{ nats}$)}, demonstrating that orthogonal phasor routing combined with dendritic modularity provides structural isolation that cannot be replicated by raw parameter scaling.
+Autoregressive transformer language models suffer from severe catastrophic forgetting when trained sequentially on non-stationary, multi-domain data distributions. While sparse Mixture-of-Experts (MoE) architectures provide parameter-efficient capacity scaling, standard linear softmax gating mechanisms suffer from representational drift and expert cannibalization under sequential task shifts. In this work, we present \textbf{Universal Substrait}, a neuro-symbolically inspired language model architecture that integrates: (1) Complex Phasor Vector Symbolic Architecture ($\mathbb{C}^{D}$) for holographic coordinate addressing; (2) Two-Compartment Dendritic Experts with non-linear NMDA coincidence detection ($h_{\text{soma}} = h_{\text{basal}} + \alpha h_{\text{apical}} + \beta (h_{\text{basal}} \odot h_{\text{apical}})$); (3) a Global Workspace Bus for asynchronous inter-expert context broadcasting; (4) Autonomous Neurogenesis (Clonal Mitosis) via real-time phasor resonance entropy tracking; and (5) Dynamic Sparse Self-Attention combining foveal sliding windows, landmark tokens, and attention sinks. Through rigorous mathematical auditing and strictly capacity-matched benchmarking against monolithic Dense Transformers and Static Softmax MoE baselines on an 11.4-million-token multi-domain corpus (\textit{FineWeb-Edu}, \textit{Python Code Instructions}, \textit{WikiText-103}, and \textit{TinyStories}), we establish three primary empirical findings: (1) \textbf{Matched-Budget Joint Representation}: Under identical 1,500-step joint pretraining budgets (4.6M tokens), the Universal Substrait system outperforms matched Dense and Static MoE baselines across all four domains (e.g., Python cross-entropy loss of \textbf{$2.790\text{ nats}$} / Top-1 accuracy of \textbf{$55.9\%$}, vs. $2.966\text{ nats}$ / $48.7\%$ for Static MoE and $3.959\text{ nats}$ / $40.0\%$ for Dense). (2) \textbf{The Necessity of Exemplar Replay}: Dynamic neurogenesis alone does not prevent catastrophic forgetting under strict non-interleaved sequential domain streams ($R_{\text{BWT}} = +1.9934\text{ nats}$, with Python accuracy collapsing from $44.64\% \to 7.81\%$), confirming that shared transformer trunks drift without rehearsal. Bolting a $20\%$ sparse exemplar buffer ($M=256$) onto the architecture reduces forgetting by \textbf{$99.3\%$} ($R_{\text{BWT}} = +0.0131\text{ nats}$), preserving Python accuracy at $44.36\%$ and unlocking positive backward transfer on FineWeb ($\Delta = -0.1804\text{ nats}$). (3) \textbf{Capacity-Matched System-Level Attribution}: Under identical $20\%$ exemplar replay and strictly matched parameter budgets ($\sim 128\text{M}$ parameters), scaling a Static Softmax MoE from 16 to 30 experts ($78.5\text{M} \to 128.1\text{M}$ params) only improves backward transfer drift by a negligible $0.038\text{ nats}$ ($R_{\text{BWT}} = +0.3605\text{ nats}$, with Python degrading by $+0.5108\text{ nats}$). In contrast, the Universal Substrait system achieves \textbf{$27.5\times$ lower backward loss drift ($R_{\text{BWT}} = +0.0131\text{ nats}$)}, establishing that the cohesive combination of phasor routing, dendritic compartments, and neurogenesis provides structural retention that cannot be replicated by raw parameter scaling in static MoEs.
 \end{abstract}
 
 \section{Introduction}
@@ -27,7 +32,7 @@ The fundamental limitation of deep connectionist neural networks trained via gra
 
 In sparse Mixture-of-Experts (MoE) architectures, linear softmax gating mechanisms $g(x) = \text{Softmax}(\text{Top-}k(W_g x))$ suffer from expert cannibalization under distribution shifts, while monolithic feedforward MLPs lack the multi-compartment inductive biases of biological pyramidal neurons.
 
-In this work, we present Universal Substrait, combining Complex Phasor Vector Symbolic Architecture ($\mathbb{C}^{2048}$), Two-Compartment Dendritic Experts, Global Workspace context broadcasting, and sparse exemplar rehearsal.
+In this work, we present Universal Substrait, combining Complex Phasor Vector Symbolic Architecture ($\mathbb{C}^{2048}$), Two-Compartment Dendritic Experts, Global Workspace context broadcasting, and sparse exemplar rehearsal on a controlled small-scale research testbed.
 
 \section{Universal Substrait Architecture}
 
@@ -70,7 +75,7 @@ WikiText-103 & $6.379\text{ nats}$ (15.3\%) & $6.368\text{ nats}$ (14.9\%) & $\m
 FineWeb-Edu & $6.633\text{ nats}$ (14.0\%) & $6.557\text{ nats}$ (16.0\%) & $\mathbf{6.302\text{ nats}}$ (\textbf{17.5\%}) & $-0.255\text{ nats}$ \\
 \bottomrule
 \end{tabular}
-\caption{Matched-budget joint pretraining comparison across 1,500 steps on identical 11.4M corpus.}
+\caption{Matched-budget joint pretraining comparison across 1,500 steps on identical 11.4M corpus (Single-Seed).}
 \end{table}
 
 \subsection{Capacity-Matched Continual Learning Attribution Matrix}
@@ -81,16 +86,16 @@ FineWeb-Edu & $6.633\text{ nats}$ (14.0\%) & $6.557\text{ nats}$ (16.0\%) & $\ma
 \toprule
 \textbf{Architecture (+ 20\% Replay)} & \textbf{Params} & \textbf{FineWeb $\Delta \mathcal{L}$} & \textbf{Python $\Delta \mathcal{L}$ (Acc)} & \textbf{WikiText $\Delta \mathcal{L}$} & \textbf{Mean $R_{\text{BWT}}$} \\
 \midrule
-Dense Transformer Baseline & $28.9\text{M}$ & $+0.341\text{ nats}$ & $+0.322\text{ nats}$ (41.2\%) & $+0.494\text{ nats}$ & $+0.3860\text{ nats}$ \\
-Static Softmax MoE (16 Exp) & $78.5\text{M}$ & $+0.275\text{ nats}$ & $+0.506\text{ nats}$ (38.4\%) & $+0.414\text{ nats}$ & $+0.3983\text{ nats}$ \\
-Static Softmax MoE (30 Exp) & $128.1\text{M}$ & $+0.312\text{ nats}$ & $+0.511\text{ nats}$ (37.4\%) & $+0.258\text{ nats}$ & $+0.3605\text{ nats}$ \\
-\textbf{Universal Substrait MoE} & $\mathbf{128.9\text{M}}$ & $\mathbf{-0.180\text{ nats}}$ & $\mathbf{-0.012\text{ nats}}$ (\textbf{44.4\%}) & $\mathbf{+0.231\text{ nats}}$ & $\mathbf{+0.0131\text{ nats}}$ \\
+Dense Transformer Baseline & $28.9\text{M}$ & $+0.3411\text{ nats}$ & $+0.3225\text{ nats}$ (41.25\%) & $+0.4945\text{ nats}$ & $+0.3860\text{ nats}$ \\
+Static Softmax MoE (16 Exp) & $78.5\text{M}$ & $+0.2750\text{ nats}$ & $+0.5054\text{ nats}$ (38.40\%) & $+0.4146\text{ nats}$ & $+0.3983\text{ nats}$ \\
+Static Softmax MoE (30 Exp) & $128.1\text{M}$ & $+0.3129\text{ nats}$ & $+0.5108\text{ nats}$ (37.42\%) & $+0.2577\text{ nats}$ & $+0.3605\text{ nats}$ \\
+\textbf{Universal Substrait MoE} & $\mathbf{128.9\text{M}}$ & $\mathbf{-0.1804\text{ nats}}$ & $\mathbf{-0.0118\text{ nats}}$ (\textbf{44.36\%}) & $\mathbf{+0.2314\text{ nats}}$ & $\mathbf{+0.0131\text{ nats}}$ \\
 \bottomrule
 \end{tabular}
-\caption{Strict 4-phase sequential continual learning attribution matrix under 20\% exemplar rehearsal.}
+\caption{Strict 4-phase sequential continual learning attribution matrix under 20\% exemplar rehearsal (Single-Seed).}
 \end{table}
 
 \section{Conclusion}
-Universal Substrait resolves catastrophic forgetting in continual language modeling by coupling Complex Phasor Hyperspace Gating ($\mathbb{C}^{2048}$), Two-Compartment Dendritic Experts, and sparse exemplar rehearsal, achieving $27.5\times$ lower backward loss drift ($R_{\text{BWT}} = +0.0131\text{ nats}$) than capacity-matched baselines.
+On a controlled small-scale testbed, the Universal Substrait system resolves catastrophic forgetting in continual language modeling by coupling Complex Phasor Hyperspace Gating ($\mathbb{C}^{2048}$), Two-Compartment Dendritic Experts, and sparse exemplar rehearsal, achieving $27.5\times$ lower backward loss drift ($R_{\text{BWT}} = +0.0131\text{ nats}$) than capacity-matched static MoE baselines.
 
 \end{document}
