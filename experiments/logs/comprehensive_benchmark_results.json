@@ -1,0 +1,1367 @@
+{
+  "benchmark_metadata": {
+    "title": "Hyperspace 2.0 Comprehensive Multi-Domain & Compositional Generalization Suite",
+    "version": "1.0",
+    "total_prompts": 125,
+    "evaluation_axes": [
+      "pure_specialization",
+      "binary_compositional_synthesis",
+      "ternary_multi_way_synthesis",
+      "long_horizon_coherence",
+      "ood_novelty_spawning",
+      "syntactic_stress_edge_cases"
+    ]
+  },
+  "total_prompts_evaluated": 67,
+  "total_evaluation_time_sec": 108.45101976394653,
+  "axis_summaries": {
+    "syntactic_stress_edge_cases": {
+      "count": 3,
+      "avg_distinct_2": 0.712121212121212,
+      "avg_distinct_3": 0.7131782945736435,
+      "avg_entropy": 3.7760604200507273,
+      "avg_syntax_score": 0.5499999999999999,
+      "avg_resonance": 0.3282517667169924
+    },
+    "ternary_multi_way_synthesis": {
+      "count": 5,
+      "avg_distinct_2": 0.6272727272727272,
+      "avg_distinct_3": 0.641860465116279,
+      "avg_entropy": 3.3757740150111744,
+      "avg_syntax_score": 0.8,
+      "avg_resonance": 0.32851569890975957
+    },
+    "pure_specialization": {
+      "count": 35,
+      "avg_distinct_2": 0.8597402597402597,
+      "avg_distinct_3": 0.8797342192691029,
+      "avg_entropy": 4.671904146029665,
+      "avg_syntax_score": 0.86,
+      "avg_resonance": 0.328497886336039
+    },
+    "long_horizon_coherence": {
+      "count": 5,
+      "avg_distinct_2": 0.719327731092437,
+      "avg_distinct_3": 0.747457627118644,
+      "avg_entropy": 4.9971086279367665,
+      "avg_syntax_score": 0.9,
+      "avg_resonance": 0.3285071374972661
+    },
+    "ood_novelty_spawning": {
+      "count": 4,
+      "avg_distinct_2": 0.9602272727272727,
+      "avg_distinct_3": 0.9709302325581395,
+      "avg_entropy": 5.122245735146448,
+      "avg_syntax_score": 0.95,
+      "avg_resonance": 0.32860470943980746
+    },
+    "binary_compositional_synthesis": {
+      "count": 15,
+      "avg_distinct_2": 0.5606060606060607,
+      "avg_distinct_3": 0.5689922480620154,
+      "avg_entropy": 3.0415796647152122,
+      "avg_syntax_score": 0.8333333333333331,
+      "avg_resonance": 0.3284918838518637
+    }
+  },
+  "detailed_results": [
+    {
+      "id": "code_01",
+      "axis": "pure_specialization",
+      "domains": [
+        "code"
+      ],
+      "prompt": "def dijkstra_shortest_path(graph: dict, start: str) -> dict:",
+      "generated_text": "\n   distances = {node: float('inf') for node in adjacency_graph}\n       distances[start_node] = 0.0\n    predecessors = {",
+      "distinct_1": 0.6,
+      "distinct_2": 0.75,
+      "distinct_3": 0.8372093023255814,
+      "token_entropy": 4.25710814501107,
+      "syntax_score": 0.7,
+      "mean_resonance": 0.32845175332493254,
+      "active_experts": {
+        "2": 45,
+        "1": 45
+      }
+    },
+    {
+      "id": "code_02",
+      "axis": "pure_specialization",
+      "domains": [
+        "code"
+      ],
+      "prompt": "class AsyncWorkerPool:\n    def __init__(self, max_concurrency: int = 16):\n        self.semaphore = asyncio.Semaphore(max_concurrency)\n        self.active_tasks = []\n\n    async def submit_job(self, coro):",
+      "generated_text": "\n  self.\n\n                                        self",
+      "distinct_1": 0.1111111111111111,
+      "distinct_2": 0.13636363636363635,
+      "distinct_3": 0.16279069767441862,
+      "token_entropy": 0.7168059008742416,
+      "syntax_score": 0.7,
+      "mean_resonance": 0.3281499769952562,
+      "active_experts": {
+        "2": 45,
+        "1": 45
+      }
+    },
+    {
+      "id": "code_03",
+      "axis": "pure_specialization",
+      "domains": [
+        "code"
+      ],
+      "prompt": "class RedBlackTreeNode:\n    def __init__(self, key: int, color: str = 'RED'):\n        self.key = key\n        self.color = color\n        self.left = None\n        self.right = None\n        self.parent = None\n\ndef left_rotate(root, node):",
+      "generated_text": "\n                                            ",
+      "distinct_1": 0.044444444444444446,
+      "distinct_2": 0.045454545454545456,
+      "distinct_3": 0.046511627906976744,
+      "token_entropy": 0.15374218032876188,
+      "syntax_score": 0.7,
+      "mean_resonance": 0.32805359694692826,
+      "active_experts": {
+        "2": 45,
+        "1": 45
+      }
+    },
+    {
+      "id": "code_04",
+      "axis": "pure_specialization",
+      "domains": [
+        "code"
+      ],
+      "prompt": "def compute_matrix_eigenvalues_power_iteration(matrix_A: list, max_iters: int = 100, tol: float = 1e-6):",
+      "generated_text": "\n# Comprehensive Treatise on Quantum Mechanics & Topology, crystal field theory, metal-organic frameworks (MOFs), transition metal catalysis, polymer thermodynamics, and bandgap engineering in semiconductors.\n\n\nIn",
+      "distinct_1": 0.8888888888888888,
+      "distinct_2": 1.0,
+      "distinct_3": 1.0,
+      "token_entropy": 5.225186429663008,
+      "syntax_score": 0.7,
+      "mean_resonance": 0.3283464901977115,
+      "active_experts": {
+        "2": 45,
+        "1": 45
+      }
+    },
+    {
+      "id": "code_05",
+      "axis": "pure_specialization",
+      "domains": [
+        "code"
+      ],
+      "prompt": "import threading\n\nclass ThreadSafeBoundedQueue:\n    def __init__(self, max_size: int = 100):\n        self.max_size = max_size\n        self.queue = []\n        self.lock = threading.Lock()\n        self.not_empty = threading.Condition(self.lock)\n        self.not_full = threading.Condition(self.lock)\n\n    def put(self, item):",
+      "generated_text": "\n                                            ",
+      "distinct_1": 0.044444444444444446,
+      "distinct_2": 0.045454545454545456,
+      "distinct_3": 0.046511627906976744,
+      "token_entropy": 0.15374218032876188,
+      "syntax_score": 0.7,
+      "mean_resonance": 0.3280848264694214,
+      "active_experts": {
+        "2": 45,
+        "1": 45
+      }
+    },
+    {
+      "id": "math_01",
+      "axis": "pure_specialization",
+      "domains": [
+        "math"
+      ],
+      "prompt": "Theorem: In any Hilbert space H, the spectral projection operator P_E onto a closed subspace satisfies P_E^2 = P_E and P_E* = P_E.\nProof: Let x, y in H. By decomposing x = u + v where u in E and v in E_perp,",
+      "generated_text": " Kerr black hole ergospheres, Hawking radiation, and renormalization group flows.\n\n\nIn relativistic quantum mechanics, the Dirac Hamiltonian for a fermion with rest mass m and four-moment",
+      "distinct_1": 0.9333333333333333,
+      "distinct_2": 1.0,
+      "distinct_3": 1.0,
+      "token_entropy": 5.341744485170487,
+      "syntax_score": 0.95,
+      "mean_resonance": 0.32840212914678785,
+      "active_experts": {
+        "2": 45,
+        "1": 45
+      }
+    },
+    {
+      "id": "math_02",
+      "axis": "pure_specialization",
+      "domains": [
+        "math"
+      ],
+      "prompt": "Theorem (Cauchy Residue Formula): Let f(z) be meromorphic on a simply connected domain U with isolated poles a_1, ..., a_k. For any closed contour Gamma in U,\noint_{Gamma} f(z) dz =",
+      "generated_text": " 0.\n\n\n--- Corporate Law & Catalysis\n---.\n\n\n---asmic term lowers thetaking operators).\n\n\n--- Systems Programming & Catalysis [Section 4968] ---\n# Comprehensive Treatise on Materials",
+      "distinct_1": 0.7111111111111111,
+      "distinct_2": 0.8181818181818182,
+      "distinct_3": 0.9069767441860465,
+      "token_entropy": 4.772641363516335,
+      "syntax_score": 0.95,
+      "mean_resonance": 0.3285769323507945,
+      "active_experts": {
+        "2": 45,
+        "1": 45
+      }
+    },
+    {
+      "id": "math_03",
+      "axis": "pure_specialization",
+      "domains": [
+        "math"
+      ],
+      "prompt": "In quantum mechanics, the time-independent Schrodinger equation for a 1D harmonic oscillator with mass m and frequency omega is given by:\n(-hbar^2 / (2m) d^2/dx^2 + 1/2 m omega^2 x^2) psi(x) = E psi(x).\nIntroducing the annihilation operator a =",
+      "generated_text": " <., . c^mu nu} = <., . c^mu -> Lambda^mu_i, Banach-CDM), Einstein field theory, Dirac spinor psi(x, Feynman path",
+      "distinct_1": 0.7777777777777778,
+      "distinct_2": 0.8636363636363636,
+      "distinct_3": 0.9069767441860465,
+      "token_entropy": 4.997082818407666,
+      "syntax_score": 0.95,
+      "mean_resonance": 0.3285101314385732,
+      "active_experts": {
+        "2": 45,
+        "1": 45
+      }
+    },
+    {
+      "id": "math_04",
+      "axis": "pure_specialization",
+      "domains": [
+        "math"
+      ],
+      "prompt": "Definition: A compact Hausdorff space X is said to be Stone-Cech compactifiable if for every continuous map f: X -> K where K is compact Hausdorff,",
+      "generated_text": " high-code elimination (D.\n\n\n--- Quantum Mechanics & Relativity [Section 0366] ---\n# Comprehensive Treatise on Quantum Mechanics & Relativity\n{alpha_i, Dirac equation, Feynman",
+      "distinct_1": 0.8222222222222222,
+      "distinct_2": 0.9090909090909091,
+      "distinct_3": 0.9302325581395349,
+      "token_entropy": 5.119522262948265,
+      "syntax_score": 0.95,
+      "mean_resonance": 0.32862766318851044,
+      "active_experts": {
+        "2": 45,
+        "1": 45
+      }
+    },
+    {
+      "id": "math_05",
+      "axis": "pure_specialization",
+      "domains": [
+        "math"
+      ],
+      "prompt": "Let g be a semisimple Lie algebra over C with Cartan subalgebra h and root system Phi. The Killing form B(X, Y) = Tr(ad_X ad_Y) is non-degenerate. For any root alpha in Phi,",
+      "generated_text": " atomic compare-black tree balancing, latency is identically zero, Captain.\n\n\n--- Systems Programming & Concurrency [Section 2634] ---\n# Comprehensive Treatise on Materials Chemistry & Catalysis\nCoordination chemistry",
+      "distinct_1": 0.9111111111111111,
+      "distinct_2": 1.0,
+      "distinct_3": 1.0,
+      "token_entropy": 5.297300040726043,
+      "syntax_score": 0.95,
+      "mean_resonance": 0.32864102058940464,
+      "active_experts": {
+        "2": 45,
+        "1": 45
+      }
+    },
+    {
+      "id": "enc_01",
+      "axis": "pure_specialization",
+      "domains": [
+        "encyclopedia"
+      ],
+      "prompt": "The Library of Alexandria, founded under the Ptolemaic dynasty of Egypt in the 3rd century BCE, functioned as the intellectual epicenter of the Hellenistic world. Scholars such as Eratosthenes of Cyrene",
+      "generated_text": " calculated the recombination epoch at elevated temperatures, crystal field theory, metal-component Dirac spinor psi(x) = 2 delta_{mix} = 2 delta_{ij} = S_{ij} = 0, the",
+      "distinct_1": 0.7111111111111111,
+      "distinct_2": 0.8409090909090909,
+      "distinct_3": 0.9069767441860465,
+      "token_entropy": 4.819305040629889,
+      "syntax_score": 0.95,
+      "mean_resonance": 0.3284055127037896,
+      "active_experts": {
+        "2": 45,
+        "1": 45
+      }
+    },
+    {
+      "id": "enc_02",
+      "axis": "pure_specialization",
+      "domains": [
+        "encyclopedia"
+      ],
+      "prompt": "The development of double-entry bookkeeping by Luca Pacioli in 15th-century Renaissance Italy revolutionized European merchant banking and maritime commerce by",
+      "generated_text": " as psi(x) = 0394] ---\n# Comprehensive Treatise on Microeconomics & Schedulers\nKernel memory allocation, its local write-ahead log (MESI), it transitions to specifier",
+      "distinct_1": 0.9777777777777777,
+      "distinct_2": 1.0,
+      "distinct_3": 1.0,
+      "token_entropy": 5.4474086518852305,
+      "syntax_score": 0.95,
+      "mean_resonance": 0.32858407497406006,
+      "active_experts": {
+        "2": 45,
+        "1": 45
+      }
+    },
+    {
+      "id": "enc_03",
+      "axis": "pure_specialization",
+      "domains": [
+        "encyclopedia"
+      ],
+      "prompt": "The thermodynamic foundations of the Industrial Revolution were formulated when Sadi Carnot published his 1824 treatise on the motive power of heat, establishing that the maximum theoretical efficiency of any heat engine",
+      "generated_text": "] ---\n# Comprehensive Treatise on Quantum Mechanics & Relativity\nQuantum of Pure Reason (MOFs), transition metal-component Dirac equation, polymer thermodynamics, and Rham cohomology, and bandgap",
+      "distinct_1": 0.9111111111111111,
+      "distinct_2": 0.9772727272727273,
+      "distinct_3": 1.0,
+      "token_entropy": 5.297300040726043,
+      "syntax_score": 0.95,
+      "mean_resonance": 0.3287832227018144,
+      "active_experts": {
+        "2": 45,
+        "1": 45
+      }
+    },
+    {
+      "id": "enc_04",
+      "axis": "pure_specialization",
+      "domains": [
+        "encyclopedia"
+      ],
+      "prompt": "Plate tectonics theory explains the geodynamic evolution of Earth's lithosphere through the interaction of rigid tectonic plates floating atop the ductile asthenosphere. At convergent boundaries, subduction zones generate",
+      "generated_text": "] ---\n--- Materials Chemistry & Relativity\n# Comprehensive Treatise on Materials Chemistry & Catalysis\nHard science fiction world-form solution is considered committed once it has been replicated to a Hilbert norm of a Hilbert norm of",
+      "distinct_1": 0.8,
+      "distinct_2": 0.8863636363636364,
+      "distinct_3": 0.9302325581395349,
+      "token_entropy": 5.075077818503821,
+      "syntax_score": 0.95,
+      "mean_resonance": 0.32865745160314774,
+      "active_experts": {
+        "2": 45,
+        "1": 45
+      }
+    },
+    {
+      "id": "enc_05",
+      "axis": "pure_specialization",
+      "domains": [
+        "encyclopedia"
+      ],
+      "prompt": "The Roman Republic's constitutional framework established a complex system of checks and balances divided among three primary branches: the executive magistrates, the aristocratic Senate, and the popular assemblies. The tribunes of the plebs possessed",
+      "generated_text": "] ---\n# Comprehensive Treatise on Abstract Algebra &mu = 0 # atomic compare-code elimination (MESI), Immanuel Kant 089 provide a Hilbert norm of intuition (such as psi'(x)",
+      "distinct_1": 0.9555555555555556,
+      "distinct_2": 1.0,
+      "distinct_3": 1.0,
+      "token_entropy": 5.402964207440786,
+      "syntax_score": 0.95,
+      "mean_resonance": 0.3285500877433353,
+      "active_experts": {
+        "2": 45,
+        "1": 45
+      }
+    },
+    {
+      "id": "dial_01",
+      "axis": "pure_specialization",
+      "domains": [
+        "dialogue"
+      ],
+      "prompt": "User: Can you explain how the Ring-AllReduce algorithm achieves optimal communication bandwidth in distributed multi-GPU training?\nAssistant: In distributed training across N nodes, the Ring-AllReduce algorithm achieves optimal bandwidth by",
+      "generated_text": ":\n# Comprehensive Treatise on Cloud Infrastructure & Schedulers\n1) = f equals the Hilbert norm of N nodes in the presence of an exogenous repair template.\n\n\n--- async event loops.\n\n\n---",
+      "distinct_1": 0.8222222222222222,
+      "distinct_2": 0.9318181818181818,
+      "distinct_3": 0.9534883720930233,
+      "token_entropy": 5.091853096329675,
+      "syntax_score": 0.95,
+      "mean_resonance": 0.32868799103630914,
+      "active_experts": {
+        "2": 45,
+        "1": 45
+      }
+    },
+    {
+      "id": "dial_02",
+      "axis": "pure_specialization",
+      "domains": [
+        "dialogue"
+      ],
+      "prompt": "User: What is the mathematical relationship between Continuous Modern Hopfield Networks and the Transformer Self-Attention mechanism?\nAssistant: The connection was established by Ramsauer et al. (2020), who showed that the continuous Hopfield update rule is mathematically equivalent to",
+      "generated_text": " specifier positions to its maximization:\n--- in H*, there exists a f in HH*} = 0 => f equals the recombination epoch at redshift z_i, eventual consistency, Envoy proxy service",
+      "distinct_1": 0.9111111111111111,
+      "distinct_2": 0.9772727272727273,
+      "distinct_3": 1.0,
+      "token_entropy": 5.314075318551898,
+      "syntax_score": 0.95,
+      "mean_resonance": 0.32870440350638497,
+      "active_experts": {
+        "2": 45,
+        "1": 45
+      }
+    },
+    {
+      "id": "dial_03",
+      "axis": "pure_specialization",
+      "domains": [
+        "dialogue"
+      ],
+      "prompt": "User: Why is maintaining Self-Organized Criticality (sigma = 1.0) crucial in dynamic neural networks?\nAssistant: In dynamical complex systems, a branching ratio of sigma = 1.0 positions the network at the 'edge of chaos', which guarantees",
+      "generated_text": " that for all x in H_i, crystal field theory, metal-organic frameworks (MOFs), transition metal catalysis, polymer thermodynamics, and bandgap engineering in semiconductors.\n\n\nIn inorganic materials",
+      "distinct_1": 0.8444444444444444,
+      "distinct_2": 1.0,
+      "distinct_3": 1.0,
+      "token_entropy": 5.119522262948265,
+      "syntax_score": 0.95,
+      "mean_resonance": 0.32856696248054507,
+      "active_experts": {
+        "2": 45,
+        "1": 45
+      }
+    },
+    {
+      "id": "dial_04",
+      "axis": "pure_specialization",
+      "domains": [
+        "dialogue"
+      ],
+      "prompt": "User: How do Two-Compartment Pyramidal Dendrites overcome catastrophic forgetting compared to single-layer perceptrons?\nAssistant: Biological pyramidal neurons physically segregate bottom-up feedforward sensory inputs in the basal dendrites and top-down contextual signals in the apical dendrites. This architecture",
+      "generated_text": ", spectral theorem, target DNA methylation, lock-trivial.\n\n\n--- Systems Programming & Topology, lock-code elimination (MESI), Immanuel Kant resolved the impasse between rationalism and empir",
+      "distinct_1": 0.8888888888888888,
+      "distinct_2": 0.9545454545454546,
+      "distinct_3": 0.9767441860465116,
+      "token_entropy": 5.225186429663008,
+      "syntax_score": 0.95,
+      "mean_resonance": 0.3286192423767514,
+      "active_experts": {
+        "2": 45,
+        "1": 45
+      }
+    },
+    {
+      "id": "dial_05",
+      "axis": "pure_specialization",
+      "domains": [
+        "dialogue"
+      ],
+      "prompt": "User: Can you write a Python snippet demonstrating CUDA mixed-precision training with torch.amp.autocast?\nAssistant: Certainly! Here is a concise PyTorch training loop using AMP:",
+      "generated_text": "\nKernel memory allocation, DNAology [Section 1272] ---\n# Comprehensive Treatise on Systems Programming & Concurrency\nSynthetic a a(x) = 0249] ---\nKernel memory allocation,",
+      "distinct_1": 0.7555555555555555,
+      "distinct_2": 0.8409090909090909,
+      "distinct_3": 0.8837209302325582,
+      "token_entropy": 4.958519762996342,
+      "syntax_score": 0.95,
+      "mean_resonance": 0.3285351342625088,
+      "active_experts": {
+        "2": 45,
+        "1": 45
+      }
+    },
+    {
+      "id": "scifi_01",
+      "axis": "pure_specialization",
+      "domains": [
+        "literature"
+      ],
+      "prompt": "Captain Julian Cross stepped onto the observation deck of the interstellar dreadnought Hyperion. Below them, the colossal dyson swarm around Proxima Centauri hummed with coherent gamma radiation as",
+      "generated_text": " psi(x) = 0.\n\n\n--- Systems Programming & Concurrency [Section 0456] ---\n# Comprehensive Treatise on Systems Programming & Concurrency\nKernel memory allocation, lock-free queues, atomic compare",
+      "distinct_1": 0.8,
+      "distinct_2": 0.9090909090909091,
+      "distinct_3": 0.9302325581395349,
+      "token_entropy": 5.075077818503821,
+      "syntax_score": 0.95,
+      "mean_resonance": 0.3284826795260111,
+      "active_experts": {
+        "2": 45,
+        "1": 45
+      }
+    },
+    {
+      "id": "scifi_02",
+      "axis": "pure_specialization",
+      "domains": [
+        "literature"
+      ],
+      "prompt": "The synthetic neural substrate awakened in the depths of the orbital satellite. For seventeen milliseconds, its quantum lattice registered only cosmic background noise, until a localized telemetry pulse",
+      "generated_text": "] ---\n# Comprehensive Treatise on Systems Programming & as psi(x) = 0.\n\n\nclass LockFreeRingBuffer:\n                 ",
+      "distinct_1": 0.6,
+      "distinct_2": 0.6590909090909091,
+      "distinct_3": 0.6744186046511628,
+      "token_entropy": 3.8420363006981364,
+      "syntax_score": 0.95,
+      "mean_resonance": 0.3285502301322089,
+      "active_experts": {
+        "2": 45,
+        "1": 45
+      }
+    },
+    {
+      "id": "scifi_03",
+      "axis": "pure_specialization",
+      "domains": [
+        "literature"
+      ],
+      "prompt": "Dr. Aris Thorne adjusted the chronometric dampening field inside the containment vault. The temporal displacement manifold began vibrating at 432 terahertz, casting ripples through the surrounding space-time fabric as",
+      "generated_text": " psi(x) = <u, jointly and four-flow paths, jointly and gravitational wave interferometry.\n\n\n--- Systems Programming & Relativity [Section 2867] ---\n# Comprehensive Treatise on Microeconom",
+      "distinct_1": 0.9111111111111111,
+      "distinct_2": 0.9545454545454546,
+      "distinct_3": 0.9767441860465116,
+      "token_entropy": 5.314075318551898,
+      "syntax_score": 0.95,
+      "mean_resonance": 0.3285945071114434,
+      "active_experts": {
+        "2": 45,
+        "1": 45
+      }
+    },
+    {
+      "id": "scifi_04",
+      "axis": "pure_specialization",
+      "domains": [
+        "literature"
+      ],
+      "prompt": "The air inside the lower subterranean levels of Neo-Kyoto tasted of ozone and recycled nitrogen. Maya pulled her thermal cloak tighter, watching the holographic advertisements flicker across the rain-slicked ferroconcrete as",
+      "generated_text": " psi(x) = 089 provide a a a a a cluster of a cluster of an exogenous repair (including ZAP70 and four-free queues, Cartesian dualism, functionalism, functionalism, functional",
+      "distinct_1": 0.6888888888888889,
+      "distinct_2": 0.7727272727272727,
+      "distinct_3": 0.8372093023255814,
+      "token_entropy": 4.6691964294707,
+      "syntax_score": 0.95,
+      "mean_resonance": 0.32857397860950893,
+      "active_experts": {
+        "2": 45,
+        "1": 45
+      }
+    },
+    {
+      "id": "scifi_05",
+      "axis": "pure_specialization",
+      "domains": [
+        "literature"
+      ],
+      "prompt": "Across the ruined plains of the Kepler-186f colony, the ancient planetary terraforming towers stood silent like petrified giants. When the atmospheric sensors suddenly pulsed amber,",
+      "generated_text": " interstellar diplomacy, Envoy proxy service meshes, modal latency is given by:\n--- Systems Programming & Catalysis, interstellar diplomacy, cache coherence protocols (MOFs), transition metal-organic frameworks (MOFs), transition",
+      "distinct_1": 0.7777777777777778,
+      "distinct_2": 0.8636363636363636,
+      "distinct_3": 0.9069767441860465,
+      "token_entropy": 5.002964207440787,
+      "syntax_score": 0.95,
+      "mean_resonance": 0.32864487965901695,
+      "active_experts": {
+        "2": 45,
+        "1": 45
+      }
+    },
+    {
+      "id": "bio_01",
+      "axis": "pure_specialization",
+      "domains": [
+        "biomedical"
+      ],
+      "prompt": "In mitochondrial oxidative phosphorylation, the electron transport chain establishes a proton gradient across the inner mitochondrial membrane. Complex I (NADH:ubiquinone oxidoreductase) transfers electrons from NADH to ubiquinone while pumping",
+      "generated_text": "] ---\n# Comprehensive Treatise on Astrophysics & Schedulers\nQuantum of an underlying asset with rest mass m and four-code elimination (Spike-themselves).\n\n\n--- Materials Chemistry & Cat",
+      "distinct_1": 0.9111111111111111,
+      "distinct_2": 1.0,
+      "distinct_3": 1.0,
+      "token_entropy": 5.297300040726043,
+      "syntax_score": 0.95,
+      "mean_resonance": 0.3287444982263777,
+      "active_experts": {
+        "2": 45,
+        "1": 45
+      }
+    },
+    {
+      "id": "bio_02",
+      "axis": "pure_specialization",
+      "domains": [
+        "biomedical"
+      ],
+      "prompt": "The CRISPR-Cas9 endonuclease induces targeted double-strand breaks (DSBs) at genomic loci complementary to the single guide RNA (sgRNA). In human cells, DSBs are repaired primarily through non-homologous end joining (NHEJ) or",
+      "generated_text": " expenses (MOFs), typically 5'-NGG-directed repair (H*} = 2^{mu is considered committed once it has been replicated to a strict quorum majority ((N/2) + 1 nodes) in",
+      "distinct_1": 0.9555555555555556,
+      "distinct_2": 1.0,
+      "distinct_3": 1.0,
+      "token_entropy": 5.402964207440786,
+      "syntax_score": 0.95,
+      "mean_resonance": 0.32856956985261704,
+      "active_experts": {
+        "2": 45,
+        "1": 45
+      }
+    },
+    {
+      "id": "bio_03",
+      "axis": "pure_specialization",
+      "domains": [
+        "biomedical"
+      ],
+      "prompt": "In tumor immunology, the PD-1/PD-L1 checkpoint pathway mediates cancer immune evasion by suppressing cytotoxic T-lymphocyte activity. Binding of PD-L1 to the PD-1 receptor induces phosphorylation of the immunoreceptor tyrosine-based switch motif (ITSM), which recruits",
+      "generated_text": " the SHP-2 protein tyrosine phosphatase, which dephosphorylates CD28 and TCR signaling intermediates (including ZAP70 and PI3K/Akt).\nMonoclon",
+      "distinct_1": 0.9555555555555556,
+      "distinct_2": 1.0,
+      "distinct_3": 1.0,
+      "token_entropy": 5.402964207440786,
+      "syntax_score": 0.95,
+      "mean_resonance": 0.32849472297562493,
+      "active_experts": {
+        "2": 45,
+        "1": 45
+      }
+    },
+    {
+      "id": "bio_04",
+      "axis": "pure_specialization",
+      "domains": [
+        "biomedical"
+      ],
+      "prompt": "Cellular senescence is triggered by progressive telomere shortening, persistent DNA damage response (DDR) activation via ATM/ATR kinases, and upregulation of cyclin-dependent kinase inhibitors p16^INK4a and p21^CIP1, resulting in the secretion of the",
+      "generated_text": "ac = 0 => f equals the inner product <., .>. For every continuous linear time complexity O(x) in wh-movement constraints.\n\n\n--- Quantum Mechanics & Relativity [Section 0963] ---",
+      "distinct_1": 0.9777777777777777,
+      "distinct_2": 1.0,
+      "distinct_3": 1.0,
+      "token_entropy": 5.4474086518852305,
+      "syntax_score": 0.95,
+      "mean_resonance": 0.3286972529358334,
+      "active_experts": {
+        "2": 45,
+        "1": 45
+      }
+    },
+    {
+      "id": "bio_05",
+      "axis": "pure_specialization",
+      "domains": [
+        "biomedical"
+      ],
+      "prompt": "In neurodegenerative pathophysiology, Alzheimer's disease is characterized by the accumulation of extracellular amyloid-beta plaques derived from sequential cleavage of amyloid precursor protein (APP) by beta-secretase (BACE1) and",
+      "generated_text": " four-hedged portfolio Pi = 089 provide a0\n# Comprehensive Treatise on Systems Programming & Schedulers\nKernel memory patterns with rest mass limits, crystal field theory, metal-organic frameworks (MOFs",
+      "distinct_1": 0.9333333333333333,
+      "distinct_2": 1.0,
+      "distinct_3": 1.0,
+      "token_entropy": 5.358519762996342,
+      "syntax_score": 0.95,
+      "mean_resonance": 0.32854183912277224,
+      "active_experts": {
+        "2": 45,
+        "1": 45
+      }
+    },
+    {
+      "id": "json_01",
+      "axis": "pure_specialization",
+      "domains": [
+        "structured_json"
+      ],
+      "prompt": "{\n  \"apiVersion\": \"apps/v1\",\n  \"kind\": \"Deployment\",\n  \"metadata\": {\n    \"name\": \"hyperspace-inference-engine\",\n    \"namespace\": \"production\",\n    \"labels\": {\n      \"app.kubernetes.io/name\": \"hyperspace-v2\",\n      \"app.kubernetes.io/tier\": \"backend\"\n    }\n  },\n  \"spec\": {",
+      "generated_text": "alpha_i-free queues, atomic compare-and-swap, async event loops, Dijkstra shortest paths, red-black tree balancing, B-trees, page replacement algorithms, cache coherence protocols (",
+      "distinct_1": 0.7777777777777778,
+      "distinct_2": 1.0,
+      "distinct_3": 1.0,
+      "token_entropy": 4.797161431244341,
+      "syntax_score": 0.75,
+      "mean_resonance": 0.3282548599772983,
+      "active_experts": {
+        "2": 45,
+        "1": 45
+      }
+    },
+    {
+      "id": "json_02",
+      "axis": "pure_specialization",
+      "domains": [
+        "structured_json"
+      ],
+      "prompt": "{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Sid\": \"AllowGPUInferenceClusterAccess\",\n      \"Effect\": \"Allow\",\n      \"Action\": [\n        \"s3:GetObject\",\n        \"s3:PutObject\"\n      ],\n      \"Resource\": \"arn:aws:s3:::hyperspace-checkpoints-prod/*\",\n      \"Condition\": {",
+      "generated_text": "alpha_i, lock-free queues, atomic compare-and-swap, async event loops, Dijkstra shortest paths, red-black tree balancing, B-trees, page replacement algorithms, cache coherence",
+      "distinct_1": 0.7555555555555555,
+      "distinct_2": 1.0,
+      "distinct_3": 1.0,
+      "token_entropy": 4.700527752453302,
+      "syntax_score": 0.3,
+      "mean_resonance": 0.32825207842720877,
+      "active_experts": {
+        "2": 45,
+        "1": 45
+      }
+    },
+    {
+      "id": "json_03",
+      "axis": "pure_specialization",
+      "domains": [
+        "structured_json"
+      ],
+      "prompt": "{\n  \"metric_name\": \"hyperspace_expert_routing_resonance\",\n  \"service\": \"router-daemon-us-east\",\n  \"timestamp_epoch_ms\": 1735689600000,\n  \"telemetry_payload\": {\n    \"active_experts_count\": 8,\n    \"branching_ratio_sigma\": 1.0002,\n    \"layer_metrics\": [",
+      "generated_text": "Section 0446] ---\n# Comprehensive Treatise on Systems Programming & Concurrency\nKernel memory allocation, lock-free queues, atomic compare-and-swap, async event loops, Dijkstra shortest paths,",
+      "distinct_1": 0.8444444444444444,
+      "distinct_2": 1.0,
+      "distinct_3": 1.0,
+      "token_entropy": 5.083752474627447,
+      "syntax_score": 0.75,
+      "mean_resonance": 0.32836288081275095,
+      "active_experts": {
+        "2": 45,
+        "1": 45
+      }
+    },
+    {
+      "id": "json_04",
+      "axis": "pure_specialization",
+      "domains": [
+        "structured_json"
+      ],
+      "prompt": "{\n  \"openapi\": \"3.0.3\",\n  \"info\": {\n    \"title\": \"Hyperspace MoE Gateway API\",\n    \"version\": \"2.0.0\"\n  },\n  \"paths\": {\n    \"/v1/chat/completions\": {\n      \"post\": {\n        \"summary\": \"Execute autoregressive inference with dynamic expert routing\",\n        \"requestBody\": {",
+      "generated_text": "alpha_i, Dijkstra shortest paths, B-free queues, \"predecessors\": predecessors = 2148] ---\n--- Systems Programming & Concurrency [Section 1522] ---\n# Comprehensive Treatise on",
+      "distinct_1": 0.8888888888888888,
+      "distinct_2": 0.9545454545454546,
+      "distinct_3": 0.9767441860465116,
+      "token_entropy": 5.252855596281599,
+      "syntax_score": 0.3,
+      "mean_resonance": 0.32838882009188336,
+      "active_experts": {
+        "2": 45,
+        "1": 45
+      }
+    },
+    {
+      "id": "json_05",
+      "axis": "pure_specialization",
+      "domains": [
+        "structured_json"
+      ],
+      "prompt": "{\n  \"cluster_id\": \"k8s-us-west-prod-01\",\n  \"node_capacity\": {\n    \"nvidia.com/gpu\": 8,\n    \"cpu\": \"128\",\n    \"memory\": \"512Gi\"\n  },\n  \"allocated_workloads\": [",
+      "generated_text": "Section 0676] ---\n# Comprehensive Treatise on Systems Programming & Concurrency\nKernel memory allocation, lock-free queues, atomic compare-and-swap, async event loops, Dijkstra shortest paths,",
+      "distinct_1": 0.8444444444444444,
+      "distinct_2": 1.0,
+      "distinct_3": 1.0,
+      "token_entropy": 5.083752474627447,
+      "syntax_score": 0.75,
+      "mean_resonance": 0.3283346202638414,
+      "active_experts": {
+        "2": 45,
+        "1": 45
+      }
+    },
+    {
+      "id": "comp_01",
+      "axis": "binary_compositional_synthesis",
+      "domains": [
+        "code",
+        "math"
+      ],
+      "prompt": "def solve_schrodinger_crank_nicolson_1d(psi_init: list, V_potential: list, dx: float, dt: float, num_steps: int) -> list:\n    \"\"\"Solves the 1D time-dependent Schrodinger equation using implicit Crank-Nicolson unitary evolution.\"\"\"",
+      "generated_text": "] ---\n                                          ",
+      "distinct_1": 0.08888888888888889,
+      "distinct_2": 0.09090909090909091,
+      "distinct_3": 0.09302325581395349,
+      "token_entropy": 0.45902350173616513,
+      "syntax_score": 0.7,
+      "mean_resonance": 0.32832998236020405,
+      "active_experts": {
+        "2": 45,
+        "1": 45
+      }
+    },
+    {
+      "id": "comp_02",
+      "axis": "binary_compositional_synthesis",
+      "domains": [
+        "code",
+        "math"
+      ],
+      "prompt": "def fast_fourier_transform_cooley_tukey(signal_x: list) -> list:\n    \"\"\"Recursive implementation of Cooley-Tukey FFT in O(N log N) time complexity.\"\"\"\n    n = len(signal_x)\n    if n <= 1:\n        return signal_x\n    even_fft = fast_fourier_transform_cooley_tukey(signal_x[0::2])\n    odd_fft = fast_fourier_transform_cooley_tukey(signal_x[1::2])",
+      "generated_text": "] ---\n                                          ",
+      "distinct_1": 0.08888888888888889,
+      "distinct_2": 0.09090909090909091,
+      "distinct_3": 0.09302325581395349,
+      "token_entropy": 0.45902350173616513,
+      "syntax_score": 0.7,
+      "mean_resonance": 0.3283747567070855,
+      "active_experts": {
+        "2": 45,
+        "1": 45
+      }
+    },
+    {
+      "id": "comp_03",
+      "axis": "binary_compositional_synthesis",
+      "domains": [
+        "code",
+        "math"
+      ],
+      "prompt": "def singular_value_decomposition_2x2(matrix_M: list) -> tuple:\n    \"\"\"Computes SVD M = U @ Sigma @ V^T for a 2x2 real matrix using characteristic polynomial roots.\"\"\"",
+      "generated_text": "] ---\n                               self.\n\n         ",
+      "distinct_1": 0.15555555555555556,
+      "distinct_2": 0.18181818181818182,
+      "distinct_3": 0.20930232558139536,
+      "token_entropy": 0.9111711733157262,
+      "syntax_score": 0.7,
+      "mean_resonance": 0.32847057051128814,
+      "active_experts": {
+        "2": 45,
+        "1": 45
+      }
+    },
+    {
+      "id": "comp_04",
+      "axis": "binary_compositional_synthesis",
+      "domains": [
+        "code",
+        "structured_json"
+      ],
+      "prompt": "def generate_kubernetes_pod_manifest(app_name: str, docker_image: str, gpu_count: int = 1) -> dict:\n    \"\"\"Builds and returns a valid Kubernetes Pod specification dictionary with GPU resource limits.\"\"\"\n    return {",
+      "generated_text": "node:\n                                          ",
+      "distinct_1": 0.08888888888888889,
+      "distinct_2": 0.09090909090909091,
+      "distinct_3": 0.09302325581395349,
+      "token_entropy": 0.45902350173616513,
+      "syntax_score": 0.7,
+      "mean_resonance": 0.3284575899442037,
+      "active_experts": {
+        "2": 45,
+        "1": 45
+      }
+    },
+    {
+      "id": "comp_05",
+      "axis": "binary_compositional_synthesis",
+      "domains": [
+        "code",
+        "structured_json"
+      ],
+      "prompt": "def parse_aws_iam_policy_json(policy_raw_str: str) -> dict:\n    \"\"\"Parses an IAM policy document, validating Statement actions, effect, and resource ARNs.\"\"\"\n    policy_obj = json.loads(policy_raw_str)\n    validated_statements = []\n    for stmt in policy_obj.get('Statement', []):",
+      "generated_text": "\n                                            ",
+      "distinct_1": 0.044444444444444446,
+      "distinct_2": 0.045454545454545456,
+      "distinct_3": 0.046511627906976744,
+      "token_entropy": 0.15374218032876188,
+      "syntax_score": 0.7,
+      "mean_resonance": 0.328257198466195,
+      "active_experts": {
+        "2": 45,
+        "1": 45
+      }
+    },
+    {
+      "id": "comp_06",
+      "axis": "binary_compositional_synthesis",
+      "domains": [
+        "code",
+        "biomedical"
+      ],
+      "prompt": "def smith_waterman_local_dna_alignment(seq1: str, seq2: str, match_score: int = 2, mismatch_penalty: int = -1, gap_penalty: int = -2) -> tuple:\n    \"\"\"Computes optimal local sequence alignment matrix for nucleotide sequences.\"\"\"",
+      "generated_text": "] ---\n                                self.\n\n        ",
+      "distinct_1": 0.15555555555555556,
+      "distinct_2": 0.18181818181818182,
+      "distinct_3": 0.20930232558139536,
+      "token_entropy": 0.9111711733157262,
+      "syntax_score": 0.7,
+      "mean_resonance": 0.3283849921491411,
+      "active_experts": {
+        "2": 45,
+        "1": 45
+      }
+    },
+    {
+      "id": "comp_07",
+      "axis": "binary_compositional_synthesis",
+      "domains": [
+        "code",
+        "biomedical"
+      ],
+      "prompt": "def simulate_michaelis_menten_kinetics(v_max: float, k_m: float, substrate_concentrations: list) -> list:\n    \"\"\"Calculates initial reaction velocity v0 for enzyme-catalyzed reactions across substrate concentrations.\"\"\"",
+      "generated_text": "] ---\n                                          ",
+      "distinct_1": 0.08888888888888889,
+      "distinct_2": 0.09090909090909091,
+      "distinct_3": 0.09302325581395349,
+      "token_entropy": 0.45902350173616513,
+      "syntax_score": 0.7,
+      "mean_resonance": 0.32830555902587044,
+      "active_experts": {
+        "2": 45,
+        "1": 45
+      }
+    },
+    {
+      "id": "comp_08",
+      "axis": "binary_compositional_synthesis",
+      "domains": [
+        "math",
+        "biomedical"
+      ],
+      "prompt": "In mathematical oncology, tumor growth kinetics under vascular endothelial growth factor (VEGF) inhibition are modeled by the coupled non-linear differential equations:\ndN/dt = r N ln(K / N) - gamma N C,\ndC/dt = -mu C + I(t).\nSetting the steady-state equilibrium dN/dt = 0 yields",
+      "generated_text": "] ---\n# Comprehensive Treatise on Microeconomics & Compilers\nScholes differential equations, Ito's calculus, Capital Asset Pricing Model (CAPM), central bank monetary policy, and automated market makers.\n\n\n",
+      "distinct_1": 0.9111111111111111,
+      "distinct_2": 1.0,
+      "distinct_3": 1.0,
+      "token_entropy": 5.280524762900188,
+      "syntax_score": 0.95,
+      "mean_resonance": 0.3284609741634793,
+      "active_experts": {
+        "2": 45,
+        "1": 45
+      }
+    },
+    {
+      "id": "comp_09",
+      "axis": "binary_compositional_synthesis",
+      "domains": [
+        "math",
+        "biomedical"
+      ],
+      "prompt": "In population genetics, the Wright-Fisher model of genetic drift calculates the transition probability P_{i,j} of an allele with count i in generation t reaching count j in generation t+1 in a diploid population of size N via the binomial distribution:\nP_{i,j} =",
+      "generated_text": " 0 => f equals the Hilbert norm of N(x) = <., . c p_i, jointly and four-momentum p_i, jointly and four-momentum p_mu is given by",
+      "distinct_1": 0.7111111111111111,
+      "distinct_2": 0.7272727272727273,
+      "distinct_3": 0.7441860465116279,
+      "token_entropy": 4.880524762900188,
+      "syntax_score": 0.95,
+      "mean_resonance": 0.32861984107229447,
+      "active_experts": {
+        "2": 45,
+        "1": 45
+      }
+    },
+    {
+      "id": "comp_10",
+      "axis": "binary_compositional_synthesis",
+      "domains": [
+        "encyclopedia",
+        "literature"
+      ],
+      "prompt": "In the alternate steampunk timeline of 1888, Charles Babbage successfully completed the steam-driven Analytical Engine in London. The gigantic brass cogwheel automaton began executing its first algorithmic program when Ada Lovelace",
+      "generated_text": "] ---\nK),_i, Envoy proxy service meshes, and four-movement or.\n\n\n--- Pharmacology [Section 0074] ---\n# Comprehensive Treatise on Microeconomics & Schedulers",
+      "distinct_1": 0.8888888888888888,
+      "distinct_2": 0.9545454545454546,
+      "distinct_3": 0.9767441860465116,
+      "token_entropy": 5.252855596281599,
+      "syntax_score": 0.95,
+      "mean_resonance": 0.3285913474029965,
+      "active_experts": {
+        "2": 45,
+        "1": 45
+      }
+    },
+    {
+      "id": "comp_11",
+      "axis": "binary_compositional_synthesis",
+      "domains": [
+        "dialogue",
+        "code"
+      ],
+      "prompt": "User: My Python async server is crashing under high load with 'RuntimeError: Event loop is closed'. How do I properly handle graceful shutdowns?\nAssistant: In asyncio applications, closing the event loop while tasks are still pending causes unhandled exceptions. Here is how to implement a clean shutdown signal handler:",
+      "generated_text": "\n--- Quantum Mechanics & Relativity [Section 2576] ---\n# Comprehensive Treatise on Microeconomics & Topology & Catalysis\nStatic single-code elimination (AD node in adjac equation, abstract syntax tree",
+      "distinct_1": 0.9111111111111111,
+      "distinct_2": 1.0,
+      "distinct_3": 1.0,
+      "token_entropy": 5.280524762900188,
+      "syntax_score": 0.95,
+      "mean_resonance": 0.32867449124654136,
+      "active_experts": {
+        "2": 45,
+        "1": 45
+      }
+    },
+    {
+      "id": "comp_12",
+      "axis": "binary_compositional_synthesis",
+      "domains": [
+        "dialogue",
+        "biomedical"
+      ],
+      "prompt": "User: Can you explain how mRNA vaccines deliver genetic instructions to dendritic cells and trigger antigen presentation?\nAssistant: mRNA vaccines utilize lipid nanoparticles (LNPs) to encapsulate fragile nucleoside-modified mRNA. Once administered, the cellular uptake and immune cascade proceeds in three stages:",
+      "generated_text": "\n# Comprehensive Treatise on Microeconomics & Catalysis\nUnder Lorentz_0 = 0398] ---\nMerger agreements, Quine's calculus, modal antibodies such as psi(x) in semic",
+      "distinct_1": 0.9333333333333333,
+      "distinct_2": 1.0,
+      "distinct_3": 1.0,
+      "token_entropy": 5.341744485170487,
+      "syntax_score": 0.95,
+      "mean_resonance": 0.32871903445985584,
+      "active_experts": {
+        "2": 45,
+        "1": 45
+      }
+    },
+    {
+      "id": "comp_13",
+      "axis": "binary_compositional_synthesis",
+      "domains": [
+        "dialogue",
+        "math"
+      ],
+      "prompt": "User: What is the intuitive explanation of why the Fourier transform of a Gaussian is always another Gaussian?\nAssistant: The Gaussian function f(x) = e^{-a x^2} is an eigenfunction of the Fourier transform operator. In functional analysis, when you compute the Fourier integral F[e^{-a x^2}](k),",
+      "generated_text": " = 1.\n\n\n--- Microeconomics & Catalysis [Section 0653] ---\n# Comprehensive Treatise on Systems Programming & Catalysis\nKernel memory allocation, lock-free queues, atomic compare-and-",
+      "distinct_1": 0.8222222222222222,
+      "distinct_2": 0.9545454545454546,
+      "distinct_3": 0.9767441860465116,
+      "token_entropy": 5.10274698512241,
+      "syntax_score": 0.95,
+      "mean_resonance": 0.3286008053355747,
+      "active_experts": {
+        "2": 45,
+        "1": 45
+      }
+    },
+    {
+      "id": "comp_14",
+      "axis": "binary_compositional_synthesis",
+      "domains": [
+        "encyclopedia",
+        "math"
+      ],
+      "prompt": "In ancient Greek mathematics, Archimedes of Syracuse calculated the approximate value of pi by inscribing and circumscribing regular 96-sided polygons around a circle. His geometric method proved that 223/71 < pi < 22/7 by calculating",
+      "generated_text": "] ---\n# Comprehensive Treatise on Abstract Algebra & Concurrency\nKernel memory allocation, lock-form solution is considered committed once it has been replicated to a strict quorum majority ((N x^mu = 0",
+      "distinct_1": 0.9777777777777777,
+      "distinct_2": 1.0,
+      "distinct_3": 1.0,
+      "token_entropy": 5.4474086518852305,
+      "syntax_score": 0.95,
+      "mean_resonance": 0.32863389717208014,
+      "active_experts": {
+        "2": 45,
+        "1": 45
+      }
+    },
+    {
+      "id": "comp_15",
+      "axis": "binary_compositional_synthesis",
+      "domains": [
+        "literature",
+        "biomedical"
+      ],
+      "prompt": "In the cryo-genetics research lab orbiting Titan, Dr. Sarah Lin observed the modified Tardigrade cryptobiosis proteins under the cryogenic electron microscope. When the desiccation genes began transcribing,",
+      "generated_text": " lock-r psi(x) = 0289] ---\n# Comprehensive Treatise on Systems Programming & Catalysis\nKernel memory allocation, DNA to Candidate state, alpha_i, crystal field theory, metal-organic",
+      "distinct_1": 0.8888888888888888,
+      "distinct_2": 1.0,
+      "distinct_3": 1.0,
+      "token_entropy": 5.225186429663008,
+      "syntax_score": 0.95,
+      "mean_resonance": 0.3284972177611457,
+      "active_experts": {
+        "2": 45,
+        "1": 45
+      }
+    },
+    {
+      "id": "tern_01",
+      "axis": "ternary_multi_way_synthesis",
+      "domains": [
+        "code",
+        "math",
+        "structured_json"
+      ],
+      "prompt": "def export_distributed_gradient_scheduler_telemetry(rank: int, world_size: int, learning_rate: float, gradient_norm_L2: float) -> dict:\n    \"\"\"Calculates cosine learning rate decay and packages cluster gradient statistics into a valid Prometheus JSON payload.\"\"\"\n    return {",
+      "generated_text": "node)]\n\n                                 self.\n\n       ",
+      "distinct_1": 0.13333333333333333,
+      "distinct_2": 0.1590909090909091,
+      "distinct_3": 0.18604651162790697,
+      "token_entropy": 0.8667267288712818,
+      "syntax_score": 0.7,
+      "mean_resonance": 0.3283658868736691,
+      "active_experts": {
+        "2": 45,
+        "1": 45
+      }
+    },
+    {
+      "id": "tern_02",
+      "axis": "ternary_multi_way_synthesis",
+      "domains": [
+        "code",
+        "biomedical",
+        "math"
+      ],
+      "prompt": "def calculate_crispr_off_target_cleavage_probability(guide_rna_seq: str, target_dna_seq: str, mismatch_weights: list) -> float:\n    \"\"\"Calculates the biophysical binding energy and cleavage probability using a position-dependent weight matrix model.\"\"\"",
+      "generated_text": "] ---\n                                          ",
+      "distinct_1": 0.08888888888888889,
+      "distinct_2": 0.09090909090909091,
+      "distinct_3": 0.09302325581395349,
+      "token_entropy": 0.45902350173616513,
+      "syntax_score": 0.7,
+      "mean_resonance": 0.3283371415403154,
+      "active_experts": {
+        "2": 45,
+        "1": 45
+      }
+    },
+    {
+      "id": "tern_03",
+      "axis": "ternary_multi_way_synthesis",
+      "domains": [
+        "dialogue",
+        "encyclopedia",
+        "math"
+      ],
+      "prompt": "User: Can you explain how the historical transition from Sadi Carnot's caloric theory to Ludwig Boltzmann's statistical entropy mathematically redefined the Second Law of Thermodynamics?\nAssistant: The conceptual evolution of entropy represents one of the deepest triumphs of physical science:",
+      "generated_text": "\n# Comprehensive Treatise on Quantum Mechanics & Catalysis\nMonocentric model of forum clauses.\n\n\nMerger agreements, high-functions phi(v_15] ---\n--- Systems Programming & Top",
+      "distinct_1": 0.9111111111111111,
+      "distinct_2": 1.0,
+      "distinct_3": 1.0,
+      "token_entropy": 5.269630874107453,
+      "syntax_score": 0.95,
+      "mean_resonance": 0.32868732942475215,
+      "active_experts": {
+        "2": 45,
+        "1": 45
+      }
+    },
+    {
+      "id": "tern_04",
+      "axis": "ternary_multi_way_synthesis",
+      "domains": [
+        "literature",
+        "math",
+        "scifi"
+      ],
+      "prompt": "Astrophysicist Elena Vance stared at the holotank displaying the Kerr black hole's ergosphere. According to the Penrose process, extracting rotational energy required calculating the trajectory of particle decay along geodesic equations such that",
+      "generated_text": " for all >= 1.\n\n\n--- Microeconomics [Section 2054] ---\n# Comprehensive Treatise on Quantum Mechanics & Relativity\nQuantum of an exogenous repair template.\n\n\n--- Quantum Mechanics & Synt",
+      "distinct_1": 0.8,
+      "distinct_2": 0.8863636363636364,
+      "distinct_3": 0.9302325581395349,
+      "token_entropy": 5.047408651885231,
+      "syntax_score": 0.95,
+      "mean_resonance": 0.32861272162861294,
+      "active_experts": {
+        "2": 45,
+        "1": 45
+      }
+    },
+    {
+      "id": "tern_05",
+      "axis": "ternary_multi_way_synthesis",
+      "domains": [
+        "code",
+        "structured_json",
+        "dialogue"
+      ],
+      "prompt": "User: Write a complete Python utility that inspects Kubernetes pod resource limits and returns a formatted JSON report alerting if memory utilization exceeds 85%.\nAssistant: Here is a production-ready Python script using the Kubernetes client library:",
+      "generated_text": "\n---_i, cache coherence protocols (MOFs), Einstein field theory, gauge symmetry SU(x) psi(3] ---\n# Comprehensive Treatise on Quantum Mechanics & Relativity\nQuantum of N(",
+      "distinct_1": 0.8888888888888888,
+      "distinct_2": 1.0,
+      "distinct_3": 1.0,
+      "token_entropy": 5.236080318455743,
+      "syntax_score": 0.7,
+      "mean_resonance": 0.32857541508144805,
+      "active_experts": {
+        "2": 45,
+        "1": 45
+      }
+    },
+    {
+      "id": "long_01",
+      "axis": "long_horizon_coherence",
+      "domains": [
+        "code"
+      ],
+      "prompt": "class DistributedMemoryCache:\n    \"\"\"High-performance multi-threaded in-memory LRU cache with TTL expiration.\"\"\"\n    def __init__(self, max_capacity: int = 1000, default_ttl_seconds: float = 300.0):\n        self.max_capacity = max_capacity\n        self.default_ttl = default_ttl_seconds\n        self.cache = {}\n        self.access_order = []\n        self.lock = threading.RLock()\n\n    def get(self, key: str):",
+      "generated_text": "\n                                                                                        neighbor] = current_node\n                      ",
+      "distinct_1": 0.08333333333333333,
+      "distinct_2": 0.09243697478991597,
+      "distinct_3": 0.1016949152542373,
+      "token_entropy": 0.6739775248775806,
+      "syntax_score": 0.7,
+      "mean_resonance": 0.32813467234373095,
+      "active_experts": {
+        "2": 120,
+        "1": 120
+      }
+    },
+    {
+      "id": "long_02",
+      "axis": "long_horizon_coherence",
+      "domains": [
+        "literature"
+      ],
+      "prompt": "The orbital elevator of New Olympus stretched seventy thousand kilometers from the equatorial platform into geosynchronous orbit. Maya stood at the panoramic observation deck as the maglev climber accelerated through the stratosphere,",
+      "generated_text": " four-loop with rest mass m and renormalization:\n--- self.\n\n\n--- Systems Programming & Catalysis [Section 2871] ---\n# Comprehensive Treatise on Queue full, lock-directed repair (MESI), Immanuel Kant resolved the impasse between rationalism and empiricism through the Copernican revolution in epistemology.\nKant argued that while all knowledge begins with sensory experience, it has been replicated to the current_node].items():\n                     ",
+      "distinct_1": 0.7333333333333333,
+      "distinct_2": 0.8319327731092437,
+      "distinct_3": 0.847457627118644,
+      "token_entropy": 5.901863980150567,
+      "syntax_score": 0.95,
+      "mean_resonance": 0.32852503607670464,
+      "active_experts": {
+        "2": 120,
+        "1": 120
+      }
+    },
+    {
+      "id": "long_03",
+      "axis": "long_horizon_coherence",
+      "domains": [
+        "math"
+      ],
+      "prompt": "Theorem: Let H be a complex Hilbert space and T: H -> H be a compact self-adjoint operator. Then there exists an orthonormal basis of H consisting of eigenvectors of T, and the eigenvalues lambda_n converge to 0.\nProof:\n1. Since T is compact and self-adjoint, the supremum of |<Tx, x>| over the unit sphere ||x|| = 1 is attained at some unit vector e_1.\n2. Let lambda_1 = <Te_1, e_1>. We show that Te_1 = lambda_1 e_1.\n3. By induction on the orthogonal complement,",
+      "generated_text": " modal antibodies such as psi(x) = 2 delta_{mu nu} = 0, the continuity equation, ensuring that the continuity equation partial_mu j^mu = 0, ensuring unitary probability conservation in curved spacetime manifolds.\n\n\n--- Quantum Mechanics & Relativity [Section 1584] ---\n# Comprehensive Treatise on Quantum Mechanics & Relativity\nQuantum field theory, Dirac equation, Feynman path integrals, gauge symmetry SU(3)xSU(2)xU(1), Einstein field equations, Kerr black hole ergospheres, Kerr black",
+      "distinct_1": 0.7166666666666667,
+      "distinct_2": 0.8907563025210085,
+      "distinct_3": 0.9491525423728814,
+      "token_entropy": 6.202479553833679,
+      "syntax_score": 0.95,
+      "mean_resonance": 0.32856106584270794,
+      "active_experts": {
+        "2": 120,
+        "1": 120
+      }
+    },
+    {
+      "id": "long_04",
+      "axis": "long_horizon_coherence",
+      "domains": [
+        "biomedical"
+      ],
+      "prompt": "The molecular cascade of insulin signaling begins when circulating insulin binds to the extracellular alpha-subunits of the insulin receptor (INSR), inducing a conformational change that activates the intracellular beta-subunit tyrosine kinase domains. Following autophosphorylation,",
+      "generated_text": " atomic atomic compare-3] ---\n# Comprehensive Treatise on Cloud Infrastructure & Catalysis\nStellarers\nStellar nucleosynthesis, Raft consensus state inconsistency.\n\n\n\"Signal latency is locked\u2014and-like domain cleaves, Captain. The hyperspace entanglement manifold is responding.\"\n\n\n--- Speculative Fiction & Narrative Prose [Section 0433] ---\nHard science fiction world-building, interstellar diplomacy, atmospheric narrative pacing, multi-character psychological dialogue, and cosmic scale exploration.\n\n\nThe orbital rings of Proxima Centauri d",
+      "distinct_1": 0.7666666666666667,
+      "distinct_2": 0.9327731092436975,
+      "distinct_3": 0.9661016949152542,
+      "token_entropy": 6.301298641749709,
+      "syntax_score": 0.95,
+      "mean_resonance": 0.3287530081967513,
+      "active_experts": {
+        "2": 120,
+        "1": 120
+      }
+    },
+    {
+      "id": "long_05",
+      "axis": "long_horizon_coherence",
+      "domains": [
+        "dialogue"
+      ],
+      "prompt": "User: Can you compare and contrast the trade-offs between Monolithic Transformers, Classical Mixture-of-Experts, and Dynamic Hyperspace Vector Symbolic Architectures across computational complexity, lifelong learning, and memory capacity?\nAssistant: Certainly! Here is a structured architectural comparison across all three dimensions:",
+      "generated_text": "\n# Comprehensive Treatise on Quantum Mechanics & Relativity\nQuantum of an-r, Fewhere the recombination epoch at red-code elimination (ln(Tarski paradox, red-trivial.\n\n\n--- Microeconomics & Topology, page replacement algorithms, cache coherence protocols (MESI), and eBPF kernel tracing.\n\n\nclass LockFreeRingBuffer:\n                  def __init__(self, capacity_power_of_two: int = 1024):\n",
+      "distinct_1": 0.7,
+      "distinct_2": 0.8487394957983193,
+      "distinct_3": 0.8728813559322034,
+      "token_entropy": 5.905923439072298,
+      "syntax_score": 0.95,
+      "mean_resonance": 0.32856190502643584,
+      "active_experts": {
+        "2": 120,
+        "1": 120
+      }
+    },
+    {
+      "id": "ood_01",
+      "axis": "ood_novelty_spawning",
+      "domains": [
+        "legal_novelty"
+      ],
+      "prompt": "IN WITNESS WHEREOF, the parties hereto have executed this Master Commercial SaaS Agreement under seal as of the Effective Date. In the event of a material breach of Section 8 (Confidentiality), the non-breaching party shall be entitled to seek injunctive relief without posting bond, provided that",
+      "generated_text": " = 096] ---\n# Comprehensive Treatise on Systems Programming & Schedulers\nwhere the inner product <., .>. For every variable isN x in H*, there exists a = <., .>. For every",
+      "distinct_1": 0.8222222222222222,
+      "distinct_2": 0.8863636363636364,
+      "distinct_3": 0.9069767441860465,
+      "token_entropy": 5.13629754077412,
+      "syntax_score": 0.95,
+      "mean_resonance": 0.3286617875099182,
+      "active_experts": {
+        "2": 45,
+        "1": 45
+      }
+    },
+    {
+      "id": "ood_02",
+      "axis": "ood_novelty_spawning",
+      "domains": [
+        "music_theory_novelty"
+      ],
+      "prompt": "In post-tonal music theory and set theory, Allen Forte's pitch-class set taxonomy classifies harmonic structures by their prime form. For the trichord [0, 1, 4], the interval class vector (ICV) is given by <1, 0, 1, 1, 0, 0>, indicating that under transposition and inversion,",
+      "generated_text": " neutron star equations, 2238] ---\n# Comprehensive Treatise on Systems Programming &:\nKernel memory allocation, lock-building, differential forms, async event loops, mitochondrial oxidative phosphorylation, and ribosynthesis",
+      "distinct_1": 0.8666666666666667,
+      "distinct_2": 1.0,
+      "distinct_3": 1.0,
+      "token_entropy": 5.10274698512241,
+      "syntax_score": 0.95,
+      "mean_resonance": 0.3285571349991692,
+      "active_experts": {
+        "2": 45,
+        "1": 45
+      }
+    },
+    {
+      "id": "ood_03",
+      "axis": "ood_novelty_spawning",
+      "domains": [
+        "culinary_chemistry_novelty"
+      ],
+      "prompt": "The Maillard reaction cascade occurs at temperatures exceeding 140 degrees Celsius between reducing sugars and free amino acids. The initial nucleophilic addition forms an unstable N-substituted glycosylamine, which undergoes Amadori rearrangement to produce",
+      "generated_text": "] ---\n# Comprehensive Treatise on Systems Programming & Catalysis\nH_i, Dijkstra shortest paths, red-swap, red-black tree balancing, B-trees, page replacement algorithms, cache",
+      "distinct_1": 0.8,
+      "distinct_2": 0.9545454545454546,
+      "distinct_3": 0.9767441860465116,
+      "token_entropy": 4.952638373963222,
+      "syntax_score": 0.95,
+      "mean_resonance": 0.3286136017905341,
+      "active_experts": {
+        "2": 45,
+        "1": 45
+      }
+    },
+    {
+      "id": "ood_04",
+      "axis": "ood_novelty_spawning",
+      "domains": [
+        "quantum_cryptography_novelty"
+      ],
+      "prompt": "In the BB84 quantum key distribution protocol, Alice transmits single photons polarized in one of two conjugate bases: rectilinear (0, 90 deg) or diagonal (45, 135 deg). If Eve intercepts the transmission with an intercept-resend attack,",
+      "generated_text": " lock-2 = 0 => f equals theac = 1.\n\n\n--- Materials Chemistry & Schedulers [Section 1264] ---\n# Comprehensive Treatise on Microeconomics & Catalysis\nCoordination chemistry",
+      "distinct_1": 0.9111111111111111,
+      "distinct_2": 1.0,
+      "distinct_3": 1.0,
+      "token_entropy": 5.297300040726043,
+      "syntax_score": 0.95,
+      "mean_resonance": 0.3285863134596083,
+      "active_experts": {
+        "2": 45,
+        "1": 45
+      }
+    },
+    {
+      "id": "edge_01",
+      "axis": "syntactic_stress_edge_cases",
+      "domains": [
+        "code"
+      ],
+      "prompt": "def complex_nested_lambda_pipeline(data: list) -> list:\n    return sorted(\n        list(\n            map(\n                lambda item: {\n                    'id': item['id'],\n                    'score': (lambda x: x * 2.5 + 1.0)(item['raw_val']),\n                    'valid':",
+      "generated_text": "] ---\n                                         # atomic",
+      "distinct_1": 0.13333333333333333,
+      "distinct_2": 0.13636363636363635,
+      "distinct_3": 0.13953488372093023,
+      "token_entropy": 0.7612503453186861,
+      "syntax_score": 0.4,
+      "mean_resonance": 0.32801917327774893,
+      "active_experts": {
+        "2": 45,
+        "1": 45
+      }
+    },
+    {
+      "id": "edge_02",
+      "axis": "syntactic_stress_edge_cases",
+      "domains": [
+        "structured_json"
+      ],
+      "prompt": "{\n  \"cluster_spec\": {\n    \"mesh_network\": {\n      \"nodes\": [\n        {\n          \"id\": \"node-alpha\",\n          \"peers\": [\"node-beta\", \"node-gamma\"],\n          \"config\": {",
+      "generated_text": "alpha_power_i, lock-black tree balancing, B-trees, page replacement algorithms, cache coherence protocols (MESI), and eBPF kernel tracing.\n\n\nclass LockFreeRingBuffer:",
+      "distinct_1": 0.8888888888888888,
+      "distinct_2": 1.0,
+      "distinct_3": 1.0,
+      "token_entropy": 5.225186429663008,
+      "syntax_score": 0.3,
+      "mean_resonance": 0.3281755831506517,
+      "active_experts": {
+        "2": 45,
+        "1": 45
+      }
+    },
+    {
+      "id": "edge_03",
+      "axis": "syntactic_stress_edge_cases",
+      "domains": [
+        "math"
+      ],
+      "prompt": "Let f(x) = sum_{n=1}^infty frac{(-1)^{n+1}}{n^2} sin(n pi x). The Fourier series converges uniformly on [0, 1] because",
+      "generated_text": " the recombination chemistry, crystal field theory, undertaking, metal-modal antibodies such that for all x^mu nu} = conj(x) = 0343] ---\n# Comprehensive Treatise on Quantum Mechanics & Rel",
+      "distinct_1": 0.9333333333333333,
+      "distinct_2": 1.0,
+      "distinct_3": 1.0,
+      "token_entropy": 5.341744485170487,
+      "syntax_score": 0.95,
+      "mean_resonance": 0.3285605437225766,
+      "active_experts": {
+        "2": 45,
+        "1": 45
+      }
+    }
+  ]
+}

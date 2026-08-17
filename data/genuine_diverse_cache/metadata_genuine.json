@@ -1,0 +1,42 @@
+{
+  "created_at": 1786922520.1240737,
+  "vocab_size": 50257,
+  "domains": {
+    "natural_stories": {
+      "title": "Natural English Stories & Logic (TinyStories)",
+      "train_tokens": 970124,
+      "val_tokens": 80000,
+      "total_tokens": 1050124,
+      "train_file": "E:\\universal_substrait\\data\\genuine_diverse_cache\\natural_stories_train.bin",
+      "val_file": "E:\\universal_substrait\\data\\genuine_diverse_cache\\natural_stories_val.bin",
+      "unique_docs": 5082
+    },
+    "python_code": {
+      "title": "Real Python Source Code (Python Instructions)",
+      "train_tokens": 970017,
+      "val_tokens": 80000,
+      "total_tokens": 1050017,
+      "train_file": "E:\\universal_substrait\\data\\genuine_diverse_cache\\python_code_train.bin",
+      "val_file": "E:\\universal_substrait\\data\\genuine_diverse_cache\\python_code_val.bin",
+      "unique_docs": 4728
+    },
+    "wikitext_facts": {
+      "title": "General Knowledge & Science (WikiText-103)",
+      "train_tokens": 970030,
+      "val_tokens": 80000,
+      "total_tokens": 1050030,
+      "train_file": "E:\\universal_substrait\\data\\genuine_diverse_cache\\wikitext_facts_train.bin",
+      "val_file": "E:\\universal_substrait\\data\\genuine_diverse_cache\\wikitext_facts_val.bin",
+      "unique_docs": 7182
+    },
+    "fineweb_reasoning": {
+      "title": "Educational Web Reasoning (FineWeb-Edu)",
+      "train_tokens": 970891,
+      "val_tokens": 80000,
+      "total_tokens": 1050891,
+      "train_file": "E:\\universal_substrait\\data\\genuine_diverse_cache\\fineweb_reasoning_train.bin",
+      "val_file": "E:\\universal_substrait\\data\\genuine_diverse_cache\\fineweb_reasoning_val.bin",
+      "unique_docs": 995
+    }
+  }
+}

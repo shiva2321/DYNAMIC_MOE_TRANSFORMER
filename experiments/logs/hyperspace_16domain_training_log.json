@@ -1,0 +1,2372 @@
+{
+  "total_tokens_trained": 1638400,
+  "total_time_seconds": 1073.1758813858032,
+  "spawn_events_log": [
+    {
+      "event": "autonomous_spawn",
+      "step": 1,
+      "layer": 0,
+      "new_expert_id": 2,
+      "triggering_domain": "algorithms_and_systems",
+      "total_experts_in_layer": 3,
+      "timestamp_epoch": 1786895435.5333252
+    },
+    {
+      "event": "autonomous_spawn",
+      "step": 1,
+      "layer": 1,
+      "new_expert_id": 2,
+      "triggering_domain": "algorithms_and_systems",
+      "total_experts_in_layer": 3,
+      "timestamp_epoch": 1786895435.5650742
+    },
+    {
+      "event": "autonomous_spawn",
+      "step": 1,
+      "layer": 2,
+      "new_expert_id": 2,
+      "triggering_domain": "algorithms_and_systems",
+      "total_experts_in_layer": 3,
+      "timestamp_epoch": 1786895435.565907
+    },
+    {
+      "event": "autonomous_spawn",
+      "step": 1,
+      "layer": 3,
+      "new_expert_id": 2,
+      "triggering_domain": "algorithms_and_systems",
+      "total_experts_in_layer": 3,
+      "timestamp_epoch": 1786895435.566947
+    },
+    {
+      "event": "autonomous_spawn",
+      "step": 1,
+      "layer": 4,
+      "new_expert_id": 2,
+      "triggering_domain": "algorithms_and_systems",
+      "total_experts_in_layer": 3,
+      "timestamp_epoch": 1786895435.5674665
+    },
+    {
+      "event": "autonomous_spawn",
+      "step": 1,
+      "layer": 5,
+      "new_expert_id": 2,
+      "triggering_domain": "algorithms_and_systems",
+      "total_experts_in_layer": 3,
+      "timestamp_epoch": 1786895435.5679858
+    },
+    {
+      "event": "autonomous_spawn",
+      "step": 1,
+      "layer": 0,
+      "new_expert_id": 3,
+      "triggering_domain": "pure_mathematics",
+      "total_experts_in_layer": 4,
+      "timestamp_epoch": 1786895436.005242
+    },
+    {
+      "event": "autonomous_spawn",
+      "step": 1,
+      "layer": 1,
+      "new_expert_id": 3,
+      "triggering_domain": "pure_mathematics",
+      "total_experts_in_layer": 4,
+      "timestamp_epoch": 1786895436.0343435
+    },
+    {
+      "event": "autonomous_spawn",
+      "step": 1,
+      "layer": 2,
+      "new_expert_id": 3,
+      "triggering_domain": "pure_mathematics",
+      "total_experts_in_layer": 4,
+      "timestamp_epoch": 1786895436.035381
+    },
+    {
+      "event": "autonomous_spawn",
+      "step": 1,
+      "layer": 3,
+      "new_expert_id": 3,
+      "triggering_domain": "pure_mathematics",
+      "total_experts_in_layer": 4,
+      "timestamp_epoch": 1786895436.0359087
+    },
+    {
+      "event": "autonomous_spawn",
+      "step": 1,
+      "layer": 4,
+      "new_expert_id": 3,
+      "triggering_domain": "pure_mathematics",
+      "total_experts_in_layer": 4,
+      "timestamp_epoch": 1786895436.0369487
+    },
+    {
+      "event": "autonomous_spawn",
+      "step": 1,
+      "layer": 5,
+      "new_expert_id": 3,
+      "triggering_domain": "pure_mathematics",
+      "total_experts_in_layer": 4,
+      "timestamp_epoch": 1786895436.0374644
+    },
+    {
+      "event": "autonomous_spawn",
+      "step": 1,
+      "layer": 0,
+      "new_expert_id": 4,
+      "triggering_domain": "theoretical_physics",
+      "total_experts_in_layer": 5,
+      "timestamp_epoch": 1786895436.5145247
+    },
+    {
+      "event": "autonomous_spawn",
+      "step": 1,
+      "layer": 1,
+      "new_expert_id": 4,
+      "triggering_domain": "theoretical_physics",
+      "total_experts_in_layer": 5,
+      "timestamp_epoch": 1786895436.5389924
+    },
+    {
+      "event": "autonomous_spawn",
+      "step": 1,
+      "layer": 2,
+      "new_expert_id": 4,
+      "triggering_domain": "theoretical_physics",
+      "total_experts_in_layer": 5,
+      "timestamp_epoch": 1786895436.5402892
+    },
+    {
+      "event": "autonomous_spawn",
+      "step": 1,
+      "layer": 3,
+      "new_expert_id": 4,
+      "triggering_domain": "theoretical_physics",
+      "total_experts_in_layer": 5,
+      "timestamp_epoch": 1786895436.541326
+    },
+    {
+      "event": "autonomous_spawn",
+      "step": 1,
+      "layer": 4,
+      "new_expert_id": 4,
+      "triggering_domain": "theoretical_physics",
+      "total_experts_in_layer": 5,
+      "timestamp_epoch": 1786895436.5418456
+    },
+    {
+      "event": "autonomous_spawn",
+      "step": 1,
+      "layer": 5,
+      "new_expert_id": 4,
+      "triggering_domain": "theoretical_physics",
+      "total_experts_in_layer": 5,
+      "timestamp_epoch": 1786895436.542364
+    },
+    {
+      "event": "autonomous_spawn",
+      "step": 1,
+      "layer": 0,
+      "new_expert_id": 5,
+      "triggering_domain": "molecular_biology_genetics",
+      "total_experts_in_layer": 6,
+      "timestamp_epoch": 1786895437.1122513
+    },
+    {
+      "event": "autonomous_spawn",
+      "step": 1,
+      "layer": 1,
+      "new_expert_id": 5,
+      "triggering_domain": "molecular_biology_genetics",
+      "total_experts_in_layer": 6,
+      "timestamp_epoch": 1786895437.1423106
+    },
+    {
+      "event": "autonomous_spawn",
+      "step": 1,
+      "layer": 2,
+      "new_expert_id": 5,
+      "triggering_domain": "molecular_biology_genetics",
+      "total_experts_in_layer": 6,
+      "timestamp_epoch": 1786895437.1429863
+    },
+    {
+      "event": "autonomous_spawn",
+      "step": 1,
+      "layer": 3,
+      "new_expert_id": 5,
+      "triggering_domain": "molecular_biology_genetics",
+      "total_experts_in_layer": 6,
+      "timestamp_epoch": 1786895437.1440265
+    },
+    {
+      "event": "autonomous_spawn",
+      "step": 1,
+      "layer": 4,
+      "new_expert_id": 5,
+      "triggering_domain": "molecular_biology_genetics",
+      "total_experts_in_layer": 6,
+      "timestamp_epoch": 1786895437.1445482
+    },
+    {
+      "event": "autonomous_spawn",
+      "step": 1,
+      "layer": 5,
+      "new_expert_id": 5,
+      "triggering_domain": "molecular_biology_genetics",
+      "total_experts_in_layer": 6,
+      "timestamp_epoch": 1786895437.1450727
+    },
+    {
+      "event": "autonomous_spawn",
+      "step": 1,
+      "layer": 0,
+      "new_expert_id": 6,
+      "triggering_domain": "pharmacology_medicine",
+      "total_experts_in_layer": 7,
+      "timestamp_epoch": 1786895437.733925
+    },
+    {
+      "event": "autonomous_spawn",
+      "step": 1,
+      "layer": 1,
+      "new_expert_id": 6,
+      "triggering_domain": "pharmacology_medicine",
+      "total_experts_in_layer": 7,
+      "timestamp_epoch": 1786895437.7595596
+    },
+    {
+      "event": "autonomous_spawn",
+      "step": 1,
+      "layer": 2,
+      "new_expert_id": 6,
+      "triggering_domain": "pharmacology_medicine",
+      "total_experts_in_layer": 7,
+      "timestamp_epoch": 1786895437.7610767
+    },
+    {
+      "event": "autonomous_spawn",
+      "step": 1,
+      "layer": 3,
+      "new_expert_id": 6,
+      "triggering_domain": "pharmacology_medicine",
+      "total_experts_in_layer": 7,
+      "timestamp_epoch": 1786895437.7621148
+    },
+    {
+      "event": "autonomous_spawn",
+      "step": 1,
+      "layer": 4,
+      "new_expert_id": 6,
+      "triggering_domain": "pharmacology_medicine",
+      "total_experts_in_layer": 7,
+      "timestamp_epoch": 1786895437.762636
+    },
+    {
+      "event": "autonomous_spawn",
+      "step": 1,
+      "layer": 5,
+      "new_expert_id": 6,
+      "triggering_domain": "pharmacology_medicine",
+      "total_experts_in_layer": 7,
+      "timestamp_epoch": 1786895437.7636783
+    },
+    {
+      "event": "autonomous_spawn",
+      "step": 1,
+      "layer": 0,
+      "new_expert_id": 7,
+      "triggering_domain": "world_history_civilizations",
+      "total_experts_in_layer": 8,
+      "timestamp_epoch": 1786895438.3970656
+    },
+    {
+      "event": "autonomous_spawn",
+      "step": 1,
+      "layer": 1,
+      "new_expert_id": 7,
+      "triggering_domain": "world_history_civilizations",
+      "total_experts_in_layer": 8,
+      "timestamp_epoch": 1786895438.425941
+    },
+    {
+      "event": "autonomous_spawn",
+      "step": 1,
+      "layer": 2,
+      "new_expert_id": 7,
+      "triggering_domain": "world_history_civilizations",
+      "total_experts_in_layer": 8,
+      "timestamp_epoch": 1786895438.4275148
+    },
+    {
+      "event": "autonomous_spawn",
+      "step": 1,
+      "layer": 3,
+      "new_expert_id": 7,
+      "triggering_domain": "world_history_civilizations",
+      "total_experts_in_layer": 8,
+      "timestamp_epoch": 1786895438.428552
+    },
+    {
+      "event": "autonomous_spawn",
+      "step": 1,
+      "layer": 4,
+      "new_expert_id": 7,
+      "triggering_domain": "world_history_civilizations",
+      "total_experts_in_layer": 8,
+      "timestamp_epoch": 1786895438.4290733
+    },
+    {
+      "event": "autonomous_spawn",
+      "step": 1,
+      "layer": 5,
+      "new_expert_id": 7,
+      "triggering_domain": "world_history_civilizations",
+      "total_experts_in_layer": 8,
+      "timestamp_epoch": 1786895438.430114
+    },
+    {
+      "event": "autonomous_spawn",
+      "step": 1,
+      "layer": 0,
+      "new_expert_id": 8,
+      "triggering_domain": "philosophy_epistemology",
+      "total_experts_in_layer": 9,
+      "timestamp_epoch": 1786895439.1150622
+    },
+    {
+      "event": "autonomous_spawn",
+      "step": 1,
+      "layer": 1,
+      "new_expert_id": 8,
+      "triggering_domain": "philosophy_epistemology",
+      "total_experts_in_layer": 9,
+      "timestamp_epoch": 1786895439.147106
+    },
+    {
+      "event": "autonomous_spawn",
+      "step": 1,
+      "layer": 2,
+      "new_expert_id": 8,
+      "triggering_domain": "philosophy_epistemology",
+      "total_experts_in_layer": 9,
+      "timestamp_epoch": 1786895439.1487172
+    },
+    {
+      "event": "autonomous_spawn",
+      "step": 1,
+      "layer": 3,
+      "new_expert_id": 8,
+      "triggering_domain": "philosophy_epistemology",
+      "total_experts_in_layer": 9,
+      "timestamp_epoch": 1786895439.1497805
+    },
+    {
+      "event": "autonomous_spawn",
+      "step": 1,
+      "layer": 4,
+      "new_expert_id": 8,
+      "triggering_domain": "philosophy_epistemology",
+      "total_experts_in_layer": 9,
+      "timestamp_epoch": 1786895439.1506062
+    },
+    {
+      "event": "autonomous_spawn",
+      "step": 1,
+      "layer": 5,
+      "new_expert_id": 8,
+      "triggering_domain": "philosophy_epistemology",
+      "total_experts_in_layer": 9,
+      "timestamp_epoch": 1786895439.1511092
+    },
+    {
+      "event": "autonomous_spawn",
+      "step": 1,
+      "layer": 0,
+      "new_expert_id": 9,
+      "triggering_domain": "economics_finance",
+      "total_experts_in_layer": 10,
+      "timestamp_epoch": 1786895439.8696449
+    },
+    {
+      "event": "autonomous_spawn",
+      "step": 1,
+      "layer": 1,
+      "new_expert_id": 9,
+      "triggering_domain": "economics_finance",
+      "total_experts_in_layer": 10,
+      "timestamp_epoch": 1786895439.90063
+    },
+    {
+      "event": "autonomous_spawn",
+      "step": 1,
+      "layer": 2,
+      "new_expert_id": 9,
+      "triggering_domain": "economics_finance",
+      "total_experts_in_layer": 10,
+      "timestamp_epoch": 1786895439.9014435
+    },
+    {
+      "event": "autonomous_spawn",
+      "step": 1,
+      "layer": 3,
+      "new_expert_id": 9,
+      "triggering_domain": "economics_finance",
+      "total_experts_in_layer": 10,
+      "timestamp_epoch": 1786895439.9024844
+    },
+    {
+      "event": "autonomous_spawn",
+      "step": 1,
+      "layer": 4,
+      "new_expert_id": 9,
+      "triggering_domain": "economics_finance",
+      "total_experts_in_layer": 10,
+      "timestamp_epoch": 1786895439.9030018
+    },
+    {
+      "event": "autonomous_spawn",
+      "step": 1,
+      "layer": 5,
+      "new_expert_id": 9,
+      "triggering_domain": "economics_finance",
+      "total_experts_in_layer": 10,
+      "timestamp_epoch": 1786895439.9040408
+    },
+    {
+      "event": "autonomous_spawn",
+      "step": 1,
+      "layer": 0,
+      "new_expert_id": 10,
+      "triggering_domain": "linguistics_cognition",
+      "total_experts_in_layer": 11,
+      "timestamp_epoch": 1786895440.6475775
+    },
+    {
+      "event": "autonomous_spawn",
+      "step": 1,
+      "layer": 1,
+      "new_expert_id": 10,
+      "triggering_domain": "linguistics_cognition",
+      "total_experts_in_layer": 11,
+      "timestamp_epoch": 1786895440.6761115
+    },
+    {
+      "event": "autonomous_spawn",
+      "step": 1,
+      "layer": 2,
+      "new_expert_id": 10,
+      "triggering_domain": "linguistics_cognition",
+      "total_experts_in_layer": 11,
+      "timestamp_epoch": 1786895440.6767673
+    },
+    {
+      "event": "autonomous_spawn",
+      "step": 1,
+      "layer": 3,
+      "new_expert_id": 10,
+      "triggering_domain": "linguistics_cognition",
+      "total_experts_in_layer": 11,
+      "timestamp_epoch": 1786895440.67729
+    },
+    {
+      "event": "autonomous_spawn",
+      "step": 1,
+      "layer": 4,
+      "new_expert_id": 10,
+      "triggering_domain": "linguistics_cognition",
+      "total_experts_in_layer": 11,
+      "timestamp_epoch": 1786895440.6783254
+    },
+    {
+      "event": "autonomous_spawn",
+      "step": 1,
+      "layer": 5,
+      "new_expert_id": 10,
+      "triggering_domain": "linguistics_cognition",
+      "total_experts_in_layer": 11,
+      "timestamp_epoch": 1786895440.6788454
+    },
+    {
+      "event": "autonomous_spawn",
+      "step": 1,
+      "layer": 0,
+      "new_expert_id": 11,
+      "triggering_domain": "astronomy_cosmology",
+      "total_experts_in_layer": 12,
+      "timestamp_epoch": 1786895441.4481716
+    },
+    {
+      "event": "autonomous_spawn",
+      "step": 1,
+      "layer": 1,
+      "new_expert_id": 11,
+      "triggering_domain": "astronomy_cosmology",
+      "total_experts_in_layer": 12,
+      "timestamp_epoch": 1786895441.479171
+    },
+    {
+      "event": "autonomous_spawn",
+      "step": 1,
+      "layer": 2,
+      "new_expert_id": 11,
+      "triggering_domain": "astronomy_cosmology",
+      "total_experts_in_layer": 12,
+      "timestamp_epoch": 1786895441.481219
+    },
+    {
+      "event": "autonomous_spawn",
+      "step": 1,
+      "layer": 3,
+      "new_expert_id": 11,
+      "triggering_domain": "astronomy_cosmology",
+      "total_experts_in_layer": 12,
+      "timestamp_epoch": 1786895441.4822812
+    },
+    {
+      "event": "autonomous_spawn",
+      "step": 1,
+      "layer": 4,
+      "new_expert_id": 11,
+      "triggering_domain": "astronomy_cosmology",
+      "total_experts_in_layer": 12,
+      "timestamp_epoch": 1786895441.4828475
+    },
+    {
+      "event": "autonomous_spawn",
+      "step": 1,
+      "layer": 5,
+      "new_expert_id": 11,
+      "triggering_domain": "astronomy_cosmology",
+      "total_experts_in_layer": 12,
+      "timestamp_epoch": 1786895441.4833822
+    },
+    {
+      "event": "autonomous_spawn",
+      "step": 1,
+      "layer": 0,
+      "new_expert_id": 12,
+      "triggering_domain": "neuroscience_cybernetics",
+      "total_experts_in_layer": 13,
+      "timestamp_epoch": 1786895442.31213
+    },
+    {
+      "event": "autonomous_spawn",
+      "step": 1,
+      "layer": 1,
+      "new_expert_id": 12,
+      "triggering_domain": "neuroscience_cybernetics",
+      "total_experts_in_layer": 13,
+      "timestamp_epoch": 1786895442.3436418
+    },
+    {
+      "event": "autonomous_spawn",
+      "step": 1,
+      "layer": 2,
+      "new_expert_id": 12,
+      "triggering_domain": "neuroscience_cybernetics",
+      "total_experts_in_layer": 13,
+      "timestamp_epoch": 1786895442.3449972
+    },
+    {
+      "event": "autonomous_spawn",
+      "step": 1,
+      "layer": 3,
+      "new_expert_id": 12,
+      "triggering_domain": "neuroscience_cybernetics",
+      "total_experts_in_layer": 13,
+      "timestamp_epoch": 1786895442.345515
+    },
+    {
+      "event": "autonomous_spawn",
+      "step": 1,
+      "layer": 4,
+      "new_expert_id": 12,
+      "triggering_domain": "neuroscience_cybernetics",
+      "total_experts_in_layer": 13,
+      "timestamp_epoch": 1786895442.346084
+    },
+    {
+      "event": "autonomous_spawn",
+      "step": 1,
+      "layer": 5,
+      "new_expert_id": 12,
+      "triggering_domain": "neuroscience_cybernetics",
+      "total_experts_in_layer": 13,
+      "timestamp_epoch": 1786895442.3471186
+    },
+    {
+      "event": "autonomous_spawn",
+      "step": 1,
+      "layer": 0,
+      "new_expert_id": 13,
+      "triggering_domain": "cloud_distributed_systems",
+      "total_experts_in_layer": 14,
+      "timestamp_epoch": 1786895443.250208
+    },
+    {
+      "event": "autonomous_spawn",
+      "step": 1,
+      "layer": 1,
+      "new_expert_id": 13,
+      "triggering_domain": "cloud_distributed_systems",
+      "total_experts_in_layer": 14,
+      "timestamp_epoch": 1786895443.2812283
+    },
+    {
+      "event": "autonomous_spawn",
+      "step": 1,
+      "layer": 2,
+      "new_expert_id": 13,
+      "triggering_domain": "cloud_distributed_systems",
+      "total_experts_in_layer": 14,
+      "timestamp_epoch": 1786895443.2827327
+    },
+    {
+      "event": "autonomous_spawn",
+      "step": 1,
+      "layer": 3,
+      "new_expert_id": 13,
+      "triggering_domain": "cloud_distributed_systems",
+      "total_experts_in_layer": 14,
+      "timestamp_epoch": 1786895443.2832708
+    },
+    {
+      "event": "autonomous_spawn",
+      "step": 1,
+      "layer": 4,
+      "new_expert_id": 13,
+      "triggering_domain": "cloud_distributed_systems",
+      "total_experts_in_layer": 14,
+      "timestamp_epoch": 1786895443.2842987
+    },
+    {
+      "event": "autonomous_spawn",
+      "step": 1,
+      "layer": 5,
+      "new_expert_id": 13,
+      "triggering_domain": "cloud_distributed_systems",
+      "total_experts_in_layer": 14,
+      "timestamp_epoch": 1786895443.2848287
+    },
+    {
+      "event": "autonomous_spawn",
+      "step": 1,
+      "layer": 0,
+      "new_expert_id": 14,
+      "triggering_domain": "speculative_literature",
+      "total_experts_in_layer": 15,
+      "timestamp_epoch": 1786895444.1619341
+    },
+    {
+      "event": "autonomous_spawn",
+      "step": 1,
+      "layer": 1,
+      "new_expert_id": 14,
+      "triggering_domain": "speculative_literature",
+      "total_experts_in_layer": 15,
+      "timestamp_epoch": 1786895444.1947517
+    },
+    {
+      "event": "autonomous_spawn",
+      "step": 1,
+      "layer": 2,
+      "new_expert_id": 14,
+      "triggering_domain": "speculative_literature",
+      "total_experts_in_layer": 15,
+      "timestamp_epoch": 1786895444.1959174
+    },
+    {
+      "event": "autonomous_spawn",
+      "step": 1,
+      "layer": 3,
+      "new_expert_id": 14,
+      "triggering_domain": "speculative_literature",
+      "total_experts_in_layer": 15,
+      "timestamp_epoch": 1786895444.1969557
+    },
+    {
+      "event": "autonomous_spawn",
+      "step": 1,
+      "layer": 4,
+      "new_expert_id": 14,
+      "triggering_domain": "speculative_literature",
+      "total_experts_in_layer": 15,
+      "timestamp_epoch": 1786895444.1980805
+    },
+    {
+      "event": "autonomous_spawn",
+      "step": 1,
+      "layer": 5,
+      "new_expert_id": 14,
+      "triggering_domain": "speculative_literature",
+      "total_experts_in_layer": 15,
+      "timestamp_epoch": 1786895444.1986194
+    },
+    {
+      "event": "autonomous_spawn",
+      "step": 1,
+      "layer": 0,
+      "new_expert_id": 15,
+      "triggering_domain": "legal_jurisprudence",
+      "total_experts_in_layer": 16,
+      "timestamp_epoch": 1786895445.1280591
+    },
+    {
+      "event": "autonomous_spawn",
+      "step": 1,
+      "layer": 1,
+      "new_expert_id": 15,
+      "triggering_domain": "legal_jurisprudence",
+      "total_experts_in_layer": 16,
+      "timestamp_epoch": 1786895445.1611655
+    },
+    {
+      "event": "autonomous_spawn",
+      "step": 1,
+      "layer": 2,
+      "new_expert_id": 15,
+      "triggering_domain": "legal_jurisprudence",
+      "total_experts_in_layer": 16,
+      "timestamp_epoch": 1786895445.1624794
+    },
+    {
+      "event": "autonomous_spawn",
+      "step": 1,
+      "layer": 3,
+      "new_expert_id": 15,
+      "triggering_domain": "legal_jurisprudence",
+      "total_experts_in_layer": 16,
+      "timestamp_epoch": 1786895445.1629999
+    },
+    {
+      "event": "autonomous_spawn",
+      "step": 1,
+      "layer": 4,
+      "new_expert_id": 15,
+      "triggering_domain": "legal_jurisprudence",
+      "total_experts_in_layer": 16,
+      "timestamp_epoch": 1786895445.1640422
+    },
+    {
+      "event": "autonomous_spawn",
+      "step": 1,
+      "layer": 5,
+      "new_expert_id": 15,
+      "triggering_domain": "legal_jurisprudence",
+      "total_experts_in_layer": 16,
+      "timestamp_epoch": 1786895445.1645637
+    },
+    {
+      "event": "autonomous_spawn",
+      "step": 1,
+      "layer": 0,
+      "new_expert_id": 16,
+      "triggering_domain": "chemistry_materials_science",
+      "total_experts_in_layer": 17,
+      "timestamp_epoch": 1786895446.1777508
+    },
+    {
+      "event": "autonomous_spawn",
+      "step": 1,
+      "layer": 1,
+      "new_expert_id": 16,
+      "triggering_domain": "chemistry_materials_science",
+      "total_experts_in_layer": 17,
+      "timestamp_epoch": 1786895446.212782
+    },
+    {
+      "event": "autonomous_spawn",
+      "step": 1,
+      "layer": 2,
+      "new_expert_id": 16,
+      "triggering_domain": "chemistry_materials_science",
+      "total_experts_in_layer": 17,
+      "timestamp_epoch": 1786895446.2143064
+    },
+    {
+      "event": "autonomous_spawn",
+      "step": 1,
+      "layer": 3,
+      "new_expert_id": 16,
+      "triggering_domain": "chemistry_materials_science",
+      "total_experts_in_layer": 17,
+      "timestamp_epoch": 1786895446.2153566
+    },
+    {
+      "event": "autonomous_spawn",
+      "step": 1,
+      "layer": 4,
+      "new_expert_id": 16,
+      "triggering_domain": "chemistry_materials_science",
+      "total_experts_in_layer": 17,
+      "timestamp_epoch": 1786895446.2158725
+    },
+    {
+      "event": "autonomous_spawn",
+      "step": 1,
+      "layer": 5,
+      "new_expert_id": 16,
+      "triggering_domain": "chemistry_materials_science",
+      "total_experts_in_layer": 17,
+      "timestamp_epoch": 1786895446.2169087
+    },
+    {
+      "event": "autonomous_spawn",
+      "step": 1,
+      "layer": 0,
+      "new_expert_id": 17,
+      "triggering_domain": "software_architecture_design",
+      "total_experts_in_layer": 18,
+      "timestamp_epoch": 1786895447.2518268
+    },
+    {
+      "event": "autonomous_spawn",
+      "step": 1,
+      "layer": 1,
+      "new_expert_id": 17,
+      "triggering_domain": "software_architecture_design",
+      "total_experts_in_layer": 18,
+      "timestamp_epoch": 1786895447.2858696
+    },
+    {
+      "event": "autonomous_spawn",
+      "step": 1,
+      "layer": 2,
+      "new_expert_id": 17,
+      "triggering_domain": "software_architecture_design",
+      "total_experts_in_layer": 18,
+      "timestamp_epoch": 1786895447.287425
+    },
+    {
+      "event": "autonomous_spawn",
+      "step": 1,
+      "layer": 3,
+      "new_expert_id": 17,
+      "triggering_domain": "software_architecture_design",
+      "total_experts_in_layer": 18,
+      "timestamp_epoch": 1786895447.2879605
+    },
+    {
+      "event": "autonomous_spawn",
+      "step": 1,
+      "layer": 4,
+      "new_expert_id": 17,
+      "triggering_domain": "software_architecture_design",
+      "total_experts_in_layer": 18,
+      "timestamp_epoch": 1786895447.289014
+    },
+    {
+      "event": "autonomous_spawn",
+      "step": 1,
+      "layer": 5,
+      "new_expert_id": 17,
+      "triggering_domain": "software_architecture_design",
+      "total_experts_in_layer": 18,
+      "timestamp_epoch": 1786895447.2895484
+    }
+  ],
+  "telemetry_records": [
+    {
+      "step": 1,
+      "train_loss": 183.52523136138916,
+      "avg_val_loss": 10.865401268005371,
+      "val_ppl": 52333.986056689355,
+      "tokens_sec": 1080.9629095867213,
+      "experts_per_layer": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ]
+    },
+    {
+      "step": 2,
+      "train_loss": 180.97010326385498,
+      "avg_val_loss": 10.865401268005371,
+      "val_ppl": 52333.986056689355,
+      "tokens_sec": 1117.8393915595504,
+      "experts_per_layer": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ]
+    },
+    {
+      "step": 3,
+      "train_loss": 180.68986225128174,
+      "avg_val_loss": 10.865401268005371,
+      "val_ppl": 52333.986056689355,
+      "tokens_sec": 1153.800042780921,
+      "experts_per_layer": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ]
+    },
+    {
+      "step": 4,
+      "train_loss": 180.49202632904053,
+      "avg_val_loss": 10.865401268005371,
+      "val_ppl": 52333.986056689355,
+      "tokens_sec": 1175.0187208863738,
+      "experts_per_layer": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ]
+    },
+    {
+      "step": 5,
+      "train_loss": 179.4514980316162,
+      "avg_val_loss": 10.865401268005371,
+      "val_ppl": 52333.986056689355,
+      "tokens_sec": 1184.9250932656262,
+      "experts_per_layer": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ]
+    },
+    {
+      "step": 6,
+      "train_loss": 178.54012775421143,
+      "avg_val_loss": 10.865401268005371,
+      "val_ppl": 52333.986056689355,
+      "tokens_sec": 1190.8396137546765,
+      "experts_per_layer": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ]
+    },
+    {
+      "step": 7,
+      "train_loss": 177.00390338897705,
+      "avg_val_loss": 10.865401268005371,
+      "val_ppl": 52333.986056689355,
+      "tokens_sec": 1204.695340228537,
+      "experts_per_layer": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ]
+    },
+    {
+      "step": 8,
+      "train_loss": 175.34435749053955,
+      "avg_val_loss": 10.865401268005371,
+      "val_ppl": 52333.986056689355,
+      "tokens_sec": 1217.6894103444083,
+      "experts_per_layer": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ]
+    },
+    {
+      "step": 9,
+      "train_loss": 173.17042922973633,
+      "avg_val_loss": 10.865401268005371,
+      "val_ppl": 52333.986056689355,
+      "tokens_sec": 1228.3986174809318,
+      "experts_per_layer": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ]
+    },
+    {
+      "step": 10,
+      "train_loss": 171.26012134552002,
+      "avg_val_loss": 10.865401268005371,
+      "val_ppl": 52333.986056689355,
+      "tokens_sec": 1228.9706333102897,
+      "experts_per_layer": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ]
+    },
+    {
+      "step": 11,
+      "train_loss": 169.6809492111206,
+      "avg_val_loss": 10.865401268005371,
+      "val_ppl": 52333.986056689355,
+      "tokens_sec": 1230.7516753195828,
+      "experts_per_layer": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ]
+    },
+    {
+      "step": 12,
+      "train_loss": 168.16801261901855,
+      "avg_val_loss": 10.865401268005371,
+      "val_ppl": 52333.986056689355,
+      "tokens_sec": 1233.28275086554,
+      "experts_per_layer": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ]
+    },
+    {
+      "step": 13,
+      "train_loss": 166.66840171813965,
+      "avg_val_loss": 10.865401268005371,
+      "val_ppl": 52333.986056689355,
+      "tokens_sec": 1236.0447215332513,
+      "experts_per_layer": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ]
+    },
+    {
+      "step": 14,
+      "train_loss": 165.3444700241089,
+      "avg_val_loss": 10.865401268005371,
+      "val_ppl": 52333.986056689355,
+      "tokens_sec": 1235.534082724296,
+      "experts_per_layer": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ]
+    },
+    {
+      "step": 15,
+      "train_loss": 163.55827236175537,
+      "avg_val_loss": 10.865401268005371,
+      "val_ppl": 52333.986056689355,
+      "tokens_sec": 1237.704088070593,
+      "experts_per_layer": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ]
+    },
+    {
+      "step": 16,
+      "train_loss": 161.95838832855225,
+      "avg_val_loss": 10.865401268005371,
+      "val_ppl": 52333.986056689355,
+      "tokens_sec": 1238.1190937505946,
+      "experts_per_layer": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ]
+    },
+    {
+      "step": 17,
+      "train_loss": 160.2100944519043,
+      "avg_val_loss": 10.865401268005371,
+      "val_ppl": 52333.986056689355,
+      "tokens_sec": 1240.4176407826874,
+      "experts_per_layer": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ]
+    },
+    {
+      "step": 18,
+      "train_loss": 158.45239448547363,
+      "avg_val_loss": 10.865401268005371,
+      "val_ppl": 52333.986056689355,
+      "tokens_sec": 1239.8556361549936,
+      "experts_per_layer": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ]
+    },
+    {
+      "step": 19,
+      "train_loss": 156.59498405456543,
+      "avg_val_loss": 10.865401268005371,
+      "val_ppl": 52333.986056689355,
+      "tokens_sec": 1240.4034176870416,
+      "experts_per_layer": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ]
+    },
+    {
+      "step": 20,
+      "train_loss": 154.29388236999512,
+      "avg_val_loss": 9.146660804748535,
+      "val_ppl": 9383.05615234199,
+      "tokens_sec": 1233.9959873887165,
+      "experts_per_layer": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ]
+    },
+    {
+      "step": 21,
+      "train_loss": 152.0435914993286,
+      "avg_val_loss": 9.146660804748535,
+      "val_ppl": 9383.05615234199,
+      "tokens_sec": 1237.0726237640743,
+      "experts_per_layer": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ]
+    },
+    {
+      "step": 22,
+      "train_loss": 149.97043895721436,
+      "avg_val_loss": 9.146660804748535,
+      "val_ppl": 9383.05615234199,
+      "tokens_sec": 1242.2156506241024,
+      "experts_per_layer": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ]
+    },
+    {
+      "step": 23,
+      "train_loss": 147.43342304229736,
+      "avg_val_loss": 9.146660804748535,
+      "val_ppl": 9383.05615234199,
+      "tokens_sec": 1239.3338377842692,
+      "experts_per_layer": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ]
+    },
+    {
+      "step": 24,
+      "train_loss": 144.74241733551025,
+      "avg_val_loss": 9.146660804748535,
+      "val_ppl": 9383.05615234199,
+      "tokens_sec": 1243.4244054460296,
+      "experts_per_layer": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ]
+    },
+    {
+      "step": 25,
+      "train_loss": 142.1869158744812,
+      "avg_val_loss": 9.146660804748535,
+      "val_ppl": 9383.05615234199,
+      "tokens_sec": 1252.3785411225504,
+      "experts_per_layer": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ]
+    },
+    {
+      "step": 26,
+      "train_loss": 139.39626216888428,
+      "avg_val_loss": 9.146660804748535,
+      "val_ppl": 9383.05615234199,
+      "tokens_sec": 1260.5828611866418,
+      "experts_per_layer": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ]
+    },
+    {
+      "step": 27,
+      "train_loss": 137.31280422210693,
+      "avg_val_loss": 9.146660804748535,
+      "val_ppl": 9383.05615234199,
+      "tokens_sec": 1267.3779516456493,
+      "experts_per_layer": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ]
+    },
+    {
+      "step": 28,
+      "train_loss": 134.5676851272583,
+      "avg_val_loss": 9.146660804748535,
+      "val_ppl": 9383.05615234199,
+      "tokens_sec": 1273.8518594842835,
+      "experts_per_layer": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ]
+    },
+    {
+      "step": 29,
+      "train_loss": 132.11651706695557,
+      "avg_val_loss": 9.146660804748535,
+      "val_ppl": 9383.05615234199,
+      "tokens_sec": 1282.7802419997695,
+      "experts_per_layer": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ]
+    },
+    {
+      "step": 30,
+      "train_loss": 129.66436195373535,
+      "avg_val_loss": 9.146660804748535,
+      "val_ppl": 9383.05615234199,
+      "tokens_sec": 1290.0044476207952,
+      "experts_per_layer": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ]
+    },
+    {
+      "step": 31,
+      "train_loss": 127.26756954193115,
+      "avg_val_loss": 9.146660804748535,
+      "val_ppl": 9383.05615234199,
+      "tokens_sec": 1301.9914739371277,
+      "experts_per_layer": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ]
+    },
+    {
+      "step": 32,
+      "train_loss": 124.80801630020142,
+      "avg_val_loss": 9.146660804748535,
+      "val_ppl": 9383.05615234199,
+      "tokens_sec": 1313.8418899646697,
+      "experts_per_layer": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ]
+    },
+    {
+      "step": 33,
+      "train_loss": 122.82982587814331,
+      "avg_val_loss": 9.146660804748535,
+      "val_ppl": 9383.05615234199,
+      "tokens_sec": 1325.45315206225,
+      "experts_per_layer": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ]
+    },
+    {
+      "step": 34,
+      "train_loss": 121.15310049057007,
+      "avg_val_loss": 9.146660804748535,
+      "val_ppl": 9383.05615234199,
+      "tokens_sec": 1338.6868601060685,
+      "experts_per_layer": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ]
+    },
+    {
+      "step": 35,
+      "train_loss": 119.32192420959473,
+      "avg_val_loss": 9.146660804748535,
+      "val_ppl": 9383.05615234199,
+      "tokens_sec": 1350.4928439766347,
+      "experts_per_layer": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ]
+    },
+    {
+      "step": 36,
+      "train_loss": 117.7746524810791,
+      "avg_val_loss": 9.146660804748535,
+      "val_ppl": 9383.05615234199,
+      "tokens_sec": 1361.007853715813,
+      "experts_per_layer": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ]
+    },
+    {
+      "step": 37,
+      "train_loss": 116.22759675979614,
+      "avg_val_loss": 9.146660804748535,
+      "val_ppl": 9383.05615234199,
+      "tokens_sec": 1373.1721411645708,
+      "experts_per_layer": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ]
+    },
+    {
+      "step": 38,
+      "train_loss": 114.70574808120728,
+      "avg_val_loss": 9.146660804748535,
+      "val_ppl": 9383.05615234199,
+      "tokens_sec": 1384.0033324918759,
+      "experts_per_layer": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ]
+    },
+    {
+      "step": 39,
+      "train_loss": 113.99060821533203,
+      "avg_val_loss": 9.146660804748535,
+      "val_ppl": 9383.05615234199,
+      "tokens_sec": 1395.0314683883776,
+      "experts_per_layer": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ]
+    },
+    {
+      "step": 40,
+      "train_loss": 112.47705841064453,
+      "avg_val_loss": 6.569505572319031,
+      "val_ppl": 713.0172205160292,
+      "tokens_sec": 1402.6380163505362,
+      "experts_per_layer": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ]
+    },
+    {
+      "step": 41,
+      "train_loss": 111.77523756027222,
+      "avg_val_loss": 6.569505572319031,
+      "val_ppl": 713.0172205160292,
+      "tokens_sec": 1414.1645439825063,
+      "experts_per_layer": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ]
+    },
+    {
+      "step": 42,
+      "train_loss": 111.74800491333008,
+      "avg_val_loss": 6.569505572319031,
+      "val_ppl": 713.0172205160292,
+      "tokens_sec": 1425.6314942698664,
+      "experts_per_layer": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ]
+    },
+    {
+      "step": 43,
+      "train_loss": 110.86713075637817,
+      "avg_val_loss": 6.569505572319031,
+      "val_ppl": 713.0172205160292,
+      "tokens_sec": 1436.3411833430807,
+      "experts_per_layer": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ]
+    },
+    {
+      "step": 44,
+      "train_loss": 109.82496404647827,
+      "avg_val_loss": 6.569505572319031,
+      "val_ppl": 713.0172205160292,
+      "tokens_sec": 1446.7699566581373,
+      "experts_per_layer": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ]
+    },
+    {
+      "step": 45,
+      "train_loss": 109.42052459716797,
+      "avg_val_loss": 6.569505572319031,
+      "val_ppl": 713.0172205160292,
+      "tokens_sec": 1458.1945923216051,
+      "experts_per_layer": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ]
+    },
+    {
+      "step": 46,
+      "train_loss": 109.47568845748901,
+      "avg_val_loss": 6.569505572319031,
+      "val_ppl": 713.0172205160292,
+      "tokens_sec": 1469.0234765124835,
+      "experts_per_layer": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ]
+    },
+    {
+      "step": 47,
+      "train_loss": 108.93094682693481,
+      "avg_val_loss": 6.569505572319031,
+      "val_ppl": 713.0172205160292,
+      "tokens_sec": 1479.8648882342713,
+      "experts_per_layer": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ]
+    },
+    {
+      "step": 48,
+      "train_loss": 108.6422872543335,
+      "avg_val_loss": 6.569505572319031,
+      "val_ppl": 713.0172205160292,
+      "tokens_sec": 1489.8563054765486,
+      "experts_per_layer": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ]
+    },
+    {
+      "step": 49,
+      "train_loss": 108.47466087341309,
+      "avg_val_loss": 6.569505572319031,
+      "val_ppl": 713.0172205160292,
+      "tokens_sec": 1499.965408770643,
+      "experts_per_layer": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ]
+    },
+    {
+      "step": 50,
+      "train_loss": 109.13897037506104,
+      "avg_val_loss": 6.569505572319031,
+      "val_ppl": 713.0172205160292,
+      "tokens_sec": 1510.6720444503667,
+      "experts_per_layer": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ]
+    },
+    {
+      "step": 51,
+      "train_loss": 108.64563322067261,
+      "avg_val_loss": 6.569505572319031,
+      "val_ppl": 713.0172205160292,
+      "tokens_sec": 1519.8125572859021,
+      "experts_per_layer": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ]
+    },
+    {
+      "step": 52,
+      "train_loss": 108.05429697036743,
+      "avg_val_loss": 6.569505572319031,
+      "val_ppl": 713.0172205160292,
+      "tokens_sec": 1527.4640789064208,
+      "experts_per_layer": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ]
+    },
+    {
+      "step": 53,
+      "train_loss": 107.63275098800659,
+      "avg_val_loss": 6.569505572319031,
+      "val_ppl": 713.0172205160292,
+      "tokens_sec": 1532.6534741244343,
+      "experts_per_layer": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ]
+    },
+    {
+      "step": 54,
+      "train_loss": 108.63639831542969,
+      "avg_val_loss": 6.569505572319031,
+      "val_ppl": 713.0172205160292,
+      "tokens_sec": 1535.7201215277003,
+      "experts_per_layer": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ]
+    },
+    {
+      "step": 55,
+      "train_loss": 107.41652536392212,
+      "avg_val_loss": 6.569505572319031,
+      "val_ppl": 713.0172205160292,
+      "tokens_sec": 1542.54064079568,
+      "experts_per_layer": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ]
+    },
+    {
+      "step": 56,
+      "train_loss": 107.50556564331055,
+      "avg_val_loss": 6.569505572319031,
+      "val_ppl": 713.0172205160292,
+      "tokens_sec": 1548.4831504828762,
+      "experts_per_layer": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ]
+    },
+    {
+      "step": 57,
+      "train_loss": 107.13107538223267,
+      "avg_val_loss": 6.569505572319031,
+      "val_ppl": 713.0172205160292,
+      "tokens_sec": 1550.5841248008899,
+      "experts_per_layer": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ]
+    },
+    {
+      "step": 58,
+      "train_loss": 106.77730560302734,
+      "avg_val_loss": 6.569505572319031,
+      "val_ppl": 713.0172205160292,
+      "tokens_sec": 1556.9593620929982,
+      "experts_per_layer": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ]
+    },
+    {
+      "step": 59,
+      "train_loss": 106.54783868789673,
+      "avg_val_loss": 6.569505572319031,
+      "val_ppl": 713.0172205160292,
+      "tokens_sec": 1563.0997918636635,
+      "experts_per_layer": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ]
+    },
+    {
+      "step": 60,
+      "train_loss": 105.60595512390137,
+      "avg_val_loss": 6.112727046012878,
+      "val_ppl": 451.56848562344504,
+      "tokens_sec": 1565.287185770675,
+      "experts_per_layer": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ]
+    },
+    {
+      "step": 61,
+      "train_loss": 105.17454051971436,
+      "avg_val_loss": 6.112727046012878,
+      "val_ppl": 451.56848562344504,
+      "tokens_sec": 1569.2207011639957,
+      "experts_per_layer": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ]
+    },
+    {
+      "step": 62,
+      "train_loss": 105.58215141296387,
+      "avg_val_loss": 6.112727046012878,
+      "val_ppl": 451.56848562344504,
+      "tokens_sec": 1572.792227017232,
+      "experts_per_layer": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ]
+    },
+    {
+      "step": 63,
+      "train_loss": 104.68968534469604,
+      "avg_val_loss": 6.112727046012878,
+      "val_ppl": 451.56848562344504,
+      "tokens_sec": 1572.727213039817,
+      "experts_per_layer": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ]
+    },
+    {
+      "step": 64,
+      "train_loss": 105.21317625045776,
+      "avg_val_loss": 6.112727046012878,
+      "val_ppl": 451.56848562344504,
+      "tokens_sec": 1570.6257860577518,
+      "experts_per_layer": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ]
+    },
+    {
+      "step": 65,
+      "train_loss": 104.33240032196045,
+      "avg_val_loss": 6.112727046012878,
+      "val_ppl": 451.56848562344504,
+      "tokens_sec": 1571.5119455820209,
+      "experts_per_layer": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ]
+    },
+    {
+      "step": 66,
+      "train_loss": 104.2286376953125,
+      "avg_val_loss": 6.112727046012878,
+      "val_ppl": 451.56848562344504,
+      "tokens_sec": 1570.3326642660663,
+      "experts_per_layer": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ]
+    },
+    {
+      "step": 67,
+      "train_loss": 104.2011284828186,
+      "avg_val_loss": 6.112727046012878,
+      "val_ppl": 451.56848562344504,
+      "tokens_sec": 1570.2812995060708,
+      "experts_per_layer": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ]
+    },
+    {
+      "step": 68,
+      "train_loss": 103.90542411804199,
+      "avg_val_loss": 6.112727046012878,
+      "val_ppl": 451.56848562344504,
+      "tokens_sec": 1573.213167554985,
+      "experts_per_layer": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ]
+    },
+    {
+      "step": 69,
+      "train_loss": 103.89481782913208,
+      "avg_val_loss": 6.112727046012878,
+      "val_ppl": 451.56848562344504,
+      "tokens_sec": 1575.2476770857363,
+      "experts_per_layer": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ]
+    },
+    {
+      "step": 70,
+      "train_loss": 103.84140300750732,
+      "avg_val_loss": 6.112727046012878,
+      "val_ppl": 451.56848562344504,
+      "tokens_sec": 1578.5953236749651,
+      "experts_per_layer": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ]
+    },
+    {
+      "step": 71,
+      "train_loss": 103.33434629440308,
+      "avg_val_loss": 6.112727046012878,
+      "val_ppl": 451.56848562344504,
+      "tokens_sec": 1581.5480562176401,
+      "experts_per_layer": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ]
+    },
+    {
+      "step": 72,
+      "train_loss": 103.45378351211548,
+      "avg_val_loss": 6.112727046012878,
+      "val_ppl": 451.56848562344504,
+      "tokens_sec": 1584.9266150739052,
+      "experts_per_layer": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ]
+    },
+    {
+      "step": 73,
+      "train_loss": 104.12355852127075,
+      "avg_val_loss": 6.112727046012878,
+      "val_ppl": 451.56848562344504,
+      "tokens_sec": 1588.6057031579776,
+      "experts_per_layer": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ]
+    },
+    {
+      "step": 74,
+      "train_loss": 103.16726970672607,
+      "avg_val_loss": 6.112727046012878,
+      "val_ppl": 451.56848562344504,
+      "tokens_sec": 1588.135053773775,
+      "experts_per_layer": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ]
+    },
+    {
+      "step": 75,
+      "train_loss": 103.46349143981934,
+      "avg_val_loss": 6.112727046012878,
+      "val_ppl": 451.56848562344504,
+      "tokens_sec": 1588.286053028793,
+      "experts_per_layer": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ]
+    },
+    {
+      "step": 76,
+      "train_loss": 102.75962257385254,
+      "avg_val_loss": 6.112727046012878,
+      "val_ppl": 451.56848562344504,
+      "tokens_sec": 1590.6209230738632,
+      "experts_per_layer": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ]
+    },
+    {
+      "step": 77,
+      "train_loss": 101.98397445678711,
+      "avg_val_loss": 6.112727046012878,
+      "val_ppl": 451.56848562344504,
+      "tokens_sec": 1593.6839887181902,
+      "experts_per_layer": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ]
+    },
+    {
+      "step": 78,
+      "train_loss": 102.5307068824768,
+      "avg_val_loss": 6.112727046012878,
+      "val_ppl": 451.56848562344504,
+      "tokens_sec": 1595.4398703246973,
+      "experts_per_layer": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ]
+    },
+    {
+      "step": 79,
+      "train_loss": 102.33798742294312,
+      "avg_val_loss": 6.112727046012878,
+      "val_ppl": 451.56848562344504,
+      "tokens_sec": 1597.3241178768515,
+      "experts_per_layer": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ]
+    },
+    {
+      "step": 80,
+      "train_loss": 102.34416961669922,
+      "avg_val_loss": 5.912209987640381,
+      "val_ppl": 369.521892508189,
+      "tokens_sec": 1596.2237030689491,
+      "experts_per_layer": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ]
+    },
+    {
+      "step": 81,
+      "train_loss": 102.56318616867065,
+      "avg_val_loss": 5.912209987640381,
+      "val_ppl": 369.521892508189,
+      "tokens_sec": 1597.5161809386218,
+      "experts_per_layer": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ]
+    },
+    {
+      "step": 82,
+      "train_loss": 102.46408128738403,
+      "avg_val_loss": 5.912209987640381,
+      "val_ppl": 369.521892508189,
+      "tokens_sec": 1597.552142068306,
+      "experts_per_layer": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ]
+    },
+    {
+      "step": 83,
+      "train_loss": 102.33972644805908,
+      "avg_val_loss": 5.912209987640381,
+      "val_ppl": 369.521892508189,
+      "tokens_sec": 1596.2922211847288,
+      "experts_per_layer": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ]
+    },
+    {
+      "step": 84,
+      "train_loss": 101.83809900283813,
+      "avg_val_loss": 5.912209987640381,
+      "val_ppl": 369.521892508189,
+      "tokens_sec": 1592.4735333639803,
+      "experts_per_layer": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ]
+    },
+    {
+      "step": 85,
+      "train_loss": 101.9137830734253,
+      "avg_val_loss": 5.912209987640381,
+      "val_ppl": 369.521892508189,
+      "tokens_sec": 1589.838350710976,
+      "experts_per_layer": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ]
+    },
+    {
+      "step": 86,
+      "train_loss": 101.96330261230469,
+      "avg_val_loss": 5.912209987640381,
+      "val_ppl": 369.521892508189,
+      "tokens_sec": 1587.9693143326015,
+      "experts_per_layer": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ]
+    },
+    {
+      "step": 87,
+      "train_loss": 102.26432132720947,
+      "avg_val_loss": 5.912209987640381,
+      "val_ppl": 369.521892508189,
+      "tokens_sec": 1586.1516799428273,
+      "experts_per_layer": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ]
+    },
+    {
+      "step": 88,
+      "train_loss": 102.2084732055664,
+      "avg_val_loss": 5.912209987640381,
+      "val_ppl": 369.521892508189,
+      "tokens_sec": 1583.4491302128863,
+      "experts_per_layer": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ]
+    },
+    {
+      "step": 89,
+      "train_loss": 102.59375524520874,
+      "avg_val_loss": 5.912209987640381,
+      "val_ppl": 369.521892508189,
+      "tokens_sec": 1580.600053141003,
+      "experts_per_layer": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ]
+    },
+    {
+      "step": 90,
+      "train_loss": 101.2052264213562,
+      "avg_val_loss": 5.912209987640381,
+      "val_ppl": 369.521892508189,
+      "tokens_sec": 1574.933159277346,
+      "experts_per_layer": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ]
+    },
+    {
+      "step": 91,
+      "train_loss": 101.96217441558838,
+      "avg_val_loss": 5.912209987640381,
+      "val_ppl": 369.521892508189,
+      "tokens_sec": 1568.8704310598964,
+      "experts_per_layer": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ]
+    },
+    {
+      "step": 92,
+      "train_loss": 101.938223361969,
+      "avg_val_loss": 5.912209987640381,
+      "val_ppl": 369.521892508189,
+      "tokens_sec": 1565.2453818013312,
+      "experts_per_layer": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ]
+    },
+    {
+      "step": 93,
+      "train_loss": 101.75755643844604,
+      "avg_val_loss": 5.912209987640381,
+      "val_ppl": 369.521892508189,
+      "tokens_sec": 1561.8837107170652,
+      "experts_per_layer": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ]
+    },
+    {
+      "step": 94,
+      "train_loss": 101.13493728637695,
+      "avg_val_loss": 5.912209987640381,
+      "val_ppl": 369.521892508189,
+      "tokens_sec": 1558.3465055115753,
+      "experts_per_layer": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ]
+    },
+    {
+      "step": 95,
+      "train_loss": 102.05469703674316,
+      "avg_val_loss": 5.912209987640381,
+      "val_ppl": 369.521892508189,
+      "tokens_sec": 1553.8310811780939,
+      "experts_per_layer": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ]
+    },
+    {
+      "step": 96,
+      "train_loss": 101.64258193969727,
+      "avg_val_loss": 5.912209987640381,
+      "val_ppl": 369.521892508189,
+      "tokens_sec": 1549.2757162849928,
+      "experts_per_layer": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ]
+    },
+    {
+      "step": 97,
+      "train_loss": 101.77067232131958,
+      "avg_val_loss": 5.912209987640381,
+      "val_ppl": 369.521892508189,
+      "tokens_sec": 1544.7088285382895,
+      "experts_per_layer": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ]
+    },
+    {
+      "step": 98,
+      "train_loss": 101.26064348220825,
+      "avg_val_loss": 5.912209987640381,
+      "val_ppl": 369.521892508189,
+      "tokens_sec": 1540.5701237327887,
+      "experts_per_layer": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ]
+    },
+    {
+      "step": 99,
+      "train_loss": 101.38933420181274,
+      "avg_val_loss": 5.912209987640381,
+      "val_ppl": 369.521892508189,
+      "tokens_sec": 1535.9634567632036,
+      "experts_per_layer": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ]
+    },
+    {
+      "step": 100,
+      "train_loss": 101.12083959579468,
+      "avg_val_loss": 5.938122034072876,
+      "val_ppl": 379.22209423564954,
+      "tokens_sec": 1526.6835832019603,
+      "experts_per_layer": [
+        18,
+        18,
+        18,
+        18,
+        18,
+        18
+      ]
+    }
+  ]
+}

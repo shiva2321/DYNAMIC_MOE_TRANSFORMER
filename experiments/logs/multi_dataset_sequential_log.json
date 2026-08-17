@@ -1,0 +1,141 @@
+{
+  "config": {
+    "mode": "sequential",
+    "steps_per_domain": 5,
+    "total_steps": 560,
+    "d_model": 256,
+    "n_layers": 3,
+    "n_heads": 4,
+    "d_ff": 512,
+    "d_hyper": 2048,
+    "top_k": 2,
+    "spawn_threshold": 0.26,
+    "max_experts": 16,
+    "batch_size": 4,
+    "seq_len": 64,
+    "lr": 0.0006,
+    "device": "cuda",
+    "output_dir": "experiments",
+    "save_checkpoint": true
+  },
+  "total_time_seconds": 3.81546688079834,
+  "spawn_events": [
+    {
+      "step": 1,
+      "domain": "code",
+      "domain_name": "Python & Systems Code",
+      "prev_experts": 2,
+      "curr_experts": 3,
+      "new_params_count": 21
+    }
+  ],
+  "telemetry_log": [
+    {
+      "step": 20,
+      "active_domain": "dialogue",
+      "train_loss": 57.7585,
+      "avg_eval_loss": 46.7981,
+      "eval_perplexity": 485165195.41,
+      "domain_eval_losses": {
+        "code": 32.2638,
+        "math": 49.6687,
+        "encyclopedia": 56.5311,
+        "dialogue": 54.2349,
+        "literature": 54.8838,
+        "biomedical": 55.0544,
+        "structured_json": 24.9502
+      },
+      "num_experts": 3,
+      "branching_ratio_sigma": 0.9997,
+      "routing_temperature": 10.0
+    },
+    {
+      "step": 35,
+      "active_domain": "structured_json",
+      "train_loss": 23.8359,
+      "avg_eval_loss": 35.752,
+      "eval_perplexity": 485165195.41,
+      "domain_eval_losses": {
+        "code": 26.3473,
+        "math": 39.2574,
+        "encyclopedia": 42.905,
+        "dialogue": 41.9361,
+        "literature": 37.3966,
+        "biomedical": 40.074,
+        "structured_json": 22.3477
+      },
+      "num_experts": 3,
+      "branching_ratio_sigma": 1.0,
+      "routing_temperature": 10.0
+    }
+  ],
+  "domain_expert_activations": {
+    "code": {
+      "2": 1280,
+      "0": 1280
+    },
+    "math": {
+      "2": 1280,
+      "0": 1280
+    },
+    "encyclopedia": {
+      "2": 1280,
+      "0": 1280
+    },
+    "dialogue": {
+      "2": 1280,
+      "0": 1280
+    },
+    "literature": {
+      "2": 1280,
+      "0": 1280
+    },
+    "biomedical": {
+      "2": 1280,
+      "0": 1280
+    },
+    "structured_json": {
+      "2": 1280,
+      "0": 1280
+    }
+  },
+  "final_eval_losses": {
+    "code": 20.902718861897785,
+    "math": 40.34637451171875,
+    "encyclopedia": 42.553637186686196,
+    "dialogue": 42.33447392781576,
+    "literature": 37.58350435892741,
+    "biomedical": 40.71716753641764,
+    "structured_json": 21.02484130859375
+  },
+  "generations": {
+    "code": {
+      "prompt": "def quicksort(array):",
+      "generated_text": "def quicksort(array):                                        "
+    },
+    "math": {
+      "prompt": "In quantum mechanics, the Hamiltonian operator",
+      "generated_text": "In quantum mechanics, the Hamiltonian operator                                        "
+    },
+    "encyclopedia": {
+      "prompt": "The Roman Republic was established in",
+      "generated_text": "The Roman Republic was established in                                        "
+    },
+    "dialogue": {
+      "prompt": "User: What are the key advantages of dynamic MoE?\nAssistant:",
+      "generated_text": "User: What are the key advantages of dynamic MoE?\nAssistant:                                        "
+    },
+    "literature": {
+      "prompt": "The void beyond the outer orbit of Kepler-186f",
+      "generated_text": "The void beyond the outer orbit of Kepler-186f                                        "
+    },
+    "biomedical": {
+      "prompt": "Cellular senescence is a state of permanent",
+      "generated_text": "Cellular senescence is a state of permanent 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7"
+    },
+    "structured_json": {
+      "prompt": "{\n  \"system_telemetry\": {",
+      "generated_text": "{\n  \"system_telemetry\": {                                        "
+    }
+  }
+}

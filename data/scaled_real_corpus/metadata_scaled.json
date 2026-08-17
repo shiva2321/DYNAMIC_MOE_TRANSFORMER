@@ -1,0 +1,44 @@
+{
+  "created_at": 1786924502.973543,
+  "vocab_size": 50257,
+  "total_target_tokens": 11000000,
+  "domains": {
+    "fineweb_edu": {
+      "title": "Educational Web Reasoning (FineWeb-Edu)",
+      "train_tokens": 2950356,
+      "val_tokens": 150000,
+      "total_tokens": 3100356,
+      "train_file": "E:\\universal_substrait\\data\\scaled_real_corpus\\fineweb_edu_train.bin",
+      "val_file": "E:\\universal_substrait\\data\\scaled_real_corpus\\fineweb_edu_val.bin",
+      "unique_docs": 2936
+    },
+    "python_code": {
+      "title": "Python Algorithms & Source Code (Alpaca Instructions)",
+      "train_tokens": 2451892,
+      "val_tokens": 150000,
+      "total_tokens": 2601892,
+      "train_file": "E:\\universal_substrait\\data\\scaled_real_corpus\\python_code_train.bin",
+      "val_file": "E:\\universal_substrait\\data\\scaled_real_corpus\\python_code_val.bin",
+      "unique_docs": 11835
+    },
+    "wikitext_facts": {
+      "title": "Encyclopedic Knowledge & Science (WikiText-103)",
+      "train_tokens": 2950208,
+      "val_tokens": 150000,
+      "total_tokens": 3100208,
+      "train_file": "E:\\universal_substrait\\data\\scaled_real_corpus\\wikitext_facts_train.bin",
+      "val_file": "E:\\universal_substrait\\data\\scaled_real_corpus\\wikitext_facts_val.bin",
+      "unique_docs": 21621
+    },
+    "natural_stories": {
+      "title": "Narrative Dialogue & Causal Logic (TinyStories)",
+      "train_tokens": 2450109,
+      "val_tokens": 150000,
+      "total_tokens": 2600109,
+      "train_file": "E:\\universal_substrait\\data\\scaled_real_corpus\\natural_stories_train.bin",
+      "val_file": "E:\\universal_substrait\\data\\scaled_real_corpus\\natural_stories_val.bin",
+      "unique_docs": 11933
+    }
+  },
+  "actual_total_tokens": 11402565
+}

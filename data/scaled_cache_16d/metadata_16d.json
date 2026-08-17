@@ -1,0 +1,134 @@
+{
+  "total_domains": 16,
+  "total_tokens": 21600000,
+  "domains": {
+    "algorithms_and_systems": {
+      "title": "Systems Programming & Concurrency",
+      "train_tokens": 1215000,
+      "val_tokens": 135000,
+      "total_tokens": 1350000,
+      "train_file": "data/scaled_cache_16d\\algorithms_and_systems_train.bin",
+      "val_file": "data/scaled_cache_16d\\algorithms_and_systems_val.bin"
+    },
+    "pure_mathematics": {
+      "title": "Abstract Algebra & Topology",
+      "train_tokens": 1215000,
+      "val_tokens": 135000,
+      "total_tokens": 1350000,
+      "train_file": "data/scaled_cache_16d\\pure_mathematics_train.bin",
+      "val_file": "data/scaled_cache_16d\\pure_mathematics_val.bin"
+    },
+    "theoretical_physics": {
+      "title": "Quantum Mechanics & Relativity",
+      "train_tokens": 1215000,
+      "val_tokens": 135000,
+      "total_tokens": 1350000,
+      "train_file": "data/scaled_cache_16d\\theoretical_physics_train.bin",
+      "val_file": "data/scaled_cache_16d\\theoretical_physics_val.bin"
+    },
+    "molecular_biology_genetics": {
+      "title": "Molecular Genetics & Bioenergetics",
+      "train_tokens": 1215000,
+      "val_tokens": 135000,
+      "total_tokens": 1350000,
+      "train_file": "data/scaled_cache_16d\\molecular_biology_genetics_train.bin",
+      "val_file": "data/scaled_cache_16d\\molecular_biology_genetics_val.bin"
+    },
+    "pharmacology_medicine": {
+      "title": "Pharmacology & Clinical Immunology",
+      "train_tokens": 1215000,
+      "val_tokens": 135000,
+      "total_tokens": 1350000,
+      "train_file": "data/scaled_cache_16d\\pharmacology_medicine_train.bin",
+      "val_file": "data/scaled_cache_16d\\pharmacology_medicine_val.bin"
+    },
+    "world_history_civilizations": {
+      "title": "World History & Historiography",
+      "train_tokens": 1215000,
+      "val_tokens": 135000,
+      "total_tokens": 1350000,
+      "train_file": "data/scaled_cache_16d\\world_history_civilizations_train.bin",
+      "val_file": "data/scaled_cache_16d\\world_history_civilizations_val.bin"
+    },
+    "philosophy_epistemology": {
+      "title": "Epistemology & Philosophy of Mind",
+      "train_tokens": 1215000,
+      "val_tokens": 135000,
+      "total_tokens": 1350000,
+      "train_file": "data/scaled_cache_16d\\philosophy_epistemology_train.bin",
+      "val_file": "data/scaled_cache_16d\\philosophy_epistemology_val.bin"
+    },
+    "economics_finance": {
+      "title": "Microeconomics & Quantitative Finance",
+      "train_tokens": 1215000,
+      "val_tokens": 135000,
+      "total_tokens": 1350000,
+      "train_file": "data/scaled_cache_16d\\economics_finance_train.bin",
+      "val_file": "data/scaled_cache_16d\\economics_finance_val.bin"
+    },
+    "linguistics_cognition": {
+      "title": "Theoretical Linguistics & Syntax",
+      "train_tokens": 1215000,
+      "val_tokens": 135000,
+      "total_tokens": 1350000,
+      "train_file": "data/scaled_cache_16d\\linguistics_cognition_train.bin",
+      "val_file": "data/scaled_cache_16d\\linguistics_cognition_val.bin"
+    },
+    "astronomy_cosmology": {
+      "title": "Astrophysics & Cosmology",
+      "train_tokens": 1215000,
+      "val_tokens": 135000,
+      "total_tokens": 1350000,
+      "train_file": "data/scaled_cache_16d\\astronomy_cosmology_train.bin",
+      "val_file": "data/scaled_cache_16d\\astronomy_cosmology_val.bin"
+    },
+    "neuroscience_cybernetics": {
+      "title": "Computational Neuroscience & SOC",
+      "train_tokens": 1215000,
+      "val_tokens": 135000,
+      "total_tokens": 1350000,
+      "train_file": "data/scaled_cache_16d\\neuroscience_cybernetics_train.bin",
+      "val_file": "data/scaled_cache_16d\\neuroscience_cybernetics_val.bin"
+    },
+    "cloud_distributed_systems": {
+      "title": "Cloud Infrastructure & Schedulers",
+      "train_tokens": 1215000,
+      "val_tokens": 135000,
+      "total_tokens": 1350000,
+      "train_file": "data/scaled_cache_16d\\cloud_distributed_systems_train.bin",
+      "val_file": "data/scaled_cache_16d\\cloud_distributed_systems_val.bin"
+    },
+    "speculative_literature": {
+      "title": "Speculative Fiction & Narrative Prose",
+      "train_tokens": 1215000,
+      "val_tokens": 135000,
+      "total_tokens": 1350000,
+      "train_file": "data/scaled_cache_16d\\speculative_literature_train.bin",
+      "val_file": "data/scaled_cache_16d\\speculative_literature_val.bin"
+    },
+    "legal_jurisprudence": {
+      "title": "Corporate Law & Jurisprudence",
+      "train_tokens": 1215000,
+      "val_tokens": 135000,
+      "total_tokens": 1350000,
+      "train_file": "data/scaled_cache_16d\\legal_jurisprudence_train.bin",
+      "val_file": "data/scaled_cache_16d\\legal_jurisprudence_val.bin"
+    },
+    "chemistry_materials_science": {
+      "title": "Materials Chemistry & Catalysis",
+      "train_tokens": 1215000,
+      "val_tokens": 135000,
+      "total_tokens": 1350000,
+      "train_file": "data/scaled_cache_16d\\chemistry_materials_science_train.bin",
+      "val_file": "data/scaled_cache_16d\\chemistry_materials_science_val.bin"
+    },
+    "software_architecture_design": {
+      "title": "Software Architecture & Compilers",
+      "train_tokens": 1215000,
+      "val_tokens": 135000,
+      "total_tokens": 1350000,
+      "train_file": "data/scaled_cache_16d\\software_architecture_design_train.bin",
+      "val_file": "data/scaled_cache_16d\\software_architecture_design_val.bin"
+    }
+  }
+}

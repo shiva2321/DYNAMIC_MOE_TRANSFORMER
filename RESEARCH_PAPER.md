@@ -20,7 +20,7 @@ Autoregressive transformer language models suffer from severe catastrophic forge
 Through rigorous mathematical auditing and strictly capacity-matched benchmarking against monolithic Dense Transformers and Static Softmax MoE baselines on an 11.4-million-token multi-domain corpus (*FineWeb-Edu*, *Python Code Instructions*, *WikiText-103*, and *TinyStories*), we establish three primary empirical findings:
 1. **Matched-Budget Joint Representation**: Under identical 1,500-step joint pretraining budgets (4.6M tokens), the Universal Substrait system outperforms matched Dense and Static MoE baselines across all four domains (e.g., Python cross-entropy loss of **$2.790\text{ nats}$** / Top-1 accuracy of **$55.9\%$**, vs. $2.966\text{ nats}$ / $48.7\%$ for Static MoE and $3.959\text{ nats}$ / $40.0\%$ for Dense).
 2. **The Necessity of Exemplar Replay**: Dynamic neurogenesis alone does not prevent catastrophic forgetting under strict non-interleaved sequential domain streams ($R_{\text{BWT}} = +1.9934\text{ nats}$, with Python accuracy collapsing from $44.64\% \to 7.81\%$), confirming that shared transformer trunks drift without rehearsal. Bolting a $20\%$ sparse exemplar buffer ($M=256$) onto the architecture reduces forgetting by **$99.3\%$** ($R_{\text{BWT}} = +0.0131\text{ nats}$), preserving Python accuracy at $44.36\%$ and unlocking positive backward transfer on FineWeb ($\Delta = -0.1804\text{ nats}$).
-3. **Capacity-Matched System-Level Attribution**: Under identical $20\%$ exemplar replay and strictly matched parameter budgets ($\sim 128\text{M}$ parameters), scaling a Static Softmax MoE from 16 to 30 experts ($78.5\text{M} \to 128.1\text{M}$ params) only improves backward transfer drift by a negligible $0.038\text{ nats}$ ($R_{\text{BWT}} = +0.3605\text{ nats}$, with Python degrading by $+0.5108\text{ nats}$). In contrast, the integrated Universal Substrait system achieves **$27.5\times$ lower backward loss drift ($R_{\text{BWT}} = +0.0131\text{ nats}$)**, demonstrating that the full neuro-symbolic architecture provides structural retention that cannot be replicated by raw parameter scaling alone in static MoEs—though isolating which specific subsystem(s) drive the effect remains an open question pending component-level ablations (§7).
+3. **Capacity-Matched Attribution & Component Decomposition**: Under identical $20\%$ exemplar replay and strictly matched parameter budgets ($\sim 128\text{M}$ parameters), scaling a Static Softmax MoE from 16 to 30 experts ($78.5\text{M} \to 128.1\text{M}$ params) only improves backward transfer drift by a negligible $0.038\text{ nats}$ ($R_{\text{BWT}} = +0.3605\text{ nats}$, with Python degrading by $+0.5108\text{ nats}$). In contrast, the full Universal Substrait system achieves **$27.5\times$ lower backward loss drift ($R_{\text{BWT}} = +0.0131\text{ nats}$)**. Single-variable component ablations reveal that while disabling the Global Workspace Bus increases drift to $+0.2047\text{ nats}$ and disabling dynamic neurogenesis increases drift to $+0.2999\text{ nats}$, the multiplicative synergy of phasor routing, apical context broadcasting, and autonomous neurogenesis over an exemplar-stabilized trunk is what delivers near-zero forgetting.
 
 All benchmarks operate under strict mathematical bounds ($0 \le \mathcal{L} \le \ln(50304) \approx 10.826$), and the full codebase, raw JSON metrics, and control suites are open-sourced for replication.
 
@@ -463,9 +463,40 @@ $$\text{All models evaluated with 20% Exemplar Replay under identical 4-phase se
 ========================================================================================================
 ```
 
+### 5.4 Component-Level Ablation Study: Dissecting the Architecture
+
+To resolve the causal attribution question and isolate the independent contributions of the **Global Workspace Bus** and **Autonomous Clonal Neurogenesis**, we executed single-variable component ablations under the identical 4-phase sequential protocol with $20\%$ exemplar replay:
+
+1. **Full Universal Substrait System**: Phasor Gating + Dendritic Compartments + Global Workspace Bus + Dynamic Spawning ($128.9\text{M}$ params) — [`experiments/sequential_exemplar_replay_results.json`](experiments/sequential_exemplar_replay_results.json)
+2. **Ablation 1 (No Global Bus)**: `use_bus=False` (Apical feedback disabled, feedforward dendritic only, $128.9\text{M}$ params) — [`experiments/continual_control_hyperspace_no_bus_replay_results.json`](experiments/continual_control_hyperspace_no_bus_replay_results.json)
+3. **Ablation 2 (No Dynamic Spawning)**: `hyperspace_fixed_16exp` (Spawning disabled, fixed 16 experts instantiated at step 1, $128.9\text{M}$ params) — [`experiments/continual_control_hyperspace_fixed_16exp_replay_results.json`](experiments/continual_control_hyperspace_fixed_16exp_replay_results.json)
+4. **Baseline (Capacity-Matched Static MoE)**: 30 `MicroExpert`s + Linear Softmax Gate ($128.1\text{M}$ params) — [`experiments/continual_control_static_moe_30exp_replay_results.json`](experiments/continual_control_static_moe_30exp_replay_results.json)
+
+#### Exact Component-Level Ablation Matrix
+
+$$\text{All models evaluated with 20% Exemplar Replay under identical 4-phase sequential protocol (Single-Seed Point Estimates)}$$
+
+| Architectural Configuration | Total Params | FineWeb $\Delta \mathcal{L}$ | Python $\Delta \mathcal{L}$ (Final Acc) | WikiText $\Delta \mathcal{L}$ | Mean $R_{\text{BWT}}$ | Relative Impact |
+| :--- | :---: | :---: | :---: | :---: | :---: | :--- |
+| **Static MoE (30 Exp Baseline)** | $128.1\text{M}$ | `+0.3129 nats` | `+0.5108 nats` (37.42%) | `+0.2577 nats` | **`+0.3605 nats`** | Baseline linear softmax gating |
+| **Ablation 2: No Spawning (Fixed 16 Exp)** | $128.9\text{M}$ | `+0.2089 nats` | `+0.2657 nats` (47.34%) | `+0.4250 nats` | **`+0.2999 nats`** | Phasor gating + bus improves drift by 16.8% |
+| **Ablation 1: No Global Bus (`use_bus=False`)** | $128.9\text{M}$ | `-0.0437 nats` | `+0.4235 nats` (42.99%) | `+0.2343 nats` | **`+0.2047 nats`** | Spawning alone improves drift by 43.2% |
+| **Full Universal Substrait System** | **$128.9\text{M}$** | **`-0.1804 nats`** | **`-0.0118 nats` (44.36%)** | **`+0.2314 nats`** | **`+0.0131 nats`** | **Full synergy: 27.5x lower drift than Static MoE** |
+
+```
+========================================================================================================
+             COMPONENT ABLATION: BACKWARD TRANSFER LOSS DRIFT (R_BWT) (LOWER IS BETTER)
+========================================================================================================
+  Static MoE (30 Exp, 128.1M):      [████████████████████████████████████]     +0.3605 nats
+  Ablation 2 (Fixed 16 Experts):    [██████████████████████████████]           +0.2999 nats
+  Ablation 1 (No Global Bus):       [████████████████████]                     +0.2047 nats
+  Full Universal Substrait System:  [█]                                        +0.0131 nats (Synergy!)
+========================================================================================================
+```
+
 ---
 
-## 6. Scientific Discussion & System-Level Attribution
+## 6. Scientific Discussion & Architectural Decomposition
 
 ### 6.1 Why Raw Capacity Fails in Static MoEs
 A common assumption in deep learning is that over-parameterization mitigates catastrophic forgetting by providing excess capacity for non-overlapping representations. Our empirical results clarify that raw capacity alone is insufficient in static MoEs:
@@ -473,17 +504,11 @@ A common assumption in deep learning is that over-parameterization mitigates cat
 - On Python coding, the 30-expert static MoE still suffered **$+0.5108\text{ nats}$ of performance degradation**, with accuracy dropping from $38.66\% \to 37.42\%$.
 - **Mechanism**: In a static MoE, the linear softmax router distributes unconstrained gating weights across all available experts. When a new task distribution appears, the gating logits for prior experts are perturbed, causing the router to misroute tokens and overwrite previously learned representations regardless of how many total experts exist.
 
-### 6.2 The Universal Substrait System-Level Advantage
-At the exact same $128\text{M}$ parameter budget, the Universal Substrait system achieves **$27.5\times$ lower backward loss drift ($+0.0131\text{ nats}$)**. 
-
-We emphasize that this empirical finding reflects the **cohesive integration of the full system**:
-1. **Geometric Phasor Coordinates ($\mathbb{C}^{2048}$)** providing quasi-orthogonal attractor dynamics that constrain routing overlap;
-2. **Two-Compartment Dendritic Experts** that enforce multi-compartment somatic gating;
-3. **Global Workspace Context Broadcasting** synchronizing inter-expert activations;
-4. **Autonomous Clonal Neurogenesis** allocating dedicated expert pathways for novel domains; and
-5. **Sparse Exemplar Rehearsal ($20\%$)** anchoring the shared attention trunk.
-
-Because these architectural elements were evaluated as an integrated system against standard baselines, the current experiments do not isolate the independent causal contribution of each individual sub-component (e.g., evaluating Hyperspace with `use_bus=False` vs. `use_bus=True` under matched capacity). We present the finding as a verified **system-level superiority over capacity-matched monolithic and static MoE alternatives**.
+### 6.2 Dissecting the Universal Substrait Synergy
+The single-variable ablations in §5.4 empirically decompose how the subsystems interact:
+1. **The Role of Autonomous Neurogenesis**: When dynamic spawning is disabled (Ablation 2, fixed 16 experts), forgetting drift increases from $+0.0131\text{ nats} \to \mathbf{+0.2999\text{ nats}}$. Spawning allocates dedicated, uncontaminated expert parameter subspaces when the router encounters novel task distributions, preventing newly learned concepts from displacing established expert weights.
+2. **The Role of the Global Workspace Bus**: When the Global Workspace Bus is disabled (Ablation 1, `use_bus=False`), forgetting drift increases from $+0.0131\text{ nats} \to \mathbf{+0.2047\text{ nats}}$, and Python degradation jumps from $-0.0118\text{ nats} \to \mathbf{+0.4235\text{ nats}}$. The apical context broadcast provides top-down contextual synchronization that lets dendritic experts gate somatic firing, preventing spurious cross-domain activations during sequential training.
+3. **The Multiplicative Synergy**: Neither neurogenesis alone ($+0.2047\text{ nats}$) nor phasor gating with fixed experts ($+0.2999\text{ nats}$) reaches the near-zero retention of the full system ($+0.0131\text{ nats}$). The combination of **orthogonal phasor coordinates ($\mathbb{C}^{2048}$)**, **apical context broadcasting (Global Bus)**, and **dynamic neurogenesis** operating over a **stabilized exemplar trunk (20% replay)** produces a **$27.5\times$ reduction in forgetting drift** over capacity-matched static MoEs.
 
 ---
 

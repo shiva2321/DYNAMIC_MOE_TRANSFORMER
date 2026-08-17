@@ -1,0 +1,63 @@
+{
+  "version": "1.0",
+  "created_at": 1786899902.2363658,
+  "vocab_size": 50257,
+  "domains": {
+    "fineweb_edu": {
+      "title": "FineWeb-Edu General Knowledge & Reasoning",
+      "train_file": "E:\\universal_substrait\\data\\real_blend_cache\\fineweb_edu_train.bin",
+      "val_file": "E:\\universal_substrait\\data\\real_blend_cache\\fineweb_edu_val.bin",
+      "train_tokens": 950891,
+      "val_tokens": 100000
+    },
+    "github_code": {
+      "title": "GitHub Clean Source Code & Algorithms",
+      "train_file": "E:\\universal_substrait\\data\\real_blend_cache\\github_code_train.bin",
+      "val_file": "E:\\universal_substrait\\data\\real_blend_cache\\github_code_val.bin",
+      "train_tokens": 3111541,
+      "val_tokens": 100000
+    },
+    "openweb_math": {
+      "title": "OpenWebMath & Formal Mathematical Proofs",
+      "train_file": "E:\\universal_substrait\\data\\real_blend_cache\\openweb_math_train.bin",
+      "val_file": "E:\\universal_substrait\\data\\real_blend_cache\\openweb_math_val.bin",
+      "train_tokens": 954765,
+      "val_tokens": 100000
+    },
+    "pubmed_biomedical": {
+      "title": "PubMed Biomedical & Molecular Genetics",
+      "train_file": "E:\\universal_substrait\\data\\real_blend_cache\\pubmed_biomedical_train.bin",
+      "val_file": "E:\\universal_substrait\\data\\real_blend_cache\\pubmed_biomedical_val.bin",
+      "train_tokens": 375422,
+      "val_tokens": 41713
+    },
+    "freelaw_legal": {
+      "title": "FreeLaw Statutory Jurisprudence & Court Opinions",
+      "train_file": "E:\\universal_substrait\\data\\real_blend_cache\\freelaw_legal_train.bin",
+      "val_file": "E:\\universal_substrait\\data\\real_blend_cache\\freelaw_legal_val.bin",
+      "train_tokens": 1226156,
+      "val_tokens": 100000
+    },
+    "arxiv_physics": {
+      "title": "arXiv Theoretical Physics & Quantum Theory",
+      "train_file": "E:\\universal_substrait\\data\\real_blend_cache\\arxiv_physics_train.bin",
+      "val_file": "E:\\universal_substrait\\data\\real_blend_cache\\arxiv_physics_val.bin",
+      "train_tokens": 950068,
+      "val_tokens": 100000
+    },
+    "financial_market": {
+      "title": "Macroeconomics & Financial 10-K Filings",
+      "train_file": "E:\\universal_substrait\\data\\real_blend_cache\\financial_market_train.bin",
+      "val_file": "E:\\universal_substrait\\data\\real_blend_cache\\financial_market_val.bin",
+      "train_tokens": 1582648,
+      "val_tokens": 100000
+    },
+    "gutenberg_literature": {
+      "title": "Project Gutenberg Literature & Philosophy",
+      "train_file": "E:\\universal_substrait\\data\\real_blend_cache\\gutenberg_literature_train.bin",
+      "val_file": "E:\\universal_substrait\\data\\real_blend_cache\\gutenberg_literature_val.bin",
+      "train_tokens": 1100632,
+      "val_tokens": 100000
+    }
+  }
+}

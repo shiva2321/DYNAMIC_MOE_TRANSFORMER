@@ -77,6 +77,9 @@ class HyperTransformerBlock(nn.Module):
         num_sinks: int = 4,
         max_seq_len: int = 512,
         dropout: float = 0.0,
+        use_bus: bool = True,
+        use_hopfield: bool = True,
+        use_criticality: bool = True,
     ):
         super().__init__()
         self.norm1 = RMSNorm(d_model)
@@ -105,6 +108,9 @@ class HyperTransformerBlock(nn.Module):
             spawn_threshold=spawn_threshold,
             max_experts=max_experts,
             initial_experts=initial_experts,
+            use_bus=use_bus,
+            use_hopfield=use_hopfield,
+            use_criticality=use_criticality,
         )
 
     def forward(self, x: torch.Tensor, allow_spawning: bool = True) -> Tuple[torch.Tensor, Dict[str, Any]]:
@@ -145,6 +151,9 @@ class HyperTransformerLM(nn.Module):
         num_sinks: int = 4,
         max_seq_len: int = 512,
         dropout: float = 0.0,
+        use_bus: bool = True,
+        use_hopfield: bool = True,
+        use_criticality: bool = True,
     ):
         super().__init__()
         self.vocab_size = vocab_size
@@ -176,6 +185,9 @@ class HyperTransformerLM(nn.Module):
                 num_sinks=num_sinks,
                 max_seq_len=max_seq_len,
                 dropout=dropout,
+                use_bus=use_bus,
+                use_hopfield=use_hopfield,
+                use_criticality=use_criticality,
             )
             for _ in range(n_layers)
         ])

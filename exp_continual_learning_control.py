@@ -109,7 +109,54 @@ def run_control_experiment(
             num_landmarks=4,
             num_sinks=4,
             max_seq_len=576,
-            dropout=0.0
+            dropout=0.0,
+            use_bus=True
+        ).to(device)
+    elif model_type == "hyperspace_no_bus":
+        model = HyperTransformerLM(
+            vocab_size=vocab_size,
+            d_model=d_model,
+            n_layers=n_layers,
+            n_heads=n_heads,
+            d_ff=d_ff,
+            d_hyper=2048,
+            top_k=2,
+            max_k=4,
+            top_p=0.85,
+            dynamic_k=True,
+            spawn_threshold=0.30,
+            max_experts=16,
+            initial_experts=2,
+            use_sparse_attn=True,
+            foveal_window=128,
+            num_landmarks=4,
+            num_sinks=4,
+            max_seq_len=576,
+            dropout=0.0,
+            use_bus=False
+        ).to(device)
+    elif model_type == "hyperspace_fixed_16exp":
+        model = HyperTransformerLM(
+            vocab_size=vocab_size,
+            d_model=d_model,
+            n_layers=n_layers,
+            n_heads=n_heads,
+            d_ff=d_ff,
+            d_hyper=2048,
+            top_k=2,
+            max_k=4,
+            top_p=0.85,
+            dynamic_k=False,
+            spawn_threshold=1.0, # Disable dynamic neurogenesis
+            max_experts=16,
+            initial_experts=16,
+            use_sparse_attn=True,
+            foveal_window=128,
+            num_landmarks=4,
+            num_sinks=4,
+            max_seq_len=576,
+            dropout=0.0,
+            use_bus=True
         ).to(device)
     else:
         raise ValueError(f"Unknown model_type: {model_type}")
@@ -212,7 +259,7 @@ def run_control_experiment(
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Continual Learning Control Runner")
-    parser.add_argument("--model", type=str, choices=["dense", "static_moe", "static_moe_30exp", "hyperspace"], default="dense")
+    parser.add_argument("--model", type=str, choices=["dense", "static_moe", "static_moe_30exp", "hyperspace", "hyperspace_no_bus", "hyperspace_fixed_16exp"], default="dense")
     parser.add_argument("--steps", type=int, default=300)
     parser.add_argument("--ratio", type=float, default=0.20)
     args = parser.parse_args()

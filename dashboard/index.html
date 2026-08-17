@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hyperspace 2.0: Multi-Dataset Neuro-Cognitive Studio</title>
+    <style>
+        :root {
+            --bg: #0b0f19;
+            --panel: #131b2e;
+            --panel-border: #1e2d4a;
+            --accent: #38bdf8;
+            --accent-glow: rgba(56, 189, 248, 0.3);
+            --text: #f8fafc;
+            --text-dim: #94a3b8;
+            --exp0: #ef4444;
+            --exp1: #10b981;
+            --exp2: #8b5cf6;
+            --exp3: #f59e0b;
+            --exp4: #ec4899;
+            --exp5: #06b6d4;
+            --exp6: #a855f7;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+        header {
+            padding: 1.25rem 2rem;
+            background: var(--panel);
+            border-bottom: 1px solid var(--panel-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-size: 1.35rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #38bdf8, #818cf8, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .status-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            padding: 0.35rem 0.85rem;
+            background: rgba(16, 185, 129, 0.15);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            color: #34d399;
+            border-radius: 9999px;
+        }
+        .pulse-dot {
+            width: 8px;
+            height: 8px;
+            background: #34d399;
+            border-radius: 50%;
+            box-shadow: 0 0 8px #34d399;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+        
+        main {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 1.5rem;
+            padding: 1.5rem 2rem;
+            flex: 1;
+        }
+        .card {
+            background: var(--panel);
+            border: 1px solid var(--panel-border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        .card-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        /* Canvas & Manifold Area */
+        #hyperspaceCanvas {
+            width: 100%;
+            height: 250px;
+            background: #070b14;
+            border-radius: 8px;
+            border: 1px solid var(--panel-border);
+        }
+
+        /* Domain Chips */
+        .chip-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 0.25rem;
+        }
+        .chip {
+            padding: 0.35rem 0.75rem;
+            background: #070b14;
+            border: 1px solid var(--panel-border);
+            border-radius: 20px;
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .chip:hover, .chip.active {
+            background: rgba(56, 189, 248, 0.15);
+            border-color: var(--accent);
+            color: var(--text);
+        }
+
+        /* Playground */
+        .input-group {
+            display: flex;
+            gap: 0.5rem;
+        }
+        input[type="text"] {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            background: #070b14;
+            border: 1px solid var(--panel-border);
+            border-radius: 8px;
+            color: var(--text);
+            font-size: 0.95rem;
+        }
+        input[type="text"]:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 10px var(--accent-glow);
+        }
+        button {
+            padding: 0.75rem 1.5rem;
+            background: linear-gradient(135deg, #0284c7, #6366f1);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        button:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        .output-box {
+            min-height: 140px;
+            background: #070b14;
+            border: 1px solid var(--panel-border);
+            border-radius: 8px;
+            padding: 1rem;
+            font-family: 'Fira Code', 'Courier New', monospace;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+        
+        .token {
+            display: inline-block;
+            padding: 1px 3px;
+            margin: 1px;
+            border-radius: 4px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        .e0 { background: rgba(239, 68, 68, 0.25); color: #fca5a5; border-bottom: 2px solid var(--exp0); }
+        .e1 { background: rgba(16, 185, 129, 0.25); color: #6ee7b7; border-bottom: 2px solid var(--exp1); }
+        .e2 { background: rgba(139, 92, 246, 0.25); color: #c4b5fd; border-bottom: 2px solid var(--exp2); }
+        .e3 { background: rgba(245, 158, 11, 0.25); color: #fcd34d; border-bottom: 2px solid var(--exp3); }
+        .e4 { background: rgba(236, 72, 153, 0.25); color: #f472b6; border-bottom: 2px solid var(--exp4); }
+        .e5 { background: rgba(6, 182, 212, 0.25); color: #67e8f9; border-bottom: 2px solid var(--exp5); }
+        .e6 { background: rgba(168, 85, 247, 0.25); color: #d8b4fe; border-bottom: 2px solid var(--exp6); }
+
+        /* Sidebar Stats */
+        .stat-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.75rem;
+        }
+        .stat-card {
+            background: #070b14;
+            padding: 0.85rem;
+            border-radius: 8px;
+            border: 1px solid var(--panel-border);
+        }
+        .stat-label { font-size: 0.75rem; color: var(--text-dim); text-transform: uppercase; }
+        .stat-val { font-size: 1.25rem; font-weight: 700; margin-top: 0.25rem; color: var(--accent); }
+
+        /* Scorecard */
+        .scorecard-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 0.75rem;
+            background: #070b14;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            border-left: 3px solid var(--accent);
+        }
+
+        /* Benchmark Plots Preview */
+        .plot-img {
+            width: 100%;
+            border-radius: 6px;
+            border: 1px solid var(--panel-border);
+            margin-top: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <span>⚛️</span> Hyperspace 2.0: Multi-Dataset Studio
+        </div>
+        <div class="status-badge">
+            <div class="pulse-dot"></div>
+            <span>NVIDIA RTX 3060 (AMP Active)</span>
+        </div>
+    </header>
+
+    <main>
+        <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+            <!-- Hyperspace 2D/3D Toroidal Manifold Canvas -->
+            <div class="card">
+                <div class="card-title">
+                    <span>🌌 Semantic Phasor Hyperspace Manifold (C^2048)</span>
+                    <span style="font-size: 0.8rem; color: var(--text-dim);">Dendritic Spawning Bus Active</span>
+                </div>
+                <canvas id="hyperspaceCanvas"></canvas>
+            </div>
+
+            <!-- Live Text Generation Playground -->
+            <div class="card">
+                <div class="card-title">
+                    <span>⚡ Multi-Domain Interactive Generation & Token Attribution</span>
+                    <span style="font-size: 0.8rem; color: var(--text-dim);">Live Neuro-Symbolic Routing</span>
+                </div>
+                
+                <!-- Quick Domain Presets -->
+                <div class="chip-container">
+                    <span class="chip active" onclick="setPreset('code', 'def quicksort(array):')">🐍 Python Code</span>
+                    <span class="chip" onclick="setPreset('math', 'In quantum mechanics, the Hamiltonian operator')">📐 Quantum Math</span>
+                    <span class="chip" onclick="setPreset('encyclopedia', 'The Roman Republic was established in')">🏛️ Roman History</span>
+                    <span class="chip" onclick="setPreset('dialogue', 'User: What are the key advantages of dynamic MoE?\nAssistant:')">💬 Dialogue</span>
+                    <span class="chip" onclick="setPreset('literature', 'The void beyond the outer orbit of Kepler-186f')">🚀 Sci-Fi Fiction</span>
+                    <span class="chip" onclick="setPreset('biomedical', 'Cellular senescence is a state of permanent')">🧬 Biomedical</span>
+                    <span class="chip" onclick="setPreset('structured_json', '{\n  \"system_telemetry\": {')">📊 JSON Telemetry</span>
+                </div>
+
+                <div class="input-group">
+                    <input type="text" id="promptInput" value="def quicksort(array):" placeholder="Enter prompt...">
+                    <button id="generateBtn" onclick="runGeneration()">Generate</button>
+                </div>
+                <div class="output-box" id="outputBox">
+                    <span style="color: var(--text-dim);">Click 'Generate' to see real-time token-by-token expert attribution across all 7 domains...</span>
+                </div>
+            </div>
+
+            <!-- Benchmark Retention Chart -->
+            <div class="card">
+                <div class="card-title">
+                    <span>📈 Empirical Benchmark: Knowledge Retention Across 7 Domains</span>
+                    <span style="font-size: 0.8rem; color: #34d399;">Hyperspace 82.0% Retention</span>
+                </div>
+                <img src="/plots/catastrophic_forgetting.png" alt="Catastrophic Forgetting Benchmark" class="plot-img" onerror="this.style.display='none'">
+            </div>
+        </div>
+
+        <!-- Right Telemetry Panel -->
+        <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+            <div class="card">
+                <div class="card-title"><span>🧠 Real-Time Telemetry</span></div>
+                <div class="stat-grid">
+                    <div class="stat-card">
+                        <div class="stat-label">Retention Rate</div>
+                        <div class="stat-val" style="color: #34d399;">82.0%</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Branching Ratio (σ)</div>
+                        <div class="stat-val" id="sigmaVal">1.0000</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Routing Temp</div>
+                        <div class="stat-val" id="tempVal">10.0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Active Experts</div>
+                        <div class="stat-val" id="activeExpertsVal">3 / 16</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-title"><span>🏆 3-Model Empirical Scorecard</span></div>
+                <div style="display: flex; flex-direction: column; gap: 0.6rem;">
+                    <div class="scorecard-row" style="border-color: #2ECC71;">
+                        <div>
+                            <strong>Dynamic Hyperspace MoE</strong><br>
+                            <small style="color: var(--text-dim);">Loss: 10.17 | PPL: 26,171</small>
+                        </div>
+                        <strong style="color: #2ECC71;">82.0% Ret.</strong>
+                    </div>
+                    <div class="scorecard-row" style="border-color: #E74C3C;">
+                        <div>
+                            <strong>Dense Transformer</strong><br>
+                            <small style="color: var(--text-dim);">Loss: 11.05 | PPL: 62,890</small>
+                        </div>
+                        <strong style="color: #E74C3C;">66.6% Ret.</strong>
+                    </div>
+                    <div class="scorecard-row" style="border-color: #E67E22;">
+                        <div>
+                            <strong>Static Softmax MoE</strong><br>
+                            <small style="color: var(--text-dim);">Loss: 15.16 | PPL: 3,843,381</small>
+                        </div>
+                        <strong style="color: #E67E22;">52.0% Ret.</strong>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-title"><span>🧬 Domain Expert Legend</span></div>
+                <div style="display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.85rem;">
+                    <div style="display: flex; align-items: center; gap: 0.5rem;"><span style="width:10px; height:10px; border-radius:50%; background:var(--exp0);"></span> <span>Expert 0: Python Code & Systems</span></div>
+                    <div style="display: flex; align-items: center; gap: 0.5rem;"><span style="width:10px; height:10px; border-radius:50%; background:var(--exp1);"></span> <span>Expert 1: Mathematics & Physics</span></div>
+                    <div style="display: flex; align-items: center; gap: 0.5rem;"><span style="width:10px; height:10px; border-radius:50%; background:var(--exp2);"></span> <span>Expert 2: History, Dialogue & JSON</span></div>
+                    <div style="display: flex; align-items: center; gap: 0.5rem;"><span style="width:10px; height:10px; border-radius:50%; background:var(--exp3);"></span> <span>Expert 3: Dynamic Spawned</span></div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Manifold Canvas Simulation
+        const canvas = document.getElementById('hyperspaceCanvas');
+        const ctx = canvas.getContext('2d');
+        let width = canvas.width = canvas.offsetWidth;
+        let height = canvas.height = canvas.offsetHeight;
+
+        const nodes = [
+            { x: width * 0.20, y: height * 0.35, color: '#ef4444', label: 'E0 (Code)', r: 12 },
+            { x: width * 0.80, y: height * 0.35, color: '#10b981', label: 'E1 (Math)', r: 12 },
+            { x: width * 0.50, y: height * 0.75, color: '#8b5cf6', label: 'E2 (Wiki/JSON)', r: 14 },
+            { x: width * 0.35, y: height * 0.55, color: '#f59e0b', label: 'E3 (Dynamic)', r: 10 },
+        ];
+
+        let pulseAngle = 0;
+        function drawManifold() {
+            ctx.fillStyle = '#070b14';
+            ctx.fillRect(0, 0, width, height);
+
+            pulseAngle += 0.03;
+
+            // Toroidal Wave rings
+            ctx.strokeStyle = 'rgba(56, 189, 248, 0.08)';
+            ctx.lineWidth = 1;
+            for (let r = 20; r < Math.max(width, height); r += 35) {
+                ctx.beginPath();
+                ctx.arc(width / 2, height / 2, r + Math.sin(pulseAngle) * 5, 0, Math.PI * 2);
+                ctx.stroke();
+            }
+
+            // Global Bus lines
+            for (let i = 0; i < nodes.length; i++) {
+                for (let j = i + 1; j < nodes.length; j++) {
+                    ctx.beginPath();
+                    ctx.moveTo(nodes[i].x, nodes[i].y);
+                    ctx.lineTo(nodes[j].x, nodes[j].y);
+                    ctx.strokeStyle = 'rgba(129, 140, 248, 0.25)';
+                    ctx.lineWidth = 1.5;
+                    ctx.stroke();
+                }
+            }
+
+            // Expert Nodes
+            nodes.forEach(node => {
+                ctx.beginPath();
+                ctx.arc(node.x, node.y, node.r + Math.sin(pulseAngle * 2) * 2, 0, Math.PI * 2);
+                ctx.fillStyle = node.color;
+                ctx.shadowColor = node.color;
+                ctx.shadowBlur = 15;
+                ctx.fill();
+                ctx.shadowBlur = 0;
+
+                ctx.fillStyle = '#f8fafc';
+                ctx.font = '11px monospace';
+                ctx.fillText(node.label, node.x - 24, node.y - 18);
+            });
+
+            requestAnimationFrame(drawManifold);
+        }
+        drawManifold();
+
+        function setPreset(domainKey, promptText) {
+            document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+            event.target.classList.add('active');
+            document.getElementById('promptInput').value = promptText;
+            runGeneration();
+        }
+
+        async function runGeneration() {
+            const prompt = document.getElementById('promptInput').value;
+            const outputBox = document.getElementById('outputBox');
+            outputBox.innerHTML = '<span style="color: var(--accent);">Resonating in Hyperspace...</span>';
+
+            try {
+                const res = await fetch('/generate', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ prompt: prompt, max_new_tokens: 35, temperature: 0.75 })
+                });
+                const data = await res.json();
+                
+                outputBox.innerHTML = '';
+                data.tokens.forEach(tok => {
+                    const span = document.createElement('span');
+                    span.className = `token e${tok.expert}`;
+                    span.innerText = tok.char;
+                    span.title = `Generated by Expert ${tok.expert} (Confidence: ${tok.weight.toFixed(2)})`;
+                    outputBox.appendChild(span);
+                });
+
+                document.getElementById('sigmaVal').innerText = data.sigma.toFixed(4);
+                document.getElementById('tempVal').innerText = data.temp.toFixed(1);
+                document.getElementById('activeExpertsVal').innerText = `${data.active_experts} / 16`;
+            } catch (err) {
+                outputBox.innerHTML = `<span style="color:#f87171;">Error contacting generation endpoint: ${err}</span>`;
+            }
+        }
+    </script>
+</body>
+</html>
