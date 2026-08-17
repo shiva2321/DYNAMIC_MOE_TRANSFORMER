@@ -514,9 +514,9 @@ The single-variable ablations in §5.4 empirically decompose how the subsystems 
 
 ## 7. Limitations & Open Questions
 
-1. **Single-Seed Point Estimates**: The empirical benchmarks reported in this paper reflect single-seed training runs. While mathematical loss bounds and exact arithmetic have been verified, evaluating multi-seed standard deviations and confidence intervals is a required next step for high-stakes deployment.
+1. **Single-Seed Point Estimates**: The empirical benchmarks reported in this paper reflect single-seed training runs. While mathematical loss bounds, code wiring, and exact arithmetic have been verified, evaluating multi-seed standard deviations and confidence intervals is a required next step for high-stakes deployment.
 2. **Small-Scale Research Regime**: All experiments operate in a controlled small-scale research regime ($28.9\text{M}\text{--}128.9\text{M}$ parameters, $11.4\text{M}$ tokens). Extrapolating these findings to frontier-scale foundation models ($>70\text{B}$ parameters, $>10\text{T}$ tokens) remains an open empirical question requiring massive distributed compute.
-3. **Component-Level Ablation**: Future work will systematically disable individual components (e.g., evaluating `use_bus=False`, fixing expert count vs. dynamic spawning, and testing linear vs. phasor gates on identical dendritic experts) to decompose the individual variance explained by each subsystem.
+3. **Residual Subsystem Ablations**: While single-variable ablations isolated the independent contributions of the Global Workspace Bus and Autonomous Neurogenesis (§5.4), other sub-mechanisms—such as dynamic-$k$ routing versus fixed-$k$ and criticality-based temperature scaling—remain present across all Hyperspace variants and have not been isolated independently.
 4. **Long Sequence Horizons**: The current experiments evaluate sequence lengths of $S=256\text{--}576$ tokens. Future work will scale Universal Substrait to ultra-long contexts ($S \ge 32\text{k}$) utilizing the dynamic landmark attention mechanism.
 
 ---
