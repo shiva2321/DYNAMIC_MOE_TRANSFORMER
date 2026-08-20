@@ -35,21 +35,22 @@ Universal SubStrait:        Input x ───► [ Phasor Resonance WTA (C^2048)
 
 ---
 
-## Key Empirical Findings (44.24M Tokens Evaluated)
+## Key Empirical Findings (110.59M Tokens Evaluated across 5 Seeds)
 
-We evaluated Universal SubStrait across a **10-Domain Continual Learning Curriculum** spanning **44,236,800 tokens** across 4 multi-seed runs (holding compute strictly constant at $3,600\text{ steps} = 11.06\text{M tokens/run}$).
+We evaluated Universal SubStrait across a **10-Domain Continual Learning Curriculum** spanning **110,592,000 tokens** across 10 multi-seed runs (5 independent random seeds $\times$ 2 architectures, holding compute strictly constant at $3,600\text{ steps} = 11.06\text{M tokens/run}$).
 
 ![10-Domain Continual Learning Master Matrix](experiments/10domain_continual_learning_master_matrix.png)
 
-### 1. Robust Specialist Retention on Structurally Complex Domains
-On domains with rich, non-repeating data distributions ($>1.1\text{M}$ fresh tokens), autonomous neurogenesis provides a **statistically significant retention shield** against catastrophic forgetting after 8 intervening domain shifts:
-* **Systems Code (`github_code`)**: **$98.02\% \pm 0.64\%$** retained accuracy vs **$93.84\% \pm 0.26\%$** for static MoE (**$+4.18\%$** retention advantage, $t = 8.62, p < 0.01$).
-* **Classic Literature (`gutenberg_literature`)**: **$22.88\% \pm 0.37\%$** retained accuracy vs **$19.81\% \pm 0.38\%$** for static MoE (**$+3.08\%$** retention advantage, $t = 8.21, p < 0.01$).
+### 1. Robust Specialist Retention Replicated Across All 5 Seeds ($p < 0.01$)
+Under a strict pre-registered empirical protocol, autonomous neurogenesis demonstrated a **statistically significant retention shield** on complex, non-repeating data streams across all 5 independent seeds ($N=5$, Welch-Satterthwaite degrees of freedom):
+* **Systems Code (`github_code`)**: **$97.92\% \pm 0.67\%$** retained accuracy vs **$93.60\% \pm 1.61\%$** for static MoE (**$+4.32\%$** retention advantage, Welch $t = +5.53$, $df = 5.4$, **$p = 0.0021$**, positive across all 5/5 individual seeds).
+* **Classic Literature (`gutenberg_literature`)**: **$23.37\% \pm 0.55\%$** retained accuracy vs **$20.93\% \pm 1.09\%$** for static MoE (**$+2.44\%$** retention advantage, Welch $t = +4.47$, $df = 5.9$, **$p = 0.0044$**, positive across all 5/5 individual seeds).
+* **Encyclopedic Facts (`wikitext_facts`)**: **$19.28\% \pm 0.27\%$** vs **$18.66\% \pm 0.23\%$** (**$+0.62\%$** advantage, Welch $t = +3.91$, $df = 7.8$, **$p = 0.0047$**).
 
-### 2. Transparent Aggregate Statistical Significance ($p > 0.40$)
-Across all 10 domains, the mean Backward Transfer ($R_{\text{BWT}}$) difference between Dynamic Spawning ($+0.3118 \pm 0.0171\text{ nats}$) and Static MoE ($+0.2995 \pm 0.0132\text{ nats}$) is $+0.0123\text{ nats}$ ($t = 0.81, p \approx 0.45$). 
+### 2. Transparent Aggregate Statistical Significance ($p = 0.58$)
+Across all 10 domains, the mean Backward Transfer ($R_{\text{BWT}}$) difference between Dynamic Spawning ($+0.3051 \pm 0.0153\text{ nats}$) and Static MoE ($+0.3004 \pm 0.0095\text{ nats}$) is $+0.0046\text{ nats}$ (Welch $t = +0.58$, $df = 6.7$, **$p = 0.5825$**). 
 
-> **Scientific Attribution**: Neurogenesis is not an indiscriminate global win across all tasks; rather, it acts as a targeted structural shield that prevents destructive interference specifically when learning large, distinct, high-entropy representations.
+> **Scientific Attribution**: Dynamic neurogenesis is not an indiscriminate global win across all tasks; rather, it acts as a targeted structural shield that prevents destructive interference specifically when learning large, distinct, high-entropy representations.
 
 ### 3. Discovery: The Small-Corpus Repetition Confound
 Diagnostic probing revealed that training shards with $<1.1\text{M}$ tokens (`pubmed_biomedical`, `openweb_math`, `arxiv_physics`, `fineweb_edu`) caused routers to converge onto near-identical representations ($\text{Sim} = 0.91\text{--}0.98$) due to multi-pass looping over identical token sequences. On fresh corpora ($>1.1\text{M}$ tokens), genuine structural modularity emerged: code representations clustered together ($\text{Sim} \approx 0.81\text{--}0.90$), while code vs prose remained strictly orthogonal ($\text{Sim} \approx 0.20\text{--}0.26$).
@@ -145,23 +146,21 @@ Post-training frozen probing (evaluating 32,768 held-out tokens per domain acros
 
 ## 10-Domain Continual Learning Benchmark Results
 
-Below is the complete scorecard across all 4 multi-seed runs holding compute strictly constant ($3,600\text{ steps} = 11.06\text{M tokens/run}$, $44.24\text{M tokens total}$):
+Below is the complete scorecard across all 10 multi-seed runs holding compute strictly constant ($3,600\text{ steps} = 11.06\text{M tokens/run}$, $110.59\text{M tokens total}$, Seeds: 7, 42, 123, 999, 1337):
 
-| Domain Name | Corpus Volume Status | Budgeted Spawn (Mean $\pm$ SD) | Static MoE 16-Exp (Mean $\pm$ SD) | Retention Delta | Two-Sample $t$-statistic |
-| :--- | :---: | :---: | :---: | :---: | :---: |
-| **`fineweb_edu`** | Looped ($<1.1\text{M}$) | $13.56\% \pm 0.13\%$ | $13.56\% \pm 0.45\%$ | $+0.00\%$ | $t = 0.00$ |
-| **`github_code`** | **Fresh ($>1.1\text{M}$)** | **$98.02\% \pm 0.64\%$** | **$93.84\% \pm 0.26\%$** | **$+4.18\%$** | **$t = 8.62$ ($p < 0.01$)** |
-| **`openweb_math`** | Looped ($<1.1\text{M}$) | $14.42\% \pm 0.13\%$ | $13.37\% \pm 0.40\%$ | $+1.05\%$ | $t = 3.48$ |
-| **`pubmed_biomedical`** | Looped ($<1.1\text{M}$) | $29.15\% \pm 0.73\%$ | $29.49\% \pm 0.43\%$ | $-0.34\%$ | $t = -0.57$ (Noise) |
-| **`freelaw_legal`** | Fresh ($>1.1\text{M}$) | $98.47\% \pm 0.14\%$ | $98.00\% \pm 0.52\%$ | $+0.46\%$ | $t = 1.22$ |
-| **`arxiv_physics`** | Looped ($<1.1\text{M}$) | $18.29\% \pm 0.29\%$ | $17.57\% \pm 0.40\%$ | $+0.73\%$ | $t = 2.06$ |
-| **`financial_market`** | Fresh ($>1.1\text{M}$) | $98.26\% \pm 0.30\%$ | $97.87\% \pm 0.16\%$ | $+0.39\%$ | $t = 1.65$ |
-| **`gutenberg_literature`**| **Fresh ($>1.1\text{M}$)** | **$22.88\% \pm 0.37\%$** | **$19.81\% \pm 0.38\%$** | **$+3.08\%$** | **$t = 8.21$ ($p < 0.01$)** |
-| **`python_code`** | Fresh ($>1.1\text{M}$) | $44.65\% \pm 1.76\%$ | $45.18\% \pm 0.72\%$ | $-0.52\%$ | $t = -0.39$ (Noise) |
-| **`wikitext_facts`** | Fresh ($>1.1\text{M}$) | $19.53\% \pm 0.20\%$ | $18.72\% \pm 0.27\%$ | $+0.81\%$ | $t = 3.41$ |
-| **Mean $R_{\text{BWT}}$ (Retention)** | **Overall** | **$+0.3118 \pm 0.0171\text{ nats}$** | **$+0.2995 \pm 0.0132\text{ nats}$** | **$+0.0123\text{ nats}$** | **$t = 0.81$ ($p > 0.40$)** |
-| Mean Run Duration | Per Run | 76.93 mins | 54.58 mins | $+22.35$m | --- |
-| Mean Global Speed | Tok/sec | 2,398.0 tok/s | 3,377.7 tok/s | $-979.7$ tok/s | --- |
+| Domain Name | Corpus Volume Status | Budgeted Spawn ($N=5$, Mean $\pm$ SD) | Static MoE 16-Exp ($N=5$, Mean $\pm$ SD) | Retention Delta | Welch $t$ ($df$) | Two-Tailed $p$-value | Pre-Reg Replicated? |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| **`fineweb_edu`** | Looped ($<1.1\text{M}$) | $13.81\% \pm 0.33\%$ | $13.02\% \pm 0.60\%$ | $+0.79\%$ | $t = +2.59$ ($df=6.2$) | $p = 0.0400$ | Mixed (4/5 +) |
+| **`github_code`** | **Fresh ($>1.1\text{M}$)** | **$97.92\% \pm 0.67\%$** | **$93.60\% \pm 1.61\%$** | **$+4.32\%$** | **$t = +5.53$ ($df=5.4$)** | **$p = 0.0021$** | **YES (5/5 +)** [***] |
+| **`openweb_math`** | Looped ($<1.1\text{M}$) | $14.47\% \pm 0.45\%$ | $13.63\% \pm 0.52\%$ | $+0.84\%$ | $t = +2.71$ ($df=7.8$) | $p = 0.0270$ | YES (5/5 +) |
+| **`pubmed_biomedical`** | Looped ($<1.1\text{M}$) | $29.58\% \pm 0.69\%$ | $29.45\% \pm 0.48\%$ | $+0.13\%$ | $t = +0.35$ ($df=7.1$) | $p = 0.7353$ | Mixed (3/5 +) (Noise) |
+| **`freelaw_legal`** | Fresh ($>1.1\text{M}$) | $98.46\% \pm 0.16\%$ | $98.40\% \pm 0.52\%$ | $+0.06\%$ | $t = +0.24$ ($df=4.7$) | $p = 0.8194$ | Mixed (2/5 +) (Ceiling) |
+| **`arxiv_physics`** | Looped ($<1.1\text{M}$) | $18.01\% \pm 0.61\%$ | $17.45\% \pm 0.48\%$ | $+0.56\%$ | $t = +1.61$ ($df=7.6$) | $p = 0.1488$ | Mixed (4/5 +) |
+| **`financial_market`** | Fresh ($>1.1\text{M}$) | $98.54\% \pm 0.37\%$ | $98.14\% \pm 0.45\%$ | $+0.40\%$ | $t = +1.55$ ($df=7.7$) | $p = 0.1613$ | Mixed (4/5 +) (Ceiling) |
+| **`gutenberg_literature`**| **Fresh ($>1.1\text{M}$)** | **$23.37\% \pm 0.55\%$** | **$20.93\% \pm 1.09\%$** | **$+2.44\%$** | **$t = +4.47$ ($df=5.9$)** | **$p = 0.0044$** | **YES (5/5 +)** [***] |
+| **`python_code`** | Fresh ($>1.1\text{M}$) | $45.59\% \pm 1.69\%$ | $45.60\% \pm 0.95\%$ | $-0.02\%$ | $t = -0.02$ ($df=6.3$) | $p = 0.9849$ | Mixed (4/5 +) (Matched) |
+| **`wikitext_facts`** | Fresh ($>1.1\text{M}$) | $19.28\% \pm 0.27\%$ | $18.66\% \pm 0.23\%$ | $+0.62\%$ | $t = +3.91$ ($df=7.8$) | $p = 0.0047$ | YES (5/5 +) [***] |
+| **Mean $R_{\text{BWT}}$ (Retention)** | **Overall** | **$+0.3051 \pm 0.0153\text{ nats}$** | **$+0.3004 \pm 0.0095\text{ nats}$** | **$+0.0046\text{ nats}$** | **$t = +0.58$ ($df=6.7$)** | **$p = 0.5825$** | --- (Null) |
 
 ---
 
@@ -185,8 +184,10 @@ universal_substrait/
 ├── exp_10domain_continual_learning.py       # Master 10-Domain Continual Learning Training Runner
 │
 ├── scratch/
+│   ├── preregistered_5seed_protocol.md      # Formal Pre-Registered Replication Protocol
+│   ├── run_5seed_campaign.py                # Automated 5-seed queue runner
+│   ├── compile_10domain_final_report.py     # Multi-seed Welch's t-test aggregator ($df$ & $p$-values)
 │   ├── analyze_10domain_results.py          # Post-training routing diagnostic probe & Gini calculator
-│   ├── compile_10domain_final_report.py     # Multi-seed aggregate statistical aggregator ($t$-tests)
 │   ├── generate_publication_figures.py      # High-DPI publication figure generator
 │   └── verify_tokensorted_equivalence.py    # Bitwise gradient equivalence verification suite
 │
@@ -221,28 +222,13 @@ pip install -r requirements.txt
 python -u data/setup_10domain_corpus.py
 ```
 
-### 3. Run the Multi-Seed Benchmark Suite
+### 3. Run the Full 5-Seed Benchmark Campaign
 ```bash
-# 1. Hyperspace Budgeted Spawn (Seed 1337)
-python -u exp_10domain_continual_learning.py --model hyperspace_budgeted_spawn --steps 360 --ratio 0.20 --seed 1337
-
-# 2. Hyperspace Budgeted Spawn (Seed 42)
-python -u exp_10domain_continual_learning.py --model hyperspace_budgeted_spawn --steps 360 --ratio 0.20 --seed 42
-
-# 3. Static Softmax MoE Baseline (Seed 1337)
-python -u exp_10domain_continual_learning.py --model static_moe --steps 360 --ratio 0.20 --seed 1337
-
-# 4. Static Softmax MoE Baseline (Seed 42)
-python -u exp_10domain_continual_learning.py --model static_moe --steps 360 --ratio 0.20 --seed 42
+python -u scratch/run_5seed_campaign.py
 ```
 
-### 4. Run Probes & Compile Figures
+### 4. Compile Figures & Statistical Reports
 ```bash
-# Run frozen diagnostic probe on checkpoints
-python -u scratch/analyze_10domain_results.py --ckpt experiments/checkpoint_10domain_hyperspace_budgeted_spawn.pt --out 10domain_spawn_seed1337
-python -u scratch/analyze_10domain_results.py --ckpt experiments/checkpoint_10domain_hyperspace_budgeted_spawn_seed_42.pt --out 10domain_spawn_seed42
-
-# Generate summary statistics and plots
 python -u scratch/compile_10domain_final_report.py
 python -u scratch/generate_publication_figures.py
 ```

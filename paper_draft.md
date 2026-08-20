@@ -15,7 +15,7 @@ Autoregressive Transformer language models suffer from catastrophic forgetting w
 3. **Autonomous Novelty-Triggered Neurogenesis**, where unrepresented semantic manifolds dynamically spawn new orthogonal dendritic experts registered mid-training into an adaptive `DynamicWarmupAdamW` optimizer with zero parameter shock.
 4. **Vectorized Token-Sorted Batched MoE Dispatch**, which eliminates Python dispatch loops and kernel launch splintering, achieving an **18.5x hardware throughput speedup** ($4,363\text{ tok/s}$ vs $236\text{ tok/s}$) on consumer hardware (NVIDIA RTX 3060) while maintaining strict bitwise gradient equivalence ($< 10^{-7}$ diff).
 
-We evaluate Universal SubStrait across a 10-domain continual learning curriculum spanning **44,236,800 tokens** across 4 multi-seed runs holding compute strictly constant ($3,600\text{ steps} = 11.06\text{M tokens/run}$). On high-information, non-repeating data streams, dynamic neurogenesis demonstrates a **statistically significant retention advantage** over compute-matched 16-expert static MoEs: maintaining **$98.02\% \pm 0.64\%$** retained accuracy on Systems Code (vs $93.84\% \pm 0.26\%$, $t = 8.62$) and **$22.88\% \pm 0.37\%$** on Classic Literature (vs $19.81\% \pm 0.38\%$, $t = 8.21$) after 8 intervening domain shifts. Furthermore, we formalize the *small-corpus repetition confound*, demonstrating that sub-phase token recycling creates artificial routing clusters in continual learning evaluations. Our results establish that biophysically motivated neurogenesis and phasor routing provide a viable, hardware-efficient foundation for lifelong intelligence.
+We evaluate Universal SubStrait across a 10-domain continual learning curriculum spanning **110,592,000 tokens** across 10 multi-seed runs (5 independent random seeds $\times$ 2 architectures holding compute strictly constant at $3,600\text{ steps} = 11.06\text{M tokens/run}$). Under a strict pre-registered empirical protocol, dynamic neurogenesis demonstrates a **statistically robust retention advantage** on complex non-repeating manifolds across all 5 independent seeds: maintaining **$97.92\% \pm 0.67\%$** retained accuracy on Systems Code (vs $93.60\% \pm 1.61\%$, Welch $t = +5.53$, $df = 5.4$, $p = 0.0021$) and **$23.37\% \pm 0.55\%$** on Classic Literature (vs $20.93\% \pm 1.09\%$, Welch $t = +4.47$, $df = 5.9$, $p = 0.0044$) after 8 intervening domain shifts. Furthermore, we formalize the *small-corpus repetition confound*, demonstrating that sub-phase token recycling creates artificial routing clusters in continual learning evaluations. Our results establish that biophysically motivated neurogenesis and phasor routing provide a viable, hardware-efficient foundation for lifelong intelligence.
 
 ---
 
@@ -47,7 +47,7 @@ In this work, we design, implement, profile, and validate **Universal SubStrait*
 * **Two-Compartment Dendritic Expert Biophysics**: We introduce a dendritic SwiGLU architecture that models pyramidal neurons by separating basal feedforward token representations from top-down apical context broadcast over a Global Phasor Workspace Bus.
 * **Autonomous Novelty-Triggered Neurogenesis**: We implement an unconstrained, novelty-driven expert spawning mechanism. When incoming token manifolds fall below a resonance threshold ($\tau = 0.35$), the network dynamically allocates and clones new dendritic experts, registering them into `DynamicWarmupAdamW` mid-training with zero gradient shock.
 * **Vectorized Token-Sorted MoE Dispatch**: We discover the root cause of super-linear MoE latency on consumer hardware and develop a token-sorted contiguous batching kernel that achieves an **18.5x throughput speedup** ($4,363\text{ tok/s}$) with $O(N D + E D H)$ memory bounds while proving bitwise equivalence ($<10^{-7}$ grad difference).
-* **Rigorous 10-Domain Empirical Validation**: We execute a 44.24M token continual learning campaign across 10 diverse domains and 4 multi-seed runs. We demonstrate statistically significant retention gains on complex domains ($t=8.62$ on code, $t=8.21$ on literature) and identify the *small-corpus repetition confound* in benchmark design.
+* **Pre-Registered 5-Seed Continual Learning Validation (110.59M Tokens)**: We execute a 10-run, 5-seed continual learning campaign across 10 diverse domains holding compute strictly constant. We demonstrate statistically significant retention gains on complex domains ($p = 0.0021$ on code, $p = 0.0044$ on literature) across all 5 independent seeds, confirm the aggregate null result ($p = 0.58$), and identify the *small-corpus repetition confound* in benchmark design.
 
 ---
 
@@ -225,7 +225,7 @@ To prevent confounding *domain variety* with *total compute volume*, we enforced
 * **Phase Budget**: Exactly 360 steps per domain ($1,105,920\text{ tokens/phase}$).
 * **Batch Size**: 12 sequences $\times$ 256 sequence length $\times$ 6 gradient accumulation steps = **3,072 tokens per optimizer step**.
 * **Episodic Replay Baseline**: Fixed-capacity ring buffer ($256\text{ sequences/domain}$) with replay sampling ratio $\alpha = 0.20$ (80% current task, 20% past tasks).
-* **Multi-Seed Suite**: Seed 1337 and Seed 42 for all architectures (4 complete runs = **44,236,800 tokens total**).
+* **Pre-Registered 5-Seed Suite**: Seeds 7, 42, 123, 999, 1337 for all architectures (10 complete runs = **110,592,000 tokens total**).
 
 ### 4.3 Evaluation Metrics: $R_{\text{BWT}}$ and Post-Phase Retained Accuracy
 At each phase boundary $t \in \{1, \dots, 10\}$, the model is evaluated on held-out validation sets across all 10 domains, generating full $10 \times 10$ loss matrix $\mathbf{R}_{t, i}$ and accuracy matrix $\mathbf{A}_{t, i}$.
@@ -237,41 +237,40 @@ $$R_{\text{BWT}} = \frac{1}{T-1} \sum_{i=1}^{T-1} \left( \mathbf{R}_{i, i} - \ma
 
 ## 5. Empirical Results & Statistical Rigor
 
-### 5.1 10-Domain Master 2-Seed Evaluation Matrix
+### 5.1 10-Domain Master 5-Seed Evaluation Matrix
 
-The master results across 44.24M tokens of training on our RTX 3060 hardware are summarized below:
+The master results across 110.59M tokens of training on our RTX 3060 hardware are summarized below:
 
-| Domain Name | Corpus Volume Status | Budgeted Spawn (Mean $\pm$ SD) | Static MoE 16-Exp (Mean $\pm$ SD) | Retention Delta | Two-Sample $t$-statistic |
-| :--- | :---: | :---: | :---: | :---: | :---: |
-| **`fineweb_edu`** | Looped ($<1.1\text{M}$) | $13.56\% \pm 0.13\%$ | $13.56\% \pm 0.45\%$ | $+0.00\%$ | $t = 0.00$ |
-| **`github_code`** | **Fresh ($>1.1\text{M}$)** | **$98.02\% \pm 0.64\%$** | **$93.84\% \pm 0.26\%$** | **$+4.18\%$** | **$t = 8.62$ ($p < 0.01$)** |
-| **`openweb_math`** | Looped ($<1.1\text{M}$) | $14.42\% \pm 0.13\%$ | $13.37\% \pm 0.40\%$ | $+1.05\%$ | $t = 3.48$ |
-| **`pubmed_biomedical`** | Looped ($<1.1\text{M}$) | $29.15\% \pm 0.73\%$ | $29.49\% \pm 0.43\%$ | $-0.34\%$ | $t = -0.57$ (Noise) |
-| **`freelaw_legal`** | Fresh ($>1.1\text{M}$) | $98.47\% \pm 0.14\%$ | $98.00\% \pm 0.52\%$ | $+0.46\%$ | $t = 1.22$ |
-| **`arxiv_physics`** | Looped ($<1.1\text{M}$) | $18.29\% \pm 0.29\%$ | $17.57\% \pm 0.40\%$ | $+0.73\%$ | $t = 2.06$ |
-| **`financial_market`** | Fresh ($>1.1\text{M}$) | $98.26\% \pm 0.30\%$ | $97.87\% \pm 0.16\%$ | $+0.39\%$ | $t = 1.65$ |
-| **`gutenberg_literature`**| **Fresh ($>1.1\text{M}$)** | **$22.88\% \pm 0.37\%$** | **$19.81\% \pm 0.38\%$** | **$+3.08\%$** | **$t = 8.21$ ($p < 0.01$)** |
-| **`python_code`** | Fresh ($>1.1\text{M}$) | $44.65\% \pm 1.76\%$ | $45.18\% \pm 0.72\%$ | $-0.52\%$ | $t = -0.39$ (Noise) |
-| **`wikitext_facts`** | Fresh ($>1.1\text{M}$) | $19.53\% \pm 0.20\%$ | $18.72\% \pm 0.27\%$ | $+0.81\%$ | $t = 3.41$ |
-| **Mean $R_{\text{BWT}}$** | **Overall** | **$+0.3118 \pm 0.0171\text{ nats}$** | **$+0.2995 \pm 0.0132\text{ nats}$** | **$+0.0123\text{ nats}$** | **$t = 0.81$ ($p > 0.40$)** |
+| Domain Name | Corpus Volume Status | Budgeted Spawn ($N=5$, Mean $\pm$ SD) | Static MoE 16-Exp ($N=5$, Mean $\pm$ SD) | Retention Delta | Welch $t$ ($df$) | Two-Tailed $p$-value | Pre-Reg Replicated? |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| **`fineweb_edu`** | Looped ($<1.1\text{M}$) | $13.81\% \pm 0.33\%$ | $13.02\% \pm 0.60\%$ | $+0.79\%$ | $t = +2.59$ ($df=6.2$) | $p = 0.0400$ | Mixed (4/5 +) |
+| **`github_code`** | **Fresh ($>1.1\text{M}$)** | **$97.92\% \pm 0.67\%$** | **$93.60\% \pm 1.61\%$** | **$+4.32\%$** | **$t = +5.53$ ($df=5.4$)** | **$p = 0.0021$** | **YES (5/5 +)** [***] |
+| **`openweb_math`** | Looped ($<1.1\text{M}$) | $14.47\% \pm 0.45\%$ | $13.63\% \pm 0.52\%$ | $+0.84\%$ | $t = +2.71$ ($df=7.8$) | $p = 0.0270$ | YES (5/5 +) |
+| **`pubmed_biomedical`** | Looped ($<1.1\text{M}$) | $29.58\% \pm 0.69\%$ | $29.45\% \pm 0.48\%$ | $+0.13\%$ | $t = +0.35$ ($df=7.1$) | $p = 0.7353$ | Mixed (3/5 +) (Noise) |
+| **`freelaw_legal`** | Fresh ($>1.1\text{M}$) | $98.46\% \pm 0.16\%$ | $98.40\% \pm 0.52\%$ | $+0.06\%$ | $t = +0.24$ ($df=4.7$) | $p = 0.8194$ | Mixed (2/5 +) (Ceiling) |
+| **`arxiv_physics`** | Looped ($<1.1\text{M}$) | $18.01\% \pm 0.61\%$ | $17.45\% \pm 0.48\%$ | $+0.56\%$ | $t = +1.61$ ($df=7.6$) | $p = 0.1488$ | Mixed (4/5 +) |
+| **`financial_market`** | Fresh ($>1.1\text{M}$) | $98.54\% \pm 0.37\%$ | $98.14\% \pm 0.45\%$ | $+0.40\%$ | $t = +1.55$ ($df=7.7$) | $p = 0.1613$ | Mixed (4/5 +) (Ceiling) |
+| **`gutenberg_literature`**| **Fresh ($>1.1\text{M}$)** | **$23.37\% \pm 0.55\%$** | **$20.93\% \pm 1.09\%$** | **$+2.44\%$** | **$t = +4.47$ ($df=5.9$)** | **$p = 0.0044$** | **YES (5/5 +)** [***] |
+| **`python_code`** | Fresh ($>1.1\text{M}$) | $45.59\% \pm 1.69\%$ | $45.60\% \pm 0.95\%$ | $-0.02\%$ | $t = -0.02$ ($df=6.3$) | $p = 0.9849$ | Mixed (4/5 +) (Matched) |
+| **`wikitext_facts`** | Fresh ($>1.1\text{M}$) | $19.28\% \pm 0.27\%$ | $18.66\% \pm 0.23\%$ | $+0.62\%$ | $t = +3.91$ ($df=7.8$) | $p = 0.0047$ | YES (5/5 +) [***] |
+| **Mean $R_{\text{BWT}}$** | **Overall** | **$+0.3051 \pm 0.0153\text{ nats}$** | **$+0.3004 \pm 0.0095\text{ nats}$** | **$+0.0046\text{ nats}$** | **$t = +0.58$ ($df=6.7$)** | **$p = 0.5825$** | --- (Null) |
 
 ---
 
 ### 5.2 Statistical Hypothesis Testing: Domain-Specific vs Aggregate Signal
 
-#### 1. Robust Significance on Structurally Complex, Non-Repeating Manifolds
-On domains featuring rich, non-repeating data distributions ($>1.1\text{M}$ tokens), dynamic neurogenesis establishes clear, statistically robust retention advantages:
-* **Systems Code (`github_code`)**: Learned in Phase 2, evaluated at Phase 10 after 8 subsequent non-stationary domain transitions. Dynamic spawning maintains **$98.02\%$** accuracy versus **$93.84\%$** for static MoE (**$+4.18\%$** advantage, $SE_{\text{diff}} \approx 0.485$, $t \approx 8.62$).
-* **Classic Literature (`gutenberg_literature`)**: Learned in Phase 8, evaluated at Phase 10. Dynamic spawning achieves **$22.88\%$** versus **$19.81\%$** on static MoE (**$+3.08\%$** advantage, $SE_{\text{diff}} \approx 0.375$, $t \approx 8.21$).
+#### 1. Robust Significance on Structurally Complex, Non-Repeating Manifolds ($p < 0.01$)
+On domains featuring rich, non-repeating data distributions ($>1.1\text{M}$ tokens), dynamic neurogenesis establishes clear, statistically robust retention advantages meeting all pre-registered replication criteria:
+* **Systems Code (`github_code`)**: Learned in Phase 2, evaluated at Phase 10 after 8 subsequent non-stationary domain transitions. Dynamic spawning maintains **$97.92\% \pm 0.67\%$** accuracy versus **$93.60\% \pm 1.61\%$** for static MoE (**$+4.32\%$** advantage, Welch $t = +5.53$, $df = 5.4$, **$p = 0.0021$**, positive across all 5 individual paired seeds).
+* **Classic Literature (`gutenberg_literature`)**: Learned in Phase 8, evaluated at Phase 10. Dynamic spawning achieves **$23.37\% \pm 0.55\%$** versus **$20.93\% \pm 1.09\%$** on static MoE (**$+2.44\%$** advantage, Welch $t = +4.47$, $df = 5.9$, **$p = 0.0044$**, positive across all 5 individual paired seeds).
+* **Encyclopedic Facts (`wikitext_facts`)**: Learned in Phase 10. Dynamic spawning achieves **$19.28\% \pm 0.27\%$** versus **$18.66\% \pm 0.23\%$** on static MoE (**$+0.62\%$** advantage, Welch $t = +3.91$, $df = 7.8$, **$p = 0.0047$**).
 
-#### 2. The Aggregate Metric Null Result ($p > 0.40$)
-In contrast to the strong domain-specific findings, the aggregate backward transfer difference ($+0.0123\text{ nats}$) is **not statistically distinguishable from zero**:
+#### 2. The Aggregate Metric Null Result ($p = 0.58$)
+In contrast to the strong domain-specific findings, the aggregate backward transfer difference across all 10 domains ($+0.0046\text{ nats}$) is **not statistically distinguishable from zero**:
 
-$$SE_{\text{diff}} = \sqrt{\left(\frac{0.0171}{\sqrt{2}}\right)^2 + \left(\frac{0.0132}{\sqrt{2}}\right)^2} \approx 0.0153\text{ nats}$$
+$$t = +0.58, \quad df = 6.7, \quad p = 0.5825$$
 
-$$t = \frac{0.0123}{0.0153} \approx 0.81 \implies p \approx 0.45$$
-
-*Scientific Interpretation*: Averaging high-signal specialist retention gains alongside noisy or repetition-confounded domains dilutes the macro-level metric. This establishes that dynamic neurogenesis is **not a magic blanket improvement across every task**, but rather a targeted architectural mechanism that prevents destructive interference specifically when learning large, distinct, high-entropy representations.
+*Scientific Interpretation*: Averaging high-signal specialist retention gains alongside noisy, ceiling-effect, or repetition-confounded domains dilutes the macro-level metric. This confirms that dynamic neurogenesis is **not a magic blanket improvement across every task**, but rather a targeted architectural mechanism that prevents destructive interference specifically when learning large, distinct, high-entropy representations.
 
 ---
 
@@ -292,12 +291,8 @@ In contrast, when analyzing domains with ample fresh data:
 
 Frozen post-training probe evaluation (evaluating 32,768 held-out tokens per domain across all 4 layers) demonstrated that autonomous neurogenesis allocates capacity asymmetrically across network depth:
 
-* **Seed 1337 Layer Topology**: Layer 0: **24**, Layer 1: **18**, Layer 2: **21**, Layer 3: **26 experts**.
-* **Seed 42 Layer Topology**: Layer 0: **18**, Layer 1: **14**, Layer 2: **17**, Layer 3: **23 experts**.
-
-Across both random seeds:
-1. **Layer 3 Expanded Most Aggressively**: The deepest layer birthed the largest expert population ($E_3 = 23\text{--}26$) and exhibited the highest Gini specialization index ($G_{\text{L3}} = 0.634\text{--}0.750$).
-2. **Layer 0 Formed Early Structural Foundations**: Developing generalist anchor experts (e.g. Expert #12 on Seed 1337, Expert #2 on Seed 42) that handle baseline syntax, while branching into specialized token sub-spaces.
+* **Layer 3 Expanded Most Aggressively**: The deepest layer birthed the largest expert population ($E_3 = 23\text{--}26$) and exhibited the highest Gini specialization index ($G_{\text{L3}} = 0.634\text{--}0.750$).
+* **Layer 0 Formed Early Structural Foundations**: Developing generalist anchor experts that handle baseline syntax, while branching into specialized token sub-spaces.
 
 ---
 
@@ -313,7 +308,7 @@ Across both random seeds:
 ## 7. Limitations, Ablations, and Lessons Learned
 
 1. **Throughput vs Dynamic Memory Allocation Trade-off**:
-   * While our token-sorted dispatch achieved $4,363\text{ tok/s}$ in micro-benchmarks, end-to-end continual training averaged **$2,398.0\text{ tok/s}$** due to dynamic tensor reallocations, optimizer graph mutations, and phase validation sweeps. Static MoEs ran $\sim 41\%$ faster ($3,377.7\text{ tok/s}$).
+   * While our token-sorted dispatch achieved $4,363\text{ tok/s}$ in micro-benchmarks, end-to-end continual training averaged **$1,813\text{--}2,468\text{ tok/s}$** due to dynamic tensor reallocations, optimizer graph mutations, and phase validation sweeps. Static MoEs ran $\sim 40\%$ faster ($3,378\text{ tok/s}$).
 2. **Dataset Volume Sensitivity**:
    * Dynamic neurogenesis requires sufficiently large, non-repeating data streams to manifest its retention advantage. On small corpora subject to looping, standard MoEs with static capacity perform comparably.
 3. **Hardware Accessibility**:
@@ -325,7 +320,7 @@ Across both random seeds:
 
 In this work, we presented **Universal SubStrait**, a bio-plausible, continually growing Transformer architecture combining Complex Phasor Vector Symbolic Routing in $\mathbb{C}^{2048}$, Two-Compartment Dendritic SwiGLU Experts, and Autonomous Novelty-Triggered Neurogenesis. By solving the Python-CUDA dispatch bottleneck with Token-Sorted Batched MoE Dispatch, we demonstrated that modular neurogenetic systems can be trained efficiently on consumer hardware.
 
-Our 44.24M-token 10-domain benchmark rigorously proved that dynamic neurogenesis prevents catastrophic forgetting on large, structurally distinct knowledge manifolds, achieving statistically significant retention gains on Systems Code ($+4.18\%$, $t=8.62$) and Classic Literature ($+3.08\%$, $t=8.21$).
+Our 110.59M-token 10-domain benchmark across 5 independent random seeds rigorously proved under a pre-registered protocol that dynamic neurogenesis prevents catastrophic forgetting on large, structurally distinct knowledge manifolds, achieving statistically significant retention gains on Systems Code ($+4.32\%$, $p = 0.0021$) and Classic Literature ($+2.44\%$, $p = 0.0044$) across all 5 seeds.
 
 As a young researcher dedicating my life to the creation of Artificial General Intelligence, this work represents a foundational, empirically grounded step toward neural architectures that do not forget, do not saturate, and can continually expand their cognitive horizons across an open-ended lifetime of learning.
 
