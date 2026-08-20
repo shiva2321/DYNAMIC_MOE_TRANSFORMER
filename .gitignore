@@ -11,6 +11,8 @@ __pycache__/
 *.bin
 *.mmap
 *.parquet
+*.safetensors
+exported_model/
 experiments/*.pt
 experiments/checkpoints/*.pt
 data/**/*.bin
