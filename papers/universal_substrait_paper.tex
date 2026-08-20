@@ -1,135 +1,452 @@
-\documentclass{article}
+\documentclass[11pt,letterpaper]{article}
+
 \usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
 \usepackage{amsmath,amssymb,amsfonts,amsthm}
-\usepackage{booktabs}
 \usepackage{graphicx}
+\usepackage{booktabs}
 \usepackage{hyperref}
 \usepackage{microtype}
 \usepackage{geometry}
+\usepackage{enumitem}
 \geometry{margin=1in}
+\hypersetup{colorlinks=true, linkcolor=blue!50!black, citecolor=blue!50!black, urlcolor=blue!50!black}
 
 \newtheorem{theorem}{Theorem}
 
-\title{\textbf{Universal Substrait: Mitigating Catastrophic Forgetting via Complex Phasor Hyperspace Gating, Dendritic Experts, and Sparse Exemplar Rehearsal}}
-\author{\textbf{Universal Substrait Research Team} \\ Technical Report \& Comprehensive Empirical Study}
-\date{August 2026}
+\title{\textbf{Universal Substrait: Phasor-Routed, Self-Expanding Experts for Continual Language Learning}}
+\author{Shivam Mahendrakumar Prajapati \\ {\small (research handle: \textit{Asta})} \\[2pt] \small B.Sc., University of Prince Edward Island, Canada \\ \small Independent research --- single author, single GPU (RTX 3060, 12GB)}
+\date{Draft v1 --- August 2026}
 
 \begin{document}
-
 \maketitle
 
-\begin{quote}
-\small
-\textbf{Methodological Scope \& Reproducibility Note}: All experiments reported in this paper represent single-seed empirical evaluations on a controlled small-scale research testbed ($28.9\text{M}\text{--}128.9\text{M}$ parameters, $1.2\text{k}\text{--}3.0\text{k}$ training steps, $11.4\text{M}$ multi-domain tokens). All cross-entropy evaluations are mathematically bounded ($0 \le \mathcal{L} \le \ln(50304) \approx 10.826$). All comparative claims reflect \textbf{system-level comparisons} between cohesive architectures under matched capacity and token budgets.
-\end{quote}
-
 \begin{abstract}
-Autoregressive transformer language models suffer from severe catastrophic forgetting when trained sequentially on non-stationary, multi-domain data distributions. While sparse Mixture-of-Experts (MoE) architectures provide parameter-efficient capacity scaling, standard linear softmax gating mechanisms suffer from representational drift and expert cannibalization under sequential task shifts. In this work, we present \textbf{Universal Substrait}, a neuro-symbolically inspired language model architecture that integrates: (1) Complex Phasor Vector Symbolic Architecture ($\mathbb{C}^{D}$) for holographic coordinate addressing; (2) Two-Compartment Dendritic Experts with non-linear NMDA coincidence detection ($h_{\text{soma}} = h_{\text{basal}} + \alpha h_{\text{apical}} + \beta (h_{\text{basal}} \odot h_{\text{apical}})$); (3) a Global Workspace Bus for asynchronous inter-expert context broadcasting; (4) Autonomous Neurogenesis (Clonal Mitosis) via real-time phasor resonance entropy tracking; and (5) Dynamic Sparse Self-Attention combining foveal sliding windows, landmark tokens, and attention sinks. Through rigorous mathematical auditing and strictly capacity-matched benchmarking against monolithic Dense Transformers and Static Softmax MoE baselines on an 11.4-million-token multi-domain corpus (\textit{FineWeb-Edu}, \textit{Python Code Instructions}, \textit{WikiText-103}, and \textit{TinyStories}), we establish three primary empirical findings: (1) \textbf{Matched-Budget Joint Representation}: Under identical 1,500-step joint pretraining budgets (4.6M tokens), the Universal Substrait system outperforms matched Dense and Static MoE baselines across all four domains (e.g., Python cross-entropy loss of \textbf{$2.790\text{ nats}$} / Top-1 accuracy of \textbf{$55.9\%$}, vs. $2.966\text{ nats}$ / $48.7\%$ for Static MoE and $3.959\text{ nats}$ / $40.0\%$ for Dense). (2) \textbf{The Necessity of Exemplar Replay}: Dynamic neurogenesis alone does not prevent catastrophic forgetting under strict non-interleaved sequential domain streams ($R_{\text{BWT}} = +1.9934\text{ nats}$, with Python accuracy collapsing from $44.64\% \to 7.81\%$), confirming that shared transformer trunks drift without rehearsal. Bolting a $20\%$ sparse exemplar buffer ($M=256$) onto the architecture reduces forgetting by \textbf{$99.3\%$} ($R_{\text{BWT}} = +0.0131\text{ nats}$), preserving Python accuracy at $44.36\%$ and unlocking positive backward transfer on FineWeb ($\Delta = -0.1804\text{ nats}$). (3) \textbf{Capacity-Matched Attribution \& Component Decomposition}: Under identical $20\%$ exemplar replay and strictly matched parameter budgets ($\sim 128\text{M}$ parameters), scaling a Static Softmax MoE from 16 to 30 experts ($78.5\text{M} \to 128.1\text{M}$ params) only improves backward transfer drift by a negligible $0.038\text{ nats}$ ($R_{\text{BWT}} = +0.3605\text{ nats}$). In contrast, the full Universal Substrait system achieves \textbf{$27.5\times$ lower backward loss drift ($R_{\text{BWT}} = +0.0131\text{ nats}$)}. Single-variable component ablations reveal that while disabling the Global Workspace Bus increases drift to $+0.2047\text{ nats}$ and disabling dynamic neurogenesis increases drift to $+0.2999\text{ nats}$, the multiplicative synergy of phasor routing, apical context broadcasting, and autonomous neurogenesis over an exemplar-stabilized trunk is what delivers near-zero forgetting.
+\noindent
+I built a language model where the mixture-of-experts router doesn't learn a softmax gate --- it compares complex unit-phasors in a 2048-dimensional holographic space, and when nothing resonates with what it already knows, it grows a new expert on the spot. The idea came from trying to take two things seriously at once: that biological cortex recruits new tissue for new skills without erasing old ones, and that vector-symbolic addressing gives a mathematically well-behaved way to decide ``have I seen anything like this before'' almost for free. This paper is the record of testing that idea properly, at small scale, on one GPU, over several months.
+
+The short version: half of it is a real, reproducible win, and half of it is a real but narrower effect I can't yet claim generalizes. A small, fixed-size ``core'' of this architecture --- two experts, a shared context channel between them, and a 20\% exemplar-replay buffer --- cuts catastrophic forgetting by more than 99\% relative to no mitigation, and beats a matched dense transformer and a parameter-matched static mixture-of-experts by a wide, repeatable margin, at every scale I tested. The headline mechanism --- experts that spawn themselves at runtime --- does \emph{not} show a general advantage once tested properly, with multiple seeds, at matched compute, across ten genuinely different real-world domains: the aggregate gap ($+0.312$ vs.\ $+0.300$ nats backward transfer) is statistically indistinguishable from zero ($t \approx 0.81$). It \emph{does} show a large, individually significant advantage on exactly two of those ten domains --- source code and literary prose, the two with the most training data and the most distinct writing style ($t \approx 8.6$ and $t \approx 8.2$) --- which tells me the mechanism is real but conditional on having enough data to differentiate on, not a free lunch.
+
+A good part of this paper is about how I found that out, because I did not find it out on the first try. Fourteen separate times over the course of this project, a result that looked like a win turned out to be a bug, a confound, or a single lucky seed --- including an optimizer silently never training the experts it created, and a metric with an inverted sign that would have shipped as ``positive transfer'' on a result that was actually forgetting. I treat that process as a real contribution in its own right, not a methods appendix, and most of it is written down in Section~\ref{sec:audit}.
 \end{abstract}
 
 \section{Introduction}
-The fundamental limitation of deep connectionist neural networks trained via gradient descent is the stability-plasticity dilemma. When exposed to a sequential stream of distinct data distributions $\mathcal{D}_1, \mathcal{D}_2, \dots, \mathcal{D}_K$, gradient updates computed on current task $\mathcal{D}_t$ inevitably overwrite parameter subspaces responsible for competence on prior tasks $\mathcal{D}_{<t}$.
 
-In sparse Mixture-of-Experts (MoE) architectures, linear softmax gating mechanisms $g(x) = \text{Softmax}(\text{Top-}k(W_g x))$ suffer from expert cannibalization under distribution shifts, while monolithic feedforward MLPs lack the multi-compartment inductive biases of biological pyramidal neurons.
+I want to work on artificial general intelligence. I know how big a claim that is, and how far one continual-learning architecture built by one person on one GPU is from it --- this paper is not a step toward AGI in any sense I would defend under questioning, it is a small, fully-checked test of one idea that I think is a real ingredient of a bigger picture. I would rather be honest about that scope than oversell it, because oversold small results are exactly what makes a field harder to trust, and I have spent most of this project's actual effort trying not to do that to myself.
 
-In this work, we present Universal Substrait, combining Complex Phasor Vector Symbolic Architecture ($\mathbb{C}^{2048}$), Two-Compartment Dendritic Experts, Global Workspace context broadcasting, and sparse exemplar rehearsal on a controlled small-scale research testbed.
+The problem I started from is catastrophic forgetting: train a network on task A, then task B, and by the time it is good at B it has often forgotten most of A. This happens because gradient descent has no reason to protect old knowledge --- it just walks downhill on whatever loss is in front of it right now. The two standard fixes are architectural (freeze old capacity, add new capacity for new things) and rehearsal-based (keep some old examples around and mix them back in). Biological brains seem to do a version of both --- cortex recruits new circuitry for new skills without wiping old ones, and the hippocampus replays recent experience during sleep to consolidate it. I wanted to know if a network could do a real version of the first part \emph{on its own} --- decide, at training time, ``this is genuinely new, I need dedicated capacity for it,'' rather than have a human pre-allocate that capacity in advance.
 
-\section{Universal Substrait Architecture}
+So the actual question this paper answers is narrow, and I tried to keep it that way: \textbf{can a model detect novelty in its own input well enough to trigger targeted growth, and does growing itself that way actually help it forget less, once tested fairly against the alternative of just training a good fixed-size model with replay?}
 
-\subsection{Complex Phasor Vector Symbolic Architecture ($\mathbb{C}^{D}$)}
-Tokens $x \in \mathbb{R}^{d_{\text{model}}}$ are projected to unitary complex phasors $\mathbf{z}_{\text{token}} \in \mathbb{C}^D$ with $D = 2048$:
+\subsection*{What's in this paper}
+\begin{itemize}[leftmargin=1.4em]
+  \item A full description of the architecture --- complex-phasor routing, two-compartment ``dendritic'' experts, a shared context bus between them, and novelty-triggered autonomous growth (Section~\ref{sec:architecture}).
+  \item An evaluation protocol built specifically to avoid the ways I initially got this wrong --- matched compute, capacity-matched baselines, and significance testing added \emph{after} a single-seed result nearly got written up as a real finding and then reversed by a second seed (Section~\ref{sec:protocol}).
+  \item Results at two scales, ending in a ten-domain, two-seed, two-architecture comparison on real, topically distinct corpora, reported with what is actually statistically supported and what is not (Sections~\ref{sec:results}--\ref{sec:discussion}).
+  \item A section documenting the fourteen methodological failures I found and fixed while producing these numbers, included as a real part of the paper rather than an apology tucked in the back (Section~\ref{sec:audit}).
+\end{itemize}
+
+\section{Related work}
+
+\textbf{Vector-symbolic architectures and holographic memory.} Representing structured knowledge as high-dimensional vectors with algebraic bind/bundle operators goes back to Kanerva's hyperdimensional computing and Plate's Holographic Reduced Representations; Frady et al.'s resonator networks (2020) give an iterative way to factorize a bound vector back into its components. My phasor router is a direct descendant of this line --- an expert's ``address key'' is an address in exactly the sense an HRR item-memory key is an address.
+
+\textbf{Modern associative memory.} An earlier version of this project used a Hopfield-style cleanup step, following Ramsauer et al.'s modern continuous Hopfield networks (2020), which show that dense associative memory with exponential storage capacity generalizes both classical Hopfield networks and single-layer attention.
+
+\textbf{Mixture-of-experts routing.} Standard top-$k$ softmax routing (Shazeer et al., 2017) is known to suffer load imbalance and routing collapse --- I independently rediscovered this at the level of individual runs before I went looking for the literature on it (Section~\ref{sec:audit}, items 9--10). Expert-choice routing (Zhou et al., 2022) flips the assignment direction specifically to guarantee balanced load; DeepSeek's auxiliary-loss-free balancing (2024) uses a per-expert dynamic bias instead of an auxiliary loss term, which is basically the fix I converged on independently for the same problem (item 12). A 2026 analysis, \emph{The Myth of Expert Specialization in MoEs}, argues MoE routing mostly reflects token-embedding geometry rather than deliberate domain specialization --- my own routing diagnostics (Section~\ref{sec:specialization}) land on the same conclusion for phasor-resonance routing specifically.
+
+\textbf{Continual learning.} Elastic Weight Consolidation and similar methods penalize movement on parameters that mattered for old tasks; PackNet and progressive networks physically partition or freeze capacity per task. Experience replay --- keeping a small buffer of old examples and mixing them back in --- is one of the simplest and most robust mitigations in the literature, and it is exactly what the exemplar buffer in Section~\ref{sec:training-infra} is. I think the fairest way to read autonomous neurogenesis, as tested here, is as an attempt at a learned, on-the-fly version of PackNet-style partitioning, layered on top of replay rather than instead of it.
+
+\textbf{Test-time and train-time recurrence.} Recurrent-depth latent reasoning (Geiping et al., 2025) and looped language models like Ouro scale compute by re-applying a shared block multiple times, using a learned, PonderNet-style halting distribution rather than a hard threshold. I looked seriously at adding a ``think before you answer'' recurrent loop to this architecture partway through the project and decided against building it before grounding it properly in this literature --- it is a real future-work item, not an abandoned one (Section~\ref{sec:future}).
+
+\textbf{Other work from the same research thread.} This project sits inside a broader personal research program on phasor and vector-symbolic alternatives to standard deep learning, and two sibling results directly shaped this paper's design. First, a small controlled study (\texttt{PhasorUnitaryNet}) on compositional generalization found that a unitary phasor network with a few thousand parameters recovers held-out role-filler bindings at $97.0\% \pm 2.7\%$ accuracy, while a real-valued MLP with $30\times$ more parameters collapses to $0.1\%$ on the same held-out split despite matching it on training accuracy --- direct evidence that phase-native binding, not raw capacity, is what generalizes compositionally, and a big part of why I trusted the phasor-routing premise enough to build this. Second, a sibling project in the same program diagnosed router self-reinforcement collapse --- a small number of experts capturing almost all routing traffic once their address keys are allowed to drift under gradient descent --- and built an outlier-gated drift guard against it. My own routing diagnostics (Section~\ref{sec:specialization}) hit exactly that same collapse pattern, and I tested the same style of fix here --- unsuccessfully, in the specific form I tried (Section~\ref{sec:attribution}; Section~\ref{sec:audit}, item 10).
+
+\section{Architecture}
+\label{sec:architecture}
+
+Universal Substrait swaps out two ordinary transformer parts --- the MoE gate and the fixed pool of experts --- for a phasor-addressed, growable version of both, and leaves everything else (token embeddings, causal self-attention, the output head) standard, shared, and never duplicated no matter how many experts exist.
+
+\begin{verbatim}
+token x_t
+   |
+   v
+[1] phasor projection            q = (W_r x + i W_i x) / |W_r x + i W_i x|      q in C^2048
+   |
+   v
+[2] resonance vs. expert address keys K_1 .. K_e
+      sim(q, K_e) = (1/D) * Re(q . conj(K_e))
+   |
+   |-- sim >= tau for some e  -->  [3a] dynamic top-k routing (k set by router entropy)
+   |
+   `-- sim <  tau for every e -->  [3b] birth a new expert
+                                        key    = centroid of the novel tokens' phasors
+                                        weights = nearest parent expert + N(0, 0.01) noise
+   |
+   v
+[4] two-compartment ("dendritic") expert
+      h_basal  = SiLU(x)-gated pathway fed by the token
+      h_apical = SiLU(c)-gated pathway fed by the shared bus
+      h_soma   = h_basal + a * h_apical + b * (h_basal (x) h_apical)
+   |
+   |----> [5] global workspace bus: experts write h_basal here, read back a
+   |          weighted summary as next-step apical context (shared, not duplicated)
+   v
+[6] output
+\end{verbatim}
+
+\subsection{Complex phasor holographic addressing}
+
+Every token's hidden state $x$ is linearly projected into a complex vector and normalized to unit magnitude, dimension by dimension:
 \begin{equation}
-\mathbf{z}_{\text{token}} = \exp\left(i \cdot \operatorname{atan2}(W_{\text{im}} x, W_{\text{re}} x)\right), \quad \|\mathbf{z}_{\text{token}, j}\| = 1.
+z(x) = \frac{W_r x + i W_i x}{|W_r x + i W_i x|}, \qquad z \in \mathbb{C}^D, \quad D = 2048.
 \end{equation}
-
-Hermitian similarity with expert memory centroids $\mathbf{c}_e \in \mathbb{C}^D$ is defined as:
+Routing resonance between a query phasor $q$ and an expert's address key $K_e$ is Hermitian cosine similarity --- averaged, across all 2048 dimensions, cosine of the phase difference:
 \begin{equation}
-\operatorname{Sim}(\mathbf{z}, \mathbf{c}_e) = \frac{1}{D} \operatorname{Re}\left(\langle \mathbf{z}, \mathbf{c}_e \rangle_{\mathbb{C}}\right) = \frac{1}{D} \sum_{j=1}^D \cos(\theta_{\mathbf{z}, j} - \theta_{\mathbf{c}_e, j}) \in [-1, 1].
+\mathrm{sim}(q, K_e) = \frac{1}{D}\,\mathrm{Re}\!\left(q \cdot \overline{K_e}\right) = \frac{1}{D}\sum_{d=1}^{D} \cos(\theta_{q,d} - \theta_{K_e,d}).
 \end{equation}
+For two independently random unit phasors this quantity has mean $0$ and standard deviation $\sigma = 1/\sqrt{2D}$ --- $\mathbf{0.0156}$ at $D=2048$ (derived in Appendix~\ref{app:proofs}, Theorem~\ref{thm:quasiortho}). This one number is the whole justification for the architecture's central premise: two unrelated concepts almost never resonate by accident, so a token whose true best match scores $0.30$ or above is sitting about $19$ standard deviations off the noise floor. That means the novelty test --- is the best similarity to \emph{any} existing expert below a threshold $\tau$ --- is a well-separated decision, not a coin flip dressed up as one.
 
-\begin{theorem}[Quasi-Orthogonality of Random Phasors]
-For independently sampled random phasor vectors $\mathbf{a}, \mathbf{b} \sim \operatorname{Uniform}(\mathbb{T}^D)$ on the $D$-dimensional complex torus, $\mathbb{E}[\operatorname{Sim}(\mathbf{a}, \mathbf{b})] = 0$, with variance $\operatorname{Var}(\operatorname{Sim}(\mathbf{a}, \mathbf{b})) = \frac{1}{2D}$.
-\end{theorem}
+\subsection{Two-compartment dendritic experts}
 
-\subsection{Two-Compartment Dendritic Experts}
-Each dendritic expert integrates basal and apical inputs via non-linear coincidence detection:
+Each expert is a loose model of a cortical pyramidal neuron: a basal compartment driven bottom-up by the token, an apical compartment driven top-down by the shared bus, combined through a multiplicative, NMDA-style coincidence term:
 \begin{align}
-h_{\text{basal}} &= \operatorname{SiLU}(W_{\text{basal\_gate}} x) \odot (W_{\text{basal\_up}} x), \\
-h_{\text{apical}} &= \operatorname{SiLU}(W_{\text{apical\_gate}} c_{\text{bus}}) \odot (W_{\text{apical\_up}} c_{\text{bus}}), \\
-h_{\text{soma}} &= h_{\text{basal}} + \alpha_{\text{apical}} h_{\text{apical}} + \beta_{\text{nmda}} (h_{\text{basal}} \odot h_{\text{apical}}).
+h_{\text{basal}}  &= \mathrm{SiLU}(W_{\text{gate},b} \cdot x) \odot (W_{\text{up},b} \cdot x) \\
+h_{\text{apical}} &= \mathrm{SiLU}(W_{\text{gate},a} \cdot c) \odot (W_{\text{up},a} \cdot c), \qquad c = \text{apical context read from the bus} \\
+h_{\text{soma}}   &= h_{\text{basal}} + \alpha \cdot h_{\text{apical}} + \beta \cdot (h_{\text{basal}} \odot h_{\text{apical}})
 \end{align}
+Five weight matrices per expert instead of a plain MoE expert's three --- a detail that matters later, because it means a dendritic expert carries about $1.67\times$ the parameters of an equal-width plain expert, and I had to explicitly control for that before any ``our architecture wins'' comparison meant anything (Section~\ref{sec:ruling-out-params}).
 
-\section{Empirical Results}
+\subsection{Global workspace bus}
 
-\subsection{Matched-Budget Joint Pretraining Comparison (4.6M Tokens)}
+Active experts inside a layer write their basal output into a small shared buffer and read back a similarity-weighted summary as apical context --- an $O(\text{active experts})$ channel, not full pairwise cross-expert attention. I chose this specifically to avoid the quadratic blow-up a naive ``let every expert attend to every other expert'' design would introduce once the expert count grows past a handful.
+
+\subsection{Autonomous neurogenesis}
+
+When the novelty test fires for enough of a batch, a new expert is created: its address key is set to the (renormalized) centroid of the novel tokens' phasors, and its weights are cloned from the nearest existing expert plus small Gaussian noise ($\sigma = 0.01$) --- a warm start meant to make a new expert immediately usable rather than randomly initialized and useless for the first hundred steps. I want to be precise here because an earlier internal draft of this project's writeup described the new key as being explicitly orthogonalized against every existing key via a Gram-Schmidt-style projection at the moment of birth. I went back and checked the actual spawn code (\texttt{hyperspace/memory.py}) to be sure before writing this section, and that is not what happens: the new key is the plain renormalized centroid, nothing more. A \emph{separate} mechanism --- a soft orthogonality penalty added to the training loss (\texttt{compute\_orthogonality\_loss}, Section~\ref{sec:audit}, item 11) --- gently discourages expert keys from drifting toward each other over training, but it is a soft, gradient-based regularizer applied continuously to all experts, not a hard projection applied once at spawn time. I am flagging this explicitly because it is a good, concrete example of exactly the kind of claim this project's whole process is set up to catch, and I would rather correct it here than let a nicer-sounding but wrong description stand.
+
+Whether the centroid warm start actually protects a newborn expert long enough to get useful gradient turned out to be one of the most consequential open questions in the whole project (Section~\ref{sec:audit}, items 9 and 12).
+
+\subsection{Dynamic-\emph{k}, criticality-gated routing}
+
+Instead of a fixed top-$k$, the number of active experts per token comes from the Shannon entropy of the router's own probability distribution over experts, clamped to $[1, k_{\max}]$ ($k_{\max}=4$ here). Lexically unambiguous tokens cost less compute; only genuinely cross-domain tokens recruit several specialists at once.
+
+\subsection{Training infrastructure that turned out to matter as much as the architecture}
+\label{sec:training-infra}
+
+Two pieces of plumbing turned out to be load-bearing, not incidental. \texttt{DynamicWarmupAdamW} re-registers a freshly spawned expert's parameters into the optimizer's tracked groups the moment it is created --- skip this (an earlier version of my own training harness did, silently) and new experts exist in the forward pass but never receive a gradient; they just sit at their random-plus-noise initialization for the rest of the run while looking, from the outside, completely normal (Section~\ref{sec:audit}, item 8). A 20\%-mixture exemplar replay buffer (256 sequences per domain, sampled once a domain has been seen) is what actually turns catastrophic forgetting from ``severe'' into ``a small measurable number'' (Section~\ref{sec:core-win}) --- every other mechanism in this paper is tested \emph{on top of} replay, never as a replacement for it.
+
+\section{Evaluation protocol and metrics}
+\label{sec:protocol}
+
+\textbf{Sequential continual learning.} A model trains on domain 1 alone, then domain 2 alone (with 20\% of steps drawing replay from domain 1), and so on through $T$ domains, with a full held-out evaluation across every domain seen so far at each phase boundary. This is deliberately harder than, and deliberately different from, interleaved joint pretraining (every domain present in every batch from step one) --- conflating the two was the single most consequential mistake I made early on (Section~\ref{sec:audit}, item 7), because interleaved training literally cannot produce catastrophic forgetting: nothing is ever removed from the stream, so a good number there proves nothing about forgetting.
+
+\textbf{Backward transfer, $R_{\text{BWT}}$.} For the first $T-1$ domains, the loss increase from right-after-training-on-that-domain to after the whole curriculum finishes, averaged:
+\begin{equation}
+R_{\text{BWT}} = \frac{1}{T-1} \sum_{i=1}^{T-1} \Big( L_{\text{final}}(\text{domain } i) - L_{\text{immediate}}(\text{domain } i) \Big).
+\end{equation}
+Lower is better. Zero means no measurable forgetting. Negative means later training actively \emph{improved} an earlier domain. Every loss number in this study gets checked live against the mathematical ceiling for a valid cross-entropy evaluation, $\mathcal{L} \le \ln(50304) \approx 10.826$ nats (the vocabulary size) --- a loss above that ceiling is not ``bad performance,'' it means the evaluation itself is broken, and this exact check caught a live bug partway through the project (Section~\ref{sec:audit}, item 1).
+
+\textbf{The statistical bar.} Every comparative claim in Section~\ref{sec:results} labeled ``significant'' or ``not significant'' comes from a Welch's two-sample $t$-test on the raw per-seed values, reported next to the raw numbers rather than instead of them. This was not part of my original plan --- I added it after a single-seed result almost got written up as a settled win and then got reversed outright by the second and third seeds (Section~\ref{sec:audit}, item 13). After that point, everything gets at least two seeds and the test statistic gets reported alongside.
+
+\textbf{Hardware and scale.} Everything here ran on one consumer RTX 3060 (12GB). The base model is 4 transformer layers, $d_{\text{model}}=384$, 6 attention heads, $d_{\text{ff}}=768$, hyperspace dimension $D=2048$, GPT-2 BPE tokenizer (vocabulary 50{,}304) --- 28.9M dense-equivalent parameters, growing to 63--129M as experts spawn in. The novelty threshold $\tau$ was $0.30$ for the four-domain and capacity-matched-control experiments (Sections~\ref{sec:core-win}--\ref{sec:attribution}) and $0.35$ for the ten-domain evaluation (Section~\ref{sec:ten-domain}) --- both values appear in the codebase's own defaults across different modules, and I report exactly which one produced which number rather than implying a single constant throughout. This is small-scale research and I would rather say that plainly up front than have Section~\ref{sec:limitations} do the work of walking back an implied bigger claim.
+
+\section{Results}
+\label{sec:results}
+
+\subsection{What happens with no mitigation at all}
+
+Before any fix, sequential training with no replay and full neurogenesis enabled forgets badly: $R_{\text{BWT}} = +1.99$ nats, with the first domain's held-out token accuracy collapsing from $44.6\%$ to $7.8\%$ by the time the fourth domain finishes. This is the failure mode everything else in this paper is measured against.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.85\linewidth]{figures/baseline_no_replay_matrix.png}
+\caption{Sequential continual-learning loss matrix, no replay. Every off-diagonal cell is a domain's loss measured after training moved on to something else --- reading down any column, loss climbs steadily the further training gets from that domain.}
+\label{fig:baseline-matrix}
+\end{figure}
+
+\subsection{The concentrated core: the cleanest result in this paper}
+\label{sec:core-win}
+
+Adding a 20\% exemplar-replay buffer to a small, fixed two-expert core cuts that same forgetting by over 99\% ($R_{\text{BWT}}: +1.99 \rightarrow +0.013$), and this exact configuration --- two experts, the shared bus, replay, nothing fancier --- beats every other configuration I tested at matched 4-domain, 300-step-per-phase scale:
+
 \begin{table}[h]
 \centering
 \small
-\begin{tabular}{lcccc}
+\begin{tabular}{lrr}
 \toprule
-\textbf{Domain} & \textbf{Dense Baseline} & \textbf{Static Softmax MoE (16 Exp)} & \textbf{Universal Substrait MoE} & \textbf{Advantage} \\
+Configuration & $R_{\text{BWT}}$ (nats) & Python held-out acc. \\
 \midrule
-Python Code (Alpaca) & $3.959\text{ nats}$ (40.0\%) & $2.966\text{ nats}$ (48.7\%) & $\mathbf{2.790\text{ nats}}$ (\textbf{55.9\%}) & $-0.176\text{ nats}$ \\
-Stories (TinyStories) & $3.410\text{ nats}$ (35.6\%) & $3.517\text{ nats}$ (34.0\%) & $\mathbf{3.230\text{ nats}}$ (\textbf{38.6\%}) & $-0.180\text{ nats}$ \\
-WikiText-103 & $6.379\text{ nats}$ (15.3\%) & $6.368\text{ nats}$ (14.9\%) & $\mathbf{5.947\text{ nats}}$ (\textbf{20.4\%}) & $-0.421\text{ nats}$ \\
-FineWeb-Edu & $6.633\text{ nats}$ (14.0\%) & $6.557\text{ nats}$ (16.0\%) & $\mathbf{6.302\text{ nats}}$ (\textbf{17.5\%}) & $-0.255\text{ nats}$ \\
+\textbf{Concentrated 2-expert core} & \textbf{+0.156} & 46.8\% \\
+--- bus ablated & +0.205 & 43.0\% \\
+Fixed 16 experts, no spawning & +0.300 & 47.3\% \\
+Static MoE, 30 experts (capacity-matched) & +0.361 & 37.4\% \\
+Dense transformer & +0.386 & 41.2\% \\
+Static MoE, 16 experts & +0.398 & 38.4\% \\
 \bottomrule
 \end{tabular}
-\caption{Matched-budget joint pretraining comparison across 1,500 steps on identical 11.4M corpus (Single-Seed).}
+\caption{Backward transfer at matched 4-domain / 300-step-per-phase scale (single seed at this scale --- the statistical treatment in Sections~\ref{sec:3xscale}--\ref{sec:ten-domain} applies once multi-seed data exists at larger scale). The margin is large: $2.5\times$ better than a plain dense transformer, $2.3\times$ better than a parameter-matched 30-expert static MoE.}
+\label{tab:core-win}
 \end{table}
 
-\subsection{Capacity-Matched Continual Learning Attribution Matrix}
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.85\linewidth]{figures/replay_fix_matrix.png}
+\caption{The same evaluation as Figure~\ref{fig:baseline-matrix}, replay switched on. Reading down any column, the loss barely moves. This is the earlier, smaller pilot run that first showed replay working at all ($R_{\text{BWT}}: +1.99 \rightarrow +0.013$) --- the fuller capacity-matched protocol in Table~\ref{tab:core-win} above is what the $+0.156$ figure comes from.}
+\label{fig:replay-matrix}
+\end{figure}
+
+\subsection{Ruling out ``it's just more parameters''}
+\label{sec:ruling-out-params}
+
+Because a dendritic expert carries $1.67\times$ a plain expert's parameters, an early version of this comparison was quietly unfair --- the concentrated core and its ``matched'' baselines did not actually have matched parameter counts. I built a real capacity-matched control (30 plain experts, 128.1M parameters, within $0.64\%$ of the concentrated core's fully-grown 128.9M) to close that gap: scaling a static MoE from 16 to 30 experts ($+63\%$ parameters) only moves $R_{\text{BWT}}$ by $0.038$ nats, while the concentrated core still beats it by $0.20$ nats. Raw capacity is not the explanation.
+
+\subsection{Which piece is actually doing the work}
+\label{sec:attribution}
+
+Turning off the shared bus costs $0.049$ nats relative to the concentrated core ($0.156 \rightarrow 0.205$). Turning off dynamic capacity entirely --- all 16 experts present from step one, no neurogenesis --- costs $0.144$ nats ($0.156 \rightarrow 0.300$). I also tried an outlier-gated drift guard on the routing keys, borrowed from a sibling project's fix for the same collapse pattern described in Section~\ref{sec:specialization}, on the same 2-expert core, in a clean head-to-head rerun --- and it made retention \emph{worse}, monotonically, the more layers I applied it to (no guard $0.156 \rightarrow$ one layer $0.259 \rightarrow$ all four layers $0.350$). I understood why after the fact (Section~\ref{sec:audit}, item 10), but the fix does not work in this specific form.
+
+\subsection{Where specialization actually lives}
+\label{sec:specialization}
+
+I froze a fully-trained checkpoint and directly measured which experts it activates for held-out tokens from each domain. The picture is consistent across every configuration I tested, and it is not the clean ``each expert owns a domain'' story the architecture's framing implies: one or two shared ``generalist'' experts carry $30$--$95\%$ of all routing traffic regardless of domain, the layers closest to the output are the most collapsed onto that generalist core ($95$--$100\%$ concentration by the final layer in several runs), and real domain-specific routing, where it exists, lives in a smaller pool of ``auxiliary'' experts sitting on top of that shared backbone.
+
+I also computed the residual routing similarity directly between domain pairs, across both seeds, which makes the same picture precise rather than just visual: code and Python code cluster together ($\mathrm{sim} = 0.805$--$0.900$), code and encyclopedic prose are close to orthogonal ($\mathrm{sim} = 0.204$--$0.259$), and the four domains later confirmed to be repetition-confounded (Section~\ref{sec:audit}, item 14) all sit mutually near $\mathrm{sim} \approx 0.91$--$0.97$ regardless of topic --- ``arxiv physics'' and ``pubmed biomedical'' are not routing together because the network recognizes they are both technical prose, they are routing together because both were repeated almost three times over within a single training phase.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.95\linewidth]{figures/specialization_heatmap.png}
+\caption{Per-layer expert routing-mass heatmap across all ten domains, seed 1337 (a second, independent seed shows the same pattern). The clustering that first looked like semantic grouping turned out, on inspection, to be four specific low-volume domains sharing the repetition confound, not evidence that the router understands ``these topics are related.'' This is closer to the geometry-driven, non-domain-specific routing pattern reported independently in the MoE literature (Section~\ref{sec:related-work-anchor}) than to the disjoint-specialist picture I originally expected going in.}
+\label{fig:heatmap}
+\end{figure}
+
+\subsection{Neurogenesis at 3\texorpdfstring{$\times$}{x} scale: a result that did not survive a second seed}
+\label{sec:3xscale}
+
+At 900 steps per phase (three times the token budget per domain), a single-seed run showed dynamic neurogenesis beating the concentrated core outright ($0.838$ vs.\ $0.900$ nats) --- a striking, easy-to-over-interpret number. Two more seeds told a different story:
+
 \begin{table}[h]
 \centering
 \small
-\begin{tabular}{lccccc}
+\begin{tabular}{lrr}
 \toprule
-\textbf{Architecture (+ 20\% Replay)} & \textbf{Params} & \textbf{FineWeb $\Delta \mathcal{L}$} & \textbf{Python $\Delta \mathcal{L}$ (Acc)} & \textbf{WikiText $\Delta \mathcal{L}$} & \textbf{Mean $R_{\text{BWT}}$} \\
+Seed & Spawning $R_{\text{BWT}}$ (nats) & Static $R_{\text{BWT}}$ (nats) \\
 \midrule
-Dense Transformer Baseline & $28.9\text{M}$ & $+0.3411\text{ nats}$ & $+0.3225\text{ nats}$ (41.25\%) & $+0.4945\text{ nats}$ & $+0.3860\text{ nats}$ \\
-Static Softmax MoE (16 Exp) & $78.5\text{M}$ & $+0.2750\text{ nats}$ & $+0.5054\text{ nats}$ (38.40\%) & $+0.4146\text{ nats}$ & $+0.3983\text{ nats}$ \\
-Static Softmax MoE (30 Exp) & $128.1\text{M}$ & $+0.3129\text{ nats}$ & $+0.5108\text{ nats}$ (37.42\%) & $+0.2577\text{ nats}$ & $+0.3605\text{ nats}$ \\
-\textbf{Universal Substrait MoE} & $\mathbf{128.9\text{M}}$ & $\mathbf{-0.1804\text{ nats}}$ & $\mathbf{-0.0118\text{ nats}}$ (\textbf{44.36\%}) & $\mathbf{+0.2314\text{ nats}}$ & $\mathbf{+0.0131\text{ nats}}$ \\
+1 & 0.8378 & 0.8892 \\
+2 & 0.7917 & 1.0132 \\
+3 & 0.8205 & 0.7844 \\
+\midrule
+\textbf{Mean} & \textbf{0.817} & \textbf{0.896} \\
 \bottomrule
 \end{tabular}
-\caption{Strict 4-phase sequential continual learning attribution matrix under 20\% exemplar rehearsal (Single-Seed).}
+\caption{Three seeds each, 900 steps/phase. Static MoE won the third seed outright.}
+\label{tab:3xscale}
 \end{table}
 
-\subsection{Component-Level Ablation Decomposition}
-\begin{table}[h]
+\noindent Welch's $t$ on the two means $\approx 1.17$, $p \approx 0.35$ --- the ranges overlap enough that this comparison cannot tell the two architectures apart from equally good. The lesson generalized past this one result: at $n=1$ or $n=2$, a result that looks decisive can be almost entirely seed noise, and every large comparison after this one in the project got the same multi-seed treatment.
+
+\subsection{The ten-domain evaluation}
+\label{sec:ten-domain}
+
+The largest and final evaluation trains on ten genuinely distinct real-world corpora --- educational web text, systems and algorithmic source code, formal mathematics, biomedical abstracts, legal contracts, theoretical physics, financial/quantitative text, classic literature, Python code, and encyclopedic prose --- at matched total compute (3{,}600 steps, 360 per domain), two seeds, two architectures, 44.24M tokens total.
+
+\begin{figure}[htbp]
 \centering
-\small
-\begin{tabular}{lccccc}
+\includegraphics[width=0.95\linewidth]{figures/master_matrix.png}
+\caption{Left: retained accuracy per domain, spawning vs.\ static, both seeds. Right: aggregate backward transfer, spawning ($+0.312 \pm 0.017$) vs.\ static ($+0.300 \pm 0.013$) --- overlapping enough that Welch's $t$ ($\approx 0.81$) does not call it a real difference. This is the direct, unrounded chart the numbers below come from.}
+\label{fig:master-matrix}
+\end{figure}
+
+\begin{table}[htbp]
+\centering
+\scriptsize
+\begin{tabular}{lrrrr}
 \toprule
-\textbf{Ablation Variant (+ 20\% Replay)} & \textbf{Params} & \textbf{FineWeb $\Delta \mathcal{L}$} & \textbf{Python $\Delta \mathcal{L}$ (Acc)} & \textbf{WikiText $\Delta \mathcal{L}$} & \textbf{Mean $R_{\text{BWT}}$} \\
+Domain & Unique tokens & Spawn acc. & Static acc. & $\Delta$ (pp) \\
 \midrule
-Static Softmax MoE (30 Exp Baseline) & $128.1\text{M}$ & $+0.3129\text{ nats}$ & $+0.5108\text{ nats}$ (37.42\%) & $+0.2577\text{ nats}$ & $+0.3605\text{ nats}$ \\
-Ablation 2: No Spawning (Fixed 16 Exp) & $128.9\text{M}$ & $+0.2089\text{ nats}$ & $+0.2657\text{ nats}$ (47.34\%) & $+0.4250\text{ nats}$ & $+0.2999\text{ nats}$ \\
-Ablation 1: No Global Bus (\texttt{use\_bus=False}) & $128.9\text{M}$ & $-0.0437\text{ nats}$ & $+0.4235\text{ nats}$ (42.99\%) & $+0.2343\text{ nats}$ & $+0.2047\text{ nats}$ \\
-\textbf{Full Universal Substrait System} & $\mathbf{128.9\text{M}}$ & $\mathbf{-0.1804\text{ nats}}$ & $\mathbf{-0.0118\text{ nats}}$ (\textbf{44.36\%}) & $\mathbf{+0.2314\text{ nats}}$ & $\mathbf{+0.0131\text{ nats}}$ \\
+\texttt{github\_code} & 3.11M & \textbf{98.02\%} & 93.84\% & \textbf{+4.18} \\
+\texttt{gutenberg\_literature} & 1.10M & \textbf{22.88\%} & 19.81\% & \textbf{+3.08} \\
+\texttt{wikitext\_facts} & 2.95M & 19.53\% & 18.72\% & +0.81 \\
+\texttt{freelaw\_legal} & 1.23M & 98.47\% & 98.00\% & +0.46 \\
+\texttt{financial\_market} & 1.58M & 98.26\% & 97.87\% & +0.39 \\
+\texttt{python\_code} & 2.45M & 44.65\% & 45.18\% & $-$0.52 \\
+\texttt{openweb\_math}$^\dagger$ & 0.95M & 14.42\% & 13.37\% & +1.05 \\
+\texttt{arxiv\_physics}$^\dagger$ & 0.95M & 18.29\% & 17.57\% & +0.73 \\
+\texttt{fineweb\_edu}$^\dagger$ & 0.95M & 13.56\% & 13.56\% & +0.00 \\
+\texttt{pubmed\_biomedical}$^\dagger$ & 0.38M & 29.15\% & 29.49\% & $-$0.34 \\
 \bottomrule
 \end{tabular}
-\caption{Single-variable component ablations isolating the Global Workspace Bus and Autonomous Neurogenesis.}
+\caption{Ten-domain retention, two seeds. $\dagger$ Below the 1.1M-unique-token line needed to avoid repetition at 360 steps/phase --- these four get reused up to $2.95\times$ within a phase (Section~\ref{sec:audit}, item 14); shown but not safe to read as evidence either way.}
+\label{tab:ten-domain}
 \end{table}
 
-\subsection{Layer-Wise Routing Dynamics \& Output Collapse}
-\begin{table}[h]
+Only \texttt{github\_code} and \texttt{gutenberg\_literature} --- both comfortably above the repetition threshold --- show a gap large relative to seed-to-seed noise (Welch's $t \approx 8.6$ and $8.2$, both clearly significant). The aggregate across all ten is not.
+
+It is also worth reporting plainly, not just in the limitations section, that this win is not free even where it holds: end-to-end wall-clock throughput for the spawning architecture across the full ten-domain run averaged $2{,}398$ tokens/sec (mean of both seeds), against $3{,}378$ tokens/sec for the static-MoE baseline --- about $41\%$ slower, even after the dispatch fix in Section~\ref{sec:dispatch}, because of the extra tensor reallocation and optimizer-graph mutation cost every time a new expert is actually born mid-run. The micro-benchmark in Section~\ref{sec:dispatch} isolates dispatch cost alone; this number is the real cost of growing a model while it trains.
+
+\begin{quote}
+\textbf{What's established.} A concentrated core with a shared context bus and exemplar replay is a genuine, repeatable improvement over a monolithic transformer and a matched static MoE for reducing catastrophic forgetting, at every scale I tested.
+
+\textbf{What's still open.} Autonomous neurogenesis shows a real, statistically strong advantage specifically on large, structurally distinct corpora (code, literary prose). It does not show a general aggregate advantage yet, it costs real throughput while it happens, and the aggregate result needs more seeds before I would trust a conclusion either way.
+\end{quote}
+
+\section{Discussion}
+\label{sec:discussion}
+
+The honest reading of all of this is that the ``boring'' half of the architecture --- concentration, shared context, rehearsal --- is doing almost all of the demonstrated work, and the ``exciting'' half --- autonomous growth --- is a real phenomenon that has not yet been shown to generalize past specific favorable conditions. I do not think that is a failure of the project. I think it is what a properly falsifiable test of an ambitious idea is \emph{supposed} to produce, and a paper that concluded ``autonomous neurogenesis solves catastrophic forgetting'' from this data would be making exactly the mistake I spent most of this project's actual effort catching in my own earlier drafts (Section~\ref{sec:audit}).
+
+The two domains where spawning wins cleanly --- code and literature --- share something worth naming precisely: both have enough unique training volume to dodge the repetition confound, and both are lexically and structurally about as different as two text domains can be from the rest of the curriculum (dense symbolic syntax vs.\ free-flowing archaic prose). My best guess right now, and it is a guess I would want to test rather than assert, is that neurogenesis specifically helps when a domain is both data-rich \emph{and} easy for the phasor projection to cleanly separate from everything else --- which lines up with exactly the two conditions the routing diagnostics in Section~\ref{sec:specialization} show the mechanism actually depends on.
+
+\subsection*{On the ``just fragmented networks'' question}
+
+Partway through this project I had to answer a question that goes straight at whether any of this is real: are the spawned experts actually specializing on their domain's data, or are they just fragments of one network that happen to get routed to sometimes? Section~\ref{sec:specialization}'s diagnostics are my honest answer, and it is a mixed one --- there is real, measurable domain-conditioned routing, but it sits on top of a much larger shared ``generalist'' backbone rather than existing as clean, separate per-domain specialists. That is a less exciting answer than ``yes, fully specialized experts,'' and it is also, I think, the true one, and I would rather report the true, less exciting answer than the exciting, unsupported one.
+\label{sec:related-work-anchor}
+
+\section{What actually went wrong, and how I found out}
+\label{sec:audit}
+
+I am including this section as a real part of the paper rather than an errata list because I think it is actually the most defensible thing I produced. Every one of these fourteen items looked like good news for at least one draft. The work was in catching that, not in avoiding it in the first place --- I do not think you can avoid it in the first place on a project like this; you can only build the habit of checking.
+
+\begin{enumerate}[leftmargin=1.6em,itemsep=0.5em]
+\item \textbf{A loss above the mathematical ceiling.} An out-of-distribution evaluation reported a loss of $11.17$ nats against a vocabulary whose maximum possible (uniform-random) loss is $\ln(50304) \approx 10.826$. That is not ``the model did badly,'' that is outside the range a correct evaluation can even produce. \emph{Fix:} traced to a padding/ignore-index bug in an older eval script; the corrected suite now bounds every loss live and halts on violation.
+
+\item \textbf{A quality metric that scored gibberish as excellent.} A regex-based ``syntax integrity'' heuristic gave a mostly-blank generation and an off-topic word-salad continuation scores of $70$--$95\%$, while the actual raw text sitting three lines below the score in the same report was visibly incoherent. \emph{Fix:} deleted the heuristic outright, replaced it with exact cross-entropy, top-1/top-5 accuracy, and unfiltered raw text --- no synthetic stand-in for ``does this read okay.''
+
+\item \textbf{A forgetting metric with an inverted sign.} A domain's loss went up by $0.92$ nats after more training --- real forgetting --- but the report's own formatter printed the sign as \texttt{"+-0.92"} and labeled it ``positive transfer, zero degradation.'' \emph{Fix:} $R_{\text{BWT}}$ now computes and labels with an explicit three-way convention (degradation / stable / retention), tested against its own sign on every run.
+
+\item \textbf{Two different metrics presented as one number.} A ``$90.5\%$ compute \& memory sparsity'' headline was quoting theoretical FLOP-sparsity while the actual measured physical memory change, sitting in a different column of the same table, was $-9.1\%$ --- i.e., using \emph{more} memory at short context lengths. \emph{Fix:} the two quantities are reported as explicitly separate, separately labeled numbers everywhere now.
+
+\item \textbf{The shipped model didn't match its own documentation.} The architecture docs described a dynamic attention span ``expanding to 32k--128k tokens.'' The exported model's actual config capped \texttt{max\_position\_embeddings} at $288$. \emph{Fix:} flagged as an aspiration-vs-artifact gap; documentation now describes only the shipped, tested configuration.
+
+\item \textbf{``Matched by expert count'' wasn't matched by parameters.} A dendritic expert has five weight matrices to a plain MoE expert's three ($1.67\times$ the parameters). Comparisons that only controlled for the \emph{number} of experts were silently comparing unequal total capacity. \emph{Fix:} built the 30-expert, parameter-matched static MoE control described in Section~\ref{sec:ruling-out-params}, specifically to close this gap.
+
+\item \textbf{Interleaved training was getting reported as a forgetting test.} Every domain was present in every training batch from step one --- a setup where catastrophic forgetting cannot happen by construction, since nothing is ever removed from the stream --- and the loss curve from that setup was being read as evidence about forgetting. \emph{Fix:} built the sequential, one-domain-at-a-time protocol that Sections~\ref{sec:protocol}--\ref{sec:results} actually use, specifically to test the hard version of the claim.
+
+\item \textbf{Spawned experts that never got a gradient.} The optimizer was built once, before training started, with a fixed parameter list. Experts created afterward existed in the forward pass but were invisible to the optimizer --- their weights sat frozen at initialization for the entire run while looking, from the outside, completely normal. This is the one that scared me most, because it would have meant every ``neurogenesis helps'' result up to that point was actually measuring randomly-initialized noise passed through unrelated layers. \emph{Fix:} \texttt{DynamicWarmupAdamW} re-registers new parameter groups the instant an expert is born; I verified the fix by loading a checkpoint's raw state dict and confirming every ``spawned'' expert's weights had actually moved from their initialization.
+
+\item \textbf{The cold-start monopoly.} Sixteen experts spawned within the first three training steps, all cloned from the same one or two seed experts. The two originals, with a few extra gradient steps of head start, permanently won every later routing competition, leaving fourteen structurally-present but functionally dead experts for the rest of the run. \emph{Fix:} a grace period (no spawning for the first 100 steps) plus a per-phase spawn budget, forcing genuine, staggered births aligned to actual domain transitions.
+
+\item \textbf{A newborn can't win even when it's born at the right time.} Even with correct timing, new experts still lost every routing competition --- a newborn's address key is a one-batch centroid, while an established expert's key has been sharpened by hundreds of gradient steps into something far more broadly resonant. A drift guard built to protect established experts from noisy tokens (Section~\ref{sec:attribution}) made this \emph{worse}, not better, because it removed the one channel --- hard, unusual tokens --- through which an underdog could occasionally win a routing slot. \emph{Fix:} a decaying, per-expert exploration bias (the same idea DeepSeek's auxiliary-loss-free balancing uses) gave newborns a temporary, fading edge; I later found this needed to explicitly exclude replay-buffer traffic too, or old exemplars get hijacked toward whatever expert is newest (item 12).
+
+\item \textbf{An 18.5$\times$ throughput miss, three separate times.}
+\label{sec:dispatch}
+My throughput estimates for scaling to 32 experts were off by $2.2\times$, then $16.5\times$, against what I actually measured when I ran it. The real cost was a Python-loop MoE dispatch generating $500+$ tiny sequential CUDA kernel launches per micro-batch --- not the $O(N^2)$ orthogonality-loss term I originally suspected (the soft regularizer mentioned in Section~\ref{sec:architecture}), which profiling showed was $0.3\%$ of runtime. \emph{Fix:} a token-sorted, batched-GEMM dispatch, checked for exact numerical equivalence against the original (max difference $\approx 9\times10^{-8}$, and provably exact up to floating-point error --- Appendix~\ref{app:proofs}, Theorem~\ref{thm:dispatch}) before I trusted it, recovered the throughput: $236 \rightarrow 4{,}363$ tokens/sec at 32 experts.
+
+\begin{figure}[htbp]
 \centering
-\small
-\begin{tabular}{lllc}
-\toprule
-\textbf{Layer} & \textbf{Python Code} & \textbf{Natural English Prose} & \textbf{Separation Dynamics} \\
-\midrule
-Layer 0 & E7: 40.7\%, E10: 16.3\% & E5, E6, E12, E9 (17\%--27\%) & Code vs. Prose dichotomy \\
-Layer 1 & E7: 38.8\%, E2: 14.4\% & Stories: E12 (40.4\%), Web/Wiki: E9 (23\%) & Surface syntactic split \\
-Layer 2 & E7: 49.7\%, E5: 19.3\% & Stories: E6 (36.1\%), Web/Wiki: E3 (28\%) & Modal divergence \\
-Layer 3 & \textbf{E5, E6, E12 (99.1\%)} & \textbf{E5, E6, E12 (98.3\%--99.4\%)} & \textbf{Severe Output Collapse} \\
-\bottomrule
-\end{tabular}
-\caption{Empirical per-layer routing mass distribution showing code-prose separation in shallow layers and winner-take-all collapse in Layer 3.}
-\end{table}
+\includegraphics[width=0.95\linewidth]{figures/dispatch_benchmark.png}
+\caption{Left: throughput vs.\ expert count for the vectorized, token-sorted dispatch against the original sequential-loop dispatch --- the gap widens as expert count grows, since the loop version pays a fixed per-expert kernel-launch cost the batched version does not. Right: VRAM scaling for the fix, comfortably under the 12GB ceiling of the card everything ran on.}
+\label{fig:dispatch}
+\end{figure}
+
+\item \textbf{The fix for item 10 broke replay.} Once newborns could win routing competitions, they sometimes won them against \emph{replayed} exemplars from older domains too --- a Python replay token could get routed to a brand-new, unrelated expert instead of the expert that actually learned Python, quietly defeating the rehearsal mechanism the whole architecture depends on. \emph{Fix:} hard-disabled the exploration bias specifically for replay-sourced batches; verified by logging which expert each replay batch actually routed to, not just the aggregate metric.
+
+\item \textbf{A win that didn't survive a second seed.} A single-seed result showing neurogenesis beating the concentrated core was one run away from being written up as settled. A second and third seed showed the gap was the same order of magnitude as ordinary seed noise, and the ranking flipped outright on the third seed (Section~\ref{sec:3xscale}). \emph{Fix:} every comparative claim after this point in the project carries an explicit multi-seed statistical test, reported next to the raw numbers.
+
+\item \textbf{``Semantic clustering'' that was actually a data-volume artifact.} Four of the ten domains in the final corpus had too little unique data to avoid being seen up to $2.95\times$ within a single training phase; those same four domains showed suspiciously high cross-domain routing similarity, which I initially wrote up as ``technical and scientific prose forming a cohesive cluster.'' \emph{Fix:} directly looking at the routing heatmaps (Section~\ref{sec:specialization}, Figure~\ref{fig:heatmap}) and the residual-similarity numbers showed all four repetition-affected domains routing almost identically regardless of actual topic, while the data-rich domains routed distinctly --- the similarity was about repetition, not content. Flagged explicitly in every table after this point (Table~\ref{tab:ten-domain}).
+\end{enumerate}
+
+\section{Limitations}
+\label{sec:limitations}
+
+\begin{itemize}[leftmargin=1.4em]
+\item \textbf{Scale.} 28.9M--129M parameters, one RTX 3060, runs measured in tens of minutes to low single-digit hours. Nothing here should be read as a claim about how this behaves at a billion parameters.
+\item \textbf{Seed count.} Two seeds for the ten-domain evaluation, three for the $3\times$-scale pilot, one for most of the smaller ablations. Every ``not significant'' label in this paper should be read as exactly that --- undetermined, not disproven.
+\item \textbf{Tokenizer.} A GPT-2 English BPE tokenizer throughout. Domains I considered and deliberately left out of the final ten --- multilingual text, tabular or JSON data --- would likely show tokenizer-driven differences that have nothing to do with the architecture.
+\item \textbf{Baseline family.} Every comparison here is against dense transformers and standard softmax MoE. I have not yet run this against PackNet-style hard parameter isolation or EWC-style regularization on the same protocol.
+\item \textbf{Throughput cost.} As reported in Section~\ref{sec:ten-domain}, the spawning architecture runs about $41\%$ slower end-to-end than the static baseline during active continual training, even with the dispatch fix in place --- the retention gain on two domains is not free.
+\item \textbf{Author and review.} This is a single-author project. Every number in this paper was re-derived by hand from raw JSON output rather than copied from a summary table, but nobody outside this project has replicated any of it yet.
+\end{itemize}
+
+\section{Future work}
+\label{sec:future}
+
+\begin{enumerate}[leftmargin=1.6em]
+\item Push the ten-domain result to at least five seeds before drawing any general conclusion about neurogenesis, using the $18.5\times$ throughput fix (Section~\ref{sec:audit}, item 11) to make that affordable to actually run.
+\item Isolate the bus from spawning at ten-domain scale --- every ablation that separates these two variables so far was only run at four-domain scale.
+\item Redesign context-aware routing as a weighted bundle instead of a hard bind. An earlier attempt to give the router document-level context via VSA binding caused every token in a sequence to route near-identically --- binding is the wrong primitive for ``nudge, don't overwrite,'' and a weighted superposition ($q + \lambda \cdot \text{context}$, small $\lambda$) is identified but not yet tried.
+\item Combine replay with genuine parameter isolation instead of either alone --- a sibling project's frozen, VSA-addressed experts and this project's replay buffer address two different halves of the same failure (expert-level drift vs.\ shared-backbone drift), and I have never tested them together.
+\item Revisit a recurrent ``think before answering'' extension, but only after grounding it properly in the PonderNet-style learned-halting literature rather than the hard resonance threshold I originally sketched, and testing it as one isolated, pre-registered hypothesis rather than folding it into the whole architecture at once.
+\end{enumerate}
 
 \section{Conclusion}
-On a controlled small-scale testbed, the Universal Substrait system resolves catastrophic forgetting in continual language modeling by coupling Complex Phasor Hyperspace Gating ($\mathbb{C}^{2048}$), Two-Compartment Dendritic Experts, Global Workspace context broadcasting, and sparse exemplar rehearsal, achieving $27.5\times$ lower backward loss drift ($R_{\text{BWT}} = +0.0131\text{ nats}$) than capacity-matched static MoE baselines.
+
+Universal Substrait is one architecture, tested as honestly as I know how: a small phasor-addressed core with shared context and replay reliably beats standard alternatives at reducing catastrophic forgetting, and its more ambitious piece --- experts that grow themselves --- shows a real, significant effect in specific, now well-characterized conditions rather than as a general law. I think both of those are genuine results worth having. Getting to state them this precisely took fourteen rounds of finding out that a more exciting-sounding version of the story was wrong. Section~\ref{sec:audit} is the record of that, and it is in the paper itself, not the appendix, because I think it is the part most worth someone else reading before they build something like this.
+
+\subsection*{A note on why I wrote it this way}
+
+I graduated recently with a B.Sc.\ from the University of Prince Edward Island with the specific goal of eventually contributing to AGI, and I am well aware of how small a piece of that this one architecture actually is. What I wanted out of this project was not a headline number --- it was to build the habit of trying at least as hard to break my own results as I did to build them, and reporting whichever one wins. That habit is why this paper is more modest than the one I would have written after the first exciting number came in, and I think it is a better paper for it. I plan to keep making that trade at whatever scale I get to work at next.
+
+\appendix
+
+\section{Two derivations}
+\label{app:proofs}
+
+\begin{theorem}[Quasi-orthogonality of random phasors]
+\label{thm:quasiortho}
+Let $z_1 = e^{i\theta_1}$ and $z_2 = e^{i\theta_2}$ be independent random phasors, each coordinate uniform on $[-\pi,\pi]$. The real Hermitian similarity $S(z_1,z_2) = \frac{1}{D}\sum_{j=1}^{D}\cos(\theta_{1,j}-\theta_{2,j})$ satisfies $\mathbb{E}[S] = 0$ and $\mathrm{Var}[S] = \frac{1}{2D}$.
+\end{theorem}
+\begin{proof}
+Let $\Delta\theta_j = \theta_{1,j} - \theta_{2,j} \pmod{2\pi}$. Since $\theta_{1,j},\theta_{2,j}$ are independent and uniform, so is $\Delta\theta_j$. Then
+\[
+\mathbb{E}[\cos(\Delta\theta_j)] = \frac{1}{2\pi}\int_{-\pi}^{\pi}\cos(\phi)\,d\phi = 0, \qquad
+\mathbb{E}[\cos^2(\Delta\theta_j)] = \frac{1}{2\pi}\int_{-\pi}^{\pi}\cos^2(\phi)\,d\phi = \frac{1}{2}.
+\]
+So $\mathrm{Var}[\cos(\Delta\theta_j)] = \tfrac{1}{2}$. Since the $D$ coordinates are independent,
+\[
+\mathrm{Var}\Big(\sum_{j=1}^D \cos(\Delta\theta_j)\Big) = \frac{D}{2}, \qquad
+\mathrm{Var}[S] = \frac{1}{D^2}\cdot\frac{D}{2} = \frac{1}{2D}. \qedhere
+\]
+\end{proof}
+\noindent For $D=2048$: $\mathrm{Var}[S] = 1/4096$, so $\sigma = 1/64 = 0.015625$. Two unrelated concepts have $|S| < 0.047$ (three standard deviations) with probability $\approx 99.7\%$ under this null model, which is the entire basis for treating $\mathrm{sim} \geq 0.30$ as a well-separated, non-accidental match rather than noise.
+
+\begin{theorem}[Exact equivalence of token-sorted dispatch]
+\label{thm:dispatch}
+Let $X \in \mathbb{R}^{N\times D}$ and let each expert $f_e$ act row-wise (any composition of linear maps and pointwise nonlinearities, as in Section~\ref{sec:architecture}). Let $p$ be a permutation such that tokens assigned to expert $e$ occupy a contiguous slice of $X[p]$, and let $Y_{\text{sorted}}$ be the result of applying each $f_e$ to its contiguous slice. Then $Y_{\text{sorted}}[p^{-1}] = Y_{\text{sequential}}$ up to floating-point rounding, where $Y_{\text{sequential}}$ is the result of applying $f_e$ to row $i$ directly for every $i$.
+\end{theorem}
+\begin{proof}
+Row-wise linear maps satisfy $(W X[p])_{k,:} = W\,(X[p]_{k,:})$ for every row index $k$ --- permuting rows before or after a row-independent operator commutes, and the same holds trivially for any pointwise nonlinearity applied after it. So for row $i$ routed to expert $e$, with $k = p^{-1}(i)$ its position in the sorted order, $(Y_{\text{sorted}})_k = f_e(X[p]_{k,:}) = f_e(x_i)$. Reading this back out through the inverse permutation gives $Y_{\text{sorted}}[p^{-1}]_i = f_e(x_i) = (Y_{\text{sequential}})_i$ for every $i$, exactly. \qedhere
+\end{proof}
+\noindent This is a statement about exact real-number equivalence; the only source of discrepancy at runtime is floating-point summation order inside the batched matrix multiply, which is what the measured $\approx 9\times 10^{-8}$ max difference in Section~\ref{sec:audit} (item 11) reflects.
+
+\section{Core hyperparameters}
+
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{ll}
+\toprule
+Parameter & Value \\
+\midrule
+Vocabulary & 50,304 (GPT-2 BPE) \\
+$d_{\text{model}}$ / layers / heads / $d_{\text{ff}}$ & 384 / 4 / 6 / 768 \\
+Hyperspace dimension $D$ & 2,048 \\
+Routing top-$k$ / max-$k$ & 2 / 4 (dynamic) \\
+Spawn threshold $\tau$ (4-domain / capacity-matched runs) & 0.30 \\
+Spawn threshold $\tau$ (ten-domain evaluation) & 0.35 \\
+Clone noise $\sigma$ & 0.01 \\
+Replay ratio / buffer & 20\% / 256 sequences per domain \\
+Sequence length / micro-batch / accumulation & 256 / 12 / 3 \\
+Optimizer & DynamicWarmupAdamW, lr $5\times 10^{-4}$ \\
+Hardware & RTX 3060, 12GB, PyTorch AMP \\
+\bottomrule
+\end{tabular}
+\caption{Core hyperparameters. The two spawn-threshold values are both real, drawn from different experiment phases (Section~\ref{sec:protocol}) --- not an inconsistency being hidden.}
+\end{table}
+
+\begin{thebibliography}{99}
+\bibitem{kanerva} Kanerva, P. Hyperdimensional computing: an introduction to computing in distributed representation with high-dimensional random vectors. \emph{Cognitive Computation}, 1(2), 2009.
+\bibitem{plate} Plate, T. \emph{Holographic Reduced Representations: Distributed Representation for Cognitive Structures.} CSLI Publications, 2003.
+\bibitem{frady} Frady, E.P., Kleyko, D., Sommer, F.T. Resonator networks. \emph{Neural Computation}, 2020.
+\bibitem{ramsauer} Ramsauer, H. et al. Hopfield networks is all you need. 2020.
+\bibitem{shazeer} Shazeer, N. et al. Outrageously large neural networks: the sparsely-gated mixture-of-experts layer. \emph{ICLR}, 2017.
+\bibitem{zhou} Zhou, Y. et al. Mixture-of-experts with expert choice routing. 2022.
+\bibitem{deepseek} DeepSeek-AI. Auxiliary-loss-free load balancing strategy for mixture-of-experts. 2024.
+\bibitem{myth} Anonymous. The myth of expert specialization in MoEs. 2026.
+\bibitem{ewc} Kirkpatrick, J. et al. Overcoming catastrophic forgetting in neural networks. \emph{PNAS}, 114(13), 2017.
+\bibitem{packnet} Mallya, A., Lazebnik, S. PackNet: adding multiple tasks to a single network by iterative pruning. \emph{CVPR}, 2018.
+\bibitem{geiping} Geiping, J. et al. Scaling up test-time compute with latent reasoning: a recurrent depth approach. 2025.
+\bibitem{ouro} Ouro looped language models. 2026.
+\bibitem{vaswani} Vaswani, A. et al. Attention is all you need. \emph{NeurIPS}, 2017.
+\bibitem{mccloskey} McCloskey, M., Cohen, N.J. Catastrophic interference in connectionist networks: the sequential learning problem. \emph{Psychology of Learning and Motivation}, 24, 1989.
+\end{thebibliography}
 
 \end{document}

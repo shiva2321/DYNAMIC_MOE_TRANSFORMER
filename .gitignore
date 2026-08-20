@@ -7,10 +7,15 @@ __pycache__/
 .benchmarks/
 
 # Checkpoints and Large Binaries
+*.pt
+*.bin
+*.mmap
+*.parquet
+experiments/*.pt
 experiments/checkpoints/*.pt
 data/**/*.bin
-data/**/*.mmap
-data/**/*.parquet
+data/corpus_10domain/*.bin
+data/corpus_10domain/
 
 # Virtual Environments
 venv/

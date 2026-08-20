@@ -17,16 +17,30 @@ class SemanticHyperspaceMemory(nn.Module):
     Continuous Item Memory for Neural Experts in Complex Phasor Hyperspace.
     Expert address keys are learnable parameters in C^D optimized by backpropagation.
     """
-    def __init__(self, d_hyper: int = 2048, spawn_threshold: float = 0.35, max_experts: int = 64):
+    def __init__(
+        self,
+        d_hyper: int = 2048,
+        spawn_threshold: float = 0.35,
+        max_experts: int = 64,
+        use_drift_guard: bool = False,
+        drift_sigma: float = 2.0
+    ):
         super().__init__()
         self.d_hyper = d_hyper
         self.spawn_threshold = spawn_threshold
         self.max_experts = max_experts
+        self.use_drift_guard = use_drift_guard
+        self.drift_sigma = drift_sigma
         
         # Learnable parameter lists for real and imaginary components in C^D
         self.keys_r = nn.ParameterList()
         self.keys_i = nn.ParameterList()
         self.expert_metadata: List[Dict[str, Any]] = []
+
+        # Statistical Outlier Drift-Guard Buffers (Faithful to VSA_GROUND_REBUILD)
+        self.register_buffer("running_sim_mean", torch.zeros(max_experts))
+        self.register_buffer("running_sim_var", torch.ones(max_experts) * 0.04)
+        self.register_buffer("usage_counts", torch.zeros(max_experts, dtype=torch.long))
 
     @property
     def num_experts(self) -> int:
@@ -65,26 +79,56 @@ class SemanticHyperspaceMemory(nn.Module):
         
         expert_id = self.num_experts - 1
         self.expert_metadata.append({"id": expert_id, "label": label})
+
+        # Initialize running similarity distribution for new expert
+        if expert_id < self.max_experts:
+            self.running_sim_mean[expert_id] = 0.35
+            self.running_sim_var[expert_id] = 0.04
+            self.usage_counts[expert_id] = 0
+
         return expert_id
 
     def compute_resonance(self, query_phasors: torch.Tensor) -> torch.Tensor:
         """
         Computes the semantic resonance (Hermitian cosine similarity) between input queries and learnable expert keys.
         query_phasors: [Batch, D] (unit complex phasors)
-        Returns: [Batch, num_experts] in [-1.0, 1.0] with full gradient flow to keys.
+        Returns: [Batch, num_experts] in [-1.0, 1.0].
+        If use_drift_guard=True during training, straight-through gates gradients for outlier tokens.
         """
         if self.num_experts == 0:
             raise ValueError("No experts registered in Hyperspace Memory.")
             
         keys = self.expert_keys # [N, D] in C^D
-        # Hermitian dot product: Real(query . keys^H)
-        # (q_r + i q_i) . (k_r - i k_i) = (q_r k_r + q_i k_i)
         qr = query_phasors.real
         qi = query_phasors.imag
         kr = keys.real
         ki = keys.imag
         
-        sim = (torch.matmul(qr, kr.T) + torch.matmul(qi, ki.T)) / self.d_hyper
+        sim = (torch.matmul(qr, kr.T) + torch.matmul(qi, ki.T)) / self.d_hyper # [B, N]
+
+        if self.training and self.use_drift_guard and self.num_experts > 0:
+            with torch.no_grad():
+                for e in range(self.num_experts):
+                    e_sim = sim[:, e]
+                    mean_val = self.running_sim_mean[e]
+                    std_val = torch.sqrt(self.running_sim_var[e] + 1e-6)
+                    active_mask = e_sim > (mean_val - 2.5 * std_val)
+                    if active_mask.any():
+                        batch_mean = e_sim[active_mask].mean()
+                        batch_var = torch.var(e_sim[active_mask], unbiased=False) if active_mask.sum() > 1 else torch.tensor(0.01, device=sim.device)
+                        
+                        alpha = 0.95
+                        self.running_sim_mean[e] = alpha * self.running_sim_mean[e] + (1.0 - alpha) * batch_mean
+                        self.running_sim_var[e] = (alpha * self.running_sim_var[e] + (1.0 - alpha) * batch_var).clamp(min=1e-4, max=1.0)
+                        self.usage_counts[e] += active_mask.sum()
+
+            std_expanded = torch.sqrt(self.running_sim_var[:self.num_experts] + 1e-6).unsqueeze(0) # [1, N]
+            mean_expanded = self.running_sim_mean[:self.num_experts].unsqueeze(0) # [1, N]
+            is_outlier = torch.abs(sim - mean_expanded) > (self.drift_sigma * std_expanded)
+            
+            # Straight-through gradient detachment: forward value exact, backward gradient zero for outliers
+            sim = torch.where(is_outlier, sim.detach(), sim)
+
         return sim
 
     def evaluate_novelty(

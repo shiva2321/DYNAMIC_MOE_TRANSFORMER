@@ -3,7 +3,7 @@ HyperTransformerLM: NanoGPT Architecture powered by Dynamic Hyper-MoE Layers.
 """
 
 import math
-from typing import Optional, Tuple, Dict, Any, List
+from typing import Optional, Tuple, Dict, Any, List, Union
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -80,6 +80,9 @@ class HyperTransformerBlock(nn.Module):
         use_bus: bool = True,
         use_hopfield: bool = True,
         use_criticality: bool = True,
+        use_drift_guard: bool = False,
+        drift_sigma: float = 2.0,
+        use_context_binding: bool = False,
     ):
         super().__init__()
         self.norm1 = RMSNorm(d_model)
@@ -111,9 +114,12 @@ class HyperTransformerBlock(nn.Module):
             use_bus=use_bus,
             use_hopfield=use_hopfield,
             use_criticality=use_criticality,
+            use_drift_guard=use_drift_guard,
+            drift_sigma=drift_sigma,
+            use_context_binding=use_context_binding,
         )
 
-    def forward(self, x: torch.Tensor, allow_spawning: bool = True) -> Tuple[torch.Tensor, Dict[str, Any]]:
+    def forward(self, x: torch.Tensor, allow_spawning: bool = True, is_replay: bool = False) -> Tuple[torch.Tensor, Dict[str, Any]]:
         # Pre-LN Self-Attention
         if self.use_sparse_attn:
             attn_out, _ = self.attn(self.norm1(x))
@@ -122,7 +128,7 @@ class HyperTransformerBlock(nn.Module):
             x = x + self.attn(self.norm1(x))
             
         # Pre-LN Hyper-MoE
-        moe_out, telemetry = self.hyper_moe(self.norm2(x), allow_spawning=allow_spawning)
+        moe_out, telemetry = self.hyper_moe(self.norm2(x), allow_spawning=allow_spawning, is_replay=is_replay)
         x = x + moe_out
         return x, telemetry
 
@@ -154,6 +160,11 @@ class HyperTransformerLM(nn.Module):
         use_bus: bool = True,
         use_hopfield: bool = True,
         use_criticality: bool = True,
+        use_drift_guard: Union[bool, List[bool]] = False,
+        drift_sigma: float = 2.0,
+        use_context_binding: bool = False,
+        ortho_loss_weight: float = 0.005,
+        load_bal_weight: float = 0.01,
     ):
         super().__init__()
         self.vocab_size = vocab_size
@@ -162,9 +173,13 @@ class HyperTransformerLM(nn.Module):
         self.dynamic_k = dynamic_k
         self.max_k = max_k
         self.top_p = top_p
+        self.ortho_loss_weight = ortho_loss_weight
+        self.load_bal_weight = load_bal_weight
         
         self.token_embeddings = nn.Embedding(vocab_size, d_model)
         self.dropout = nn.Dropout(dropout) if dropout > 0.0 else nn.Identity()
+        
+        drift_guards = use_drift_guard if isinstance(use_drift_guard, (list, tuple)) else [use_drift_guard] * n_layers
         
         self.blocks = nn.ModuleList([
             HyperTransformerBlock(
@@ -188,8 +203,11 @@ class HyperTransformerLM(nn.Module):
                 use_bus=use_bus,
                 use_hopfield=use_hopfield,
                 use_criticality=use_criticality,
+                use_drift_guard=drift_guards[l],
+                drift_sigma=drift_sigma,
+                use_context_binding=use_context_binding,
             )
-            for _ in range(n_layers)
+            for l in range(n_layers)
         ])
         
         self.final_norm = RMSNorm(d_model)
@@ -226,6 +244,7 @@ class HyperTransformerLM(nn.Module):
         input_ids: torch.Tensor,
         targets: Optional[torch.Tensor] = None,
         allow_spawning: bool = True,
+        is_replay: bool = False,
     ) -> Tuple[torch.Tensor, Optional[torch.Tensor], List[Dict[str, Any]]]:
         """
         input_ids: [Batch, SeqLen]
@@ -238,8 +257,9 @@ class HyperTransformerLM(nn.Module):
         x = self.dropout(x)
         
         layer_telemetries = []
-        for block in self.blocks:
-            x, telem = block(x, allow_spawning=allow_spawning)
+        for l_idx, block in enumerate(self.blocks):
+            block_spawning = allow_spawning[l_idx] if isinstance(allow_spawning, (list, tuple)) else allow_spawning
+            x, telem = block(x, allow_spawning=block_spawning, is_replay=is_replay)
             layer_telemetries.append(telem)
             
         x = self.final_norm(x)
@@ -263,7 +283,7 @@ class HyperTransformerLM(nn.Module):
             else:
                 load_bal_loss = min(5.0, float(load_bal_loss))
                 
-            loss = lm_loss + (0.005 * ortho_loss) + (0.01 * load_bal_loss)
+            loss = lm_loss + (self.ortho_loss_weight * ortho_loss) + (self.load_bal_weight * load_bal_loss)
             
         return logits, loss, layer_telemetries
 

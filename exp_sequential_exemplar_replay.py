@@ -114,7 +114,9 @@ def run_sequential_exemplar_replay(
     ).to(device)
 
     scaler = torch.amp.GradScaler('cuda')
-    optimizer = torch.optim.AdamW(model.parameters(), lr=lr, weight_decay=0.01, betas=(0.9, 0.95))
+    from hyperspace.dynamic_optimizer import DynamicWarmupAdamW
+    optimizer = DynamicWarmupAdamW(model.parameters(), lr=lr, weight_decay=0.01, default_group_warmup_steps=50)
+    prev_expert_counts = [b.hyper_moe.num_experts for b in model.blocks]
     memory_buffer = TinyExemplarBuffer(max_samples_per_domain=256)
 
     loss_matrix = np.zeros((4, 4))
@@ -174,6 +176,20 @@ def run_sequential_exemplar_replay(
 
                 accum_loss += loss.item() * accum_steps
                 scaler.scale(loss).backward()
+
+                # Dynamic Spawning Parameter Registration
+                curr_expert_counts = [b.hyper_moe.num_experts for b in model.blocks]
+                if curr_expert_counts != prev_expert_counts:
+                    for l_idx, block in enumerate(model.blocks):
+                        if curr_expert_counts[l_idx] > prev_expert_counts[l_idx]:
+                            for new_exp_idx in range(prev_expert_counts[l_idx], curr_expert_counts[l_idx]):
+                                new_exp = block.hyper_moe.experts[new_exp_idx]
+                                key_r = block.hyper_moe.memory.keys_r[new_exp_idx]
+                                key_i = block.hyper_moe.memory.keys_i[new_exp_idx]
+                                new_params = list(new_exp.parameters()) + [key_r, key_i]
+                                optimizer.add_dynamic_param_group(new_params, lr=lr, warmup_steps=50, group_name=f"L{l_idx}_E{new_exp_idx}")
+                                print(f"  🌱 [AUTONOMOUS SPAWN REGISTERED @ PHASE {phase_idx+1} STEP {step}] Layer {l_idx} spawned Expert #{new_exp_idx}! Registered in DynamicWarmupAdamW.", flush=True)
+                    prev_expert_counts = curr_expert_counts
 
             scaler.unscale_(optimizer)
             torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)

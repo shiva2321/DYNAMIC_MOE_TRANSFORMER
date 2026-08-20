@@ -42,6 +42,9 @@ class DynamicHyperMoE(nn.Module):
         use_dentate: bool = True,
         use_hopfield: bool = True,
         use_criticality: bool = True,
+        use_drift_guard: bool = False,
+        drift_sigma: float = 2.0,
+        use_context_binding: bool = False,
     ):
         super().__init__()
         self.d_model = d_model
@@ -55,6 +58,9 @@ class DynamicHyperMoE(nn.Module):
         self.use_dentate = use_dentate
         self.use_hopfield = use_hopfield
         self.use_criticality = use_criticality
+        self.use_drift_guard = use_drift_guard
+        self.drift_sigma = drift_sigma
+        self.use_context_binding = use_context_binding
         self.max_experts = max_experts
         
         # 1. Complex Linear Phasor Projection Layers (C^{D x d_model})
@@ -67,7 +73,9 @@ class DynamicHyperMoE(nn.Module):
         self.memory = SemanticHyperspaceMemory(
             d_hyper=d_hyper,
             spawn_threshold=spawn_threshold,
-            max_experts=max_experts
+            max_experts=max_experts,
+            use_drift_guard=use_drift_guard,
+            drift_sigma=drift_sigma
         )
         
         # 3. Dynamic Container for Two-Compartment Dendritic Micro-Experts
@@ -131,7 +139,7 @@ class DynamicHyperMoE(nn.Module):
         return expert_id
 
     def forward(
-        self, x: torch.Tensor, allow_spawning: bool = True
+        self, x: torch.Tensor, allow_spawning: bool = True, is_replay: bool = False
     ) -> Tuple[torch.Tensor, Dict[str, Any]]:
         """
         x: [Batch, SeqLen, d_model]
@@ -141,14 +149,34 @@ class DynamicHyperMoE(nn.Module):
         num_tokens = flat_x.shape[0]
         
         # 1. Project Tokens to Unit Complex Phasor Hyperspace
-        norm_flat_x = F.normalize(flat_x, p=2, dim=-1)
-        r_part = self.proj_r(norm_flat_x).float()
-        i_part = self.proj_i(norm_flat_x).float()
-        z = torch.complex(r_part, i_part)
-        query_phasors = z / (torch.abs(z) + 1e-8)
+        if self.use_context_binding:
+            norm_x = F.normalize(x, p=2, dim=-1) # [B, S, d_model]
+            r_part = self.proj_r(norm_x).float()
+            i_part = self.proj_i(norm_x).float()
+            z = torch.complex(r_part, i_part)
+            token_phasors = z / (torch.abs(z) + 1e-8) # [B, S, d_hyper]
+            
+            # Strictly Causal Prefix Context: token t only sees context from positions 1..t
+            prefix_sum = torch.cumsum(token_phasors, dim=1) # [B, S, d_hyper]
+            positions = torch.arange(1, s + 1, device=x.device, dtype=torch.float).view(1, s, 1)
+            c_seq_unnorm = prefix_sum / positions # [B, S, d_hyper]
+            c_seq = c_seq_unnorm / (torch.abs(c_seq_unnorm) + 1e-8) # [B, S, d_hyper]
+            
+            # VSA Superposition Bundling (Context Nudge):
+            # Preserves individual token identity (sim ~ 0.98) while providing a subtle sequence-register bias
+            lambda_ctx = 0.15
+            nudged_unnorm = token_phasors + lambda_ctx * c_seq
+            nudged_phasors = nudged_unnorm / (torch.abs(nudged_unnorm) + 1e-8)
+            query_phasors = nudged_phasors.view(-1, self.d_hyper) # [N_tokens, d_hyper]
+        else:
+            norm_flat_x = F.normalize(flat_x, p=2, dim=-1)
+            r_part = self.proj_r(norm_flat_x).float()
+            i_part = self.proj_i(norm_flat_x).float()
+            z = torch.complex(r_part, i_part)
+            query_phasors = z / (torch.abs(z) + 1e-8)
         
-        # 2. Novelty Evaluation & Dynamic Spawning
-        if self.training and allow_spawning and len(self.experts) < self.max_experts:
+        # 2. Novelty Evaluation & Dynamic Spawning (Never spawn on replay rehearsal)
+        if self.training and allow_spawning and not is_replay and len(self.experts) < self.max_experts:
             resonance, max_sim, should_spawn, seed_vector = self.memory.evaluate_novelty(query_phasors)
             if should_spawn and seed_vector is not None:
                 new_id = self._spawn_expert(seed_vector, label=f"spawned_t{len(self.experts)}")
@@ -156,12 +184,20 @@ class DynamicHyperMoE(nn.Module):
         else:
             resonance = self.memory.compute_resonance(query_phasors)
             
-        # 3. Homeostatic Habituation (Synaptic Fatigue / BCM Rule)
+        # 3. Homeostatic Habituation & Decaying Novelty Exploration Bias (Aux-Loss-Free Cold-Start Routing)
         if self.training and self.num_experts > 1:
             total_usage = self.expert_usage_counts[:self.num_experts].sum().float() + 1e-6
             relative_usage = self.expert_usage_counts[:self.num_experts].float() / total_usage
             fatigue_penalty = relative_usage.unsqueeze(0) * 0.25
-            effective_resonance = resonance - fatigue_penalty.to(resonance.device)
+            
+            # Temporary competitive boost for newly spawned zero-usage experts:
+            # Applied ONLY to live task training tokens. For replay tokens (is_replay=True), boost is hard 0.0 so replay routes on pure semantic resonance.
+            if not is_replay:
+                novelty_boost = (0.30 / (1.0 + self.expert_usage_counts[:self.num_experts].float() / 200.0)).unsqueeze(0).to(resonance.device)
+            else:
+                novelty_boost = torch.zeros(1, self.num_experts, device=resonance.device)
+            
+            effective_resonance = resonance - fatigue_penalty.to(resonance.device) + novelty_boost
         else:
             effective_resonance = resonance
 
@@ -226,28 +262,35 @@ class DynamicHyperMoE(nn.Module):
         else:
             load_balance_loss = torch.tensor(0.0, device=x.device)
 
-        # 5. Pass 1: Sparse Token-Dispatched Feedforward Basal Computation
-        expert_slot_basal_outputs = torch.zeros(num_tokens, k_eval, d, device=x.device, dtype=flat_x.dtype)
-        for k_idx in range(k_eval):
-            indices_k = top_indices[:, k_idx]
-            weights_k = top_weights[:, k_idx]
-            active_token_mask = weights_k > 1e-5
-            if not active_token_mask.any():
+        # 5. Token-Sorted Grouped Feedforward Dispatch (Pass 1: Basal Computation)
+        flat_exp_idx = top_indices.view(-1) # [N * k_eval]
+        flat_weights = top_weights.view(-1, 1).to(flat_x.dtype) # [N * k_eval, 1]
+        tokens_expanded = flat_x.unsqueeze(1).expand(num_tokens, k_eval, d).reshape(num_tokens * k_eval, d)
+
+        counts = torch.bincount(flat_exp_idx, minlength=self.num_experts)
+        sort_indices = torch.argsort(flat_exp_idx)
+        sorted_tokens = tokens_expanded[sort_indices]
+
+        sorted_basal_outputs = torch.zeros_like(sorted_tokens)
+        counts_cpu = counts.tolist()
+        start_idx = 0
+        for exp_id, count in enumerate(counts_cpu):
+            if count == 0:
                 continue
-            active_exp_ids = torch.unique(indices_k[active_token_mask])
-            for exp_id_tensor in active_exp_ids:
-                exp_id = exp_id_tensor.item()
-                expert = self.experts[exp_id]
-                token_mask = active_token_mask & (indices_k == exp_id)
-                selected_tokens = flat_x[token_mask]
-                exp_out = expert(x_basal=selected_tokens, c_apical=None)
-                expert_slot_basal_outputs[token_mask, k_idx] = exp_out.to(expert_slot_basal_outputs.dtype)
-                
-                if self.training:
-                    self.expert_usage_counts[exp_id] += token_mask.sum().item()
+            end_idx = start_idx + count
+            exp_tokens = sorted_tokens[start_idx:end_idx]
+            sorted_basal_outputs[start_idx:end_idx] = self.experts[exp_id](x_basal=exp_tokens, c_apical=None)
+            if self.training:
+                self.expert_usage_counts[exp_id] += count
+            start_idx = end_idx
+
+        # Invert sorting to reconstruct token-slot tensor for Global Bus
+        inv_sort_indices = torch.empty_like(sort_indices)
+        inv_sort_indices[sort_indices] = torch.arange(len(sort_indices), device=x.device)
+        expert_slot_basal_outputs = sorted_basal_outputs[inv_sort_indices].view(num_tokens, k_eval, d)
 
         # 5. Pass 2: Hyperspace Global Bus & Apical Context Feedback
-        if self.bus is not None and k_eval > 1:
+        if self.bus is not None and k_eval > 1 and self.num_experts > 1:
             selected_keys = self.memory.expert_keys[top_indices] # [N_tokens, k_eval, d_hyper]
             bus_context = self.bus.broadcast_and_listen(
                 expert_outputs=expert_slot_basal_outputs,
@@ -261,23 +304,22 @@ class DynamicHyperMoE(nn.Module):
                 cleaned_context, _ = self.hopfield_cleaner(bus_context_flat)
                 bus_context = cleaned_context.view(num_tokens, k_eval, d)
 
-            # Sparse Token-Dispatched Somatic Integration with Apical Context
-            expert_slot_final_outputs = torch.zeros(num_tokens, k_eval, d, device=x.device, dtype=flat_x.dtype)
-            for k_idx in range(k_eval):
-                indices_k = top_indices[:, k_idx]
-                weights_k = top_weights[:, k_idx]
-                active_token_mask = weights_k > 1e-5
-                if not active_token_mask.any():
+            # Token-Sorted Somatic Integration with Apical Context
+            ctx_expanded = bus_context.reshape(num_tokens * k_eval, d)
+            sorted_ctx = ctx_expanded[sort_indices]
+            sorted_final_outputs = torch.zeros_like(sorted_tokens)
+            
+            start_idx = 0
+            for exp_id, count in enumerate(counts_cpu):
+                if count == 0:
                     continue
-                active_exp_ids = torch.unique(indices_k[active_token_mask])
-                for exp_id_tensor in active_exp_ids:
-                    exp_id = exp_id_tensor.item()
-                    expert = self.experts[exp_id]
-                    token_mask = active_token_mask & (indices_k == exp_id)
-                    tokens_b = flat_x[token_mask]
-                    context_a = bus_context[token_mask, k_idx]
-                    exp_out = expert(x_basal=tokens_b, c_apical=context_a)
-                    expert_slot_final_outputs[token_mask, k_idx] = exp_out.to(expert_slot_final_outputs.dtype)
+                end_idx = start_idx + count
+                exp_tokens = sorted_tokens[start_idx:end_idx]
+                exp_ctx = sorted_ctx[start_idx:end_idx]
+                sorted_final_outputs[start_idx:end_idx] = self.experts[exp_id](x_basal=exp_tokens, c_apical=exp_ctx)
+                start_idx = end_idx
+
+            expert_slot_final_outputs = sorted_final_outputs[inv_sort_indices].view(num_tokens, k_eval, d)
         else:
             expert_slot_final_outputs = expert_slot_basal_outputs
 
