@@ -1,0 +1,235 @@
+{
+  "samples_evaluated": 5,
+  "greedy_accuracy": 0.0,
+  "majority_vote_accuracy": 0.0,
+  "manifold_verifier_accuracy": 0.0,
+  "spearman_rho": 0.0,
+  "p_value": 1.0,
+  "details": [
+    {
+      "idx": 0,
+      "gold": "18",
+      "greedy": {
+        "pred": "",
+        "correct": false
+      },
+      "majority_vote": {
+        "pred": "",
+        "correct": false
+      },
+      "manifold_verifier": {
+        "pred": "",
+        "correct": false
+      },
+      "completions": [
+        {
+          "k": 0,
+          "text": " The, and a I all to that with of self- whose also its are\ufffd has which is",
+          "pred_num": "",
+          "is_correct": false,
+          "score": -0.45688430219888687,
+          "causal_residual": 0.4109836518764496,
+          "jitter": 0.09180130064487457
+        },
+        {
+          "k": 1,
+          "text": " are of about that) more than, but and his a popular is an as their to be for",
+          "pred_num": "",
+          "is_correct": false,
+          "score": -0.496743768453598,
+          "causal_residual": 0.44177553057670593,
+          "jitter": 0.10993647575378418
+        },
+        {
+          "k": 2,
+          "text": " The, and are who is an important has to be other's most._ of its\u2019",
+          "pred_num": "",
+          "is_correct": false,
+          "score": -0.43213750422000885,
+          "causal_residual": 0.389168381690979,
+          "jitter": 0.08593824505805969
+        }
+      ]
+    },
+    {
+      "idx": 1,
+      "gold": "3",
+      "greedy": {
+        "pred": "",
+        "correct": false
+      },
+      "majority_vote": {
+        "pred": "",
+        "correct": false
+      },
+      "manifold_verifier": {
+        "pred": "",
+        "correct": false
+      },
+      "completions": [
+        {
+          "k": 0,
+          "text": " The, which has are the popular a most-term or is their at and's to program =",
+          "pred_num": "",
+          "is_correct": false,
+          "score": -0.5305327251553535,
+          "causal_residual": 0.49434366822242737,
+          "jitter": 0.07237811386585236
+        },
+        {
+          "k": 1,
+          "text": ", but is anInstruction more) they<|endoftext|> as a her of the to or about use for",
+          "pred_num": "",
+          "is_correct": false,
+          "score": -0.5036966949701309,
+          "causal_residual": 0.4701986312866211,
+          "jitter": 0.06699612736701965
+        },
+        {
+          "k": 2,
+          "text": " The the top is to their public think-imm = of about as a for they, but and",
+          "pred_num": "",
+          "is_correct": false,
+          "score": -0.5426657274365425,
+          "causal_residual": 0.5044332146644592,
+          "jitter": 0.07646502554416656
+        }
+      ]
+    },
+    {
+      "idx": 2,
+      "gold": "70000",
+      "greedy": {
+        "pred": "-50",
+        "correct": false
+      },
+      "majority_vote": {
+        "pred": "",
+        "correct": false
+      },
+      "manifold_verifier": {
+        "pred": "",
+        "correct": false
+      },
+      "completions": [
+        {
+          "k": 0,
+          "text": " The city is also an a was, and use to their on with-imm in theal of",
+          "pred_num": "",
+          "is_correct": false,
+          "score": -0.47310238517820835,
+          "causal_residual": 0.45492058992385864,
+          "jitter": 0.03636359050869942
+        },
+        {
+          "k": 1,
+          "text": "-al that is a it on, and her. The In in are to for) who use",
+          "pred_num": "",
+          "is_correct": false,
+          "score": -0.4648459292948246,
+          "causal_residual": 0.43825170397758484,
+          "jitter": 0.05318845063447952
+        },
+        {
+          "k": 2,
+          "text": " In to see been is a, and has an-. The also in which ( of the most",
+          "pred_num": "",
+          "is_correct": false,
+          "score": -0.46035407669842243,
+          "causal_residual": 0.43679124116897583,
+          "jitter": 0.047125671058893204
+        }
+      ]
+    },
+    {
+      "idx": 3,
+      "gold": "540",
+      "greedy": {
+        "pred": "",
+        "correct": false
+      },
+      "majority_vote": {
+        "pred": "",
+        "correct": false
+      },
+      "manifold_verifier": {
+        "pred": "",
+        "correct": false
+      },
+      "completions": [
+        {
+          "k": 0,
+          "text": " The, and the top's to( of is an\ufffd-imm for as \" but with that",
+          "pred_num": "",
+          "is_correct": false,
+          "score": -0.5418998636305332,
+          "causal_residual": 0.514022171497345,
+          "jitter": 0.055755384266376495
+        },
+        {
+          "k": 1,
+          "text": " The been in the practice on about's to also as, have an- publical is for that",
+          "pred_num": "",
+          "is_correct": false,
+          "score": -0.539402898401022,
+          "causal_residual": 0.5174847841262817,
+          "jitter": 0.04383622854948044
+        },
+        {
+          "k": 2,
+          "text": " in the most of an be who but and this, which to or it is has all-50",
+          "pred_num": "-50",
+          "is_correct": false,
+          "score": -0.5650582984089851,
+          "causal_residual": 0.5345423817634583,
+          "jitter": 0.06103183329105377
+        }
+      ]
+    },
+    {
+      "idx": 4,
+      "gold": "20",
+      "greedy": {
+        "pred": "",
+        "correct": false
+      },
+      "majority_vote": {
+        "pred": "",
+        "correct": false
+      },
+      "manifold_verifier": {
+        "pred": "",
+        "correct": false
+      },
+      "completions": [
+        {
+          "k": 0,
+          "text": " This, and have many on a to or it play. The(- popular by that for as",
+          "pred_num": "",
+          "is_correct": false,
+          "score": -0.420642402023077,
+          "causal_residual": 0.37186554074287415,
+          "jitter": 0.09755372256040573
+        },
+        {
+          "k": 1,
+          "text": " The on has an a which, and one or even as well by. How- be (L",
+          "pred_num": "",
+          "is_correct": false,
+          "score": -0.4033117163926363,
+          "causal_residual": 0.3728161156177521,
+          "jitter": 0.06099120154976845
+        },
+        {
+          "k": 2,
+          "text": " The through on, which. Itf are to use a I and it for were their(input",
+          "pred_num": "",
+          "is_correct": false,
+          "score": -0.41619565710425377,
+          "causal_residual": 0.3839094340801239,
+          "jitter": 0.06457244604825974
+        }
+      ]
+    }
+  ]
+}

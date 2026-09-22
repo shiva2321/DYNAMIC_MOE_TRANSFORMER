@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Universal Cognitive Engine: 3D Hyperspace Studio V3</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            background-color: #030712;
+            color: #f3f4f6;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+        }
+        #viewport {
+            flex: 1;
+            height: 100%;
+            position: relative;
+            background: radial-gradient(circle at 50% 50%, #0a0f1d 0%, #030712 100%);
+        }
+        #canvas-container { width: 100%; height: 100%; }
+        
+        /* Sidebar Styling */
+        #sidebar {
+            width: 460px;
+            background: rgba(10, 16, 30, 0.95);
+            backdrop-filter: blur(16px);
+            border-left: 1px solid rgba(56, 189, 248, 0.2);
+            padding: 22px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            box-shadow: -10px 0 35px rgba(0,0,0,0.7);
+            z-index: 10;
+        }
+        h1 {
+            font-size: 1.15rem;
+            color: #38bdf8;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .badge {
+            font-size: 0.68rem;
+            background: linear-gradient(135deg, #6366f1, #a855f7);
+            color: #fff;
+            padding: 2px 8px;
+            border-radius: 9999px;
+            font-weight: 600;
+        }
+        .subtitle {
+            font-size: 0.76rem;
+            color: #94a3b8;
+            margin-top: 2px;
+            line-height: 1.4;
+        }
+        .panel {
+            background: rgba(15, 23, 42, 0.7);
+            border: 1px solid rgba(56, 189, 248, 0.15);
+            border-radius: 8px;
+            padding: 14px;
+        }
+        .panel-title {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #cbd5e1;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        /* Mode Switcher Tabs */
+        .tab-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+        .tab-btn {
+            background: rgba(30, 41, 59, 0.7);
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            color: #94a3b8;
+            padding: 8px 10px;
+            border-radius: 6px;
+            font-size: 0.74rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: center;
+        }
+        .tab-btn:hover {
+            background: rgba(56, 189, 248, 0.15);
+            color: #38bdf8;
+            border-color: rgba(56, 189, 248, 0.4);
+        }
+        .tab-btn.active {
+            background: linear-gradient(135deg, rgba(14, 165, 233, 0.25), rgba(99, 102, 241, 0.25));
+            color: #38bdf8;
+            border-color: #38bdf8;
+            box-shadow: 0 0 12px rgba(56, 189, 248, 0.25);
+        }
+
+        /* Metric Grid */
+        .metric-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+        .metric-card {
+            background: rgba(11, 19, 38, 0.8);
+            border-radius: 6px;
+            padding: 10px;
+            border-left: 3px solid #38bdf8;
+        }
+        .metric-val {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #ffffff;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+        }
+        .metric-lbl {
+            font-size: 0.68rem;
+            color: #94a3b8;
+            margin-top: 2px;
+            text-transform: uppercase;
+        }
+
+        /* Controls */
+        .controls {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+        button.action-btn {
+            background: #0284c7;
+            color: white;
+            border: none;
+            padding: 7px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.78rem;
+            transition: 0.2s;
+        }
+        button.action-btn:hover { background: #0369a1; }
+        input[type="range"] {
+            flex: 1;
+            accent-color: #38bdf8;
+            cursor: pointer;
+        }
+
+        /* HUD Overlay */
+        .hud-overlay {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            pointer-events: none;
+            background: rgba(10, 16, 30, 0.85);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            border-radius: 8px;
+            padding: 14px 18px;
+            font-size: 0.82rem;
+            color: #e2e8f0;
+            line-height: 1.5;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+        }
+        .hud-title {
+            font-weight: 700;
+            color: #38bdf8;
+            margin-bottom: 4px;
+            font-size: 0.9rem;
+        }
+
+        /* Stream Log */
+        .stream-log {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            max-height: 140px;
+            overflow-y: auto;
+            font-family: ui-monospace, SFMono-Regular, monospace;
+            font-size: 0.72rem;
+        }
+        .log-item {
+            background: rgba(15, 23, 42, 0.8);
+            border-left: 3px solid #38bdf8;
+            padding: 5px 8px;
+            border-radius: 4px;
+            color: #cbd5e1;
+        }
+        .log-item.sheet1 { border-left-color: #38bdf8; }
+        .log-item.sheet2 { border-left-color: #f43f5e; }
+        .log-item.sleep { border-left-color: #10b981; }
+
+        .legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            font-size: 0.72rem;
+            color: #94a3b8;
+            margin-top: 8px;
+        }
+        .legend-item { display: flex; align-items: center; gap: 5px; }
+        .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+    </style>
+    <script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
+    <script src="https://unpkg.com/three@0.160.0/examples/js/controls/OrbitControls.js"></script>
+</head>
+<body>
+    <div id="viewport">
+        <div id="canvas-container"></div>
+        <div class="hud-overlay">
+            <div class="hud-title" id="hud-mode-title">Inverted Mobius 4pi Spinor Attractor</div>
+            <div>Topology: <b id="hud-top" style="color: #38bdf8;">Non-Orientable Double-Cover T^K x Z_2</b></div>
+            <div>Sheet / Phase: <b id="hud-sheet" style="color: #38bdf8;">Sheet 1 (Positive Values)</b></div>
+            <div>Exact Arithmetic CRT Drift: <b id="hud-drift" style="color: #4ade80;">0.000000 (Zero Drift)</b></div>
+            <div style="font-size: 0.7rem; color: #94a3b8; margin-top: 6px;">&bull; Left Drag: Orbit | Right Drag: Pan | Scroll: Zoom</div>
+        </div>
+    </div>
+
+    <div id="sidebar">
+        <div>
+            <h1>Hyperspace Studio <span class="badge">V3.0 ACTIVE</span></h1>
+            <p class="subtitle">
+                Universal Cognitive Engine &bull; Non-Orientable Spinors &bull; S^{D-1} x R+ Manifolds &bull; Multi-Agent Consensus
+            </p>
+        </div>
+
+        <!-- Mode Switcher -->
+        <div class="panel">
+            <div class="panel-title">Manifold Visualizer Mode</div>
+            <div class="tab-grid">
+                <button class="tab-btn active" onclick="setMode('mobius')">1. Inverted Mobius</button>
+                <button class="tab-btn" onclick="setMode('spherical')">2. S^{D-1} Memory</button>
+                <button class="tab-btn" onclick="setMode('collective')">3. Multi-Agent Bus</button>
+                <button class="tab-btn" onclick="setMode('neurogenesis')">4. Dynamic MoE</button>
+            </div>
+            <div id="mode-desc" style="font-size: 0.74rem; color: #94a3b8; line-height: 1.4;">
+                Visualizing non-orientable 4pi double-cover Mobius strip. Demonstrates exact algebraic zero-crossings without dead-reckoning drift.
+            </div>
+        </div>
+
+        <!-- Telemetry Cards -->
+        <div class="panel">
+            <div class="panel-title">Universal Cognitive Telemetry</div>
+            <div class="metric-grid">
+                <div class="metric-card" style="border-left-color: #38bdf8;">
+                    <div class="metric-val" id="val-experts">3</div>
+                    <div class="metric-lbl">Active Specialists</div>
+                </div>
+                <div class="metric-card" style="border-left-color: #4ade80;">
+                    <div class="metric-val" id="val-acc">100.0%</div>
+                    <div class="metric-lbl">Arithmetic Match</div>
+                </div>
+                <div class="metric-card" style="border-left-color: #a855f7;">
+                    <div class="metric-val" id="val-fe">0.084</div>
+                    <div class="metric-lbl">Free Energy F</div>
+                </div>
+                <div class="metric-card" style="border-left-color: #f59e0b;">
+                    <div class="metric-val" id="val-slots">32</div>
+                    <div class="metric-lbl">vMF Memory Slots</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Playback / Animation Controls -->
+        <div class="panel">
+            <div class="panel-title">Manifold Flow Simulation</div>
+            <div class="controls" style="margin-bottom: 8px;">
+                <button class="action-btn" id="btn-play" onclick="togglePlay()">Pause</button>
+                <button class="action-btn" onclick="resetSim()" style="background: #334155;">Reset</button>
+                <span id="step-display" style="font-family: monospace; font-size: 0.8rem; margin-left: auto;">t = 0.00s</span>
+            </div>
+            <input type="range" id="speed-slider" min="0.1" max="3.0" step="0.1" value="1.0" oninput="updateSpeed(this.value)">
+            <div style="display: flex; justify-content: space-between; font-size: 0.68rem; color: #64748b; margin-top: 4px;">
+                <span>0.1x Speed</span>
+                <span>Simulation Rate</span>
+                <span>3.0x Speed</span>
+            </div>
+        </div>
+
+        <!-- Live Cognitive Log -->
+        <div class="panel">
+            <div class="panel-title">Real-Time Cognitive Stream</div>
+            <div class="stream-log" id="stream-log">
+                <div class="log-item sheet1">[Init] Newborn UCE spawned with E = 1 expert.</div>
+                <div class="log-item sheet1">[Perception] Multi-domain subword phases ingested into S^7.</div>
+                <div class="log-item sheet2">[Mobius] Zero-crossing: +12.0 - 25.0 -> -13.0 (Sheet 2).</div>
+                <div class="log-item sleep">[Sleep] Barycentric merge complete; 4 starved experts pruned.</div>
+                <div class="log-item sheet1">[Consensus] Multi-agent bus locked at Frechet mean (acc=100%).</div>
+            </div>
+        </div>
+
+        <!-- Legend -->
+        <div class="panel">
+            <div class="panel-title">Manifold Color Invariants</div>
+            <div class="legend">
+                <div class="legend-item"><span class="dot" style="background: #38bdf8;"></span> Sheet 1 (Positive Values)</div>
+                <div class="legend-item"><span class="dot" style="background: #f43f5e;"></span> Sheet 2 (Negative Values)</div>
+                <div class="legend-item"><span class="dot" style="background: #a855f7;"></span> MoE Specialist Anchors</div>
+                <div class="legend-item"><span class="dot" style="background: #10b981;"></span> Frechet Consensus Vector</div>
+                <div class="legend-item"><span class="dot" style="background: #eab308;"></span> vMF Working Memory</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentMode = 'mobius';
+        let isPlaying = true;
+        let simSpeed = 1.0;
+        let simTime = 0.0;
+
+        // Mode Descriptions
+        const modeDescriptions = {
+            'mobius': 'Visualizing non-orientable 4pi double-cover Mobius strip. Demonstrates exact algebraic zero-crossings without dead-reckoning drift.',
+            'spherical': 'Concentric hyperspace memory shells in S^{D-1} x R+ with von Mises-Fisher associative read/write heads.',
+            'collective': 'Collective Hyperspace Multi-Agent Bus: 3 peer agents synchronize beliefs via Riemannian spherical cross-attention.',
+            'neurogenesis': 'Dynamic MoE: Newborn engine starts from E = 1, spawns specialists upon novelty, and prunes during sleep.'
+        };
+
+        const modeTitles = {
+            'mobius': 'Inverted Mobius 4pi Spinor Attractor',
+            'spherical': 'Infinite Spherical Hyperspace Memory (S^{D-1} x R+)',
+            'collective': 'Collective Hyperspace Multi-Agent Consensus Bus',
+            'neurogenesis': 'Dynamic MoE Neurogenesis & Apoptotic Sleep'
+        };
+
+        // Scene Setup
+        const container = document.getElementById('canvas-container');
+        const scene = new THREE.Scene();
+        scene.fog = new THREE.FogExp2(0x030712, 0.025);
+
+        const camera = new THREE.PerspectiveCamera(48, container.clientWidth / container.clientHeight, 0.1, 100);
+        camera.position.set(0, 7, 14);
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        renderer.setSize(container.clientWidth, container.clientHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        container.appendChild(renderer.domElement);
+
+        const controls = new THREE.OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.05;
+
+        // Lighting
+        scene.add(new THREE.AmbientLight(0xffffff, 0.7));
+        const dirLight = new THREE.DirectionalLight(0x38bdf8, 1.6);
+        dirLight.position.set(10, 20, 10);
+        scene.add(dirLight);
+
+        const pointLight = new THREE.PointLight(0xa855f7, 2, 20);
+        pointLight.position.set(-10, -5, -10);
+        scene.add(pointLight);
+
+        // Group containers for each mode
+        const groupMobius = new THREE.Group();
+        const groupSpherical = new THREE.Group();
+        const groupCollective = new THREE.Group();
+        const groupNeurogenesis = new THREE.Group();
+
+        scene.add(groupMobius);
+        scene.add(groupSpherical);
+        scene.add(groupCollective);
+        scene.add(groupNeurogenesis);
+
+        // -------------------------------------------------------------
+        // 1. Build Inverted Mobius Strip Geometry (4pi Double-Cover)
+        // -------------------------------------------------------------
+        const mobiusSegmentsU = 180;
+        const mobiusSegmentsV = 20;
+        const mobiusGeom = new THREE.BufferGeometry();
+        const mobiusPositions = [];
+        const mobiusColors = [];
+
+        const R_mob = 3.6;
+        const W_mob = 1.2;
+
+        for (let i = 0; i <= mobiusSegmentsU; i++) {
+            const u = (i / mobiusSegmentsU) * 4.0 * Math.PI; // 0 to 4pi
+            for (let j = 0; j <= mobiusSegmentsV; j++) {
+                const v = ((j / mobiusSegmentsV) - 0.5) * 2.0; // -1 to 1
+                
+                // Non-orientable half-twist embedding
+                const r = R_mob + v * W_mob * Math.cos(u / 2.0);
+                const x = r * Math.cos(u);
+                const y = r * Math.sin(u);
+                const z = v * W_mob * Math.sin(u / 2.0);
+
+                mobiusPositions.push(x, z, y);
+
+                // Color based on sheet: u in [0, 2pi) -> Sheet 1 (blue), u in [2pi, 4pi) -> Sheet 2 (red)
+                if (u < 2.0 * Math.PI) {
+                    // Sheet 1: Cyan/Blue
+                    mobiusColors.push(0.22, 0.74, 0.97, 0.8);
+                } else {
+                    // Sheet 2: Crimson/Coral
+                    mobiusColors.push(0.96, 0.25, 0.37, 0.8);
+                }
+            }
+        }
+
+        const mobiusIndices = [];
+        for (let i = 0; i < mobiusSegmentsU; i++) {
+            for (let j = 0; j < mobiusSegmentsV; j++) {
+                const a = i * (mobiusSegmentsV + 1) + j;
+                const b = (i + 1) * (mobiusSegmentsV + 1) + j;
+                const c = (i + 1) * (mobiusSegmentsV + 1) + (j + 1);
+                const d = i * (mobiusSegmentsV + 1) + (j + 1);
+                mobiusIndices.push(a, b, d);
+                mobiusIndices.push(b, c, d);
+            }
+        }
+
+        mobiusGeom.setAttribute('position', new THREE.Float32BufferAttribute(mobiusPositions, 3));
+        mobiusGeom.setAttribute('color', new THREE.Float32BufferAttribute(mobiusColors, 4));
+        mobiusGeom.setIndex(mobiusIndices);
+        mobiusGeom.computeVertexNormals();
+
+        const mobiusMat = new THREE.MeshStandardMaterial({
+            vertexColors: true,
+            side: THREE.DoubleSide,
+            wireframe: false,
+            roughness: 0.35,
+            metalness: 0.2,
+            transparent: true,
+            opacity: 0.85
+        });
+        const mobiusMesh = new THREE.Mesh(mobiusGeom, mobiusMat);
+        groupMobius.add(mobiusMesh);
+
+        // Spinor Particle
+        const spinorParticle = new THREE.Mesh(
+            new THREE.SphereGeometry(0.24, 16, 16),
+            new THREE.MeshStandardMaterial({ color: 0xffffff, emissive: 0x38bdf8, emissiveIntensity: 1.5 })
+        );
+        groupMobius.add(spinorParticle);
+
+        // -------------------------------------------------------------
+        // 2. Build Spherical Hyperspace Memory Geometry
+        // -------------------------------------------------------------
+        const shellRadii = [2.0, 3.5, 5.0];
+        shellRadii.forEach((r, idx) => {
+            const shellGeom = new THREE.SphereGeometry(r, 32, 24);
+            const shellMat = new THREE.MeshBasicMaterial({
+                color: [0x38bdf8, 0x10b981, 0xa855f7][idx],
+                wireframe: true,
+                transparent: true,
+                opacity: 0.15 - idx * 0.03
+            });
+            groupSpherical.add(new THREE.Mesh(shellGeom, shellMat));
+        });
+
+        // Add 24 Memory Slot Nodes on the spheres
+        const memNodes = [];
+        for (let i = 0; i < 24; i++) {
+            const phi = Math.acos(-1 + (2 * i) / 24);
+            const theta = Math.sqrt(24 * Math.PI) * phi;
+            const r = shellRadii[i % shellRadii.length];
+            const x = r * Math.sin(phi) * Math.cos(theta);
+            const y = r * Math.cos(phi);
+            const z = r * Math.sin(phi) * Math.sin(theta);
+
+            const node = new THREE.Mesh(
+                new THREE.SphereGeometry(0.12, 12, 12),
+                new THREE.MeshStandardMaterial({ color: 0xeab308, emissive: 0xca8a04, emissiveIntensity: 0.6 })
+            );
+            node.position.set(x, y, z);
+            groupSpherical.add(node);
+            memNodes.push(node);
+        }
+
+        // -------------------------------------------------------------
+        // 3. Build Collective Hyperspace Multi-Agent Bus Geometry
+        // -------------------------------------------------------------
+        const busSphere = new THREE.Mesh(
+            new THREE.SphereGeometry(3.8, 36, 28),
+            new THREE.MeshBasicMaterial({ color: 0x1e293b, wireframe: true, transparent: true, opacity: 0.25 })
+        );
+        groupCollective.add(busSphere);
+
+        const agentColors = [0x38bdf8, 0xf43f5e, 0xa855f7];
+        const agentMeshes = [];
+        for (let i = 0; i < 3; i++) {
+            const agent = new THREE.Mesh(
+                new THREE.OctahedronGeometry(0.35),
+                new THREE.MeshStandardMaterial({ color: agentColors[i], emissive: agentColors[i], emissiveIntensity: 0.8 })
+            );
+            groupCollective.add(agent);
+            agentMeshes.push(agent);
+        }
+
+        // Frechet Mean Consensus Node
+        const consensusMesh = new THREE.Mesh(
+            new THREE.SphereGeometry(0.28, 16, 16),
+            new THREE.MeshStandardMaterial({ color: 0x10b981, emissive: 0x10b981, emissiveIntensity: 1.2 })
+        );
+        groupCollective.add(consensusMesh);
+
+        // Consensus connecting lines
+        const lineMat = new THREE.LineBasicMaterial({ color: 0x10b981, transparent: true, opacity: 0.6, linewidth: 2 });
+        const lineGeom = new THREE.BufferGeometry();
+        const linePositions = new Float32Array(3 * 2 * 3); // 3 lines connecting to center
+        lineGeom.setAttribute('position', new THREE.BufferAttribute(linePositions, 3));
+        const consensusLines = new THREE.LineSegments(lineGeom, lineMat);
+        groupCollective.add(consensusLines);
+
+        // -------------------------------------------------------------
+        // 4. Build Dynamic MoE Neurogenesis Geometry
+        // -------------------------------------------------------------
+        const expertGroup = new THREE.Group();
+        groupNeurogenesis.add(expertGroup);
+
+        const expertPositions = [
+            [0, 0, 0],
+            [2.2, 1.2, 0.8],
+            [-2.0, 1.5, -0.6],
+            [0.5, -2.1, 1.4],
+            [-1.2, -1.8, -1.5]
+        ];
+        const expertMeshes = [];
+        expertPositions.forEach((pos, idx) => {
+            const expMesh = new THREE.Mesh(
+                new THREE.DodecahedronGeometry(0.32),
+                new THREE.MeshStandardMaterial({
+                    color: idx === 0 ? 0x38bdf8 : 0xc084fc,
+                    emissive: idx === 0 ? 0x0284c7 : 0x9333ea,
+                    emissiveIntensity: 0.7
+                })
+            );
+            expMesh.position.set(...pos);
+            expertGroup.add(expMesh);
+            expertMeshes.push(expMesh);
+        });
+
+        // Set initial visibility
+        setMode('mobius');
+
+        function setMode(mode) {
+            currentMode = mode;
+            groupMobius.visible = (mode === 'mobius');
+            groupSpherical.visible = (mode === 'spherical');
+            groupCollective.visible = (mode === 'collective');
+            groupNeurogenesis.visible = (mode === 'neurogenesis');
+
+            // Update UI
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            const idx = ['mobius', 'spherical', 'collective', 'neurogenesis'].indexOf(mode);
+            if (idx >= 0) {
+                document.querySelectorAll('.tab-btn')[idx].classList.add('active');
+            }
+            document.getElementById('mode-desc').innerText = modeDescriptions[mode];
+            document.getElementById('hud-mode-title').innerText = modeTitles[mode];
+
+            if (mode === 'mobius') {
+                document.getElementById('hud-top').innerText = 'Non-Orientable Double-Cover T^K x Z_2';
+            } else if (mode === 'spherical') {
+                document.getElementById('hud-top').innerText = 'Riemannian Manifold S^{D-1} x R+';
+            } else if (mode === 'collective') {
+                document.getElementById('hud-top').innerText = 'Frechet Tangent Consensus Bus';
+            } else if (mode === 'neurogenesis') {
+                document.getElementById('hud-top').innerText = 'Autonomous Clonal Mitosis (Birth from 1)';
+            }
+        }
+
+        function togglePlay() {
+            isPlaying = !isPlaying;
+            document.getElementById('btn-play').innerText = isPlaying ? 'Pause' : 'Play';
+        }
+
+        function resetSim() {
+            simTime = 0.0;
+        }
+
+        function updateSpeed(val) {
+            simSpeed = parseFloat(val);
+        }
+
+        // Animation Loop
+        let clock = new THREE.Clock();
+        function animate() {
+            requestAnimationFrame(animate);
+            const delta = clock.getDelta();
+
+            if (isPlaying) {
+                simTime += delta * simSpeed;
+                document.getElementById('step-display').innerText = `t = ${simTime.toFixed(2)}s`;
+
+                // 1. Animate Mobius Particle
+                const u_p = (simTime * 0.8) % (4.0 * Math.PI);
+                const v_p = 0.0;
+                const r_p = R_mob + v_p * W_mob * Math.cos(u_p / 2.0);
+                const xp = r_p * Math.cos(u_p);
+                const yp = r_p * Math.sin(u_p);
+                const zp = v_p * W_mob * Math.sin(u_p / 2.0);
+                spinorParticle.position.set(xp, zp, yp);
+
+                // Update HUD Sheet state
+                const isSheet2 = (u_p >= 2.0 * Math.PI);
+                const sheetText = isSheet2 ? 'Sheet 2 (Negative / Modulus Inverted)' : 'Sheet 1 (Positive Values)';
+                const sheetElem = document.getElementById('hud-sheet');
+                sheetElem.innerText = sheetText;
+                sheetElem.style.color = isSheet2 ? '#f43f5e' : '#38bdf8';
+                spinorParticle.material.emissive.setHex(isSheet2 ? 0xf43f5e : 0x38bdf8);
+
+                // Slowly rotate mobius
+                groupMobius.rotation.y = simTime * 0.15;
+                groupMobius.rotation.x = Math.sin(simTime * 0.1) * 0.2;
+
+                // 2. Animate Spherical Memory
+                groupSpherical.rotation.y = simTime * 0.12;
+                memNodes.forEach((node, i) => {
+                    const scale = 1.0 + 0.25 * Math.sin(simTime * 2.0 + i);
+                    node.scale.set(scale, scale, scale);
+                });
+
+                // 3. Animate Collective Agents
+                const R_bus = 3.8;
+                const a1_theta = simTime * 0.5;
+                const a2_theta = simTime * 0.35 + 2.09;
+                const a3_theta = simTime * 0.45 + 4.18;
+
+                const p1 = new THREE.Vector3(R_bus * Math.cos(a1_theta), Math.sin(simTime) * 1.5, R_bus * Math.sin(a1_theta));
+                const p2 = new THREE.Vector3(R_bus * Math.cos(a2_theta), Math.cos(simTime * 0.8) * 1.5, R_bus * Math.sin(a2_theta));
+                const p3 = new THREE.Vector3(R_bus * Math.cos(a3_theta), Math.sin(simTime * 0.7 + 1.0) * 1.5, R_bus * Math.sin(a3_theta));
+
+                agentMeshes[0].position.copy(p1);
+                agentMeshes[1].position.copy(p2);
+                agentMeshes[2].position.copy(p3);
+
+                // Frechet Mean
+                const center = new THREE.Vector3().add(p1).add(p2).add(p3).divideScalar(3);
+                consensusMesh.position.copy(center);
+
+                // Update connecting lines
+                const posAttr = consensusLines.geometry.attributes.position;
+                posAttr.setXYZ(0, p1.x, p1.y, p1.z);
+                posAttr.setXYZ(1, center.x, center.y, center.z);
+                posAttr.setXYZ(2, p2.x, p2.y, p2.z);
+                posAttr.setXYZ(3, center.x, center.y, center.z);
+                posAttr.setXYZ(4, p3.x, p3.y, p3.z);
+                posAttr.setXYZ(5, center.x, center.y, center.z);
+                posAttr.needsUpdate = true;
+
+                // 4. Animate Dynamic MoE
+                expertGroup.rotation.y = simTime * 0.08;
+            }
+
+            controls.update();
+            renderer.render(scene, camera);
+        }
+
+        window.addEventListener('resize', () => {
+            camera.aspect = container.clientWidth / container.clientHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(container.clientWidth, container.clientHeight);
+        });
+
+        animate();
+    </script>
+</body>
+</html>

@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Universal Cognitive Engine | Live Neural Maze Solver</title>
+    <style>
+        :root {
+            --bg: #07090e;
+            --card-bg: #0e131f;
+            --card-border: #1e293b;
+            --text: #f8fafc;
+            --text-dim: #94a3b8;
+            --accent-cyan: #00f0ff;
+            --accent-green: #10b981;
+            --accent-yellow: #fbbf24;
+            --accent-red: #f43f5e;
+            --accent-purple: #a855f7;
+            --wall-color: #1e293b;
+            --wall-border: #334155;
+            --cell-bg: #0b0f19;
+            --trail-color: rgba(0, 240, 255, 0.45);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1280px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, rgba(14, 19, 31, 0.9), rgba(15, 23, 42, 0.6));
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 20px 28px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(12px);
+        }
+
+        .title-block h1 {
+            font-size: 22px;
+            font-weight: 700;
+            background: linear-gradient(90deg, #00f0ff, #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.5px;
+            margin-bottom: 4px;
+        }
+
+        .title-block p {
+            font-size: 13px;
+            color: var(--text-dim);
+        }
+
+        .badge-bar {
+            display: flex;
+            gap: 10px;
+        }
+
+        .badge {
+            padding: 6px 14px;
+            border-radius: 9999px;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .badge-live {
+            background: rgba(16, 185, 129, 0.15);
+            border: 1px solid rgba(16, 185, 129, 0.4);
+            color: var(--accent-green);
+        }
+
+        .badge-algo {
+            background: rgba(168, 85, 247, 0.15);
+            border: 1px solid rgba(168, 85, 247, 0.4);
+            color: var(--accent-purple);
+        }
+
+        /* Selector Deck */
+        .selector-deck {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 12px 18px;
+        }
+
+        .selector-deck label {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-dim);
+        }
+
+        select {
+            background: #141b2d;
+            color: var(--text);
+            border: 1px solid var(--card-border);
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            outline: none;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        select:focus {
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 10px rgba(0, 240, 255, 0.2);
+        }
+
+        .cat-pills {
+            display: flex;
+            gap: 8px;
+            margin-left: auto;
+        }
+
+        .pill-btn {
+            background: transparent;
+            border: 1px solid var(--card-border);
+            color: var(--text-dim);
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .pill-btn.active, .pill-btn:hover {
+            background: rgba(0, 240, 255, 0.15);
+            border-color: var(--accent-cyan);
+            color: var(--accent-cyan);
+        }
+
+        /* Main Workspace Grid */
+        .workspace {
+            display: grid;
+            grid-template-columns: 1.15fr 0.85fr;
+            gap: 20px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+
+        /* Maze Stage */
+        .stage-card {
+            align-items: center;
+        }
+
+        .stage-header {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .stage-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .step-counter {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--accent-cyan);
+            background: rgba(0, 240, 255, 0.1);
+            padding: 4px 10px;
+            border-radius: 6px;
+        }
+
+        #mazeCanvas {
+            background: var(--cell-bg);
+            border: 2px solid var(--card-border);
+            border-radius: 12px;
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8), 0 0 25px rgba(0, 240, 255, 0.05);
+        }
+
+        /* Control Deck */
+        .controls {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background: #121826;
+            border: 1px solid var(--card-border);
+            padding: 12px 18px;
+            border-radius: 12px;
+        }
+
+        .btn {
+            background: #1a2236;
+            color: var(--text);
+            border: 1px solid var(--card-border);
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn:hover {
+            background: #253352;
+            border-color: var(--accent-cyan);
+            color: #fff;
+        }
+
+        .btn-play {
+            background: rgba(0, 240, 255, 0.15);
+            border-color: var(--accent-cyan);
+            color: var(--accent-cyan);
+        }
+
+        .btn-play:hover {
+            background: var(--accent-cyan);
+            color: #000;
+        }
+
+        .speed-control {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            color: var(--text-dim);
+            margin-left: 12px;
+        }
+
+        input[type="range"] {
+            accent-color: var(--accent-cyan);
+            cursor: pointer;
+        }
+
+        /* Telemetry Deck */
+        .telemetry-card {
+            gap: 16px;
+        }
+
+        .section-title {
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: var(--text-dim);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-title::before {
+            content: "";
+            width: 4px;
+            height: 14px;
+            background: var(--accent-cyan);
+            border-radius: 2px;
+        }
+
+        /* Deliberation Banner */
+        .delib-box {
+            background: #141b2c;
+            border: 1px solid var(--card-border);
+            border-radius: 10px;
+            padding: 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .delib-mode {
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .mode-sys1 {
+            color: var(--accent-cyan);
+        }
+
+        .mode-sys2 {
+            color: var(--accent-yellow);
+        }
+
+        /* Action Bars */
+        .action-bars {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .action-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .action-label {
+            width: 65px;
+            color: var(--text-dim);
+        }
+
+        .bar-container {
+            flex: 1;
+            height: 14px;
+            background: #141a29;
+            border-radius: 999px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00f0ff, #a855f7);
+            border-radius: 999px;
+            width: 0%;
+            transition: width 0.15s ease;
+        }
+
+        .action-row.winning .action-label {
+            color: var(--accent-cyan);
+        }
+
+        .action-row.winning .bar-fill {
+            background: linear-gradient(90deg, #10b981, #00f0ff);
+            box-shadow: 0 0 10px rgba(16, 185, 129, 0.4);
+        }
+
+        .action-val {
+            width: 38px;
+            text-align: right;
+            font-size: 11px;
+            color: var(--text);
+        }
+
+        /* MoE Specialists */
+        .moe-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+        }
+
+        .moe-tile {
+            background: #141b2c;
+            border: 1px solid var(--card-border);
+            border-radius: 8px;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .moe-tile-title {
+            font-size: 11px;
+            color: var(--text-dim);
+            margin-bottom: 4px;
+        }
+
+        .moe-tile-val {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--accent-purple);
+        }
+
+        /* Metrics summary */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .metric-card {
+            background: #121826;
+            border: 1px solid var(--card-border);
+            border-radius: 8px;
+            padding: 10px 14px;
+        }
+
+        .metric-lbl {
+            font-size: 11px;
+            color: var(--text-dim);
+        }
+
+        .metric-val {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text);
+            margin-top: 2px;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            font-size: 12px;
+            color: var(--text-dim);
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <div class="title-block">
+                <h1>Universal Cognitive Engine &bull; Live Spatial Solver</h1>
+                <p>Pure Neural Navigation on Riemannian Hypersphere (Zero Hardcoded Pathfinding Algorithms)</p>
+            </div>
+            <div class="badge-bar">
+                <div class="badge badge-live">&bull; Live Neural Playback</div>
+                <div class="badge badge-algo">S^7 x R+ Manifold</div>
+            </div>
+        </header>
+
+        <!-- Selector Deck -->
+        <div class="selector-deck">
+            <label for="mazeSelect">Select Layout:</label>
+            <select id="mazeSelect"></select>
+
+            <div class="cat-pills">
+                <button class="pill-btn active" data-cat="all">All</button>
+                <button class="pill-btn" data-cat="Seen (Training)">Seen</button>
+                <button class="pill-btn" data-cat="Unseen (In-Distribution)">Unseen</button>
+                <button class="pill-btn" data-cat="Novel (Out-of-Distribution)">Novel OOD</button>
+            </div>
+        </div>
+
+        <!-- Main Workspace -->
+        <div class="workspace">
+            <!-- Stage Left: Canvas & Playback -->
+            <div class="card stage-card">
+                <div class="stage-header">
+                    <span class="stage-title" id="stageTitle">Loading Maze...</span>
+                    <span class="step-counter" id="stepCounter">Step 0 / 0</span>
+                </div>
+
+                <canvas id="mazeCanvas" width="460" height="460"></canvas>
+
+                <div class="controls">
+                    <button class="btn" id="btnReset">&#8634; Reset</button>
+                    <button class="btn" id="btnPrev">&#9664; Step</button>
+                    <button class="btn btn-play" id="btnPlay">&#9654; Play</button>
+                    <button class="btn" id="btnNext">Step &#9654;</button>
+
+                    <div class="speed-control">
+                        <span>Speed:</span>
+                        <input type="range" id="speedSlider" min="50" max="600" value="200" step="25">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stage Right: Cognitive Telemetry -->
+            <div class="card telemetry-card">
+                <!-- Deliberation Mode -->
+                <div>
+                    <div class="section-title">Cognitive Mode & Deliberation</div>
+                    <div class="delib-box">
+                        <span class="delib-mode mode-sys1" id="delibModeText">System 1 (Corridor Flow)</span>
+                        <span style="font-size: 12px; color: var(--text-dim);" id="branchText">Open branches: 2</span>
+                    </div>
+                </div>
+
+                <!-- Action Logits -->
+                <div>
+                    <div class="section-title">Action Policy Distribution</div>
+                    <div class="action-bars">
+                        <div class="action-row" id="row-0">
+                            <span class="action-label">&#9650; UP</span>
+                            <div class="bar-container"><div class="bar-fill" id="bar-0"></div></div>
+                            <span class="action-val" id="val-0">0%</span>
+                        </div>
+                        <div class="action-row" id="row-1">
+                            <span class="action-label">&#9660; DOWN</span>
+                            <div class="bar-container"><div class="bar-fill" id="bar-1"></div></div>
+                            <span class="action-val" id="val-1">0%</span>
+                        </div>
+                        <div class="action-row" id="row-2">
+                            <span class="action-label">&#9668; LEFT</span>
+                            <div class="bar-container"><div class="bar-fill" id="bar-2"></div></div>
+                            <span class="action-val" id="val-2">0%</span>
+                        </div>
+                        <div class="action-row" id="row-3">
+                            <span class="action-label">&#9658; RIGHT</span>
+                            <div class="bar-container"><div class="bar-fill" id="bar-3"></div></div>
+                            <span class="action-val" id="val-3">0%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MoE Specialists -->
+                <div>
+                    <div class="section-title">Spherical MoE Specialist Weights</div>
+                    <div class="moe-grid">
+                        <div class="moe-tile">
+                            <div class="moe-tile-title">Expert 0</div>
+                            <div class="moe-tile-val" id="moe-0">0.00</div>
+                        </div>
+                        <div class="moe-tile">
+                            <div class="moe-tile-title">Expert 1</div>
+                            <div class="moe-tile-val" id="moe-1">0.00</div>
+                        </div>
+                        <div class="moe-tile">
+                            <div class="moe-tile-title">Expert 2</div>
+                            <div class="moe-tile-val" id="moe-2">0.00</div>
+                        </div>
+                        <div class="moe-tile">
+                            <div class="moe-tile-title">Expert 3</div>
+                            <div class="moe-tile-val" id="moe-3">0.00</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Diagnostics -->
+                <div>
+                    <div class="section-title">Navigation Diagnostics</div>
+                    <div class="metrics-grid">
+                        <div class="metric-card">
+                            <div class="metric-lbl">Status</div>
+                            <div class="metric-val" id="diagStatus" style="color: var(--accent-cyan);">In Progress</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-lbl">Path Efficiency</div>
+                            <div class="metric-val" id="diagEff">1.00x</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-lbl">Steps (Optimal)</div>
+                            <div class="metric-val" id="diagSteps">0 (0)</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-lbl">Wall Collisions</div>
+                            <div class="metric-val" id="diagCrashes">0</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            Universal Cognitive Engine &bull; Infinite Spherical Hyperspace Memory Network (ISHMN) &bull; Pure Geodesic Intelligence
+        </footer>
+    </div>
+
+    <!-- Live Script -->
+    <script>
+        const MAZE_DATA = [{"id": "train_5x5_1", "label": "Seen Maze #1 (5x5)", "category": "Seen (Training)", "grid_size": 5, "walls": [[0.0, 0.0, 0.0, 1.0, 0.0], [0.0, 0.0, 0.0, 1.0, 0.0], [0.0, 0.0, 0.0, 0.0, 0.0], [0.0, 1.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 1.0, 0.0]], "optimal_path": [[0, 0], [1, 0], [2, 0], [2, 1], [2, 2], [3, 2], [3, 3], [3, 4], [4, 4]], "reached_goal": true, "steps_taken": 22, "optimal_steps": 8, "crashes": 2, "path_history": [[0, 0], [1, 0], [2, 0], [2, 1], [2, 2], [3, 2], [4, 2], [4, 1], [4, 0], [3, 0], [2, 0], [2, 1], [1, 1], [1, 2], [0, 2], [0, 1], [1, 1], [2, 1], [2, 2], [2, 3], [2, 4], [3, 4], [4, 4]], "actions_taken": ["DOWN", "DOWN", "RIGHT", "RIGHT", "DOWN", "DOWN", "LEFT", "LEFT", "UP", "UP", "RIGHT", "UP", "RIGHT", "UP", "LEFT", "DOWN", "DOWN", "RIGHT", "RIGHT", "RIGHT", "DOWN", "DOWN"], "frames": [{"step": 1, "curr": [1, 0], "action_name": "DOWN", "action_probs": [0.0, 0.958, 0.0, 0.042], "system_mode": "System 1 (Corridor Flow)", "moe_weights": [0.875, 0.006, 0.106, 0.014], "radial_r": 1.03, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 2, "curr": [2, 0], "action_name": "DOWN", "action_probs": [0.0, 0.899, 0.0, 0.1], "system_mode": "System 2 (Junction Branching)", "moe_weights": [0.711, 0.006, 0.243, 0.04], "radial_r": 1.13, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 3, "curr": [2, 1], "action_name": "RIGHT", "action_probs": [0.0, 0.269, 0.0, 0.731], "system_mode": "System 2 (Junction Branching)", "moe_weights": [0.71, 0.006, 0.197, 0.088], "radial_r": 1.34, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 4, "curr": [2, 2], "action_name": "RIGHT", "action_probs": [0.0, 0.055, 0.0, 0.945], "system_mode": "System 2 (Junction Branching)", "moe_weights": [0.002, 0.004, 0.008, 0.986], "radial_r": 3.48, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 5, "curr": [3, 2], "action_name": "DOWN", "action_probs": [0.0, 0.6, 0.0, 0.4], "system_mode": "System 2 (Junction Branching)", "moe_weights": [0.0, 0.001, 0.0, 0.998], "radial_r": 7.52, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 6, "curr": [4, 2], "action_name": "DOWN", "action_probs": [0.0, 0.633, 0.0, 0.367], "system_mode": "System 2 (Junction Branching)", "moe_weights": [0.0, 0.001, 0.0, 0.999], "radial_r": 9.2, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 7, "curr": [4, 1], "action_name": "LEFT", "action_probs": [0.0, 0.852, 0.0, 0.148], "system_mode": "System 1 (Corridor Flow)", "moe_weights": [0.0, 0.001, 0.001, 0.999], "radial_r": 9.26, "collision": true, "traps_pruned": 0, "reached_goal": false}, {"step": 8, "curr": [4, 0], "action_name": "LEFT", "action_probs": [0.0, 0.344, 0.0, 0.656], "system_mode": "System 1 (Corridor Flow)", "moe_weights": [0.0, 0.006, 0.001, 0.993], "radial_r": 6.6, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 9, "curr": [3, 0], "action_name": "UP", "action_probs": [0.0, 0.748, 0.0, 0.252], "system_mode": "System 1 (Corridor Flow)", "moe_weights": [0.0, 0.0, 0.001, 0.999], "radial_r": 8.82, "collision": true, "traps_pruned": 0, "reached_goal": false}, {"step": 10, "curr": [2, 0], "action_name": "UP", "action_probs": [0.0, 0.98, 0.001, 0.019], "system_mode": "System 1 (Corridor Flow)", "moe_weights": [0.493, 0.009, 0.431, 0.066], "radial_r": 1.24, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 11, "curr": [2, 1], "action_name": "RIGHT", "action_probs": [0.0, 0.269, 0.0, 0.731], "system_mode": "System 2 (Junction Branching)", "moe_weights": [0.71, 0.006, 0.197, 0.088], "radial_r": 1.34, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 12, "curr": [1, 1], "action_name": "UP", "action_probs": [0.0, 0.055, 0.0, 0.945], "system_mode": "System 2 (Junction Branching)", "moe_weights": [0.002, 0.004, 0.008, 0.986], "radial_r": 3.48, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 13, "curr": [1, 2], "action_name": "RIGHT", "action_probs": [0.0, 0.673, 0.0, 0.326], "system_mode": "System 2 (Junction Branching)", "moe_weights": [0.137, 0.007, 0.015, 0.84], "radial_r": 1.6, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 14, "curr": [0, 2], "action_name": "UP", "action_probs": [0.0, 0.991, 0.0, 0.008], "system_mode": "System 2 (Junction Branching)", "moe_weights": [0.084, 0.015, 0.605, 0.296], "radial_r": 1.81, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 15, "curr": [0, 1], "action_name": "LEFT", "action_probs": [0.0, 0.873, 0.0, 0.127], "system_mode": "System 1 (Corridor Flow)", "moe_weights": [0.861, 0.006, 0.117, 0.015], "radial_r": 1.07, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 16, "curr": [1, 1], "action_name": "DOWN", "action_probs": [0.0, 0.904, 0.0, 0.095], "system_mode": "System 2 (Junction Branching)", "moe_weights": [0.89, 0.004, 0.075, 0.031], "radial_r": 1.12, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 17, "curr": [2, 1], "action_name": "DOWN", "action_probs": [0.0, 0.673, 0.0, 0.326], "system_mode": "System 2 (Junction Branching)", "moe_weights": [0.137, 0.007, 0.015, 0.84], "radial_r": 1.6, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 18, "curr": [2, 2], "action_name": "RIGHT", "action_probs": [0.0, 0.055, 0.0, 0.945], "system_mode": "System 2 (Junction Branching)", "moe_weights": [0.002, 0.004, 0.008, 0.986], "radial_r": 3.48, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 19, "curr": [2, 3], "action_name": "RIGHT", "action_probs": [0.0, 0.6, 0.0, 0.4], "system_mode": "System 2 (Junction Branching)", "moe_weights": [0.0, 0.001, 0.0, 0.998], "radial_r": 7.52, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 20, "curr": [2, 4], "action_name": "RIGHT", "action_probs": [0.0, 0.187, 0.0, 0.813], "system_mode": "System 2 (Junction Branching)", "moe_weights": [0.0, 0.003, 0.0, 0.996], "radial_r": 7.35, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 21, "curr": [3, 4], "action_name": "DOWN", "action_probs": [0.0, 0.501, 0.0, 0.499], "system_mode": "System 2 (Junction Branching)", "moe_weights": [0.0, 0.001, 0.001, 0.999], "radial_r": 8.55, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 22, "curr": [4, 4], "action_name": "DOWN", "action_probs": [0.0, 0.628, 0.0, 0.372], "system_mode": "System 2 (Junction Branching)", "moe_weights": [0.0, 0.001, 0.001, 0.999], "radial_r": 9.38, "collision": false, "traps_pruned": 0, "reached_goal": true}, {"step": 22, "curr": [4, 4], "action_name": "GOAL!", "action_probs": [0.0, 0.0, 0.0, 0.0], "system_mode": "GOAL REACHED", "moe_weights": [1.0, 0.0, 0.0, 0.0], "radial_r": 1.0, "collision": false, "reached_goal": true}]}, {"id": "train_5x5_4", "label": "Seen Maze #2 (5x5)", "category": "Seen (Training)", "grid_size": 5, "walls": [[0.0, 0.0, 0.0, 0.0, 0.0], [0.0, 1.0, 0.0, 0.0, 0.0], [1.0, 0.0, 0.0, 0.0, 0.0], [0.0, 1.0, 1.0, 0.0, 1.0], [1.0, 0.0, 1.0, 0.0, 0.0]], "optimal_path": [[0, 0], [0, 1], [0, 2], [1, 2], [2, 2], [2, 3], [3, 3], [4, 3], [4, 4]], "reached_goal": true, "steps_taken": 10, "optimal_steps": 8, "crashes": 1, "path_history": [[0, 0], [1, 0], [0, 0], [0, 1], [0, 2], [1, 2], [2, 2], [2, 3], [3, 3], [4, 3], [4, 4]], "actions_taken": ["DOWN", "UP", "RIGHT", "RIGHT", "DOWN", "DOWN", "RIGHT", "DOWN", "DOWN", "RIGHT"], "frames": [{"step": 1, "curr": [1, 0], "action_name": "DOWN", "action_probs": [0.0, 0.954, 0.0, 0.045], "system_mode": "System 1 (Corridor Flow)", "moe_weights": [0.876, 0.006, 0.104, 0.014], "radial_r": 1.04, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 2, "curr": [0, 0], "action_name": "UP", "action_probs": [0.0, 0.981, 0.0, 0.019], "system_mode": "System 2 (Dead-End Recovery)", "moe_weights": [0.781, 0.007, 0.186, 0.025], "radial_r": 1.13, "collision": true, "traps_pruned": 0, "reached_goal": false}, {"step": 3, "curr": [0, 1], "action_name": "RIGHT", "action_probs": [0.0, 0.954, 0.0, 0.045], "system_mode": "System 1 (Corridor Flow)", "moe_weights": [0.876, 0.006, 0.104, 0.014], "radial_r": 1.04, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 4, "curr": [0, 2], "action_name": "RIGHT", "action_probs": [0.0, 0.013, 0.0, 0.986], "system_mode": "System 1 (Corridor Flow)", "moe_weights": [0.864, 0.006, 0.103, 0.026], "radial_r": 1.19, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 5, "curr": [1, 2], "action_name": "DOWN", "action_probs": [0.0, 0.965, 0.0, 0.035], "system_mode": "System 2 (Junction Branching)", "moe_weights": [0.903, 0.004, 0.052, 0.041], "radial_r": 1.11, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 6, "curr": [2, 2], "action_name": "DOWN", "action_probs": [0.0, 0.956, 0.0, 0.044], "system_mode": "System 2 (Junction Branching)", "moe_weights": [0.63, 0.007, 0.145, 0.218], "radial_r": 1.79, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 7, "curr": [2, 3], "action_name": "RIGHT", "action_probs": [0.0, 0.389, 0.0, 0.61], "system_mode": "System 2 (Junction Branching)", "moe_weights": [0.0, 0.001, 0.0, 0.998], "radial_r": 6.66, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 8, "curr": [3, 3], "action_name": "DOWN", "action_probs": [0.0, 0.575, 0.0, 0.425], "system_mode": "System 2 (Junction Branching)", "moe_weights": [0.0, 0.001, 0.0, 0.999], "radial_r": 8.12, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 9, "curr": [4, 3], "action_name": "DOWN", "action_probs": [0.0, 0.864, 0.0, 0.136], "system_mode": "System 1 (Corridor Flow)", "moe_weights": [0.0, 0.001, 0.003, 0.996], "radial_r": 8.08, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 10, "curr": [4, 4], "action_name": "RIGHT", "action_probs": [0.0, 0.184, 0.0, 0.815], "system_mode": "System 1 (Corridor Flow)", "moe_weights": [0.0, 0.001, 0.001, 0.998], "radial_r": 9.47, "collision": false, "traps_pruned": 0, "reached_goal": true}, {"step": 10, "curr": [4, 4], "action_name": "GOAL!", "action_probs": [0.0, 0.0, 0.0, 0.0], "system_mode": "GOAL REACHED", "moe_weights": [1.0, 0.0, 0.0, 0.0], "radial_r": 1.0, "collision": false, "reached_goal": true}]}, {"id": "unseen_5x5_1", "label": "Unseen Maze #1 (5x5)", "category": "Unseen (In-Distribution)", "grid_size": 5, "walls": [[0.0, 1.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0, 0.0], [1.0, 0.0, 0.0, 0.0, 1.0], [0.0, 0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0, 0.0]], "optimal_path": [[0, 0], [1, 0], [1, 1], [2, 1], [3, 1], [4, 1], [4, 2], [4, 3], [4, 4]], "reached_goal": true, "steps_taken": 8, "optimal_steps": 8, "crashes": 0, "path_history": [[0, 0], [1, 0], [1, 1], [1, 2], [2, 2], [3, 2], [4, 2], [4, 3], [4, 4]], "actions_taken": ["DOWN", "RIGHT", "RIGHT", "DOWN", "DOWN", "DOWN", "RIGHT", "RIGHT"], "frames": [{"step": 1, "curr": [1, 0], "action_name": "DOWN", "action_probs": [0.0, 0.959, 0.0, 0.04], "system_mode": "System 2 (Dead-End Recovery)", "moe_weights": [0.914, 0.008, 0.068, 0.01], "radial_r": 1.05, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 2, "curr": [1, 1], "action_name": "RIGHT", "action_probs": [0.0, 0.011, 0.0, 0.989], "system_mode": "System 1 (Corridor Flow)", "moe_weights": [0.305, 0.014, 0.629, 0.052], "radial_r": 1.32, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 3, "curr": [1, 2], "action_name": "RIGHT", "action_probs": [0.0, 0.08, 0.0, 0.92], "system_mode": "System 2 (Junction Branching)", "moe_weights": [0.738, 0.212, 0.013, 0.037], "radial_r": 1.1, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 4, "curr": [2, 2], "action_name": "DOWN", "action_probs": [0.0, 0.978, 0.0, 0.022], "system_mode": "System 2 (Junction Branching)", "moe_weights": [0.011, 0.779, 0.01, 0.2], "radial_r": 2.93, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 5, "curr": [3, 2], "action_name": "DOWN", "action_probs": [0.0, 0.704, 0.0, 0.296], "system_mode": "System 2 (Junction Branching)", "moe_weights": [0.0, 0.426, 0.003, 0.571], "radial_r": 6.95, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 6, "curr": [4, 2], "action_name": "DOWN", "action_probs": [0.0, 0.65, 0.0, 0.35], "system_mode": "System 2 (Junction Branching)", "moe_weights": [0.0, 0.502, 0.003, 0.495], "radial_r": 7.52, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 7, "curr": [4, 3], "action_name": "RIGHT", "action_probs": [0.0, 0.038, 0.0, 0.961], "system_mode": "System 2 (Junction Branching)", "moe_weights": [0.0, 0.614, 0.006, 0.38], "radial_r": 7.57, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 8, "curr": [4, 4], "action_name": "RIGHT", "action_probs": [0.0, 0.043, 0.0, 0.956], "system_mode": "System 2 (Junction Branching)", "moe_weights": [0.0, 0.623, 0.007, 0.37], "radial_r": 7.57, "collision": false, "traps_pruned": 0, "reached_goal": true}, {"step": 8, "curr": [4, 4], "action_name": "GOAL!", "action_probs": [0.0, 0.0, 0.0, 0.0], "system_mode": "GOAL REACHED", "moe_weights": [1.0, 0.0, 0.0, 0.0], "radial_r": 1.0, "collision": false, "reached_goal": true}]}, {"id": "unseen_5x5_3", "label": "Unseen Maze #2 (5x5)", "category": "Unseen (In-Distribution)", "grid_size": 5, "walls": [[0.0, 0.0, 0.0, 0.0, 1.0], [0.0, 0.0, 0.0, 1.0, 1.0], [1.0, 1.0, 0.0, 1.0, 0.0], [0.0, 0.0, 0.0, 0.0, 0.0], [0.0, 1.0, 0.0, 1.0, 0.0]], "optimal_path": [[0, 0], [1, 0], [1, 1], [1, 2], [2, 2], [3, 2], [3, 3], [3, 4], [4, 4]], "reached_goal": true, "steps_taken": 10, "optimal_steps": 8, "crashes": 3, "path_history": [[0, 0], [1, 0], [1, 1], [1, 2], [2, 2], [3, 2], [4, 2], [3, 2], [3, 3], [3, 4], [4, 4]], "actions_taken": ["DOWN", "RIGHT", "RIGHT", "DOWN", "DOWN", "DOWN", "UP", "RIGHT", "RIGHT", "DOWN"], "frames": [{"step": 1, "curr": [1, 0], "action_name": "DOWN", "action_probs": [0.0, 0.898, 0.0, 0.102], "system_mode": "System 1 (Corridor Flow)", "moe_weights": [0.824, 0.006, 0.153, 0.017], "radial_r": 1.05, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 2, "curr": [1, 1], "action_name": "RIGHT", "action_probs": [0.0, 0.013, 0.0, 0.987], "system_mode": "System 1 (Corridor Flow)", "moe_weights": [0.352, 0.011, 0.552, 0.084], "radial_r": 1.51, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 3, "curr": [1, 2], "action_name": "RIGHT", "action_probs": [0.0, 0.992, 0.001, 0.006], "system_mode": "System 2 (Junction Branching)", "moe_weights": [0.162, 0.013, 0.491, 0.334], "radial_r": 1.34, "collision": true, "traps_pruned": 0, "reached_goal": false}, {"step": 4, "curr": [2, 2], "action_name": "DOWN", "action_probs": [0.0, 0.995, 0.0, 0.005], "system_mode": "System 2 (Junction Branching)", "moe_weights": [0.102, 0.015, 0.659, 0.224], "radial_r": 1.86, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 5, "curr": [3, 2], "action_name": "DOWN", "action_probs": [0.0, 0.07, 0.0, 0.929], "system_mode": "System 1 (Corridor Flow)", "moe_weights": [0.472, 0.009, 0.451, 0.068], "radial_r": 1.3, "collision": true, "traps_pruned": 0, "reached_goal": false}, {"step": 6, "curr": [4, 2], "action_name": "DOWN", "action_probs": [0.0, 0.519, 0.0, 0.481], "system_mode": "System 2 (Junction Branching)", "moe_weights": [0.0, 0.0, 0.001, 0.999], "radial_r": 8.61, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 7, "curr": [3, 2], "action_name": "UP", "action_probs": [0.0, 0.982, 0.0, 0.018], "system_mode": "System 2 (Dead-End Recovery)", "moe_weights": [0.0, 0.002, 0.024, 0.974], "radial_r": 7.42, "collision": true, "traps_pruned": 0, "reached_goal": false}, {"step": 8, "curr": [3, 3], "action_name": "RIGHT", "action_probs": [0.0, 0.519, 0.0, 0.481], "system_mode": "System 2 (Junction Branching)", "moe_weights": [0.0, 0.0, 0.001, 0.999], "radial_r": 8.61, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 9, "curr": [3, 4], "action_name": "RIGHT", "action_probs": [0.0, 0.344, 0.0, 0.656], "system_mode": "System 1 (Corridor Flow)", "moe_weights": [0.0, 0.001, 0.001, 0.997], "radial_r": 6.75, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 10, "curr": [4, 4], "action_name": "DOWN", "action_probs": [0.0, 0.95, 0.0, 0.05], "system_mode": "System 2 (Junction Branching)", "moe_weights": [0.0, 0.0, 0.001, 0.998], "radial_r": 9.72, "collision": false, "traps_pruned": 0, "reached_goal": true}, {"step": 10, "curr": [4, 4], "action_name": "GOAL!", "action_probs": [0.0, 0.0, 0.0, 0.0], "system_mode": "GOAL REACHED", "moe_weights": [1.0, 0.0, 0.0, 0.0], "radial_r": 1.0, "collision": false, "reached_goal": true}]}, {"id": "novel_6x6_1", "label": "Novel 6x6 Maze", "category": "Novel (Out-of-Distribution)", "grid_size": 6, "walls": [[0.0, 0.0, 0.0, 0.0, 0.0, 1.0], [1.0, 0.0, 0.0, 1.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0, 0.0, 0.0], [0.0, 1.0, 0.0, 1.0, 0.0, 0.0], [0.0, 1.0, 0.0, 0.0, 0.0, 1.0], [0.0, 0.0, 1.0, 0.0, 0.0, 0.0]], "optimal_path": [[0, 0], [0, 1], [1, 1], [2, 1], [2, 2], [3, 2], [4, 2], [4, 3], [5, 3], [5, 4], [5, 5]], "reached_goal": true, "steps_taken": 10, "optimal_steps": 10, "crashes": 1, "path_history": [[0, 0], [0, 1], [1, 1], [2, 1], [2, 2], [3, 2], [4, 2], [4, 3], [5, 3], [5, 4], [5, 5]], "actions_taken": ["RIGHT", "DOWN", "DOWN", "RIGHT", "DOWN", "DOWN", "RIGHT", "DOWN", "RIGHT", "RIGHT"], "frames": [{"step": 1, "curr": [0, 1], "action_name": "RIGHT", "action_probs": [0.0, 0.788, 0.0, 0.212], "system_mode": "System 2 (Dead-End Recovery)", "moe_weights": [0.882, 0.007, 0.098, 0.014], "radial_r": 1.06, "collision": true, "traps_pruned": 0, "reached_goal": false}, {"step": 2, "curr": [1, 1], "action_name": "DOWN", "action_probs": [0.0, 0.895, 0.0, 0.105], "system_mode": "System 2 (Junction Branching)", "moe_weights": [0.872, 0.005, 0.086, 0.037], "radial_r": 1.14, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 3, "curr": [2, 1], "action_name": "DOWN", "action_probs": [0.0, 0.869, 0.0, 0.13], "system_mode": "System 2 (Junction Branching)", "moe_weights": [0.713, 0.006, 0.231, 0.049], "radial_r": 1.13, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 4, "curr": [2, 2], "action_name": "RIGHT", "action_probs": [0.0, 0.006, 0.0, 0.994], "system_mode": "System 2 (Junction Branching)", "moe_weights": [0.038, 0.016, 0.126, 0.82], "radial_r": 1.54, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 5, "curr": [3, 2], "action_name": "DOWN", "action_probs": [0.0, 0.881, 0.0, 0.119], "system_mode": "System 2 (Junction Branching)", "moe_weights": [0.001, 0.01, 0.001, 0.989], "radial_r": 5.26, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 6, "curr": [4, 2], "action_name": "DOWN", "action_probs": [0.0, 0.933, 0.001, 0.066], "system_mode": "System 1 (Corridor Flow)", "moe_weights": [0.516, 0.008, 0.41, 0.065], "radial_r": 1.17, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 7, "curr": [4, 3], "action_name": "RIGHT", "action_probs": [0.0, 0.348, 0.0, 0.652], "system_mode": "System 1 (Corridor Flow)", "moe_weights": [0.0, 0.002, 0.001, 0.997], "radial_r": 8.48, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 8, "curr": [5, 3], "action_name": "DOWN", "action_probs": [0.0, 0.608, 0.0, 0.392], "system_mode": "System 2 (Junction Branching)", "moe_weights": [0.0, 0.002, 0.0, 0.998], "radial_r": 8.12, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 9, "curr": [5, 4], "action_name": "RIGHT", "action_probs": [0.0, 0.099, 0.0, 0.901], "system_mode": "System 1 (Corridor Flow)", "moe_weights": [0.0, 0.004, 0.002, 0.994], "radial_r": 8.94, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 10, "curr": [5, 5], "action_name": "RIGHT", "action_probs": [0.0, 0.037, 0.0, 0.963], "system_mode": "System 2 (Junction Branching)", "moe_weights": [0.0, 0.004, 0.001, 0.995], "radial_r": 8.55, "collision": false, "traps_pruned": 0, "reached_goal": true}, {"step": 10, "curr": [5, 5], "action_name": "GOAL!", "action_probs": [0.0, 0.0, 0.0, 0.0], "system_mode": "GOAL REACHED", "moe_weights": [1.0, 0.0, 0.0, 0.0], "radial_r": 1.0, "collision": false, "reached_goal": true}]}, {"id": "novel_7x7_1", "label": "Novel 7x7 Maze", "category": "Novel (Out-of-Distribution)", "grid_size": 7, "walls": [[0.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0], [1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 1.0], [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0], [0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0], [0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], [0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0]], "optimal_path": [[0, 0], [0, 1], [1, 1], [2, 1], [3, 1], [4, 1], [5, 1], [5, 2], [6, 2], [6, 3], [6, 4], [6, 5], [6, 6]], "reached_goal": true, "steps_taken": 12, "optimal_steps": 12, "crashes": 2, "path_history": [[0, 0], [0, 1], [1, 1], [2, 1], [2, 2], [2, 3], [3, 3], [3, 4], [4, 4], [4, 5], [5, 5], [5, 6], [6, 6]], "actions_taken": ["RIGHT", "DOWN", "DOWN", "RIGHT", "RIGHT", "DOWN", "RIGHT", "DOWN", "RIGHT", "DOWN", "RIGHT", "DOWN"], "frames": [{"step": 1, "curr": [0, 1], "action_name": "RIGHT", "action_probs": [0.0, 0.824, 0.0, 0.175], "system_mode": "System 2 (Dead-End Recovery)", "moe_weights": [0.906, 0.007, 0.077, 0.01], "radial_r": 1.02, "collision": true, "traps_pruned": 0, "reached_goal": false}, {"step": 2, "curr": [1, 1], "action_name": "DOWN", "action_probs": [0.0, 0.893, 0.0, 0.107], "system_mode": "System 2 (Junction Branching)", "moe_weights": [0.931, 0.006, 0.044, 0.019], "radial_r": 1.06, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 3, "curr": [2, 1], "action_name": "DOWN", "action_probs": [0.0, 0.935, 0.0, 0.064], "system_mode": "System 2 (Junction Branching)", "moe_weights": [0.796, 0.006, 0.169, 0.029], "radial_r": 1.07, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 4, "curr": [2, 2], "action_name": "RIGHT", "action_probs": [0.0, 0.017, 0.0, 0.983], "system_mode": "System 2 (Junction Branching)", "moe_weights": [0.224, 0.107, 0.011, 0.658], "radial_r": 1.59, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 5, "curr": [2, 3], "action_name": "RIGHT", "action_probs": [0.0, 0.011, 0.0, 0.989], "system_mode": "System 2 (Junction Branching)", "moe_weights": [0.092, 0.039, 0.016, 0.853], "radial_r": 1.33, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 6, "curr": [3, 3], "action_name": "DOWN", "action_probs": [0.0, 0.715, 0.0, 0.285], "system_mode": "System 2 (Junction Branching)", "moe_weights": [0.003, 0.038, 0.002, 0.957], "radial_r": 4.52, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 7, "curr": [3, 4], "action_name": "RIGHT", "action_probs": [0.0, 0.183, 0.0, 0.817], "system_mode": "System 1 (Corridor Flow)", "moe_weights": [0.005, 0.003, 0.029, 0.962], "radial_r": 4.19, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 8, "curr": [4, 4], "action_name": "DOWN", "action_probs": [0.0, 0.627, 0.0, 0.373], "system_mode": "System 2 (Junction Branching)", "moe_weights": [0.0, 0.005, 0.0, 0.995], "radial_r": 7.26, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 9, "curr": [4, 5], "action_name": "RIGHT", "action_probs": [0.0, 0.17, 0.0, 0.829], "system_mode": "System 2 (Junction Branching)", "moe_weights": [0.0, 0.004, 0.001, 0.995], "radial_r": 8.17, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 10, "curr": [5, 5], "action_name": "DOWN", "action_probs": [0.0, 0.686, 0.0, 0.314], "system_mode": "System 2 (Junction Branching)", "moe_weights": [0.0, 0.004, 0.0, 0.996], "radial_r": 7.77, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 11, "curr": [5, 6], "action_name": "RIGHT", "action_probs": [0.0, 0.475, 0.0, 0.525], "system_mode": "System 2 (Junction Branching)", "moe_weights": [0.0, 0.005, 0.0, 0.994], "radial_r": 7.89, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 12, "curr": [6, 6], "action_name": "DOWN", "action_probs": [0.0, 0.134, 0.001, 0.865], "system_mode": "System 2 (Junction Branching)", "moe_weights": [0.0, 0.006, 0.002, 0.992], "radial_r": 8.34, "collision": true, "traps_pruned": 0, "reached_goal": true}, {"step": 12, "curr": [6, 6], "action_name": "GOAL!", "action_probs": [0.0, 0.0, 0.0, 0.0], "system_mode": "GOAL REACHED", "moe_weights": [1.0, 0.0, 0.0, 0.0], "radial_r": 1.0, "collision": false, "reached_goal": true}]}, {"id": "novel_6x6_barrier_box", "label": "Novel Central Barrier Box (6x6)", "category": "Novel (Out-of-Distribution)", "grid_size": 6, "walls": [[0.0, 0.0, 0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 1.0, 1.0, 0.0, 0.0], [0.0, 1.0, 1.0, 1.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]], "optimal_path": [[0, 0], [1, 0], [2, 0], [3, 0], [4, 0], [5, 0], [5, 1], [5, 2], [5, 3], [5, 4], [5, 5]], "reached_goal": true, "steps_taken": 10, "optimal_steps": 10, "crashes": 0, "path_history": [[0, 0], [1, 0], [2, 0], [3, 0], [4, 0], [4, 1], [4, 2], [5, 2], [5, 3], [5, 4], [5, 5]], "actions_taken": ["DOWN", "DOWN", "DOWN", "DOWN", "RIGHT", "RIGHT", "DOWN", "RIGHT", "RIGHT", "RIGHT"], "frames": [{"step": 1, "curr": [1, 0], "action_name": "DOWN", "action_probs": [0.0, 0.938, 0.0, 0.062], "system_mode": "System 1 (Corridor Flow)", "moe_weights": [0.863, 0.006, 0.114, 0.016], "radial_r": 1.06, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 2, "curr": [2, 0], "action_name": "DOWN", "action_probs": [0.0, 0.838, 0.0, 0.161], "system_mode": "System 2 (Junction Branching)", "moe_weights": [0.657, 0.008, 0.29, 0.045], "radial_r": 1.17, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 3, "curr": [3, 0], "action_name": "DOWN", "action_probs": [0.0, 0.803, 0.0, 0.197], "system_mode": "System 2 (Junction Branching)", "moe_weights": [0.678, 0.006, 0.263, 0.053], "radial_r": 1.13, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 4, "curr": [4, 0], "action_name": "DOWN", "action_probs": [0.0, 0.991, 0.0, 0.009], "system_mode": "System 1 (Corridor Flow)", "moe_weights": [0.443, 0.01, 0.489, 0.058], "radial_r": 1.26, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 5, "curr": [4, 1], "action_name": "RIGHT", "action_probs": [0.0, 0.495, 0.0, 0.505], "system_mode": "System 2 (Junction Branching)", "moe_weights": [0.0, 0.001, 0.001, 0.998], "radial_r": 7.26, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 6, "curr": [4, 2], "action_name": "RIGHT", "action_probs": [0.0, 0.489, 0.0, 0.51], "system_mode": "System 2 (Junction Branching)", "moe_weights": [0.0, 0.005, 0.0, 0.995], "radial_r": 7.03, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 7, "curr": [5, 2], "action_name": "DOWN", "action_probs": [0.0, 0.601, 0.0, 0.399], "system_mode": "System 2 (Junction Branching)", "moe_weights": [0.0, 0.003, 0.0, 0.997], "radial_r": 7.58, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 8, "curr": [5, 3], "action_name": "RIGHT", "action_probs": [0.0, 0.061, 0.0, 0.939], "system_mode": "System 2 (Junction Branching)", "moe_weights": [0.0, 0.005, 0.001, 0.994], "radial_r": 8.2, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 9, "curr": [5, 4], "action_name": "RIGHT", "action_probs": [0.0, 0.038, 0.0, 0.962], "system_mode": "System 2 (Junction Branching)", "moe_weights": [0.0, 0.007, 0.001, 0.992], "radial_r": 8.25, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 10, "curr": [5, 5], "action_name": "RIGHT", "action_probs": [0.0, 0.038, 0.0, 0.962], "system_mode": "System 2 (Junction Branching)", "moe_weights": [0.0, 0.008, 0.001, 0.99], "radial_r": 8.29, "collision": false, "traps_pruned": 0, "reached_goal": true}, {"step": 10, "curr": [5, 5], "action_name": "GOAL!", "action_probs": [0.0, 0.0, 0.0, 0.0], "system_mode": "GOAL REACHED", "moe_weights": [1.0, 0.0, 0.0, 0.0], "radial_r": 1.0, "collision": false, "reached_goal": true}]}, {"id": "novel_6x6_serpentine", "label": "Novel Serpentine Snake (6x6)", "category": "Novel (Out-of-Distribution)", "grid_size": 6, "walls": [[0.0, 0.0, 0.0, 0.0, 0.0, 0.0], [1.0, 1.0, 1.0, 1.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 1.0, 1.0, 1.0, 1.0], [0.0, 0.0, 0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]], "optimal_path": [[0, 0], [0, 1], [0, 2], [0, 3], [0, 4], [1, 4], [2, 4], [2, 3], [2, 2], [2, 1], [3, 1], [4, 1], [5, 1], [5, 2], [5, 3], [5, 4], [5, 5]], "reached_goal": true, "steps_taken": 18, "optimal_steps": 16, "crashes": 3, "path_history": [[0, 0], [0, 1], [0, 2], [0, 3], [0, 4], [0, 5], [1, 5], [2, 5], [2, 4], [2, 3], [2, 2], [2, 1], [3, 1], [4, 1], [5, 1], [5, 2], [5, 3], [5, 4], [5, 5]], "actions_taken": ["RIGHT", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "DOWN", "DOWN", "LEFT", "LEFT", "LEFT", "LEFT", "DOWN", "DOWN", "DOWN", "RIGHT", "RIGHT", "RIGHT", "RIGHT"], "frames": [{"step": 1, "curr": [0, 1], "action_name": "RIGHT", "action_probs": [0.0, 0.416, 0.0, 0.583], "system_mode": "System 2 (Dead-End Recovery)", "moe_weights": [0.912, 0.016, 0.065, 0.008], "radial_r": 1.09, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 2, "curr": [0, 2], "action_name": "RIGHT", "action_probs": [0.0, 0.01, 0.0, 0.99], "system_mode": "System 1 (Corridor Flow)", "moe_weights": [0.897, 0.039, 0.051, 0.012], "radial_r": 1.27, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 3, "curr": [0, 3], "action_name": "RIGHT", "action_probs": [0.0, 0.01, 0.0, 0.99], "system_mode": "System 1 (Corridor Flow)", "moe_weights": [0.89, 0.054, 0.043, 0.012], "radial_r": 1.26, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 4, "curr": [0, 4], "action_name": "RIGHT", "action_probs": [0.0, 0.011, 0.0, 0.989], "system_mode": "System 1 (Corridor Flow)", "moe_weights": [0.853, 0.099, 0.034, 0.014], "radial_r": 1.24, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 5, "curr": [0, 5], "action_name": "RIGHT", "action_probs": [0.0, 0.08, 0.0, 0.919], "system_mode": "System 2 (Junction Branching)", "moe_weights": [0.252, 0.705, 0.019, 0.024], "radial_r": 1.06, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 6, "curr": [1, 5], "action_name": "DOWN", "action_probs": [0.0, 0.932, 0.0, 0.068], "system_mode": "System 1 (Corridor Flow)", "moe_weights": [0.908, 0.015, 0.069, 0.008], "radial_r": 1.11, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 7, "curr": [2, 5], "action_name": "DOWN", "action_probs": [0.002, 0.213, 0.005, 0.78], "system_mode": "System 2 (Junction Branching)", "moe_weights": [0.009, 0.877, 0.105, 0.009], "radial_r": 1.07, "collision": true, "traps_pruned": 0, "reached_goal": false}, {"step": 8, "curr": [2, 4], "action_name": "LEFT", "action_probs": [0.005, 0.723, 0.016, 0.256], "system_mode": "System 1 (Corridor Flow)", "moe_weights": [0.008, 0.714, 0.268, 0.01], "radial_r": 1.16, "collision": true, "traps_pruned": 0, "reached_goal": false}, {"step": 9, "curr": [2, 3], "action_name": "LEFT", "action_probs": [0.0, 0.973, 0.0, 0.026], "system_mode": "System 2 (Junction Branching)", "moe_weights": [0.0, 0.791, 0.008, 0.2], "radial_r": 5.73, "collision": true, "traps_pruned": 0, "reached_goal": false}, {"step": 10, "curr": [2, 2], "action_name": "LEFT", "action_probs": [0.0, 0.007, 0.0, 0.993], "system_mode": "System 1 (Corridor Flow)", "moe_weights": [0.121, 0.836, 0.016, 0.027], "radial_r": 1.06, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 11, "curr": [2, 1], "action_name": "LEFT", "action_probs": [0.0, 0.056, 0.0, 0.944], "system_mode": "System 1 (Corridor Flow)", "moe_weights": [0.207, 0.75, 0.018, 0.025], "radial_r": 1.1, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 12, "curr": [3, 1], "action_name": "DOWN", "action_probs": [0.0, 0.311, 0.0, 0.689], "system_mode": "System 2 (Junction Branching)", "moe_weights": [0.175, 0.779, 0.018, 0.028], "radial_r": 1.1, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 13, "curr": [4, 1], "action_name": "DOWN", "action_probs": [0.002, 0.949, 0.007, 0.041], "system_mode": "System 2 (Junction Branching)", "moe_weights": [0.009, 0.491, 0.49, 0.01], "radial_r": 1.04, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 14, "curr": [5, 1], "action_name": "DOWN", "action_probs": [0.0, 0.924, 0.0, 0.076], "system_mode": "System 2 (Junction Branching)", "moe_weights": [0.0, 0.708, 0.006, 0.286], "radial_r": 6.66, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 15, "curr": [5, 2], "action_name": "RIGHT", "action_probs": [0.0, 0.038, 0.0, 0.962], "system_mode": "System 2 (Junction Branching)", "moe_weights": [0.0, 0.778, 0.009, 0.213], "radial_r": 6.68, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 16, "curr": [5, 3], "action_name": "RIGHT", "action_probs": [0.0, 0.036, 0.0, 0.963], "system_mode": "System 2 (Junction Branching)", "moe_weights": [0.0, 0.781, 0.01, 0.209], "radial_r": 6.75, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 17, "curr": [5, 4], "action_name": "RIGHT", "action_probs": [0.0, 0.039, 0.0, 0.96], "system_mode": "System 2 (Junction Branching)", "moe_weights": [0.0, 0.784, 0.01, 0.205], "radial_r": 6.78, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 18, "curr": [5, 5], "action_name": "RIGHT", "action_probs": [0.0, 0.04, 0.001, 0.959], "system_mode": "System 2 (Junction Branching)", "moe_weights": [0.0, 0.788, 0.011, 0.202], "radial_r": 6.79, "collision": false, "traps_pruned": 0, "reached_goal": true}, {"step": 18, "curr": [5, 5], "action_name": "GOAL!", "action_probs": [0.0, 0.0, 0.0, 0.0], "system_mode": "GOAL REACHED", "moe_weights": [1.0, 0.0, 0.0, 0.0], "radial_r": 1.0, "collision": false, "reached_goal": true}]}, {"id": "novel_20x20_extrapolation", "label": "Zero-Shot 20x20 Maze (16x Scale)", "category": "Novel (Out-of-Distribution)", "grid_size": 20, "walls": [[0.0, 0.0, 1.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 1.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 0.0], [0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 1.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0], [0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0], [1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 1.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0], [0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0], [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0, 1.0], [0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0], [1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 0.0, 1.0], [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0], [0.0, 0.0, 1.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], [0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0], [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0]], "optimal_path": [[0, 0], [1, 0], [2, 0], [3, 0], [4, 0], [5, 0], [5, 1], [6, 1], [7, 1], [8, 1], [9, 1], [10, 1], [10, 2], [11, 2], [12, 2], [13, 2], [14, 2], [15, 2], [15, 3], [15, 4], [15, 5], [16, 5], [16, 6], [16, 7], [16, 8], [16, 9], [16, 10], [16, 11], [16, 12], [16, 13], [16, 14], [17, 14], [17, 15], [17, 16], [18, 16], [18, 17], [18, 18], [19, 18], [19, 19]], "reached_goal": true, "steps_taken": 40, "optimal_steps": 38, "crashes": 7, "path_history": [[0, 0], [1, 0], [2, 0], [3, 0], [4, 0], [5, 0], [5, 1], [6, 1], [7, 1], [8, 1], [9, 1], [9, 2], [10, 2], [10, 3], [11, 3], [12, 3], [13, 3], [14, 3], [15, 3], [16, 3], [17, 3], [18, 3], [19, 3], [19, 4], [19, 5], [19, 6], [19, 7], [19, 8], [19, 9], [19, 10], [19, 11], [19, 12], [19, 13], [19, 14], [19, 15], [19, 16], [18, 16], [18, 17], [18, 18], [19, 18], [19, 19]], "actions_taken": ["DOWN", "DOWN", "DOWN", "DOWN", "DOWN", "RIGHT", "DOWN", "DOWN", "DOWN", "DOWN", "RIGHT", "DOWN", "RIGHT", "DOWN", "DOWN", "DOWN", "DOWN", "DOWN", "DOWN", "DOWN", "DOWN", "DOWN", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "RIGHT", "UP", "RIGHT", "RIGHT", "DOWN", "RIGHT"], "frames": [{"step": 1, "curr": [1, 0], "action_name": "DOWN", "action_probs": [0.0, 0.955, 0.0, 0.045], "system_mode": "System 1 (Corridor Flow)", "moe_weights": [0.875, 0.006, 0.105, 0.015], "radial_r": 1.02, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 2, "curr": [2, 0], "action_name": "DOWN", "action_probs": [0.0, 0.933, 0.0, 0.067], "system_mode": "System 2 (Junction Branching)", "moe_weights": [0.716, 0.007, 0.244, 0.033], "radial_r": 1.07, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 3, "curr": [3, 0], "action_name": "DOWN", "action_probs": [0.0, 0.934, 0.0, 0.066], "system_mode": "System 2 (Junction Branching)", "moe_weights": [0.707, 0.007, 0.252, 0.035], "radial_r": 1.07, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 4, "curr": [4, 0], "action_name": "DOWN", "action_probs": [0.0, 0.935, 0.0, 0.065], "system_mode": "System 2 (Junction Branching)", "moe_weights": [0.701, 0.007, 0.256, 0.036], "radial_r": 1.06, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 5, "curr": [5, 0], "action_name": "DOWN", "action_probs": [0.0, 0.937, 0.0, 0.063], "system_mode": "System 2 (Junction Branching)", "moe_weights": [0.7, 0.006, 0.256, 0.037], "radial_r": 1.06, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 6, "curr": [5, 1], "action_name": "RIGHT", "action_probs": [0.0, 0.101, 0.001, 0.898], "system_mode": "System 1 (Corridor Flow)", "moe_weights": [0.435, 0.01, 0.494, 0.061], "radial_r": 1.14, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 7, "curr": [6, 1], "action_name": "DOWN", "action_probs": [0.0, 0.012, 0.0, 0.988], "system_mode": "System 2 (Junction Branching)", "moe_weights": [0.387, 0.01, 0.515, 0.088], "radial_r": 1.23, "collision": true, "traps_pruned": 0, "reached_goal": false}, {"step": 8, "curr": [7, 1], "action_name": "DOWN", "action_probs": [0.0, 0.937, 0.0, 0.063], "system_mode": "System 2 (Junction Branching)", "moe_weights": [0.717, 0.006, 0.237, 0.04], "radial_r": 1.04, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 9, "curr": [8, 1], "action_name": "DOWN", "action_probs": [0.0, 0.011, 0.0, 0.989], "system_mode": "System 2 (Junction Branching)", "moe_weights": [0.24, 0.012, 0.638, 0.11], "radial_r": 1.25, "collision": true, "traps_pruned": 0, "reached_goal": false}, {"step": 10, "curr": [9, 1], "action_name": "DOWN", "action_probs": [0.0, 0.011, 0.0, 0.989], "system_mode": "System 2 (Junction Branching)", "moe_weights": [0.196, 0.013, 0.674, 0.117], "radial_r": 1.23, "collision": true, "traps_pruned": 0, "reached_goal": false}, {"step": 11, "curr": [9, 2], "action_name": "RIGHT", "action_probs": [0.0, 0.071, 0.0, 0.929], "system_mode": "System 2 (Junction Branching)", "moe_weights": [0.142, 0.064, 0.008, 0.786], "radial_r": 1.84, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 12, "curr": [10, 2], "action_name": "DOWN", "action_probs": [0.0, 0.935, 0.0, 0.064], "system_mode": "System 2 (Junction Branching)", "moe_weights": [0.934, 0.005, 0.014, 0.047], "radial_r": 1.09, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 13, "curr": [10, 3], "action_name": "RIGHT", "action_probs": [0.0, 0.019, 0.0, 0.98], "system_mode": "System 2 (Junction Branching)", "moe_weights": [0.015, 0.035, 0.003, 0.947], "radial_r": 3.35, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 14, "curr": [11, 3], "action_name": "DOWN", "action_probs": [0.0, 0.522, 0.0, 0.478], "system_mode": "System 2 (Junction Branching)", "moe_weights": [0.006, 0.027, 0.002, 0.965], "radial_r": 3.89, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 15, "curr": [12, 3], "action_name": "DOWN", "action_probs": [0.002, 0.882, 0.006, 0.11], "system_mode": "System 2 (Junction Branching)", "moe_weights": [0.151, 0.013, 0.708, 0.129], "radial_r": 1.08, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 16, "curr": [13, 3], "action_name": "DOWN", "action_probs": [0.003, 0.847, 0.008, 0.141], "system_mode": "System 2 (Junction Branching)", "moe_weights": [0.146, 0.013, 0.696, 0.145], "radial_r": 1.08, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 17, "curr": [14, 3], "action_name": "DOWN", "action_probs": [0.0, 0.743, 0.0, 0.257], "system_mode": "System 2 (Junction Branching)", "moe_weights": [0.0, 0.005, 0.001, 0.994], "radial_r": 6.03, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 18, "curr": [15, 3], "action_name": "DOWN", "action_probs": [0.0, 0.741, 0.0, 0.259], "system_mode": "System 2 (Junction Branching)", "moe_weights": [0.0, 0.004, 0.0, 0.995], "radial_r": 6.36, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 19, "curr": [16, 3], "action_name": "DOWN", "action_probs": [0.0, 0.739, 0.0, 0.261], "system_mode": "System 2 (Junction Branching)", "moe_weights": [0.0, 0.004, 0.0, 0.996], "radial_r": 6.58, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 20, "curr": [17, 3], "action_name": "DOWN", "action_probs": [0.0, 0.987, 0.001, 0.013], "system_mode": "System 1 (Corridor Flow)", "moe_weights": [0.501, 0.008, 0.432, 0.059], "radial_r": 1.08, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 21, "curr": [18, 3], "action_name": "DOWN", "action_probs": [0.0, 0.7, 0.0, 0.3], "system_mode": "System 2 (Junction Branching)", "moe_weights": [0.0, 0.004, 0.001, 0.996], "radial_r": 6.84, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 22, "curr": [19, 3], "action_name": "DOWN", "action_probs": [0.0, 0.603, 0.0, 0.397], "system_mode": "System 2 (Junction Branching)", "moe_weights": [0.0, 0.004, 0.001, 0.996], "radial_r": 6.92, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 23, "curr": [19, 4], "action_name": "RIGHT", "action_probs": [0.0, 0.068, 0.0, 0.932], "system_mode": "System 2 (Junction Branching)", "moe_weights": [0.0, 0.005, 0.001, 0.994], "radial_r": 7.02, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 24, "curr": [19, 5], "action_name": "RIGHT", "action_probs": [0.0, 0.056, 0.0, 0.944], "system_mode": "System 2 (Junction Branching)", "moe_weights": [0.0, 0.005, 0.002, 0.993], "radial_r": 7.06, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 25, "curr": [19, 6], "action_name": "RIGHT", "action_probs": [0.0, 0.05, 0.0, 0.949], "system_mode": "System 2 (Junction Branching)", "moe_weights": [0.0, 0.006, 0.002, 0.992], "radial_r": 7.1, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 26, "curr": [19, 7], "action_name": "RIGHT", "action_probs": [0.0, 0.049, 0.0, 0.951], "system_mode": "System 2 (Junction Branching)", "moe_weights": [0.0, 0.006, 0.002, 0.992], "radial_r": 7.13, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 27, "curr": [19, 8], "action_name": "RIGHT", "action_probs": [0.0, 0.048, 0.0, 0.952], "system_mode": "System 2 (Junction Branching)", "moe_weights": [0.0, 0.007, 0.002, 0.991], "radial_r": 7.16, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 28, "curr": [19, 9], "action_name": "RIGHT", "action_probs": [0.0, 0.05, 0.0, 0.949], "system_mode": "System 2 (Junction Branching)", "moe_weights": [0.0, 0.008, 0.002, 0.99], "radial_r": 7.18, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 29, "curr": [19, 10], "action_name": "RIGHT", "action_probs": [0.0, 0.659, 0.0, 0.341], "system_mode": "System 1 (Corridor Flow)", "moe_weights": [0.0, 0.009, 0.001, 0.99], "radial_r": 6.14, "collision": true, "traps_pruned": 0, "reached_goal": false}, {"step": 30, "curr": [19, 11], "action_name": "RIGHT", "action_probs": [0.0, 0.056, 0.0, 0.944], "system_mode": "System 2 (Junction Branching)", "moe_weights": [0.0, 0.009, 0.003, 0.988], "radial_r": 7.22, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 31, "curr": [19, 12], "action_name": "RIGHT", "action_probs": [0.0, 0.058, 0.0, 0.941], "system_mode": "System 2 (Junction Branching)", "moe_weights": [0.0, 0.01, 0.003, 0.987], "radial_r": 7.24, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 32, "curr": [19, 13], "action_name": "RIGHT", "action_probs": [0.0, 0.06, 0.0, 0.939], "system_mode": "System 2 (Junction Branching)", "moe_weights": [0.0, 0.01, 0.003, 0.986], "radial_r": 7.25, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 33, "curr": [19, 14], "action_name": "RIGHT", "action_probs": [0.0, 0.061, 0.001, 0.938], "system_mode": "System 2 (Junction Branching)", "moe_weights": [0.0, 0.011, 0.004, 0.985], "radial_r": 7.27, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 34, "curr": [19, 15], "action_name": "RIGHT", "action_probs": [0.0, 0.062, 0.001, 0.937], "system_mode": "System 2 (Junction Branching)", "moe_weights": [0.0, 0.012, 0.004, 0.984], "radial_r": 7.28, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 35, "curr": [19, 16], "action_name": "RIGHT", "action_probs": [0.0, 0.741, 0.0, 0.259], "system_mode": "System 1 (Corridor Flow)", "moe_weights": [0.0, 0.004, 0.0, 0.995], "radial_r": 6.78, "collision": true, "traps_pruned": 0, "reached_goal": false}, {"step": 36, "curr": [18, 16], "action_name": "UP", "action_probs": [0.001, 0.116, 0.001, 0.882], "system_mode": "System 1 (Corridor Flow)", "moe_weights": [0.0, 0.02, 0.022, 0.958], "radial_r": 7.34, "collision": true, "traps_pruned": 0, "reached_goal": false}, {"step": 37, "curr": [18, 17], "action_name": "RIGHT", "action_probs": [0.0, 0.093, 0.001, 0.906], "system_mode": "System 2 (Junction Branching)", "moe_weights": [0.0, 0.021, 0.013, 0.966], "radial_r": 7.42, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 38, "curr": [18, 18], "action_name": "RIGHT", "action_probs": [0.0, 0.063, 0.001, 0.936], "system_mode": "System 2 (Junction Branching)", "moe_weights": [0.0, 0.012, 0.004, 0.983], "radial_r": 7.3, "collision": false, "traps_pruned": 0, "reached_goal": false}, {"step": 39, "curr": [19, 18], "action_name": "DOWN", "action_probs": [0.0, 0.099, 0.001, 0.899], "system_mode": "System 2 (Junction Branching)", "moe_weights": [0.0, 0.019, 0.014, 0.968], "radial_r": 7.38, "collision": true, "traps_pruned": 0, "reached_goal": false}, {"step": 40, "curr": [19, 19], "action_name": "RIGHT", "action_probs": [0.001, 0.102, 0.001, 0.896], "system_mode": "System 1 (Corridor Flow)", "moe_weights": [0.0, 0.026, 0.022, 0.952], "radial_r": 7.42, "collision": false, "traps_pruned": 0, "reached_goal": true}, {"step": 40, "curr": [19, 19], "action_name": "GOAL!", "action_probs": [0.0, 0.0, 0.0, 0.0], "system_mode": "GOAL REACHED", "moe_weights": [1.0, 0.0, 0.0, 0.0], "radial_r": 1.0, "collision": false, "reached_goal": true}]}];
+
+        let currentMazeIndex = 0;
+        let currentStep = 0;
+        let isPlaying = false;
+        let playInterval = null;
+
+        const canvas = document.getElementById('mazeCanvas');
+        const ctx = canvas.getContext('2d');
+        const select = document.getElementById('mazeSelect');
+        const stageTitle = document.getElementById('stageTitle');
+        const stepCounter = document.getElementById('stepCounter');
+        const btnPlay = document.getElementById('btnPlay');
+        const btnReset = document.getElementById('btnReset');
+        const btnPrev = document.getElementById('btnPrev');
+        const btnNext = document.getElementById('btnNext');
+        const speedSlider = document.getElementById('speedSlider');
+
+        // Populate Dropdown
+        function populateSelect(filterCat = "all") {
+            select.innerHTML = "";
+            MAZE_DATA.forEach((m, idx) => {
+                if (filterCat === "all" || m.category === filterCat) {
+                    const opt = document.createElement('option');
+                    opt.value = idx;
+                    opt.textContent = `[${m.category}] ${m.label}`;
+                    select.appendChild(opt);
+                }
+            });
+            select.value = currentMazeIndex;
+        }
+
+        function loadMaze(idx) {
+            currentMazeIndex = idx;
+            currentStep = 0;
+            pause();
+            updateUI();
+        }
+
+        function updateUI() {
+            const maze = MAZE_DATA[currentMazeIndex];
+            stageTitle.textContent = `${maze.label} (${maze.grid_size}x${maze.grid_size} ${maze.category})`;
+
+            const totalFrames = maze.frames.length;
+            stepCounter.textContent = `Step ${currentStep} / ${totalFrames - 1}`;
+
+            const frame = maze.frames[currentStep];
+
+            // Render Canvas
+            renderCanvas(maze, frame);
+
+            // Render Telemetry
+            renderTelemetry(maze, frame);
+        }
+
+        function renderCanvas(maze, frame) {
+            const N = maze.grid_size;
+            const size = canvas.width;
+            const cellSize = size / N;
+
+            ctx.clearRect(0, 0, size, size);
+
+            // Draw Background grid
+            for (let r = 0; r < N; r++) {
+                for (let c = 0; c < N; c++) {
+                    ctx.strokeStyle = "#161f30";
+                    ctx.lineWidth = 1;
+                    ctx.strokeRect(c * cellSize, r * cellSize, cellSize, cellSize);
+
+                    if (maze.walls[r][c] === 1.0) {
+                        // Draw Wall
+                        ctx.fillStyle = "#1e293b";
+                        ctx.fillRect(c * cellSize + 2, r * cellSize + 2, cellSize - 4, cellSize - 4);
+
+                        ctx.strokeStyle = "#334155";
+                        ctx.lineWidth = 2;
+                        ctx.strokeRect(c * cellSize + 2, r * cellSize + 2, cellSize - 4, cellSize - 4);
+                    }
+                }
+            }
+
+            // Draw Footprint Trail
+            const trailSoFar = maze.path_history.slice(0, currentStep + 1);
+            if (trailSoFar.length > 1) {
+                for (let i = 0; i < trailSoFar.length - 1; i++) {
+                    const [r, c] = trailSoFar[i];
+                    ctx.fillStyle = "rgba(0, 240, 255, 0.4)";
+                    ctx.beginPath();
+                    ctx.arc(c * cellSize + cellSize / 2, r * cellSize + cellSize / 2, cellSize * 0.14, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+            }
+
+            // Draw Goal Star
+            const goal = maze.optimal_path[maze.optimal_path.length - 1];
+            const gx = goal[1] * cellSize + cellSize / 2;
+            const gy = goal[0] * cellSize + cellSize / 2;
+            ctx.fillStyle = "#fbbf24";
+            ctx.shadowColor = "#fbbf24";
+            ctx.shadowBlur = 12;
+            ctx.font = `${cellSize * 0.55}px sans-serif`;
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+            ctx.fillText("★", gx, gy);
+            ctx.shadowBlur = 0;
+
+            // Draw Agent
+            const curr = frame.curr;
+            const ax = curr[1] * cellSize + cellSize / 2;
+            const ay = curr[0] * cellSize + cellSize / 2;
+
+            ctx.fillStyle = "#10b981";
+            ctx.shadowColor = "#10b981";
+            ctx.shadowBlur = 15;
+            ctx.beginPath();
+            ctx.arc(ax, ay, cellSize * 0.32, 0, Math.PI * 2);
+            ctx.fill();
+
+            ctx.fillStyle = "#ffffff";
+            ctx.font = `${cellSize * 0.38}px sans-serif`;
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+            ctx.fillText("🤖", ax, ay);
+            ctx.shadowBlur = 0;
+        }
+
+        function renderTelemetry(maze, frame) {
+            // Deliberation
+            const delibEl = document.getElementById('delibModeText');
+            delibEl.textContent = frame.system_mode;
+            if (frame.system_mode.includes('System 2')) {
+                delibEl.className = 'delib-mode mode-sys2';
+            } else {
+                delibEl.className = 'delib-mode mode-sys1';
+            }
+
+            // Action bars
+            const probs = frame.action_probs;
+            let maxP = -1;
+            let maxIdx = -1;
+            for (let i = 0; i < 4; i++) {
+                if (probs[i] > maxP) {
+                    maxP = probs[i];
+                    maxIdx = i;
+                }
+            }
+
+            for (let i = 0; i < 4; i++) {
+                const p = probs[i];
+                const pct = Math.round(p * 100);
+                document.getElementById(`bar-${i}`).style.width = `${pct}%`;
+                document.getElementById(`val-${i}`).textContent = `${pct}%`;
+
+                const row = document.getElementById(`row-${i}`);
+                if (i === maxIdx && !frame.reached_goal) {
+                    row.classList.add('winning');
+                } else {
+                    row.classList.remove('winning');
+                }
+            }
+
+            // MoE weights
+            const moe = frame.moe_weights;
+            for (let i = 0; i < 4; i++) {
+                document.getElementById(`moe-${i}`).textContent = (moe[i] !== undefined) ? moe[i].toFixed(2) : "0.00";
+            }
+
+            // Diagnostics
+            const diagStatus = document.getElementById('diagStatus');
+            if (frame.reached_goal) {
+                diagStatus.textContent = "Goal Reached!";
+                diagStatus.style.color = "#10b981";
+            } else {
+                diagStatus.textContent = "Navigating...";
+                diagStatus.style.color = "#00f0ff";
+            }
+
+            const eff = (maze.steps_taken / maze.optimal_steps).toFixed(2);
+            document.getElementById('diagEff').textContent = `${eff}x optimal`;
+            document.getElementById('diagSteps').textContent = `${currentStep} (Opt: ${maze.optimal_steps})`;
+            document.getElementById('diagCrashes').textContent = maze.crashes;
+        }
+
+        function play() {
+            if (isPlaying) return;
+            isPlaying = true;
+            btnPlay.innerHTML = "&#10074;&#10074; Pause";
+            const speed = 650 - parseInt(speedSlider.value);
+
+            playInterval = setInterval(() => {
+                const maze = MAZE_DATA[currentMazeIndex];
+                if (currentStep < maze.frames.length - 1) {
+                    currentStep++;
+                    updateUI();
+                } else {
+                    pause();
+                }
+            }, speed);
+        }
+
+        function pause() {
+            isPlaying = false;
+            btnPlay.innerHTML = "&#9654; Play";
+            if (playInterval) {
+                clearInterval(playInterval);
+                playInterval = null;
+            }
+        }
+
+        btnPlay.addEventListener('click', () => {
+            if (isPlaying) pause();
+            else play();
+        });
+
+        btnReset.addEventListener('click', () => {
+            pause();
+            currentStep = 0;
+            updateUI();
+        });
+
+        btnPrev.addEventListener('click', () => {
+            pause();
+            if (currentStep > 0) {
+                currentStep--;
+                updateUI();
+            }
+        });
+
+        btnNext.addEventListener('click', () => {
+            pause();
+            const maze = MAZE_DATA[currentMazeIndex];
+            if (currentStep < maze.frames.length - 1) {
+                currentStep++;
+                updateUI();
+            }
+        });
+
+        select.addEventListener('change', (e) => {
+            loadMaze(parseInt(e.target.value));
+        });
+
+        // Filter pills
+        document.querySelectorAll('.pill-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.pill-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                populateSelect(btn.dataset.cat);
+                loadMaze(parseInt(select.value));
+            });
+        });
+
+        // Initialize
+        populateSelect("all");
+        loadMaze(0);
+    </script>
+</body>
+</html>

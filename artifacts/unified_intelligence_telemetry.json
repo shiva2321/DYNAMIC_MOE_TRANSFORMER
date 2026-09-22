@@ -1,0 +1,108 @@
+{
+  "timestamp": 1789955210.7590513,
+  "baseline_metrics": [
+    {
+      "label": "Causal Physics",
+      "tokens": 64,
+      "s1_tokens": 2,
+      "s2_tokens": 62,
+      "avg_ticks": 5.515625,
+      "causal_error": 1.4526369282975793
+    },
+    {
+      "label": "Topological Geometry",
+      "tokens": 51,
+      "s1_tokens": 3,
+      "s2_tokens": 48,
+      "avg_ticks": 5.372549019607843,
+      "causal_error": 1.6906007052052254
+    },
+    {
+      "label": "Physical Contradiction",
+      "tokens": 75,
+      "s1_tokens": 8,
+      "s2_tokens": 67,
+      "avg_ticks": 4.88,
+      "causal_error": 1.0872466772794724
+    }
+  ],
+  "daytime_metrics": {
+    "observations_ingested": 18,
+    "elapsed_sec": 0.8848578929901123,
+    "mean_surprise": 0.114396835780806,
+    "total_episodic_traces": 252
+  },
+  "sleep_metrics": {
+    "elapsed_sec": 0.8917107582092285,
+    "initial_semantics": 5266,
+    "new_semantics": 5281,
+    "initial_experts": 7,
+    "new_experts": 7
+  },
+  "nextday_metrics": [
+    {
+      "label": "Astrophysics Query",
+      "tokens": 80,
+      "s1_tokens": 12,
+      "s2_tokens": 68,
+      "avg_ticks": 4.7875,
+      "causal_error": 1.1972499237395824
+    },
+    {
+      "label": "SynBio Query",
+      "tokens": 80,
+      "s1_tokens": 12,
+      "s2_tokens": 68,
+      "avg_ticks": 4.95,
+      "causal_error": 1.0539195692166685
+    },
+    {
+      "label": "Crypto Query",
+      "tokens": 80,
+      "s1_tokens": 7,
+      "s2_tokens": 73,
+      "avg_ticks": 5.2,
+      "causal_error": 1.1024458846077323
+    }
+  ],
+  "lifelong_audit": {
+    "all_passed": true,
+    "math_checks": [
+      {
+        "expr": "12 + 7",
+        "pred": 19.0,
+        "expected": 19.0,
+        "passed": true
+      },
+      {
+        "expr": "23164 - 45",
+        "pred": 23119.0,
+        "expected": 23119.0,
+        "passed": true
+      },
+      {
+        "expr": "23146484561521 + 45132030",
+        "pred": 23146529693551.0,
+        "expected": 23146529693551.0,
+        "passed": true
+      }
+    ],
+    "analogy_checks": [
+      {
+        "query": "man:king::woman",
+        "pred": "queen",
+        "expected": "queen",
+        "passed": true
+      },
+      {
+        "query": "fire:hot::ice",
+        "pred": "cold",
+        "expected": "cold",
+        "passed": true
+      }
+    ],
+    "active_experts": 7,
+    "semantic_invariants": 5281,
+    "episodic_traces": 464
+  }
+}

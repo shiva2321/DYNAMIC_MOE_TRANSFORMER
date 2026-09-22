@@ -1,0 +1,53 @@
+{
+  "device": "cuda",
+  "total_time_sec": 30.947962522506714,
+  "initial_concepts": 5295,
+  "final_concepts": 5306,
+  "concepts_grown": 11,
+  "initial_causal_error": 0.10058095306158066,
+  "final_causal_error": 0.12477934546768665,
+  "causal_error_reduced": false,
+  "final_cone_norm": 0.3383128345012665,
+  "anti_collapse_passed": true,
+  "history": [
+    {
+      "epoch": 1,
+      "mean_causal_error": 0.10058095306158066,
+      "mean_surprise": 0.06822108663618565,
+      "vsa_writes": 0,
+      "vsa_skips": 4,
+      "vsa_occupancy": 0.001953125,
+      "total_concepts": 5306,
+      "cone_norm": 0.33830195665359497,
+      "circular_variance": 0.661698043346405,
+      "sleep_drift": 0.0,
+      "generated_sample": "The principle of physical causality is a fundamental concept in classical mechanics that states that"
+    },
+    {
+      "epoch": 2,
+      "mean_causal_error": 0.11275702714920044,
+      "mean_surprise": 0.05564423371106386,
+      "vsa_writes": 0,
+      "vsa_skips": 4,
+      "vsa_occupancy": 0.013671875,
+      "total_concepts": 5306,
+      "cone_norm": 0.3383176326751709,
+      "circular_variance": 0.6616823673248291,
+      "sleep_drift": 0.0,
+      "generated_sample": "Mathematical causality refers to the idea that mathematical objects or relationships have an inheren"
+    },
+    {
+      "epoch": 3,
+      "mean_causal_error": 0.12477934546768665,
+      "mean_surprise": 0.07710815872997046,
+      "vsa_writes": 0,
+      "vsa_skips": 4,
+      "vsa_occupancy": 0.01953125,
+      "total_concepts": 5306,
+      "cone_norm": 0.3383128345012665,
+      "circular_variance": 0.6616871356964111,
+      "sleep_drift": 0.0,
+      "generated_sample": "The principle of physical causality is a fundamental concept in physics that states that every event"
+    }
+  ]
+}

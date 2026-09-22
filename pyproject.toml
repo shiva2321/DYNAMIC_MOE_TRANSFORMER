@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ishmn"
+version = "2.0.0"
+description = "Infinite Spherical Hyperspace Memory Network (ISHMN) & Universal Cognitive Engine (UCE)"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "torch>=2.0.0",
+    "numpy>=1.24.0",
+    "matplotlib>=3.7.0"
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["ishmn*"]

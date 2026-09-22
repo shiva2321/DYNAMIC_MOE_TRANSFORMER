@@ -1,0 +1,45 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions & Rust target
+*.so
+target/
+
+# Distribution / packaging
+.Python
+build/
+dist/
+*.egg-info/
+
+# Unit test / benchmark caches
+.pytest_cache/
+.benchmarks/
+
+# Virtual Environments
+.env
+.venv
+env/
+venv/
+ENV/
+
+# IDE and Editor files
+.vscode/
+.idea/
+*.swp
+*~
+
+# Checkpoints and Large Model Weights (>50MB)
+*.pt
+*.pt.*
+*.pth
+*.bin
+*.safetensors
+*.onnx
+artifacts/checkpoints/
+
+# Operating System files
+.DS_Store
+Thumbs.db
+desktop.ini
