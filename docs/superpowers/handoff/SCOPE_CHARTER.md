@@ -17,7 +17,7 @@ A component is VERIFIED when it has (1) code and tests, (2) a prediction written
 | GrowMoE PhyloMoE: batch vote (`batch_vote`) | `growmoe/pools/phylo.py` | VERIFIED (RV2-A, fresh seeds 20-39, 11 of 11) | `research/growmoe_results/rv2a/RESULTS_RV2A.md`, card 14 | centre cosine >= 0.6 still merges; about 1.3 points lost on known regimes that later arrive mixed |
 | GrowMoE PhyloMoE: fingerprint shortlist gate (routing v2 stage 2) | `growmoe/` (to be extended) | CANDIDATE (dev-seed spikes only) | `research/growmoe_results/rv2/RESULTS_RV2_SPIKES.md`, spec `docs/superpowers/specs/2026-10-10-routing-v2-design.md` | flag OFF until a pre-registered test passes |
 | *Candidates from the 2026 geometry atlas (Track Z; all UNTESTED)* | `geomlab/` (to be created) | CANDIDATE | `research/GEOMETRY_ATLAS_2026-10.md` | see the atlas |
-| SphericalStream (nGPT family) | Z1 | CANDIDATE | - | decides: unit-sphere residual stream |
+| SphericalStream (nGPT family) | Z1 | CANDIDATE - the recorded VERIFIED card was downgraded to PARTIAL on 2026-10-12 (baseline over-fits; speedup defined against its final loss) | `docs/labnotebook/entries/E-008-geometry-atlas-and-track-z.md` | needs a re-run with a fair baseline target and stored curves |
 | ConeMemory (recall per byte) incl. verification of the legacy ISHMN memory | Z2 | CANDIDATE | - | decides: memory geometry |
 | OrthoState / SCOR (parallel orthogonal state + snapping) | Z3 | CANDIDATE | - | decides: exact state tracking in parallel |
 | PhasePosition (PoPE/LieRE) | Z4 | CANDIDATE | - | decides: position geometry |

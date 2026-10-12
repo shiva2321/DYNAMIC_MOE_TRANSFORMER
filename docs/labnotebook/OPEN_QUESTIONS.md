@@ -1,0 +1,21 @@
+# Open questions (the "will do" list)
+
+Each question has the cheapest experiment that would answer it. Order is rough priority for the dynamic-MoE track; the other tracks are listed after.
+
+| ID | Question | Cheapest decisive step | Status |
+|---|---|---|---|
+| Q-01 | Does the fingerprint shortlist pass its pre-registered test (non-inferior accuracy, at least 4x less gate cost, identical novelty decisions)? | Plan tasks 7-14, seeds 40-59 (E-021) | running (Gemini, round RV2-5 onward) |
+| Q-02 | Can a **calibrated** batch-level novelty test cure the regime merging at centre cosine >= 0.6 (25.3 % vs about 48 %) without spurious experts? | The stage-3 spike with its acceptance criteria (plan Task 15), possibly inside a redesigned gatekeeper | open |
+| Q-03 | What is the best overall gatekeeper design (more efficient, accurate, reliable, "smart") built from stages 1-3 plus what the literature offers? | Research, design spec, spikes (entry E-023, pending) | in progress |
+| Q-04 | Does the pool work on **real** data? Only one small text check exists (+3.8 with MiniLM) | Real text / code streams with a frozen encoder (M5), same protocol | open |
+| Q-05 | Does an episodic memory tier add value, and is the pool better framed as a compute saver plus abstention layer over it? | The optional M3 arm after the gate is settled | open |
+| Q-06 | Do soft top-2 mixtures or expert-confidence arbitration beat hard routing (FLEX says calibrated soft mixtures win)? | Selection headroom on S1 is only about 3 points; test on streams with real ambiguity | open |
+| Q-07 | Do growth, merge, archive and revive ever do useful work? They did not fire in the benchmarks (growth in 3 of 70 runs) | A stream built to need them (capacity pressure; redundant experts); this is the paused R12b | paused by the user |
+| Q-08 | How does the pool behave on fully **interleaved** streams, where the batch vote's single-source assumption fails? | A stream with random per-sample regime membership; the 50/50 and 70/30 guards are only the first step | open |
+| Q-09 | Does the nGPT speedup survive a fair baseline (best loss, or early stopping, or more data) and stored curves for every arm? | Re-run Z1 per the amendment procedure, new PREREG | open |
+| Q-10 | Scaling: at hundreds or thousands of experts, what are the real wall-clock and memory curves of the exact and the shortlist gate? | The 500-expert scaling check (plan Task 10) then larger | open |
+| Q-11 | Does long-horizon training (many regimes, hundreds of segments) show forgetting or drift that the short benchmarks hide? | S5 / S6 streams, rewritten PREDICTIONS | open |
+| Q-12 | Was the ISHMN sandwich ever useful? | The decisive 4-arm test (sandwich x calculator), numeric grading, n >= 400, a few GPU-hours (offered 2026-10-09, not run) | not started |
+| Q-13 | Do orthogonal-state, position, hierarchy-index, step-control and quasimetric components (Z3-Z7) help? | Rounds Z3-Z7 per the atlas hand-off | not started |
+| Q-14 | Does VSA / APA beat a weight-decayed baseline on group tasks (Z_113, S_5)? | Phase 0 of `ALGORITHM_AND_PROTOCOL.md` | not started |
+| Q-15 | Vertical growth (stacked layers of pools) and system assembly (columns, hybrids) | Phase 2-3 of the original plan; after the gate is final | paused |

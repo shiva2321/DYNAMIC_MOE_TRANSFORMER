@@ -1,0 +1,71 @@
+# One glob per line, relative to the repository root. `tools/labnb.py manifest` records sha256, size and the last commit of every match.
+# Add a line whenever an entry cites a new evidence file. Generated files only (results, logs, preregistrations, reports), plus the scripts that made them.
+
+# --- dynamic MoE: phase 0 / phase 1 / phase 2
+research/spikes/RESULTS.md
+research/spikes/*.py
+research/growmoe_results/IMPLEMENTATION_LOG.md
+research/growmoe_results/phase0/*
+research/growmoe_results/phase1/RESULTS.md
+research/growmoe_results/phase1/phase1_results.json
+research/growmoe_results/phase2/PREDICTIONS.md
+research/growmoe_results/r11d/*
+# --- diligence (2026-10-09)
+research/moe_diligence_2026-10/*
+# --- M0 + M1
+research/growmoe_results/m0/PREREG.md
+research/growmoe_results/m0/AMENDMENT.md
+research/growmoe_results/m0/RESULTS_M0.md
+research/growmoe_results/m0/m0_runs.json
+research/growmoe_results/m0/tuning.json
+research/growmoe_results/m0/tuning.sha256
+research/growmoe_results/m0/run_m0.py
+research/growmoe_results/m0/diagnos*.json
+research/growmoe_results/m0/diagnose_*.py
+research/growmoe_results/m0/*_log.txt
+research/growmoe_results/m0/runs/*.json
+# --- M2-A
+research/growmoe_results/m2a/PREREG.md
+research/growmoe_results/m2a/AMENDMENT.md
+research/growmoe_results/m2a/RESULTS_M2A.md
+research/growmoe_results/m2a/m2a_runs.json
+research/growmoe_results/m2a/tuning_m2a.json
+research/growmoe_results/m2a/tuning_m2a.sha256
+research/growmoe_results/m2a/run_m2a.py
+research/growmoe_results/m2a/runs/*.json
+# --- routing v2 spikes and RV2-A
+research/growmoe_results/rv2/*
+research/growmoe_results/rv2a/PREREG.md
+research/growmoe_results/rv2a/RESULTS_RV2A.md
+research/growmoe_results/rv2a/rv2a_runs.json
+research/growmoe_results/rv2a/bars_rv2a.json
+research/growmoe_results/rv2a/bars_rv2a.sha256
+research/growmoe_results/rv2a/dev_effects.json
+research/growmoe_results/rv2a/tuning_rv2a.json
+research/growmoe_results/rv2a/tuning_rv2a.sha256
+research/growmoe_results/rv2a/run_rv2a.py
+research/growmoe_results/rv2a/runs/*.json
+# --- reports, specs, plans, handoffs, reviews
+research/DYNAMIC_MOE_RESEARCH_AND_DESIGN.md
+research/MOE_CONTINUAL_LEARNING_REPORT_2026-10.md
+research/ROUTING_RESEARCH_2026-10.md
+docs/superpowers/specs/*.md
+docs/superpowers/plans/*.md
+docs/superpowers/handoff/*.md
+docs/COMPONENT_CARDS.md
+# --- geometry tracks (other-track files; may be uncommitted: last_commit shows '-')
+research/geomlab_results/z0/*.md
+research/geomlab_results/z0/*.txt
+research/geomlab_results/z0/results.json
+research/geomlab_results/z1/*.md
+research/geomlab_results/z1/*.txt
+research/geomlab_results/z1/results.json
+research/geomlab_results/z1/checkpoint_z1_bf16.json
+research/geomlab_results/z2/*.txt
+research/geomlab_results/z2/results.json
+research/yggdrasil_results/*.txt
+research/yggdrasil_results/*.json
+research/yggformer_results/e*_results.json
+research/yggformer_results/track_y_final_report.txt
+research/results_vsa_numerics.log
+research/results_geometry_checks.log

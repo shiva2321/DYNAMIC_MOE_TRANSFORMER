@@ -101,7 +101,9 @@ Status assignments are authoritative and governed strictly by empirical verifica
 
 ## 11. Spherical Residual Stream (`SphericalStream` / nGPT Family)
 - **Location:** `geomlab/spherical_stream.py`, `tests/geomlab/test_z1_spherical_stream.py`, `research/geomlab_results/z1/`
-- **Status:** **VERIFIED (Token Speedup >= 2.0x on $S^{d-1}$, Isolating Control Outperformed; Eager Wall-Clock Parity without Fused Kernels)**
+- **Status:** **PARTIAL - UNDER REVIEW (was recorded as VERIFIED; see the review note below)**
+- **Review note (2026-10-12, Claude; lab notebook E-008, F-08, Q-09):** the final-loss and token-speedup comparisons are made against the baseline's *final* validation loss, and the baseline over-fits: its mean validation loss is lowest at 1.903 at step 400 (mean of per-seed minima 1.898) and rises to 2.3265 at step 1000, which is **lower than nGPT's final 1.9525**. `compute_speedup` defines the speedup as the tokens an arm needs to reach the baseline's final loss, which rewards an over-trained baseline (an exact copy of the baseline scores 4.67x). nGPT's own validation curves were not stored, so whether it beats an early-stopped baseline cannot be read from `results.json`. The numbers below are reported as originally recorded; the claim needs a re-run with a fair baseline target and stored curves for every arm before it is VERIFIED.
+- **Original status line:** VERIFIED (Token Speedup >= 2.0x on $S^{d-1}$, Isolating Control Outperformed; Eager Wall-Clock Parity without Fused Kernels)
 - **What it is:** A hyperspherical normalized residual stream architecture for sequence models. All hidden representation vectors $h_t$ are strictly constrained to the unit sphere $S^{d-1}$ via $\ell_2$ normalization in float32. Matrix weights are unit-norm normalized along output coordinates. Residual stream updates follow geodesic interpolation / eigenstep scaling:
   $$h_{t+1} = \text{Norm}(h_t + \alpha_A \cdot (A(h_t) - h_t))$$
   with learnable per-dimension metric scaling vectors ($S_A, S_M, S_{qk}, S_{uv}$).
