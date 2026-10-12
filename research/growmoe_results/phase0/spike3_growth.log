@@ -1,0 +1,27 @@
+n=20000 teacher w8 d1 seed 0: grew 1x to hidden 8 depth 1, acc 0.778 [16s]
+n=20000 teacher w8 d1 seed 1: grew 2x to hidden 12 depth 1, acc 0.851 [32s]
+n=20000 teacher w8 d1 seed 2: grew 3x to hidden 12 depth 2, acc 0.780 [51s]
+n=20000 teacher w32 d2 seed 0: grew 0x to hidden 4 depth 1, acc 0.564 [66s]
+n=20000 teacher w32 d2 seed 1: grew 0x to hidden 4 depth 1, acc 0.580 [82s]
+n=20000 teacher w32 d2 seed 2: grew 0x to hidden 4 depth 1, acc 0.565 [98s]
+n=20000 teacher w128 d3 seed 0: grew 0x to hidden 4 depth 1, acc 0.510 [114s]
+n=20000 teacher w128 d3 seed 1: grew 0x to hidden 4 depth 1, acc 0.522 [130s]
+n=20000 teacher w128 d3 seed 2: grew 0x to hidden 4 depth 1, acc 0.506 [146s]
+n=2000 teacher w8 d1 seed 0: grew 0x to hidden 4 depth 1, acc 0.530 [164s]
+n=2000 teacher w8 d1 seed 1: grew 0x to hidden 4 depth 1, acc 0.604 [180s]
+n=2000 teacher w8 d1 seed 2: grew 0x to hidden 4 depth 1, acc 0.521 [199s]
+n=2000 teacher w32 d2 seed 0: grew 0x to hidden 4 depth 1, acc 0.395 [220s]
+n=2000 teacher w32 d2 seed 1: grew 0x to hidden 4 depth 1, acc 0.398 [236s]
+n=2000 teacher w32 d2 seed 2: grew 0x to hidden 4 depth 1, acc 0.433 [254s]
+n=2000 teacher w128 d3 seed 0: grew 0x to hidden 4 depth 1, acc 0.377 [275s]
+n=2000 teacher w128 d3 seed 1: grew 0x to hidden 4 depth 1, acc 0.372 [293s]
+n=2000 teacher w128 d3 seed 2: grew 0x to hidden 4 depth 1, acc 0.357 [309s]
+
+summary (mean over seeds): commits, final width / depth, params, test accuracy vs static references
+ n_train    teacher  commits  hidden  depth   params  acc grown   acc w4  acc w128
+   20000      w8 d1      2.0    10.7    1.3     5569      0.803    0.721     0.779
+   20000     w32 d2      0.0     4.0    1.0     2700      0.570    0.567     0.598
+   20000    w128 d3      0.0     4.0    1.0     2700      0.513    0.510     0.482
+    2000      w8 d1      0.0     4.0    1.0     2700      0.552    0.562     0.527
+    2000     w32 d2      0.0     4.0    1.0     2700      0.409    0.414     0.438
+    2000    w128 d3      0.0     4.0    1.0     2700      0.369    0.373     0.401

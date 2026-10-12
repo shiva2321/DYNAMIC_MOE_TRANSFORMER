@@ -1,0 +1,13 @@
+﻿
+PhyloMoE after 30 regimes: 24 live experts, 6080 stored signature prototypes in total
+method                              ms/sample B=64  ms/sample B=1   multiply-adds/sample
+PhyloMoE (as implemented)                    0.387          9.941              1,597,440
+kNN, 12,000 stored (everything)              0.047          0.419              1,894,400
+kNN, 4,000 stored (2 MB)                     0.013          0.131                512,000
+Replay network (one MLP)                     0.003          0.132                 34,048
+
+PhyloMoE multiply-adds per sample, split: gate (scan every expert's stored vectors) = 1,556,480 as implemented 
+(778,240 if the score were computed once); the ONE expert that answers = 40,960.
+=> the gate costs 38x the expert it selects; total vs kNN-everything: 0.84x
+
+

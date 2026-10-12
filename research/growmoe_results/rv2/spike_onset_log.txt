@@ -1,0 +1,21 @@
+C:\Users\Asta\AppData\Local\Programs\Python\Python312\Lib\site-packages\torch\cuda\__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+rho 0.0 seed 100: experts 10; per-sample rejection foreign 100.0 % vs own 0.0 %; batch test detects 100.0 % (false alarm 0.0 %); x-only regime id 100.0 %
+rho 0.0 seed 101: experts 10; per-sample rejection foreign 100.0 % vs own 0.0 %; batch test detects 100.0 % (false alarm 0.0 %); x-only regime id 100.0 %
+rho 0.0 seed 102: experts 10; per-sample rejection foreign 100.0 % vs own 0.0 %; batch test detects 100.0 % (false alarm 0.0 %); x-only regime id 100.0 %
+rho 0.3 seed 100: experts 9; per-sample rejection foreign 99.9 % vs own 0.0 %; batch test detects 100.0 % (false alarm 0.0 %); x-only regime id 100.0 %
+rho 0.3 seed 101: experts 9; per-sample rejection foreign 99.8 % vs own 0.0 %; batch test detects 100.0 % (false alarm 0.0 %); x-only regime id 100.0 %
+rho 0.3 seed 102: experts 9; per-sample rejection foreign 99.7 % vs own 0.0 %; batch test detects 100.0 % (false alarm 0.0 %); x-only regime id 100.0 %
+rho 0.6 seed 100: experts 4; per-sample rejection foreign 91.2 % vs own 0.0 %; batch test detects 100.0 % (false alarm 0.0 %); x-only regime id 99.8 %
+rho 0.6 seed 101: experts 3; per-sample rejection foreign 87.5 % vs own 0.0 %; batch test detects 100.0 % (false alarm 0.0 %); x-only regime id 99.8 %
+rho 0.6 seed 102: experts 3; per-sample rejection foreign 87.3 % vs own 0.0 %; batch test detects 100.0 % (false alarm 0.0 %); x-only regime id 99.9 %
+rho 0.85 seed 100: experts 7; per-sample rejection foreign 2.3 % vs own 0.0 %; batch test detects 100.0 % (false alarm 0.0 %); x-only regime id 90.8 %
+rho 0.85 seed 101: experts 5; per-sample rejection foreign 0.0 % vs own 0.0 %; batch test detects 100.0 % (false alarm 0.0 %); x-only regime id 89.5 %
+rho 0.85 seed 102: experts 3; per-sample rejection foreign 0.0 % vs own 0.0 %; batch test detects 100.0 % (false alarm 0.0 %); x-only regime id 90.0 %
+
+ONSETS of first-visit regimes 1..9 (mean over seeds)
+rho   novel frac first batch   preq CE at onset   segments with a spawn   segments with an alarm   segments with an extend   experts at end
+0.00                100.0 %             5.14                 100 %                     4 %                      4 %           10.0
+0.30                 96.8 %             4.91                  85 %                    33 %                     41 %            9.0
+0.60                 20.4 %             3.49                  26 %                     7 %                      7 %            3.3
+0.85                  0.0 %             3.99                  44 %                    44 %                      0 %            5.0

@@ -1,0 +1,157 @@
+{
+ "stream": "F-15",
+ "dev_seeds": [
+  100,
+  101,
+  102
+ ],
+ "rows": [
+  {
+   "variant": "A as run in M0",
+   "seed": 100,
+   "acc": 0.4074999988079071,
+   "n_experts": 14,
+   "seconds": 25.76996979999967
+  },
+  {
+   "variant": "A as run in M0",
+   "seed": 101,
+   "acc": 0.39066666762034097,
+   "n_experts": 15,
+   "seconds": 28.339644400000907
+  },
+  {
+   "variant": "A as run in M0",
+   "seed": 102,
+   "acc": 0.4036666681369146,
+   "n_experts": 16,
+   "seconds": 27.516953099999228
+  },
+  {
+   "variant": "fresh init (init_mode=scratch)",
+   "seed": 100,
+   "acc": 0.4114999989668528,
+   "n_experts": 16,
+   "seconds": 24.291454899999735
+  },
+  {
+   "variant": "fresh init (init_mode=scratch)",
+   "seed": 101,
+   "acc": 0.4040000001589457,
+   "n_experts": 16,
+   "seconds": 24.128851999999824
+  },
+  {
+   "variant": "fresh init (init_mode=scratch)",
+   "seed": 102,
+   "acc": 0.39300000071525576,
+   "n_experts": 14,
+   "seconds": 22.51896779999879
+  },
+  {
+   "variant": "no per-expert replay (replay_size=0)",
+   "seed": 100,
+   "acc": 0.3493333319822947,
+   "n_experts": 29,
+   "seconds": 21.930971800000407
+  },
+  {
+   "variant": "no per-expert replay (replay_size=0)",
+   "seed": 101,
+   "acc": 0.334333336353302,
+   "n_experts": 29,
+   "seconds": 22.45920819999992
+  },
+  {
+   "variant": "no per-expert replay (replay_size=0)",
+   "seed": 102,
+   "acc": 0.33016666968663533,
+   "n_experts": 27,
+   "seconds": 21.353897400000278
+  },
+  {
+   "variant": "never extend, always spawn (delta_forget=-1)",
+   "seed": 100,
+   "acc": 0.415666667620341,
+   "n_experts": 29,
+   "seconds": 32.148508199999924
+  },
+  {
+   "variant": "never extend, always spawn (delta_forget=-1)",
+   "seed": 101,
+   "acc": 0.41050000190734864,
+   "n_experts": 28,
+   "seconds": 33.866430899999614
+  },
+  {
+   "variant": "never extend, always spawn (delta_forget=-1)",
+   "seed": 102,
+   "acc": 0.40833332935969036,
+   "n_experts": 27,
+   "seconds": 29.1541287
+  },
+  {
+   "variant": "fresh init + no replay + never extend",
+   "seed": 100,
+   "acc": 0.2598333348830541,
+   "n_experts": 59,
+   "seconds": 22.72170499999993
+  },
+  {
+   "variant": "fresh init + no replay + never extend",
+   "seed": 101,
+   "acc": 0.28200000077486037,
+   "n_experts": 49,
+   "seconds": 21.1306728999989
+  },
+  {
+   "variant": "fresh init + no replay + never extend",
+   "seed": 102,
+   "acc": 0.27066666483879087,
+   "n_experts": 46,
+   "seconds": 20.18913910000083
+  },
+  {
+   "variant": "  same recipe, 5 steps per batch",
+   "seed": 100,
+   "acc": 0.32833333561817807,
+   "n_experts": 26,
+   "seconds": 5.841722799999843
+  },
+  {
+   "variant": "  same recipe, 5 steps per batch",
+   "seed": 101,
+   "acc": 0.39866665999094647,
+   "n_experts": 21,
+   "seconds": 5.269801499998721
+  },
+  {
+   "variant": "  same recipe, 5 steps per batch",
+   "seed": 102,
+   "acc": 0.3121666649977366,
+   "n_experts": 30,
+   "seconds": 6.679408100000728
+  },
+  {
+   "variant": "  same recipe, 20 steps per batch",
+   "seed": 100,
+   "acc": 0.26233333547910054,
+   "n_experts": 58,
+   "seconds": 13.756266300000789
+  },
+  {
+   "variant": "  same recipe, 20 steps per batch",
+   "seed": 101,
+   "acc": 0.2734999989469846,
+   "n_experts": 49,
+   "seconds": 12.357724900000903
+  },
+  {
+   "variant": "  same recipe, 20 steps per batch",
+   "seed": 102,
+   "acc": 0.2868333369493484,
+   "n_experts": 49,
+   "seconds": 11.063538599999447
+  }
+ ]
+}

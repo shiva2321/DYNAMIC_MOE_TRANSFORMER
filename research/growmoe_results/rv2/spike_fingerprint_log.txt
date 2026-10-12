@@ -1,0 +1,62 @@
+C:\Users\Asta\AppData\Local\Programs\Python\Python312\Lib\site-packages\torch\cuda\__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+F-15 seed 100 done (19s): E=16 exact 44.9 owner-routed 45.1
+F-15 seed 101 done (37s): E=15 exact 47.5 owner-routed 47.7
+F-15 seed 102 done (52s): E=15 exact 45.7 owner-routed 45.9
+F-30 seed 100 done (84s): E=30 exact 45.7 owner-routed 46.1
+F-30 seed 101 done (115s): E=29 exact 43.7 owner-routed 44.3
+F-30 seed 102 done (146s): E=30 exact 46.2 owner-routed 46.5
+S2-5 seed 100 done (149s): E=5 exact 93.2 owner-routed 93.2
+S2-5 seed 101 done (151s): E=2 exact 90.4 owner-routed 90.4
+S2-5 seed 102 done (154s): E=3 exact 90.6 owner-routed 90.6
+S2-30 seed 100 done (171s): E=23 exact 90.3 owner-routed 90.3
+S2-30 seed 101 done (187s): E=18 exact 87.4 owner-routed 87.5
+S2-30 seed 102 done (202s): E=18 exact 88.0 owner-routed 88.0
+S1 seed 100 done (216s): E=5 exact 79.6 owner-routed 83.4
+S1 seed 101 done (228s): E=4 exact 77.7 owner-routed 80.8
+S1 seed 102 done (242s): E=3 exact 77.3 owner-routed 79.7
+
+=== F-15: experts 15.3; exact gate 46.0 %, owner-routed bound 46.2 %, exact gate 501 kMACs ===
+stage 1       alone %  agree %   kMACs | top-1: recall  acc  kMACs | top-2: recall  acc  kMACs | top-3: recall  acc  kMACs
+centroid         46.4     97.6     2.0 |   97.6  46.4    35 |   99.6  46.1    67 |   99.9  46.1   100
+subproto-4       45.9     96.5     7.9 |   96.5  45.9    41 |   99.7  46.1    73 |   99.9  46.1   106
+subproto-8       46.0     96.7    15.7 |   96.7  46.0    48 |   99.6  46.1    81 |   99.9  46.1   114
+wave-512         46.4     97.3    73.4 |   97.3  46.4   106 |   99.3  46.2   139 |   99.5  46.1   171
+ridge-lin        46.3     98.2     2.0 |   98.2  46.3    35 |   99.3  46.2    67 |   99.5  46.1   100
+ridge-rff        46.2     98.1   146.8 |   98.1  46.2   179 |   99.2  46.2   212 |   99.4  46.2   245
+
+=== F-30: experts 29.7; exact gate 45.2 %, owner-routed bound 45.6 %, exact gate 972 kMACs ===
+stage 1       alone %  agree %   kMACs | top-1: recall  acc  kMACs | top-2: recall  acc  kMACs | top-3: recall  acc  kMACs
+centroid         45.6     98.3     3.8 |   98.3  45.6    37 |   99.7  45.3    69 |   99.8  45.2   102
+subproto-4       45.1     96.8    15.2 |   96.8  45.1    48 |   99.8  45.3    81 |   99.9  45.2   113
+subproto-8       45.1     96.9    30.4 |   96.9  45.1    63 |   99.8  45.3    96 |   99.9  45.2   129
+wave-512         45.6     98.0    80.7 |   98.0  45.6   113 |   98.9  45.5   146 |   99.3  45.4   179
+ridge-lin        45.6     98.3     3.8 |   98.3  45.6    37 |   98.8  45.5    69 |   99.1  45.4   102
+ridge-rff        45.6     98.2   161.5 |   98.2  45.6   194 |   98.8  45.5   227 |   99.0  45.4   260
+
+=== S2-5: experts 3.3; exact gate 91.4 %, owner-routed bound 91.4 %, exact gate 109 kMACs ===
+stage 1       alone %  agree %   kMACs | top-1: recall  acc  kMACs | top-2: recall  acc  kMACs | top-3: recall  acc  kMACs
+centroid         90.9     99.5     0.4 |   99.5  90.9    33 |  100.0  91.4    66 |  100.0  91.4    88
+subproto-4       91.4    100.0     1.7 |  100.0  91.4    34 |  100.0  91.4    67 |  100.0  91.4    89
+subproto-8       91.4    100.0     3.4 |  100.0  91.4    36 |  100.0  91.4    69 |  100.0  91.4    91
+wave-512         89.5     97.9    67.2 |   97.9  89.5   100 |   99.9  91.3   133 |  100.0  91.4   155
+ridge-lin        91.4    100.0     0.4 |  100.0  91.4    33 |  100.0  91.4    66 |  100.0  91.4    88
+ridge-rff        91.3     99.9   134.5 |   99.9  91.3   167 |  100.0  91.4   200 |  100.0  91.4   222
+
+=== S2-30: experts 19.7; exact gate 88.6 %, owner-routed bound 88.6 %, exact gate 644 kMACs ===
+stage 1       alone %  agree %   kMACs | top-1: recall  acc  kMACs | top-2: recall  acc  kMACs | top-3: recall  acc  kMACs
+centroid         86.0     96.0     2.5 |   96.0  86.0    35 |   99.0  88.0    68 |   99.5  88.4   101
+subproto-4       87.8     98.4    10.1 |   98.4  87.8    43 |   99.7  88.4    76 |   99.9  88.5   108
+subproto-8       88.4     99.5    20.1 |   99.5  88.4    53 |   99.9  88.5    86 |  100.0  88.6   118
+wave-512         76.0     81.2    75.6 |   81.2  76.0   108 |   89.1  81.2   141 |   93.0  84.1   174
+ridge-lin        84.2     93.4     2.5 |   93.4  84.2    35 |   97.0  86.7    68 |   98.3  87.6   101
+ridge-rff        88.5     99.6   151.2 |   99.6  88.5   184 |  100.0  88.6   217 |  100.0  88.6   250
+
+=== S1: experts 4.0; exact gate 78.2 %, owner-routed bound 81.3 %, exact gate 131 kMACs ===
+stage 1       alone %  agree %   kMACs | top-1: recall  acc  kMACs | top-2: recall  acc  kMACs | top-3: recall  acc  kMACs
+centroid         51.9     60.7     0.5 |   60.7  51.9    33 |   82.9  64.7    66 |   99.8  78.2    99
+subproto-4       68.7     77.7     2.0 |   77.7  68.7    35 |   94.3  75.8    68 |   98.6  77.8   100
+subproto-8       73.1     83.0     4.1 |   83.0  73.1    37 |   95.7  77.1    70 |   98.9  78.2   102
+wave-512         58.5     65.9    67.6 |   65.9  58.5   100 |   82.8  67.2   133 |   94.3  74.9   166
+ridge-lin        53.0     61.8     0.5 |   61.8  53.0    33 |   83.2  65.6    66 |   99.0  78.1    99
+ridge-rff        71.6     82.3   135.2 |   82.3  71.6   168 |   92.9  76.6   201 |   97.4  77.9   233

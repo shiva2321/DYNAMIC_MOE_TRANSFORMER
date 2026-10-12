@@ -1,0 +1,42 @@
+C:\Users\Asta\AppData\Local\Programs\Python\Python312\Lib\site-packages\torch\cuda\__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+
+D3a seed 100: experts 14, mean accuracy 40.7, regimes sharing an expert 1, mean share of a regime's samples reaching its owner 98.8%, samples sent to non-owner experts 134, corr(mass to owner, accuracy) 0.31
+   batch  0: none   1.6%  other   5.8%  own  92.6%
+   batch  1: other   6.9%  own  93.1%
+   batch  2: own 100.0%
+   batch  3: other   0.2%  own  99.8%
+   batch  4: other   0.1%  own  99.9%
+   batch  5: own 100.0%
+   batch  6: other   0.3%  own  99.7%
+   batch  7: other   0.2%  own  99.8%
+   batch  8: other   0.1%  own  99.9%
+   batch  9: other   0.1%  own  99.9%
+   batch 10: other   0.1%  own  99.9%
+   batch 11: own 100.0%
+   batch 12: other   0.2%  own  99.8%
+
+D3a seed 101: experts 15, mean accuracy 39.1, regimes sharing an expert 3, mean share of a regime's samples reaching its owner 95.5%, samples sent to non-owner experts 527, corr(mass to owner, accuracy) 0.31
+   batch  0: none   1.8%  other  25.7%  own  72.5%
+   batch  1: other  22.2%  own  77.8%
+   batch  2: other   0.8%  own  99.2%
+   batch  3: other   0.4%  own  99.6%
+   batch  4: other   0.6%  own  99.4%
+   batch  5: other   0.2%  own  99.8%
+   batch  6: other   0.4%  own  99.6%
+   batch  7: other   0.4%  own  99.6%
+   batch  8: other   1.5%  own  98.5%
+   batch  9: other   0.6%  own  99.4%
+   batch 10: other   0.4%  own  99.6%
+   batch 11: other   1.2%  own  98.8%
+   batch 12: other   0.6%  own  99.4%
+
+D3b dev accuracy % on F-15 (seeds 100-102):
+B4 as run in M0 (5 steps, no replay mixing)           48.5   per seed [49.0, 49.5, 47.1]
+oracle gating, plain training, 5 steps                48.5   per seed [49.0, 49.5, 47.1]
++ A's replay mixing, 5 steps                          52.7   per seed [53.5, 52.6, 52.0]
++ A's replay mixing + infant lr, 5 steps              51.9   per seed [52.1, 51.1, 52.5]
+oracle gating, plain training, 50 steps               37.6   per seed [38.0, 37.7, 37.1]
++ A's replay mixing, 50 steps                         47.2   per seed [47.5, 46.8, 47.1]
++ A's replay mixing + infant lr, 50 steps             46.3   per seed [46.1, 46.5, 46.3]
++ A's replay mixing, 20 steps                         49.1   per seed [49.3, 49.1, 49.0]

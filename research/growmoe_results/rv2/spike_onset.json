@@ -1,0 +1,2173 @@
+{
+ "onset": [
+  {
+   "rho": 0.0,
+   "seed": 100,
+   "n_experts": 10,
+   "segments": [
+    {
+     "seg": 0,
+     "regime": 0,
+     "first_visit": true,
+     "events": [
+      "spawn"
+     ],
+     "novel_frac": 0.0,
+     "preq_ce": 2.034569263458252,
+     "n_experts_before": 1,
+     "owner": 0
+    },
+    {
+     "seg": 1,
+     "regime": 1,
+     "first_visit": true,
+     "events": [
+      "spawn"
+     ],
+     "novel_frac": 1.0,
+     "preq_ce": 4.143182277679443,
+     "n_experts_before": 1,
+     "owner": 0
+    },
+    {
+     "seg": 2,
+     "regime": 2,
+     "first_visit": true,
+     "events": [
+      "spawn"
+     ],
+     "novel_frac": 1.0,
+     "preq_ce": 4.865123748779297,
+     "n_experts_before": 2,
+     "owner": 0
+    },
+    {
+     "seg": 3,
+     "regime": 3,
+     "first_visit": true,
+     "events": [
+      "spawn"
+     ],
+     "novel_frac": 1.0,
+     "preq_ce": 5.985699653625488,
+     "n_experts_before": 3,
+     "owner": 1
+    },
+    {
+     "seg": 4,
+     "regime": 4,
+     "first_visit": true,
+     "events": [
+      "spawn"
+     ],
+     "novel_frac": 1.0,
+     "preq_ce": 5.77589750289917,
+     "n_experts_before": 4,
+     "owner": 1
+    },
+    {
+     "seg": 5,
+     "regime": 5,
+     "first_visit": true,
+     "events": [
+      "spawn"
+     ],
+     "novel_frac": 1.0,
+     "preq_ce": 5.249640464782715,
+     "n_experts_before": 5,
+     "owner": 4
+    },
+    {
+     "seg": 6,
+     "regime": 6,
+     "first_visit": true,
+     "events": [
+      "spawn"
+     ],
+     "novel_frac": 1.0,
+     "preq_ce": 6.084501266479492,
+     "n_experts_before": 6,
+     "owner": 0
+    },
+    {
+     "seg": 7,
+     "regime": 7,
+     "first_visit": true,
+     "events": [
+      "spawn"
+     ],
+     "novel_frac": 1.0,
+     "preq_ce": 5.73256778717041,
+     "n_experts_before": 7,
+     "owner": 2
+    },
+    {
+     "seg": 8,
+     "regime": 8,
+     "first_visit": true,
+     "events": [
+      "spawn"
+     ],
+     "novel_frac": 1.0,
+     "preq_ce": 4.951662063598633,
+     "n_experts_before": 8,
+     "owner": 7
+    },
+    {
+     "seg": 9,
+     "regime": 9,
+     "first_visit": true,
+     "events": [
+      "spawn"
+     ],
+     "novel_frac": 1.0,
+     "preq_ce": 6.00846004486084,
+     "n_experts_before": 9,
+     "owner": 6
+    },
+    {
+     "seg": 10,
+     "regime": 0,
+     "first_visit": false,
+     "events": [],
+     "novel_frac": 0.0,
+     "preq_ce": 2.141627788543701,
+     "n_experts_before": 10,
+     "owner": 0
+    },
+    {
+     "seg": 11,
+     "regime": 5,
+     "first_visit": false,
+     "events": [],
+     "novel_frac": 0.0,
+     "preq_ce": 1.6348696947097778,
+     "n_experts_before": 10,
+     "owner": 5
+    }
+   ]
+  },
+  {
+   "rho": 0.0,
+   "seed": 101,
+   "n_experts": 10,
+   "segments": [
+    {
+     "seg": 0,
+     "regime": 0,
+     "first_visit": true,
+     "events": [
+      "spawn"
+     ],
+     "novel_frac": 0.0,
+     "preq_ce": 2.442685604095459,
+     "n_experts_before": 1,
+     "owner": 0
+    },
+    {
+     "seg": 1,
+     "regime": 1,
+     "first_visit": true,
+     "events": [
+      "spawn"
+     ],
+     "novel_frac": 1.0,
+     "preq_ce": 5.069614410400391,
+     "n_experts_before": 1,
+     "owner": 0
+    },
+    {
+     "seg": 2,
+     "regime": 2,
+     "first_visit": true,
+     "events": [
+      "spawn"
+     ],
+     "novel_frac": 1.0,
+     "preq_ce": 4.648828506469727,
+     "n_experts_before": 2,
+     "owner": 0
+    },
+    {
+     "seg": 3,
+     "regime": 3,
+     "first_visit": true,
+     "events": [
+      "spawn"
+     ],
+     "novel_frac": 1.0,
+     "preq_ce": 5.704016208648682,
+     "n_experts_before": 3,
+     "owner": 1
+    },
+    {
+     "seg": 4,
+     "regime": 4,
+     "first_visit": true,
+     "events": [
+      "spawn"
+     ],
+     "novel_frac": 1.0,
+     "preq_ce": 5.0624260902404785,
+     "n_experts_before": 4,
+     "owner": 1
+    },
+    {
+     "seg": 5,
+     "regime": 5,
+     "first_visit": true,
+     "events": [
+      "spawn"
+     ],
+     "novel_frac": 1.0,
+     "preq_ce": 5.430633544921875,
+     "n_experts_before": 5,
+     "owner": 3
+    },
+    {
+     "seg": 6,
+     "regime": 6,
+     "first_visit": true,
+     "events": [
+      "extend",
+      "alarm",
+      "spawn"
+     ],
+     "novel_frac": 1.0,
+     "preq_ce": 5.578042507171631,
+     "n_experts_before": 6,
+     "owner": 1
+    },
+    {
+     "seg": 7,
+     "regime": 7,
+     "first_visit": true,
+     "events": [
+      "spawn"
+     ],
+     "novel_frac": 1.0,
+     "preq_ce": 5.063381195068359,
+     "n_experts_before": 7,
+     "owner": 2
+    },
+    {
+     "seg": 8,
+     "regime": 8,
+     "first_visit": true,
+     "events": [
+      "spawn"
+     ],
+     "novel_frac": 1.0,
+     "preq_ce": 5.814350605010986,
+     "n_experts_before": 8,
+     "owner": 6
+    },
+    {
+     "seg": 9,
+     "regime": 9,
+     "first_visit": true,
+     "events": [
+      "spawn"
+     ],
+     "novel_frac": 1.0,
+     "preq_ce": 4.137393474578857,
+     "n_experts_before": 9,
+     "owner": 2
+    },
+    {
+     "seg": 10,
+     "regime": 0,
+     "first_visit": false,
+     "events": [],
+     "novel_frac": 0.0,
+     "preq_ce": 1.8392088413238525,
+     "n_experts_before": 10,
+     "owner": 0
+    },
+    {
+     "seg": 11,
+     "regime": 5,
+     "first_visit": false,
+     "events": [],
+     "novel_frac": 0.0,
+     "preq_ce": 1.5616564750671387,
+     "n_experts_before": 10,
+     "owner": 5
+    }
+   ]
+  },
+  {
+   "rho": 0.0,
+   "seed": 102,
+   "n_experts": 10,
+   "segments": [
+    {
+     "seg": 0,
+     "regime": 0,
+     "first_visit": true,
+     "events": [
+      "spawn"
+     ],
+     "novel_frac": 0.0,
+     "preq_ce": 2.120514392852783,
+     "n_experts_before": 1,
+     "owner": 0
+    },
+    {
+     "seg": 1,
+     "regime": 1,
+     "first_visit": true,
+     "events": [
+      "spawn"
+     ],
+     "novel_frac": 1.0,
+     "preq_ce": 4.440515995025635,
+     "n_experts_before": 1,
+     "owner": 0
+    },
+    {
+     "seg": 2,
+     "regime": 2,
+     "first_visit": true,
+     "events": [
+      "spawn"
+     ],
+     "novel_frac": 1.0,
+     "preq_ce": 4.96245002746582,
+     "n_experts_before": 2,
+     "owner": 0
+    },
+    {
+     "seg": 3,
+     "regime": 3,
+     "first_visit": true,
+     "events": [
+      "spawn"
+     ],
+     "novel_frac": 1.0,
+     "preq_ce": 4.5085248947143555,
+     "n_experts_before": 3,
+     "owner": 1
+    },
+    {
+     "seg": 4,
+     "regime": 4,
+     "first_visit": true,
+     "events": [
+      "spawn"
+     ],
+     "novel_frac": 1.0,
+     "preq_ce": 5.059739589691162,
+     "n_experts_before": 4,
+     "owner": 0
+    },
+    {
+     "seg": 5,
+     "regime": 5,
+     "first_visit": true,
+     "events": [
+      "spawn"
+     ],
+     "novel_frac": 1.0,
+     "preq_ce": 4.221269607543945,
+     "n_experts_before": 5,
+     "owner": 0
+    },
+    {
+     "seg": 6,
+     "regime": 6,
+     "first_visit": true,
+     "events": [
+      "spawn"
+     ],
+     "novel_frac": 1.0,
+     "preq_ce": 4.421294689178467,
+     "n_experts_before": 6,
+     "owner": 3
+    },
+    {
+     "seg": 7,
+     "regime": 7,
+     "first_visit": true,
+     "events": [
+      "spawn"
+     ],
+     "novel_frac": 1.0,
+     "preq_ce": 5.581307411193848,
+     "n_experts_before": 7,
+     "owner": 2
+    },
+    {
+     "seg": 8,
+     "regime": 8,
+     "first_visit": true,
+     "events": [
+      "spawn"
+     ],
+     "novel_frac": 1.0,
+     "preq_ce": 5.314414024353027,
+     "n_experts_before": 8,
+     "owner": 7
+    },
+    {
+     "seg": 9,
+     "regime": 9,
+     "first_visit": true,
+     "events": [
+      "spawn"
+     ],
+     "novel_frac": 1.0,
+     "preq_ce": 4.8945722579956055,
+     "n_experts_before": 9,
+     "owner": 1
+    },
+    {
+     "seg": 10,
+     "regime": 0,
+     "first_visit": false,
+     "events": [],
+     "novel_frac": 0.0,
+     "preq_ce": 1.7953112125396729,
+     "n_experts_before": 10,
+     "owner": 0
+    },
+    {
+     "seg": 11,
+     "regime": 5,
+     "first_visit": false,
+     "events": [],
+     "novel_frac": 0.0,
+     "preq_ce": 1.2611769437789917,
+     "n_experts_before": 10,
+     "owner": 5
+    }
+   ]
+  },
+  {
+   "rho": 0.3,
+   "seed": 100,
+   "n_experts": 9,
+   "segments": [
+    {
+     "seg": 0,
+     "regime": 0,
+     "first_visit": true,
+     "events": [
+      "spawn"
+     ],
+     "novel_frac": 0.0,
+     "preq_ce": 2.0307395458221436,
+     "n_experts_before": 1,
+     "owner": 0
+    },
+    {
+     "seg": 1,
+     "regime": 1,
+     "first_visit": true,
+     "events": [
+      "spawn"
+     ],
+     "novel_frac": 1.0,
+     "preq_ce": 4.374481201171875,
+     "n_experts_before": 1,
+     "owner": 0
+    },
+    {
+     "seg": 2,
+     "regime": 2,
+     "first_visit": true,
+     "events": [
+      "spawn"
+     ],
+     "novel_frac": 1.0,
+     "preq_ce": 5.501647472381592,
+     "n_experts_before": 2,
+     "owner": 0
+    },
+    {
+     "seg": 3,
+     "regime": 3,
+     "first_visit": true,
+     "events": [
+      "spawn"
+     ],
+     "novel_frac": 0.984375,
+     "preq_ce": 5.533370018005371,
+     "n_experts_before": 3,
+     "owner": 1
+    },
+    {
+     "seg": 4,
+     "regime": 4,
+     "first_visit": true,
+     "events": [
+      "spawn"
+     ],
+     "novel_frac": 1.0,
+     "preq_ce": 5.884530067443848,
+     "n_experts_before": 4,
+     "owner": 3
+    },
+    {
+     "seg": 5,
+     "regime": 5,
+     "first_visit": true,
+     "events": [
+      "extend",
+      "alarm",
+      "spawn"
+     ],
+     "novel_frac": 0.90625,
+     "preq_ce": 4.444228172302246,
+     "n_experts_before": 5,
+     "owner": 3
+    },
+    {
+     "seg": 6,
+     "regime": 6,
+     "first_visit": true,
+     "events": [
+      "extend",
+      "alarm",
+      "spawn"
+     ],
+     "novel_frac": 0.953125,
+     "preq_ce": 5.405500888824463,
+     "n_experts_before": 6,
+     "owner": 0
+    },
+    {
+     "seg": 7,
+     "regime": 7,
+     "first_visit": true,
+     "events": [
+      "extend",
+      "alarm",
+      "extend"
+     ],
+     "novel_frac": 1.0,
+     "preq_ce": 4.7899580001831055,
+     "n_experts_before": 7,
+     "owner": 2
+    },
+    {
+     "seg": 8,
+     "regime": 8,
+     "first_visit": true,
+     "events": [
+      "spawn"
+     ],
+     "novel_frac": 1.0,
+     "preq_ce": 5.192275524139404,
+     "n_experts_before": 7,
+     "owner": 1
+    },
+    {
+     "seg": 9,
+     "regime": 9,
+     "first_visit": true,
+     "events": [
+      "spawn"
+     ],
+     "novel_frac": 0.953125,
+     "preq_ce": 4.6841139793396,
+     "n_experts_before": 8,
+     "owner": 5
+    },
+    {
+     "seg": 10,
+     "regime": 0,
+     "first_visit": false,
+     "events": [],
+     "novel_frac": 0.0,
+     "preq_ce": 2.5820324420928955,
+     "n_experts_before": 9,
+     "owner": 0
+    },
+    {
+     "seg": 11,
+     "regime": 5,
+     "first_visit": false,
+     "events": [],
+     "novel_frac": 0.0,
+     "preq_ce": 2.419419527053833,
+     "n_experts_before": 9,
+     "owner": 5
+    }
+   ]
+  },
+  {
+   "rho": 0.3,
+   "seed": 101,
+   "n_experts": 9,
+   "segments": [
+    {
+     "seg": 0,
+     "regime": 0,
+     "first_visit": true,
+     "events": [
+      "spawn"
+     ],
+     "novel_frac": 0.0,
+     "preq_ce": 2.5737388134002686,
+     "n_experts_before": 1,
+     "owner": 0
+    },
+    {
+     "seg": 1,
+     "regime": 1,
+     "first_visit": true,
+     "events": [
+      "spawn"
+     ],
+     "novel_frac": 1.0,
+     "preq_ce": 4.836471080780029,
+     "n_experts_before": 1,
+     "owner": 0
+    },
+    {
+     "seg": 2,
+     "regime": 2,
+     "first_visit": true,
+     "events": [
+      "extend",
+      "alarm",
+      "spawn"
+     ],
+     "novel_frac": 0.984375,
+     "preq_ce": 5.051380157470703,
+     "n_experts_before": 2,
+     "owner": 0
+    },
+    {
+     "seg": 3,
+     "regime": 3,
+     "first_visit": true,
+     "events": [
+      "spawn"
+     ],
+     "novel_frac": 0.96875,
+     "preq_ce": 5.43944787979126,
+     "n_experts_before": 3,
+     "owner": 1
+    },
+    {
+     "seg": 4,
+     "regime": 4,
+     "first_visit": true,
+     "events": [
+      "extend"
+     ],
+     "novel_frac": 0.984375,
+     "preq_ce": 5.020951747894287,
+     "n_experts_before": 4,
+     "owner": 1
+    },
+    {
+     "seg": 5,
+     "regime": 5,
+     "first_visit": true,
+     "events": [
+      "spawn"
+     ],
+     "novel_frac": 0.984375,
+     "preq_ce": 5.277600288391113,
+     "n_experts_before": 4,
+     "owner": 3
+    },
+    {
+     "seg": 6,
+     "regime": 6,
+     "first_visit": true,
+     "events": [
+      "spawn"
+     ],
+     "novel_frac": 1.0,
+     "preq_ce": 4.060686111450195,
+     "n_experts_before": 5,
+     "owner": 0
+    },
+    {
+     "seg": 7,
+     "regime": 7,
+     "first_visit": true,
+     "events": [
+      "spawn",
+      "alarm",
+      "spawn"
+     ],
+     "novel_frac": 0.984375,
+     "preq_ce": 4.8993072509765625,
+     "n_experts_before": 6,
+     "owner": 2
+    },
+    {
+     "seg": 8,
+     "regime": 8,
+     "first_visit": true,
+     "events": [
+      "extend"
+     ],
+     "novel_frac": 1.0,
+     "preq_ce": 4.927865982055664,
+     "n_experts_before": 8,
+     "owner": 0
+    },
+    {
+     "seg": 9,
+     "regime": 9,
+     "first_visit": true,
+     "events": [
+      "spawn",
+      "alarm",
+      "extend"
+     ],
+     "novel_frac": 0.984375,
+     "preq_ce": 4.189779281616211,
+     "n_experts_before": 8,
+     "owner": 2
+    },
+    {
+     "seg": 10,
+     "regime": 0,
+     "first_visit": false,
+     "events": [
+      "alarm",
+      "extend"
+     ],
+     "novel_frac": 0.0,
+     "preq_ce": 3.7581803798675537,
+     "n_experts_before": 9,
+     "owner": 0
+    },
+    {
+     "seg": 11,
+     "regime": 5,
+     "first_visit": false,
+     "events": [],
+     "novel_frac": 0.0,
+     "preq_ce": 2.836658000946045,
+     "n_experts_before": 9,
+     "owner": 4
+    }
+   ]
+  },
+  {
+   "rho": 0.3,
+   "seed": 102,
+   "n_experts": 9,
+   "segments": [
+    {
+     "seg": 0,
+     "regime": 0,
+     "first_visit": true,
+     "events": [
+      "spawn"
+     ],
+     "novel_frac": 0.0,
+     "preq_ce": 2.0998587608337402,
+     "n_experts_before": 1,
+     "owner": 0
+    },
+    {
+     "seg": 1,
+     "regime": 1,
+     "first_visit": true,
+     "events": [
+      "spawn"
+     ],
+     "novel_frac": 1.0,
+     "preq_ce": 4.743034362792969,
+     "n_experts_before": 1,
+     "owner": 0
+    },
+    {
+     "seg": 2,
+     "regime": 2,
+     "first_visit": true,
+     "events": [
+      "extend",
+      "alarm",
+      "spawn"
+     ],
+     "novel_frac": 1.0,
+     "preq_ce": 5.375701427459717,
+     "n_experts_before": 2,
+     "owner": 0
+    },
+    {
+     "seg": 3,
+     "regime": 3,
+     "first_visit": true,
+     "events": [
+      "spawn"
+     ],
+     "novel_frac": 1.0,
+     "preq_ce": 5.101686477661133,
+     "n_experts_before": 3,
+     "owner": 1
+    },
+    {
+     "seg": 4,
+     "regime": 4,
+     "first_visit": true,
+     "events": [
+      "extend"
+     ],
+     "novel_frac": 0.96875,
+     "preq_ce": 5.141086101531982,
+     "n_experts_before": 4,
+     "owner": 0
+    },
+    {
+     "seg": 5,
+     "regime": 5,
+     "first_visit": true,
+     "events": [
+      "spawn"
+     ],
+     "novel_frac": 0.828125,
+     "preq_ce": 5.005512237548828,
+     "n_experts_before": 4,
+     "owner": 0
+    },
+    {
+     "seg": 6,
+     "regime": 6,
+     "first_visit": true,
+     "events": [
+      "extend",
+      "alarm",
+      "spawn"
+     ],
+     "novel_frac": 0.96875,
+     "preq_ce": 5.35732889175415,
+     "n_experts_before": 5,
+     "owner": 3
+    },
+    {
+     "seg": 7,
+     "regime": 7,
+     "first_visit": true,
+     "events": [
+      "spawn"
+     ],
+     "novel_frac": 0.84375,
+     "preq_ce": 4.370999813079834,
+     "n_experts_before": 6,
+     "owner": 2
+    },
+    {
+     "seg": 8,
+     "regime": 8,
+     "first_visit": true,
+     "events": [
+      "spawn"
+     ],
+     "novel_frac": 0.921875,
+     "preq_ce": 3.9220731258392334,
+     "n_experts_before": 7,
+     "owner": 3
+    },
+    {
+     "seg": 9,
+     "regime": 9,
+     "first_visit": true,
+     "events": [
+      "extend",
+      "alarm",
+      "spawn"
+     ],
+     "novel_frac": 0.921875,
+     "preq_ce": 4.1729631423950195,
+     "n_experts_before": 8,
+     "owner": 1
+    },
+    {
+     "seg": 10,
+     "regime": 0,
+     "first_visit": false,
+     "events": [],
+     "novel_frac": 0.0,
+     "preq_ce": 2.6669387817382812,
+     "n_experts_before": 9,
+     "owner": 0
+    },
+    {
+     "seg": 11,
+     "regime": 5,
+     "first_visit": false,
+     "events": [],
+     "novel_frac": 0.0,
+     "preq_ce": 2.6821846961975098,
+     "n_experts_before": 9,
+     "owner": 4
+    }
+   ]
+  },
+  {
+   "rho": 0.6,
+   "seed": 100,
+   "n_experts": 4,
+   "segments": [
+    {
+     "seg": 0,
+     "regime": 0,
+     "first_visit": true,
+     "events": [
+      "spawn"
+     ],
+     "novel_frac": 0.0,
+     "preq_ce": 2.0158371925354004,
+     "n_experts_before": 1,
+     "owner": 0
+    },
+    {
+     "seg": 1,
+     "regime": 1,
+     "first_visit": true,
+     "events": [
+      "spawn",
+      "alarm",
+      "extend"
+     ],
+     "novel_frac": 0.953125,
+     "preq_ce": 4.638562202453613,
+     "n_experts_before": 1,
+     "owner": 0
+    },
+    {
+     "seg": 2,
+     "regime": 2,
+     "first_visit": true,
+     "events": [
+      "spawn"
+     ],
+     "novel_frac": 0.78125,
+     "preq_ce": 4.169684410095215,
+     "n_experts_before": 2,
+     "owner": 0
+    },
+    {
+     "seg": 3,
+     "regime": 3,
+     "first_visit": true,
+     "events": [
+      "spawn"
+     ],
+     "novel_frac": 0.609375,
+     "preq_ce": 3.185350179672241,
+     "n_experts_before": 3,
+     "owner": 0
+    },
+    {
+     "seg": 4,
+     "regime": 4,
+     "first_visit": true,
+     "events": [],
+     "novel_frac": 0.0,
+     "preq_ce": 2.9246416091918945,
+     "n_experts_before": 4,
+     "owner": 0
+    },
+    {
+     "seg": 5,
+     "regime": 5,
+     "first_visit": true,
+     "events": [],
+     "novel_frac": 0.0,
+     "preq_ce": 2.9202725887298584,
+     "n_experts_before": 4,
+     "owner": 2
+    },
+    {
+     "seg": 6,
+     "regime": 6,
+     "first_visit": true,
+     "events": [],
+     "novel_frac": 0.0,
+     "preq_ce": 3.3897173404693604,
+     "n_experts_before": 4,
+     "owner": 0
+    },
+    {
+     "seg": 7,
+     "regime": 7,
+     "first_visit": true,
+     "events": [],
+     "novel_frac": 0.0,
+     "preq_ce": 3.6940314769744873,
+     "n_experts_before": 4,
+     "owner": 0
+    },
+    {
+     "seg": 8,
+     "regime": 8,
+     "first_visit": true,
+     "events": [],
+     "novel_frac": 0.0,
+     "preq_ce": 3.6483044624328613,
+     "n_experts_before": 4,
+     "owner": 0
+    },
+    {
+     "seg": 9,
+     "regime": 9,
+     "first_visit": true,
+     "events": [],
+     "novel_frac": 0.0,
+     "preq_ce": 3.0646750926971436,
+     "n_experts_before": 4,
+     "owner": 3
+    },
+    {
+     "seg": 10,
+     "regime": 0,
+     "first_visit": false,
+     "events": [],
+     "novel_frac": 0.0,
+     "preq_ce": 3.056215763092041,
+     "n_experts_before": 4,
+     "owner": 0
+    },
+    {
+     "seg": 11,
+     "regime": 5,
+     "first_visit": false,
+     "events": [],
+     "novel_frac": 0.0,
+     "preq_ce": 4.233377933502197,
+     "n_experts_before": 4,
+     "owner": 2
+    }
+   ]
+  },
+  {
+   "rho": 0.6,
+   "seed": 101,
+   "n_experts": 3,
+   "segments": [
+    {
+     "seg": 0,
+     "regime": 0,
+     "first_visit": true,
+     "events": [
+      "spawn"
+     ],
+     "novel_frac": 0.0,
+     "preq_ce": 2.632148027420044,
+     "n_experts_before": 1,
+     "owner": 0
+    },
+    {
+     "seg": 1,
+     "regime": 1,
+     "first_visit": true,
+     "events": [
+      "spawn"
+     ],
+     "novel_frac": 0.90625,
+     "preq_ce": 4.9173502922058105,
+     "n_experts_before": 1,
+     "owner": 0
+    },
+    {
+     "seg": 2,
+     "regime": 2,
+     "first_visit": true,
+     "events": [
+      "spawn"
+     ],
+     "novel_frac": 0.703125,
+     "preq_ce": 3.4171230792999268,
+     "n_experts_before": 2,
+     "owner": 0
+    },
+    {
+     "seg": 3,
+     "regime": 3,
+     "first_visit": true,
+     "events": [],
+     "novel_frac": 0.0,
+     "preq_ce": 3.563856840133667,
+     "n_experts_before": 3,
+     "owner": 0
+    },
+    {
+     "seg": 4,
+     "regime": 4,
+     "first_visit": true,
+     "events": [],
+     "novel_frac": 0.0,
+     "preq_ce": 3.472414493560791,
+     "n_experts_before": 3,
+     "owner": 0
+    },
+    {
+     "seg": 5,
+     "regime": 5,
+     "first_visit": true,
+     "events": [],
+     "novel_frac": 0.0,
+     "preq_ce": 2.618291139602661,
+     "n_experts_before": 3,
+     "owner": 1
+    },
+    {
+     "seg": 6,
+     "regime": 6,
+     "first_visit": true,
+     "events": [],
+     "novel_frac": 0.0,
+     "preq_ce": 2.8994500637054443,
+     "n_experts_before": 3,
+     "owner": 0
+    },
+    {
+     "seg": 7,
+     "regime": 7,
+     "first_visit": true,
+     "events": [],
+     "novel_frac": 0.0,
+     "preq_ce": 3.801772117614746,
+     "n_experts_before": 3,
+     "owner": 2
+    },
+    {
+     "seg": 8,
+     "regime": 8,
+     "first_visit": true,
+     "events": [],
+     "novel_frac": 0.0,
+     "preq_ce": 3.907762050628662,
+     "n_experts_before": 3,
+     "owner": 0
+    },
+    {
+     "seg": 9,
+     "regime": 9,
+     "first_visit": true,
+     "events": [],
+     "novel_frac": 0.0,
+     "preq_ce": 3.3713064193725586,
+     "n_experts_before": 3,
+     "owner": 0
+    },
+    {
+     "seg": 10,
+     "regime": 0,
+     "first_visit": false,
+     "events": [],
+     "novel_frac": 0.0,
+     "preq_ce": 3.1900110244750977,
+     "n_experts_before": 3,
+     "owner": 0
+    },
+    {
+     "seg": 11,
+     "regime": 5,
+     "first_visit": false,
+     "events": [],
+     "novel_frac": 0.0,
+     "preq_ce": 3.308863401412964,
+     "n_experts_before": 3,
+     "owner": 1
+    }
+   ]
+  },
+  {
+   "rho": 0.6,
+   "seed": 102,
+   "n_experts": 3,
+   "segments": [
+    {
+     "seg": 0,
+     "regime": 0,
+     "first_visit": true,
+     "events": [
+      "spawn"
+     ],
+     "novel_frac": 0.0,
+     "preq_ce": 2.093366861343384,
+     "n_experts_before": 1,
+     "owner": 0
+    },
+    {
+     "seg": 1,
+     "regime": 1,
+     "first_visit": true,
+     "events": [
+      "spawn",
+      "alarm",
+      "extend"
+     ],
+     "novel_frac": 0.921875,
+     "preq_ce": 4.854379653930664,
+     "n_experts_before": 1,
+     "owner": 0
+    },
+    {
+     "seg": 2,
+     "regime": 2,
+     "first_visit": true,
+     "events": [
+      "spawn"
+     ],
+     "novel_frac": 0.640625,
+     "preq_ce": 4.048369884490967,
+     "n_experts_before": 2,
+     "owner": 0
+    },
+    {
+     "seg": 3,
+     "regime": 3,
+     "first_visit": true,
+     "events": [],
+     "novel_frac": 0.0,
+     "preq_ce": 3.3090505599975586,
+     "n_experts_before": 3,
+     "owner": 0
+    },
+    {
+     "seg": 4,
+     "regime": 4,
+     "first_visit": true,
+     "events": [],
+     "novel_frac": 0.0,
+     "preq_ce": 3.3693833351135254,
+     "n_experts_before": 3,
+     "owner": 0
+    },
+    {
+     "seg": 5,
+     "regime": 5,
+     "first_visit": true,
+     "events": [],
+     "novel_frac": 0.0,
+     "preq_ce": 2.8981261253356934,
+     "n_experts_before": 3,
+     "owner": 0
+    },
+    {
+     "seg": 6,
+     "regime": 6,
+     "first_visit": true,
+     "events": [],
+     "novel_frac": 0.0,
+     "preq_ce": 3.300671100616455,
+     "n_experts_before": 3,
+     "owner": 2
+    },
+    {
+     "seg": 7,
+     "regime": 7,
+     "first_visit": true,
+     "events": [],
+     "novel_frac": 0.0,
+     "preq_ce": 2.9530935287475586,
+     "n_experts_before": 3,
+     "owner": 2
+    },
+    {
+     "seg": 8,
+     "regime": 8,
+     "first_visit": true,
+     "events": [],
+     "novel_frac": 0.0,
+     "preq_ce": 3.0654754638671875,
+     "n_experts_before": 3,
+     "owner": 2
+    },
+    {
+     "seg": 9,
+     "regime": 9,
+     "first_visit": true,
+     "events": [],
+     "novel_frac": 0.0,
+     "preq_ce": 2.8477001190185547,
+     "n_experts_before": 3,
+     "owner": 1
+    },
+    {
+     "seg": 10,
+     "regime": 0,
+     "first_visit": false,
+     "events": [],
+     "novel_frac": 0.0,
+     "preq_ce": 3.043191909790039,
+     "n_experts_before": 3,
+     "owner": 0
+    },
+    {
+     "seg": 11,
+     "regime": 5,
+     "first_visit": false,
+     "events": [],
+     "novel_frac": 0.0,
+     "preq_ce": 2.703667640686035,
+     "n_experts_before": 3,
+     "owner": 2
+    }
+   ]
+  },
+  {
+   "rho": 0.85,
+   "seed": 100,
+   "n_experts": 7,
+   "segments": [
+    {
+     "seg": 0,
+     "regime": 0,
+     "first_visit": true,
+     "events": [
+      "spawn"
+     ],
+     "novel_frac": 0.0,
+     "preq_ce": 2.000528335571289,
+     "n_experts_before": 1,
+     "owner": 0
+    },
+    {
+     "seg": 1,
+     "regime": 1,
+     "first_visit": true,
+     "events": [
+      "alarm",
+      "spawn"
+     ],
+     "novel_frac": 0.0,
+     "preq_ce": 4.8066630363464355,
+     "n_experts_before": 1,
+     "owner": 0
+    },
+    {
+     "seg": 2,
+     "regime": 2,
+     "first_visit": true,
+     "events": [
+      "alarm",
+      "spawn"
+     ],
+     "novel_frac": 0.0,
+     "preq_ce": 4.948569297790527,
+     "n_experts_before": 2,
+     "owner": 0
+    },
+    {
+     "seg": 3,
+     "regime": 3,
+     "first_visit": true,
+     "events": [
+      "alarm",
+      "spawn"
+     ],
+     "novel_frac": 0.0,
+     "preq_ce": 4.109744071960449,
+     "n_experts_before": 3,
+     "owner": 1
+    },
+    {
+     "seg": 4,
+     "regime": 4,
+     "first_visit": true,
+     "events": [
+      "alarm",
+      "spawn"
+     ],
+     "novel_frac": 0.0,
+     "preq_ce": 4.7978363037109375,
+     "n_experts_before": 4,
+     "owner": 3
+    },
+    {
+     "seg": 5,
+     "regime": 5,
+     "first_visit": true,
+     "events": [
+      "alarm",
+      "spawn"
+     ],
+     "novel_frac": 0.0,
+     "preq_ce": 3.6322576999664307,
+     "n_experts_before": 5,
+     "owner": 3
+    },
+    {
+     "seg": 6,
+     "regime": 6,
+     "first_visit": true,
+     "events": [
+      "alarm",
+      "spawn"
+     ],
+     "novel_frac": 0.0,
+     "preq_ce": 4.252100467681885,
+     "n_experts_before": 6,
+     "owner": 0
+    },
+    {
+     "seg": 7,
+     "regime": 7,
+     "first_visit": true,
+     "events": [],
+     "novel_frac": 0.0,
+     "preq_ce": 3.853717803955078,
+     "n_experts_before": 7,
+     "owner": 1
+    },
+    {
+     "seg": 8,
+     "regime": 8,
+     "first_visit": true,
+     "events": [],
+     "novel_frac": 0.0,
+     "preq_ce": 3.6984376907348633,
+     "n_experts_before": 7,
+     "owner": 6
+    },
+    {
+     "seg": 9,
+     "regime": 9,
+     "first_visit": true,
+     "events": [],
+     "novel_frac": 0.0,
+     "preq_ce": 3.5842440128326416,
+     "n_experts_before": 7,
+     "owner": 5
+    },
+    {
+     "seg": 10,
+     "regime": 0,
+     "first_visit": false,
+     "events": [],
+     "novel_frac": 0.0,
+     "preq_ce": 3.26035213470459,
+     "n_experts_before": 7,
+     "owner": 0
+    },
+    {
+     "seg": 11,
+     "regime": 5,
+     "first_visit": false,
+     "events": [],
+     "novel_frac": 0.0,
+     "preq_ce": 3.30666446685791,
+     "n_experts_before": 7,
+     "owner": 5
+    }
+   ]
+  },
+  {
+   "rho": 0.85,
+   "seed": 101,
+   "n_experts": 5,
+   "segments": [
+    {
+     "seg": 0,
+     "regime": 0,
+     "first_visit": true,
+     "events": [
+      "spawn"
+     ],
+     "novel_frac": 0.0,
+     "preq_ce": 2.6596124172210693,
+     "n_experts_before": 1,
+     "owner": 0
+    },
+    {
+     "seg": 1,
+     "regime": 1,
+     "first_visit": true,
+     "events": [
+      "alarm",
+      "spawn"
+     ],
+     "novel_frac": 0.0,
+     "preq_ce": 5.063601016998291,
+     "n_experts_before": 1,
+     "owner": 0
+    },
+    {
+     "seg": 2,
+     "regime": 2,
+     "first_visit": true,
+     "events": [
+      "alarm",
+      "spawn"
+     ],
+     "novel_frac": 0.0,
+     "preq_ce": 4.634044647216797,
+     "n_experts_before": 2,
+     "owner": 0
+    },
+    {
+     "seg": 3,
+     "regime": 3,
+     "first_visit": true,
+     "events": [
+      "alarm",
+      "spawn"
+     ],
+     "novel_frac": 0.0,
+     "preq_ce": 4.232925891876221,
+     "n_experts_before": 3,
+     "owner": 1
+    },
+    {
+     "seg": 4,
+     "regime": 4,
+     "first_visit": true,
+     "events": [
+      "alarm",
+      "spawn"
+     ],
+     "novel_frac": 0.0,
+     "preq_ce": 4.677495002746582,
+     "n_experts_before": 4,
+     "owner": 2
+    },
+    {
+     "seg": 5,
+     "regime": 5,
+     "first_visit": true,
+     "events": [],
+     "novel_frac": 0.0,
+     "preq_ce": 3.341010808944702,
+     "n_experts_before": 5,
+     "owner": 4
+    },
+    {
+     "seg": 6,
+     "regime": 6,
+     "first_visit": true,
+     "events": [],
+     "novel_frac": 0.0,
+     "preq_ce": 3.6434106826782227,
+     "n_experts_before": 5,
+     "owner": 4
+    },
+    {
+     "seg": 7,
+     "regime": 7,
+     "first_visit": true,
+     "events": [],
+     "novel_frac": 0.0,
+     "preq_ce": 4.02584171295166,
+     "n_experts_before": 5,
+     "owner": 4
+    },
+    {
+     "seg": 8,
+     "regime": 8,
+     "first_visit": true,
+     "events": [],
+     "novel_frac": 0.0,
+     "preq_ce": 3.8656907081604004,
+     "n_experts_before": 5,
+     "owner": 2
+    },
+    {
+     "seg": 9,
+     "regime": 9,
+     "first_visit": true,
+     "events": [],
+     "novel_frac": 0.0,
+     "preq_ce": 3.553990602493286,
+     "n_experts_before": 5,
+     "owner": 2
+    },
+    {
+     "seg": 10,
+     "regime": 0,
+     "first_visit": false,
+     "events": [],
+     "novel_frac": 0.0,
+     "preq_ce": 2.6130423545837402,
+     "n_experts_before": 5,
+     "owner": 0
+    },
+    {
+     "seg": 11,
+     "regime": 5,
+     "first_visit": false,
+     "events": [],
+     "novel_frac": 0.0,
+     "preq_ce": 3.0854644775390625,
+     "n_experts_before": 5,
+     "owner": 4
+    }
+   ]
+  },
+  {
+   "rho": 0.85,
+   "seed": 102,
+   "n_experts": 3,
+   "segments": [
+    {
+     "seg": 0,
+     "regime": 0,
+     "first_visit": true,
+     "events": [
+      "spawn"
+     ],
+     "novel_frac": 0.0,
+     "preq_ce": 2.093872308731079,
+     "n_experts_before": 1,
+     "owner": 0
+    },
+    {
+     "seg": 1,
+     "regime": 1,
+     "first_visit": true,
+     "events": [
+      "alarm",
+      "spawn"
+     ],
+     "novel_frac": 0.0,
+     "preq_ce": 4.871756076812744,
+     "n_experts_before": 1,
+     "owner": 0
+    },
+    {
+     "seg": 2,
+     "regime": 2,
+     "first_visit": true,
+     "events": [
+      "alarm",
+      "spawn"
+     ],
+     "novel_frac": 0.0,
+     "preq_ce": 4.894663333892822,
+     "n_experts_before": 2,
+     "owner": 0
+    },
+    {
+     "seg": 3,
+     "regime": 3,
+     "first_visit": true,
+     "events": [],
+     "novel_frac": 0.0,
+     "preq_ce": 4.107790470123291,
+     "n_experts_before": 3,
+     "owner": 1
+    },
+    {
+     "seg": 4,
+     "regime": 4,
+     "first_visit": true,
+     "events": [],
+     "novel_frac": 0.0,
+     "preq_ce": 3.370518684387207,
+     "n_experts_before": 3,
+     "owner": 0
+    },
+    {
+     "seg": 5,
+     "regime": 5,
+     "first_visit": true,
+     "events": [],
+     "novel_frac": 0.0,
+     "preq_ce": 3.238241672515869,
+     "n_experts_before": 3,
+     "owner": 0
+    },
+    {
+     "seg": 6,
+     "regime": 6,
+     "first_visit": true,
+     "events": [],
+     "novel_frac": 0.0,
+     "preq_ce": 3.650592803955078,
+     "n_experts_before": 3,
+     "owner": 2
+    },
+    {
+     "seg": 7,
+     "regime": 7,
+     "first_visit": true,
+     "events": [],
+     "novel_frac": 0.0,
+     "preq_ce": 3.0940604209899902,
+     "n_experts_before": 3,
+     "owner": 2
+    },
+    {
+     "seg": 8,
+     "regime": 8,
+     "first_visit": true,
+     "events": [],
+     "novel_frac": 0.0,
+     "preq_ce": 2.751523971557617,
+     "n_experts_before": 3,
+     "owner": 2
+    },
+    {
+     "seg": 9,
+     "regime": 9,
+     "first_visit": true,
+     "events": [],
+     "novel_frac": 0.0,
+     "preq_ce": 2.966280221939087,
+     "n_experts_before": 3,
+     "owner": 1
+    },
+    {
+     "seg": 10,
+     "regime": 0,
+     "first_visit": false,
+     "events": [],
+     "novel_frac": 0.0,
+     "preq_ce": 2.9969329833984375,
+     "n_experts_before": 3,
+     "owner": 0
+    },
+    {
+     "seg": 11,
+     "regime": 5,
+     "first_visit": false,
+     "events": [],
+     "novel_frac": 0.0,
+     "preq_ce": 3.0123538970947266,
+     "n_experts_before": 3,
+     "owner": 2
+    }
+   ]
+  }
+ ],
+ "detect": [
+  {
+   "rho": 0.0,
+   "seed": 100,
+   "experts_after_seg0": 1,
+   "thr": 0.14669328927993774,
+   "null_mean": 0.12130981683731079,
+   "own_batch_false_alarm": 0.0,
+   "own_sample_rejection": 0.0,
+   "foreign_batch_detect": [
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "foreign_sample_rejection": [
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "rho": 0.0,
+   "seed": 101,
+   "experts_after_seg0": 1,
+   "thr": 0.14366616308689117,
+   "null_mean": 0.11920088529586792,
+   "own_batch_false_alarm": 0.0,
+   "own_sample_rejection": 0.0,
+   "foreign_batch_detect": [
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "foreign_sample_rejection": [
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "rho": 0.0,
+   "seed": 102,
+   "experts_after_seg0": 1,
+   "thr": 0.14296802878379822,
+   "null_mean": 0.11809307336807251,
+   "own_batch_false_alarm": 0.0,
+   "own_sample_rejection": 0.0,
+   "foreign_batch_detect": [
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "foreign_sample_rejection": [
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "rho": 0.3,
+   "seed": 100,
+   "experts_after_seg0": 1,
+   "thr": 0.14688275754451752,
+   "null_mean": 0.12148590385913849,
+   "own_batch_false_alarm": 0.0,
+   "own_sample_rejection": 0.0,
+   "foreign_batch_detect": [
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "foreign_sample_rejection": [
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    0.9953125,
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "rho": 0.3,
+   "seed": 101,
+   "experts_after_seg0": 1,
+   "thr": 0.14309361577033997,
+   "null_mean": 0.11927319318056107,
+   "own_batch_false_alarm": 0.0,
+   "own_sample_rejection": 0.0,
+   "foreign_batch_detect": [
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "foreign_sample_rejection": [
+    0.9928125,
+    1.0,
+    1.0,
+    0.99890625,
+    0.9965625,
+    0.99703125,
+    0.9975,
+    0.99765625,
+    1.0
+   ]
+  },
+  {
+   "rho": 0.3,
+   "seed": 102,
+   "experts_after_seg0": 1,
+   "thr": 0.142314612865448,
+   "null_mean": 0.11807259917259216,
+   "own_batch_false_alarm": 0.0,
+   "own_sample_rejection": 0.0,
+   "foreign_batch_detect": [
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "foreign_sample_rejection": [
+    0.9975,
+    1.0,
+    1.0,
+    0.99640625,
+    0.981875,
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "rho": 0.6,
+   "seed": 100,
+   "experts_after_seg0": 1,
+   "thr": 0.1467903107404709,
+   "null_mean": 0.1215541884303093,
+   "own_batch_false_alarm": 0.0,
+   "own_sample_rejection": 0.0,
+   "foreign_batch_detect": [
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "foreign_sample_rejection": [
+    0.96640625,
+    0.93,
+    0.89484375,
+    0.9109375,
+    0.92140625,
+    0.76953125,
+    0.9575,
+    0.93515625,
+    0.91875
+   ]
+  },
+  {
+   "rho": 0.6,
+   "seed": 101,
+   "experts_after_seg0": 1,
+   "thr": 0.14337994158267975,
+   "null_mean": 0.11929433047771454,
+   "own_batch_false_alarm": 0.0,
+   "own_sample_rejection": 0.0,
+   "foreign_batch_detect": [
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "foreign_sample_rejection": [
+    0.78578125,
+    0.87796875,
+    0.87046875,
+    0.83078125,
+    0.86765625,
+    0.87,
+    0.9525,
+    0.90171875,
+    0.9190625
+   ]
+  },
+  {
+   "rho": 0.6,
+   "seed": 102,
+   "experts_after_seg0": 1,
+   "thr": 0.14166595041751862,
+   "null_mean": 0.11801701039075851,
+   "own_batch_false_alarm": 0.0,
+   "own_sample_rejection": 0.0,
+   "foreign_batch_detect": [
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "foreign_sample_rejection": [
+    0.86828125,
+    0.88625,
+    0.9128125,
+    0.80359375,
+    0.696875,
+    0.93375,
+    0.93390625,
+    0.9046875,
+    0.91984375
+   ]
+  },
+  {
+   "rho": 0.85,
+   "seed": 100,
+   "experts_after_seg0": 1,
+   "thr": 0.14677347242832184,
+   "null_mean": 0.1215912401676178,
+   "own_batch_false_alarm": 0.0,
+   "own_sample_rejection": 0.0,
+   "foreign_batch_detect": [
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "foreign_sample_rejection": [
+    0.0809375,
+    0.02125,
+    0.013125,
+    0.02296875,
+    0.0021875,
+    0.0,
+    0.01453125,
+    0.03921875,
+    0.0146875
+   ]
+  },
+  {
+   "rho": 0.85,
+   "seed": 101,
+   "experts_after_seg0": 1,
+   "thr": 0.14353768527507782,
+   "null_mean": 0.11930682510137558,
+   "own_batch_false_alarm": 0.0,
+   "own_sample_rejection": 0.0,
+   "foreign_batch_detect": [
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "foreign_sample_rejection": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.00203125,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "rho": 0.85,
+   "seed": 102,
+   "experts_after_seg0": 1,
+   "thr": 0.14102639257907867,
+   "null_mean": 0.11795405298471451,
+   "own_batch_false_alarm": 0.0,
+   "own_sample_rejection": 0.0,
+   "foreign_batch_detect": [
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "foreign_sample_rejection": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  }
+ ],
+ "xonly": [
+  {
+   "rho": 0.0,
+   "seed": 100,
+   "acc": 1.0
+  },
+  {
+   "rho": 0.0,
+   "seed": 101,
+   "acc": 1.0
+  },
+  {
+   "rho": 0.0,
+   "seed": 102,
+   "acc": 1.0
+  },
+  {
+   "rho": 0.3,
+   "seed": 100,
+   "acc": 1.0
+  },
+  {
+   "rho": 0.3,
+   "seed": 101,
+   "acc": 1.0
+  },
+  {
+   "rho": 0.3,
+   "seed": 102,
+   "acc": 1.0
+  },
+  {
+   "rho": 0.6,
+   "seed": 100,
+   "acc": 0.9984999895095825
+  },
+  {
+   "rho": 0.6,
+   "seed": 101,
+   "acc": 0.9984999895095825
+  },
+  {
+   "rho": 0.6,
+   "seed": 102,
+   "acc": 0.9990000128746033
+  },
+  {
+   "rho": 0.85,
+   "seed": 100,
+   "acc": 0.9075000286102295
+  },
+  {
+   "rho": 0.85,
+   "seed": 101,
+   "acc": 0.8952500224113464
+  },
+  {
+   "rho": 0.85,
+   "seed": 102,
+   "acc": 0.9002500176429749
+  }
+ ]
+}

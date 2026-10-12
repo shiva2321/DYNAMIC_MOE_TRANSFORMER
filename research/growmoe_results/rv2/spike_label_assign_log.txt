@@ -1,0 +1,40 @@
+C:\Users\Asta\AppData\Local\Programs\Python\Python312\Lib\site-packages\torch\cuda\__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+{'rho': 0.0, 'seed': 100, 'lam': 0.0, 'acc': 0.5184999704360962, 'experts': 10, 'spawn': 10, 'extend': 0, 'alarm': 0}
+{'rho': 0.0, 'seed': 101, 'lam': 0.0, 'acc': 0.49300000071525574, 'experts': 10, 'spawn': 10, 'extend': 1, 'alarm': 1}
+{'rho': 0.0, 'seed': 102, 'lam': 0.0, 'acc': 0.5034999847412109, 'experts': 10, 'spawn': 10, 'extend': 0, 'alarm': 0}
+{'rho': 0.0, 'seed': 100, 'lam': 1.0, 'acc': 0.5285000205039978, 'experts': 10, 'spawn': 10, 'extend': 0, 'alarm': 0}
+{'rho': 0.0, 'seed': 101, 'lam': 1.0, 'acc': 0.4997499883174896, 'experts': 10, 'spawn': 10, 'extend': 0, 'alarm': 0}
+{'rho': 0.0, 'seed': 102, 'lam': 1.0, 'acc': 0.5139999985694885, 'experts': 10, 'spawn': 10, 'extend': 0, 'alarm': 0}
+{'rho': 0.0, 'seed': 100, 'lam': 3.0, 'acc': 0.4300000071525574, 'experts': 10, 'spawn': 10, 'extend': 1, 'alarm': 1}
+{'rho': 0.0, 'seed': 101, 'lam': 3.0, 'acc': 0.4975000023841858, 'experts': 10, 'spawn': 10, 'extend': 0, 'alarm': 0}
+{'rho': 0.0, 'seed': 102, 'lam': 3.0, 'acc': 0.5149999856948853, 'experts': 10, 'spawn': 10, 'extend': 0, 'alarm': 0}
+{'rho': 0.3, 'seed': 100, 'lam': 0.0, 'acc': 0.36524999141693115, 'experts': 9, 'spawn': 9, 'extend': 4, 'alarm': 3}
+{'rho': 0.3, 'seed': 101, 'lam': 0.0, 'acc': 0.33149999380111694, 'experts': 9, 'spawn': 9, 'extend': 5, 'alarm': 4}
+{'rho': 0.3, 'seed': 102, 'lam': 0.0, 'acc': 0.3149999976158142, 'experts': 9, 'spawn': 9, 'extend': 4, 'alarm': 3}
+{'rho': 0.3, 'seed': 100, 'lam': 1.0, 'acc': 0.3384999930858612, 'experts': 9, 'spawn': 9, 'extend': 5, 'alarm': 4}
+{'rho': 0.3, 'seed': 101, 'lam': 1.0, 'acc': 0.35499998927116394, 'experts': 10, 'spawn': 10, 'extend': 3, 'alarm': 3}
+{'rho': 0.3, 'seed': 102, 'lam': 1.0, 'acc': 0.3657500147819519, 'experts': 10, 'spawn': 10, 'extend': 5, 'alarm': 5}
+{'rho': 0.3, 'seed': 100, 'lam': 3.0, 'acc': 0.3607499897480011, 'experts': 10, 'spawn': 10, 'extend': 4, 'alarm': 4}
+{'rho': 0.3, 'seed': 101, 'lam': 3.0, 'acc': 0.3644999861717224, 'experts': 9, 'spawn': 9, 'extend': 4, 'alarm': 3}
+{'rho': 0.3, 'seed': 102, 'lam': 3.0, 'acc': 0.3709999918937683, 'experts': 10, 'spawn': 10, 'extend': 3, 'alarm': 3}
+{'rho': 0.6, 'seed': 100, 'lam': 0.0, 'acc': 0.18975000083446503, 'experts': 4, 'spawn': 4, 'extend': 1, 'alarm': 1}
+{'rho': 0.6, 'seed': 101, 'lam': 0.0, 'acc': 0.17475000023841858, 'experts': 3, 'spawn': 3, 'extend': 0, 'alarm': 0}
+{'rho': 0.6, 'seed': 102, 'lam': 0.0, 'acc': 0.18774999678134918, 'experts': 3, 'spawn': 3, 'extend': 1, 'alarm': 1}
+{'rho': 0.6, 'seed': 100, 'lam': 1.0, 'acc': 0.19300000369548798, 'experts': 4, 'spawn': 4, 'extend': 2, 'alarm': 2}
+{'rho': 0.6, 'seed': 101, 'lam': 1.0, 'acc': 0.18174999952316284, 'experts': 3, 'spawn': 3, 'extend': 0, 'alarm': 0}
+{'rho': 0.6, 'seed': 102, 'lam': 1.0, 'acc': 0.19374999403953552, 'experts': 3, 'spawn': 3, 'extend': 1, 'alarm': 1}
+{'rho': 0.6, 'seed': 100, 'lam': 3.0, 'acc': 0.18250000476837158, 'experts': 3, 'spawn': 3, 'extend': 2, 'alarm': 1}
+{'rho': 0.6, 'seed': 101, 'lam': 3.0, 'acc': 0.18449999392032623, 'experts': 3, 'spawn': 3, 'extend': 0, 'alarm': 0}
+{'rho': 0.6, 'seed': 102, 'lam': 3.0, 'acc': 0.1992499977350235, 'experts': 3, 'spawn': 3, 'extend': 2, 'alarm': 2}
+
+centre cos   lambda   accuracy %   experts (10 regimes)   spawn extend alarm
+      0.0      0.0         50.5           10.0        10.0    0.3   0.3
+      0.0      1.0         51.4           10.0        10.0    0.0   0.0
+      0.0      3.0         48.1           10.0        10.0    0.3   0.3
+      0.3      0.0         33.7            9.0         9.0    4.3   3.3
+      0.3      1.0         35.3            9.7         9.7    4.3   4.0
+      0.3      3.0         36.5            9.7         9.7    3.7   3.3
+      0.6      0.0         18.4            3.3         3.3    0.7   0.7
+      0.6      1.0         18.9            3.3         3.3    1.0   1.0
+      0.6      3.0         18.9            3.0         3.0    1.3   1.0

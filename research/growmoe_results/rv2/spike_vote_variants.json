@@ -1,0 +1,170 @@
+[
+ {
+  "stream": "ov0.3",
+  "seed": 100,
+  "variant": "voter50",
+  "acc": 0.4402500092983246,
+  "experts": 10
+ },
+ {
+  "stream": "ov0.3",
+  "seed": 101,
+  "variant": "voter50",
+  "acc": 0.4652499854564667,
+  "experts": 10
+ },
+ {
+  "stream": "ov0.3",
+  "seed": 102,
+  "variant": "voter50",
+  "acc": 0.476500004529953,
+  "experts": 10
+ },
+ {
+  "stream": "ov0.3-mixed",
+  "seed": 100,
+  "variant": "voter50",
+  "acc": 0.34575000405311584,
+  "experts": 5
+ },
+ {
+  "stream": "ov0.3-mixed",
+  "seed": 101,
+  "variant": "voter50",
+  "acc": 0.3512499928474426,
+  "experts": 5
+ },
+ {
+  "stream": "ov0.3-mixed",
+  "seed": 102,
+  "variant": "voter50",
+  "acc": 0.3384999930858612,
+  "experts": 4
+ },
+ {
+  "stream": "ov0.3-mixed73",
+  "seed": 100,
+  "variant": "V0",
+  "acc": 0.3095000088214874,
+  "experts": 5
+ },
+ {
+  "stream": "ov0.3-mixed73",
+  "seed": 101,
+  "variant": "V0",
+  "acc": 0.2382500022649765,
+  "experts": 5
+ },
+ {
+  "stream": "ov0.3-mixed73",
+  "seed": 102,
+  "variant": "V0",
+  "acc": 0.2549999952316284,
+  "experts": 6
+ },
+ {
+  "stream": "ov0.3-mixed73",
+  "seed": 100,
+  "variant": "vote50",
+  "acc": 0.3409999907016754,
+  "experts": 5
+ },
+ {
+  "stream": "ov0.3-mixed73",
+  "seed": 101,
+  "variant": "vote50",
+  "acc": 0.33024999499320984,
+  "experts": 5
+ },
+ {
+  "stream": "ov0.3-mixed73",
+  "seed": 102,
+  "variant": "vote50",
+  "acc": 0.31025001406669617,
+  "experts": 6
+ },
+ {
+  "stream": "ov0.3-mixed73",
+  "seed": 100,
+  "variant": "voter50",
+  "acc": 0.30024999380111694,
+  "experts": 5
+ },
+ {
+  "stream": "ov0.3-mixed73",
+  "seed": 101,
+  "variant": "voter50",
+  "acc": 0.3334999978542328,
+  "experts": 5
+ },
+ {
+  "stream": "ov0.3-mixed73",
+  "seed": 102,
+  "variant": "voter50",
+  "acc": 0.2904999852180481,
+  "experts": 6
+ },
+ {
+  "stream": "ov0.6",
+  "seed": 100,
+  "variant": "voter50",
+  "acc": 0.2345000058412552,
+  "experts": 5
+ },
+ {
+  "stream": "ov0.6",
+  "seed": 101,
+  "variant": "voter50",
+  "acc": 0.22624999284744263,
+  "experts": 6
+ },
+ {
+  "stream": "ov0.6",
+  "seed": 102,
+  "variant": "voter50",
+  "acc": 0.22675000131130219,
+  "experts": 5
+ },
+ {
+  "stream": "F-15",
+  "seed": 100,
+  "variant": "voter50",
+  "acc": 0.5116666555404663,
+  "experts": 15
+ },
+ {
+  "stream": "F-15",
+  "seed": 101,
+  "variant": "voter50",
+  "acc": 0.49683332443237305,
+  "experts": 15
+ },
+ {
+  "stream": "F-15",
+  "seed": 102,
+  "variant": "voter50",
+  "acc": 0.49783334136009216,
+  "experts": 15
+ },
+ {
+  "stream": "S1",
+  "seed": 100,
+  "variant": "voter50",
+  "acc": 0.7895237803459167,
+  "experts": 5
+ },
+ {
+  "stream": "S1",
+  "seed": 101,
+  "variant": "voter50",
+  "acc": 0.7704761624336243,
+  "experts": 4
+ },
+ {
+  "stream": "S1",
+  "seed": 102,
+  "variant": "voter50",
+  "acc": 0.8114285469055176,
+  "experts": 3
+ }
+]

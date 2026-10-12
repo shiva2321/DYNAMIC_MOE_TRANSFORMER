@@ -1,0 +1,432 @@
+{
+ "rows": [
+  {
+   "stream": "S3",
+   "variant": "A old (20 steps)",
+   "seed": 100,
+   "final": 0.9053333282470704,
+   "n_experts": 1,
+   "n_regimes": 5,
+   "events": {
+    "spawn": 1
+   }
+  },
+  {
+   "stream": "S3",
+   "variant": "A old (20 steps)",
+   "seed": 101,
+   "final": 0.9066666722297668,
+   "n_experts": 1,
+   "n_regimes": 5,
+   "events": {
+    "spawn": 1
+   }
+  },
+  {
+   "stream": "S3",
+   "variant": "A old (20 steps)",
+   "seed": 102,
+   "final": 0.9106666684150696,
+   "n_experts": 1,
+   "n_regimes": 5,
+   "events": {
+    "spawn": 1
+   }
+  },
+  {
+   "stream": "S3",
+   "variant": "alarms off (20 steps)",
+   "seed": 100,
+   "final": 0.9053333282470704,
+   "n_experts": 1,
+   "n_regimes": 5,
+   "events": {
+    "spawn": 1
+   }
+  },
+  {
+   "stream": "S3",
+   "variant": "alarms off (20 steps)",
+   "seed": 101,
+   "final": 0.9066666722297668,
+   "n_experts": 1,
+   "n_regimes": 5,
+   "events": {
+    "spawn": 1
+   }
+  },
+  {
+   "stream": "S3",
+   "variant": "alarms off (20 steps)",
+   "seed": 102,
+   "final": 0.9106666684150696,
+   "n_experts": 1,
+   "n_regimes": 5,
+   "events": {
+    "spawn": 1
+   }
+  },
+  {
+   "stream": "S3",
+   "variant": "arm after infancy (20 steps)",
+   "seed": 100,
+   "final": 0.9053333282470704,
+   "n_experts": 1,
+   "n_regimes": 5,
+   "events": {
+    "spawn": 1
+   }
+  },
+  {
+   "stream": "S3",
+   "variant": "arm after infancy (20 steps)",
+   "seed": 101,
+   "final": 0.9066666722297668,
+   "n_experts": 1,
+   "n_regimes": 5,
+   "events": {
+    "spawn": 1
+   }
+  },
+  {
+   "stream": "S3",
+   "variant": "arm after infancy (20 steps)",
+   "seed": 102,
+   "final": 0.9106666684150696,
+   "n_experts": 1,
+   "n_regimes": 5,
+   "events": {
+    "spawn": 1
+   }
+  },
+  {
+   "stream": "S3",
+   "variant": "arm after infancy (5 steps)",
+   "seed": 100,
+   "final": 0.8439999938011169,
+   "n_experts": 1,
+   "n_regimes": 5,
+   "events": {
+    "spawn": 1
+   }
+  },
+  {
+   "stream": "S3",
+   "variant": "arm after infancy (5 steps)",
+   "seed": 101,
+   "final": 0.8680000066757202,
+   "n_experts": 1,
+   "n_regimes": 5,
+   "events": {
+    "spawn": 1
+   }
+  },
+  {
+   "stream": "S3",
+   "variant": "arm after infancy (5 steps)",
+   "seed": 102,
+   "final": 0.8639999985694885,
+   "n_experts": 1,
+   "n_regimes": 5,
+   "events": {
+    "alarm": 1,
+    "extend": 1,
+    "spawn": 1
+   }
+  },
+  {
+   "stream": "S4",
+   "variant": "A old (20 steps)",
+   "seed": 100,
+   "final": 0.7300000071525574,
+   "n_experts": 4,
+   "n_regimes": 5,
+   "events": {
+    "alarm": 3,
+    "extend": 2,
+    "spawn": 4
+   }
+  },
+  {
+   "stream": "S4",
+   "variant": "A old (20 steps)",
+   "seed": 101,
+   "final": 0.7700000047683716,
+   "n_experts": 8,
+   "n_regimes": 5,
+   "events": {
+    "alarm": 4,
+    "extend": 1,
+    "spawn": 8
+   }
+  },
+  {
+   "stream": "S4",
+   "variant": "A old (20 steps)",
+   "seed": 102,
+   "final": 0.7020000100135804,
+   "n_experts": 4,
+   "n_regimes": 5,
+   "events": {
+    "alarm": 2,
+    "extend": 3,
+    "spawn": 4
+   }
+  },
+  {
+   "stream": "S4",
+   "variant": "alarms off (20 steps)",
+   "seed": 100,
+   "final": 0.6959999918937683,
+   "n_experts": 3,
+   "n_regimes": 5,
+   "events": {
+    "extend": 2,
+    "spawn": 3
+   }
+  },
+  {
+   "stream": "S4",
+   "variant": "alarms off (20 steps)",
+   "seed": 101,
+   "final": 0.7819999933242798,
+   "n_experts": 3,
+   "n_regimes": 5,
+   "events": {
+    "extend": 2,
+    "spawn": 3
+   }
+  },
+  {
+   "stream": "S4",
+   "variant": "alarms off (20 steps)",
+   "seed": 102,
+   "final": 0.7819999933242798,
+   "n_experts": 2,
+   "n_regimes": 5,
+   "events": {
+    "extend": 3,
+    "spawn": 2
+   }
+  },
+  {
+   "stream": "S4",
+   "variant": "arm after infancy (20 steps)",
+   "seed": 100,
+   "final": 0.6959999918937683,
+   "n_experts": 3,
+   "n_regimes": 5,
+   "events": {
+    "extend": 2,
+    "spawn": 3
+   }
+  },
+  {
+   "stream": "S4",
+   "variant": "arm after infancy (20 steps)",
+   "seed": 101,
+   "final": 0.7819999933242798,
+   "n_experts": 3,
+   "n_regimes": 5,
+   "events": {
+    "extend": 2,
+    "spawn": 3
+   }
+  },
+  {
+   "stream": "S4",
+   "variant": "arm after infancy (20 steps)",
+   "seed": 102,
+   "final": 0.7819999933242798,
+   "n_experts": 2,
+   "n_regimes": 5,
+   "events": {
+    "extend": 3,
+    "spawn": 2
+   }
+  },
+  {
+   "stream": "S4",
+   "variant": "arm after infancy (5 steps)",
+   "seed": 100,
+   "final": 0.7659999966621399,
+   "n_experts": 3,
+   "n_regimes": 5,
+   "events": {
+    "extend": 2,
+    "spawn": 3
+   }
+  },
+  {
+   "stream": "S4",
+   "variant": "arm after infancy (5 steps)",
+   "seed": 101,
+   "final": 0.8120000004768372,
+   "n_experts": 5,
+   "n_regimes": 5,
+   "events": {
+    "spawn": 5
+   }
+  },
+  {
+   "stream": "S4",
+   "variant": "arm after infancy (5 steps)",
+   "seed": 102,
+   "final": 0.8040000081062317,
+   "n_experts": 5,
+   "n_regimes": 5,
+   "events": {
+    "spawn": 5
+   }
+  },
+  {
+   "stream": "S7",
+   "variant": "A old (20 steps)",
+   "seed": 100,
+   "final": 0.3450000062584877,
+   "n_experts": 4,
+   "n_regimes": 4,
+   "events": {
+    "alarm": 4,
+    "merge": 1,
+    "spawn": 5
+   }
+  },
+  {
+   "stream": "S7",
+   "variant": "A old (20 steps)",
+   "seed": 101,
+   "final": 0.31125000678002834,
+   "n_experts": 4,
+   "n_regimes": 4,
+   "events": {
+    "alarm": 4,
+    "merge": 1,
+    "spawn": 5
+   }
+  },
+  {
+   "stream": "S7",
+   "variant": "A old (20 steps)",
+   "seed": 102,
+   "final": 0.2812499990686774,
+   "n_experts": 4,
+   "n_regimes": 4,
+   "events": {
+    "alarm": 4,
+    "merge": 1,
+    "spawn": 5
+   }
+  },
+  {
+   "stream": "S7",
+   "variant": "alarms off (20 steps)",
+   "seed": 100,
+   "final": 0.3612500037997961,
+   "n_experts": 1,
+   "n_regimes": 4,
+   "events": {
+    "spawn": 1
+   }
+  },
+  {
+   "stream": "S7",
+   "variant": "alarms off (20 steps)",
+   "seed": 101,
+   "final": 0.3162500048056245,
+   "n_experts": 1,
+   "n_regimes": 4,
+   "events": {
+    "spawn": 1
+   }
+  },
+  {
+   "stream": "S7",
+   "variant": "alarms off (20 steps)",
+   "seed": 102,
+   "final": 0.26624999567866325,
+   "n_experts": 1,
+   "n_regimes": 4,
+   "events": {
+    "spawn": 1
+   }
+  },
+  {
+   "stream": "S7",
+   "variant": "arm after infancy (20 steps)",
+   "seed": 100,
+   "final": 0.3450000062584877,
+   "n_experts": 4,
+   "n_regimes": 4,
+   "events": {
+    "alarm": 4,
+    "merge": 1,
+    "spawn": 5
+   }
+  },
+  {
+   "stream": "S7",
+   "variant": "arm after infancy (20 steps)",
+   "seed": 101,
+   "final": 0.31125000678002834,
+   "n_experts": 4,
+   "n_regimes": 4,
+   "events": {
+    "alarm": 4,
+    "merge": 1,
+    "spawn": 5
+   }
+  },
+  {
+   "stream": "S7",
+   "variant": "arm after infancy (20 steps)",
+   "seed": 102,
+   "final": 0.27749999333173037,
+   "n_experts": 4,
+   "n_regimes": 4,
+   "events": {
+    "alarm": 3,
+    "spawn": 4
+   }
+  },
+  {
+   "stream": "S7",
+   "variant": "arm after infancy (5 steps)",
+   "seed": 100,
+   "final": 0.3387499996460974,
+   "n_experts": 4,
+   "n_regimes": 4,
+   "events": {
+    "alarm": 4,
+    "merge": 1,
+    "spawn": 5
+   }
+  },
+  {
+   "stream": "S7",
+   "variant": "arm after infancy (5 steps)",
+   "seed": 101,
+   "final": 0.30749999545514584,
+   "n_experts": 4,
+   "n_regimes": 4,
+   "events": {
+    "alarm": 4,
+    "merge": 1,
+    "spawn": 5
+   }
+  },
+  {
+   "stream": "S7",
+   "variant": "arm after infancy (5 steps)",
+   "seed": 102,
+   "final": 0.2912500035017729,
+   "n_experts": 4,
+   "n_regimes": 4,
+   "events": {
+    "alarm": 4,
+    "merge": 1,
+    "spawn": 5
+   }
+  }
+ ]
+}

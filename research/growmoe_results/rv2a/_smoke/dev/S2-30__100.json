@@ -1,0 +1,68 @@
+{
+ "spec": {
+  "stream": "S2-30",
+  "seed": 100,
+  "smoke": true,
+  "arms": [
+   "A_new",
+   "A_vote"
+  ]
+ },
+ "records": [
+  {
+   "stream": "S2-30",
+   "method": "A_new",
+   "seed": 100,
+   "acc": 0.6850000023841858,
+   "per_regime": [
+    0.8999999761581421,
+    0.8600000143051147,
+    0.7200000286102295,
+    0.25999999046325684
+   ],
+   "forgetting": null,
+   "n_experts": 3,
+   "params": 104478,
+   "naive_params": 104478,
+   "stored_vectors": 1160,
+   "memory_bytes": 1011832,
+   "gate_macs": 74240,
+   "expert_macs": 34048,
+   "predict_macs": 108288,
+   "wall_clock": 0.7650193000008585,
+   "event_counts": {
+    "spawn": 3
+   },
+   "steps": 20
+  },
+  {
+   "stream": "S2-30",
+   "method": "A_vote",
+   "seed": 100,
+   "acc": 0.6349999904632568,
+   "per_regime": [
+    0.6800000071525574,
+    0.8999999761581421,
+    0.699999988079071,
+    0.25999999046325684
+   ],
+   "forgetting": null,
+   "n_experts": 2,
+   "params": 69652,
+   "naive_params": 69652,
+   "stored_vectors": 1024,
+   "memory_bytes": 802896,
+   "gate_macs": 65536,
+   "expert_macs": 34048,
+   "predict_macs": 99584,
+   "wall_clock": 0.4593287000025157,
+   "event_counts": {
+    "spawn": 2,
+    "extend": 1
+   },
+   "steps": 1
+  }
+ ],
+ "seconds": 1.2248260999986087,
+ "peak_mb": 693.0234375
+}

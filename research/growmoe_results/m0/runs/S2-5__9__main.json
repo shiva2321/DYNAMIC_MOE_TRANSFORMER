@@ -1,0 +1,163 @@
+{
+ "spec": {
+  "stream": "S2-5",
+  "seed": 9,
+  "group": "main",
+  "smoke": false
+ },
+ "records": [
+  {
+   "stream": "S2-5",
+   "method": "A",
+   "seed": 9,
+   "acc": 0.8899999976158142,
+   "per_regime": [
+    0.9200000166893005,
+    0.9200000166893005,
+    0.8399999737739563,
+    0.8999999761581421,
+    0.8700000047683716
+   ],
+   "forgetting": 0.025999999046325682,
+   "n_experts": 4,
+   "params": 139304,
+   "naive_params": 139304,
+   "stored_vectors": 2048,
+   "memory_bytes": 1605792,
+   "gate_macs": 131072,
+   "expert_macs": 34048,
+   "predict_macs": 165120,
+   "wall_clock": 3.4679025000004913,
+   "event_counts": {
+    "spawn": 4,
+    "alarm": 3,
+    "extend": 4
+   },
+   "steps": 20
+  },
+  {
+   "stream": "S2-5",
+   "method": "B2",
+   "seed": 9,
+   "acc": 0.8959999918937683,
+   "per_regime": [
+    0.8399999737739563,
+    0.8999999761581421,
+    0.9100000262260437,
+    0.9399999976158142,
+    0.8899999856948853
+   ],
+   "forgetting": 0.03400001525878906,
+   "n_experts": 1,
+   "params": 34826,
+   "naive_params": 34826,
+   "stored_vectors": 2048,
+   "memory_bytes": 1187880,
+   "gate_macs": 0,
+   "expert_macs": 34048,
+   "predict_macs": 34048,
+   "wall_clock": 1.441747700000633,
+   "event_counts": {},
+   "steps": 20
+  },
+  {
+   "stream": "S2-5",
+   "method": "kNN_all",
+   "seed": 9,
+   "acc": 0.9460000038146973,
+   "per_regime": [
+    0.9599999785423279,
+    0.9399999976158142,
+    0.9200000166893005,
+    0.9800000190734863,
+    0.9300000071525574
+   ],
+   "forgetting": -0.010000002384185792,
+   "n_experts": 1,
+   "params": 0,
+   "naive_params": 0,
+   "stored_vectors": 2800,
+   "memory_bytes": 1433600,
+   "gate_macs": 358400,
+   "expert_macs": 0,
+   "predict_macs": 358400,
+   "wall_clock": 0.025861199999781093,
+   "event_counts": {}
+  },
+  {
+   "stream": "S2-5",
+   "method": "kNN_cap",
+   "seed": 9,
+   "acc": 0.9460000038146973,
+   "per_regime": [
+    0.9599999785423279,
+    0.9399999976158142,
+    0.9200000166893005,
+    0.9800000190734863,
+    0.9300000071525574
+   ],
+   "forgetting": -0.010000002384185792,
+   "n_experts": 1,
+   "params": 0,
+   "naive_params": 0,
+   "stored_vectors": 2800,
+   "memory_bytes": 1433600,
+   "gate_macs": 358400,
+   "expert_macs": 0,
+   "predict_macs": 358400,
+   "wall_clock": 0.05858500000067579,
+   "event_counts": {},
+   "capacity": 3136
+  },
+  {
+   "stream": "S2-5",
+   "method": "NCM",
+   "seed": 9,
+   "acc": 0.36399999260902405,
+   "per_regime": [
+    0.17000000178813934,
+    0.5899999737739563,
+    0.33000001311302185,
+    0.5899999737739563,
+    0.14000000059604645
+   ],
+   "forgetting": 0.2160000115633011,
+   "n_experts": 1,
+   "params": 0,
+   "naive_params": 0,
+   "stored_vectors": 10,
+   "memory_bytes": 5120,
+   "gate_macs": 1280,
+   "expert_macs": 0,
+   "predict_macs": 1280,
+   "wall_clock": 0.01109809999979916,
+   "event_counts": {}
+  },
+  {
+   "stream": "S2-5",
+   "method": "SLDA",
+   "seed": 9,
+   "acc": 0.5619999945163727,
+   "per_regime": [
+    0.3799999952316284,
+    0.7699999809265137,
+    0.44999998807907104,
+    0.7900000214576721,
+    0.41999998688697815
+   ],
+   "forgetting": 0.20600001215934755,
+   "n_experts": 1,
+   "params": 0,
+   "naive_params": 0,
+   "stored_vectors": 138,
+   "memory_bytes": 70656,
+   "gate_macs": 1280,
+   "expert_macs": 0,
+   "predict_macs": 1280,
+   "wall_clock": 0.2039268999997148,
+   "event_counts": {}
+  }
+ ],
+ "seconds": 5.209875099999408,
+ "peak_mb": 1507.30078125
+}

@@ -1,0 +1,36 @@
+﻿
+seed 0 n_regimes 5 done (8s)
+seed 0 n_regimes 15 done (35s)
+seed 0 n_regimes 30 done (120s)
+seed 1 n_regimes 5 done (127s)
+seed 1 n_regimes 15 done (156s)
+seed 1 n_regimes 30 done (252s)
+seed 2 n_regimes 5 done (258s)
+seed 2 n_regimes 15 done (282s)
+seed 2 n_regimes 30 done (372s)
+
+=== Permuted digits: final average accuracy (%) vs number of regimes; 3 seeds, mean [95% CI] ===
+regimes method                                 accuracy  experts  memory KB  sec/run
+      5 A_steps1                   87.67 [83.50, 91.83]      3.0       1258      2.5
+      5 A_steps20                  91.20 [86.78, 95.62]      2.0        838      2.5
+      5 B2_steps1                  67.20 [62.16, 72.24]      1.0       1160      0.1
+      5 B2_steps20                 92.07 [91.31, 92.83]      1.0       1160      1.2
+      5 kNN_all_samples            95.40 [91.07, 99.73]      1.0       1000      0.1
+      5 kNN_same_bytes_as_A20      94.47 [92.95, 95.98]      1.0        838      0.1
+
+     15 A_steps1                   86.71 [84.89, 88.54]     10.7       4472      8.5
+     15 A_steps20                  87.53 [86.09, 88.98]     11.0       4532     12.3
+     15 B2_steps1                  49.98 [48.59, 51.37]      1.0       1160      0.3
+     15 B2_steps20                 84.36 [82.20, 86.51]      1.0       1160      3.5
+     15 kNN_all_samples            94.73 [90.58, 98.88]      1.0       3000      0.7
+     15 kNN_same_bytes_as_A20      94.73 [90.58, 98.88]      1.0       4532      0.6
+
+     30 A_steps1                   85.71 [80.50, 90.92]     22.3       9331     31.5
+     30 A_steps20                  81.99 [70.05, 93.92]     19.0       7929     41.6
+     30 B2_steps1                  41.83 [38.47, 45.20]      1.0       1160      0.8
+     30 B2_steps20                 72.29 [70.60, 73.98]      1.0       1160      7.0
+     30 kNN_all_samples            94.69 [91.71, 97.66]      1.0       6000      3.4
+     30 kNN_same_bytes_as_A20      94.56 [91.30, 97.82]      1.0       7929      3.0
+
+
+

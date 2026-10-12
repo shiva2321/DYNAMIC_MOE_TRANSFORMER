@@ -1,0 +1,244 @@
+{
+ "stream": "F-15",
+ "rows": [
+  {
+   "variant": "A as run in M0 (50 steps)",
+   "seed": 100,
+   "final": 0.4074999988079071,
+   "immediate": 0.41516666611035663,
+   "n_experts": 14,
+   "events": {
+    "alarm": 13,
+    "extend": 14,
+    "spawn": 14
+   }
+  },
+  {
+   "variant": "A as run in M0 (50 steps)",
+   "seed": 101,
+   "final": 0.39066666762034097,
+   "immediate": 0.4225000023841858,
+   "n_experts": 15,
+   "events": {
+    "alarm": 13,
+    "extend": 13,
+    "spawn": 15
+   }
+  },
+  {
+   "variant": "A as run in M0 (50 steps)",
+   "seed": 102,
+   "final": 0.4036666681369146,
+   "immediate": 0.4221666673819224,
+   "n_experts": 16,
+   "events": {
+    "alarm": 14,
+    "extend": 13,
+    "spawn": 16
+   }
+  },
+  {
+   "variant": "competence monitor off (no alarms)",
+   "seed": 100,
+   "final": 0.40833333432674407,
+   "immediate": 0.42833333611488345,
+   "n_experts": 13,
+   "events": {
+    "extend": 2,
+    "spawn": 13
+   }
+  },
+  {
+   "variant": "competence monitor off (no alarms)",
+   "seed": 101,
+   "final": 0.4104999949534734,
+   "immediate": 0.4349999984105428,
+   "n_experts": 13,
+   "events": {
+    "extend": 2,
+    "spawn": 13
+   }
+  },
+  {
+   "variant": "competence monitor off (no alarms)",
+   "seed": 102,
+   "final": 0.3823333332935969,
+   "immediate": 0.43266666730244957,
+   "n_experts": 12,
+   "events": {
+    "extend": 3,
+    "spawn": 12
+   }
+  },
+  {
+   "variant": "no probation (spawn at once)",
+   "seed": 100,
+   "final": 0.41016666690508524,
+   "immediate": 0.42133333484331764,
+   "n_experts": 14,
+   "events": {
+    "alarm": 13,
+    "extend": 14,
+    "spawn": 14
+   }
+  },
+  {
+   "variant": "no probation (spawn at once)",
+   "seed": 101,
+   "final": 0.4161666671435038,
+   "immediate": 0.42416666547457377,
+   "n_experts": 17,
+   "events": {
+    "alarm": 14,
+    "extend": 12,
+    "spawn": 17
+   }
+  },
+  {
+   "variant": "no probation (spawn at once)",
+   "seed": 102,
+   "final": 0.40100000202655794,
+   "immediate": 0.41983333428700764,
+   "n_experts": 16,
+   "events": {
+    "alarm": 14,
+    "extend": 13,
+    "spawn": 16
+   }
+  },
+  {
+   "variant": "no alarms + no probation",
+   "seed": 100,
+   "final": 0.40433333615461986,
+   "immediate": 0.42850000262260435,
+   "n_experts": 13,
+   "events": {
+    "extend": 2,
+    "spawn": 13
+   }
+  },
+  {
+   "variant": "no alarms + no probation",
+   "seed": 101,
+   "final": 0.40549999674161274,
+   "immediate": 0.43533333341280617,
+   "n_experts": 13,
+   "events": {
+    "extend": 2,
+    "spawn": 13
+   }
+  },
+  {
+   "variant": "no alarms + no probation",
+   "seed": 102,
+   "final": 0.3851666659116745,
+   "immediate": 0.43233333230018617,
+   "n_experts": 12,
+   "events": {
+    "extend": 3,
+    "spawn": 12
+   }
+  },
+  {
+   "variant": "no alarms + no probation + no growth",
+   "seed": 100,
+   "final": 0.40433333615461986,
+   "immediate": 0.42850000262260435,
+   "n_experts": 13,
+   "events": {
+    "extend": 2,
+    "spawn": 13
+   }
+  },
+  {
+   "variant": "no alarms + no probation + no growth",
+   "seed": 101,
+   "final": 0.40549999674161274,
+   "immediate": 0.43533333341280617,
+   "n_experts": 13,
+   "events": {
+    "extend": 2,
+    "spawn": 13
+   }
+  },
+  {
+   "variant": "no alarms + no probation + no growth",
+   "seed": 102,
+   "final": 0.3851666659116745,
+   "immediate": 0.43233333230018617,
+   "n_experts": 12,
+   "events": {
+    "extend": 3,
+    "spawn": 12
+   }
+  },
+  {
+   "variant": "A, 5 steps",
+   "seed": 100,
+   "final": 0.40050000250339507,
+   "immediate": 0.3949999988079071,
+   "n_experts": 16,
+   "events": {
+    "alarm": 11,
+    "extend": 9,
+    "spawn": 16
+   }
+  },
+  {
+   "variant": "A, 5 steps",
+   "seed": 101,
+   "final": 0.4108333349227905,
+   "immediate": 0.42549999952316286,
+   "n_experts": 19,
+   "events": {
+    "alarm": 14,
+    "extend": 10,
+    "spawn": 19
+   }
+  },
+  {
+   "variant": "A, 5 steps",
+   "seed": 102,
+   "final": 0.36499999860922494,
+   "immediate": 0.3623333324988683,
+   "n_experts": 20,
+   "events": {
+    "alarm": 13,
+    "extend": 8,
+    "spawn": 20
+   }
+  },
+  {
+   "variant": "no alarms + no probation, 5 steps",
+   "seed": 100,
+   "final": 0.4774999976158142,
+   "immediate": 0.4863333364327749,
+   "n_experts": 15,
+   "events": {
+    "spawn": 15
+   }
+  },
+  {
+   "variant": "no alarms + no probation, 5 steps",
+   "seed": 101,
+   "final": 0.46733333071072897,
+   "immediate": 0.481166664759318,
+   "n_experts": 14,
+   "events": {
+    "extend": 1,
+    "spawn": 14
+   }
+  },
+  {
+   "variant": "no alarms + no probation, 5 steps",
+   "seed": 102,
+   "final": 0.4433333337306976,
+   "immediate": 0.4671666661898295,
+   "n_experts": 13,
+   "events": {
+    "extend": 2,
+    "spawn": 13
+   }
+  }
+ ]
+}

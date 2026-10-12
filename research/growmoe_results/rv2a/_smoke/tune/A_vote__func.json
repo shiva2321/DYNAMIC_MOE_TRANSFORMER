@@ -1,0 +1,17 @@
+{
+ "family": "func",
+ "arm": "A_vote",
+ "steps": 5,
+ "at_edge": false,
+ "table": {
+  "1": 0.21875,
+  "5": 0.3125,
+  "12": 0.28125
+ },
+ "stream": "F-15",
+ "dev_seeds": [
+  100
+ ],
+ "seconds": 3.093693800001347,
+ "peak_mb": 688.46875
+}

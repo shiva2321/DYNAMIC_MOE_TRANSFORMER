@@ -1,0 +1,52 @@
+C:\Users\Asta\AppData\Local\Programs\Python\Python312\Lib\site-packages\torch\cuda\__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+C:\Users\Asta\AppData\Local\Programs\Python\Python312\Lib\site-packages\torch\cuda\__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+C:\Users\Asta\AppData\Local\Programs\Python\Python312\Lib\site-packages\torch\cuda\__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+{'stream': 'F-15', 'variant': 'alarms off + no probation, 5 steps (D4)', 'seed': 100, 'final': 0.4774999976158142, 'immediate': 0.4863333364327749, 'n_experts': 15, 'n_regimes': 15} {'spawn': 15}
+{'stream': 'F-15', 'variant': 'alarms off + no probation, 5 steps (D4)', 'seed': 101, 'final': 0.46733333071072897, 'immediate': 0.481166664759318, 'n_experts': 14, 'n_regimes': 15} {'extend': 1, 'spawn': 14}
+{'stream': 'F-15', 'variant': 'alarms off + no probation, 5 steps (D4)', 'seed': 102, 'final': 0.4433333337306976, 'immediate': 0.4671666661898295, 'n_experts': 13, 'n_regimes': 15} {'extend': 2, 'spawn': 13}
+{'stream': 'F-15', 'variant': '  + never extend', 'seed': 100, 'final': 0.4774999976158142, 'immediate': 0.4863333364327749, 'n_experts': 15, 'n_regimes': 15} {'spawn': 15}
+{'stream': 'F-15', 'variant': '  + never extend', 'seed': 101, 'final': 0.47949999769528706, 'immediate': 0.4928333322207133, 'n_experts': 15, 'n_regimes': 15} {'spawn': 15}
+{'stream': 'F-15', 'variant': '  + never extend', 'seed': 102, 'final': 0.47050000230471295, 'immediate': 0.502999997138977, 'n_experts': 15, 'n_regimes': 15} {'spawn': 15}
+{'stream': 'F-15', 'variant': 'alarms off, probation ON, 5 steps', 'seed': 100, 'final': 0.4774999976158142, 'immediate': 0.4863333364327749, 'n_experts': 15, 'n_regimes': 15} {'spawn': 15}
+{'stream': 'F-15', 'variant': 'alarms off, probation ON, 5 steps', 'seed': 101, 'final': 0.4674999972184499, 'immediate': 0.481333331267039, 'n_experts': 14, 'n_regimes': 15} {'extend': 1, 'spawn': 14}
+{'stream': 'F-15', 'variant': 'alarms off, probation ON, 5 steps', 'seed': 102, 'final': 0.44350000023841857, 'immediate': 0.4671666661898295, 'n_experts': 13, 'n_regimes': 15} {'extend': 2, 'spawn': 13}
+{'stream': 'F-15', 'variant': 'alarms off, probation ON, never extend, 5 steps', 'seed': 100, 'final': 0.4774999976158142, 'immediate': 0.4863333364327749, 'n_experts': 15, 'n_regimes': 15} {'spawn': 15}
+{'stream': 'F-15', 'variant': 'alarms off, probation ON, never extend, 5 steps', 'seed': 101, 'final': 0.4793333292007446, 'immediate': 0.49266666372617085, 'n_experts': 15, 'n_regimes': 15} {'spawn': 15}
+{'stream': 'F-15', 'variant': 'alarms off, probation ON, never extend, 5 steps', 'seed': 102, 'final': 0.47050000230471295, 'immediate': 0.502999997138977, 'n_experts': 15, 'n_regimes': 15} {'spawn': 15}
+{'stream': 'F-15', 'variant': 'alarms ON, no probation, never extend, 5 steps', 'seed': 100, 'final': 0.4339999993642171, 'immediate': 0.4228333334128062, 'n_experts': 27, 'n_regimes': 15} {'alarm': 12, 'spawn': 27}
+{'stream': 'F-15', 'variant': 'alarms ON, no probation, never extend, 5 steps', 'seed': 101, 'final': 0.4153333346048991, 'immediate': 0.42083333134651185, 'n_experts': 28, 'n_regimes': 15} {'alarm': 13, 'spawn': 28}
+{'stream': 'F-15', 'variant': 'alarms ON, no probation, never extend, 5 steps', 'seed': 102, 'final': 0.42600000301996865, 'immediate': 0.4150000015894572, 'n_experts': 28, 'n_regimes': 15} {'alarm': 13, 'spawn': 28}
+{'stream': 'F-15', 'variant': 'alarms off + no probation + never extend, 20 steps', 'seed': 100, 'final': 0.43766667048136393, 'immediate': 0.4586666683355967, 'n_experts': 15, 'n_regimes': 15} {'spawn': 15}
+{'stream': 'F-15', 'variant': 'alarms off + no probation + never extend, 20 steps', 'seed': 101, 'final': 0.4490000009536743, 'immediate': 0.4685000002384186, 'n_experts': 15, 'n_regimes': 15} {'spawn': 15}
+{'stream': 'F-15', 'variant': 'alarms off + no probation + never extend, 20 steps', 'seed': 102, 'final': 0.4246666669845581, 'immediate': 0.4564999977747599, 'n_experts': 15, 'n_regimes': 15} {'spawn': 15}
+{'stream': 'F-15', 'variant': 'alarms off + no probation + never extend, 50 steps', 'seed': 100, 'final': 0.41516666412353515, 'immediate': 0.44949999849001565, 'n_experts': 15, 'n_regimes': 15} {'spawn': 15}
+{'stream': 'F-15', 'variant': 'alarms off + no probation + never extend, 50 steps', 'seed': 101, 'final': 0.431333331267039, 'immediate': 0.4524999996026357, 'n_experts': 15, 'n_regimes': 15} {'spawn': 15}
+{'stream': 'F-15', 'variant': 'alarms off + no probation + never extend, 50 steps', 'seed': 102, 'final': 0.4016666650772095, 'immediate': 0.4535000006357829, 'n_experts': 15, 'n_regimes': 15} {'spawn': 15}
+{'stream': 'S2-5', 'variant': 'A tuned (20 steps)', 'seed': 100, 'final': 0.9300000071525574, 'immediate': 0.9079999923706055, 'n_experts': 4, 'n_regimes': 5} {'alarm': 3, 'extend': 4, 'spawn': 4}
+{'stream': 'S2-5', 'variant': 'A tuned (20 steps)', 'seed': 101, 'final': 0.9100000023841858, 'immediate': 0.9079999923706055, 'n_experts': 2, 'n_regimes': 5} {'alarm': 1, 'extend': 4, 'spawn': 2}
+{'stream': 'S2-5', 'variant': 'A tuned (20 steps)', 'seed': 102, 'final': 0.9180000066757202, 'immediate': 0.9000000119209289, 'n_experts': 3, 'n_regimes': 5} {'alarm': 2, 'extend': 4, 'spawn': 3}
+{'stream': 'S2-5', 'variant': 'alarms off + no probation + never extend, 5 steps', 'seed': 100, 'final': 0.8980000019073486, 'immediate': 0.8820000052452087, 'n_experts': 5, 'n_regimes': 5} {'spawn': 5}
+{'stream': 'S2-5', 'variant': 'alarms off + no probation + never extend, 5 steps', 'seed': 101, 'final': 0.928000009059906, 'immediate': 0.9259999990463257, 'n_experts': 5, 'n_regimes': 5} {'spawn': 5}
+{'stream': 'S2-5', 'variant': 'alarms off + no probation + never extend, 5 steps', 'seed': 102, 'final': 0.899999988079071, 'immediate': 0.9059999942779541, 'n_experts': 5, 'n_regimes': 5} {'spawn': 5}
+{'stream': 'S1', 'variant': 'A tuned (5 steps)', 'seed': 100, 'final': 0.7638095106397357, 'immediate': 0.82571428162711, 'n_experts': 8, 'n_regimes': 7} {'alarm': 8, 'extend': 6, 'spawn': 8}
+{'stream': 'S1', 'variant': 'A tuned (5 steps)', 'seed': 101, 'final': 0.7485714384487697, 'immediate': 0.8123809482370105, 'n_experts': 6, 'n_regimes': 7} {'alarm': 7, 'extend': 6, 'spawn': 6}
+{'stream': 'S1', 'variant': 'A tuned (5 steps)', 'seed': 102, 'final': 0.7676190478461129, 'immediate': 0.8466666724000659, 'n_experts': 5, 'n_regimes': 7} {'alarm': 5, 'extend': 6, 'spawn': 5}
+{'stream': 'S1', 'variant': 'alarms off + no probation + never extend, 5 steps', 'seed': 100, 'final': 0.7133333342415946, 'immediate': 0.8447619080543518, 'n_experts': 6, 'n_regimes': 7} {'spawn': 6}
+{'stream': 'S1', 'variant': 'alarms off + no probation + never extend, 5 steps', 'seed': 101, 'final': 0.7323809521538871, 'immediate': 0.8314285704067775, 'n_experts': 6, 'n_regimes': 7} {'spawn': 6}
+{'stream': 'S1', 'variant': 'alarms off + no probation + never extend, 5 steps', 'seed': 102, 'final': 0.653333340372358, 'immediate': 0.8390476150172097, 'n_experts': 6, 'n_regimes': 7} {'spawn': 6}
+
+stream variant                                              immediate %  final %  experts / regimes  events (mean)
+F-15  alarms off + no probation, 5 steps (D4)                     47.8     46.3     14.0 / 15   extend 1.0, spawn 14.0
+F-15    + never extend                                            49.4     47.6     15.0 / 15   spawn 15.0
+F-15  alarms off, probation ON, 5 steps                           47.8     46.3     14.0 / 15   extend 1.0, spawn 14.0
+F-15  alarms off, probation ON, never extend, 5 steps             49.4     47.6     15.0 / 15   spawn 15.0
+F-15  alarms ON, no probation, never extend, 5 steps              42.0     42.5     27.7 / 15   alarm 12.7, spawn 27.7
+F-15  alarms off + no probation + never extend, 20 steps          46.1     43.7     15.0 / 15   spawn 15.0
+F-15  alarms off + no probation + never extend, 50 steps          45.2     41.6     15.0 / 15   spawn 15.0
+S2-5  A tuned (20 steps)                                          90.5     91.9      3.0 / 5   alarm 2.0, extend 4.0, spawn 3.0
+S2-5  alarms off + no probation + never extend, 5 steps           90.5     90.9      5.0 / 5   spawn 5.0
+S1    A tuned (5 steps)                                           82.8     76.0      6.3 / 7   alarm 6.7, extend 6.0, spawn 6.3
+S1    alarms off + no probation + never extend, 5 steps           83.8     70.0      6.0 / 7   spawn 6.0

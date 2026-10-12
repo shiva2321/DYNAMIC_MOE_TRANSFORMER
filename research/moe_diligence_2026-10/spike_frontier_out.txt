@@ -1,0 +1,30 @@
+﻿
+seed 0 A_default(h128,64cls,256 protos): acc=84.9 mem=9966KB experts=24 (36s)
+seed 0 A_small(h32,10cls,64 protos,64 replay): acc=83.6 mem=3525KB experts=34 (77s)
+seed 0 A_tiny(h16,10cls,32 protos,32 replay): acc=20.0 mem=222KB experts=4 (87s)
+seed 0 done (117s)
+seed 1 A_default(h128,64cls,256 protos): acc=84.2 mem=9224KB experts=22 (152s)
+seed 1 A_small(h32,10cls,64 protos,64 replay): acc=56.1 mem=2281KB experts=22 (186s)
+seed 1 A_tiny(h16,10cls,32 protos,32 replay): acc=18.0 mem=167KB experts=3 (195s)
+seed 1 done (224s)
+seed 2 A_default(h128,64cls,256 protos): acc=88.1 mem=8804KB experts=21 (258s)
+seed 2 A_small(h32,10cls,64 protos,64 replay): acc=84.5 mem=3421KB experts=33 (294s)
+seed 2 A_tiny(h16,10cls,32 protos,32 replay): acc=14.4 mem=111KB experts=2 (300s)
+seed 2 done (328s)
+
+=== 30 permuted-digit regimes (400 train each = 12,000 samples = 6,000 KB raw): accuracy vs memory, 3 seeds ===
+method                                      memory KB               accuracy %  experts
+A_tiny(h16,10cls,32 protos,32 replay)             167     17.48 [10.34, 24.62]      3.0
+kNN cap=500                                       250     33.52 [28.07, 38.98]      1.0
+B2 replay buf=512 (20 steps)                      392     56.20 [53.67, 58.73]      1.0
+kNN cap=1000                                      500     53.32 [50.67, 55.98]      1.0
+kNN cap=2000                                     1000     74.58 [72.05, 77.11]      1.0
+B2 replay buf=2048 (20 steps)                    1160     72.29 [70.60, 73.98]      1.0
+kNN cap=4000                                     2000     85.86 [84.45, 87.26]      1.0
+A_small(h32,10cls,64 protos,64 replay)           3075    74.74 [34.55, 114.94]     29.7
+kNN cap=8000                                     4000     91.90 [89.81, 93.99]      1.0
+B2 replay buf=8192 (20 steps)                    4232     79.30 [77.77, 80.83]      1.0
+kNN cap=12000                                    6000     93.80 [91.01, 96.59]      1.0
+A_default(h128,64cls,256 protos)                 9331     85.71 [80.50, 90.92]     22.3
+
+

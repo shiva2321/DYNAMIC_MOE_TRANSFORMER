@@ -1,0 +1,53 @@
+﻿
+=== F. NormGatedLinear on unit-sphere inputs ===
+max |NormGated(x) - plain linear with shifted bias| on unit vectors: 1.1920928955078125e-07
+same comparison on inputs with varying norm (so the gate can act): 39.79878234863281
+
+=== H. Pool C parameter accounting on S2 (benchmark config) ===
+seed 0: experts=7  summary n_params=371392  unique params=120640  (own deltas 78848 + shared base 41792 = 120640)  
+acc=72.8
+          Pool A same seed: experts=3 summary n_params=125376 acc=86.6
+seed 1: experts=5  summary n_params=265280  unique params=98112  (own deltas 56320 + shared base 41792 = 98112)  
+acc=75.2
+          Pool A same seed: experts=3 summary n_params=125376 acc=86.8
+seed 2: experts=5  summary n_params=265280  unique params=98112  (own deltas 56320 + shared base 41792 = 98112)  
+acc=73.8
+          Pool A same seed: experts=3 summary n_params=125376 acc=89.6
+
+=== E. Intrinsic-dimension estimates at probation-cluster sizes (true dimension known; embedded in R^128, 
+unit-normalised) ===
+true d     N |    repo TwoNN mean+-sd |   agent formula mean+-sd
+     2    32 |     3.23 +-  0.74      |      4.73 +-  1.38
+     2    64 |     4.56 +-  0.70      |      6.91 +-  1.28
+     2   128 |     7.25 +-  0.84      |     11.55 +-  1.57
+     2   256 |    10.85 +-  1.14      |     17.38 +-  1.92
+     2   512 |    16.01 +-  0.73      |     25.68 +-  1.28
+     5    32 |     4.54 +-  1.13      |      7.01 +-  1.99
+     5    64 |     4.13 +-  0.59      |      6.29 +-  1.43
+     5   128 |     4.02 +-  0.54      |      5.70 +-  0.84
+     5   256 |     4.34 +-  0.42      |      6.20 +-  0.79
+     5   512 |     4.34 +-  0.23      |      6.19 +-  0.39
+    10    32 |     8.02 +-  1.52      |     11.36 +-  3.37
+    10    64 |     7.90 +-  1.08      |     11.88 +-  2.05
+    10   128 |     8.15 +-  0.77      |     11.71 +-  1.35
+    10   256 |     8.55 +-  0.68      |     12.15 +-  1.31
+    10   512 |     8.40 +-  0.59      |     11.96 +-  0.85
+    20    32 |    13.50 +-  2.90      |     18.58 +-  6.03
+    20    64 |    14.61 +-  2.83      |     21.37 +-  5.85
+    20   128 |    15.12 +-  1.55      |     21.93 +-  3.28
+    20   256 |    15.51 +-  1.38      |     21.86 +-  2.29
+    20   512 |    15.69 +-  0.73      |     22.59 +-  1.38
+
+=== D. Same inputs, different labelling function: needed expert width (accuracy %, 3 seeds) ===
+labels                   w=2    w=4    w=8    w=16   w=32   w=64   w=128 
+linear labels              84.5   82.1   84.6   83.9   81.5   78.4   78.9
+deep teacher (w32,d2)      52.7   52.4   53.0   53.2   59.9   58.4   57.0
+(inputs are IDENTICAL random unit vectors in both rows: same N, same concentration, same intrinsic dimension)
+
+=== G. Routing (predict) cost vs number of live experts, batch of 64 ===
+E=   8:      7.1 ms per batch of 64  (  0.11 ms per sample)
+E=  32:     25.9 ms per batch of 64  (  0.41 ms per sample)
+E= 128:    102.1 ms per batch of 64  (  1.60 ms per sample)
+E= 512:    451.3 ms per batch of 64  (  7.05 ms per sample)
+
+

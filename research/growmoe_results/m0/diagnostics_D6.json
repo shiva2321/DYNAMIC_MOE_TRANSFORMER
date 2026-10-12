@@ -1,0 +1,376 @@
+{
+ "rows": [
+  {
+   "stream": "F-15",
+   "variant": "A as run in M0 (50 steps)",
+   "seed": 100,
+   "final": 0.4074999988079071,
+   "immediate": 0.41516666611035663,
+   "n_experts": 14,
+   "n_regimes": 15,
+   "events": {
+    "alarm": 13,
+    "extend": 14,
+    "spawn": 14
+   }
+  },
+  {
+   "stream": "F-15",
+   "variant": "A as run in M0 (50 steps)",
+   "seed": 101,
+   "final": 0.39066666762034097,
+   "immediate": 0.4225000023841858,
+   "n_experts": 15,
+   "n_regimes": 15,
+   "events": {
+    "alarm": 13,
+    "extend": 13,
+    "spawn": 15
+   }
+  },
+  {
+   "stream": "F-15",
+   "variant": "A as run in M0 (50 steps)",
+   "seed": 102,
+   "final": 0.4036666681369146,
+   "immediate": 0.4221666673819224,
+   "n_experts": 16,
+   "n_regimes": 15,
+   "events": {
+    "alarm": 14,
+    "extend": 13,
+    "spawn": 16
+   }
+  },
+  {
+   "stream": "F-15",
+   "variant": "arm after infancy, 50 steps",
+   "seed": 100,
+   "final": 0.40833333432674407,
+   "immediate": 0.42833333611488345,
+   "n_experts": 13,
+   "n_regimes": 15,
+   "events": {
+    "extend": 2,
+    "spawn": 13
+   }
+  },
+  {
+   "stream": "F-15",
+   "variant": "arm after infancy, 50 steps",
+   "seed": 101,
+   "final": 0.40983332792917887,
+   "immediate": 0.43433333237965904,
+   "n_experts": 13,
+   "n_regimes": 15,
+   "events": {
+    "alarm": 1,
+    "extend": 3,
+    "spawn": 13
+   }
+  },
+  {
+   "stream": "F-15",
+   "variant": "arm after infancy, 50 steps",
+   "seed": 102,
+   "final": 0.3834999988476435,
+   "immediate": 0.4288333336512248,
+   "n_experts": 12,
+   "n_regimes": 15,
+   "events": {
+    "alarm": 1,
+    "extend": 4,
+    "spawn": 12
+   }
+  },
+  {
+   "stream": "F-15",
+   "variant": "A, 5 steps",
+   "seed": 100,
+   "final": 0.40050000250339507,
+   "immediate": 0.3949999988079071,
+   "n_experts": 16,
+   "n_regimes": 15,
+   "events": {
+    "alarm": 11,
+    "extend": 9,
+    "spawn": 16
+   }
+  },
+  {
+   "stream": "F-15",
+   "variant": "A, 5 steps",
+   "seed": 101,
+   "final": 0.4108333349227905,
+   "immediate": 0.42549999952316286,
+   "n_experts": 19,
+   "n_regimes": 15,
+   "events": {
+    "alarm": 14,
+    "extend": 10,
+    "spawn": 19
+   }
+  },
+  {
+   "stream": "F-15",
+   "variant": "A, 5 steps",
+   "seed": 102,
+   "final": 0.36499999860922494,
+   "immediate": 0.3623333324988683,
+   "n_experts": 20,
+   "n_regimes": 15,
+   "events": {
+    "alarm": 13,
+    "extend": 8,
+    "spawn": 20
+   }
+  },
+  {
+   "stream": "F-15",
+   "variant": "arm after infancy, 5 steps",
+   "seed": 100,
+   "final": 0.47050000429153443,
+   "immediate": 0.4776666680971781,
+   "n_experts": 16,
+   "n_regimes": 15,
+   "events": {
+    "alarm": 1,
+    "spawn": 16
+   }
+  },
+  {
+   "stream": "F-15",
+   "variant": "arm after infancy, 5 steps",
+   "seed": 101,
+   "final": 0.47483333150545753,
+   "immediate": 0.4868333319822947,
+   "n_experts": 15,
+   "n_regimes": 15,
+   "events": {
+    "alarm": 1,
+    "extend": 1,
+    "spawn": 15
+   }
+  },
+  {
+   "stream": "F-15",
+   "variant": "arm after infancy, 5 steps",
+   "seed": 102,
+   "final": 0.4571666677792867,
+   "immediate": 0.4859999974568685,
+   "n_experts": 15,
+   "n_regimes": 15,
+   "events": {
+    "alarm": 2,
+    "extend": 2,
+    "spawn": 15
+   }
+  },
+  {
+   "stream": "F-15",
+   "variant": "arm after infancy, 20 steps",
+   "seed": 100,
+   "final": 0.3968333343664805,
+   "immediate": 0.4291666686534882,
+   "n_experts": 12,
+   "n_regimes": 15,
+   "events": {
+    "alarm": 1,
+    "extend": 4,
+    "spawn": 12
+   }
+  },
+  {
+   "stream": "F-15",
+   "variant": "arm after infancy, 20 steps",
+   "seed": 101,
+   "final": 0.4510000010331472,
+   "immediate": 0.4631666660308838,
+   "n_experts": 15,
+   "n_regimes": 15,
+   "events": {
+    "alarm": 2,
+    "extend": 2,
+    "spawn": 15
+   }
+  },
+  {
+   "stream": "F-15",
+   "variant": "arm after infancy, 20 steps",
+   "seed": 102,
+   "final": 0.4038333296775818,
+   "immediate": 0.4419999976952871,
+   "n_experts": 13,
+   "n_regimes": 15,
+   "events": {
+    "extend": 2,
+    "spawn": 13
+   }
+  },
+  {
+   "stream": "S1",
+   "variant": "A tuned (5 steps)",
+   "seed": 100,
+   "final": 0.7638095106397357,
+   "immediate": 0.82571428162711,
+   "n_experts": 8,
+   "n_regimes": 7,
+   "events": {
+    "alarm": 8,
+    "extend": 6,
+    "spawn": 8
+   }
+  },
+  {
+   "stream": "S1",
+   "variant": "A tuned (5 steps)",
+   "seed": 101,
+   "final": 0.7485714384487697,
+   "immediate": 0.8123809482370105,
+   "n_experts": 6,
+   "n_regimes": 7,
+   "events": {
+    "alarm": 7,
+    "extend": 6,
+    "spawn": 6
+   }
+  },
+  {
+   "stream": "S1",
+   "variant": "A tuned (5 steps)",
+   "seed": 102,
+   "final": 0.7676190478461129,
+   "immediate": 0.8466666724000659,
+   "n_experts": 5,
+   "n_regimes": 7,
+   "events": {
+    "alarm": 5,
+    "extend": 6,
+    "spawn": 5
+   }
+  },
+  {
+   "stream": "S1",
+   "variant": "arm after infancy, 5 steps",
+   "seed": 100,
+   "final": 0.7485714341912951,
+   "immediate": 0.826666670186179,
+   "n_experts": 4,
+   "n_regimes": 7,
+   "events": {
+    "alarm": 2,
+    "extend": 4,
+    "spawn": 4
+   }
+  },
+  {
+   "stream": "S1",
+   "variant": "arm after infancy, 5 steps",
+   "seed": 101,
+   "final": 0.6980952365057809,
+   "immediate": 0.8419047594070435,
+   "n_experts": 5,
+   "n_regimes": 7,
+   "events": {
+    "alarm": 2,
+    "extend": 3,
+    "spawn": 5
+   }
+  },
+  {
+   "stream": "S1",
+   "variant": "arm after infancy, 5 steps",
+   "seed": 102,
+   "final": 0.7761904852730888,
+   "immediate": 0.8523809569222587,
+   "n_experts": 5,
+   "n_regimes": 7,
+   "events": {
+    "alarm": 1,
+    "extend": 2,
+    "spawn": 5
+   }
+  },
+  {
+   "stream": "S2-5",
+   "variant": "A tuned (20 steps)",
+   "seed": 100,
+   "final": 0.9300000071525574,
+   "immediate": 0.9079999923706055,
+   "n_experts": 4,
+   "n_regimes": 5,
+   "events": {
+    "alarm": 3,
+    "extend": 4,
+    "spawn": 4
+   }
+  },
+  {
+   "stream": "S2-5",
+   "variant": "A tuned (20 steps)",
+   "seed": 101,
+   "final": 0.9100000023841858,
+   "immediate": 0.9079999923706055,
+   "n_experts": 2,
+   "n_regimes": 5,
+   "events": {
+    "alarm": 1,
+    "extend": 4,
+    "spawn": 2
+   }
+  },
+  {
+   "stream": "S2-5",
+   "variant": "A tuned (20 steps)",
+   "seed": 102,
+   "final": 0.9180000066757202,
+   "immediate": 0.9000000119209289,
+   "n_experts": 3,
+   "n_regimes": 5,
+   "events": {
+    "alarm": 2,
+    "extend": 4,
+    "spawn": 3
+   }
+  },
+  {
+   "stream": "S2-5",
+   "variant": "arm after infancy, 20 steps",
+   "seed": 100,
+   "final": 0.9319999933242797,
+   "immediate": 0.899999988079071,
+   "n_experts": 5,
+   "n_regimes": 5,
+   "events": {
+    "spawn": 5
+   }
+  },
+  {
+   "stream": "S2-5",
+   "variant": "arm after infancy, 20 steps",
+   "seed": 101,
+   "final": 0.9099999904632569,
+   "immediate": 0.9139999866485595,
+   "n_experts": 2,
+   "n_regimes": 5,
+   "events": {
+    "alarm": 1,
+    "extend": 4,
+    "spawn": 2
+   }
+  },
+  {
+   "stream": "S2-5",
+   "variant": "arm after infancy, 20 steps",
+   "seed": 102,
+   "final": 0.9079999923706055,
+   "immediate": 0.9040000081062317,
+   "n_experts": 3,
+   "n_regimes": 5,
+   "events": {
+    "extend": 2,
+    "spawn": 3
+   }
+  }
+ ]
+}

@@ -1,0 +1,36 @@
+﻿
+files combined: ['function_stream_raw_seeds_0.json', 'function_stream_raw_seeds_1.json', 
+'function_stream_raw_seeds_2.json']
+
+=== Function regimes (8 classes, chance 12.5%): final average accuracy %, 3 seeds, mean [95% CI] ===
+regimes method                                         accuracy  experts  memory KB
+      5 kNN stores everything              21.32 [19.71, 22.92]      1.0       2800
+      5 kNN same bytes as PhyloMoE         21.38 [19.05, 23.72]      1.0       2341
+      5 Replay net 1 step(s)               25.20 [19.34, 31.06]      1.0       1160
+      5 Replay net 20 step(s)              37.28 [32.43, 42.14]      1.0       1160
+      5 PhyloMoE 1 step(s)                 42.63 [35.53, 49.74]      6.0       2451
+      5 PhyloMoE 20 step(s)                46.53 [42.59, 50.48]      5.7       2341
+      5 Oracle: one expert per regime      41.78 [39.03, 44.53]      5.0        836
+
+     15 kNN stores everything              21.85 [20.95, 22.75]      1.0       6800
+     15 kNN same bytes as PhyloMoE         21.76 [20.58, 22.94]      1.0       6202
+     15 Replay net 1 step(s)               19.68 [17.89, 21.48]      1.0       1160
+     15 Replay net 20 step(s)              24.47 [22.31, 26.62]      1.0       1160
+     15 PhyloMoE 1 step(s)                 33.95 [18.41, 49.49]     17.3       7042
+     15 PhyloMoE 20 step(s)                40.61 [36.28, 44.94]     15.0       6202
+     15 Oracle: one expert per regime      39.49 [36.95, 42.04]     15.0       2508
+
+     30 kNN stores everything              21.73 [20.91, 22.55]      1.0      12800
+     30 kNN same bytes as PhyloMoE         21.49 [20.06, 22.92]      1.0      10833
+     30 Replay net 1 step(s)               16.37 [15.23, 17.51]      1.0       1160
+     30 Replay net 20 step(s)              18.82 [18.01, 19.64]      1.0       1160
+     30 PhyloMoE 1 step(s)                 30.58 [20.46, 40.69]     33.7      13537
+     30 PhyloMoE 20 step(s)                31.59 [24.20, 38.97]     27.3      10833
+     30 Oracle: one expert per regime      39.65 [36.94, 42.36]     30.0       5016
+
+paired difference PhyloMoE(20 steps) minus Replay net(20 steps), percentage points:
+    5 regimes: +9.2 [+0.7, +17.8]  per-seed: [5.4, 12.0, 10.3]
+   15 regimes: +16.1 [+13.0, +19.3]  per-seed: [15.1, 15.8, 17.6]
+   30 regimes: +12.8 [+4.9, +20.6]  per-seed: [14.5, 9.1, 14.7]
+
+

@@ -1,0 +1,30 @@
+﻿
+encoder loaded (7s)
+
+=== S1 final average accuracy (%), 10 seeds, mean [95% CI] ===
+A_hash       69.81 [67.79, 71.83]
+A_minilm     72.62 [69.95, 75.29]
+kNN_hash     77.95 [77.35, 78.56]
+kNN_minilm   81.96 [81.49, 82.43]
+
+=== Per-regime final accuracy (%), mean over seeds ===
+regime              A_hash    A_minilm    kNN_hash  kNN_minilm
+digits                86.0        82.1        97.1        97.1
+wine                  88.6        88.2        92.6        92.6
+breast_cancer         78.6        79.5        94.9        94.9
+sinusoid              95.9        95.7       100.0       100.0
+ar2                   50.3        47.0        53.1        53.1
+pydoc_text            35.1        44.5        43.1        55.1
+stdlib_code           54.1        71.3        64.9        80.9
+
+=== Own-regime 1-NN separability (%), mean over seeds ===
+regime             hash   minilm
+digits            100.0    100.0
+wine               99.7     99.7
+breast_cancer      99.2     99.2
+sinusoid          100.0    100.0
+ar2                76.3     76.3
+pydoc_text         72.0     77.6
+stdlib_code        89.7     92.0
+
+

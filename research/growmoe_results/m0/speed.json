@@ -1,0 +1,32 @@
+{
+ "seed": 100,
+ "rows": [
+  {
+   "stream": "S2-5",
+   "method": "A",
+   "steps": 20,
+   "seconds_original": 5.879559499999232,
+   "seconds_new": 2.5658248999989155,
+   "speedup": 2.2914889866419634,
+   "final_accuracy_equal": true
+  },
+  {
+   "stream": "F-15",
+   "method": "A",
+   "steps": 50,
+   "seconds_original": 27.541071999999986,
+   "seconds_new": 19.777840099999594,
+   "speedup": 1.3925217243515156,
+   "final_accuracy_equal": true
+  },
+  {
+   "stream": "F-30",
+   "method": "A",
+   "steps": 50,
+   "seconds_original": 98.75318010000046,
+   "seconds_new": 47.27178840000124,
+   "speedup": 2.089051069199613,
+   "final_accuracy_equal": true
+  }
+ ]
+}
