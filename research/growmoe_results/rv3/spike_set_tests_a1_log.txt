@@ -1,0 +1,35 @@
+A1 0.0 100 done
+A1 0.0 101 done
+A1 0.0 102 done
+A1 0.3 100 done
+A1 0.3 101 done
+A1 0.3 102 done
+A1 0.6 100 done
+A1 0.6 101 done
+A1 0.6 102 done
+A1 0.85 100 done
+A1 0.85 101 done
+A1 0.85 102 done
+
+=== A1 clean: in-regime vs foreign batches against the expert's own reference (mean over seeds (100, 101, 102)) ===
+rho  statistic       false alarm @0.05 / @0.01 / @0.001     detection @0.05 / @0.01 / @0.001     AUROC
+0.00 fisher_owner       0.067    0.011    0.006             1.000    1.000    1.000           1.000
+0.00 meandist           0.061    0.000    0.000             1.000    1.000    1.000           1.000
+0.00 mmd                0.061    0.006    0.000             1.000    1.000    1.000           1.000
+0.00 scoresum           0.061    0.022    0.011             1.000    1.000    1.000           0.994
+0.00 per-sample BH    flagged fraction own/known vs foreign/onset: 0.000 vs 1.000   AUROC 1.000
+0.30 fisher_owner       0.061    0.022    0.006             1.000    1.000    1.000           1.000
+0.30 meandist           0.056    0.006    0.000             1.000    1.000    1.000           1.000
+0.30 mmd                0.061    0.006    0.000             1.000    1.000    1.000           1.000
+0.30 scoresum           0.083    0.028    0.011             1.000    1.000    1.000           0.994
+0.30 per-sample BH    flagged fraction own/known vs foreign/onset: 0.000 vs 0.998   AUROC 1.000
+0.60 fisher_owner       0.072    0.028    0.017             1.000    1.000    1.000           1.000
+0.60 meandist           0.056    0.006    0.000             1.000    1.000    1.000           1.000
+0.60 mmd                0.061    0.006    0.000             1.000    1.000    1.000           1.000
+0.60 scoresum           0.083    0.028    0.011             1.000    1.000    1.000           0.994
+0.60 per-sample BH    flagged fraction own/known vs foreign/onset: 0.000 vs 0.869   AUROC 0.998
+0.85 fisher_owner       0.072    0.022    0.011             1.000    1.000    1.000           1.000
+0.85 meandist           0.056    0.006    0.000             1.000    1.000    1.000           1.000
+0.85 mmd                0.067    0.006    0.000             1.000    1.000    1.000           1.000
+0.85 scoresum           0.089    0.028    0.006             1.000    1.000    1.000           0.997
+0.85 per-sample BH    flagged fraction own/known vs foreign/onset: 0.000 vs 0.016   AUROC 0.532

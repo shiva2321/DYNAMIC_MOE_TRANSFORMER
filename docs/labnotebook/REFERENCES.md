@@ -29,6 +29,14 @@ arXiv IDs below were collected on 2026-10-09 (routing note) and 2026-10-06 (geom
 | PEER (product keys), arXiv 2407.04153; fast feedforward networks, arXiv 2308.14711 | sublinear routing | L |
 | Loss-free load balancing (DeepSeek), arXiv 2408.15664 | fixed-pool maintenance | L |
 | MaRS (ICLR 2026), SEMA (CVPR 2025), LLaVA-CMoE | closest published relatives to statistically controlled growth | L |
+| SEMA, arXiv 2403.18886 (code: huiyiwang01/SEMA-CL, MIT) | method read: autoencoder descriptor per adapter, z-score of reconstruction error, expand when all descriptors flag shift, task boundaries given | L+ |
+| AIR-MoE, arXiv 2605.04952 | two-stage routing: codebook shortlist then exact scores; guarantee on routing mass recall; the same pattern as our stage 2 | L+ |
+| Task-level MoE (Kudugunta et al.), arXiv 2110.03742 | routing a whole task or sequence together: +1.0 BLEU, 1.9x throughput; the precedent for group answering | L |
+| Conformal test martingales, arXiv 2411.11824; testing by betting (Shekhar and Ramdas), arXiv 2112.09162; crepes (martingale module) | sequential, anytime-valid alternatives to a batch test | L |
+| RouterRetriever, arXiv 2409.02685 | add an expert without retraining a pilot-embedding router | L |
+| Phipson and Smyth (2010), permutation p-values should never be zero | the (1 + count) / (1 + n) form we use, so the smallest p-value is 1 / (1 + n_perm) | R |
+| Besag and Clifford (1991), sequential Monte Carlo p-values | stop at the first exceedance: same decision, far fewer permutations for a known batch | R |
+| Bates et al. (2023), testing for outliers with conformal p-values | conformal p-values of test points sharing a calibration set are dependent (PRDS): why the Fisher combination over-fires | R |
 
 ## Geometry (Tracks Y, Z)
 

@@ -1,0 +1,36 @@
+
+=== 20news: 17 categories, seeds [100, 101, 102]; centre cosine of tested foreign pairs: min -0.18, median 0.32, max 0.86 ===
+batch   per-sample test: foreign inputs flagged (own / foreign), AUROC  | batch test: false alarm @0.05 / @0.001, detection @0.05 / @0.001, AUROC
+b=  8   0.000 / 0.193, AUROC 0.663   |   0.055 / 0.001,  0.975 / 0.820,  AUROC 0.994   (own n=1632, foreign n=13056)
+        pairs the per-sample test is nearly blind to (flags < 30 % of the inputs): 9746 of 13056 foreign batches (75 %); batch test detects 96.7 % @0.05 and 76.6 % @0.001; their centre cosine median 0.38
+        the 20 % most similar foreign pairs (centre cosine >= 0.52): per-sample flags 0.011 of the inputs, batch test detects 44.2 % @0.001
+b= 16   0.000 / 0.171, AUROC 0.645   |   0.049 / 0.000,  0.997 / 0.968,  AUROC 0.999   (own n=816, foreign n=6528)
+        pairs the per-sample test is nearly blind to (flags < 30 % of the inputs): 4834 of 6528 foreign batches (74 %); batch test detects 99.6 % @0.05 and 95.7 % @0.001; their centre cosine median 0.38
+        the 20 % most similar foreign pairs (centre cosine >= 0.52): per-sample flags 0.004 of the inputs, batch test detects 85.0 % @0.001
+b= 64   0.000 / 0.167, AUROC 0.654   |   0.064 / 0.010,  1.000 / 1.000,  AUROC 0.995   (own n=204, foreign n=1632)
+        pairs the per-sample test is nearly blind to (flags < 30 % of the inputs): 1216 of 1632 foreign batches (75 %); batch test detects 100.0 % @0.05 and 100.0 % @0.001; their centre cosine median 0.38
+        the 20 % most similar foreign pairs (centre cosine >= 0.52): per-sample flags 0.002 of the inputs, batch test detects 100.0 % @0.001
+
+=== agnews: 4 categories, seeds [100, 101, 102]; centre cosine of tested foreign pairs: min 0.11, median 0.30, max 0.72 ===
+batch   per-sample test: foreign inputs flagged (own / foreign), AUROC  | batch test: false alarm @0.05 / @0.001, detection @0.05 / @0.001, AUROC
+b=  8   0.000 / 0.191, AUROC 0.662   |   0.055 / 0.001,  0.967 / 0.822,  AUROC 0.993   (own n=768, foreign n=2304)
+        pairs the per-sample test is nearly blind to (flags < 30 % of the inputs): 1715 of 2304 foreign batches (74 %); batch test detects 95.6 % @0.05 and 76.2 % @0.001; their centre cosine median 0.32
+        the 20 % most similar foreign pairs (centre cosine >= 0.35): per-sample flags 0.007 of the inputs, batch test detects 32.2 % @0.001
+b= 16   0.000 / 0.178, AUROC 0.650   |   0.049 / 0.003,  0.998 / 0.962,  AUROC 0.998   (own n=384, foreign n=1152)
+        pairs the per-sample test is nearly blind to (flags < 30 % of the inputs): 836 of 1152 foreign batches (73 %); batch test detects 99.8 % @0.05 and 94.7 % @0.001; their centre cosine median 0.32
+        the 20 % most similar foreign pairs (centre cosine >= 0.35): per-sample flags 0.002 of the inputs, batch test detects 80.9 % @0.001
+b= 64   0.000 / 0.171, AUROC 0.648   |   0.104 / 0.000,  1.000 / 1.000,  AUROC 1.000   (own n=96, foreign n=288)
+        pairs the per-sample test is nearly blind to (flags < 30 % of the inputs): 210 of 288 foreign batches (73 %); batch test detects 100.0 % @0.05 and 100.0 % @0.001; their centre cosine median 0.32
+        the 20 % most similar foreign pairs (centre cosine >= 0.35): per-sample flags 0.000 of the inputs, batch test detects 100.0 % @0.001
+
+=== banking77: 20 categories, seeds [100, 101, 102]; centre cosine of tested foreign pairs: min 0.29, median 0.68, max 0.91 ===
+batch   per-sample test: foreign inputs flagged (own / foreign), AUROC  | batch test: false alarm @0.05 / @0.001, detection @0.05 / @0.001, AUROC
+b=  8   0.000 / 0.339, AUROC 0.676   |   0.052 / 0.000,  0.999 / 0.974,  AUROC 1.000   (own n=480, foreign n=3840)
+        pairs the per-sample test is nearly blind to (flags < 30 % of the inputs): 2485 of 3840 foreign batches (65 %); batch test detects 99.9 % @0.05 and 96.1 % @0.001; their centre cosine median 0.73
+        the 20 % most similar foreign pairs (centre cosine >= 0.79): per-sample flags 0.026 of the inputs, batch test detects 87.8 % @0.001
+b= 16   0.000 / 0.342, AUROC 0.680   |   0.037 / 0.000,  1.000 / 0.998,  AUROC 1.000   (own n=240, foreign n=1920)
+        pairs the per-sample test is nearly blind to (flags < 30 % of the inputs): 1227 of 1920 foreign batches (64 %); batch test detects 100.0 % @0.05 and 99.7 % @0.001; their centre cosine median 0.73
+        the 20 % most similar foreign pairs (centre cosine >= 0.79): per-sample flags 0.013 of the inputs, batch test detects 99.0 % @0.001
+b= 32   0.000 / 0.338, AUROC 0.679   |   0.067 / 0.000,  1.000 / 1.000,  AUROC 1.000   (own n=120, foreign n=960)
+        pairs the per-sample test is nearly blind to (flags < 30 % of the inputs): 616 of 960 foreign batches (64 %); batch test detects 100.0 % @0.05 and 100.0 % @0.001; their centre cosine median 0.73
+        the 20 % most similar foreign pairs (centre cosine >= 0.79): per-sample flags 0.009 of the inputs, batch test detects 100.0 % @0.001

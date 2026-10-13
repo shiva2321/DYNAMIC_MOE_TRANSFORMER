@@ -69,3 +69,13 @@ research/yggformer_results/e*_results.json
 research/yggformer_results/track_y_final_report.txt
 research/results_vsa_numerics.log
 research/results_geometry_checks.log
+# --- gatekeeper research: rv3 spikes (2026-10-12/13), notebook entry E-023
+research/GATEKEEPER_RESEARCH_2026-10.md
+research/growmoe_results/rv3/README.md
+research/growmoe_results/rv3/RESULTS_RV3.md
+research/growmoe_results/rv3/*.py
+research/growmoe_results/rv3/*.json
+research/growmoe_results/rv3/*.txt
+research/growmoe_results/rv3/gen1_ownerfirst/*
+# --- routing v2 stage 2 hand-off to Gemini (2026-10-13)
+docs/superpowers/handoff/KICKOFF_RV2B_AMEND_AND_RUN_2026-10-13.md

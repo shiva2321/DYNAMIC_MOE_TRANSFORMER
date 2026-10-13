@@ -1,0 +1,14 @@
+
+##### 20news
+raw                    per-sample: foreign inputs flagged 0.186, AUROC 0.648, pairs nearly invisible 76.7 %   | batch (8 documents): false alarm @0.05 0.074, detection @0.001  75.0 %, hardest 20 % pairs  27.1 %
+centered, all data     per-sample: foreign inputs flagged 0.187, AUROC 0.653, pairs nearly invisible 76.4 %   | batch (8 documents): false alarm @0.05 0.072, detection @0.001  74.0 %, hardest 20 % pairs  23.4 %
+whitened, all data     per-sample: foreign inputs flagged 0.204, AUROC 0.685, pairs nearly invisible 71.9 %   | batch (8 documents): false alarm @0.05 0.064, detection @0.001  56.3 %, hardest 20 % pairs  23.0 %
+centered, early        per-sample: foreign inputs flagged 0.158, AUROC 0.631, pairs nearly invisible 80.1 %   | batch (8 documents): false alarm @0.05 0.070, detection @0.001  73.8 %, hardest 20 % pairs  23.0 %
+whitened, early        per-sample: foreign inputs flagged 0.123, AUROC 0.599, pairs nearly invisible 84.7 %   | batch (8 documents): false alarm @0.05 0.075, detection @0.001  69.6 %, hardest 20 % pairs  30.8 %
+
+##### banking77
+raw                    per-sample: foreign inputs flagged 0.357, AUROC 0.684, pairs nearly invisible 63.1 %   | batch (8 documents): false alarm @0.05 0.044, detection @0.001  96.4 %, hardest 20 % pairs  82.0 %
+centered, all data     per-sample: foreign inputs flagged 0.511, AUROC 0.762, pairs nearly invisible 47.5 %   | batch (8 documents): false alarm @0.05 0.050, detection @0.001  96.7 %, hardest 20 % pairs  85.2 %
+whitened, all data     per-sample: foreign inputs flagged 0.444, AUROC 0.732, pairs nearly invisible 53.6 %   | batch (8 documents): false alarm @0.05 0.037, detection @0.001  87.5 %, hardest 20 % pairs  64.8 %
+centered, early        per-sample: foreign inputs flagged 0.423, AUROC 0.719, pairs nearly invisible 56.2 %   | batch (8 documents): false alarm @0.05 0.044, detection @0.001  96.2 %, hardest 20 % pairs  85.9 %
+whitened, early        per-sample: foreign inputs flagged 0.349, AUROC 0.679, pairs nearly invisible 64.2 %   | batch (8 documents): false alarm @0.05 0.056, detection @0.001  90.5 %, hardest 20 % pairs  68.0 %
