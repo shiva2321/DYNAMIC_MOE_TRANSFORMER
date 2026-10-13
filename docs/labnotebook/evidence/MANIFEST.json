@@ -1,6 +1,6 @@
 {
- "generated": "2026-10-13 17:04:03",
- "head": "090ece8",
+ "generated": "2026-10-13 17:10:00",
+ "head": "117aec5",
  "branch": "track-g-growmoe",
  "n_files": 657,
  "files": [
@@ -26,19 +26,19 @@
    "path": "docs/superpowers/handoff/KICKOFF_M5_REAL_TEXT_STREAM_2026-10-13.md",
    "sha256": "758818726e4d8b992a2a57627b16c094a294923c661b800dcaacce9ee5ade56c",
    "bytes": 4897,
-   "last_commit": null
+   "last_commit": "117aec5"
   },
   {
    "path": "docs/superpowers/handoff/KICKOFF_RV2_8_ADOPT_CASCADE_2026-10-13.md",
    "sha256": "be22a8deaa1780eb39c69921ca7edb05d8fc5df8c5f1d35bad40730fa39177b8",
    "bytes": 6244,
-   "last_commit": null
+   "last_commit": "117aec5"
   },
   {
    "path": "docs/superpowers/handoff/KICKOFF_RV2B_AMEND_AND_RUN_2026-10-13.md",
    "sha256": "6aed3fa227db9861590cf105e9def5c3ccee049d0c1d8e1dc3bae8a3a4dd82d3",
    "bytes": 5505,
-   "last_commit": null
+   "last_commit": "117aec5"
   },
   {
    "path": "docs/superpowers/handoff/REVIEW_2026-10-05_R10_AND_Y1.md",
@@ -104,7 +104,7 @@
    "path": "research/GATEKEEPER_RESEARCH_2026-10.md",
    "sha256": "b2cc5abe08376256243f8bf813979dd28c1e5f442ca209f108a15593e35807b0",
    "bytes": 43544,
-   "last_commit": null
+   "last_commit": "117aec5"
   },
   {
    "path": "research/geomlab_results/z0/AMENDMENT.md",
@@ -3278,397 +3278,397 @@
    "path": "research/growmoe_results/rv3/compare_variants.py",
    "sha256": "cbe878ed8c0a189d193f0cf1d2ca0511a63381844b2d41dcc794bec1cdf1b383",
    "bytes": 1618,
-   "last_commit": null
+   "last_commit": "117aec5"
   },
   {
    "path": "research/growmoe_results/rv3/diag_set_gate.py",
    "sha256": "58d7f3f2228c205eb0b412cf66a33a60111a7fae285ca65730b9233c28ec3a43",
    "bytes": 1801,
-   "last_commit": null
+   "last_commit": "117aec5"
   },
   {
    "path": "research/growmoe_results/rv3/final_table.py",
    "sha256": "6d5b41a491da5ce99789fe7af2b15c05ee4642f643485f95d57a2d27496052c3",
    "bytes": 2209,
-   "last_commit": null
+   "last_commit": "117aec5"
   },
   {
    "path": "research/growmoe_results/rv3/gen1_ownerfirst/spike_set_gate_A_log.txt",
    "sha256": "0d136c4b6eba9c047e569e34707fcb4f19c9a84497867d8aaaa34347cddbf438",
    "bytes": 5395,
-   "last_commit": null
+   "last_commit": "117aec5"
   },
   {
    "path": "research/growmoe_results/rv3/gen1_ownerfirst/spike_set_gate_B_log.txt",
    "sha256": "c522cea48b48833d49b2c0ac282b1cb38714a72dafc88ad3b89dccc70bd158a6",
    "bytes": 7060,
-   "last_commit": null
+   "last_commit": "117aec5"
   },
   {
    "path": "research/growmoe_results/rv3/README.md",
    "sha256": "78ac60e24955fa480a2e3bdaa337a2ea2303a35fd45eae8ef051db2708b6ade8",
    "bytes": 5196,
-   "last_commit": null
+   "last_commit": "117aec5"
   },
   {
    "path": "research/growmoe_results/rv3/report_rv3.py",
    "sha256": "e34a1026452d4ef7b11e1d8d705276050b1b1bbf984c3bb8a55c850f0dd1b9e1",
    "bytes": 7020,
-   "last_commit": null
+   "last_commit": "117aec5"
   },
   {
    "path": "research/growmoe_results/rv3/RESULTS_RV3.md",
    "sha256": "46a092375b85084297f0ecf5663153af9d7b7f3e7fa01a6d804950f32274e677",
    "bytes": 90518,
-   "last_commit": null
+   "last_commit": "117aec5"
   },
   {
    "path": "research/growmoe_results/rv3/routing_table.py",
    "sha256": "b6ec2dbdae8415a25938e44da369ebfdcd431c3973ef65d96faea17e9264efb4",
    "bytes": 1697,
-   "last_commit": null
+   "last_commit": "117aec5"
   },
   {
    "path": "research/growmoe_results/rv3/spike_arbitration.py",
    "sha256": "85405b62e865bc6dc0a00629f59dae7e870a2b7ae97e693b56bae78006e76784",
    "bytes": 12091,
-   "last_commit": null
+   "last_commit": "117aec5"
   },
   {
    "path": "research/growmoe_results/rv3/spike_arbitration_gen1.py",
    "sha256": "6c57aaea3068c992c75ec7bdb1a0a3d1ed6656b24db4d5962ed5ea322e8cd259",
    "bytes": 10040,
-   "last_commit": null
+   "last_commit": "117aec5"
   },
   {
    "path": "research/growmoe_results/rv3/spike_arbitration_md_recent.json",
    "sha256": "61a8530c70b9a35958d7c5d8717e14e0b14f2815259f1e8853e7d483172d2f18",
    "bytes": 14368,
-   "last_commit": null
+   "last_commit": "117aec5"
   },
   {
    "path": "research/growmoe_results/rv3/spike_arbitration_md_recent_guards.json",
    "sha256": "c7a6fdb1e807d631caff455a68fc5af97d64f1f8125e7e9ea680103efa496362",
    "bytes": 17826,
-   "last_commit": null
+   "last_commit": "117aec5"
   },
   {
    "path": "research/growmoe_results/rv3/spike_arbitration_md_recent_guards_log.txt",
    "sha256": "67af5d22a86e805c0a83497cb0afe74c8da43338012999118d4fc44f7459c30f",
    "bytes": 14157,
-   "last_commit": null
+   "last_commit": "117aec5"
   },
   {
    "path": "research/growmoe_results/rv3/spike_arbitration_md_recent_log.txt",
    "sha256": "78b97dda71b2d036c2d47a6cf63bf22c5f4966e8475c7ee9ac26e9284091ce21",
    "bytes": 11460,
-   "last_commit": null
+   "last_commit": "117aec5"
   },
   {
    "path": "research/growmoe_results/rv3/spike_arbitration_vote.json",
    "sha256": "ef27366665fc6de802b0d79a7313430099392361779c70dea3a617acb00660ad",
    "bytes": 7478,
-   "last_commit": null
+   "last_commit": "117aec5"
   },
   {
    "path": "research/growmoe_results/rv3/spike_arbitration_vote_log.txt",
    "sha256": "6d1ef13790397fcc42d440453f5135e3442f1c3f90209d5a76708c234c3137c8",
    "bytes": 5105,
-   "last_commit": null
+   "last_commit": "117aec5"
   },
   {
    "path": "research/growmoe_results/rv3/spike_arbitration_vote_v2.json",
    "sha256": "7c95254af3819c341190e1d8d8789f976ed19ebc3191f22094d6e42719595d6a",
    "bytes": 35700,
-   "last_commit": null
+   "last_commit": "117aec5"
   },
   {
    "path": "research/growmoe_results/rv3/spike_arbitration_vote_v2_log.txt",
    "sha256": "9d7b35e78097ecddb56a9bd2582a96b262d6f3da663d04056d4773c024881492",
    "bytes": 28579,
-   "last_commit": null
+   "last_commit": "117aec5"
   },
   {
    "path": "research/growmoe_results/rv3/spike_arbitration_windows_loss.json",
    "sha256": "3e2d9835cd9b4134e00751dfd97c147fbdf9f76e665e467774df1d2fab31f4ef",
    "bytes": 46296,
-   "last_commit": null
+   "last_commit": "117aec5"
   },
   {
    "path": "research/growmoe_results/rv3/spike_arbitration_windows_loss_log.txt",
    "sha256": "f36cdc57ce91d0f4a70da563103bc25ad9b822b3f2d9a60f9086948cbd2339d4",
    "bytes": 38188,
-   "last_commit": null
+   "last_commit": "117aec5"
   },
   {
    "path": "research/growmoe_results/rv3/spike_power_vs_batch.json",
    "sha256": "cd706697ae27966d8de8e5c5dd27c2deb45086dc59dfbfe60588618eec2e559d",
    "bytes": 7361,
-   "last_commit": null
+   "last_commit": "117aec5"
   },
   {
    "path": "research/growmoe_results/rv3/spike_power_vs_batch.py",
    "sha256": "4466564dea2f069edb2cca2a2be62695950e4196ab5e1caf4ea0c1d6a143b42f",
    "bytes": 3341,
-   "last_commit": null
+   "last_commit": "117aec5"
   },
   {
    "path": "research/growmoe_results/rv3/spike_power_vs_batch_log.txt",
    "sha256": "1e387744027247f0a8905330d598487df3d963315198c1000e1e495eb023a117",
    "bytes": 1131,
-   "last_commit": null
+   "last_commit": "117aec5"
   },
   {
    "path": "research/growmoe_results/rv3/spike_real_geometry.py",
    "sha256": "c512ffb4813c12ec1cd8ae19110b6b909c3ab9967cdb8caf6851c954d09ec30b",
    "bytes": 3180,
-   "last_commit": null
+   "last_commit": "117aec5"
   },
   {
    "path": "research/growmoe_results/rv3/spike_real_geometry_log.txt",
    "sha256": "1cbc7d8ebf8748eea4959c8ade9fca0402c4b2750d7eb8c078f0902323dc8982",
    "bytes": 2155,
-   "last_commit": null
+   "last_commit": "117aec5"
   },
   {
    "path": "research/growmoe_results/rv3/spike_real_text.json",
    "sha256": "1f4244d1776146ff00807e64cd858fa8d595c568956f1ed329c42b55c831e13e",
    "bytes": 4141896,
-   "last_commit": null
+   "last_commit": "117aec5"
   },
   {
    "path": "research/growmoe_results/rv3/spike_real_text.py",
    "sha256": "5afd5bb858ba2e18580de583d96efacb9d760a8af9716d48b2cfcae4cffdb7dd",
    "bytes": 9677,
-   "last_commit": null
+   "last_commit": "117aec5"
   },
   {
    "path": "research/growmoe_results/rv3/spike_real_text_log.txt",
    "sha256": "5574120d5422610e3b92e3d0e305d2eb5256a715debd4ff650fa62a25e7217e6",
    "bytes": 5450,
-   "last_commit": null
+   "last_commit": "117aec5"
   },
   {
    "path": "research/growmoe_results/rv3/spike_real_text_summary.txt",
    "sha256": "fd7ae2e7547e20b77c9c0670d7c699faa84816cc45d975cf39e5964cacc7bb58",
    "bytes": 4980,
-   "last_commit": null
+   "last_commit": "117aec5"
   },
   {
    "path": "research/growmoe_results/rv3/spike_set_gate.py",
    "sha256": "fcece17f249227ffae29bf528c1eb0ab6a5ae98e128747c5420491f80ee4af93",
    "bytes": 18115,
-   "last_commit": null
+   "last_commit": "117aec5"
   },
   {
    "path": "research/growmoe_results/rv3/spike_set_gate_g2A.json",
    "sha256": "12dc8707a0bf45ac9b213994a69c29d4417e586f7daa37bf3d7814dfb5343ff2",
    "bytes": 33253,
-   "last_commit": null
+   "last_commit": "117aec5"
   },
   {
    "path": "research/growmoe_results/rv3/spike_set_gate_g2A_log.txt",
    "sha256": "6662f423aa7dc10f39b979ddf7ae2423ba966e9036dab207096e4418a4169409",
    "bytes": 33980,
-   "last_commit": null
+   "last_commit": "117aec5"
   },
   {
    "path": "research/growmoe_results/rv3/spike_set_gate_g2B.json",
    "sha256": "05183b49e81fb773e4db3ce545a2454f792c246b2dc3d34bcbc2d232eb2e5747",
    "bytes": 26567,
-   "last_commit": null
+   "last_commit": "117aec5"
   },
   {
    "path": "research/growmoe_results/rv3/spike_set_gate_g2B_log.txt",
    "sha256": "ca5bda420bd08839c1199e1f4b7a37460ccf3bdba99aebfefdc6cd888fcac49c",
    "bytes": 26908,
-   "last_commit": null
+   "last_commit": "117aec5"
   },
   {
    "path": "research/growmoe_results/rv3/spike_set_gate_g3keep.json",
    "sha256": "6a57649d1f3bb40ed04efdb01ab60ed4ea8f23c5d746f495f3d6d09bd3d1a779",
    "bytes": 8104,
-   "last_commit": null
+   "last_commit": "117aec5"
   },
   {
    "path": "research/growmoe_results/rv3/spike_set_gate_g3keep_log.txt",
    "sha256": "897f02f4f4b18d0186d24eb59c2d47cff0351ff1d683240856d281ed6c483542",
    "bytes": 8709,
-   "last_commit": null
+   "last_commit": "117aec5"
   },
   {
    "path": "research/growmoe_results/rv3/spike_set_gate_g4A.json",
    "sha256": "59523686e72dfae191454aa4d3d64934433254aaf8a3e185ab5bcf80006f9772",
    "bytes": 14176,
-   "last_commit": null
+   "last_commit": "117aec5"
   },
   {
    "path": "research/growmoe_results/rv3/spike_set_gate_g4A_log.txt",
    "sha256": "e7fbd23cad134c6e199d183e4a2b3eaaca97bb6aeacd22969a915e5f28bebda9",
    "bytes": 14993,
-   "last_commit": null
+   "last_commit": "117aec5"
   },
   {
    "path": "research/growmoe_results/rv3/spike_set_gate_g4B.json",
    "sha256": "3423e5ee399f5c63ebfbfda2fb1962fedc98cffa8e91a6df0d8424f5a0cdabc6",
    "bytes": 11314,
-   "last_commit": null
+   "last_commit": "117aec5"
   },
   {
    "path": "research/growmoe_results/rv3/spike_set_gate_g4B_log.txt",
    "sha256": "aa3c0de27aa96e427be9fa9e71aff491d271ff53528b78c4561fd318c20e35a3",
    "bytes": 11869,
-   "last_commit": null
+   "last_commit": "117aec5"
   },
   {
    "path": "research/growmoe_results/rv3/spike_set_gate_g5mmd.json",
    "sha256": "1a89b4107c9a3ea825ef58cfb3664399d7507d5389d8225ff108e908ad70618f",
    "bytes": 8852,
-   "last_commit": null
+   "last_commit": "117aec5"
   },
   {
    "path": "research/growmoe_results/rv3/spike_set_gate_g5mmd_log.txt",
    "sha256": "e60a4160893da82d5242b2192d44df8986e584bcdefd5f98d27ec89e2a6667d3",
    "bytes": 9383,
-   "last_commit": null
+   "last_commit": "117aec5"
   },
   {
    "path": "research/growmoe_results/rv3/spike_set_gate_g6cb.json",
    "sha256": "4e2d60e05978f617ed3a50e4823ba3eab302761a9e695c56b1f0c69c73b26eca",
    "bytes": 7494,
-   "last_commit": null
+   "last_commit": "117aec5"
   },
   {
    "path": "research/growmoe_results/rv3/spike_set_gate_g6cb_log.txt",
    "sha256": "ae8393f2b8f29a780224559279cfe6c6a7d9e5a3c685c8ca940f8bba6826b0a5",
    "bytes": 8079,
-   "last_commit": null
+   "last_commit": "117aec5"
   },
   {
    "path": "research/growmoe_results/rv3/spike_set_gate_gen1.py",
    "sha256": "f42c02ddee6e837b993985c4cd25633bf5a08616f71bad121507ef3325a1115c",
    "bytes": 12630,
-   "last_commit": null
+   "last_commit": "117aec5"
   },
   {
    "path": "research/growmoe_results/rv3/spike_set_gate_gen2.py",
    "sha256": "8c403be279e15bc4770d3dfc7e330368404f52c462afc642cfce4515fbebb9bf",
    "bytes": 13640,
-   "last_commit": null
+   "last_commit": "117aec5"
   },
   {
    "path": "research/growmoe_results/rv3/spike_set_gate_gen2b_windows.py",
    "sha256": "305931dddc33218d68a28084d4facf53b9daf28996865c39205e88e2fb1d816c",
    "bytes": 16566,
-   "last_commit": null
+   "last_commit": "117aec5"
   },
   {
    "path": "research/growmoe_results/rv3/spike_set_gate_gen3_veto.py",
    "sha256": "1b1b52cc460e28b7351735420541ecb661a96978fc8de92653ede03db7e6aca3",
    "bytes": 16234,
-   "last_commit": null
+   "last_commit": "117aec5"
   },
   {
    "path": "research/growmoe_results/rv3/spike_set_gate_gen4_loss.py",
    "sha256": "5524296cf30dcfe43c5140f5da15e5d415ccdd9cee2bfd2acb9d53b0d0d25035",
    "bytes": 17199,
-   "last_commit": null
+   "last_commit": "117aec5"
   },
   {
    "path": "research/growmoe_results/rv3/spike_set_tests.py",
    "sha256": "836b88854ea3d0d11209efe1639962a61322330f4afa6d1f306c6f477f1f09a4",
    "bytes": 17164,
-   "last_commit": null
+   "last_commit": "117aec5"
   },
   {
    "path": "research/growmoe_results/rv3/spike_set_tests_a1.json",
    "sha256": "8569c1d85f25baf744b3713ba02e477e0a12c3644a06784f8b43e724bd95ff56",
    "bytes": 12308,
-   "last_commit": null
+   "last_commit": "117aec5"
   },
   {
    "path": "research/growmoe_results/rv3/spike_set_tests_a1_log.txt",
    "sha256": "3d5b1683f7668c7b121eb8bf865f5a3053610501d81845908ff08896b4eb5332",
    "bytes": 2434,
-   "last_commit": null
+   "last_commit": "117aec5"
   },
   {
    "path": "research/growmoe_results/rv3/spike_set_tests_a2.json",
    "sha256": "236eaa2711a48bae3dd243a6d1c88ceea0d5ada754c10ce0c17a0db2119e46f2",
    "bytes": 753859,
-   "last_commit": null
+   "last_commit": "117aec5"
   },
   {
    "path": "research/growmoe_results/rv3/spike_set_tests_a2_log.txt",
    "sha256": "2406205ffc17b14de2cd10fe0e9ccd86c939f5bbfb850db426d64c96d262390b",
    "bytes": 8156,
-   "last_commit": null
+   "last_commit": "117aec5"
   },
   {
    "path": "research/growmoe_results/rv3/spike_set_tests_a2recent.json",
    "sha256": "eac377fe0d35379ac297b39fec75987826eb9484a6291cb5cf800cbfc6cb0932",
    "bytes": 880409,
-   "last_commit": null
+   "last_commit": "117aec5"
   },
   {
    "path": "research/growmoe_results/rv3/spike_set_tests_a2recent_log.txt",
    "sha256": "e565d932eb2cb8d12f5fea05c07c96390d98aa8308afc3489bdd5c4f84c9b8db",
    "bytes": 9304,
-   "last_commit": null
+   "last_commit": "117aec5"
   },
   {
    "path": "research/growmoe_results/rv3/spike_set_tests_log.txt",
    "sha256": "ce231883a2033fd56d0132034bbb462a10d7b7f72be6321ea4e52e56979a97dc",
    "bytes": 6072,
-   "last_commit": null
+   "last_commit": "117aec5"
   },
   {
    "path": "research/growmoe_results/rv3/spike_sorted_batches.py",
    "sha256": "caa9646e7fad5979c2a0ecb3caeb8ea37b4e1fb9765d1e6723d3cbd56c77331d",
    "bytes": 3302,
-   "last_commit": null
+   "last_commit": "117aec5"
   },
   {
    "path": "research/growmoe_results/rv3/spike_sorted_batches_cb.json",
    "sha256": "dc8f50a06dad552340d87ee7ada35a783ff542f32eba8ba5d1562a86a940f85e",
    "bytes": 8860,
-   "last_commit": null
+   "last_commit": "117aec5"
   },
   {
    "path": "research/growmoe_results/rv3/spike_sorted_batches_cb_log.txt",
    "sha256": "c72217a964eb50cedfb297ddacfa8b0cc52f4d5f91d2537f40a3db9a61db4634",
    "bytes": 7997,
-   "last_commit": null
+   "last_commit": "117aec5"
   },
   {
    "path": "research/growmoe_results/rv3/spike_sorted_batches_cbfast.json",
    "sha256": "d1f0c6fbede321698697bfdb7753dcf7e7960cfd65d922be62b166707efbaec5",
    "bytes": 3013,
-   "last_commit": null
+   "last_commit": "117aec5"
   },
   {
    "path": "research/growmoe_results/rv3/spike_sorted_batches_cbfast_log.txt",
    "sha256": "2917773dba63add0111d294e5c716a83dd52dce43d4cc176172ea60f2c7f5d44",
    "bytes": 2832,
-   "last_commit": null
+   "last_commit": "117aec5"
   },
   {
    "path": "research/growmoe_results/rv3/spike_sorted_batches_md_recent.json",
    "sha256": "26894ff26bfce479f3b49390e797270e5b0d4d3ea27f9f2d6d532637ef6abcf8",
    "bytes": 5598,
-   "last_commit": null
+   "last_commit": "117aec5"
   },
   {
    "path": "research/growmoe_results/rv3/spike_sorted_batches_md_recent_log.txt",
    "sha256": "0601dcc75dfeb6cb1b33d7ea1b38800e99635c9373b1773b0b65168c1d28a8c5",
    "bytes": 5085,
-   "last_commit": null
+   "last_commit": "117aec5"
   },
   {
    "path": "research/growmoe_results/rv3/summ.py",
    "sha256": "d5b2a1df12624b7c20f509eff79d2028cc598cf09c2a36cad205b60896d00dce",
    "bytes": 860,
-   "last_commit": null
+   "last_commit": "117aec5"
   },
   {
    "path": "research/MOE_CONTINUAL_LEARNING_REPORT_2026-10.md",
