@@ -1,0 +1,7 @@
+    after block 0 (+max): experts 1  max  82.2 add   2.0 sub   1.0 mod   0.3 div   2.8 mul   3.2
+        max  routed to e0: 100%
+        add  routed to e0: 100%
+        sub  routed to e0: 100%
+        mod  routed to e0: 100%
+        div  routed to e0: 100%
+        mul  routed to e0: 100%

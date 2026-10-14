@@ -1,0 +1,43 @@
+    after block 0 (+max): experts 1  max  86.1 add   1.9 sub   1.1 mod   0.0 div   2.9 mul   3.1
+        max  routed to e0: 100%
+        add  routed to e0: 100%
+        sub  routed to e0: 100%
+        mod  routed to e0: 100%
+        div  routed to e0: 100%
+        mul  routed to e0: 100%
+    after block 1 (+add): experts 1  max  69.0 add  39.5 sub   1.7 mod   0.1 div   0.0 mul   0.0
+        max  routed to e0: 100%
+        add  routed to e0: 100%
+        sub  routed to e0: 100%
+        mod  routed to e0: 100%
+        div  routed to e0: 100%
+        mul  routed to e0: 100%
+    after block 2 (+sub): experts 1  max  66.0 add  36.8 sub  31.0 mod   1.7 div   0.1 mul   0.0
+        max  routed to e0: 100%
+        add  routed to e0: 100%
+        sub  routed to e0: 100%
+        mod  routed to e0: 100%
+        div  routed to e0: 100%
+        mul  routed to e0: 100%
+    after block 3 (+mod): experts 1  max  67.3 add  31.1 sub  24.4 mod  52.4 div   0.5 mul   0.1
+        max  routed to e0: 100%
+        add  routed to e0: 100%
+        sub  routed to e0: 100%
+        mod  routed to e0: 100%
+        div  routed to e0: 100%
+        mul  routed to e0: 100%
+    after block 4 (+div): experts 1  max  64.1 add  27.2 sub  19.2 mod  42.9 div  52.9 mul   2.1
+        max  routed to e0: 100%
+        add  routed to e0: 100%
+        sub  routed to e0: 100%
+        mod  routed to e0: 100%
+        div  routed to e0: 100%
+        mul  routed to e0: 100%
+    after block 5 (+mul): experts 1  max  52.4 add  26.1 sub  18.2 mod  39.6 div  48.3 mul   7.5
+        max  routed to e0: 100%
+        add  routed to e0: 100%
+        sub  routed to e0: 100%
+        mod  routed to e0: 100%
+        div  routed to e0: 100%
+        mul  routed to e0: 100%
+[probe600 s0] mean exact 31.9  forgetting 12.9  experts 1  424s

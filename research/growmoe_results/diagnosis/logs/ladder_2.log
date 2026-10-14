@@ -1,0 +1,15 @@
+[S256x2   O5-r256            s0] unseen  21.2  seen  22.1  add   5.5 sub   3.7 mul   4.3 max  41.9  train-CE 1.061  params 101,900  121s
+[L1024x3  D10                s0] unseen  62.5  seen  86.5  add  82.9 sub  63.5 mul  16.7 max  93.3  train-CE 0.160  params 2,243,596  14s
+[E512     O5-r100000         s0] unseen  43.1  seen  47.8  add  40.6 sub  25.0 mul   8.4 max  76.9  train-CE 0.563  params 133,772  175s
+[E512     M20000-D40         s0] unseen  13.0  seen  15.9  add   1.6 sub   0.9 mul   2.2 max  13.8  train-CE 3.200  params 133,772  5s
+[E128     M20000-D40         s0] unseen  14.6  seen  16.8  add   1.8 sub   1.1 mul   2.7 max  14.4  train-CE 1.454  params 35,084  5s
+[E128     D40                s1] unseen  47.3  seen  54.1  add  54.7 sub  30.2 mul   8.8 max  81.3  train-CE 0.506  params 35,084  61s
+[E128     O5-r20000          s1] unseen  32.9  seen  35.3  add  20.6 sub  15.0 mul   6.7 max  57.9  train-CE 0.731  params 35,084  110s
+[E512     D10                s1] unseen  44.7  seen  54.7  add  39.1 sub  29.4 mul   8.6 max  80.6  train-CE 0.506  params 133,772  16s
+[E512     O1-r20000          s1] unseen  37.1  seen  40.6  add  28.1 sub  19.6 mul   7.1 max  67.6  train-CE 0.671  params 133,772  29s
+[S256x2n  D40                s1] unseen  47.3  seen  58.6  add  49.2 sub  33.4 mul   9.9 max  81.1  train-CE 0.429  params 101,900  39s
+[S256x2   O5-r20000          s1] unseen  35.5  seen  38.6  add  29.1 sub  17.0 mul   6.6 max  64.1  train-CE 0.753  params 101,900  63s
+[L1024x3  O5-r20000          s1] unseen  31.9  seen  35.1  add  18.3 sub  14.4 mul   5.8 max  61.2  train-CE 0.851  params 2,243,596  395s
+[E512     O5-r300000         s1] unseen  44.9  seen  48.8  add  45.7 sub  28.6 mul   7.6 max  78.7  train-CE 0.536  params 133,772  92s
+[E128     O5-r2000           s1] unseen  23.5  seen  26.1  add   9.6 sub   9.2 mul   1.5 max  38.7  train-CE 0.942  params 35,084  50s
+[S256x2   M20000-D40         s1] unseen  16.4  seen  17.5  add   3.1 sub   1.9 mul   2.5 max  17.6  train-CE 1.095  params 101,900  3s

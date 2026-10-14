@@ -97,3 +97,28 @@ research/growmoe_results/arith/launch_main.sh
 research/growmoe_results/arith/launch_main2.sh
 research/growmoe_results/arith/launch_curve.sh
 research/growmoe_results/arith/RESULTS_ARITH.md
+# --- E-027 geometry core phase 0: group symmetries and algebraic discovery (2026-10-14)
+geomlab/phase0_algebra.py
+tests/geomlab/test_phase0.py
+research/geomlab_results/phase0/PREREG.md
+research/geomlab_results/phase0/run_phase0.py
+research/geomlab_results/phase0/results.json
+research/geomlab_results/phase0/tables.txt
+# --- E-028 geometry core phase 1: real latent geometry health and capacity (2026-10-14)
+geomlab/phase1_capacity.py
+tests/geomlab/test_phase1.py
+research/geomlab_results/phase1/PREREG.md
+research/geomlab_results/phase1/run_phase1.py
+research/geomlab_results/phase1/checkpoint.json
+research/geomlab_results/phase1/results.json
+research/geomlab_results/phase1/tables.txt
+# --- E-029 geometry core phase 2: compositional ood generalization and length extrapolation (2026-10-14)
+geomlab/phase2_composition.py
+tests/geomlab/test_phase2.py
+research/geomlab_results/phase2/PREREG.md
+research/geomlab_results/phase2/run_phase2.py
+research/geomlab_results/phase2/checkpoint.json
+research/geomlab_results/phase2/results.json
+research/geomlab_results/phase2/tables.txt
+
+

@@ -109,7 +109,7 @@ def main():
     out["nearest_neighbour_same_operator"] = float((base_op[nn_idx] == op_te[:4000]).mean())
     print(f"nearest stored input has the same operator: {100 * out['nearest_neighbour_same_operator']:.1f} % (chance 16.7 %)")
 
-    (HERE / "separability.json").write_text(json.dumps(out, indent=1), encoding="utf-8")
+    D.atomic_write_text((HERE / "separability.json"), json.dumps(out, indent=1))
 
 
 if __name__ == "__main__":

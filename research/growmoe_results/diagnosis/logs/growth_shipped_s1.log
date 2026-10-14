@@ -1,0 +1,56 @@
+[shipped s1] unseen 28.0  seen 30.3  params 150,988  growth calls 52  plateau-true 52  offline plateau fraction 0.54  events {'grow': 3, 'spawn': 1}
+   call at batch 142: n_train 205 n_valid 51 hidden 128 -> rejected best gain -58.2% p 0.645
+   call at batch 275: n_train 205 n_valid 51 hidden 128 -> backoff best gain +0.0% p 1.000
+   call at batch 373: n_train 205 n_valid 51 hidden 128 -> committed best gain +17.6% p 0.001
+   call at batch 453: n_train 205 n_valid 51 hidden 128 -> rejected best gain -12.9% p 0.640
+   call at batch 540: n_train 205 n_valid 51 hidden 128 -> backoff best gain +0.0% p 1.000
+   call at batch 620: n_train 205 n_valid 51 hidden 192 -> committed best gain +20.7% p 0.006
+   call at batch 700: n_train 205 n_valid 51 hidden 192 -> committed best gain +32.6% p 0.001
+   call at batch 780: n_train 205 n_valid 51 hidden 192 -> rejected best gain -18.0% p 0.797
+   call at batch 860: n_train 205 n_valid 51 hidden 192 -> backoff best gain +0.0% p 1.000
+   call at batch 954: n_train 205 n_valid 51 hidden 192 -> rejected best gain +49.4% p 0.051
+   call at batch 1059: n_train 205 n_valid 51 hidden 192 -> backoff best gain +0.0% p 1.000
+   call at batch 1139: n_train 205 n_valid 51 hidden 192 -> backoff best gain +0.0% p 1.000
+   call at batch 1225: n_train 205 n_valid 51 hidden 192 -> rejected best gain +2.2% p 0.054
+   call at batch 1305: n_train 205 n_valid 51 hidden 192 -> backoff best gain +0.0% p 1.000
+   call at batch 1399: n_train 205 n_valid 51 hidden 192 -> backoff best gain +0.0% p 1.000
+   call at batch 1489: n_train 205 n_valid 51 hidden 192 -> backoff best gain +0.0% p 1.000
+   call at batch 1569: n_train 205 n_valid 51 hidden 192 -> backoff best gain +0.0% p 1.000
+   call at batch 1655: n_train 205 n_valid 51 hidden 192 -> rejected best gain -9.8% p 0.666
+   call at batch 1778: n_train 205 n_valid 51 hidden 192 -> backoff best gain +0.0% p 1.000
+   call at batch 1858: n_train 205 n_valid 51 hidden 192 -> backoff best gain +0.0% p 1.000
+   call at batch 1938: n_train 205 n_valid 51 hidden 192 -> backoff best gain +0.0% p 1.000
+   call at batch 2021: n_train 205 n_valid 51 hidden 192 -> backoff best gain +0.0% p 1.000
+   call at batch 2101: n_train 205 n_valid 51 hidden 192 -> backoff best gain +0.0% p 1.000
+   call at batch 2186: n_train 205 n_valid 51 hidden 192 -> backoff best gain +0.0% p 1.000
+   call at batch 2266: n_train 205 n_valid 51 hidden 192 -> backoff best gain +0.0% p 1.000
+   call at batch 2373: n_train 205 n_valid 51 hidden 192 -> backoff best gain +0.0% p 1.000
+   call at batch 2466: n_train 205 n_valid 51 hidden 192 -> rejected best gain -8.8% p 0.886
+   call at batch 2546: n_train 205 n_valid 51 hidden 192 -> backoff best gain +0.0% p 1.000
+   call at batch 2631: n_train 205 n_valid 51 hidden 192 -> backoff best gain +0.0% p 1.000
+   call at batch 2730: n_train 205 n_valid 51 hidden 192 -> backoff best gain +0.0% p 1.000
+   call at batch 2814: n_train 205 n_valid 51 hidden 192 -> backoff best gain +0.0% p 1.000
+   call at batch 2915: n_train 205 n_valid 51 hidden 192 -> backoff best gain +0.0% p 1.000
+   call at batch 2995: n_train 205 n_valid 51 hidden 192 -> backoff best gain +0.0% p 1.000
+   call at batch 3083: n_train 205 n_valid 51 hidden 192 -> backoff best gain +0.0% p 1.000
+   call at batch 3163: n_train 205 n_valid 51 hidden 192 -> backoff best gain +0.0% p 1.000
+   call at batch 3243: n_train 205 n_valid 51 hidden 192 -> backoff best gain +0.0% p 1.000
+   call at batch 3323: n_train 205 n_valid 51 hidden 192 -> backoff best gain +0.0% p 1.000
+   call at batch 3405: n_train 205 n_valid 51 hidden 192 -> backoff best gain +0.0% p 1.000
+   call at batch 3486: n_train 205 n_valid 51 hidden 192 -> backoff best gain +0.0% p 1.000
+   call at batch 3566: n_train 205 n_valid 51 hidden 192 -> backoff best gain +0.0% p 1.000
+   call at batch 3647: n_train 205 n_valid 51 hidden 192 -> backoff best gain +0.0% p 1.000
+   call at batch 3731: n_train 205 n_valid 51 hidden 192 -> backoff best gain +0.0% p 1.000
+   call at batch 3811: n_train 205 n_valid 51 hidden 192 -> backoff best gain +0.0% p 1.000
+   call at batch 3941: n_train 205 n_valid 51 hidden 192 -> rejected best gain +3.5% p 0.327
+   call at batch 4028: n_train 205 n_valid 51 hidden 192 -> backoff best gain +0.0% p 1.000
+   call at batch 4108: n_train 205 n_valid 51 hidden 192 -> backoff best gain +0.0% p 1.000
+   call at batch 4192: n_train 205 n_valid 51 hidden 192 -> backoff best gain +0.0% p 1.000
+   call at batch 4272: n_train 205 n_valid 51 hidden 192 -> backoff best gain +0.0% p 1.000
+   call at batch 4352: n_train 205 n_valid 51 hidden 192 -> backoff best gain +0.0% p 1.000
+   call at batch 4432: n_train 205 n_valid 51 hidden 192 -> backoff best gain +0.0% p 1.000
+   call at batch 4512: n_train 205 n_valid 51 hidden 192 -> backoff best gain +0.0% p 1.000
+   call at batch 4600: n_train 205 n_valid 51 hidden 192 -> backoff best gain +0.0% p 1.000
+   counterfactual 205/51: rejected best gain +4.3% p 0.270
+   counterfactual 4000/1000: rejected best gain -5.9% p 1.000
+   counterfactual 16000/4000: rejected best gain +0.2% p 0.365

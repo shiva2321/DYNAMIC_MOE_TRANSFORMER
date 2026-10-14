@@ -1,0 +1,6 @@
+[E16 left alone s1] unseen 11.0  seen 11.9  params 6,300  96s
+[E16 widened to 128 at half s1] unseen 29.3  seen 30.9  params 35,084  84s
+[E16 widened to 512 at half s1] unseen 31.8  seen 33.9  params 133,772  85s
+[E16, one more block at half s1] unseen 11.9  seen 12.7  params 10,796  115s
+[E128 from the start s1] unseen 32.9  seen 35.3  params 35,084  148s
+[E512 from the start s1] unseen 36.1  seen 40.3  params 133,772  105s

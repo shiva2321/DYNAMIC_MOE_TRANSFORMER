@@ -1,0 +1,4 @@
+[default s0] shipped gate 26.6  oracle 40.5  learned router 40.5   router sends to own expert: add 100 sub 100 mul 100 mod 100 div 100 max 100
+[default s1] shipped gate 27.1  oracle 40.0  learned router 40.0   router sends to own expert: add 100 sub 100 mul 100 mod 100 div 100 max 100
+[forced_spawn s0] shipped gate 35.0  oracle 46.8  learned router 46.8   router sends to own expert: add 100 sub 100 mul 100 mod 100 div 100 max 100
+[forced_spawn s1] shipped gate 34.9  oracle 47.9  learned router 47.9   router sends to own expert: add 100 sub 100 mul 100 mod 100 div 100 max 100

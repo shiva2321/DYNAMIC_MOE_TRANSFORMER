@@ -1,0 +1,58 @@
+[fixed E16 s1] unseen 11.0  seen 11.9  params 6,300  83s
+[fixed E32 s1] unseen 19.1  seen 20.4  params 10,412  108s
+[fixed E64 s1] unseen 28.3  seen 30.0  params 18,636  49s
+[fixed E128 s1] unseen 32.9  seen 35.3  params 35,084  66s
+[fixed E512 s1] unseen 36.1  seen 40.3  params 133,772  113s
+[growing pool from 16 s1] unseen 11.0  seen 11.9  params 6,300  final hidden 16 depth 1  growth events 0  policy calls 52  135s
+   call: rejected   hidden   16 depth 1 n_train 7322 n_valid 1830 best gain -0.7% p 0.970
+   call: backoff    hidden   16 depth 1 n_train 12698 n_valid 3174 best gain +0.0% p 1.000
+   call: rejected   hidden   16 depth 1 n_train 16000 n_valid 4000 best gain +1.9% p 0.001
+   call: backoff    hidden   16 depth 1 n_train 16000 n_valid 4000 best gain +0.0% p 1.000
+   call: backoff    hidden   16 depth 1 n_train 16000 n_valid 4000 best gain +0.0% p 1.000
+   call: rejected   hidden   16 depth 1 n_train 16000 n_valid 4000 best gain +1.5% p 0.004
+   call: backoff    hidden   16 depth 1 n_train 16000 n_valid 4000 best gain +0.0% p 1.000
+   call: backoff    hidden   16 depth 1 n_train 16000 n_valid 4000 best gain +0.0% p 1.000
+   call: backoff    hidden   16 depth 1 n_train 16000 n_valid 4000 best gain +0.0% p 1.000
+   call: backoff    hidden   16 depth 1 n_train 16000 n_valid 4000 best gain +0.0% p 1.000
+   call: rejected   hidden   16 depth 1 n_train 16000 n_valid 4000 best gain +1.0% p 0.017
+   call: backoff    hidden   16 depth 1 n_train 16000 n_valid 4000 best gain +0.0% p 1.000
+   call: backoff    hidden   16 depth 1 n_train 16000 n_valid 4000 best gain +0.0% p 1.000
+   call: backoff    hidden   16 depth 1 n_train 16000 n_valid 4000 best gain +0.0% p 1.000
+   call: backoff    hidden   16 depth 1 n_train 16000 n_valid 4000 best gain +0.0% p 1.000
+   call: backoff    hidden   16 depth 1 n_train 16000 n_valid 4000 best gain +0.0% p 1.000
+   call: backoff    hidden   16 depth 1 n_train 16000 n_valid 4000 best gain +0.0% p 1.000
+   call: backoff    hidden   16 depth 1 n_train 16000 n_valid 4000 best gain +0.0% p 1.000
+   call: backoff    hidden   16 depth 1 n_train 16000 n_valid 4000 best gain +0.0% p 1.000
+   call: rejected   hidden   16 depth 1 n_train 16000 n_valid 4000 best gain +1.5% p 0.002
+   call: backoff    hidden   16 depth 1 n_train 16000 n_valid 4000 best gain +0.0% p 1.000
+   call: backoff    hidden   16 depth 1 n_train 16000 n_valid 4000 best gain +0.0% p 1.000
+   call: backoff    hidden   16 depth 1 n_train 16000 n_valid 4000 best gain +0.0% p 1.000
+   call: backoff    hidden   16 depth 1 n_train 16000 n_valid 4000 best gain +0.0% p 1.000
+   call: backoff    hidden   16 depth 1 n_train 16000 n_valid 4000 best gain +0.0% p 1.000
+   call: backoff    hidden   16 depth 1 n_train 16000 n_valid 4000 best gain +0.0% p 1.000
+   call: backoff    hidden   16 depth 1 n_train 16000 n_valid 4000 best gain +0.0% p 1.000
+   call: backoff    hidden   16 depth 1 n_train 16000 n_valid 4000 best gain +0.0% p 1.000
+   call: backoff    hidden   16 depth 1 n_train 16000 n_valid 4000 best gain +0.0% p 1.000
+   call: backoff    hidden   16 depth 1 n_train 16000 n_valid 4000 best gain +0.0% p 1.000
+   call: backoff    hidden   16 depth 1 n_train 16000 n_valid 4000 best gain +0.0% p 1.000
+   call: backoff    hidden   16 depth 1 n_train 16000 n_valid 4000 best gain +0.0% p 1.000
+   call: backoff    hidden   16 depth 1 n_train 16000 n_valid 4000 best gain +0.0% p 1.000
+   call: backoff    hidden   16 depth 1 n_train 16000 n_valid 4000 best gain +0.0% p 1.000
+   call: backoff    hidden   16 depth 1 n_train 16000 n_valid 4000 best gain +0.0% p 1.000
+   call: backoff    hidden   16 depth 1 n_train 16000 n_valid 4000 best gain +0.0% p 1.000
+   call: rejected   hidden   16 depth 1 n_train 16000 n_valid 4000 best gain +0.3% p 0.065
+   call: backoff    hidden   16 depth 1 n_train 16000 n_valid 4000 best gain +0.0% p 1.000
+   call: backoff    hidden   16 depth 1 n_train 16000 n_valid 4000 best gain +0.0% p 1.000
+   call: backoff    hidden   16 depth 1 n_train 16000 n_valid 4000 best gain +0.0% p 1.000
+   call: backoff    hidden   16 depth 1 n_train 16000 n_valid 4000 best gain +0.0% p 1.000
+   call: backoff    hidden   16 depth 1 n_train 16000 n_valid 4000 best gain +0.0% p 1.000
+   call: backoff    hidden   16 depth 1 n_train 16000 n_valid 4000 best gain +0.0% p 1.000
+   call: backoff    hidden   16 depth 1 n_train 16000 n_valid 4000 best gain +0.0% p 1.000
+   call: backoff    hidden   16 depth 1 n_train 16000 n_valid 4000 best gain +0.0% p 1.000
+   call: backoff    hidden   16 depth 1 n_train 16000 n_valid 4000 best gain +0.0% p 1.000
+   call: backoff    hidden   16 depth 1 n_train 16000 n_valid 4000 best gain +0.0% p 1.000
+   call: backoff    hidden   16 depth 1 n_train 16000 n_valid 4000 best gain +0.0% p 1.000
+   call: backoff    hidden   16 depth 1 n_train 16000 n_valid 4000 best gain +0.0% p 1.000
+   call: backoff    hidden   16 depth 1 n_train 16000 n_valid 4000 best gain +0.0% p 1.000
+   call: backoff    hidden   16 depth 1 n_train 16000 n_valid 4000 best gain +0.0% p 1.000
+   call: backoff    hidden   16 depth 1 n_train 16000 n_valid 4000 best gain +0.0% p 1.000

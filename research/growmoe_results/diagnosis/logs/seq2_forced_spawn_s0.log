@@ -1,0 +1,43 @@
+    after block 0 (+max): experts 1  max  86.1 add   1.9 sub   1.1 mod   0.0 div   2.9 mul   3.1
+        max  routed to e0: 100%
+        add  routed to e0: 100%
+        sub  routed to e0: 100%
+        mod  routed to e0: 100%
+        div  routed to e0: 100%
+        mul  routed to e0: 100%
+    after block 1 (+add): experts 2  max  81.9 add  47.3 sub   1.4 mod   0.1 div   1.3 mul   1.5
+        max  routed to e0:  97%  e1:   3%
+        add  routed to e0:   3%  e1:  97%
+        sub  routed to e0:  52%  e1:  48%
+        mod  routed to e0:  53%  e1:  47%
+        div  routed to e0:  52%  e1:  48%
+        mul  routed to e0:  47%  e1:  53%
+    after block 2 (+sub): experts 3  max  77.6 add  45.1 sub  31.4 mod   1.1 div   1.2 mul   1.1
+        max  routed to e0:  94%  e1:   3%  e2:   3%
+        add  routed to e0:   3%  e1:  95%  e2:   2%
+        sub  routed to e0:   3%  e1:   3%  e2:  94%
+        mod  routed to e0:  38%  e1:  32%  e2:  30%
+        div  routed to e0:  38%  e1:  35%  e2:  27%
+        mul  routed to e0:  33%  e1:  38%  e2:  30%
+    after block 3 (+mod): experts 4  max  71.7 add  42.5 sub  29.1 mod  43.3 div   2.6 mul   1.3
+        max  routed to e0:  91%  e1:   2%  e2:   3%  e3:   3%
+        add  routed to e0:   3%  e1:  92%  e2:   2%  e3:   3%
+        sub  routed to e0:   3%  e1:   3%  e2:  92%  e3:   3%
+        mod  routed to e0:   3%  e1:   2%  e2:   2%  e3:  93%
+        div  routed to e0:  29%  e1:  26%  e2:  19%  e3:  26%
+        mul  routed to e0:  25%  e1:  30%  e2:  23%  e3:  22%
+    after block 4 (+div): experts 5  max  67.3 add  40.2 sub  26.6 mod  42.0 div  39.5 mul   1.3
+        max  routed to e0:  89%  e1:   2%  e2:   3%  e3:   3%  e4:   2%
+        add  routed to e0:   3%  e1:  91%  e2:   2%  e3:   2%  e4:   2%
+        sub  routed to e0:   3%  e1:   3%  e2:  89%  e3:   3%  e4:   3%
+        mod  routed to e0:   3%  e1:   2%  e2:   2%  e3:  90%  e4:   3%
+        div  routed to e0:   3%  e1:   2%  e2:   2%  e3:   3%  e4:  90%
+        mul  routed to e0:  21%  e1:  25%  e2:  19%  e3:  19%  e4:  16%
+    after block 5 (+mul): experts 6  max  65.1 add  38.8 sub  26.2 mod  40.5 div  38.1 mul   4.9
+        max  routed to e0:  88%  e1:   2%  e2:   3%  e3:   3%  e4:   2%  e5:   1%
+        add  routed to e0:   3%  e1:  89%  e2:   2%  e3:   2%  e4:   2%  e5:   2%
+        sub  routed to e0:   3%  e1:   2%  e2:  88%  e3:   3%  e4:   3%  e5:   1%
+        mod  routed to e0:   3%  e1:   2%  e2:   2%  e3:  89%  e4:   3%  e5:   1%
+        div  routed to e0:   3%  e1:   2%  e2:   2%  e3:   3%  e4:  88%  e5:   1%
+        mul  routed to e0:   3%  e1:   3%  e2:   2%  e3:   3%  e4:   2%  e5:  86%
+[forced_spawn s0] mean exact 35.0  forgetting 6.5  experts 6  2185s

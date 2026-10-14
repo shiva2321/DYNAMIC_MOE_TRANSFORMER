@@ -5,7 +5,9 @@ training recipe" is the real thing, only without the gate, the probation buffer 
 (``research/growmoe_results/arith``): the same held-out problems, exact match (every answer slot right).
 """
 
+import json
 import math
+import os
 import sys
 import time
 from pathlib import Path
@@ -27,6 +29,47 @@ from growmoe.pools.base import BasePool  # noqa: E402
 from growmoe.replay import Reservoir  # noqa: E402
 
 DEV = L.DEV
+
+
+# ---------------------------------------------------------------------------------------------------------------- outage-proof writing
+# The machine loses power now and then (see memory note plan-for-daily-power-outages): a result file must never be left half written, and a half-written file must never count as done.
+def atomic_write_bytes(path, data: bytes) -> None:
+    """Write ``data`` to a temp file in the same folder, flush it to disk, then rename it over ``path`` (the rename is atomic on the same volume)."""
+    path = Path(path)
+    tmp = path.with_name(path.name + ".tmp")
+    with open(tmp, "wb") as fh:
+        fh.write(data)
+        fh.flush()
+        os.fsync(fh.fileno())
+    os.replace(tmp, path)
+
+
+def atomic_write_text(path, text: str) -> None:
+    atomic_write_bytes(path, text.encode("utf-8"))
+
+
+def atomic_savez(path, **arrays) -> None:
+    import io
+    buf = io.BytesIO()
+    np.savez_compressed(buf, **arrays)
+    atomic_write_bytes(path, buf.getvalue())
+
+
+def atomic_pickle(path, obj) -> None:
+    """Pickle an object this project created itself (checkpoints); never used on files from outside."""
+    import pickle
+    atomic_write_bytes(path, pickle.dumps(obj, protocol=4))
+
+
+def valid_json(path) -> bool:
+    """True when the file exists and parses (a truncated file counts as missing)."""
+    try:
+        with open(path, "r", encoding="utf-8") as fh:
+            json.load(fh)
+        return True
+    except Exception:
+        return False
+
 
 # ---------------------------------------------------------------------------------------------------------------- architectures
 ARCHS = {
@@ -133,9 +176,10 @@ class Offline(NetLearner):
 class OfflineSubset(Offline):
     """The dense recipe on a random subset of ``n_keep`` training examples: what an offline learner can do with the SAME number of stored examples as a pool whose replay buffer holds ``n_keep``."""
 
-    def __init__(self, arch: str, n_keep: int, epochs: int = 40, lr: float = 2e-3, bs: int = 512):
+    def __init__(self, arch: str, n_keep: int, steps: int = 23000, lr: float = 2e-3, bs: int = 512):
+        epochs = max(1, math.ceil(steps / math.ceil(n_keep / bs)))                  # as many optimiser steps as the full-data dense recipe takes (about 23,000), whatever the subset size
         super().__init__(arch, epochs, lr, bs)
-        self.n_keep = n_keep
+        self.n_keep, self.steps = n_keep, steps
         self.name = f"{arch}|dense-{epochs}ep-on-{n_keep}"
 
     def fit(self, tr, seed):

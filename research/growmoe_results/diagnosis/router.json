@@ -1,0 +1,154 @@
+[
+ {
+  "variant": "default",
+  "seed": 0,
+  "operator_to_expert": {
+   "max": 0,
+   "add": 0,
+   "sub": 0,
+   "mod": 1,
+   "div": 2,
+   "mul": 3
+  },
+  "shipped_gate_mean_exact": 0.2664666666666667,
+  "oracle_mean_exact": 0.4053333333333333,
+  "learned_router_mean_exact": 0.4053333333333333,
+  "learned_router_exact_by_op": {
+   "add": 0.3084,
+   "sub": 0.2976,
+   "mul": 0.0822,
+   "mod": 0.5436,
+   "div": 0.5394,
+   "max": 0.6608
+  },
+  "learned_router_to_own_expert": {
+   "add": 1.0,
+   "sub": 1.0,
+   "mul": 1.0,
+   "mod": 1.0,
+   "div": 1.0,
+   "max": 1.0
+  },
+  "gate_rules_mean_exact": {
+   "accept_then_logf": 0.26646666666666663,
+   "argmax_logf": 0.2672,
+   "argmax_p": 0.26543333333333335,
+   "nearest_proto": 0.213,
+   "zscore_logf": 0.21220000000000003
+  }
+ },
+ {
+  "variant": "default",
+  "seed": 1,
+  "operator_to_expert": {
+   "max": 0,
+   "add": 0,
+   "sub": 0,
+   "mod": 1,
+   "div": 2,
+   "mul": 3
+  },
+  "shipped_gate_mean_exact": 0.27136666666666664,
+  "oracle_mean_exact": 0.3999,
+  "learned_router_mean_exact": 0.3999,
+  "learned_router_exact_by_op": {
+   "add": 0.3194,
+   "sub": 0.2604,
+   "mul": 0.07,
+   "mod": 0.5576,
+   "div": 0.5532,
+   "max": 0.6388
+  },
+  "learned_router_to_own_expert": {
+   "add": 1.0,
+   "sub": 1.0,
+   "mul": 1.0,
+   "mod": 1.0,
+   "div": 1.0,
+   "max": 1.0
+  },
+  "gate_rules_mean_exact": {
+   "accept_then_logf": 0.2713666666666667,
+   "argmax_logf": 0.27343333333333336,
+   "argmax_p": 0.27293333333333336,
+   "nearest_proto": 0.21813333333333337,
+   "zscore_logf": 0.21746666666666667
+  }
+ },
+ {
+  "variant": "forced_spawn",
+  "seed": 0,
+  "operator_to_expert": {
+   "max": 0,
+   "add": 1,
+   "sub": 2,
+   "mod": 3,
+   "div": 4,
+   "mul": 5
+  },
+  "shipped_gate_mean_exact": 0.35013333333333335,
+  "oracle_mean_exact": 0.46770000000000006,
+  "learned_router_mean_exact": 0.46770000000000006,
+  "learned_router_exact_by_op": {
+   "add": 0.4834,
+   "sub": 0.334,
+   "mul": 0.0742,
+   "mod": 0.5258,
+   "div": 0.538,
+   "max": 0.8508
+  },
+  "learned_router_to_own_expert": {
+   "add": 1.0,
+   "sub": 1.0,
+   "mul": 1.0,
+   "mod": 1.0,
+   "div": 1.0,
+   "max": 1.0
+  },
+  "gate_rules_mean_exact": {
+   "accept_then_logf": 0.35013333333333335,
+   "argmax_logf": 0.35119999999999996,
+   "argmax_p": 0.28656666666666664,
+   "nearest_proto": 0.22643333333333335,
+   "zscore_logf": 0.17676666666666666
+  }
+ },
+ {
+  "variant": "forced_spawn",
+  "seed": 1,
+  "operator_to_expert": {
+   "max": 0,
+   "add": 1,
+   "sub": 2,
+   "mod": 3,
+   "div": 4,
+   "mul": 5
+  },
+  "shipped_gate_mean_exact": 0.34859999999999997,
+  "oracle_mean_exact": 0.4795,
+  "learned_router_mean_exact": 0.4795,
+  "learned_router_exact_by_op": {
+   "add": 0.5078,
+   "sub": 0.353,
+   "mul": 0.0812,
+   "mod": 0.5474,
+   "div": 0.5486,
+   "max": 0.839
+  },
+  "learned_router_to_own_expert": {
+   "add": 1.0,
+   "sub": 1.0,
+   "mul": 1.0,
+   "mod": 1.0,
+   "div": 1.0,
+   "max": 1.0
+  },
+  "gate_rules_mean_exact": {
+   "accept_then_logf": 0.3486,
+   "argmax_logf": 0.3490333333333333,
+   "argmax_p": 0.31483333333333335,
+   "nearest_proto": 0.22606666666666667,
+   "zscore_logf": 0.18543333333333334
+  }
+ }
+]

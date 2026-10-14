@@ -1,0 +1,14 @@
+[L1024x3  D40                s0] unseen  63.8  seen 100.0  add  83.7 sub  69.0 mul  17.3 max  95.0  train-CE 0.000  params 2,243,596  54s
+[E512     O5-r2000           s0] unseen  31.8  seen  33.5  add  23.6 sub  13.6 mul   5.4 max  56.1  train-CE 0.764  params 133,772  125s
+[E512     M2000-D40          s0] unseen   6.3  seen   6.7  add   0.4 sub   0.4 mul   0.6 max   0.9  train-CE 2.472  params 133,772  1s
+[E128     O5-r300000         s0] unseen  37.2  seen  38.5  add  28.6 sub  16.4 mul   5.2 max  71.5  train-CE 0.659  params 35,084  101s
+[S256x2   O5-r300000         s0] unseen  44.3  seen  48.5  add  41.5 sub  28.7 mul   7.8 max  81.6  train-CE 0.558  params 101,900  83s
+[E128     O5-r256            s1] unseen  26.2  seen  28.3  add  10.8 sub   9.4 mul   2.9 max  44.7  train-CE 0.859  params 35,084  82s
+[E512     D40                s1] unseen  48.3  seen  72.7  add  53.8 sub  39.5 mul   9.7 max  79.5  train-CE 0.316  params 133,772  52s
+[E512     O5-r20000          s1] unseen  36.1  seen  40.3  add  27.1 sub  20.0 mul   5.9 max  64.8  train-CE 0.674  params 133,772  93s
+[S256x2   D40                s1] unseen  51.6  seen  77.7  add  61.0 sub  43.5 mul  11.9 max  82.4  train-CE 0.240  params 101,900  33s
+[S256x2   O5-r256            s1] unseen  23.3  seen  25.0  add   3.1 sub   4.4 mul   3.8 max  47.4  train-CE 0.981  params 101,900  58s
+[L1024x3  D10                s1] unseen  62.5  seen  86.6  add  82.5 sub  63.3 mul  17.4 max  92.6  train-CE 0.157  params 2,243,596  16s
+[E512     O5-r100000         s1] unseen  42.7  seen  46.6  add  38.9 sub  26.0 mul   7.8 max  76.8  train-CE 0.565  params 133,772  89s
+[E512     M20000-D40         s1] unseen  14.0  seen  15.6  add   3.0 sub   1.8 mul   2.7 max  13.6  train-CE 3.060  params 133,772  4s
+[E128     M20000-D40         s1] unseen  14.6  seen  16.7  add   2.2 sub   1.9 mul   2.2 max  14.9  train-CE 1.449  params 35,084  4s

@@ -279,7 +279,11 @@ def _parallel(fn, specs: list, path_of, workers: int, threads: int, label: str, 
     for s in specs:
         p = path_of(s)
         if p.exists() and not force:
-            done.append(json.loads(p.read_text(encoding="utf-8")))
+            try:
+                done.append(json.loads(p.read_text(encoding="utf-8")))
+            except ValueError:                                                          # a result cut short by a power loss does not count as finished: run it again
+                print(f"[{label}] {p.name} is unreadable (interrupted write?); it will be run again", flush=True)
+                todo.append(s)
         else:
             todo.append(s)
     print(f"[{label}] {len(done)} finished earlier, {len(todo)} to run, {workers} worker(s) x {threads} thread(s)", flush=True)
@@ -291,7 +295,12 @@ def _parallel(fn, specs: list, path_of, workers: int, threads: int, label: str, 
                 r = fut.result()
                 p = path_of(futures[fut])
                 p.parent.mkdir(parents=True, exist_ok=True)
-                p.write_text(json.dumps(r, indent=1), encoding="utf-8")
+                tmp = p.with_name(p.name + ".tmp")                                      # write, flush to disk, then rename: a power cut never leaves a half-written result behind
+                with open(tmp, "w", encoding="utf-8") as fh:
+                    fh.write(json.dumps(r, indent=1))
+                    fh.flush()
+                    os.fsync(fh.fileno())
+                os.replace(tmp, p)
                 done.append(r)
                 print(f"[{label}] {i}/{len(todo)} {tag_of(futures[fut])} {r['seconds']:.0f}s, peak {r['peak_mb']:.0f} MB "
                       f"(elapsed {(time.perf_counter() - t0) / 60:.1f} min)", flush=True)

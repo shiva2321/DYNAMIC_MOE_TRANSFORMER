@@ -42,26 +42,20 @@ RECIPES = {
     "O5-r2000": lambda arch: D.Online(arch, 5, 2000),
     "O5-r100000": lambda arch: D.Online(arch, 5, 100000),
     "O5-r300000": lambda arch: D.Online(arch, 5, 300000),
-    "M2000-D40": lambda arch: D.OfflineSubset(arch, 2000),
-    "M20000-D40": lambda arch: D.OfflineSubset(arch, 20000),
+    "M2000-D40": lambda arch: D.OfflineSubset(arch, 2000, 160),              # SUPERSEDED (only 160 steps: under-trained); kept so old result files stay readable
+    "M20000-D40": lambda arch: D.OfflineSubset(arch, 20000, 1600),           # SUPERSEDED (1,600 steps)
+    "M2000-S3k": lambda arch: D.OfflineSubset(arch, 2000, 3000),
+    "M2000-S23k": lambda arch: D.OfflineSubset(arch, 2000, 23000),
+    "M20000-S3k": lambda arch: D.OfflineSubset(arch, 20000, 3000),
+    "M20000-S23k": lambda arch: D.OfflineSubset(arch, 20000, 23000),
 }
 
-CELLS = [
-    ("E128", "D40"), ("E128", "D10"), ("E128", "O5-r256"), ("E128", "O5-r20000"), ("E128", "O1-r20000"),
-    ("E512", "D40"), ("E512", "D10"), ("E512", "O5-r256"), ("E512", "O5-r20000"), ("E512", "O1-r20000"), ("E512", "O5-r20000-anneal"),
-    ("S256x2", "D40"), ("S256x2n", "D40"), ("S256x2", "D10"), ("S256x2", "O5-r256"), ("S256x2", "O5-r20000"),
-    ("L1024x3", "D40"), ("L1024x3", "D10"), ("L1024x3", "O5-r20000"),
-]
-CELLS_EXTRA = [
-    ("E512", "O5-r2000"), ("E512", "O5-r100000"), ("E512", "O5-r300000"), ("E512", "M2000-D40"), ("E512", "M20000-D40"),
-    ("E128", "O5-r2000"), ("E128", "O5-r300000"), ("E128", "M20000-D40"),
-    ("S256x2", "M20000-D40"), ("S256x2", "O5-r300000"),
-]
+from ladder_cells import CELLS, CELLS_EXTRA, CELLS_SUBSET  # noqa: E402  (the cell lists live in a module without heavy imports; queue.py reads them too)
 
 
 def run_cell(arch, recipe, seed, tr, test, seen, per_cell):
     stem = OUT / f"{arch}__{recipe}__s{seed}"
-    if stem.with_suffix(".json").exists():
+    if D.valid_json(stem.with_suffix(".json")):
         return
     learner = RECIPES[recipe](arch)
     t0 = time.time()
@@ -70,7 +64,7 @@ def run_cell(arch, recipe, seed, tr, test, seen, per_cell):
     s = D.summarise(res)
     res.update(arch=arch, recipe=recipe, seed=seed, train=info, summary=s, total_seconds=time.time() - t0)
     OUT.mkdir(parents=True, exist_ok=True)
-    stem.with_suffix(".json").write_text(json.dumps(res), encoding="utf-8")
+    D.atomic_write_text(stem.with_suffix(".json"), json.dumps(res))
     print(f"[{arch:8s} {recipe:18s} s{seed}] unseen {100 * s['mean_exact']:5.1f}  seen {100 * s['seen_exact']:5.1f}  add {100 * s['exact_by_op']['add']:5.1f} sub {100 * s['exact_by_op']['sub']:5.1f} "
           f"mul {100 * s['exact_by_op']['mul']:5.1f} max {100 * s['exact_by_op']['max']:5.1f}  train-CE {info['train_loss']:.3f}  params {info['params']:,}  {time.time() - t0:.0f}s", flush=True)
 
@@ -84,10 +78,11 @@ def main():
     ap.add_argument("--seen-per-op", type=int, default=500)
     ap.add_argument("--extra", action="store_true", help="run the memory-sweep cells instead of the main grid")
     ap.add_argument("--all", action="store_true", help="run the main grid and then the memory-sweep cells")
+    ap.add_argument("--subset", action="store_true", help="run the equal-stored-examples offline cells (M<N>-S<steps>)")
     a = ap.parse_args()
     k, n = (int(v) for v in a.shard.split("/"))
     test = L.build_test(a.per_cell)
-    cells = CELLS + CELLS_EXTRA if a.all else (CELLS_EXTRA if a.extra else CELLS)
+    cells = CELLS_SUBSET if a.subset else (CELLS + CELLS_EXTRA if a.all else (CELLS_EXTRA if a.extra else CELLS))
     jobs = [(arch, recipe, int(s)) for s in a.seeds.split(",") for arch, recipe in cells]
     for j, (arch, recipe, seed) in enumerate(jobs):
         if j % n != k:

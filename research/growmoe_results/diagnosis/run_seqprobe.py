@@ -14,6 +14,7 @@ Variants (config fields only):
 
 import argparse
 import json
+import os
 import sys
 import time
 from pathlib import Path
@@ -47,6 +48,22 @@ class _FProxy:
         if self.record is not None and not torch.is_grad_enabled() and out.ndim == 0:
             self.record.append(float(out))
         return out
+
+
+ASSIGN_LOG = []
+
+
+def install_assign_logger():
+    """Records, for every ``observe`` call, how many of the batch's samples were handed to each expert for TRAINING (-1 = trained by nobody: flagged, held or unlabelled)."""
+    orig = phylo.PhyloMoE.observe
+
+    def observe_logged(self, x, y=None, ctx=None):
+        rec = orig(self, x, y, ctx)
+        a = rec.assigned
+        ASSIGN_LOG.append((int(self.step), {int(e): int((a == e).sum()) for e in torch.unique(a).tolist()}))
+        return rec
+
+    phylo.PhyloMoE.observe = observe_logged
 
 
 def install_probe_logger(log: list):
@@ -87,10 +104,12 @@ def main():
     OUT = HERE / a.out
     OUT.mkdir(exist_ok=True)
     stem = OUT / f"{a.variant}_s{a.seed}"
-    if stem.with_suffix(".json").exists():
+    if D.valid_json(stem.with_suffix(".json")):                                       # done (a truncated file does not count)
         return
+    ckpt = stem.with_suffix(".ckpt")                                                  # state after the last finished block: a power cut costs at most one block
     probe_log = []
     install_probe_logger(probe_log)
+    install_assign_logger()
     train = L.build_train("FULL", a.seed, a.n_per_op)
     test, small = L.build_test(a.per_cell), L.build_test(a.seq_cell)
     seen = L.build_seen(train, min(500, a.n_per_op), a.seed)
@@ -100,18 +119,94 @@ def main():
     def after_block(k, oi):
         out = learner.predict(small)
         ex = small.exact(out["pred"]).reshape(A.N_OPS, -1).mean(-1)
-        blocks.append({"block": k, "op_added": A.OPS[oi], "exact_by_op": [float(v) for v in ex], "n_experts": len(learner.pool.experts), "step": learner.pool.step})
+        op_of, correct = small.op[small.pi], out["pred"] == small.y
+        eids = sorted(learner.pool.experts)
+        routing = {A.OPS[o]: {int(e): int(((op_of == o) & (out["expert"] == e)).sum()) for e in eids} for o in range(A.N_OPS)}          # examples of operator o sent to expert e
+        acc_given = {A.OPS[o]: {int(e): (float(correct[(op_of == o) & (out["expert"] == e)].mean()) if ((op_of == o) & (out["expert"] == e)).any() else None) for e in eids} for o in range(A.N_OPS)}
+        blocks.append({"block": k, "op_added": A.OPS[oi], "exact_by_op": [float(v) for v in ex], "n_experts": len(learner.pool.experts), "step": learner.pool.step,
+                       "routing": routing, "slot_acc_given_expert": acc_given, "unknown_rate": float(out["unknown"].mean()),
+                       "expert_states": {int(e): learner.pool.experts[e].state for e in eids}})
         boundaries.append(learner.pool.step)
         print(f"    after block {k} (+{A.OPS[oi]}): experts {len(learner.pool.experts)}  " + " ".join(f"{A.OPS[o]} {100 * ex[o]:5.1f}" for o in L.OP_ORDER), flush=True)
+        for o in L.OP_ORDER:
+            tot = max(sum(routing[A.OPS[o]].values()), 1)
+            print(f"        {A.OPS[o]:<4s} routed to " + "  ".join(f"e{e}:{100 * c / tot:4.0f}%" for e, c in routing[A.OPS[o]].items() if c), flush=True)
 
-    t0 = time.time()
-    info = learner.fit_sequential(train, a.seed, after_block)
+    torch.set_num_threads(3)
+    seconds_before, done_block = 0.0, -1
+    if ckpt.exists():
+        try:
+            import pickle
+            with open(ckpt, "rb") as fh:                                              # written by this script (atomic_pickle) in this folder; never loaded from anywhere else
+                state = pickle.load(fh)
+            learner.pool = state["pool"]
+            probe_log.extend(state["probe_log"])
+            blocks.extend(state["blocks"])
+            boundaries.extend(state["boundaries"])
+            ASSIGN_LOG.extend(state["assign_log"])
+            torch.set_rng_state(state["torch_rng"])
+            np.random.set_state(state["np_rng"])
+            import random
+            random.setstate(state["py_rng"])
+            seconds_before, done_block = state["seconds"], state["done_block"]
+            print(f"RESUMED from the checkpoint after block {done_block} ({seconds_before:.0f} s of work already done)", flush=True)
+        except Exception as exc:                                                      # unreadable checkpoint: start over rather than trust it
+            print("checkpoint unreadable, starting from the beginning:", exc, flush=True)
+            probe_log.clear(), blocks.clear(), boundaries.clear(), ASSIGN_LOG.clear()
+            seconds_before, done_block = 0.0, -1
+    if done_block < 0:
+        learner._new(a.seed)
+    t0 = time.time() - seconds_before
+    for k, (oi, idx) in enumerate(L.op_blocks(train, a.seed)):
+        if k <= done_block:
+            continue
+        learner._feed(train, idx)
+        after_block(k, oi)
+        import random
+        D.atomic_pickle(ckpt, {"pool": learner.pool, "probe_log": probe_log, "blocks": blocks, "boundaries": boundaries, "assign_log": ASSIGN_LOG, "done_block": k,
+                               "seconds": time.time() - t0, "torch_rng": torch.get_rng_state(), "np_rng": np.random.get_state(), "py_rng": random.getstate()})
+        if os.environ.get("SEQPROBE_CRASH_AFTER_BLOCK") == str(k):                    # test hook: simulate a power cut right after the checkpoint of block k
+            print(f"simulated power cut after block {k}", flush=True)
+            os._exit(3)
+    info = learner._info(t0)
     res, raw = L.evaluate(learner, test, a.per_cell, seen)
+    xt = torch.from_numpy(D.unit(test.x()))                                          # every expert answers EVERY test example: the best expert per operator is the routing oracle
+    per_expert = {}
+    with torch.no_grad():
+        for e, rec in learner.pool.experts.items():
+            rec.module.eval()
+            per_expert[int(e)] = [float(v) for v in test.exact(rec.module(xt).argmax(-1).numpy()).reshape(A.N_OPS, -1).mean(-1)]
+    res["expert_exact_by_op"] = per_expert
+    res["oracle_routed_exact_by_op"] = [max(v[o] for v in per_expert.values()) for o in range(A.N_OPS)]
+    rules = {}                                                                         # the SAME trained pool answered under the routing rules the product offers (prediction-time only)
+    saved_rule = learner.pool.cfg.route_rule
+    for rule in ("accept_then_logf", "argmax_logf", "argmax_p", "nearest_proto", "zscore_logf"):
+        learner.pool.cfg.route_rule = rule
+        o = learner.predict(test)
+        rules[rule] = {"exact_by_op": [float(v) for v in test.exact(o["pred"]).reshape(A.N_OPS, -1).mean(-1)],
+                       "routing_to_own": float(np.mean([(o["expert"][test.op[test.pi] == k] == int(np.argmax([per_expert[e][k] for e in sorted(per_expert)]))).mean() for k in range(A.N_OPS)]))}
+    learner.pool.cfg.route_rule = saved_rule
+    res["route_rules"] = rules
+    try:
+        D.atomic_pickle(stem.with_suffix(".pool.pkl"), learner.pool)
+    except Exception as exc:                                                           # the analysis does not depend on it
+        print("could not pickle the pool:", exc, flush=True)
     events = [{"kind": e.kind, "step": e.step, "fields": e.fields} for e in learner.pool.events]
-    res.update(variant=a.variant, seed=a.seed, train=info, blocks=blocks, block_steps=boundaries, probe_log=probe_log, events=events,
+    per_block, lo = [], 0                                                         # training assignment per block: samples handed to each expert (-1: trained by nobody)
+    for hi in boundaries:
+        tot = {}
+        for st, cnt in ASSIGN_LOG:
+            if lo < st <= hi:
+                for e, c in cnt.items():
+                    tot[e] = tot.get(e, 0) + c
+        per_block.append({str(e): c for e, c in sorted(tot.items())})
+        lo = hi
+    res.update(variant=a.variant, seed=a.seed, train=info, blocks=blocks, block_steps=boundaries, probe_log=probe_log, events=events, train_assignment_per_block=per_block,
                summary={**D.summarise(res), "forgetting": forgetting(blocks), "experts": len(learner.pool.experts)}, total_seconds=time.time() - t0)
-    np.savez_compressed(stem.with_suffix(".npz"), **raw)
-    stem.with_suffix(".json").write_text(json.dumps(res), encoding="utf-8")
+    D.atomic_savez(stem.with_suffix(".npz"), **raw)
+    D.atomic_write_text(stem.with_suffix(".json"), json.dumps(res))                    # LAST: this file is what marks the run as done
+    if ckpt.exists():
+        os.remove(ckpt)
     s = res["summary"]
     print(f"[{a.variant} s{a.seed}] mean exact {100 * s['mean_exact']:.1f}  forgetting {100 * s['forgetting']:.1f}  experts {s['experts']}  {time.time() - t0:.0f}s", flush=True)
 

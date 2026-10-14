@@ -1,0 +1,43 @@
+    after block 0 (+max): experts 1  max  82.2 add   2.0 sub   1.0 mod   0.3 div   2.8 mul   3.2
+        max  routed to e0: 100%
+        add  routed to e0: 100%
+        sub  routed to e0: 100%
+        mod  routed to e0: 100%
+        div  routed to e0: 100%
+        mul  routed to e0: 100%
+    after block 1 (+add): experts 1  max  66.5 add  43.8 sub   1.7 mod   0.1 div   0.2 mul   0.1
+        max  routed to e0: 100%
+        add  routed to e0: 100%
+        sub  routed to e0: 100%
+        mod  routed to e0: 100%
+        div  routed to e0: 100%
+        mul  routed to e0: 100%
+    after block 2 (+sub): experts 1  max  64.1 add  33.9 sub  25.6 mod   1.6 div   0.5 mul   0.0
+        max  routed to e0: 100%
+        add  routed to e0: 100%
+        sub  routed to e0: 100%
+        mod  routed to e0: 100%
+        div  routed to e0: 100%
+        mul  routed to e0: 100%
+    after block 3 (+mod): experts 2  max  43.0 add  28.0 sub  20.2 mod  50.7 div   1.6 mul   0.4
+        max  routed to e0:  84%  e1:  16%
+        add  routed to e0:  92%  e1:   8%
+        sub  routed to e0:  90%  e1:  10%
+        mod  routed to e0:   3%  e1:  97%
+        div  routed to e0:  52%  e1:  48%
+        mul  routed to e0:  54%  e1:  46%
+    after block 4 (+div): experts 3  max  33.1 add  23.7 sub  17.0 mod  47.5 div  46.3 mul   0.7
+        max  routed to e0:  74%  e1:  14%  e2:  13%
+        add  routed to e0:  86%  e1:   8%  e2:   7%
+        sub  routed to e0:  83%  e1:   9%  e2:   8%
+        mod  routed to e0:   3%  e1:  94%  e2:   3%
+        div  routed to e0:   3%  e1:   3%  e2:  94%
+        mul  routed to e0:  38%  e1:  32%  e2:  31%
+    after block 5 (+mul): experts 4  max  28.5 add  22.3 sub  16.0 mod  44.9 div  44.2 mul   4.9
+        max  routed to e0:  68%  e1:  13%  e2:  12%  e3:   7%
+        add  routed to e0:  82%  e1:   7%  e2:   6%  e3:   4%
+        sub  routed to e0:  79%  e1:   9%  e2:   8%  e3:   5%
+        mod  routed to e0:   3%  e1:  92%  e2:   3%  e3:   2%
+        div  routed to e0:   3%  e1:   3%  e2:  93%  e3:   2%
+        mul  routed to e0:   3%  e1:   2%  e2:   3%  e3:  91%
+[default s1] mean exact 27.1  forgetting 15.4  experts 4  1132s

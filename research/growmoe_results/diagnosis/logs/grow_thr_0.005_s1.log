@@ -1,0 +1,2 @@
+[start 16, min_gain 0.005, s1] unseen 27.5  seen 29.4  params 18,636  final hidden 64 depth 1  growth events 1  310s
+   grow at step 327: widen +48  gain +1.9%  p 0.001

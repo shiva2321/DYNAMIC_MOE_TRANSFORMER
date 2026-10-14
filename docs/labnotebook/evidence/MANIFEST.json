@@ -1,14 +1,14 @@
 {
- "generated": "2026-10-14 10:00:38",
- "head": "e33cc18",
+ "generated": "2026-10-14 14:14:07",
+ "head": "8312306",
  "branch": "track-g-growmoe",
- "n_files": 684,
+ "n_files": 704,
  "files": [
   {
    "path": "demos/demo_growmoe_continual_learning.py",
    "sha256": "f9981952b2e17e8c7a99e384bf66183715cc37dc11e15fea90cd85d6d0724d31",
    "bytes": 9621,
-   "last_commit": null
+   "last_commit": "8312306"
   },
   {
    "path": "docs/COMPONENT_CARDS.md",
@@ -32,19 +32,19 @@
    "path": "docs/superpowers/handoff/KICKOFF_CVA1_CVA2A_2026-10-14.md",
    "sha256": "9167956dcd89621508f75dcbad3c76dcb01377c81f76e8d14c381b0279d9b629",
    "bytes": 6608,
-   "last_commit": null
+   "last_commit": "8312306"
   },
   {
    "path": "docs/superpowers/handoff/KICKOFF_CVA1B_CVA3A_2026-10-14.md",
    "sha256": "12ce7b3f726cfc073173b8e0bd54a12d6ef38e099bed102ead1667fecba01db2",
    "bytes": 5231,
-   "last_commit": null
+   "last_commit": "8312306"
   },
   {
    "path": "docs/superpowers/handoff/KICKOFF_CVA2B_CVA5A_2026-10-14.md",
    "sha256": "c48431ca8099de1ddaf59af08e262a7fb0b1f7985a2a72a2d18e278e99674d78",
    "bytes": 5636,
-   "last_commit": null
+   "last_commit": "8312306"
   },
   {
    "path": "docs/superpowers/handoff/KICKOFF_M5_REAL_TEXT_STREAM_2026-10-13.md",
@@ -56,7 +56,7 @@
    "path": "docs/superpowers/handoff/KICKOFF_M5B_REAL_STREAM_CEILINGS_2026-10-13.md",
    "sha256": "1823791d5f5bc90e13fd957c76c2b1e16fc5766a9eedf169c01b077c9c52950c",
    "bytes": 6671,
-   "last_commit": null
+   "last_commit": "8312306"
   },
   {
    "path": "docs/superpowers/handoff/KICKOFF_RV2_8_ADOPT_CASCADE_2026-10-13.md",
@@ -74,19 +74,19 @@
    "path": "docs/superpowers/handoff/KICKOFF_RV3_AMENDED_BUILD_DEV_2026-10-14.md",
    "sha256": "df13cf8b1598935e9222846e1318fa7b416139ce0b128d98bf8be998ea18fccb",
    "bytes": 6241,
-   "last_commit": null
+   "last_commit": "8312306"
   },
   {
    "path": "docs/superpowers/handoff/KICKOFF_RV3_BUILD_TRACE_DEV_2026-10-13.md",
    "sha256": "7a12576d933e68bf334c506fd53946d7f29db07599ab7a7a3098c698bdb90440",
    "bytes": 5650,
-   "last_commit": null
+   "last_commit": "8312306"
   },
   {
    "path": "docs/superpowers/handoff/KICKOFF_RV3_SENSITIVITY_2026-10-13.md",
    "sha256": "c71771f83577cad9c3236d6f05d963e088cdce94356b8e85cda5e474bd6ebbe7",
    "bytes": 2342,
-   "last_commit": null
+   "last_commit": "8312306"
   },
   {
    "path": "docs/superpowers/handoff/REVIEW_2026-10-05_R10_AND_Y1.md",
@@ -134,7 +134,7 @@
    "path": "docs/superpowers/plans/2026-10-13-routing-v2-stage3.md",
    "sha256": "2deb04f72ddb7918fe2a744765b7f9b55f81db0a5bcb9b2fedbddc290f920335",
    "bytes": 7942,
-   "last_commit": null
+   "last_commit": "8312306"
   },
   {
    "path": "docs/superpowers/specs/2026-10-04-growmoe-design.md",
@@ -152,25 +152,43 @@
    "path": "docs/superpowers/specs/2026-10-13-routing-v2-stage3-design-AMENDMENTS.md",
    "sha256": "a277a512938f6312ab55d0513e9ef22afb45a29a5dd362fe8deb6638d91b2ffa",
    "bytes": 11465,
-   "last_commit": null
+   "last_commit": "8312306"
   },
   {
    "path": "docs/superpowers/specs/2026-10-13-routing-v2-stage3-design.md",
    "sha256": "a3f5e2c9434488f13c861f75785283699f4e1532161d9827d47198bc78252120",
    "bytes": 19969,
-   "last_commit": "e33cc18"
+   "last_commit": "8312306"
   },
   {
    "path": "docs/superpowers/specs/2026-10-14-growmoe-component-verification-audit.md",
    "sha256": "cb724bec02204d1a2b3a28d12421bc49a26df1fb820d433cc5bf08443b38d354",
    "bytes": 11972,
+   "last_commit": "8312306"
+  },
+  {
+   "path": "geomlab/phase0_algebra.py",
+   "sha256": "e48162f20b3e41281f08ae7d102a4eedc532b64e6dcbc557368c185334cdd492",
+   "bytes": 10964,
+   "last_commit": null
+  },
+  {
+   "path": "geomlab/phase1_capacity.py",
+   "sha256": "47fc553fe1660e1faac1dcfb07534803dfd387ac4c0fac5dde8c95d872e4c6c5",
+   "bytes": 8757,
+   "last_commit": null
+  },
+  {
+   "path": "geomlab/phase2_composition.py",
+   "sha256": "0244f3bf75f5690e80af6275798e47502b617cc7bf98ba4579f5f6ab798f3ca7",
+   "bytes": 12845,
    "last_commit": null
   },
   {
    "path": "growmoe/arith.py",
    "sha256": "152ef314a8862f657eaf1de014fb6d3de491e98b9d33b48c7a31dc75d4cdd776",
    "bytes": 9740,
-   "last_commit": null
+   "last_commit": "8312306"
   },
   {
    "path": "research/DYNAMIC_MOE_RESEARCH_AND_DESIGN.md",
@@ -185,112 +203,196 @@
    "last_commit": "117aec5"
   },
   {
+   "path": "research/geomlab_results/phase0/PREREG.md",
+   "sha256": "664025fa77e7a28c64512f19dcdedeeb65b0754d1c6005539bbd6ddee1514c72",
+   "bytes": 6310,
+   "last_commit": null
+  },
+  {
+   "path": "research/geomlab_results/phase0/results.json",
+   "sha256": "6d93bbd6692fff7df872fdd5424c36f57fa28d037b5f1bbb9473585f7c7f1c25",
+   "bytes": 17882,
+   "last_commit": null
+  },
+  {
+   "path": "research/geomlab_results/phase0/run_phase0.py",
+   "sha256": "e022afe927e04a9f94ff21e556cb21c692d3083be908ac2b3c929b1c2d71e900",
+   "bytes": 15872,
+   "last_commit": null
+  },
+  {
+   "path": "research/geomlab_results/phase0/tables.txt",
+   "sha256": "8c55ecb7e6f890135e43ceb384c63ea0199aae9495aaaf24afc737ecad151182",
+   "bytes": 2313,
+   "last_commit": null
+  },
+  {
+   "path": "research/geomlab_results/phase1/checkpoint.json",
+   "sha256": "70dc720e746c8176f9f757783082658dc16752254e43ff72d8af76ecd083eac1",
+   "bytes": 86126,
+   "last_commit": null
+  },
+  {
+   "path": "research/geomlab_results/phase1/PREREG.md",
+   "sha256": "e834537003734560cf8985c7a8196eca2e5c51a93a388ddb60f71ae1a23d82c2",
+   "bytes": 7144,
+   "last_commit": null
+  },
+  {
+   "path": "research/geomlab_results/phase1/results.json",
+   "sha256": "0d5d46c1cae74be486b37487bd0d56e47f225e5e03d130940633937b8050e530",
+   "bytes": 65566,
+   "last_commit": null
+  },
+  {
+   "path": "research/geomlab_results/phase1/run_phase1.py",
+   "sha256": "820bb3d6645c28ecbd0da4a7b9a1e3b559be1e7daa52f2dfbd6995420392f3db",
+   "bytes": 25041,
+   "last_commit": null
+  },
+  {
+   "path": "research/geomlab_results/phase1/tables.txt",
+   "sha256": "a06ee9f7858a6f09350e282e67dcfc92a66c9fa4408a4e068d0b68d79968cb0b",
+   "bytes": 4921,
+   "last_commit": null
+  },
+  {
+   "path": "research/geomlab_results/phase2/checkpoint.json",
+   "sha256": "1a3cda0f32e653994ae5e0b410c2705f23a5d1c384cb16365bd20414fd9c4c43",
+   "bytes": 40130,
+   "last_commit": null
+  },
+  {
+   "path": "research/geomlab_results/phase2/PREREG.md",
+   "sha256": "26476c647b4455d53f00af7ba1d528c976a91f220e211f08e16760be09c3f90b",
+   "bytes": 6992,
+   "last_commit": null
+  },
+  {
+   "path": "research/geomlab_results/phase2/results.json",
+   "sha256": "0b144302ef228ad3d15fd7d897ca9ef2f0cd9835b1f892831397441bc26d6799",
+   "bytes": 13152,
+   "last_commit": null
+  },
+  {
+   "path": "research/geomlab_results/phase2/run_phase2.py",
+   "sha256": "bd2c793d7414264d8ddd18f715f9be353487525cfe3fefb1f0015ebdc17db189",
+   "bytes": 21107,
+   "last_commit": null
+  },
+  {
+   "path": "research/geomlab_results/phase2/tables.txt",
+   "sha256": "e9593b578089974e816a29a8f3815233fb05ac5f24ebc33119322906ccdec6e9",
+   "bytes": 2803,
+   "last_commit": null
+  },
+  {
    "path": "research/geomlab_results/z0/AMENDMENT.md",
    "sha256": "53f33d7b0ec8fd81b877a833fa8fb39d509f3d9f34735234491f622a9f605af3",
    "bytes": 4189,
-   "last_commit": null
+   "last_commit": "8312306"
   },
   {
    "path": "research/geomlab_results/z0/PREREG.md",
    "sha256": "476b91015388fc10640f0cab691b3c94b896edfa89efdaa9d1178ce3391854fb",
    "bytes": 4634,
-   "last_commit": null
+   "last_commit": "8312306"
   },
   {
    "path": "research/geomlab_results/z0/results.json",
    "sha256": "b25053834281ccaa69a136c7999b2cf54774b34bd860d764d806a1f174c390e8",
    "bytes": 13878,
-   "last_commit": null
+   "last_commit": "8312306"
   },
   {
    "path": "research/geomlab_results/z0/tables.txt",
    "sha256": "c722f418919a48a4a5ca28141343f41c9957b25a1d046e1ce961b105168d9dd0",
    "bytes": 2141,
-   "last_commit": null
+   "last_commit": "8312306"
   },
   {
    "path": "research/geomlab_results/z1/AMENDMENT.md",
    "sha256": "319acba5f9a21792bc2146d575bb8c2473137ace21b157b333171bd596180bb6",
    "bytes": 2040,
-   "last_commit": null
+   "last_commit": "8312306"
   },
   {
    "path": "research/geomlab_results/z1/checkpoint_z1_bf16.json",
    "sha256": "4b455ec0b3e9c4d2848973a043f19ac5c34508e91c9d453e75df6af7c3882e18",
    "bytes": 28563,
-   "last_commit": null
+   "last_commit": "8312306"
   },
   {
    "path": "research/geomlab_results/z1/PREREG.md",
    "sha256": "c97ba7479c60a6954eda8600fafbd2046af21e032d1719fc4b7b08ee299d1cf2",
    "bytes": 8319,
-   "last_commit": null
+   "last_commit": "8312306"
   },
   {
    "path": "research/geomlab_results/z1/results.json",
    "sha256": "beed3937c52b6ab385fea03a2ebed69857c65659b2fd104b6e30020d0857794a",
    "bytes": 32054,
-   "last_commit": null
+   "last_commit": "8312306"
   },
   {
    "path": "research/geomlab_results/z1/tables.txt",
    "sha256": "c13257d3f906c12ac97a1f8da13352f1eb2f2268aeee427796f02db43232a048",
    "bytes": 1794,
-   "last_commit": null
+   "last_commit": "8312306"
   },
   {
    "path": "research/geomlab_results/z2/results.json",
    "sha256": "28db35ac7af6cf0fc5da29d36bd3440c6d9784349d11901d307c120931a4d0d9",
    "bytes": 60229,
-   "last_commit": null
+   "last_commit": "8312306"
   },
   {
    "path": "research/geomlab_results/z2/tables.txt",
    "sha256": "e0ea375e0115b15f66561adab245202b388954ba68c98d3de05226add6fa083f",
    "bytes": 3161,
-   "last_commit": null
+   "last_commit": "8312306"
   },
   {
    "path": "research/growmoe_results/arith/arith_lib.py",
    "sha256": "4543edb8ec22032c1f9963e30b0b0db55e7a11db9b7a6559273235dd54fbf092",
    "bytes": 22231,
-   "last_commit": null
+   "last_commit": "8312306"
   },
   {
    "path": "research/growmoe_results/arith/launch_curve.sh",
    "sha256": "6809c6edd0be4f981756d57b23dfd652ea4daa4e6c7fb1c74af66f5e264a5f66",
    "bytes": 599,
-   "last_commit": null
+   "last_commit": "8312306"
   },
   {
    "path": "research/growmoe_results/arith/launch_main.sh",
    "sha256": "2523f4c2035e2dc174c43f37e4178c60d2317e293a11ce46c297dc3af804ad3f",
    "bytes": 1509,
-   "last_commit": null
+   "last_commit": "8312306"
   },
   {
    "path": "research/growmoe_results/arith/launch_main2.sh",
    "sha256": "4b00a433bc4a36d4c03c327d605da3552a8d45d23fd7a26a6215a8b10556aa56",
    "bytes": 681,
-   "last_commit": null
+   "last_commit": "8312306"
   },
   {
    "path": "research/growmoe_results/arith/report_arith.py",
    "sha256": "bb2baf5a336038d137e190ae255d98367575eaff8af61f6f9e14ef528b25ef5f",
    "bytes": 32121,
-   "last_commit": null
+   "last_commit": "8312306"
   },
   {
    "path": "research/growmoe_results/arith/RESULTS_ARITH.md",
    "sha256": "d29a40229325ece5fef66533084f3c8e7a3b2372fffddf4701c48c95510801a3",
    "bytes": 26894,
-   "last_commit": null
+   "last_commit": "8312306"
   },
   {
    "path": "research/growmoe_results/arith/run_arith.py",
    "sha256": "02959dd38bf6af9979ab78bdac6ead8c2962cc3f804a51df0291ddf863729363",
    "bytes": 7792,
-   "last_commit": null
+   "last_commit": "8312306"
   },
   {
    "path": "research/growmoe_results/IMPLEMENTATION_LOG.md",
@@ -444,9 +546,9 @@
   },
   {
    "path": "research/growmoe_results/m0/run_m0.py",
-   "sha256": "97e5dfbf82c5e49a8b0bc97e0971393283f3ff2aeaf0cf136774e63f00805ece",
-   "bytes": 36743,
-   "last_commit": "f881cb3"
+   "sha256": "830a9b4976a0015b55069bb31734b352907651af630311ff62a421b342bdd8e7",
+   "bytes": 37414,
+   "last_commit": "8312306"
   },
   {
    "path": "research/growmoe_results/m0/runs/F-15__0__b1.json",
@@ -1538,25 +1640,25 @@
    "path": "research/growmoe_results/m5/m5c_stage3.json",
    "sha256": "0afe74581ef357f60c69d56b3062c27d1dac965feb8a147a1fe1c08074f00c88",
    "bytes": 2960,
-   "last_commit": null
+   "last_commit": "8312306"
   },
   {
    "path": "research/growmoe_results/m5/m5d_fresh.json",
    "sha256": "66046b552e1a06ca5a762f54274aba1310fa1519aaace1dcdc960a7000eb86c6",
    "bytes": 2033,
-   "last_commit": null
+   "last_commit": "8312306"
   },
   {
    "path": "research/growmoe_results/m5/run_m5c_stage3.py",
    "sha256": "d2d87249d1dd175f8753f5d5c2a10d29051c33e97f7bfe3960a77dab0fa61dff",
    "bytes": 3989,
-   "last_commit": null
+   "last_commit": "8312306"
   },
   {
    "path": "research/growmoe_results/m5/run_m5d_fresh.py",
    "sha256": "450251c34fee2b7ff9cb927fc6495e2046285f2c34dca8034e4c387327504ded",
    "bytes": 4528,
-   "last_commit": null
+   "last_commit": "8312306"
   },
   {
    "path": "research/growmoe_results/phase0/spike1_novelty.json",
@@ -3818,13 +3920,13 @@
    "path": "research/growmoe_results/shootout/RESULTS_SHOOTOUT.md",
    "sha256": "5e8cb9dfbe9be193139a198a17bdf263e41738813aa692dc8507861d8d23460f",
    "bytes": 2784,
-   "last_commit": null
+   "last_commit": "8312306"
   },
   {
    "path": "research/growmoe_results/shootout/shootout.py",
    "sha256": "486acd3b9d456040d7e8f42478b8ebe6068996c7be32517aaa3e5ae963ed25c5",
    "bytes": 10520,
-   "last_commit": null
+   "last_commit": "8312306"
   },
   {
    "path": "research/MOE_CONTINUAL_LEARNING_REPORT_2026-10.md",
@@ -3992,13 +4094,13 @@
    "path": "research/results_geometry_checks.log",
    "sha256": "4d681075b6bba90d65547a2286aee728aa939d26e86f55222fbd409395230ca6",
    "bytes": 1560,
-   "last_commit": null
+   "last_commit": "8312306"
   },
   {
    "path": "research/results_vsa_numerics.log",
    "sha256": "9ee3a01a7085364114552b1edefc039ee60caa8300d9e213317187bd8c838942",
    "bytes": 5320,
-   "last_commit": null
+   "last_commit": "8312306"
   },
   {
    "path": "research/ROUTING_RESEARCH_2026-10.md",
@@ -4034,79 +4136,97 @@
    "path": "research/yggdrasil_results/poc_a4_tree_embedding_tuned.json",
    "sha256": "abac34d2d5dd0b9b17082443e6bc248c6a52b443cc69b60e4c08454ca25bff12",
    "bytes": 7803,
-   "last_commit": null
+   "last_commit": "8312306"
   },
   {
    "path": "research/yggdrasil_results/poc_a5_long_training.json",
    "sha256": "1f5eff89678844d825206a7145a653b3cecba6cf92f4b89710621f098896fe2d",
    "bytes": 1957,
-   "last_commit": null
+   "last_commit": "8312306"
   },
   {
    "path": "research/yggdrasil_results/poc_b_table.txt",
    "sha256": "a537e890b366b38074c4d941e8cb98e0d583410ae3c16dae6a19f679b0c5973f",
    "bytes": 2003,
-   "last_commit": null
+   "last_commit": "8312306"
   },
   {
    "path": "research/yggdrasil_results/poc_c2_output.txt",
    "sha256": "e6a6752afefb2474dce396b2f604bdd0a4dd416c11202c30f8d798fdacdee567",
    "bytes": 515,
-   "last_commit": null
+   "last_commit": "8312306"
   },
   {
    "path": "research/yggdrasil_results/poc_c_output.txt",
    "sha256": "dffc747eacb22e409d952def2c94c1d1021dd9286aaeefacbb8dfabf77534be8",
    "bytes": 4724,
-   "last_commit": null
+   "last_commit": "8312306"
   },
   {
    "path": "research/yggdrasil_results/s5_comparison.json",
    "sha256": "0e798892ee01c5ea0844cc35e360ea597b4672aca34d1d284c9c63632feff646",
    "bytes": 7934,
-   "last_commit": null
+   "last_commit": "8312306"
   },
   {
    "path": "research/yggdrasil_results/s5_comparison_table.txt",
    "sha256": "bf5901a10edbb91f9aacdfe3ad3674fe0ae929798bc8484a033753ff0228a640",
    "bytes": 743,
-   "last_commit": null
+   "last_commit": "8312306"
   },
   {
    "path": "research/yggformer_results/e3_results.json",
    "sha256": "bd82b96bd02ea4042a8e7d553ac506546724dda8c8741a2cbc3bec5f3b8c47cf",
    "bytes": 29689,
-   "last_commit": null
+   "last_commit": "8312306"
   },
   {
    "path": "research/yggformer_results/e5_results.json",
    "sha256": "d710e652743ea8e3cfbe476350fb762299c68b3b75bab7113253d7b13d443eb5",
    "bytes": 7896,
-   "last_commit": null
+   "last_commit": "8312306"
   },
   {
    "path": "research/yggformer_results/e6_lm_results.json",
    "sha256": "0aceef6ee425895f0c3d3016ba5e56343501455137d214802447fe8f3b475eb9",
    "bytes": 14963,
-   "last_commit": null
+   "last_commit": "8312306"
   },
   {
    "path": "research/yggformer_results/e7_results.json",
    "sha256": "ad3bacdf5e15125bd21b16bf0a9fdbbd50c6ddf745be4e0b33ae1c6ccb0ef612",
    "bytes": 820,
-   "last_commit": null
+   "last_commit": "8312306"
   },
   {
    "path": "research/yggformer_results/track_y_final_report.txt",
    "sha256": "a3601a446c70d709cf16eadcc321cab94e9eed0e32d57d5e640135b049e4bdcb",
    "bytes": 17639,
+   "last_commit": "8312306"
+  },
+  {
+   "path": "tests/geomlab/test_phase0.py",
+   "sha256": "04d592483e7cf05b2a1664a83b5cf08add189c9949fccd9fb8bfa6baff04317a",
+   "bytes": 4307,
+   "last_commit": null
+  },
+  {
+   "path": "tests/geomlab/test_phase1.py",
+   "sha256": "dbe43ec3c550d17178fdb110892f88e2b28e66eaf82b96d99fcc2b42cfe0f96a",
+   "bytes": 2680,
+   "last_commit": null
+  },
+  {
+   "path": "tests/geomlab/test_phase2.py",
+   "sha256": "f78348d83af295bbe529063b3ba9c039ce0f662d42585664f7cc0ce9cf139aa5",
+   "bytes": 3920,
    "last_commit": null
   },
   {
    "path": "tests/growmoe/test_gm_arith.py",
    "sha256": "ce724a8a1041f787cf14806188a665a90d8e8592638834dd244587adefcd6388",
    "bytes": 6621,
-   "last_commit": null
+   "last_commit": "8312306"
   }
  ]
 }

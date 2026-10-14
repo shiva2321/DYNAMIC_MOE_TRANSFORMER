@@ -1,0 +1,6 @@
+[E128 left alone s0] unseen 34.4  seen 36.4  params 35,084  129s
+[E512 from the start s0] unseen 37.3  seen 40.8  params 133,772  158s
+[E128, widen +64 at half s0] unseen 34.3  seen 37.8  params 51,532  188s
+[E128, widen +384 at half s0] unseen 34.4  seen 37.2  params 133,772  191s
+[E128, widen +896 at half s0] unseen 33.8  seen 36.9  params 265,356  136s
+[E128, one more block at half s0] unseen 34.1  seen 37.0  params 68,364  124s

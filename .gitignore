@@ -43,3 +43,12 @@ artifacts/checkpoints/
 .DS_Store
 Thumbs.db
 desktop.ini
+
+# GrowMoE diagnosis study: checkpoints, saved pools and temp files are large and re-creatable (resume with research/growmoe_results/diagnosis/jobqueue.py)
+research/growmoe_results/diagnosis/**/*.ckpt
+research/growmoe_results/diagnosis/**/*.pool.pkl
+research/growmoe_results/diagnosis/**/*.tmp
+research/growmoe_results/diagnosis/queue.lock
+
+# third-party dataset download caches (re-downloadable)
+data_cache/

@@ -1,0 +1,5 @@
+after 900 batches the 16-wide expert has held-out CE 1.230; probing on 16000 stored and 4000 held-out examples
+probe of 480 steps: control CE 1.206  +8: gain +0.5% (p 0.005)  +48: gain +1.7% (p 0.002)  +112: gain +2.0% (p 0.001)  +496: gain +0.7% (p 0.220)   (12s)
+probe of 1000 steps: control CE 1.213  +8: gain +1.9% (p 0.001)  +48: gain +2.0% (p 0.006)  +112: gain -0.3% (p 0.625)  +496: gain -8.9% (p 1.000)   (26s)
+probe of 2000 steps: control CE 1.225  +8: gain +1.0% (p 0.085)  +48: gain -3.2% (p 0.993)  +112: gain -18.0% (p 1.000)  +496: gain -69.1% (p 1.000)   (61s)
+probe of 5000 steps: control CE 1.235  +8: gain -0.4% (p 0.648)  +48: gain -22.0% (p 1.000)  +112: gain -88.9% (p 1.000)  +496: gain -197.9% (p 1.000)   (115s)

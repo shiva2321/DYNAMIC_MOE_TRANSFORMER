@@ -1,0 +1,6 @@
+[E16 left alone s0] unseen 10.9  seen 10.8  params 6,300  88s
+[E16 widened to 128 at half s0] unseen 28.9  seen 32.0  params 35,084  86s
+[E16 widened to 512 at half s0] unseen 32.3  seen 36.5  params 133,772  84s
+[E16, one more block at half s0] unseen 10.8  seen 11.0  params 10,796  117s
+[E128 from the start s0] unseen 34.4  seen 36.4  params 35,084  147s
+[E512 from the start s0] unseen 37.3  seen 40.8  params 133,772  106s
