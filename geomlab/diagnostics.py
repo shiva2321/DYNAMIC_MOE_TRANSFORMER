@@ -28,7 +28,9 @@ def effective_rank(X: torch.Tensor, eps: float = 1e-12) -> float:
     """
     if not isinstance(X, torch.Tensor):
         X = torch.tensor(X, dtype=torch.float32)
-    X_flat = X.detach().float()
+    X_flat = X.detach()
+    if not X_flat.is_complex():
+        X_flat = X_flat.float()
     if X_flat.dim() > 2:
         X_flat = X_flat.reshape(-1, X_flat.shape[-1])
     elif X_flat.dim() == 1:
@@ -66,7 +68,9 @@ def isotropy(X: torch.Tensor, eps: float = 1e-8, t: float = 2.0, max_samples: in
     """
     if not isinstance(X, torch.Tensor):
         X = torch.tensor(X, dtype=torch.float32)
-    X_flat = X.detach().float()
+    X_flat = X.detach()
+    if not X_flat.is_complex():
+        X_flat = X_flat.float()
     if X_flat.dim() > 2:
         X_flat = X_flat.reshape(-1, X_flat.shape[-1])
 
@@ -81,7 +85,10 @@ def isotropy(X: torch.Tensor, eps: float = 1e-8, t: float = 2.0, max_samples: in
         N = max_samples
 
     u = F.normalize(X_flat, p=2, dim=-1, eps=eps)
-    G = torch.matmul(u, u.t())  # Pairwise cosine Gram matrix (N, N)
+    if u.is_complex():
+        G = torch.matmul(u, u.conj().t()).real  # Pairwise cosine Gram matrix (N, N)
+    else:
+        G = torch.matmul(u, u.t())  # Pairwise cosine Gram matrix (N, N)
 
     # Exclude self-similarities on the diagonal
     num_pairs = N * (N - 1)

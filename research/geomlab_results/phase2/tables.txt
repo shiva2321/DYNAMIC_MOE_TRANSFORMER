@@ -1,0 +1,42 @@
+================================================================================
+PHASE 2: COMPOSITIONAL OOD GENERALIZATION AND LENGTH EXTRAPOLATION RESULTS
+================================================================================
+Dev Seeds: [100, 101, 102] | Test Seeds: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9] (10 seeds, mean +- 95% CI)
+Training distribution: K in {1, 2, 3} | OOD Extrapolation: K in {4, 6, 8, 12}
+
+TABLE 1: REASONING ACCURACY ACROSS COMPOSITION LENGTHS (CHANCE = 0.39%)
+--------------------------------------------------------------------------------
+Arm                      | K<=3 (Train)   | K=4 (OOD)    | K=6 (OOD)    | K=8 (OOD)    | K=12 (OOD)  
+--------------------------------------------------------------------------------
+standard_transformer     | 11.5% +/- 2.3% | 5.5%         | 3.3%         | 2.3%         | 1.6%        
+euclidean_rnn            | 2.9% +/- 0.3%  | 2.2%         | 0.7%         | 0.5%         | 0.5%        
+torus_isometry           | 48.3% +/- 1.5% | 26.2%        | 11.9%        | 6.4%         | 1.9%        
+block_unitary_isometry   | 78.3% +/- 1.2% | 73.8%        | 68.2%        | 57.8%        | 48.4%       
+--------------------------------------------------------------------------------
+
+TABLE 2: REPRESENTATION NORM DRIFT RATIO ||h_K|| / ||h_0|| AT K=12
+--------------------------------------------------------------------------------
+Arm                      | K=12 Norm Drift    | Theoretical Ideal 
+--------------------------------------------------------------------------------
+standard_transformer     | 1.0587 +/- 0.0761  | 1.0000            
+euclidean_rnn            | 1.0819 +/- 0.0036  | 1.0000            
+torus_isometry           | 1.0000 +/- 0.0000  | 1.0000 (Exact Isometry)
+block_unitary_isometry   | 1.0000 +/- 0.0000  | 1.0000 (Exact Isometry)
+--------------------------------------------------------------------------------
+
+TABLE 3: PRE-REGISTERED HYPOTHESIS VERIFICATION
+--------------------------------------------------------------------------------
+H1: In-distribution competence (all arms >= 80% on K<=3): REJECTED
+    standard_transformer: 11.5%
+    euclidean_rnn: 2.9%
+    torus_isometry: 48.3%
+    block_unitary_isometry: 78.3%
+H2: Baseline length breakdown (<30% at K=8, <15% at K=12): PASSED
+    Transformer K=8: 2.3%, K=12: 1.6%
+    RNN K=8: 0.5%, K=12: 0.5%
+H3: Isometric extrapolation resilience (Unitary >=75% at K=8, >=60% at K=12, gain >=40%): REJECTED
+    Unitary K=8: 57.8%, K=12: 48.4% (Gain over baselines: +46.8%, p=3.45e-14, dz=25.55)
+    Torus K=8: 6.4%, K=12: 1.9%
+H4: Isometry norm conservation (drift=0.0%, RNN drift >= 25%): REJECTED
+    Unitary: 1.0000, Torus: 1.0000, RNN: 1.0819
+================================================================================
