@@ -1,0 +1,1 @@
+{"arm": "replay_eq_w4096_s5", "n_regimes": 100, "seed": 101, "acc": 0.25547499939799306, "experts": 1, "params": 1054344, "stored_vectors": 60512, "bytes": 35199520, "predict_macs": 1049600, "seconds": 89.83001650000006, "width": 4096, "buffer": 60512, "steps": 5}

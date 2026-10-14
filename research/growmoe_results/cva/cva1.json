@@ -1,0 +1,828 @@
+{
+  "exp1_1_gate_false_novelty": [
+    {
+      "n_fit": 32,
+      "q": 0.02,
+      "mean_inputs_flagged": 0.0,
+      "std_inputs_flagged": 0.0,
+      "mean_batches_flagged": 0.0,
+      "std_batches_flagged": 0.0,
+      "threshold_1_5_q": 0.03,
+      "verdict": "NOTE"
+    },
+    {
+      "n_fit": 32,
+      "q": 0.05,
+      "mean_inputs_flagged": 0.0,
+      "std_inputs_flagged": 0.0,
+      "mean_batches_flagged": 0.0,
+      "std_batches_flagged": 0.0,
+      "threshold_1_5_q": 0.07500000000000001,
+      "verdict": "NOTE"
+    },
+    {
+      "n_fit": 64,
+      "q": 0.02,
+      "mean_inputs_flagged": 0.0,
+      "std_inputs_flagged": 0.0,
+      "mean_batches_flagged": 0.0,
+      "std_batches_flagged": 0.0,
+      "threshold_1_5_q": 0.03,
+      "verdict": "NOTE"
+    },
+    {
+      "n_fit": 64,
+      "q": 0.05,
+      "mean_inputs_flagged": 0.0,
+      "std_inputs_flagged": 0.0,
+      "mean_batches_flagged": 0.0,
+      "std_batches_flagged": 0.0,
+      "threshold_1_5_q": 0.07500000000000001,
+      "verdict": "NOTE"
+    },
+    {
+      "n_fit": 128,
+      "q": 0.02,
+      "mean_inputs_flagged": 0.0,
+      "std_inputs_flagged": 0.0,
+      "mean_batches_flagged": 0.0,
+      "std_batches_flagged": 0.0,
+      "threshold_1_5_q": 0.03,
+      "verdict": "PASS"
+    },
+    {
+      "n_fit": 128,
+      "q": 0.05,
+      "mean_inputs_flagged": 0.0,
+      "std_inputs_flagged": 0.0,
+      "mean_batches_flagged": 0.0,
+      "std_batches_flagged": 0.0,
+      "threshold_1_5_q": 0.07500000000000001,
+      "verdict": "PASS"
+    },
+    {
+      "n_fit": 256,
+      "q": 0.02,
+      "mean_inputs_flagged": 0.0,
+      "std_inputs_flagged": 0.0,
+      "mean_batches_flagged": 0.0,
+      "std_batches_flagged": 0.0,
+      "threshold_1_5_q": 0.03,
+      "verdict": "PASS"
+    },
+    {
+      "n_fit": 256,
+      "q": 0.05,
+      "mean_inputs_flagged": 0.0002,
+      "std_inputs_flagged": 0.0006782329983125267,
+      "mean_batches_flagged": 0.002531645569620253,
+      "std_batches_flagged": 0.008585227826740848,
+      "threshold_1_5_q": 0.07500000000000001,
+      "verdict": "PASS"
+    },
+    {
+      "n_fit": 512,
+      "q": 0.02,
+      "mean_inputs_flagged": 0.0,
+      "std_inputs_flagged": 0.0,
+      "mean_batches_flagged": 0.0,
+      "std_batches_flagged": 0.0,
+      "threshold_1_5_q": 0.03,
+      "verdict": "PASS"
+    },
+    {
+      "n_fit": 512,
+      "q": 0.05,
+      "mean_inputs_flagged": 0.0,
+      "std_inputs_flagged": 0.0,
+      "mean_batches_flagged": 0.0,
+      "std_batches_flagged": 0.0,
+      "threshold_1_5_q": 0.07500000000000001,
+      "verdict": "PASS"
+    },
+    {
+      "n_fit": 1024,
+      "q": 0.02,
+      "mean_inputs_flagged": 0.0,
+      "std_inputs_flagged": 0.0,
+      "mean_batches_flagged": 0.0,
+      "std_batches_flagged": 0.0,
+      "threshold_1_5_q": 0.03,
+      "verdict": "PASS"
+    },
+    {
+      "n_fit": 1024,
+      "q": 0.05,
+      "mean_inputs_flagged": 0.0,
+      "std_inputs_flagged": 0.0,
+      "mean_batches_flagged": 0.0,
+      "std_batches_flagged": 0.0,
+      "threshold_1_5_q": 0.07500000000000001,
+      "verdict": "PASS"
+    }
+  ],
+  "exp1_2_gate_power_overlap": [
+    {
+      "rho": 0.0,
+      "mean_flagged_B": 1.0,
+      "std_flagged_B": 0.0,
+      "mean_auroc": 0.9972749820000001,
+      "std_auroc": 0.0034004083440310404,
+      "verdict": "REPORT"
+    },
+    {
+      "rho": 0.3,
+      "mean_flagged_B": 0.9992600000000001,
+      "std_flagged_B": 0.0006843975452907611,
+      "mean_auroc": 0.9972187839999999,
+      "std_auroc": 0.0033849362924793487,
+      "verdict": "REPORT"
+    },
+    {
+      "rho": 0.6,
+      "mean_flagged_B": 0.87421,
+      "std_flagged_B": 0.057088088950323086,
+      "mean_auroc": 0.987977499,
+      "std_auroc": 0.002758725193146089,
+      "verdict": "REPORT"
+    },
+    {
+      "rho": 0.85,
+      "mean_flagged_B": 0.03693,
+      "std_flagged_B": 0.0829758826406806,
+      "mean_auroc": 0.823654966,
+      "std_auroc": 0.011504828730605434,
+      "verdict": "REPORT"
+    },
+    {
+      "rho": 0.95,
+      "mean_flagged_B": 2e-05,
+      "std_flagged_B": 8.717797887081348e-05,
+      "mean_auroc": 0.6235470270000001,
+      "std_auroc": 0.010506245194156251,
+      "verdict": "REPORT"
+    }
+  ],
+  "exp1_3_negative_control": [
+    {
+      "n_fit": 64,
+      "variant": "direct",
+      "m": 32,
+      "share_above_threshold": 0.085,
+      "mean_evidence": -17.412950592041014,
+      "std_evidence": 16.55990754777643,
+      "threshold": 4.605170185988092,
+      "verdict": "DEFECT-EVIDENCE-UNCALIBRATED"
+    },
+    {
+      "n_fit": 64,
+      "variant": "direct",
+      "m": 64,
+      "share_above_threshold": 0.29,
+      "mean_evidence": -7.51048713684082,
+      "std_evidence": 23.650548157966213,
+      "threshold": 4.605170185988092,
+      "verdict": "DEFECT-EVIDENCE-UNCALIBRATED"
+    },
+    {
+      "n_fit": 64,
+      "variant": "direct",
+      "m": 128,
+      "share_above_threshold": 0.79,
+      "mean_evidence": 35.079678268432616,
+      "std_evidence": 38.466010450978196,
+      "threshold": 4.605170185988092,
+      "verdict": "DEFECT-EVIDENCE-UNCALIBRATED"
+    },
+    {
+      "n_fit": 64,
+      "variant": "direct",
+      "m": 256,
+      "share_above_threshold": 1.0,
+      "mean_evidence": 140.81058921813965,
+      "std_evidence": 57.3844735968472,
+      "threshold": 4.605170185988092,
+      "verdict": "DEFECT-EVIDENCE-UNCALIBRATED"
+    },
+    {
+      "n_fit": 64,
+      "variant": "incremental",
+      "m": 32,
+      "share_above_threshold": 0.085,
+      "mean_evidence": -17.412950592041014,
+      "std_evidence": 16.55990754777643,
+      "threshold": 4.605170185988092,
+      "verdict": "DEFECT-EVIDENCE-UNCALIBRATED"
+    },
+    {
+      "n_fit": 64,
+      "variant": "incremental",
+      "m": 64,
+      "share_above_threshold": 0.29,
+      "mean_evidence": -7.51048713684082,
+      "std_evidence": 23.650548157966213,
+      "threshold": 4.605170185988092,
+      "verdict": "DEFECT-EVIDENCE-UNCALIBRATED"
+    },
+    {
+      "n_fit": 64,
+      "variant": "incremental",
+      "m": 128,
+      "share_above_threshold": 0.79,
+      "mean_evidence": 35.079678268432616,
+      "std_evidence": 38.466010450978196,
+      "threshold": 4.605170185988092,
+      "verdict": "DEFECT-EVIDENCE-UNCALIBRATED"
+    },
+    {
+      "n_fit": 64,
+      "variant": "incremental",
+      "m": 256,
+      "share_above_threshold": 1.0,
+      "mean_evidence": 140.81058921813965,
+      "std_evidence": 57.3844735968472,
+      "threshold": 4.605170185988092,
+      "verdict": "DEFECT-EVIDENCE-UNCALIBRATED"
+    },
+    {
+      "n_fit": 256,
+      "variant": "direct",
+      "m": 32,
+      "share_above_threshold": 0.005,
+      "mean_evidence": -38.77477607727051,
+      "std_evidence": 15.575914133826338,
+      "threshold": 4.605170185988092,
+      "verdict": "PASS"
+    },
+    {
+      "n_fit": 256,
+      "variant": "direct",
+      "m": 64,
+      "share_above_threshold": 0.015,
+      "mean_evidence": -45.831918716430664,
+      "std_evidence": 22.27745783315614,
+      "threshold": 4.605170185988092,
+      "verdict": "PASS"
+    },
+    {
+      "n_fit": 256,
+      "variant": "direct",
+      "m": 128,
+      "share_above_threshold": 0.055,
+      "mean_evidence": -41.41708145141602,
+      "std_evidence": 29.179261452926855,
+      "threshold": 4.605170185988092,
+      "verdict": "DEFECT-EVIDENCE-UNCALIBRATED"
+    },
+    {
+      "n_fit": 256,
+      "variant": "direct",
+      "m": 256,
+      "share_above_threshold": 0.335,
+      "mean_evidence": -11.205443649291992,
+      "std_evidence": 40.853035177112254,
+      "threshold": 4.605170185988092,
+      "verdict": "DEFECT-EVIDENCE-UNCALIBRATED"
+    },
+    {
+      "n_fit": 256,
+      "variant": "incremental",
+      "m": 32,
+      "share_above_threshold": 0.005,
+      "mean_evidence": -38.77477607727051,
+      "std_evidence": 15.575914133826338,
+      "threshold": 4.605170185988092,
+      "verdict": "PASS"
+    },
+    {
+      "n_fit": 256,
+      "variant": "incremental",
+      "m": 64,
+      "share_above_threshold": 0.015,
+      "mean_evidence": -45.831918716430664,
+      "std_evidence": 22.27745783315614,
+      "threshold": 4.605170185988092,
+      "verdict": "PASS"
+    },
+    {
+      "n_fit": 256,
+      "variant": "incremental",
+      "m": 128,
+      "share_above_threshold": 0.055,
+      "mean_evidence": -41.41708145141602,
+      "std_evidence": 29.179261452926855,
+      "threshold": 4.605170185988092,
+      "verdict": "DEFECT-EVIDENCE-UNCALIBRATED"
+    },
+    {
+      "n_fit": 256,
+      "variant": "incremental",
+      "m": 256,
+      "share_above_threshold": 0.335,
+      "mean_evidence": -11.205443649291992,
+      "std_evidence": 40.853035177112254,
+      "threshold": 4.605170185988092,
+      "verdict": "DEFECT-EVIDENCE-UNCALIBRATED"
+    },
+    {
+      "n_fit": 1024,
+      "variant": "direct",
+      "m": 32,
+      "share_above_threshold": 0.005,
+      "mean_evidence": -35.117536544799805,
+      "std_evidence": 16.05885686635665,
+      "threshold": 4.605170185988092,
+      "verdict": "PASS"
+    },
+    {
+      "n_fit": 1024,
+      "variant": "direct",
+      "m": 64,
+      "share_above_threshold": 0.025,
+      "mean_evidence": -39.96245445251465,
+      "std_evidence": 22.92780517993672,
+      "threshold": 4.605170185988092,
+      "verdict": "PASS"
+    },
+    {
+      "n_fit": 1024,
+      "variant": "direct",
+      "m": 128,
+      "share_above_threshold": 0.125,
+      "mean_evidence": -34.700774307250974,
+      "std_evidence": 31.324515632056713,
+      "threshold": 4.605170185988092,
+      "verdict": "DEFECT-EVIDENCE-UNCALIBRATED"
+    },
+    {
+      "n_fit": 1024,
+      "variant": "direct",
+      "m": 256,
+      "share_above_threshold": 0.465,
+      "mean_evidence": 3.983755798339844,
+      "std_evidence": 46.495808974106176,
+      "threshold": 4.605170185988092,
+      "verdict": "DEFECT-EVIDENCE-UNCALIBRATED"
+    },
+    {
+      "n_fit": 1024,
+      "variant": "incremental",
+      "m": 32,
+      "share_above_threshold": 0.005,
+      "mean_evidence": -35.117536544799805,
+      "std_evidence": 16.05885686635665,
+      "threshold": 4.605170185988092,
+      "verdict": "PASS"
+    },
+    {
+      "n_fit": 1024,
+      "variant": "incremental",
+      "m": 64,
+      "share_above_threshold": 0.025,
+      "mean_evidence": -39.96245445251465,
+      "std_evidence": 22.92780517993672,
+      "threshold": 4.605170185988092,
+      "verdict": "PASS"
+    },
+    {
+      "n_fit": 1024,
+      "variant": "incremental",
+      "m": 128,
+      "share_above_threshold": 0.125,
+      "mean_evidence": -34.700774307250974,
+      "std_evidence": 31.324515632056713,
+      "threshold": 4.605170185988092,
+      "verdict": "DEFECT-EVIDENCE-UNCALIBRATED"
+    },
+    {
+      "n_fit": 1024,
+      "variant": "incremental",
+      "m": 256,
+      "share_above_threshold": 0.465,
+      "mean_evidence": 3.983755798339844,
+      "std_evidence": 46.495808974106176,
+      "threshold": 4.605170185988092,
+      "verdict": "DEFECT-EVIDENCE-UNCALIBRATED"
+    }
+  ],
+  "exp1_3_positive_control": [
+    {
+      "rho": 0.0,
+      "n_fit": 256,
+      "variant": "direct",
+      "m": 32,
+      "share_above_threshold": 1.0,
+      "mean_evidence": 598.4587382507324,
+      "std_evidence": 29.25482607911568,
+      "threshold": 4.605170185988092,
+      "verdict": "REPORT"
+    },
+    {
+      "rho": 0.0,
+      "n_fit": 256,
+      "variant": "direct",
+      "m": 64,
+      "share_above_threshold": 1.0,
+      "mean_evidence": 1226.191870727539,
+      "std_evidence": 39.54237751731331,
+      "threshold": 4.605170185988092,
+      "verdict": "PASS"
+    },
+    {
+      "rho": 0.0,
+      "n_fit": 256,
+      "variant": "direct",
+      "m": 128,
+      "share_above_threshold": 1.0,
+      "mean_evidence": 2505.087814941406,
+      "std_evidence": 64.45293610636638,
+      "threshold": 4.605170185988092,
+      "verdict": "PASS"
+    },
+    {
+      "rho": 0.0,
+      "n_fit": 256,
+      "variant": "direct",
+      "m": 256,
+      "share_above_threshold": 1.0,
+      "mean_evidence": 5092.25396484375,
+      "std_evidence": 97.06749296681193,
+      "threshold": 4.605170185988092,
+      "verdict": "PASS"
+    },
+    {
+      "rho": 0.3,
+      "n_fit": 256,
+      "variant": "direct",
+      "m": 32,
+      "share_above_threshold": 1.0,
+      "mean_evidence": 401.60560424804686,
+      "std_evidence": 25.9153136090289,
+      "threshold": 4.605170185988092,
+      "verdict": "REPORT"
+    },
+    {
+      "rho": 0.3,
+      "n_fit": 256,
+      "variant": "direct",
+      "m": 64,
+      "share_above_threshold": 1.0,
+      "mean_evidence": 832.4660986328125,
+      "std_evidence": 35.93048996003767,
+      "threshold": 4.605170185988092,
+      "verdict": "PASS"
+    },
+    {
+      "rho": 0.3,
+      "n_fit": 256,
+      "variant": "direct",
+      "m": 128,
+      "share_above_threshold": 1.0,
+      "mean_evidence": 1718.0830450439453,
+      "std_evidence": 58.76611479626504,
+      "threshold": 4.605170185988092,
+      "verdict": "PASS"
+    },
+    {
+      "rho": 0.3,
+      "n_fit": 256,
+      "variant": "direct",
+      "m": 256,
+      "share_above_threshold": 1.0,
+      "mean_evidence": 3515.872224121094,
+      "std_evidence": 89.10349304208736,
+      "threshold": 4.605170185988092,
+      "verdict": "PASS"
+    },
+    {
+      "rho": 0.6,
+      "n_fit": 256,
+      "variant": "direct",
+      "m": 32,
+      "share_above_threshold": 1.0,
+      "mean_evidence": 209.27820930480956,
+      "std_evidence": 22.15657897187661,
+      "threshold": 4.605170185988092,
+      "verdict": "REPORT"
+    },
+    {
+      "rho": 0.6,
+      "n_fit": 256,
+      "variant": "direct",
+      "m": 64,
+      "share_above_threshold": 1.0,
+      "mean_evidence": 448.397547454834,
+      "std_evidence": 31.14268132109496,
+      "threshold": 4.605170185988092,
+      "verdict": "REPORT"
+    },
+    {
+      "rho": 0.6,
+      "n_fit": 256,
+      "variant": "direct",
+      "m": 128,
+      "share_above_threshold": 1.0,
+      "mean_evidence": 949.8579330444336,
+      "std_evidence": 49.35890570592733,
+      "threshold": 4.605170185988092,
+      "verdict": "REPORT"
+    },
+    {
+      "rho": 0.6,
+      "n_fit": 256,
+      "variant": "direct",
+      "m": 256,
+      "share_above_threshold": 1.0,
+      "mean_evidence": 1976.4724475097655,
+      "std_evidence": 76.00689045731608,
+      "threshold": 4.605170185988092,
+      "verdict": "REPORT"
+    },
+    {
+      "rho": 0.85,
+      "n_fit": 256,
+      "variant": "direct",
+      "m": 32,
+      "share_above_threshold": 0.99,
+      "mean_evidence": 52.74076301574707,
+      "std_evidence": 18.697696776484847,
+      "threshold": 4.605170185988092,
+      "verdict": "REPORT"
+    },
+    {
+      "rho": 0.85,
+      "n_fit": 256,
+      "variant": "direct",
+      "m": 64,
+      "share_above_threshold": 1.0,
+      "mean_evidence": 136.27492027282716,
+      "std_evidence": 26.002598529266468,
+      "threshold": 4.605170185988092,
+      "verdict": "REPORT"
+    },
+    {
+      "rho": 0.85,
+      "n_fit": 256,
+      "variant": "direct",
+      "m": 128,
+      "share_above_threshold": 1.0,
+      "mean_evidence": 324.87741554260253,
+      "std_evidence": 37.62700030001972,
+      "threshold": 4.605170185988092,
+      "verdict": "REPORT"
+    },
+    {
+      "rho": 0.85,
+      "n_fit": 256,
+      "variant": "direct",
+      "m": 256,
+      "share_above_threshold": 1.0,
+      "mean_evidence": 723.6288812255859,
+      "std_evidence": 57.097458881669134,
+      "threshold": 4.605170185988092,
+      "verdict": "REPORT"
+    }
+  ],
+  "exp1_4_two_experts_negative_control": [
+    {
+      "n_fit": 64,
+      "variant": "direct",
+      "m": 32,
+      "share_above_threshold": 0.08,
+      "mean_evidence": -18.522436370849608,
+      "std_evidence": 16.505309227264913,
+      "threshold": 4.605170185988092,
+      "verdict": "DEFECT-EVIDENCE-UNCALIBRATED"
+    },
+    {
+      "n_fit": 64,
+      "variant": "direct",
+      "m": 64,
+      "share_above_threshold": 0.29,
+      "mean_evidence": -8.31772720336914,
+      "std_evidence": 23.775310044388213,
+      "threshold": 4.605170185988092,
+      "verdict": "DEFECT-EVIDENCE-UNCALIBRATED"
+    },
+    {
+      "n_fit": 64,
+      "variant": "direct",
+      "m": 128,
+      "share_above_threshold": 0.77,
+      "mean_evidence": 34.213799209594725,
+      "std_evidence": 36.713098858467944,
+      "threshold": 4.605170185988092,
+      "verdict": "DEFECT-EVIDENCE-UNCALIBRATED"
+    },
+    {
+      "n_fit": 64,
+      "variant": "direct",
+      "m": 256,
+      "share_above_threshold": 0.995,
+      "mean_evidence": 141.97918182373047,
+      "std_evidence": 56.517753786160874,
+      "threshold": 4.605170185988092,
+      "verdict": "DEFECT-EVIDENCE-UNCALIBRATED"
+    },
+    {
+      "n_fit": 64,
+      "variant": "incremental",
+      "m": 32,
+      "share_above_threshold": 0.08,
+      "mean_evidence": -18.522436370849608,
+      "std_evidence": 16.505309227264913,
+      "threshold": 4.605170185988092,
+      "verdict": "DEFECT-EVIDENCE-UNCALIBRATED"
+    },
+    {
+      "n_fit": 64,
+      "variant": "incremental",
+      "m": 64,
+      "share_above_threshold": 0.29,
+      "mean_evidence": -8.31772720336914,
+      "std_evidence": 23.775310044388213,
+      "threshold": 4.605170185988092,
+      "verdict": "DEFECT-EVIDENCE-UNCALIBRATED"
+    },
+    {
+      "n_fit": 64,
+      "variant": "incremental",
+      "m": 128,
+      "share_above_threshold": 0.77,
+      "mean_evidence": 34.213799209594725,
+      "std_evidence": 36.713098858467944,
+      "threshold": 4.605170185988092,
+      "verdict": "DEFECT-EVIDENCE-UNCALIBRATED"
+    },
+    {
+      "n_fit": 64,
+      "variant": "incremental",
+      "m": 256,
+      "share_above_threshold": 0.995,
+      "mean_evidence": 141.97918182373047,
+      "std_evidence": 56.517753786160874,
+      "threshold": 4.605170185988092,
+      "verdict": "DEFECT-EVIDENCE-UNCALIBRATED"
+    },
+    {
+      "n_fit": 256,
+      "variant": "direct",
+      "m": 32,
+      "share_above_threshold": 0.0,
+      "mean_evidence": -38.98477439880371,
+      "std_evidence": 15.58774112723077,
+      "threshold": 4.605170185988092,
+      "verdict": "PASS"
+    },
+    {
+      "n_fit": 256,
+      "variant": "direct",
+      "m": 64,
+      "share_above_threshold": 0.01,
+      "mean_evidence": -45.494091491699216,
+      "std_evidence": 22.139224216608667,
+      "threshold": 4.605170185988092,
+      "verdict": "PASS"
+    },
+    {
+      "n_fit": 256,
+      "variant": "direct",
+      "m": 128,
+      "share_above_threshold": 0.04,
+      "mean_evidence": -43.50690689086914,
+      "std_evidence": 29.959990943830753,
+      "threshold": 4.605170185988092,
+      "verdict": "DEFECT-EVIDENCE-UNCALIBRATED"
+    },
+    {
+      "n_fit": 256,
+      "variant": "direct",
+      "m": 256,
+      "share_above_threshold": 0.32,
+      "mean_evidence": -11.793406066894532,
+      "std_evidence": 40.86143546872142,
+      "threshold": 4.605170185988092,
+      "verdict": "DEFECT-EVIDENCE-UNCALIBRATED"
+    },
+    {
+      "n_fit": 256,
+      "variant": "incremental",
+      "m": 32,
+      "share_above_threshold": 0.0,
+      "mean_evidence": -38.24721618652344,
+      "std_evidence": 16.360127021854748,
+      "threshold": 4.605170185988092,
+      "verdict": "PASS"
+    },
+    {
+      "n_fit": 256,
+      "variant": "incremental",
+      "m": 64,
+      "share_above_threshold": 0.01,
+      "mean_evidence": -44.549978256225586,
+      "std_evidence": 22.628200254099138,
+      "threshold": 4.605170185988092,
+      "verdict": "PASS"
+    },
+    {
+      "n_fit": 256,
+      "variant": "incremental",
+      "m": 128,
+      "share_above_threshold": 0.055,
+      "mean_evidence": -41.28483299255371,
+      "std_evidence": 30.26448280249536,
+      "threshold": 4.605170185988092,
+      "verdict": "DEFECT-EVIDENCE-UNCALIBRATED"
+    },
+    {
+      "n_fit": 256,
+      "variant": "incremental",
+      "m": 256,
+      "share_above_threshold": 0.405,
+      "mean_evidence": -8.308394927978515,
+      "std_evidence": 46.93334305572828,
+      "threshold": 4.605170185988092,
+      "verdict": "DEFECT-EVIDENCE-UNCALIBRATED"
+    },
+    {
+      "n_fit": 1024,
+      "variant": "direct",
+      "m": 32,
+      "share_above_threshold": 0.01,
+      "mean_evidence": -36.643200912475585,
+      "std_evidence": 15.424870732858734,
+      "threshold": 4.605170185988092,
+      "verdict": "PASS"
+    },
+    {
+      "n_fit": 1024,
+      "variant": "direct",
+      "m": 64,
+      "share_above_threshold": 0.025,
+      "mean_evidence": -41.87191963195801,
+      "std_evidence": 21.939723230455506,
+      "threshold": 4.605170185988092,
+      "verdict": "PASS"
+    },
+    {
+      "n_fit": 1024,
+      "variant": "direct",
+      "m": 128,
+      "share_above_threshold": 0.105,
+      "mean_evidence": -36.37791351318359,
+      "std_evidence": 31.734252460209074,
+      "threshold": 4.605170185988092,
+      "verdict": "DEFECT-EVIDENCE-UNCALIBRATED"
+    },
+    {
+      "n_fit": 1024,
+      "variant": "direct",
+      "m": 256,
+      "share_above_threshold": 0.475,
+      "mean_evidence": 3.504836654663086,
+      "std_evidence": 44.03161696008887,
+      "threshold": 4.605170185988092,
+      "verdict": "DEFECT-EVIDENCE-UNCALIBRATED"
+    },
+    {
+      "n_fit": 1024,
+      "variant": "incremental",
+      "m": 32,
+      "share_above_threshold": 0.02,
+      "mean_evidence": -36.88769821166992,
+      "std_evidence": 15.944696861543365,
+      "threshold": 4.605170185988092,
+      "verdict": "PASS"
+    },
+    {
+      "n_fit": 1024,
+      "variant": "incremental",
+      "m": 64,
+      "share_above_threshold": 0.03,
+      "mean_evidence": -42.483952865600585,
+      "std_evidence": 23.147686596402952,
+      "threshold": 4.605170185988092,
+      "verdict": "PASS"
+    },
+    {
+      "n_fit": 1024,
+      "variant": "incremental",
+      "m": 128,
+      "share_above_threshold": 0.095,
+      "mean_evidence": -38.01335388183594,
+      "std_evidence": 31.346300120153792,
+      "threshold": 4.605170185988092,
+      "verdict": "DEFECT-EVIDENCE-UNCALIBRATED"
+    },
+    {
+      "n_fit": 1024,
+      "variant": "incremental",
+      "m": 256,
+      "share_above_threshold": 0.5,
+      "mean_evidence": 0.5959964752197265,
+      "std_evidence": 45.79720662978062,
+      "threshold": 4.605170185988092,
+      "verdict": "DEFECT-EVIDENCE-UNCALIBRATED"
+    }
+  ]
+}

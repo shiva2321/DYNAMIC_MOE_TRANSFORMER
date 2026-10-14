@@ -1,0 +1,17 @@
+tree: 1093 nodes (ternary, depth 6); device cuda; 2000 Adam steps with cosine decay; lr grid (0.1, 0.03, 0.01); selection seed 100, test seeds (0, 1, 2)
+d= 4 euclid   best-MAP 0.363 (lr 0.1)   best-distortion 0.166 (lr 0.1)   [18s]
+d= 4 poincare best-MAP 1.000 (lr 0.03)   best-distortion 0.036 (lr 0.1)   [62s]
+d= 4 lorentz  best-MAP 0.999 (lr 0.1)   best-distortion 0.038 (lr 0.1)   [93s]
+d= 8 euclid   best-MAP 0.592 (lr 0.01)   best-distortion 0.094 (lr 0.1)   [119s]
+d= 8 poincare best-MAP 1.000 (lr 0.1)   best-distortion 0.020 (lr 0.03)   [167s]
+d= 8 lorentz  best-MAP 1.000 (lr 0.1)   best-distortion 0.020 (lr 0.1)   [197s]
+
+MAP of retrieving each node's tree neighbours (higher is better; best lr per cell; mean of 3 seeds)
+   d    euclid  poincare   lorentz
+   4     0.363     1.000     0.999
+   8     0.592     1.000     1.000
+
+mean relative distortion of all pairs (lower is better; best lr per cell; mean of 3 seeds)
+   d    euclid  poincare   lorentz
+   4     0.166     0.036     0.038
+   8     0.094     0.020     0.020

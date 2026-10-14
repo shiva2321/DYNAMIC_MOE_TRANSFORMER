@@ -1,0 +1,12 @@
+C:\Users\Asta\AppData\Local\Programs\Python\Python312\Lib\site-packages\torch\cuda\__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+seed 80: A_set  83.2  A_today  81.1  replay_default  88.7  joint_128  89.1  kNN_all  89.7  replay_same_bytes_w128  85.4  replay_same_bytes_w512  84.7  replay_same_bytes_w2048  87.0   (A_set 4 experts, 2.62 MB; stream 3000 samples)
+seed 81: A_set  81.2  A_today  73.2  replay_default  82.4  joint_128  85.6  kNN_all  85.0  replay_same_bytes_w128  81.6  replay_same_bytes_w512  83.4  replay_same_bytes_w2048  83.1   (A_set 4 experts, 2.62 MB; stream 3000 samples)
+seed 82: A_set  78.4  A_today  74.6  replay_default  79.9  joint_128  84.6  kNN_all  85.6  replay_same_bytes_w128  82.4  replay_same_bytes_w512  81.8  replay_same_bytes_w2048  76.2   (A_set 3 experts, 2.32 MB; stream 3000 samples)
+seed 83: A_set  86.1  A_today  74.4  replay_default  84.7  joint_128  86.6  kNN_all  88.0  replay_same_bytes_w128  84.6  replay_same_bytes_w512  84.9  replay_same_bytes_w2048  85.8   (A_set 6 experts, 3.14 MB; stream 3000 samples)
+seed 84: A_set  82.3  A_today  73.1  replay_default  80.3  joint_128  84.2  kNN_all  84.1  replay_same_bytes_w128  80.8  replay_same_bytes_w512  82.4  replay_same_bytes_w2048  82.9   (A_set 5 experts, 3.06 MB; stream 3000 samples)
+
+mean over seeds 80-84: {'A_set': 82.3, 'A_today': 75.3, 'replay_default': 83.2, 'joint_128': 86.0, 'kNN_all': 86.5, 'replay_same_bytes_w128': 83.0, 'replay_same_bytes_w512': 83.4, 'replay_same_bytes_w2048': 83.0}
+A_set - A_today: +7.0 points [+2.0, +11.9], >= +5 on 3 of 5 seeds (prediction: >= 4)
+best replay with A_set's bytes: replay_same_bytes_w512; its mean minus A_set's = +1.2 points (prediction: A_set within 5 points)
+353s

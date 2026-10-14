@@ -1,0 +1,36 @@
+tree: 1093 nodes (ternary, depth 6); device cuda; 600 Adam steps with cosine decay; lr grid (0.1, 0.03, 0.01, 0.003); selection seed 100, test seeds (0, 1, 2)
+d= 2 euclid   best-MAP 0.048 (lr 0.1)   best-distortion 0.311 (lr 0.1)   [9s]
+d= 2 poincare best-MAP 0.342 (lr 0.1)   best-distortion 0.202 (lr 0.1)   [21s]
+d= 2 lorentz  best-MAP 0.213 (lr 0.1)   best-distortion 0.223 (lr 0.1)   [33s]
+d= 4 euclid   best-MAP 0.349 (lr 0.1)   best-distortion 0.178 (lr 0.1)   [40s]
+d= 4 poincare best-MAP 0.863 (lr 0.1)   best-distortion 0.140 (lr 0.1)   [52s]
+d= 4 lorentz  best-MAP 0.858 (lr 0.1)   best-distortion 0.145 (lr 0.1)   [63s]
+d= 4 product  best-MAP 0.410 (lr 0.1)   best-distortion 0.120 (lr 0.1)   [78s]
+d= 8 euclid   best-MAP 0.803 (lr 0.03)   best-distortion 0.099 (lr 0.1)   [86s]
+d= 8 poincare best-MAP 0.969 (lr 0.1)   best-distortion 0.050 (lr 0.1)   [96s]
+d= 8 lorentz  best-MAP 0.991 (lr 0.1)   best-distortion 0.047 (lr 0.1)   [111s]
+d= 8 product  best-MAP 0.937 (lr 0.1)   best-distortion 0.045 (lr 0.1)   [130s]
+d=16 euclid   best-MAP 0.794 (lr 0.03)   best-distortion 0.061 (lr 0.1)   [142s]
+d=16 poincare best-MAP 0.994 (lr 0.03)   best-distortion 0.036 (lr 0.1)   [165s]
+d=16 lorentz  best-MAP 0.984 (lr 0.1)   best-distortion 0.021 (lr 0.1)   [181s]
+d=16 product  best-MAP 0.957 (lr 0.1)   best-distortion 0.031 (lr 0.1)   [201s]
+d=32 euclid   best-MAP 0.979 (lr 0.01)   best-distortion 0.042 (lr 0.1)   [211s]
+d=32 poincare best-MAP 0.991 (lr 0.03)   best-distortion 0.032 (lr 0.03)   [225s]
+d=32 lorentz  best-MAP 0.988 (lr 0.03)   best-distortion 0.015 (lr 0.1)   [244s]
+d=32 product  best-MAP 0.962 (lr 0.1)   best-distortion 0.030 (lr 0.1)   [261s]
+
+MAP of retrieving each node's tree neighbours (higher is better; best lr per cell; mean of 3 seeds)
+   d    euclid  poincare   lorentz   product
+   2     0.048     0.342     0.213         -
+   4     0.349     0.863     0.858     0.410
+   8     0.803     0.969     0.991     0.937
+  16     0.794     0.994     0.984     0.957
+  32     0.979     0.991     0.988     0.962
+
+mean relative distortion of all pairs (lower is better; best lr per cell; mean of 3 seeds)
+   d    euclid  poincare   lorentz   product
+   2     0.311     0.202     0.223         -
+   4     0.178     0.140     0.145     0.120
+   8     0.099     0.050     0.047     0.045
+  16     0.061     0.036     0.021     0.031
+  32     0.042     0.032     0.015     0.030

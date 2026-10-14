@@ -1,0 +1,2925 @@
+{
+  "metadata": {
+    "title": "CVA-2B: Long-stream Lifecycle Verification",
+    "stream": "s2_permuted(30 regimes, 150 segments, n_train=200, n_test=100)",
+    "seeds": [
+      10,
+      11,
+      12,
+      13,
+      14
+    ],
+    "arms": {
+      "LIFE_ON": "dormant_after=60, archive_after=120, merge_every=50",
+      "LIFE_OFF": "dormant_after=10**9, archive_after=10**9, merge_every=10**9"
+    }
+  },
+  "criteria": {
+    "crit_a_lifecycle_events": {
+      "pass": true,
+      "dormant_happened": true,
+      "archive_happened": true,
+      "revive_happened": true
+    },
+    "crit_b_paired_accuracy": {
+      "pass": true,
+      "mean_paired_diff_points": -0.4066668351491298,
+      "paired_diffs_by_seed": {
+        "10": -0.9333334366480539,
+        "11": -0.533333420753479,
+        "12": -0.5333340167999245,
+        "13": -0.2333331108093306,
+        "14": 0.19999980926513894
+      },
+      "threshold": -1.0
+    },
+    "crit_c_invariants": {
+      "pass": true,
+      "details_by_seed": {
+        "10": {
+          "ok": true,
+          "issues": []
+        },
+        "11": {
+          "ok": true,
+          "issues": []
+        },
+        "12": {
+          "ok": true,
+          "issues": []
+        },
+        "13": {
+          "ok": true,
+          "issues": []
+        },
+        "14": {
+          "ok": true,
+          "issues": []
+        }
+      }
+    },
+    "crit_d_memory_report": {
+      "mean_stored_vectors_share": 0.9587530637254902,
+      "mean_memory_bytes_share": 0.9730659092516463
+    },
+    "determinism": {
+      "pass": true,
+      "acc_match": true,
+      "events_match": true
+    }
+  },
+  "life_on_runs": [
+    {
+      "seed": 10,
+      "arm": "LIFE_ON",
+      "acc": 0.9209999998410543,
+      "n_experts": 20,
+      "events": {
+        "spawn": 20,
+        "extend": 14,
+        "alarm": 5,
+        "revive": 69,
+        "archive": 35,
+        "dormant_transitions": 77
+      },
+      "params": 696520,
+      "stored_vectors": 9792,
+      "memory_bytes": 7799584,
+      "gate_macs": 655360,
+      "max_non_active": 12,
+      "timeline": [
+        {
+          "call": 25,
+          "n_experts": 3,
+          "states": {
+            "infant": 1,
+            "active": 2,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 1280
+        },
+        {
+          "call": 50,
+          "n_experts": 9,
+          "states": {
+            "infant": 1,
+            "active": 8,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 4480
+        },
+        {
+          "call": 75,
+          "n_experts": 12,
+          "states": {
+            "infant": 1,
+            "active": 11,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 6144
+        },
+        {
+          "call": 100,
+          "n_experts": 17,
+          "states": {
+            "infant": 1,
+            "active": 12,
+            "dormant": 4,
+            "archived": 0
+          },
+          "stored_vectors": 8704
+        },
+        {
+          "call": 125,
+          "n_experts": 20,
+          "states": {
+            "infant": 0,
+            "active": 14,
+            "dormant": 6,
+            "archived": 0
+          },
+          "stored_vectors": 10240
+        },
+        {
+          "call": 150,
+          "n_experts": 20,
+          "states": {
+            "infant": 0,
+            "active": 11,
+            "dormant": 7,
+            "archived": 2
+          },
+          "stored_vectors": 9728
+        },
+        {
+          "call": 175,
+          "n_experts": 20,
+          "states": {
+            "infant": 0,
+            "active": 10,
+            "dormant": 6,
+            "archived": 4
+          },
+          "stored_vectors": 9216
+        },
+        {
+          "call": 200,
+          "n_experts": 20,
+          "states": {
+            "infant": 0,
+            "active": 13,
+            "dormant": 4,
+            "archived": 3
+          },
+          "stored_vectors": 9304
+        },
+        {
+          "call": 225,
+          "n_experts": 20,
+          "states": {
+            "infant": 0,
+            "active": 13,
+            "dormant": 6,
+            "archived": 1
+          },
+          "stored_vectors": 9624
+        },
+        {
+          "call": 250,
+          "n_experts": 20,
+          "states": {
+            "infant": 0,
+            "active": 12,
+            "dormant": 8,
+            "archived": 0
+          },
+          "stored_vectors": 9960
+        },
+        {
+          "call": 275,
+          "n_experts": 20,
+          "states": {
+            "infant": 0,
+            "active": 11,
+            "dormant": 7,
+            "archived": 2
+          },
+          "stored_vectors": 9504
+        },
+        {
+          "call": 300,
+          "n_experts": 20,
+          "states": {
+            "infant": 0,
+            "active": 13,
+            "dormant": 4,
+            "archived": 3
+          },
+          "stored_vectors": 9192
+        },
+        {
+          "call": 325,
+          "n_experts": 20,
+          "states": {
+            "infant": 0,
+            "active": 15,
+            "dormant": 5,
+            "archived": 0
+          },
+          "stored_vectors": 9712
+        },
+        {
+          "call": 350,
+          "n_experts": 20,
+          "states": {
+            "infant": 0,
+            "active": 12,
+            "dormant": 8,
+            "archived": 0
+          },
+          "stored_vectors": 9720
+        },
+        {
+          "call": 375,
+          "n_experts": 20,
+          "states": {
+            "infant": 0,
+            "active": 12,
+            "dormant": 8,
+            "archived": 0
+          },
+          "stored_vectors": 9848
+        },
+        {
+          "call": 400,
+          "n_experts": 20,
+          "states": {
+            "infant": 0,
+            "active": 11,
+            "dormant": 5,
+            "archived": 4
+          },
+          "stored_vectors": 8992
+        },
+        {
+          "call": 425,
+          "n_experts": 20,
+          "states": {
+            "infant": 0,
+            "active": 13,
+            "dormant": 4,
+            "archived": 3
+          },
+          "stored_vectors": 9248
+        },
+        {
+          "call": 450,
+          "n_experts": 20,
+          "states": {
+            "infant": 0,
+            "active": 14,
+            "dormant": 5,
+            "archived": 1
+          },
+          "stored_vectors": 9592
+        },
+        {
+          "call": 475,
+          "n_experts": 20,
+          "states": {
+            "infant": 0,
+            "active": 13,
+            "dormant": 7,
+            "archived": 0
+          },
+          "stored_vectors": 9784
+        },
+        {
+          "call": 500,
+          "n_experts": 20,
+          "states": {
+            "infant": 0,
+            "active": 9,
+            "dormant": 8,
+            "archived": 3
+          },
+          "stored_vectors": 9136
+        },
+        {
+          "call": 525,
+          "n_experts": 20,
+          "states": {
+            "infant": 0,
+            "active": 11,
+            "dormant": 5,
+            "archived": 4
+          },
+          "stored_vectors": 8744
+        },
+        {
+          "call": 550,
+          "n_experts": 20,
+          "states": {
+            "infant": 0,
+            "active": 13,
+            "dormant": 5,
+            "archived": 2
+          },
+          "stored_vectors": 9336
+        },
+        {
+          "call": 575,
+          "n_experts": 20,
+          "states": {
+            "infant": 0,
+            "active": 12,
+            "dormant": 5,
+            "archived": 3
+          },
+          "stored_vectors": 9136
+        },
+        {
+          "call": 600,
+          "n_experts": 20,
+          "states": {
+            "infant": 0,
+            "active": 12,
+            "dormant": 8,
+            "archived": 0
+          },
+          "stored_vectors": 9792
+        }
+      ],
+      "wall_clock": 31.79
+    },
+    {
+      "seed": 11,
+      "arm": "LIFE_ON",
+      "acc": 0.9213333368301392,
+      "n_experts": 21,
+      "events": {
+        "spawn": 21,
+        "extend": 10,
+        "alarm": 1,
+        "revive": 65,
+        "archive": 35,
+        "dormant_transitions": 75
+      },
+      "params": 731346,
+      "stored_vectors": 10136,
+      "memory_bytes": 8115016,
+      "gate_macs": 688128,
+      "max_non_active": 12,
+      "timeline": [
+        {
+          "call": 25,
+          "n_experts": 3,
+          "states": {
+            "infant": 1,
+            "active": 2,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 1536
+        },
+        {
+          "call": 50,
+          "n_experts": 7,
+          "states": {
+            "infant": 1,
+            "active": 6,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 3456
+        },
+        {
+          "call": 75,
+          "n_experts": 11,
+          "states": {
+            "infant": 1,
+            "active": 10,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 5632
+        },
+        {
+          "call": 100,
+          "n_experts": 17,
+          "states": {
+            "infant": 1,
+            "active": 13,
+            "dormant": 3,
+            "archived": 0
+          },
+          "stored_vectors": 8704
+        },
+        {
+          "call": 125,
+          "n_experts": 21,
+          "states": {
+            "infant": 0,
+            "active": 14,
+            "dormant": 7,
+            "archived": 0
+          },
+          "stored_vectors": 10752
+        },
+        {
+          "call": 150,
+          "n_experts": 21,
+          "states": {
+            "infant": 0,
+            "active": 12,
+            "dormant": 8,
+            "archived": 1
+          },
+          "stored_vectors": 10496
+        },
+        {
+          "call": 175,
+          "n_experts": 21,
+          "states": {
+            "infant": 0,
+            "active": 11,
+            "dormant": 7,
+            "archived": 3
+          },
+          "stored_vectors": 9984
+        },
+        {
+          "call": 200,
+          "n_experts": 21,
+          "states": {
+            "infant": 0,
+            "active": 11,
+            "dormant": 4,
+            "archived": 6
+          },
+          "stored_vectors": 9160
+        },
+        {
+          "call": 225,
+          "n_experts": 21,
+          "states": {
+            "infant": 0,
+            "active": 13,
+            "dormant": 6,
+            "archived": 2
+          },
+          "stored_vectors": 9960
+        },
+        {
+          "call": 250,
+          "n_experts": 21,
+          "states": {
+            "infant": 0,
+            "active": 12,
+            "dormant": 8,
+            "archived": 1
+          },
+          "stored_vectors": 10104
+        },
+        {
+          "call": 275,
+          "n_experts": 21,
+          "states": {
+            "infant": 0,
+            "active": 11,
+            "dormant": 6,
+            "archived": 4
+          },
+          "stored_vectors": 9504
+        },
+        {
+          "call": 300,
+          "n_experts": 21,
+          "states": {
+            "infant": 0,
+            "active": 12,
+            "dormant": 3,
+            "archived": 6
+          },
+          "stored_vectors": 8992
+        },
+        {
+          "call": 325,
+          "n_experts": 21,
+          "states": {
+            "infant": 0,
+            "active": 12,
+            "dormant": 5,
+            "archived": 4
+          },
+          "stored_vectors": 9392
+        },
+        {
+          "call": 350,
+          "n_experts": 21,
+          "states": {
+            "infant": 0,
+            "active": 12,
+            "dormant": 8,
+            "archived": 1
+          },
+          "stored_vectors": 9920
+        },
+        {
+          "call": 375,
+          "n_experts": 21,
+          "states": {
+            "infant": 0,
+            "active": 13,
+            "dormant": 7,
+            "archived": 1
+          },
+          "stored_vectors": 9992
+        },
+        {
+          "call": 400,
+          "n_experts": 21,
+          "states": {
+            "infant": 0,
+            "active": 12,
+            "dormant": 5,
+            "archived": 4
+          },
+          "stored_vectors": 9392
+        },
+        {
+          "call": 425,
+          "n_experts": 21,
+          "states": {
+            "infant": 0,
+            "active": 14,
+            "dormant": 4,
+            "archived": 3
+          },
+          "stored_vectors": 9648
+        },
+        {
+          "call": 450,
+          "n_experts": 21,
+          "states": {
+            "infant": 0,
+            "active": 13,
+            "dormant": 6,
+            "archived": 2
+          },
+          "stored_vectors": 9904
+        },
+        {
+          "call": 475,
+          "n_experts": 21,
+          "states": {
+            "infant": 0,
+            "active": 10,
+            "dormant": 10,
+            "archived": 1
+          },
+          "stored_vectors": 10160
+        },
+        {
+          "call": 500,
+          "n_experts": 21,
+          "states": {
+            "infant": 0,
+            "active": 9,
+            "dormant": 10,
+            "archived": 2
+          },
+          "stored_vectors": 9792
+        },
+        {
+          "call": 525,
+          "n_experts": 21,
+          "states": {
+            "infant": 0,
+            "active": 10,
+            "dormant": 6,
+            "archived": 5
+          },
+          "stored_vectors": 9080
+        },
+        {
+          "call": 550,
+          "n_experts": 21,
+          "states": {
+            "infant": 0,
+            "active": 14,
+            "dormant": 4,
+            "archived": 3
+          },
+          "stored_vectors": 9536
+        },
+        {
+          "call": 575,
+          "n_experts": 21,
+          "states": {
+            "infant": 0,
+            "active": 13,
+            "dormant": 6,
+            "archived": 2
+          },
+          "stored_vectors": 9736
+        },
+        {
+          "call": 600,
+          "n_experts": 21,
+          "states": {
+            "infant": 0,
+            "active": 11,
+            "dormant": 10,
+            "archived": 0
+          },
+          "stored_vectors": 10136
+        }
+      ],
+      "wall_clock": 26.65
+    },
+    {
+      "seed": 12,
+      "arm": "LIFE_ON",
+      "acc": 0.8826666633288066,
+      "n_experts": 16,
+      "events": {
+        "spawn": 16,
+        "extend": 17,
+        "alarm": 4,
+        "revive": 54,
+        "archive": 26,
+        "dormant_transitions": 59
+      },
+      "params": 557216,
+      "stored_vectors": 7968,
+      "memory_bytes": 6308480,
+      "gate_macs": 524288,
+      "max_non_active": 10,
+      "timeline": [
+        {
+          "call": 25,
+          "n_experts": 3,
+          "states": {
+            "infant": 0,
+            "active": 3,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 1536
+        },
+        {
+          "call": 50,
+          "n_experts": 6,
+          "states": {
+            "infant": 1,
+            "active": 5,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 2944
+        },
+        {
+          "call": 75,
+          "n_experts": 10,
+          "states": {
+            "infant": 0,
+            "active": 10,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 5120
+        },
+        {
+          "call": 100,
+          "n_experts": 13,
+          "states": {
+            "infant": 0,
+            "active": 12,
+            "dormant": 1,
+            "archived": 0
+          },
+          "stored_vectors": 6656
+        },
+        {
+          "call": 125,
+          "n_experts": 16,
+          "states": {
+            "infant": 0,
+            "active": 11,
+            "dormant": 5,
+            "archived": 0
+          },
+          "stored_vectors": 8192
+        },
+        {
+          "call": 150,
+          "n_experts": 16,
+          "states": {
+            "infant": 0,
+            "active": 9,
+            "dormant": 7,
+            "archived": 0
+          },
+          "stored_vectors": 8192
+        },
+        {
+          "call": 175,
+          "n_experts": 16,
+          "states": {
+            "infant": 0,
+            "active": 8,
+            "dormant": 8,
+            "archived": 0
+          },
+          "stored_vectors": 8192
+        },
+        {
+          "call": 200,
+          "n_experts": 16,
+          "states": {
+            "infant": 0,
+            "active": 7,
+            "dormant": 6,
+            "archived": 3
+          },
+          "stored_vectors": 7368
+        },
+        {
+          "call": 225,
+          "n_experts": 16,
+          "states": {
+            "infant": 0,
+            "active": 11,
+            "dormant": 4,
+            "archived": 1
+          },
+          "stored_vectors": 7520
+        },
+        {
+          "call": 250,
+          "n_experts": 16,
+          "states": {
+            "infant": 0,
+            "active": 12,
+            "dormant": 4,
+            "archived": 0
+          },
+          "stored_vectors": 7968
+        },
+        {
+          "call": 275,
+          "n_experts": 16,
+          "states": {
+            "infant": 0,
+            "active": 8,
+            "dormant": 7,
+            "archived": 1
+          },
+          "stored_vectors": 7656
+        },
+        {
+          "call": 300,
+          "n_experts": 16,
+          "states": {
+            "infant": 0,
+            "active": 9,
+            "dormant": 6,
+            "archived": 1
+          },
+          "stored_vectors": 7712
+        },
+        {
+          "call": 325,
+          "n_experts": 16,
+          "states": {
+            "infant": 0,
+            "active": 7,
+            "dormant": 6,
+            "archived": 3
+          },
+          "stored_vectors": 7200
+        },
+        {
+          "call": 350,
+          "n_experts": 16,
+          "states": {
+            "infant": 0,
+            "active": 8,
+            "dormant": 7,
+            "archived": 1
+          },
+          "stored_vectors": 7584
+        },
+        {
+          "call": 375,
+          "n_experts": 16,
+          "states": {
+            "infant": 0,
+            "active": 9,
+            "dormant": 5,
+            "archived": 2
+          },
+          "stored_vectors": 7400
+        },
+        {
+          "call": 400,
+          "n_experts": 16,
+          "states": {
+            "infant": 0,
+            "active": 9,
+            "dormant": 5,
+            "archived": 2
+          },
+          "stored_vectors": 7344
+        },
+        {
+          "call": 425,
+          "n_experts": 16,
+          "states": {
+            "infant": 0,
+            "active": 8,
+            "dormant": 5,
+            "archived": 3
+          },
+          "stored_vectors": 6952
+        },
+        {
+          "call": 450,
+          "n_experts": 16,
+          "states": {
+            "infant": 0,
+            "active": 10,
+            "dormant": 4,
+            "archived": 2
+          },
+          "stored_vectors": 7288
+        },
+        {
+          "call": 475,
+          "n_experts": 16,
+          "states": {
+            "infant": 0,
+            "active": 12,
+            "dormant": 3,
+            "archived": 1
+          },
+          "stored_vectors": 7480
+        },
+        {
+          "call": 500,
+          "n_experts": 16,
+          "states": {
+            "infant": 0,
+            "active": 9,
+            "dormant": 6,
+            "archived": 1
+          },
+          "stored_vectors": 7488
+        },
+        {
+          "call": 525,
+          "n_experts": 16,
+          "states": {
+            "infant": 0,
+            "active": 9,
+            "dormant": 5,
+            "archived": 2
+          },
+          "stored_vectors": 7400
+        },
+        {
+          "call": 550,
+          "n_experts": 16,
+          "states": {
+            "infant": 0,
+            "active": 9,
+            "dormant": 6,
+            "archived": 1
+          },
+          "stored_vectors": 7600
+        },
+        {
+          "call": 575,
+          "n_experts": 16,
+          "states": {
+            "infant": 0,
+            "active": 11,
+            "dormant": 4,
+            "archived": 1
+          },
+          "stored_vectors": 7648
+        },
+        {
+          "call": 600,
+          "n_experts": 16,
+          "states": {
+            "infant": 0,
+            "active": 11,
+            "dormant": 5,
+            "archived": 0
+          },
+          "stored_vectors": 7968
+        }
+      ],
+      "wall_clock": 30.65
+    },
+    {
+      "seed": 13,
+      "arm": "LIFE_ON",
+      "acc": 0.9246666709582011,
+      "n_experts": 20,
+      "events": {
+        "spawn": 20,
+        "extend": 12,
+        "alarm": 2,
+        "revive": 66,
+        "archive": 27,
+        "dormant_transitions": 77
+      },
+      "params": 696520,
+      "stored_vectors": 9904,
+      "memory_bytes": 7856928,
+      "gate_macs": 655360,
+      "max_non_active": 12,
+      "timeline": [
+        {
+          "call": 25,
+          "n_experts": 3,
+          "states": {
+            "infant": 1,
+            "active": 2,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 1280
+        },
+        {
+          "call": 50,
+          "n_experts": 8,
+          "states": {
+            "infant": 1,
+            "active": 7,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 3968
+        },
+        {
+          "call": 75,
+          "n_experts": 12,
+          "states": {
+            "infant": 0,
+            "active": 12,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 6144
+        },
+        {
+          "call": 100,
+          "n_experts": 15,
+          "states": {
+            "infant": 1,
+            "active": 10,
+            "dormant": 4,
+            "archived": 0
+          },
+          "stored_vectors": 7680
+        },
+        {
+          "call": 125,
+          "n_experts": 19,
+          "states": {
+            "infant": 0,
+            "active": 11,
+            "dormant": 8,
+            "archived": 0
+          },
+          "stored_vectors": 9728
+        },
+        {
+          "call": 150,
+          "n_experts": 19,
+          "states": {
+            "infant": 0,
+            "active": 10,
+            "dormant": 7,
+            "archived": 2
+          },
+          "stored_vectors": 9216
+        },
+        {
+          "call": 175,
+          "n_experts": 20,
+          "states": {
+            "infant": 0,
+            "active": 12,
+            "dormant": 7,
+            "archived": 1
+          },
+          "stored_vectors": 9744
+        },
+        {
+          "call": 200,
+          "n_experts": 20,
+          "states": {
+            "infant": 0,
+            "active": 12,
+            "dormant": 5,
+            "archived": 3
+          },
+          "stored_vectors": 9184
+        },
+        {
+          "call": 225,
+          "n_experts": 20,
+          "states": {
+            "infant": 0,
+            "active": 13,
+            "dormant": 6,
+            "archived": 1
+          },
+          "stored_vectors": 9640
+        },
+        {
+          "call": 250,
+          "n_experts": 20,
+          "states": {
+            "infant": 0,
+            "active": 10,
+            "dormant": 10,
+            "archived": 0
+          },
+          "stored_vectors": 9840
+        },
+        {
+          "call": 275,
+          "n_experts": 20,
+          "states": {
+            "infant": 0,
+            "active": 9,
+            "dormant": 8,
+            "archived": 3
+          },
+          "stored_vectors": 9248
+        },
+        {
+          "call": 300,
+          "n_experts": 20,
+          "states": {
+            "infant": 0,
+            "active": 9,
+            "dormant": 5,
+            "archived": 6
+          },
+          "stored_vectors": 8592
+        },
+        {
+          "call": 325,
+          "n_experts": 20,
+          "states": {
+            "infant": 0,
+            "active": 14,
+            "dormant": 4,
+            "archived": 2
+          },
+          "stored_vectors": 9256
+        },
+        {
+          "call": 350,
+          "n_experts": 20,
+          "states": {
+            "infant": 0,
+            "active": 12,
+            "dormant": 7,
+            "archived": 1
+          },
+          "stored_vectors": 9704
+        },
+        {
+          "call": 375,
+          "n_experts": 20,
+          "states": {
+            "infant": 0,
+            "active": 11,
+            "dormant": 8,
+            "archived": 1
+          },
+          "stored_vectors": 9704
+        },
+        {
+          "call": 400,
+          "n_experts": 20,
+          "states": {
+            "infant": 0,
+            "active": 9,
+            "dormant": 7,
+            "archived": 4
+          },
+          "stored_vectors": 8936
+        },
+        {
+          "call": 425,
+          "n_experts": 20,
+          "states": {
+            "infant": 0,
+            "active": 11,
+            "dormant": 5,
+            "archived": 4
+          },
+          "stored_vectors": 8744
+        },
+        {
+          "call": 450,
+          "n_experts": 20,
+          "states": {
+            "infant": 0,
+            "active": 13,
+            "dormant": 5,
+            "archived": 2
+          },
+          "stored_vectors": 9208
+        },
+        {
+          "call": 475,
+          "n_experts": 20,
+          "states": {
+            "infant": 0,
+            "active": 13,
+            "dormant": 7,
+            "archived": 0
+          },
+          "stored_vectors": 9736
+        },
+        {
+          "call": 500,
+          "n_experts": 20,
+          "states": {
+            "infant": 0,
+            "active": 12,
+            "dormant": 5,
+            "archived": 3
+          },
+          "stored_vectors": 9024
+        },
+        {
+          "call": 525,
+          "n_experts": 20,
+          "states": {
+            "infant": 0,
+            "active": 10,
+            "dormant": 6,
+            "archived": 4
+          },
+          "stored_vectors": 8936
+        },
+        {
+          "call": 550,
+          "n_experts": 20,
+          "states": {
+            "infant": 0,
+            "active": 12,
+            "dormant": 4,
+            "archived": 4
+          },
+          "stored_vectors": 9104
+        },
+        {
+          "call": 575,
+          "n_experts": 20,
+          "states": {
+            "infant": 0,
+            "active": 12,
+            "dormant": 6,
+            "archived": 2
+          },
+          "stored_vectors": 9504
+        },
+        {
+          "call": 600,
+          "n_experts": 20,
+          "states": {
+            "infant": 0,
+            "active": 9,
+            "dormant": 11,
+            "archived": 0
+          },
+          "stored_vectors": 9904
+        }
+      ],
+      "wall_clock": 29.31
+    },
+    {
+      "seed": 14,
+      "arm": "LIFE_ON",
+      "acc": 0.906333327293396,
+      "n_experts": 17,
+      "events": {
+        "spawn": 17,
+        "extend": 15,
+        "alarm": 2,
+        "revive": 51,
+        "archive": 24,
+        "dormant_transitions": 58
+      },
+      "params": 592042,
+      "stored_vectors": 8312,
+      "memory_bytes": 6623912,
+      "gate_macs": 557056,
+      "max_non_active": 10,
+      "timeline": [
+        {
+          "call": 25,
+          "n_experts": 3,
+          "states": {
+            "infant": 0,
+            "active": 3,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 1424
+        },
+        {
+          "call": 50,
+          "n_experts": 7,
+          "states": {
+            "infant": 1,
+            "active": 6,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 3456
+        },
+        {
+          "call": 75,
+          "n_experts": 10,
+          "states": {
+            "infant": 1,
+            "active": 9,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 5120
+        },
+        {
+          "call": 100,
+          "n_experts": 14,
+          "states": {
+            "infant": 0,
+            "active": 13,
+            "dormant": 1,
+            "archived": 0
+          },
+          "stored_vectors": 7168
+        },
+        {
+          "call": 125,
+          "n_experts": 17,
+          "states": {
+            "infant": 0,
+            "active": 14,
+            "dormant": 3,
+            "archived": 0
+          },
+          "stored_vectors": 8704
+        },
+        {
+          "call": 150,
+          "n_experts": 17,
+          "states": {
+            "infant": 0,
+            "active": 11,
+            "dormant": 6,
+            "archived": 0
+          },
+          "stored_vectors": 8704
+        },
+        {
+          "call": 175,
+          "n_experts": 17,
+          "states": {
+            "infant": 0,
+            "active": 10,
+            "dormant": 6,
+            "archived": 1
+          },
+          "stored_vectors": 8448
+        },
+        {
+          "call": 200,
+          "n_experts": 17,
+          "states": {
+            "infant": 0,
+            "active": 8,
+            "dormant": 7,
+            "archived": 2
+          },
+          "stored_vectors": 8192
+        },
+        {
+          "call": 225,
+          "n_experts": 17,
+          "states": {
+            "infant": 0,
+            "active": 9,
+            "dormant": 7,
+            "archived": 1
+          },
+          "stored_vectors": 8336
+        },
+        {
+          "call": 250,
+          "n_experts": 17,
+          "states": {
+            "infant": 0,
+            "active": 11,
+            "dormant": 4,
+            "archived": 2
+          },
+          "stored_vectors": 8024
+        },
+        {
+          "call": 275,
+          "n_experts": 17,
+          "states": {
+            "infant": 0,
+            "active": 9,
+            "dormant": 5,
+            "archived": 3
+          },
+          "stored_vectors": 7880
+        },
+        {
+          "call": 300,
+          "n_experts": 17,
+          "states": {
+            "infant": 0,
+            "active": 9,
+            "dormant": 3,
+            "archived": 5
+          },
+          "stored_vectors": 7424
+        },
+        {
+          "call": 325,
+          "n_experts": 17,
+          "states": {
+            "infant": 0,
+            "active": 9,
+            "dormant": 5,
+            "archived": 3
+          },
+          "stored_vectors": 7688
+        },
+        {
+          "call": 350,
+          "n_experts": 17,
+          "states": {
+            "infant": 0,
+            "active": 10,
+            "dormant": 5,
+            "archived": 2
+          },
+          "stored_vectors": 7968
+        },
+        {
+          "call": 375,
+          "n_experts": 17,
+          "states": {
+            "infant": 0,
+            "active": 10,
+            "dormant": 7,
+            "archived": 0
+          },
+          "stored_vectors": 8368
+        },
+        {
+          "call": 400,
+          "n_experts": 17,
+          "states": {
+            "infant": 0,
+            "active": 8,
+            "dormant": 6,
+            "archived": 3
+          },
+          "stored_vectors": 7712
+        },
+        {
+          "call": 425,
+          "n_experts": 17,
+          "states": {
+            "infant": 0,
+            "active": 8,
+            "dormant": 4,
+            "archived": 5
+          },
+          "stored_vectors": 7256
+        },
+        {
+          "call": 450,
+          "n_experts": 17,
+          "states": {
+            "infant": 0,
+            "active": 10,
+            "dormant": 4,
+            "archived": 3
+          },
+          "stored_vectors": 7656
+        },
+        {
+          "call": 475,
+          "n_experts": 17,
+          "states": {
+            "infant": 0,
+            "active": 13,
+            "dormant": 4,
+            "archived": 0
+          },
+          "stored_vectors": 8304
+        },
+        {
+          "call": 500,
+          "n_experts": 17,
+          "states": {
+            "infant": 0,
+            "active": 10,
+            "dormant": 7,
+            "archived": 0
+          },
+          "stored_vectors": 8368
+        },
+        {
+          "call": 525,
+          "n_experts": 17,
+          "states": {
+            "infant": 0,
+            "active": 8,
+            "dormant": 6,
+            "archived": 3
+          },
+          "stored_vectors": 7712
+        },
+        {
+          "call": 550,
+          "n_experts": 17,
+          "states": {
+            "infant": 0,
+            "active": 11,
+            "dormant": 4,
+            "archived": 2
+          },
+          "stored_vectors": 7968
+        },
+        {
+          "call": 575,
+          "n_experts": 17,
+          "states": {
+            "infant": 0,
+            "active": 13,
+            "dormant": 3,
+            "archived": 1
+          },
+          "stored_vectors": 8112
+        },
+        {
+          "call": 600,
+          "n_experts": 17,
+          "states": {
+            "infant": 0,
+            "active": 10,
+            "dormant": 7,
+            "archived": 0
+          },
+          "stored_vectors": 8312
+        }
+      ],
+      "wall_clock": 30.74
+    }
+  ],
+  "life_off_runs": [
+    {
+      "seed": 10,
+      "arm": "LIFE_OFF",
+      "acc": 0.9303333342075348,
+      "n_experts": 20,
+      "events": {
+        "spawn": 20,
+        "extend": 14,
+        "alarm": 5,
+        "dormant_transitions": 0
+      },
+      "params": 696520,
+      "stored_vectors": 10240,
+      "memory_bytes": 8028960,
+      "gate_macs": 655360,
+      "max_non_active": 2,
+      "timeline": [
+        {
+          "call": 25,
+          "n_experts": 3,
+          "states": {
+            "infant": 1,
+            "active": 2,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 1280
+        },
+        {
+          "call": 50,
+          "n_experts": 9,
+          "states": {
+            "infant": 1,
+            "active": 8,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 4480
+        },
+        {
+          "call": 75,
+          "n_experts": 12,
+          "states": {
+            "infant": 1,
+            "active": 11,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 6144
+        },
+        {
+          "call": 100,
+          "n_experts": 17,
+          "states": {
+            "infant": 1,
+            "active": 16,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 8704
+        },
+        {
+          "call": 125,
+          "n_experts": 20,
+          "states": {
+            "infant": 0,
+            "active": 20,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 10240
+        },
+        {
+          "call": 150,
+          "n_experts": 20,
+          "states": {
+            "infant": 0,
+            "active": 20,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 10240
+        },
+        {
+          "call": 175,
+          "n_experts": 20,
+          "states": {
+            "infant": 0,
+            "active": 20,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 10240
+        },
+        {
+          "call": 200,
+          "n_experts": 20,
+          "states": {
+            "infant": 0,
+            "active": 20,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 10240
+        },
+        {
+          "call": 225,
+          "n_experts": 20,
+          "states": {
+            "infant": 0,
+            "active": 20,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 10240
+        },
+        {
+          "call": 250,
+          "n_experts": 20,
+          "states": {
+            "infant": 0,
+            "active": 20,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 10240
+        },
+        {
+          "call": 275,
+          "n_experts": 20,
+          "states": {
+            "infant": 0,
+            "active": 20,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 10240
+        },
+        {
+          "call": 300,
+          "n_experts": 20,
+          "states": {
+            "infant": 0,
+            "active": 20,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 10240
+        },
+        {
+          "call": 325,
+          "n_experts": 20,
+          "states": {
+            "infant": 0,
+            "active": 20,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 10240
+        },
+        {
+          "call": 350,
+          "n_experts": 20,
+          "states": {
+            "infant": 0,
+            "active": 20,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 10240
+        },
+        {
+          "call": 375,
+          "n_experts": 20,
+          "states": {
+            "infant": 0,
+            "active": 20,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 10240
+        },
+        {
+          "call": 400,
+          "n_experts": 20,
+          "states": {
+            "infant": 0,
+            "active": 20,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 10240
+        },
+        {
+          "call": 425,
+          "n_experts": 20,
+          "states": {
+            "infant": 0,
+            "active": 20,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 10240
+        },
+        {
+          "call": 450,
+          "n_experts": 20,
+          "states": {
+            "infant": 0,
+            "active": 20,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 10240
+        },
+        {
+          "call": 475,
+          "n_experts": 20,
+          "states": {
+            "infant": 0,
+            "active": 20,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 10240
+        },
+        {
+          "call": 500,
+          "n_experts": 20,
+          "states": {
+            "infant": 0,
+            "active": 20,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 10240
+        },
+        {
+          "call": 525,
+          "n_experts": 20,
+          "states": {
+            "infant": 0,
+            "active": 20,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 10240
+        },
+        {
+          "call": 550,
+          "n_experts": 20,
+          "states": {
+            "infant": 0,
+            "active": 20,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 10240
+        },
+        {
+          "call": 575,
+          "n_experts": 20,
+          "states": {
+            "infant": 0,
+            "active": 20,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 10240
+        },
+        {
+          "call": 600,
+          "n_experts": 20,
+          "states": {
+            "infant": 0,
+            "active": 20,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 10240
+        }
+      ],
+      "wall_clock": 26.12
+    },
+    {
+      "seed": 11,
+      "arm": "LIFE_OFF",
+      "acc": 0.926666671037674,
+      "n_experts": 21,
+      "events": {
+        "spawn": 21,
+        "extend": 10,
+        "alarm": 1,
+        "dormant_transitions": 0
+      },
+      "params": 731346,
+      "stored_vectors": 10752,
+      "memory_bytes": 8430408,
+      "gate_macs": 688128,
+      "max_non_active": 2,
+      "timeline": [
+        {
+          "call": 25,
+          "n_experts": 3,
+          "states": {
+            "infant": 1,
+            "active": 2,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 1536
+        },
+        {
+          "call": 50,
+          "n_experts": 7,
+          "states": {
+            "infant": 1,
+            "active": 6,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 3456
+        },
+        {
+          "call": 75,
+          "n_experts": 11,
+          "states": {
+            "infant": 1,
+            "active": 10,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 5632
+        },
+        {
+          "call": 100,
+          "n_experts": 17,
+          "states": {
+            "infant": 1,
+            "active": 16,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 8704
+        },
+        {
+          "call": 125,
+          "n_experts": 21,
+          "states": {
+            "infant": 0,
+            "active": 21,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 10752
+        },
+        {
+          "call": 150,
+          "n_experts": 21,
+          "states": {
+            "infant": 0,
+            "active": 21,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 10752
+        },
+        {
+          "call": 175,
+          "n_experts": 21,
+          "states": {
+            "infant": 0,
+            "active": 21,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 10752
+        },
+        {
+          "call": 200,
+          "n_experts": 21,
+          "states": {
+            "infant": 0,
+            "active": 21,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 10752
+        },
+        {
+          "call": 225,
+          "n_experts": 21,
+          "states": {
+            "infant": 0,
+            "active": 21,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 10752
+        },
+        {
+          "call": 250,
+          "n_experts": 21,
+          "states": {
+            "infant": 0,
+            "active": 21,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 10752
+        },
+        {
+          "call": 275,
+          "n_experts": 21,
+          "states": {
+            "infant": 0,
+            "active": 21,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 10752
+        },
+        {
+          "call": 300,
+          "n_experts": 21,
+          "states": {
+            "infant": 0,
+            "active": 21,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 10752
+        },
+        {
+          "call": 325,
+          "n_experts": 21,
+          "states": {
+            "infant": 0,
+            "active": 21,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 10752
+        },
+        {
+          "call": 350,
+          "n_experts": 21,
+          "states": {
+            "infant": 0,
+            "active": 21,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 10752
+        },
+        {
+          "call": 375,
+          "n_experts": 21,
+          "states": {
+            "infant": 0,
+            "active": 21,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 10752
+        },
+        {
+          "call": 400,
+          "n_experts": 21,
+          "states": {
+            "infant": 0,
+            "active": 21,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 10752
+        },
+        {
+          "call": 425,
+          "n_experts": 21,
+          "states": {
+            "infant": 0,
+            "active": 21,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 10752
+        },
+        {
+          "call": 450,
+          "n_experts": 21,
+          "states": {
+            "infant": 0,
+            "active": 21,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 10752
+        },
+        {
+          "call": 475,
+          "n_experts": 21,
+          "states": {
+            "infant": 0,
+            "active": 21,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 10752
+        },
+        {
+          "call": 500,
+          "n_experts": 21,
+          "states": {
+            "infant": 0,
+            "active": 21,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 10752
+        },
+        {
+          "call": 525,
+          "n_experts": 21,
+          "states": {
+            "infant": 0,
+            "active": 21,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 10752
+        },
+        {
+          "call": 550,
+          "n_experts": 21,
+          "states": {
+            "infant": 0,
+            "active": 21,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 10752
+        },
+        {
+          "call": 575,
+          "n_experts": 21,
+          "states": {
+            "infant": 0,
+            "active": 21,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 10752
+        },
+        {
+          "call": 600,
+          "n_experts": 21,
+          "states": {
+            "infant": 0,
+            "active": 21,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 10752
+        }
+      ],
+      "wall_clock": 27.08
+    },
+    {
+      "seed": 12,
+      "arm": "LIFE_OFF",
+      "acc": 0.8880000034968059,
+      "n_experts": 16,
+      "events": {
+        "spawn": 16,
+        "extend": 16,
+        "alarm": 3,
+        "dormant_transitions": 0
+      },
+      "params": 557216,
+      "stored_vectors": 8192,
+      "memory_bytes": 6423168,
+      "gate_macs": 524288,
+      "max_non_active": 2,
+      "timeline": [
+        {
+          "call": 25,
+          "n_experts": 3,
+          "states": {
+            "infant": 0,
+            "active": 3,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 1536
+        },
+        {
+          "call": 50,
+          "n_experts": 6,
+          "states": {
+            "infant": 1,
+            "active": 5,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 2944
+        },
+        {
+          "call": 75,
+          "n_experts": 10,
+          "states": {
+            "infant": 0,
+            "active": 10,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 5120
+        },
+        {
+          "call": 100,
+          "n_experts": 13,
+          "states": {
+            "infant": 0,
+            "active": 13,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 6656
+        },
+        {
+          "call": 125,
+          "n_experts": 16,
+          "states": {
+            "infant": 0,
+            "active": 16,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 8192
+        },
+        {
+          "call": 150,
+          "n_experts": 16,
+          "states": {
+            "infant": 0,
+            "active": 16,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 8192
+        },
+        {
+          "call": 175,
+          "n_experts": 16,
+          "states": {
+            "infant": 0,
+            "active": 16,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 8192
+        },
+        {
+          "call": 200,
+          "n_experts": 16,
+          "states": {
+            "infant": 0,
+            "active": 16,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 8192
+        },
+        {
+          "call": 225,
+          "n_experts": 16,
+          "states": {
+            "infant": 0,
+            "active": 16,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 8192
+        },
+        {
+          "call": 250,
+          "n_experts": 16,
+          "states": {
+            "infant": 0,
+            "active": 16,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 8192
+        },
+        {
+          "call": 275,
+          "n_experts": 16,
+          "states": {
+            "infant": 0,
+            "active": 16,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 8192
+        },
+        {
+          "call": 300,
+          "n_experts": 16,
+          "states": {
+            "infant": 0,
+            "active": 16,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 8192
+        },
+        {
+          "call": 325,
+          "n_experts": 16,
+          "states": {
+            "infant": 0,
+            "active": 16,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 8192
+        },
+        {
+          "call": 350,
+          "n_experts": 16,
+          "states": {
+            "infant": 0,
+            "active": 16,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 8192
+        },
+        {
+          "call": 375,
+          "n_experts": 16,
+          "states": {
+            "infant": 0,
+            "active": 16,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 8192
+        },
+        {
+          "call": 400,
+          "n_experts": 16,
+          "states": {
+            "infant": 0,
+            "active": 16,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 8192
+        },
+        {
+          "call": 425,
+          "n_experts": 16,
+          "states": {
+            "infant": 0,
+            "active": 16,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 8192
+        },
+        {
+          "call": 450,
+          "n_experts": 16,
+          "states": {
+            "infant": 0,
+            "active": 16,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 8192
+        },
+        {
+          "call": 475,
+          "n_experts": 16,
+          "states": {
+            "infant": 0,
+            "active": 16,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 8192
+        },
+        {
+          "call": 500,
+          "n_experts": 16,
+          "states": {
+            "infant": 0,
+            "active": 16,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 8192
+        },
+        {
+          "call": 525,
+          "n_experts": 16,
+          "states": {
+            "infant": 0,
+            "active": 16,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 8192
+        },
+        {
+          "call": 550,
+          "n_experts": 16,
+          "states": {
+            "infant": 0,
+            "active": 16,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 8192
+        },
+        {
+          "call": 575,
+          "n_experts": 16,
+          "states": {
+            "infant": 0,
+            "active": 16,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 8192
+        },
+        {
+          "call": 600,
+          "n_experts": 16,
+          "states": {
+            "infant": 0,
+            "active": 16,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 8192
+        }
+      ],
+      "wall_clock": 30.54
+    },
+    {
+      "seed": 13,
+      "arm": "LIFE_OFF",
+      "acc": 0.9270000020662944,
+      "n_experts": 20,
+      "events": {
+        "spawn": 20,
+        "extend": 12,
+        "alarm": 2,
+        "dormant_transitions": 0
+      },
+      "params": 696520,
+      "stored_vectors": 10240,
+      "memory_bytes": 8028960,
+      "gate_macs": 655360,
+      "max_non_active": 2,
+      "timeline": [
+        {
+          "call": 25,
+          "n_experts": 3,
+          "states": {
+            "infant": 1,
+            "active": 2,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 1280
+        },
+        {
+          "call": 50,
+          "n_experts": 8,
+          "states": {
+            "infant": 1,
+            "active": 7,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 3968
+        },
+        {
+          "call": 75,
+          "n_experts": 12,
+          "states": {
+            "infant": 0,
+            "active": 12,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 6144
+        },
+        {
+          "call": 100,
+          "n_experts": 15,
+          "states": {
+            "infant": 1,
+            "active": 14,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 7680
+        },
+        {
+          "call": 125,
+          "n_experts": 19,
+          "states": {
+            "infant": 0,
+            "active": 19,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 9728
+        },
+        {
+          "call": 150,
+          "n_experts": 19,
+          "states": {
+            "infant": 0,
+            "active": 19,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 9728
+        },
+        {
+          "call": 175,
+          "n_experts": 20,
+          "states": {
+            "infant": 0,
+            "active": 20,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 10064
+        },
+        {
+          "call": 200,
+          "n_experts": 20,
+          "states": {
+            "infant": 0,
+            "active": 20,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 10064
+        },
+        {
+          "call": 225,
+          "n_experts": 20,
+          "states": {
+            "infant": 0,
+            "active": 20,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 10064
+        },
+        {
+          "call": 250,
+          "n_experts": 20,
+          "states": {
+            "infant": 0,
+            "active": 20,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 10064
+        },
+        {
+          "call": 275,
+          "n_experts": 20,
+          "states": {
+            "infant": 0,
+            "active": 20,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 10240
+        },
+        {
+          "call": 300,
+          "n_experts": 20,
+          "states": {
+            "infant": 0,
+            "active": 20,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 10240
+        },
+        {
+          "call": 325,
+          "n_experts": 20,
+          "states": {
+            "infant": 0,
+            "active": 20,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 10240
+        },
+        {
+          "call": 350,
+          "n_experts": 20,
+          "states": {
+            "infant": 0,
+            "active": 20,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 10240
+        },
+        {
+          "call": 375,
+          "n_experts": 20,
+          "states": {
+            "infant": 0,
+            "active": 20,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 10240
+        },
+        {
+          "call": 400,
+          "n_experts": 20,
+          "states": {
+            "infant": 0,
+            "active": 20,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 10240
+        },
+        {
+          "call": 425,
+          "n_experts": 20,
+          "states": {
+            "infant": 0,
+            "active": 20,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 10240
+        },
+        {
+          "call": 450,
+          "n_experts": 20,
+          "states": {
+            "infant": 0,
+            "active": 20,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 10240
+        },
+        {
+          "call": 475,
+          "n_experts": 20,
+          "states": {
+            "infant": 0,
+            "active": 20,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 10240
+        },
+        {
+          "call": 500,
+          "n_experts": 20,
+          "states": {
+            "infant": 0,
+            "active": 20,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 10240
+        },
+        {
+          "call": 525,
+          "n_experts": 20,
+          "states": {
+            "infant": 0,
+            "active": 20,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 10240
+        },
+        {
+          "call": 550,
+          "n_experts": 20,
+          "states": {
+            "infant": 0,
+            "active": 20,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 10240
+        },
+        {
+          "call": 575,
+          "n_experts": 20,
+          "states": {
+            "infant": 0,
+            "active": 20,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 10240
+        },
+        {
+          "call": 600,
+          "n_experts": 20,
+          "states": {
+            "infant": 0,
+            "active": 20,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 10240
+        }
+      ],
+      "wall_clock": 27.83
+    },
+    {
+      "seed": 14,
+      "arm": "LIFE_OFF",
+      "acc": 0.9043333292007446,
+      "n_experts": 17,
+      "events": {
+        "spawn": 17,
+        "extend": 15,
+        "alarm": 2,
+        "dormant_transitions": 0
+      },
+      "params": 592042,
+      "stored_vectors": 8704,
+      "memory_bytes": 6824616,
+      "gate_macs": 557056,
+      "max_non_active": 2,
+      "timeline": [
+        {
+          "call": 25,
+          "n_experts": 3,
+          "states": {
+            "infant": 0,
+            "active": 3,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 1424
+        },
+        {
+          "call": 50,
+          "n_experts": 7,
+          "states": {
+            "infant": 1,
+            "active": 6,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 3456
+        },
+        {
+          "call": 75,
+          "n_experts": 10,
+          "states": {
+            "infant": 1,
+            "active": 9,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 5120
+        },
+        {
+          "call": 100,
+          "n_experts": 14,
+          "states": {
+            "infant": 0,
+            "active": 14,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 7168
+        },
+        {
+          "call": 125,
+          "n_experts": 17,
+          "states": {
+            "infant": 0,
+            "active": 17,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 8704
+        },
+        {
+          "call": 150,
+          "n_experts": 17,
+          "states": {
+            "infant": 0,
+            "active": 17,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 8704
+        },
+        {
+          "call": 175,
+          "n_experts": 17,
+          "states": {
+            "infant": 0,
+            "active": 17,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 8704
+        },
+        {
+          "call": 200,
+          "n_experts": 17,
+          "states": {
+            "infant": 0,
+            "active": 17,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 8704
+        },
+        {
+          "call": 225,
+          "n_experts": 17,
+          "states": {
+            "infant": 0,
+            "active": 17,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 8704
+        },
+        {
+          "call": 250,
+          "n_experts": 17,
+          "states": {
+            "infant": 0,
+            "active": 17,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 8704
+        },
+        {
+          "call": 275,
+          "n_experts": 17,
+          "states": {
+            "infant": 0,
+            "active": 17,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 8704
+        },
+        {
+          "call": 300,
+          "n_experts": 17,
+          "states": {
+            "infant": 0,
+            "active": 17,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 8704
+        },
+        {
+          "call": 325,
+          "n_experts": 17,
+          "states": {
+            "infant": 0,
+            "active": 17,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 8704
+        },
+        {
+          "call": 350,
+          "n_experts": 17,
+          "states": {
+            "infant": 0,
+            "active": 17,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 8704
+        },
+        {
+          "call": 375,
+          "n_experts": 17,
+          "states": {
+            "infant": 0,
+            "active": 17,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 8704
+        },
+        {
+          "call": 400,
+          "n_experts": 17,
+          "states": {
+            "infant": 0,
+            "active": 17,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 8704
+        },
+        {
+          "call": 425,
+          "n_experts": 17,
+          "states": {
+            "infant": 0,
+            "active": 17,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 8704
+        },
+        {
+          "call": 450,
+          "n_experts": 17,
+          "states": {
+            "infant": 0,
+            "active": 17,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 8704
+        },
+        {
+          "call": 475,
+          "n_experts": 17,
+          "states": {
+            "infant": 0,
+            "active": 17,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 8704
+        },
+        {
+          "call": 500,
+          "n_experts": 17,
+          "states": {
+            "infant": 0,
+            "active": 17,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 8704
+        },
+        {
+          "call": 525,
+          "n_experts": 17,
+          "states": {
+            "infant": 0,
+            "active": 17,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 8704
+        },
+        {
+          "call": 550,
+          "n_experts": 17,
+          "states": {
+            "infant": 0,
+            "active": 17,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 8704
+        },
+        {
+          "call": 575,
+          "n_experts": 17,
+          "states": {
+            "infant": 0,
+            "active": 17,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 8704
+        },
+        {
+          "call": 600,
+          "n_experts": 17,
+          "states": {
+            "infant": 0,
+            "active": 17,
+            "dormant": 0,
+            "archived": 0
+          },
+          "stored_vectors": 8704
+        }
+      ],
+      "wall_clock": 28.19
+    }
+  ]
+}

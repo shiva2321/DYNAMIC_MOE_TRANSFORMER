@@ -1,0 +1,301 @@
+C:\Users\Asta\AppData\Local\Programs\Python\Python312\Lib\site-packages\torch\cuda\__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+[iid FULL kNN seed 0] fit 0s  experts -  params 0  total 5s
+    op      seen  unseen/in-len  unseen/new-len  digit/in  digit/new
+    add    100.0            0.3             -        57.2        -  
+    sub    100.0            0.4             -        54.5        -  
+    mul    100.0            1.5             -        52.0        -  
+    mod    100.0           13.7             -        53.2        -  
+    div    100.0           24.4             -        56.5        -  
+    max    100.0            7.6             -        52.2        -  
+[iid FULL MLP-S seed 0] fit 36s  experts -  params 101900  total 36s
+    op      seen  unseen/in-len  unseen/new-len  digit/in  digit/new
+    add     97.0           59.7             -        89.8        -  
+    sub     85.6           43.5             -        82.9        -  
+    mul     23.6           11.2             -        63.2        -  
+    mod     79.8           52.9             -        82.2        -  
+    div     71.6           57.8             -        84.7        -  
+    max    100.0           84.6             -        95.8        -  
+[iid FULL MLP-L seed 0] fit 120s  experts -  params 2243596  total 121s
+    op      seen  unseen/in-len  unseen/new-len  digit/in  digit/new
+    add    100.0           83.7             -        96.5        -  
+    sub    100.0           69.0             -        92.0        -  
+    mul    100.0           17.3             -        67.4        -  
+    mod    100.0           57.1             -        83.7        -  
+    div    100.0           60.5             -        85.8        -  
+    max    100.0           95.0             -        98.7        -  
+[iid FULL Oracle-op seed 0] fit 99s  experts 6  params 2009160  total 99s
+    op      seen  unseen/in-len  unseen/new-len  digit/in  digit/new
+    add    100.0           73.8             -        94.2        -  
+    sub    100.0           53.1             -        86.6        -  
+    mul    100.0           11.2             -        63.6        -  
+    mod    100.0           54.5             -        82.2        -  
+    div    100.0           59.3             -        85.6        -  
+    max    100.0           86.6             -        96.1        -  
+[iid FULL Oracle-oppos seed 0] fit 106s  experts 37  params 12389820  total 106s
+    op      seen  unseen/in-len  unseen/new-len  digit/in  digit/new
+    add    100.0           84.6             -        96.9        -  
+    sub    100.0           62.6             -        89.8        -  
+    mul    100.0           12.3             -        64.2        -  
+    mod    100.0           55.6             -        82.5        -  
+    div    100.0           57.5             -        84.8        -  
+    max    100.0           88.5             -        96.6        -  
+[iid FULL Transformer seed 0] fit 533s  experts -  params 602124  total 542s
+    op      seen  unseen/in-len  unseen/new-len  digit/in  digit/new
+    add     85.0           85.3             -        96.9        -  
+    sub     87.8           85.1             -        97.1        -  
+    mul     61.6           22.9             -        70.9        -  
+    mod     46.6           17.6             -        69.2        -  
+    div     47.4           18.5             -        76.4        -  
+    max     88.6           89.5             -        97.5        -  
+C:\Users\Asta\AppData\Local\Programs\Python\Python312\Lib\site-packages\torch\cuda\__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+[iid FULL kNN seed 1] fit 0s  experts -  params 0  total 8s
+    op      seen  unseen/in-len  unseen/new-len  digit/in  digit/new
+    add    100.0            0.2             -        56.8        -  
+    sub    100.0            1.1             -        54.0        -  
+    mul    100.0            1.6             -        52.0        -  
+    mod    100.0           15.6             -        53.9        -  
+    div    100.0           25.8             -        56.6        -  
+    max    100.0            6.8             -        52.6        -  
+[iid FULL MLP-S seed 1] fit 34s  experts -  params 101900  total 35s
+    op      seen  unseen/in-len  unseen/new-len  digit/in  digit/new
+    add     97.4           61.0             -        90.4        -  
+    sub     87.4           43.5             -        82.9        -  
+    mul     25.6           11.9             -        63.4        -  
+    mod     81.0           53.1             -        82.1        -  
+    div     74.8           57.5             -        84.3        -  
+    max    100.0           82.4             -        95.1        -  
+[iid FULL MLP-L seed 1] fit 101s  experts -  params 2243596  total 102s
+    op      seen  unseen/in-len  unseen/new-len  digit/in  digit/new
+    add    100.0           83.4             -        96.5        -  
+    sub    100.0           67.7             -        91.7        -  
+    mul    100.0           17.7             -        67.1        -  
+    mod    100.0           58.7             -        83.9        -  
+    div    100.0           59.9             -        85.7        -  
+    max    100.0           95.1             -        98.6        -  
+[iid FULL Oracle-op seed 1] fit 99s  experts 6  params 2009160  total 99s
+    op      seen  unseen/in-len  unseen/new-len  digit/in  digit/new
+    add    100.0           76.9             -        94.8        -  
+    sub    100.0           50.3             -        85.6        -  
+    mul    100.0           11.6             -        63.7        -  
+    mod    100.0           54.5             -        82.1        -  
+    div    100.0           60.2             -        85.6        -  
+    max    100.0           86.8             -        96.3        -  
+[iid FULL Oracle-oppos seed 1] fit 99s  experts 37  params 12389820  total 99s
+    op      seen  unseen/in-len  unseen/new-len  digit/in  digit/new
+    add    100.0           85.3             -        97.1        -  
+    sub    100.0           62.8             -        89.8        -  
+    mul    100.0           11.8             -        64.4        -  
+    mod    100.0           55.2             -        82.4        -  
+    div    100.0           59.0             -        85.1        -  
+    max    100.0           87.4             -        96.4        -  
+[iid FULL Transformer seed 1] fit 507s  experts -  params 602124  total 514s
+    op      seen  unseen/in-len  unseen/new-len  digit/in  digit/new
+    add     76.0           72.6             -        91.9        -  
+    sub     97.0           92.8             -        98.5        -  
+    mul     45.2           19.1             -        66.6        -  
+    mod     74.4           39.2             -        77.9        -  
+    div     89.2           63.1             -        84.6        -  
+    max     92.6           94.0             -        98.6        -  
+C:\Users\Asta\AppData\Local\Programs\Python\Python312\Lib\site-packages\torch\cuda\__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+[iid HOLE kNN seed 0] fit 0s  experts -  params 0  total 6s
+    op      seen  unseen/in-len  unseen/new-len  digit/in  digit/new
+    add    100.0            0.2             0.0      57.9       56.3
+    sub    100.0            0.8             0.1      54.5       51.6
+    mul    100.0            1.5             1.4      51.8       52.3
+    mod    100.0           14.3            11.9      53.4       56.1
+    div    100.0           22.9            23.7      53.7       60.3
+    max    100.0            7.0             2.3      52.0       55.2
+[iid HOLE MLP-S seed 0] fit 37s  experts -  params 101900  total 37s
+    op      seen  unseen/in-len  unseen/new-len  digit/in  digit/new
+    add     96.8           64.4            25.4      90.6       78.0
+    sub     85.0           49.9            18.2      83.5       70.9
+    mul     29.8           15.9             5.5      64.4       59.0
+    mod     82.2           55.1            34.0      82.7       76.4
+    div     73.6           57.3            49.1      83.4       82.0
+    max    100.0           82.0            51.9      95.0       86.3
+[iid HOLE MLP-L seed 0] fit 90s  experts -  params 2243596  total 90s
+    op      seen  unseen/in-len  unseen/new-len  digit/in  digit/new
+    add    100.0           83.9            50.3      96.5       87.6
+    sub    100.0           69.7            34.9      91.5       79.6
+    mul    100.0           22.0             6.2      68.2       61.1
+    mod    100.0           61.3            44.3      84.7       79.1
+    div    100.0           63.7            49.3      85.8       82.3
+    max    100.0           95.6            82.3      98.9       93.7
+[iid HOLE Oracle-op seed 0] fit 98s  experts 6  params 2009160  total 99s
+    op      seen  unseen/in-len  unseen/new-len  digit/in  digit/new
+    add    100.0           75.1            37.4      94.1       82.8
+    sub    100.0           56.7            25.3      86.8       75.6
+    mul    100.0           14.4             3.2      64.5       60.1
+    mod    100.0           57.2            39.5      83.0       78.1
+    div    100.0           62.7            51.6      85.4       84.0
+    max    100.0           87.3            71.0      96.1       91.8
+[iid HOLE Oracle-oppos seed 0] fit 102s  experts 37  params 12389820  total 102s
+    op      seen  unseen/in-len  unseen/new-len  digit/in  digit/new
+    add    100.0           84.5            38.4      96.9       84.0
+    sub    100.0           64.1            28.9      89.3       76.4
+    mul    100.0           15.9             3.6      65.6       58.9
+    mod    100.0           58.0            35.7      83.5       77.2
+    div    100.0           61.7            49.1      85.4       81.8
+    max    100.0           87.9            73.3      96.4       91.4
+[iid HOLE Transformer seed 0] fit 450s  experts -  params 602124  total 458s
+    op      seen  unseen/in-len  unseen/new-len  digit/in  digit/new
+    add     82.6           75.3            66.6      94.1       93.2
+    sub     82.0           80.3            60.4      95.8       89.8
+    mul     90.2           34.8            11.4      73.3       62.5
+    mod     85.6           56.7            47.4      82.6       79.2
+    div     86.6           65.8            50.7      82.8       78.9
+    max     88.4           87.8            82.2      97.4       95.4
+C:\Users\Asta\AppData\Local\Programs\Python\Python312\Lib\site-packages\torch\cuda\__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+[iid HOLE kNN seed 1] fit 0s  experts -  params 0  total 8s
+    op      seen  unseen/in-len  unseen/new-len  digit/in  digit/new
+    add    100.0            0.2             0.0      56.9       56.6
+    sub    100.0            1.4             0.1      54.7       51.7
+    mul    100.0            1.4             1.2      52.4       51.9
+    mod    100.0           14.3            12.8      52.7       56.0
+    div    100.0           22.1            24.1      52.9       60.2
+    max    100.0            6.5             2.0      52.2       54.1
+[iid HOLE MLP-S seed 1] fit 36s  experts -  params 101900  total 36s
+    op      seen  unseen/in-len  unseen/new-len  digit/in  digit/new
+    add     97.0           62.4            25.5      89.8       78.8
+    sub     85.6           49.4            14.8      83.6       69.6
+    mul     35.8           14.3             4.9      64.2       59.3
+    mod     85.6           56.1            35.1      82.9       76.7
+    div     76.6           58.4            47.8      83.7       81.7
+    max    100.0           81.7            55.4      95.0       87.4
+[iid HOLE MLP-L seed 1] fit 107s  experts -  params 2243596  total 107s
+    op      seen  unseen/in-len  unseen/new-len  digit/in  digit/new
+    add    100.0           83.4            47.8      96.2       86.6
+    sub    100.0           70.1            33.7      91.6       77.8
+    mul    100.0           21.1             7.4      68.5       60.7
+    mod    100.0           60.8            42.6      84.8       77.8
+    div    100.0           65.0            48.8      86.2       82.6
+    max    100.0           95.1            78.8      98.6       92.4
+[iid HOLE Oracle-op seed 1] fit 93s  experts 6  params 2009160  total 93s
+    op      seen  unseen/in-len  unseen/new-len  digit/in  digit/new
+    add    100.0           77.4            37.9      94.7       83.5
+    sub    100.0           55.8            23.4      86.3       74.2
+    mul    100.0           14.8             3.6      64.9       59.9
+    mod    100.0           56.9            37.7      83.0       77.4
+    div    100.0           63.3            50.0      85.4       83.4
+    max    100.0           86.3            70.7      96.0       91.5
+[iid HOLE Oracle-oppos seed 1] fit 99s  experts 37  params 12389820  total 99s
+    op      seen  unseen/in-len  unseen/new-len  digit/in  digit/new
+    add    100.0           84.5            37.1      96.9       83.4
+    sub    100.0           64.8            30.2      89.5       76.6
+    mul    100.0           14.4             3.5      66.0       59.3
+    mod    100.0           57.2            36.4      83.2       77.6
+    div    100.0           61.0            48.0      85.2       81.4
+    max    100.0           87.9            71.8      96.4       90.8
+[iid HOLE Transformer seed 1] fit 531s  experts -  params 602124  total 540s
+    op      seen  unseen/in-len  unseen/new-len  digit/in  digit/new
+    add     70.2           69.4            69.2      92.7       93.2
+    sub     90.6           86.0            74.9      97.0       92.1
+    mul     47.8           20.8             6.0      65.3       56.4
+    mod     86.2           56.2            40.6      83.6       77.1
+    div     58.4           51.0            44.3      69.5       70.2
+    max     82.6           81.8            72.7      95.8       91.6
+C:\Users\Asta\AppData\Local\Programs\Python\Python312\Lib\site-packages\torch\cuda\__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+[iid SHORT kNN seed 0] fit 0s  experts -  params 0  total 8s
+    op      seen  unseen/in-len  unseen/new-len  digit/in  digit/new
+    add    100.0            0.4             0.0      75.5       45.0
+    sub    100.0            1.9             0.1      70.1       37.1
+    mul    100.0            1.2             1.8      71.4       42.5
+    mod    100.0           18.1            17.3      68.6       56.1
+    div    100.0           20.2            23.3      67.8       60.6
+    max    100.0           16.4             0.0      68.4       34.0
+[iid SHORT MLP-S seed 0] fit 34s  experts -  params 101900  total 34s
+    op      seen  unseen/in-len  unseen/new-len  digit/in  digit/new
+    add    100.0           83.8             0.0      96.9       61.5
+    sub     99.8           71.7             0.2      94.1       48.5
+    mul     63.8           29.6             2.5      84.4       48.1
+    mod     96.2           62.0            36.7      89.9       70.9
+    div     94.8           69.7            39.3      92.8       75.1
+    max    100.0           93.9             0.0      98.7       52.8
+[iid SHORT MLP-L seed 0] fit 106s  experts -  params 2243596  total 107s
+    op      seen  unseen/in-len  unseen/new-len  digit/in  digit/new
+    add    100.0           96.4             0.0      99.4       68.4
+    sub    100.0           91.0             0.2      98.3       53.3
+    mul    100.0           41.2             2.7      87.4       50.9
+    mod    100.0           66.8            39.3      91.2       71.5
+    div    100.0           76.9            40.7      94.7       75.8
+    max    100.0           98.3             0.0      99.6       53.9
+[iid SHORT Oracle-op seed 0] fit 96s  experts 6  params 2009160  total 97s
+    op      seen  unseen/in-len  unseen/new-len  digit/in  digit/new
+    add    100.0           96.2             0.0      99.3       68.5
+    sub    100.0           85.0             0.1      97.0       52.7
+    mul    100.0           30.6             2.7      85.0       49.4
+    mod    100.0           63.6            38.2      89.9       71.2
+    div    100.0           79.1            37.2      95.2       74.8
+    max    100.0           95.7             0.0      99.1       54.0
+[iid SHORT Oracle-oppos seed 0] fit 98s  experts 37  params 12389820  total 99s
+    op      seen  unseen/in-len  unseen/new-len  digit/in  digit/new
+    add    100.0           95.3             0.0      99.2       69.6
+    sub    100.0           82.1             0.2      96.7       53.0
+    mul     99.8           36.1             2.7      86.6       50.9
+    mod     99.6           66.5            38.8      90.8       71.5
+    div    100.0           71.3            39.0      93.8       75.1
+    max    100.0           96.1             0.0      99.1       53.8
+[iid SHORT Transformer seed 0] fit 272s  experts -  params 602124  total 275s
+    op      seen  unseen/in-len  unseen/new-len  digit/in  digit/new
+    add     90.8           90.6             0.0      97.5       63.6
+    sub    100.0           97.7             0.4      99.5       56.1
+    mul     64.6           38.8             1.8      83.9       45.0
+    mod     85.4           58.4            35.2      89.5       69.8
+    div     95.8           83.8            40.1      96.4       75.3
+    max     99.6           99.4             0.0      99.8       54.3
+C:\Users\Asta\AppData\Local\Programs\Python\Python312\Lib\site-packages\torch\cuda\__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+[iid SHORT kNN seed 1] fit 0s  experts -  params 0  total 3s
+    op      seen  unseen/in-len  unseen/new-len  digit/in  digit/new
+    add    100.0            0.1             0.0      74.3       45.1
+    sub    100.0            3.7             0.0      70.4       37.0
+    mul    100.0            1.2             1.9      71.7       42.8
+    mod    100.0           17.3            17.7      67.2       56.1
+    div    100.0           20.8            24.3      67.5       61.3
+    max    100.0           17.6             0.0      69.5       33.3
+[iid SHORT MLP-S seed 1] fit 37s  experts -  params 101900  total 37s
+    op      seen  unseen/in-len  unseen/new-len  digit/in  digit/new
+    add    100.0           80.0             0.0      96.1       61.9
+    sub     99.0           69.2             0.1      93.5       48.5
+    mul     62.2           29.8             2.7      84.2       48.1
+    mod     97.2           62.2            37.4      89.8       71.3
+    div     97.0           67.7            39.9      92.2       75.4
+    max    100.0           91.7             0.0      98.2       52.4
+[iid SHORT MLP-L seed 1] fit 41s  experts -  params 2243596  total 42s
+    op      seen  unseen/in-len  unseen/new-len  digit/in  digit/new
+    add    100.0           95.2             0.0      99.1       67.7
+    sub    100.0           89.3             0.2      97.9       53.2
+    mul    100.0           39.8             2.7      87.4       51.0
+    mod    100.0           68.0            39.2      91.3       71.2
+    div    100.0           76.7            40.7      94.6       75.9
+    max    100.0           99.0             0.0      99.8       53.9
+[iid SHORT Oracle-op seed 1] fit 101s  experts 6  params 2009160  total 101s
+    op      seen  unseen/in-len  unseen/new-len  digit/in  digit/new
+    add    100.0           94.9             0.0      99.1       68.4
+    sub    100.0           86.7             0.1      97.3       53.5
+    mul    100.0           30.9             2.7      85.1       49.5
+    mod    100.0           64.5            37.8      90.0       71.4
+    div    100.0           79.9            37.4      95.4       74.8
+    max    100.0           97.1             0.0      99.4       54.0
+[iid SHORT Oracle-oppos seed 1] fit 103s  experts 37  params 12389820  total 103s
+    op      seen  unseen/in-len  unseen/new-len  digit/in  digit/new
+    add    100.0           91.8             0.0      98.6       69.1
+    sub    100.0           83.7             0.1      96.9       53.4
+    mul     98.8           34.1             2.7      86.3       51.1
+    mod     98.8           68.2            39.0      91.0       71.6
+    div    100.0           76.6            38.9      94.8       75.1
+    max    100.0           96.1             0.0      99.2       53.9
+[iid SHORT Transformer seed 1] fit 202s  experts -  params 602124  total 206s
+    op      seen  unseen/in-len  unseen/new-len  digit/in  digit/new
+    add     96.4           94.3             0.0      98.8       69.3
+    sub     97.0           91.5             0.2      97.6       54.0
+    mul     72.2           37.2             1.4      83.0       45.8
+    mod     94.6           65.3            35.5      90.0       64.7
+    div     97.6           82.8            36.3      95.5       70.7
+    max     90.2           91.9             0.0      97.9       53.0
+queue gpu_iid finished at Wed Oct 14 07:50:27 EDT 2026

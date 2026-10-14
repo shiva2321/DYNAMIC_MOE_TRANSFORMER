@@ -1,0 +1,106 @@
+{
+ "spec": {
+  "stream": "OV-0.6",
+  "seed": 104,
+  "arm": "A_set@12-0.35-100",
+  "smoke": false
+ },
+ "records": [
+  {
+   "stream": "OV-0.6",
+   "method": "A_set",
+   "seed": 104,
+   "acc": 0.4339999943971634,
+   "per_regime": [
+    0.5274999737739563,
+    0.41999998688697815,
+    0.375,
+    0.4375,
+    0.41499999165534973,
+    0.49000000953674316,
+    0.41499999165534973,
+    0.3824999928474426,
+    0.46000000834465027,
+    0.41749998927116394
+   ],
+   "forgetting": null,
+   "n_experts": 10,
+   "params": 345680,
+   "naive_params": 345680,
+   "stored_vectors": 8256,
+   "memory_bytes": 5609792,
+   "gate_macs": 327680,
+   "expert_macs": 33792,
+   "predict_macs": 361472,
+   "wall_clock": 14.718856399995275,
+   "event_counts": {
+    "spawn": 10,
+    "set_novel": 8
+   },
+   "regimes": 10,
+   "steps": 5,
+   "arm": "A_set@12-0.35-100",
+   "observe_seconds": 14.664265000043088,
+   "fn_known": 126,
+   "fn_called_novel": 0,
+   "onset_total": 9,
+   "onset_called_novel": 8,
+   "verdict_counts": {
+    "None": 2,
+    "novel": 8,
+    "known": 146
+   },
+   "set_stats": {
+    "tests": 451,
+    "early_stops": 146,
+    "perms": 307911,
+    "novel": 8,
+    "known": 146,
+    "override": 0,
+    "paused": 0,
+    "breaker_opens": 0,
+    "window_splits": 2
+   },
+   "breaker_opens": 0,
+   "groups": {
+    "pure64": {
+     "single": 0.43671876192092896,
+     "group": 0.44453126192092896,
+     "n": 3840,
+     "n_groups": 60,
+     "changed": 96
+    },
+    "pure16": {
+     "single": 0.4339999854564667,
+     "group": 0.4424999952316284,
+     "n": 4000,
+     "n_groups": 250,
+     "changed": 104
+    },
+    "pure8": {
+     "single": 0.4339999854564667,
+     "group": 0.44200000166893005,
+     "n": 4000,
+     "n_groups": 500,
+     "changed": 101
+    },
+    "mixed32_32": {
+     "single": 0.4359374940395355,
+     "group": 0.42955729365348816,
+     "n": 7680,
+     "n_groups": 120,
+     "changed": 231
+    },
+    "mixed58_6": {
+     "single": 0.43307292461395264,
+     "group": 0.4388020932674408,
+     "n": 3840,
+     "n_groups": 60,
+     "changed": 115
+    }
+   }
+  }
+ ],
+ "seconds": 15.611071400002402,
+ "peak_mb": 787.53125
+}

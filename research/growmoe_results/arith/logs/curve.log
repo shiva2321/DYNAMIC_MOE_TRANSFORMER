@@ -1,0 +1,73 @@
+C:\Users\Asta\AppData\Local\Programs\Python\Python312\Lib\site-packages\torch\cuda\__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+[iid FULL MLP-L seed 0] fit 10s  experts -  params 2243596  total 10s
+    op      seen  unseen/in-len  unseen/new-len  digit/in  digit/new
+    add    100.0           10.2             -        62.0        -  
+    sub    100.0            5.5             -        59.2        -  
+    mul    100.0            3.6             -        55.5        -  
+    mod    100.0           32.1             -        74.2        -  
+    div    100.0           48.8             -        79.7        -  
+    max    100.0           30.1             -        75.7        -  
+[iid FULL Transformer seed 0] fit 33s  experts -  params 602124  total 42s
+    op      seen  unseen/in-len  unseen/new-len  digit/in  digit/new
+    add     76.2           16.2             -        64.3        -  
+    sub     63.6            6.7             -        59.3        -  
+    mul     98.2            3.5             -        55.6        -  
+    mod     91.8           46.0             -        78.2        -  
+    div     96.0           48.0             -        77.7        -  
+    max     84.4           75.8             -        92.1        -  
+C:\Users\Asta\AppData\Local\Programs\Python\Python312\Lib\site-packages\torch\cuda\__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+[iid FULL MLP-L seed 0] fit 30s  experts -  params 2243596  total 31s
+    op      seen  unseen/in-len  unseen/new-len  digit/in  digit/new
+    add    100.0           43.3             -        83.8        -  
+    sub    100.0           30.3             -        76.6        -  
+    mul    100.0            8.7             -        61.1        -  
+    mod    100.0           51.9             -        81.4        -  
+    div    100.0           54.7             -        82.7        -  
+    max    100.0           73.1             -        91.7        -  
+[iid FULL Transformer seed 0] fit 132s  experts -  params 602124  total 140s
+    op      seen  unseen/in-len  unseen/new-len  digit/in  digit/new
+    add     88.4           71.1             -        92.5        -  
+    sub     88.0           46.5             -        84.8        -  
+    mul     92.0           11.5             -        64.3        -  
+    mod     93.4           54.4             -        81.6        -  
+    div     99.0           57.5             -        83.9        -  
+    max     95.6           94.6             -        98.3        -  
+C:\Users\Asta\AppData\Local\Programs\Python\Python312\Lib\site-packages\torch\cuda\__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+[iid FULL MLP-L seed 0] fit 56s  experts -  params 2243596  total 57s
+    op      seen  unseen/in-len  unseen/new-len  digit/in  digit/new
+    add    100.0           65.9             -        91.6        -  
+    sub    100.0           47.1             -        84.0        -  
+    mul    100.0           13.0             -        63.6        -  
+    mod    100.0           56.6             -        82.8        -  
+    div    100.0           57.9             -        84.3        -  
+    max    100.0           86.3             -        96.2        -  
+[iid FULL Transformer seed 0] fit 244s  experts -  params 602124  total 251s
+    op      seen  unseen/in-len  unseen/new-len  digit/in  digit/new
+    add     91.6           84.9             -        96.7        -  
+    sub     96.6           78.4             -        95.0        -  
+    mul     82.0           16.0             -        66.6        -  
+    mod     90.6           52.8             -        82.2        -  
+    div     99.0           62.3             -        86.6        -  
+    max     94.4           96.6             -        99.0        -  
+C:\Users\Asta\AppData\Local\Programs\Python\Python312\Lib\site-packages\torch\cuda\__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+[iid FULL MLP-L seed 0] fit 173s  experts -  params 2243596  total 173s
+    op      seen  unseen/in-len  unseen/new-len  digit/in  digit/new
+    add    100.0           92.8             -        98.6        -  
+    sub    100.0           85.3             -        96.8        -  
+    mul     86.6           22.8             -        71.0        -  
+    mod    100.0           61.6             -        84.9        -  
+    div    100.0           66.5             -        88.2        -  
+    max    100.0           98.5             -        99.6        -  
+[iid FULL Transformer seed 0] fit 987s  experts -  params 602124  total 996s
+    op      seen  unseen/in-len  unseen/new-len  digit/in  digit/new
+    add     86.4           86.3             -        96.7        -  
+    sub     93.0           89.1             -        97.9        -  
+    mul     86.6           33.3             -        76.5        -  
+    mod     75.2           44.5             -        78.0        -  
+    div     88.0           73.0             -        88.0        -  
+    max     92.2           90.8             -        98.0        -  
+queue curve finished at Wed Oct 14 07:39:26 EDT 2026

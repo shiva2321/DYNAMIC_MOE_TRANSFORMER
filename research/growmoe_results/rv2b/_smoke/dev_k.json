@@ -1,0 +1,48 @@
+{
+ "accuracy": {
+  "F-30": {
+   "A_exact": 28.125,
+   "A_cascade_k1": 28.125,
+   "A_cascade_k4": 28.125,
+   "A_cascade_k8": 28.125
+  },
+  "S2-30": {
+   "A_exact": 80.4999977350235,
+   "A_cascade_k1": 80.4999977350235,
+   "A_cascade_k4": 80.4999977350235,
+   "A_cascade_k8": 80.4999977350235
+  },
+  "F-15": {
+   "A_exact": 31.25,
+   "A_cascade_k1": 31.25,
+   "A_cascade_k4": 31.25,
+   "A_cascade_k8": 31.25
+  }
+ },
+ "gate_macs_pred": {
+  "F-30": {
+   "A_exact": 98304.0,
+   "A_cascade_k1": 98304.0,
+   "A_cascade_k4": 98304.0,
+   "A_cascade_k8": 98304.0
+  },
+  "S2-30": {
+   "A_exact": 73728.0,
+   "A_cascade_k1": 73728.0,
+   "A_cascade_k4": 73728.0,
+   "A_cascade_k8": 73728.0
+  },
+  "F-15": {
+   "A_exact": 90112.0,
+   "A_cascade_k1": 90112.0,
+   "A_cascade_k4": 90112.0,
+   "A_cascade_k8": 90112.0
+  }
+ },
+ "k": 1,
+ "satisfying": [
+  1,
+  4,
+  8
+ ]
+}

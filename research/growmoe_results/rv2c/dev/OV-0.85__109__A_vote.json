@@ -1,0 +1,99 @@
+{
+ "spec": {
+  "stream": "OV-0.85",
+  "seed": 109,
+  "arm": "A_vote",
+  "smoke": false
+ },
+ "records": [
+  {
+   "stream": "OV-0.85",
+   "method": "A_vote",
+   "seed": 109,
+   "acc": 0.2657499983906746,
+   "per_regime": [
+    0.35749998688697815,
+    0.2750000059604645,
+    0.24250000715255737,
+    0.2524999976158142,
+    0.2849999964237213,
+    0.26499998569488525,
+    0.20000000298023224,
+    0.28999999165534973,
+    0.27250000834465027,
+    0.2175000011920929
+   ],
+   "forgetting": null,
+   "n_experts": 12,
+   "params": 414816,
+   "naive_params": 414816,
+   "stored_vectors": 6144,
+   "memory_bytes": 4804992,
+   "gate_macs": 393216,
+   "expert_macs": 33792,
+   "predict_macs": 427008,
+   "wall_clock": 11.147945799999434,
+   "event_counts": {
+    "spawn": 12,
+    "alarm": 11
+   },
+   "regimes": 10,
+   "steps": 5,
+   "arm": "A_vote",
+   "observe_seconds": 11.058984700015571,
+   "fn_known": 126,
+   "fn_called_novel": 0,
+   "fn_doubtful": 0,
+   "onset_total": 9,
+   "onset_called_novel": 0,
+   "onset_doubtful": 0,
+   "verdict_counts": {
+    "None": 156
+   },
+   "set_stats": null,
+   "breaker_opens": 0,
+   "sig_vectors": 3072,
+   "replay_vectors": 3072,
+   "window_vectors": 0,
+   "groups": {
+    "pure64": {
+     "single": 0.265625,
+     "group": 0.3372395932674408,
+     "n": 3840,
+     "n_groups": 60,
+     "changed": 1204
+    },
+    "pure16": {
+     "single": 0.265749990940094,
+     "group": 0.3402499854564667,
+     "n": 4000,
+     "n_groups": 250,
+     "changed": 1217
+    },
+    "pure8": {
+     "single": 0.265749990940094,
+     "group": 0.3294999897480011,
+     "n": 4000,
+     "n_groups": 500,
+     "changed": 1123
+    },
+    "mixed32_32": {
+     "single": 0.2652343809604645,
+     "group": 0.2757812440395355,
+     "n": 7680,
+     "n_groups": 120,
+     "changed": 2254
+    },
+    "mixed58_6": {
+     "single": 0.26484376192092896,
+     "group": 0.3200520873069763,
+     "n": 3840,
+     "n_groups": 60,
+     "changed": 1208
+    }
+   }
+  }
+ ],
+ "seconds": 12.526099800001248,
+ "peak_mb": 921.6015625
+}

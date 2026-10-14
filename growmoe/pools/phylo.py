@@ -27,6 +27,11 @@ from ..competence import LossChangeMonitor
 from ..growth import GrowthPolicy, plateau
 from ..probation import Probation
 from ..signature import VmfSignature
+from ..fingerprint import Fingerprint
+from ..groupvote import vote_groups
+from ..setgate import SetGate
+from ..settest import generator
+from ..sources import SourceWindows
 from ..types import StepRecord, Prediction
 from ..replay import Reservoir
 from ..vmf import log_vmf_norm
@@ -50,6 +55,10 @@ class PhyloMoE(BasePool):
         self.probation = Probation(cap=self.cfg.pool_cap, d=self.cfg.d)
         self.samples_seen = 0
         self.sig_cls = getattr(self.cfg, "sig_cls", None) or VmfSignature
+        self.reset_gate_stats()
+        self._set = SetGate(self.cfg)                                  # routing v2 stage 3a; idle unless cfg.set_gate
+        self._held: list = []                                          # persistence (A-15): samples of a doubtful batch that wait for the next decision
+        self._held_step = -10
 
     @staticmethod
     def _forget_competence_history(rec) -> None:
@@ -415,6 +424,8 @@ class PhyloMoE(BasePool):
                         rec_i.meta["sig"].merge_from(sig_j)
                         rec_i.meta["sig"].fit()
                         rec_i.replay.add(rx_j, ry_j)
+                        if rec_j.meta.get("windows") is not None:          # routing v2 stage 3a: the merged expert remembers the sources of both
+                            self._windows_of(rec_i).merge_from(rec_j.meta["windows"])
 
                         for c_id, c_rec in list(self.experts.items()):
                             if c_rec.parent == j:
@@ -506,6 +517,7 @@ class PhyloMoE(BasePool):
                     loss=float("nan"),
                     spawned=[],
                     n_experts=0,
+                    meta={"set_verdict": None} if self.cfg.set_gate else {},
                 )
 
             # Once >= m_min samples are buffered, found expert 0 from scratch
@@ -581,25 +593,12 @@ class PhyloMoE(BasePool):
                 loss=loss,
                 spawned=[rec.id],
                 n_experts=len(self.experts),
+                meta={"set_verdict": None} if self.cfg.set_gate else {},
             )
 
         # ------------------------------------------------ 13b Gate & Routing
         eids = list(self.experts.keys())
-        p_list = []
-        logf_list = []
-
-        for eid in eids:
-            rec = self.experts[eid]
-            sig: VmfSignature = rec.meta["sig"]
-            p_k = sig.pvalue(x)
-            if rec.state == "infant":
-                p_k = torch.clamp(p_k * self.cfg.infant_relax, max=1.0)
-            logf_k = sig.logpdf(x)
-            p_list.append(p_k)
-            logf_list.append(logf_k)
-
-        P = torch.stack(p_list, dim=1)        # (B, K)
-        LogF = torch.stack(logf_list, dim=1)  # (B, K)
+        P, LogF = self._gate_matrices(x, eids, phase="observe")               # (B, K) each
 
         if self.cfg.no_conformal:
             max_logf = torch.max(LogF, dim=1).values
@@ -635,10 +634,16 @@ class PhyloMoE(BasePool):
         if self.cfg.batch_vote:                                    # routing v2 stage 1; reads only `assigned`, so it holds in every gate mode
             assigned = self._batch_consistent(assigned)
 
+        set_verdict, probation_mask = None, novel                  # routing v2 stage 3a (OFF by default): the accepted samples are tested as a SET
+        if self.cfg.set_gate:
+            assigned, set_novel, set_verdict = self._set_gate_step(x, y_t, assigned, eids)
+            if set_novel is not None:
+                probation_mask = novel | set_novel                 # called new as a set: they join the individually flagged ones; `novel` itself stays the per-sample gate's
+
         spawned = []
 
         # ------------------------------------------------ 13c Probation Buffer
-        novel_indices = torch.where(novel)[0]
+        novel_indices = torch.where(probation_mask)[0]
         if self.cfg.no_probation:
             if len(novel_indices) > 0 and len(self.experts) < self.cfg.max_experts:
                 x_nov = x[novel_indices]
@@ -657,7 +662,10 @@ class PhyloMoE(BasePool):
                 x_nov = x[novel_indices]
                 y_nov = y_t[novel_indices] if y_t is not None else None
                 arr_nov = start_arrival + novel_indices
-                self.probation.add(x_nov, y_nov, arrival=arr_nov)
+                if set_verdict == "held":                              # persistence: the flagged samples of a doubtful batch wait with its accepted samples
+                    self._held.append((x_nov, y_nov, arr_nov))
+                else:
+                    self.probation.add(x_nov, y_nov, arrival=arr_nov)
 
             ttl = int(math.ceil(self.cfg.m_min / self.cfg.min_share))
             self.probation.expire(now=self.samples_seen, ttl=ttl)
@@ -737,6 +745,8 @@ class PhyloMoE(BasePool):
                 self.events.add(kind="revive", step=self.step, expert=eid)
 
             rec.meta["sig"].update(xk)
+            if self.cfg.set_gate:                                  # routing v2 stage 3a: remember which source these samples came from
+                self._update_windows(rec, xk)
 
             if y_t is not None:
                 yk = y_t[mask_k]
@@ -850,28 +860,235 @@ class PhyloMoE(BasePool):
             loss=mean_loss,
             spawned=spawned,
             n_experts=len(self.experts),
+            meta={"set_verdict": set_verdict} if self.cfg.set_gate else {},
         )
+
+    # ------------------------------------------------------------------------------------------ routing v2 stage 3a: the batch-level gate
+    @property
+    def set_stats(self) -> dict:
+        """Counters of the batch-level gate (tests, early stops, permutations, verdicts, overrides, pauses, breaker openings, window splits). No wall-clock."""
+        return self._set.stats
+
+    def summary(self) -> dict:
+        out = super().summary()
+        if self.cfg.set_gate:
+            out["set_stats"] = dict(self._set.stats)
+        return out
+
+    def _windows_of(self, rec) -> SourceWindows:
+        """The expert's source windows, created on first use (so a pool that never enables the set gate never holds any)."""
+        w = rec.meta.get("windows")
+        if w is None:
+            c = self.cfg
+            w = rec.meta["windows"] = SourceWindows(
+                max_windows=c.set_gate_windows, max_batches=c.set_gate_window_batches, min_ref=c.set_gate_min_ref, split_alpha=c.set_gate_split_alpha,
+                n_perm=c.set_gate_perms, chunk=c.set_gate_chunk, stat=c.set_gate_stat, max_rows=c.set_gate_max_rows)
+        return w
+
+    def _update_windows(self, rec, xk: Tensor) -> None:
+        """Add the samples a trained batch sent to this expert to its source windows."""
+        if self._windows_of(rec).update(xk, generator(self.cfg.seed, 0x57494E, self.step, rec.id), self.step):    # 0x57494E = "WIN"
+            self._set.stats["window_splits"] += 1
+
+    def _set_refs(self, eid: int):
+        """The expert's references for the set test as (rows, mean) pairs: one per source window with enough rows, else its stored prototypes (a young
+        expert's prototypes are its training samples). An expert with neither has no reference and can never be admitted."""
+        rec = self.experts[eid]
+        w = rec.meta.get("windows")
+        pairs = w.ref_pairs() if w is not None else []
+        if pairs:
+            return pairs
+        protos = rec.meta["sig"].protos
+        return [(protos, protos.mean(0))] if protos is not None and len(protos) > 0 else []
+
+    def _set_loss(self, eid: int, x: Tensor, y: Tensor) -> float:
+        with torch.no_grad():
+            return float(F.cross_entropy(self.experts[eid].module(x), y))
+
+    def _set_gate_step(self, x: Tensor, y_t: Optional[Tensor], assigned: Tensor, eids: List[int]):
+        """Routing v2 stage 3a. The samples the per-sample gate accepted (and the batch vote assigned) are tested as a SET against the experts' source
+        windows. Returns ``(assigned, set_novel_mask or None, verdict or None)``: novel as a set -> the accepted samples are unassigned and the mask tells the
+        caller to send them to the probation buffer; known -> one expert trains all of them. Samples the per-sample gate flagged are never touched.
+        Persistence (``set_gate_confirm`` = c > 1, amendment A-15): the first c - 1 doubtful decided batches in a row return "held": their accepted samples are
+        unassigned and wait in ``self._held`` (``observe`` adds the flagged samples to the same list instead of the probation buffer); the c-th doubtful batch
+        returns "novel" and the held samples join its cluster; a known batch drops them. The circuit breaker always sees the raw verdict."""
+        gate, cfg = self._set, self.cfg
+        accepted = assigned >= 0
+        n_acc = int(accepted.sum())
+        if n_acc < cfg.batch_vote_min:
+            return assigned, None, None
+        if gate.paused(self.step):
+            gate.stats["paused"] += 1
+            return assigned, None, "paused"
+        ids, counts = torch.unique(assigned[accepted], return_counts=True)
+        vote_owner = int(ids[counts == counts.max()].min())
+        dec = gate.decide(x[accepted], y_t[accepted] if y_t is not None else None, eids, self._set_refs, self._set_loss, self.step)
+        verdict = gate.confirm(dec.verdict)                            # persistence (A-15): "known", "held" or "novel" (acted on)
+        out = assigned.clone()
+        if verdict == "held":
+            out[accepted] = -1
+            gate.stats["held"] += 1
+            self._hold(x, y_t, accepted)
+            self.events.add(kind="set_held", step=self.step, n=n_acc, tried=dec.tried)
+        elif verdict == "novel":
+            self._release_held()
+            out[accepted] = -1
+            self.events.add(kind="set_novel", step=self.step, n=n_acc, tried=dec.tried)
+        else:
+            self._drop_held()
+            out[accepted] = dec.owner
+            if dec.owner != vote_owner:
+                gate.stats["override"] += 1
+                self.events.add(kind="set_override", step=self.step, n=n_acc, vote=vote_owner, owner=dec.owner, admitted=dec.admitted)
+        if gate.note(dec.verdict, n_acc / assigned.shape[0], self.step):
+            self.events.add(kind="breaker_open", step=self.step, until=gate.pause_until)
+        return out, (accepted if verdict == "novel" else None), verdict
+
+    _HOLD_TTL = 3                                                      # a held batch is only joined by the next decided batch if it comes within this many steps
+
+    def _hold(self, x: Tensor, y_t: Optional[Tensor], accepted: Tensor) -> None:
+        """Persistence (A-15): the accepted samples of a doubtful batch wait (the flagged ones follow in ``observe``)."""
+        if self.step - self._held_step > self._HOLD_TTL:               # an older, never-resolved hold is stale
+            self._held = []
+        start = self.samples_seen - x.shape[0]
+        self._held.append((x[accepted].clone(), y_t[accepted].clone() if y_t is not None else None, start + torch.where(accepted)[0]))
+        self._held_step = self.step
+
+    def _release_held(self) -> None:
+        """The next decided batch is doubtful too: the held samples join the probation buffer (and so the cluster of this batch) if they are still fresh."""
+        if self._held and self.step - self._held_step <= self._HOLD_TTL:
+            for px, py, pa in self._held:
+                self.probation.add(px, py, arrival=pa)
+            self._set.stats["released"] += 1
+        elif self._held:
+            self._set.stats["dropped"] += 1
+        self._held = []
+
+    def _drop_held(self) -> None:
+        """The next decided batch is known: the doubt was a false alarm and the held samples are dropped."""
+        if self._held:
+            self._set.stats["dropped"] += 1
+        self._held = []
+
+    # ------------------------------------------------------------------------------------------ routing v2 stage 3b: group answering
+    def predict_grouped(self, x: Tensor, groups: Tensor, ctx: Optional[Tensor] = None) -> Prediction:
+        """Answer ``x`` with the inputs of every group answered together. ``groups`` is a LongTensor of OPAQUE group ids chosen by the caller (one document, one
+        session, one batch; negative = not grouped); they carry no regime or label information. With ``cfg.group_vote`` every group of at least ``cfg.group_min``
+        inputs is answered by the expert most of its inputs chose on their own (routing v2 stage 3b); with the flag off, or an empty pool, the answer is
+        ``predict(x, ctx)`` itself. ``predict`` is not changed: its signature is pinned by tests/growmoe/test_gm_phylo.py (no side channel into the pool)."""
+        pred = self.predict(x, ctx)
+        if not self.cfg.group_vote or len(self.experts) == 0:
+            return pred
+        return self._answer_groups(x, pred, groups)
+
+    def _answer_groups(self, x: Tensor, pred: Prediction, groups: Tensor) -> Prediction:
+        """Re-answer the inputs of every large enough group with the group's expert (see ``growmoe.groupvote``). The veto uses EXACT p-values from
+        ``_gate_column``, never the cascade's restricted matrix (which holds 0 for experts outside an input's shortlist)."""
+        cfg = self.cfg
+        groups = torch.as_tensor(groups)
+        xn = self._normalize(x.float())
+
+        def accepts(eid: int, idx: Tensor) -> Tensor:
+            p, logf = self._gate_column(eid, xn[idx])
+            return (logf >= 0.0) if cfg.no_conformal else (p >= cfg.group_veto_q)
+
+        new_expert, info = vote_groups(pred.expert, groups, cfg.group_min, accepts if cfg.group_veto else None)
+        moved = new_expert != pred.expert
+        probs = pred.probs
+        if moved.any():
+            probs = pred.probs.clone()
+            with torch.no_grad():
+                for eid in torch.unique(new_expert[moved]).tolist():
+                    m = moved & (new_expert == eid)
+                    probs[m] = self.experts[eid].module.proba(xn[m])
+        return Prediction(probs=probs, expert=new_expert, p_nov=pred.p_nov, unknown=pred.unknown, meta={**pred.meta, "group_vote": info})
 
     _FAST_RULES = ("accept_then_logf", "argmax_logf", "argmax_p", "zscore_logf", "nearest_proto")
 
-    def _gate_matrices(self, x: Tensor, eids: List[int]):
-        """(B, K) conformal p-values and log-densities. For the standard signature the score is computed ONCE per expert (the
-        reference loop computed it twice, once inside ``pvalue`` and once inside ``logpdf``); every value is bit-identical."""
-        p_cols, f_cols = [], []
-        for eid in eids:
-            rec = self.experts[eid]
-            sig = rec.meta["sig"]
-            if isinstance(sig, VmfSignature):
-                s = sig.score(x)
-                p_k = conformal_pvalues(sig.cal_scores, s)
-                logf_k = s + sig._log_c[sig._kappa]
-            else:
-                p_k, logf_k = sig.pvalue(x), sig.logpdf(x)
-            if rec.state == "infant":
-                p_k = torch.clamp(p_k * self.cfg.infant_relax, max=1.0)
-            p_cols.append(p_k)
-            f_cols.append(logf_k)
-        return torch.stack(p_cols, dim=1), torch.stack(f_cols, dim=1)
+    def reset_gate_stats(self) -> None:
+        """Multiply-adds spent by the gate, counted per call site ('observe' while learning, 'predict' while answering)."""
+        self.gate_stats = {ph: {"samples": 0, "stage1": 0, "stage2": 0, "second_look": 0} for ph in ("observe", "predict")}
+
+    def _gate_column(self, eid: int, x: Tensor):
+        """Conformal p-values and log-densities of ``x`` under one expert's signature (infants get the relaxed gate). The score is computed ONCE
+        (the reference loop computed it twice, once inside ``pvalue`` and once inside ``logpdf``); every value is bit-identical."""
+        rec = self.experts[eid]
+        sig = rec.meta["sig"]
+        if isinstance(sig, VmfSignature):
+            s = sig.score(x)
+            p = conformal_pvalues(sig.cal_scores, s)
+            logf = s + sig._log_c[sig._kappa]
+        else:
+            p, logf = sig.pvalue(x), sig.logpdf(x)
+        if rec.state == "infant":
+            p = torch.clamp(p * self.cfg.infant_relax, max=1.0)
+        return p, logf
+
+    def _gate_exact(self, x: Tensor, eids: List[int]):
+        cols = [self._gate_column(eid, x) for eid in eids]
+        return torch.stack([c[0] for c in cols], dim=1), torch.stack([c[1] for c in cols], dim=1)
+
+    def _gate_matrices(self, x: Tensor, eids: List[int], phase: str = "predict"):
+        """(B, K) conformal p-values and log-densities. With ``gate_shortlist > 0`` and enough experts the cascade of ``_gate_cascade`` is used; its
+        novelty decisions equal the exact gate's (see that method). ``phase`` ('observe' or 'predict') only decides which counters are advanced."""
+        stats = self.gate_stats[phase]
+        stats["samples"] += x.shape[0]
+        if self._cascade_ok(eids):
+            return self._gate_cascade(x, eids, stats)
+        stats["stage2"] += x.shape[0] * sum(self.experts[e].meta["sig"].n for e in eids) * self.cfg.d
+        return self._gate_exact(x, eids)
+
+    def _cascade_ok(self, eids: List[int]) -> bool:
+        """The shortlist needs the conformal gate, vMF signatures with at least two prototypes, and enough experts to be worth it."""
+        cfg = self.cfg
+        if cfg.gate_shortlist <= 0 or cfg.no_conformal or len(eids) < max(cfg.gate_shortlist_min_experts, cfg.gate_shortlist + 1):
+            return False
+        return all(isinstance(self.experts[e].meta["sig"], VmfSignature) and self.experts[e].meta["sig"].n >= 2 for e in eids)
+
+    def _fingerprints(self, eids: List[int]) -> Tensor:
+        """(E, k, d) unit sub-centroids, one block per expert; an expert's block is rebuilt when its signature has seen ``gate_fingerprint_refresh`` more points."""
+        k, refresh = self.cfg.gate_fingerprint_k, self.cfg.gate_fingerprint_refresh
+        blocks = []
+        for e in eids:
+            rec = self.experts[e]
+            fp = rec.meta.get("fp")
+            if fp is None or fp.stale(rec.meta["sig"], refresh):
+                fp = Fingerprint.build(rec.meta["sig"], k, seed=self.cfg.seed * 1000 + e)
+                rec.meta["fp"] = fp
+            blocks.append(fp.padded(k))
+        return torch.stack(blocks)
+
+    def _gate_cascade(self, x: Tensor, eids: List[int], stats: dict):
+        """Two-stage gate. (1) Stage 1 scores x against every expert's sub-centroids (best cosine). (2) The top ``gate_shortlist`` experts per input
+        (plus every infant) get the exact score. Pairs outside the shortlist stay P = 0, LogF = -inf. (3) Second look: every input whose restricted
+        p_nov is at most q gets the exact scan over ALL experts.
+
+        Guarantee: the Benjamini-Hochberg novelty flags equal the exact gate's. BH at level q rejects using only p-values <= q (a p above q can never
+        satisfy p_(k) <= kq/B); restricted p <= exact p, and every input whose restricted p <= q is recomputed exactly, so the entries <= q coincide and all
+        others exceed q in both versions. Only the choice among accepting experts is approximate."""
+        cfg, d = self.cfg, self.cfg.d
+        b, n_exp = x.shape[0], len(eids)
+        cents = self._fingerprints(eids)                                                  # (E, k, d)
+        k = cents.shape[1]
+        stage1 = (x @ cents.reshape(n_exp * k, d).T).reshape(b, n_exp, k).amax(dim=2)     # (B, E)
+        stats["stage1"] += b * n_exp * k * d
+        need = torch.zeros(b, n_exp, dtype=torch.bool)
+        need.scatter_(1, stage1.topk(cfg.gate_shortlist, dim=1).indices, True)
+        for c, e in enumerate(eids):
+            if self.experts[e].state == "infant":                                         # infants are few and small and must attract their regime
+                need[:, c] = True
+        P = torch.zeros(b, n_exp)
+        LogF = torch.full((b, n_exp), -math.inf)
+        for c, e in enumerate(eids):
+            rows = need[:, c].nonzero().squeeze(1)
+            if rows.numel():
+                P[rows, c], LogF[rows, c] = self._gate_column(e, x[rows])
+                stats["stage2"] += int(rows.numel()) * self.experts[e].meta["sig"].n * d
+        look = (P.max(dim=1).values <= cfg.q * 1.001).nonzero().squeeze(1)              # the 1.001 only enlarges the set (safe side)
+        if look.numel():
+            P[look], LogF[look] = self._gate_exact(x[look], eids)
+            stats["second_look"] += int(look.numel()) * sum(self.experts[e].meta["sig"].n for e in eids) * d
+        return P, LogF
 
     def predict(self, x: Tensor, ctx: Optional[Tensor] = None) -> Prediction:
         """Predict class probabilities and novelty without learning or signature updates.

@@ -1,9 +1,15 @@
 {
- "generated": "2026-10-13 17:10:00",
- "head": "117aec5",
+ "generated": "2026-10-14 10:00:38",
+ "head": "e33cc18",
  "branch": "track-g-growmoe",
- "n_files": 657,
+ "n_files": 684,
  "files": [
+  {
+   "path": "demos/demo_growmoe_continual_learning.py",
+   "sha256": "f9981952b2e17e8c7a99e384bf66183715cc37dc11e15fea90cd85d6d0724d31",
+   "bytes": 9621,
+   "last_commit": null
+  },
   {
    "path": "docs/COMPONENT_CARDS.md",
    "sha256": "3d5cabe587a7254b8507582e41c1865fb1fd378986dfafba0508a7e534ff08b5",
@@ -23,10 +29,34 @@
    "last_commit": "08c1a7a"
   },
   {
+   "path": "docs/superpowers/handoff/KICKOFF_CVA1_CVA2A_2026-10-14.md",
+   "sha256": "9167956dcd89621508f75dcbad3c76dcb01377c81f76e8d14c381b0279d9b629",
+   "bytes": 6608,
+   "last_commit": null
+  },
+  {
+   "path": "docs/superpowers/handoff/KICKOFF_CVA1B_CVA3A_2026-10-14.md",
+   "sha256": "12ce7b3f726cfc073173b8e0bd54a12d6ef38e099bed102ead1667fecba01db2",
+   "bytes": 5231,
+   "last_commit": null
+  },
+  {
+   "path": "docs/superpowers/handoff/KICKOFF_CVA2B_CVA5A_2026-10-14.md",
+   "sha256": "c48431ca8099de1ddaf59af08e262a7fb0b1f7985a2a72a2d18e278e99674d78",
+   "bytes": 5636,
+   "last_commit": null
+  },
+  {
    "path": "docs/superpowers/handoff/KICKOFF_M5_REAL_TEXT_STREAM_2026-10-13.md",
    "sha256": "758818726e4d8b992a2a57627b16c094a294923c661b800dcaacce9ee5ade56c",
    "bytes": 4897,
    "last_commit": "117aec5"
+  },
+  {
+   "path": "docs/superpowers/handoff/KICKOFF_M5B_REAL_STREAM_CEILINGS_2026-10-13.md",
+   "sha256": "1823791d5f5bc90e13fd957c76c2b1e16fc5766a9eedf169c01b077c9c52950c",
+   "bytes": 6671,
+   "last_commit": null
   },
   {
    "path": "docs/superpowers/handoff/KICKOFF_RV2_8_ADOPT_CASCADE_2026-10-13.md",
@@ -39,6 +69,24 @@
    "sha256": "6aed3fa227db9861590cf105e9def5c3ccee049d0c1d8e1dc3bae8a3a4dd82d3",
    "bytes": 5505,
    "last_commit": "117aec5"
+  },
+  {
+   "path": "docs/superpowers/handoff/KICKOFF_RV3_AMENDED_BUILD_DEV_2026-10-14.md",
+   "sha256": "df13cf8b1598935e9222846e1318fa7b416139ce0b128d98bf8be998ea18fccb",
+   "bytes": 6241,
+   "last_commit": null
+  },
+  {
+   "path": "docs/superpowers/handoff/KICKOFF_RV3_BUILD_TRACE_DEV_2026-10-13.md",
+   "sha256": "7a12576d933e68bf334c506fd53946d7f29db07599ab7a7a3098c698bdb90440",
+   "bytes": 5650,
+   "last_commit": null
+  },
+  {
+   "path": "docs/superpowers/handoff/KICKOFF_RV3_SENSITIVITY_2026-10-13.md",
+   "sha256": "c71771f83577cad9c3236d6f05d963e088cdce94356b8e85cda5e474bd6ebbe7",
+   "bytes": 2342,
+   "last_commit": null
   },
   {
    "path": "docs/superpowers/handoff/REVIEW_2026-10-05_R10_AND_Y1.md",
@@ -83,6 +131,12 @@
    "last_commit": "08c1a7a"
   },
   {
+   "path": "docs/superpowers/plans/2026-10-13-routing-v2-stage3.md",
+   "sha256": "2deb04f72ddb7918fe2a744765b7f9b55f81db0a5bcb9b2fedbddc290f920335",
+   "bytes": 7942,
+   "last_commit": null
+  },
+  {
    "path": "docs/superpowers/specs/2026-10-04-growmoe-design.md",
    "sha256": "a885cca4fa128a9121db47a15682929994a28c8170c7ec87120f033578ad5cd2",
    "bytes": 12824,
@@ -93,6 +147,30 @@
    "sha256": "2a97bcc55bba822b82d3565fcc514b908cb450265012a4870b3d67d18db968fc",
    "bytes": 18789,
    "last_commit": "08c1a7a"
+  },
+  {
+   "path": "docs/superpowers/specs/2026-10-13-routing-v2-stage3-design-AMENDMENTS.md",
+   "sha256": "a277a512938f6312ab55d0513e9ef22afb45a29a5dd362fe8deb6638d91b2ffa",
+   "bytes": 11465,
+   "last_commit": null
+  },
+  {
+   "path": "docs/superpowers/specs/2026-10-13-routing-v2-stage3-design.md",
+   "sha256": "a3f5e2c9434488f13c861f75785283699f4e1532161d9827d47198bc78252120",
+   "bytes": 19969,
+   "last_commit": "e33cc18"
+  },
+  {
+   "path": "docs/superpowers/specs/2026-10-14-growmoe-component-verification-audit.md",
+   "sha256": "cb724bec02204d1a2b3a28d12421bc49a26df1fb820d433cc5bf08443b38d354",
+   "bytes": 11972,
+   "last_commit": null
+  },
+  {
+   "path": "growmoe/arith.py",
+   "sha256": "152ef314a8862f657eaf1de014fb6d3de491e98b9d33b48c7a31dc75d4cdd776",
+   "bytes": 9740,
+   "last_commit": null
   },
   {
    "path": "research/DYNAMIC_MOE_RESEARCH_AND_DESIGN.md",
@@ -170,6 +248,48 @@
    "path": "research/geomlab_results/z2/tables.txt",
    "sha256": "e0ea375e0115b15f66561adab245202b388954ba68c98d3de05226add6fa083f",
    "bytes": 3161,
+   "last_commit": null
+  },
+  {
+   "path": "research/growmoe_results/arith/arith_lib.py",
+   "sha256": "4543edb8ec22032c1f9963e30b0b0db55e7a11db9b7a6559273235dd54fbf092",
+   "bytes": 22231,
+   "last_commit": null
+  },
+  {
+   "path": "research/growmoe_results/arith/launch_curve.sh",
+   "sha256": "6809c6edd0be4f981756d57b23dfd652ea4daa4e6c7fb1c74af66f5e264a5f66",
+   "bytes": 599,
+   "last_commit": null
+  },
+  {
+   "path": "research/growmoe_results/arith/launch_main.sh",
+   "sha256": "2523f4c2035e2dc174c43f37e4178c60d2317e293a11ce46c297dc3af804ad3f",
+   "bytes": 1509,
+   "last_commit": null
+  },
+  {
+   "path": "research/growmoe_results/arith/launch_main2.sh",
+   "sha256": "4b00a433bc4a36d4c03c327d605da3552a8d45d23fd7a26a6215a8b10556aa56",
+   "bytes": 681,
+   "last_commit": null
+  },
+  {
+   "path": "research/growmoe_results/arith/report_arith.py",
+   "sha256": "bb2baf5a336038d137e190ae255d98367575eaff8af61f6f9e14ef528b25ef5f",
+   "bytes": 32121,
+   "last_commit": null
+  },
+  {
+   "path": "research/growmoe_results/arith/RESULTS_ARITH.md",
+   "sha256": "d29a40229325ece5fef66533084f3c8e7a3b2372fffddf4701c48c95510801a3",
+   "bytes": 26894,
+   "last_commit": null
+  },
+  {
+   "path": "research/growmoe_results/arith/run_arith.py",
+   "sha256": "02959dd38bf6af9979ab78bdac6ead8c2962cc3f804a51df0291ddf863729363",
+   "bytes": 7792,
    "last_commit": null
   },
   {
@@ -1413,6 +1533,30 @@
    "sha256": "09a967c75719e5f9cd133247c2d15700b24d7ebeb1ce6f8b85f7cf58e0718dff",
    "bytes": 66,
    "last_commit": "f881cb3"
+  },
+  {
+   "path": "research/growmoe_results/m5/m5c_stage3.json",
+   "sha256": "0afe74581ef357f60c69d56b3062c27d1dac965feb8a147a1fe1c08074f00c88",
+   "bytes": 2960,
+   "last_commit": null
+  },
+  {
+   "path": "research/growmoe_results/m5/m5d_fresh.json",
+   "sha256": "66046b552e1a06ca5a762f54274aba1310fa1519aaace1dcdc960a7000eb86c6",
+   "bytes": 2033,
+   "last_commit": null
+  },
+  {
+   "path": "research/growmoe_results/m5/run_m5c_stage3.py",
+   "sha256": "d2d87249d1dd175f8753f5d5c2a10d29051c33e97f7bfe3960a77dab0fa61dff",
+   "bytes": 3989,
+   "last_commit": null
+  },
+  {
+   "path": "research/growmoe_results/m5/run_m5d_fresh.py",
+   "sha256": "450251c34fee2b7ff9cb927fc6495e2046285f2c34dca8034e4c387327504ded",
+   "bytes": 4528,
+   "last_commit": null
   },
   {
    "path": "research/growmoe_results/phase0/spike1_novelty.json",
@@ -3671,6 +3815,18 @@
    "last_commit": "117aec5"
   },
   {
+   "path": "research/growmoe_results/shootout/RESULTS_SHOOTOUT.md",
+   "sha256": "5e8cb9dfbe9be193139a198a17bdf263e41738813aa692dc8507861d8d23460f",
+   "bytes": 2784,
+   "last_commit": null
+  },
+  {
+   "path": "research/growmoe_results/shootout/shootout.py",
+   "sha256": "486acd3b9d456040d7e8f42478b8ebe6068996c7be32517aaa3e5ae963ed25c5",
+   "bytes": 10520,
+   "last_commit": null
+  },
+  {
    "path": "research/MOE_CONTINUAL_LEARNING_REPORT_2026-10.md",
    "sha256": "c45160f9d72c7608825b0d5526074f05ae9e3a8affe1bb2372a514edf5018ff6",
    "bytes": 97402,
@@ -3944,6 +4100,12 @@
    "path": "research/yggformer_results/track_y_final_report.txt",
    "sha256": "a3601a446c70d709cf16eadcc321cab94e9eed0e32d57d5e640135b049e4bdcb",
    "bytes": 17639,
+   "last_commit": null
+  },
+  {
+   "path": "tests/growmoe/test_gm_arith.py",
+   "sha256": "ce724a8a1041f787cf14806188a665a90d8e8592638834dd244587adefcd6388",
+   "bytes": 6621,
    "last_commit": null
   }
  ]

@@ -1,0 +1,28 @@
+{
+  "ptx": {
+    "ptx_size_bytes": 154703,
+    "nul_terminated": true
+  },
+  "accuracy": {
+    "max_error": 9.5367431640625e-07,
+    "mean_error": 3.0850060284137726e-09,
+    "accepted": true
+  },
+  "latency": {
+    "gemm_floor_ms": 0.6925312042236328,
+    "engine_kernel_ms": 2.497979736328125,
+    "cuda_fast_ms": 1.0448895772298177,
+    "cuda_fast_speedup_vs_engine": 2.3906638469403627,
+    "target_4x_met": false,
+    "torch_wrapped_ms": 70.19929809570313,
+    "torch_smooth_ms": 14.173065185546875,
+    "speedup_vs_torch_wrapped": 67.18346093738782
+  },
+  "prep": {
+    "prep_ms": 0.6321660614013672,
+    "renorm_ms": 0.19303424835205077,
+    "total_overhead_ms": 0.825200309753418,
+    "exceeds_threshold": true,
+    "fused_kernel_status": "not done (stretch / overhead measured)"
+  }
+}

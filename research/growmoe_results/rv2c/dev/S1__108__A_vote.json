@@ -1,0 +1,97 @@
+{
+ "spec": {
+  "stream": "S1",
+  "seed": 108,
+  "arm": "A_vote",
+  "smoke": false
+ },
+ "records": [
+  {
+   "stream": "S1",
+   "method": "A_vote",
+   "seed": 108,
+   "acc": 0.7685714278902326,
+   "per_regime": [
+    0.8866666555404663,
+    0.8999999761581421,
+    0.8799999952316284,
+    0.9933333396911621,
+    0.753333330154419,
+    0.36666667461395264,
+    0.6000000238418579
+   ],
+   "forgetting": null,
+   "n_experts": 3,
+   "params": 112218,
+   "naive_params": 112218,
+   "stored_vectors": 1536,
+   "memory_bytes": 1235304,
+   "gate_macs": 98304,
+   "expert_macs": 36608,
+   "predict_macs": 134912,
+   "wall_clock": 15.927473499999905,
+   "event_counts": {
+    "spawn": 3,
+    "extend": 6,
+    "alarm": 2
+   },
+   "regimes": 7,
+   "steps": 200,
+   "arm": "A_vote",
+   "observe_seconds": 15.916074500008108,
+   "fn_known": 40,
+   "fn_called_novel": 0,
+   "fn_doubtful": 0,
+   "onset_total": 6,
+   "onset_called_novel": 0,
+   "onset_doubtful": 0,
+   "verdict_counts": {
+    "None": 61
+   },
+   "set_stats": null,
+   "breaker_opens": 0,
+   "sig_vectors": 768,
+   "replay_vectors": 768,
+   "window_vectors": 0,
+   "groups": {
+    "pure64": {
+     "single": 0.7600446343421936,
+     "group": 0.7633928656578064,
+     "n": 896,
+     "n_groups": 14,
+     "changed": 3
+    },
+    "pure16": {
+     "single": 0.7658730149269104,
+     "group": 0.7688491940498352,
+     "n": 1008,
+     "n_groups": 63,
+     "changed": 3
+    },
+    "pure8": {
+     "single": 0.7658730149269104,
+     "group": 0.7688491940498352,
+     "n": 1008,
+     "n_groups": 126,
+     "changed": 3
+    },
+    "mixed32_32": {
+     "single": 0.7633928656578064,
+     "group": 0.765625,
+     "n": 1792,
+     "n_groups": 28,
+     "changed": 4
+    },
+    "mixed58_6": {
+     "single": 0.7689732313156128,
+     "group": 0.7723214030265808,
+     "n": 896,
+     "n_groups": 14,
+     "changed": 3
+    }
+   }
+  }
+ ],
+ "seconds": 16.098719400000846,
+ "peak_mb": 1004.828125
+}

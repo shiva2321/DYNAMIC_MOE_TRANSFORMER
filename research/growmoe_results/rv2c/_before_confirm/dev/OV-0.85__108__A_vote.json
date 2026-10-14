@@ -1,0 +1,94 @@
+{
+ "spec": {
+  "stream": "OV-0.85",
+  "seed": 108,
+  "arm": "A_vote",
+  "smoke": false
+ },
+ "records": [
+  {
+   "stream": "OV-0.85",
+   "method": "A_vote",
+   "seed": 108,
+   "acc": 0.21200000271201133,
+   "per_regime": [
+    0.42500001192092896,
+    0.33250001072883606,
+    0.2775000035762787,
+    0.2775000035762787,
+    0.11500000208616257,
+    0.16750000417232513,
+    0.13249999284744263,
+    0.12250000238418579,
+    0.12999999523162842,
+    0.14000000059604645
+   ],
+   "forgetting": null,
+   "n_experts": 5,
+   "params": 172840,
+   "naive_params": 172840,
+   "stored_vectors": 2560,
+   "memory_bytes": 2002080,
+   "gate_macs": 163840,
+   "expert_macs": 33792,
+   "predict_macs": 197632,
+   "wall_clock": 6.459757100004936,
+   "event_counts": {
+    "spawn": 5,
+    "alarm": 4
+   },
+   "regimes": 10,
+   "steps": 5,
+   "arm": "A_vote",
+   "observe_seconds": 6.427642200047558,
+   "fn_known": 126,
+   "fn_called_novel": 0,
+   "onset_total": 9,
+   "onset_called_novel": 0,
+   "verdict_counts": {
+    "None": 156
+   },
+   "set_stats": null,
+   "breaker_opens": 0,
+   "groups": {
+    "pure64": {
+     "single": 0.21119791269302368,
+     "group": 0.25468748807907104,
+     "n": 3840,
+     "n_groups": 60,
+     "changed": 1421
+    },
+    "pure16": {
+     "single": 0.21199999749660492,
+     "group": 0.24574999511241913,
+     "n": 4000,
+     "n_groups": 250,
+     "changed": 1414
+    },
+    "pure8": {
+     "single": 0.21199999749660492,
+     "group": 0.24275000393390656,
+     "n": 4000,
+     "n_groups": 500,
+     "changed": 1333
+    },
+    "mixed32_32": {
+     "single": 0.21145834028720856,
+     "group": 0.21731771528720856,
+     "n": 7680,
+     "n_groups": 120,
+     "changed": 3308
+    },
+    "mixed58_6": {
+     "single": 0.2135416716337204,
+     "group": 0.2473958283662796,
+     "n": 3840,
+     "n_groups": 60,
+     "changed": 1479
+    }
+   }
+  }
+ ],
+ "seconds": 7.0487062000029255,
+ "peak_mb": 906.5703125
+}

@@ -79,3 +79,21 @@ research/growmoe_results/rv3/*.txt
 research/growmoe_results/rv3/gen1_ownerfirst/*
 # --- routing v2 stage 2 hand-off to Gemini (2026-10-13)
 docs/superpowers/handoff/KICKOFF_RV2B_AMEND_AND_RUN_2026-10-13.md
+# --- E-025 equal-memory shootout and stage 3 on real text (2026-10-14)
+research/growmoe_results/shootout/shootout.py
+research/growmoe_results/shootout/RESULTS_SHOOTOUT.md
+research/growmoe_results/m5/run_m5c_stage3.py
+research/growmoe_results/m5/m5c_stage3.json
+research/growmoe_results/m5/run_m5d_fresh.py
+research/growmoe_results/m5/m5d_fresh.json
+demos/demo_growmoe_continual_learning.py
+# --- E-026 arithmetic benchmark (2026-10-14)
+growmoe/arith.py
+tests/growmoe/test_gm_arith.py
+research/growmoe_results/arith/arith_lib.py
+research/growmoe_results/arith/run_arith.py
+research/growmoe_results/arith/report_arith.py
+research/growmoe_results/arith/launch_main.sh
+research/growmoe_results/arith/launch_main2.sh
+research/growmoe_results/arith/launch_curve.sh
+research/growmoe_results/arith/RESULTS_ARITH.md

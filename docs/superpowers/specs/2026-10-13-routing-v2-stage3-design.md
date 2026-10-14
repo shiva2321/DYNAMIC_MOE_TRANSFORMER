@@ -1,5 +1,7 @@
 # Routing v2, stage 3 — a calibrated batch-level gate while learning (3a) and group answering while predicting (3b)
 
+**Amendments found while writing the plan: `2026-10-13-routing-v2-stage3-design-AMENDMENTS.md` (read it with this spec; none changes a statement, bar or decision rule).**
+
 Date 2026-10-13. Status: **written spec for review** (path: architectural; the design was approved by the user in conversation on 2026-10-13, the written spec and then the plan still need their own approvals). Nothing here is built, pre-registered or run on fresh seeds. Evidence tags: **[M]** measured on dev seeds 100-102 by throwaway spikes (direction only; every number is script-generated in `research/growmoe_results/rv3/RESULTS_RV3.md` and the two notebook entries E-023 and E-024; "R5.4" means section 5.4 of `research/GATEKEEPER_RESEARCH_2026-10.md`, "§3" means a section of this spec), **[L]** literature.
 
 ## 1. Decisions (from the user)

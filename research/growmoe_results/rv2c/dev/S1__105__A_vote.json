@@ -1,0 +1,97 @@
+{
+ "spec": {
+  "stream": "S1",
+  "seed": 105,
+  "arm": "A_vote",
+  "smoke": false
+ },
+ "records": [
+  {
+   "stream": "S1",
+   "method": "A_vote",
+   "seed": 105,
+   "acc": 0.7819047527653831,
+   "per_regime": [
+    0.8799999952316284,
+    0.9466666579246521,
+    0.95333331823349,
+    0.9933333396911621,
+    0.7133333086967468,
+    0.47999998927116394,
+    0.5066666603088379
+   ],
+   "forgetting": null,
+   "n_experts": 6,
+   "params": 224436,
+   "naive_params": 224436,
+   "stored_vectors": 2896,
+   "memory_bytes": 2380496,
+   "gate_macs": 185344,
+   "expert_macs": 36608,
+   "predict_macs": 221952,
+   "wall_clock": 17.093352899999445,
+   "event_counts": {
+    "spawn": 6,
+    "extend": 3,
+    "alarm": 3
+   },
+   "regimes": 7,
+   "steps": 200,
+   "arm": "A_vote",
+   "observe_seconds": 17.071254500006035,
+   "fn_known": 40,
+   "fn_called_novel": 0,
+   "fn_doubtful": 0,
+   "onset_total": 6,
+   "onset_called_novel": 0,
+   "onset_doubtful": 0,
+   "verdict_counts": {
+    "None": 61
+   },
+   "set_stats": null,
+   "breaker_opens": 0,
+   "sig_vectors": 1448,
+   "replay_vectors": 1448,
+   "window_vectors": 0,
+   "groups": {
+    "pure64": {
+     "single": 0.7857142686843872,
+     "group": 0.8180803656578064,
+     "n": 896,
+     "n_groups": 14,
+     "changed": 51
+    },
+    "pure16": {
+     "single": 0.7807539701461792,
+     "group": 0.8115079402923584,
+     "n": 1008,
+     "n_groups": 63,
+     "changed": 51
+    },
+    "pure8": {
+     "single": 0.7807539701461792,
+     "group": 0.8045634627342224,
+     "n": 1008,
+     "n_groups": 126,
+     "changed": 58
+    },
+    "mixed32_32": {
+     "single": 0.7834821343421936,
+     "group": 0.7745535969734192,
+     "n": 1792,
+     "n_groups": 28,
+     "changed": 123
+    },
+    "mixed58_6": {
+     "single": 0.7857142686843872,
+     "group": 0.8091517686843872,
+     "n": 896,
+     "n_groups": 14,
+     "changed": 56
+    }
+   }
+  }
+ ],
+ "seconds": 17.36496989999796,
+ "peak_mb": 1004.828125
+}

@@ -1,0 +1,127 @@
+{
+ "spec": {
+  "stream": "F-15-SORTED",
+  "seed": 105,
+  "arm": "A_set@12-0.5-100",
+  "smoke": false
+ },
+ "records": [
+  {
+   "stream": "F-15-SORTED",
+   "method": "A_set",
+   "seed": 105,
+   "acc": 0.21716666370630264,
+   "per_regime": [
+    0.20000000298023224,
+    0.28999999165534973,
+    0.17749999463558197,
+    0.2224999964237213,
+    0.33250001072883606,
+    0.32749998569488525,
+    0.21250000596046448,
+    0.14499999582767487,
+    0.19249999523162842,
+    0.29499998688697815,
+    0.12999999523162842,
+    0.13500000536441803,
+    0.2199999988079071,
+    0.2574999928474426,
+    0.11999999731779099
+   ],
+   "forgetting": null,
+   "n_experts": 24,
+   "params": 829632,
+   "naive_params": 829632,
+   "stored_vectors": 18391,
+   "memory_bytes": 12734720,
+   "gate_macs": 724480,
+   "expert_macs": 33792,
+   "predict_macs": 758272,
+   "wall_clock": 13.767419900003006,
+   "event_counts": {
+    "spawn": 25,
+    "set_held": 11,
+    "set_novel": 7,
+    "set_override": 8,
+    "alarm": 15,
+    "breaker_open": 2,
+    "extend": 10,
+    "merge": 1
+   },
+   "regimes": 15,
+   "steps": 5,
+   "arm": "A_set@12-0.5-100",
+   "observe_seconds": 13.657797400021082,
+   "fn_known": 176,
+   "fn_called_novel": 7,
+   "fn_doubtful": 15,
+   "onset_total": 14,
+   "onset_called_novel": 0,
+   "onset_doubtful": 1,
+   "verdict_counts": {
+    "None": 13,
+    "held": 11,
+    "paused": 173,
+    "known": 17,
+    "novel": 7
+   },
+   "set_stats": {
+    "tests": 192,
+    "early_stops": 18,
+    "perms": 175602,
+    "novel": 18,
+    "known": 17,
+    "override": 8,
+    "paused": 173,
+    "breaker_opens": 2,
+    "window_splits": 114,
+    "held": 11,
+    "released": 5,
+    "dropped": 6
+   },
+   "breaker_opens": 2,
+   "sig_vectors": 5660,
+   "replay_vectors": 5628,
+   "window_vectors": 7103,
+   "groups": {
+    "pure64": {
+     "single": 0.2161458283662796,
+     "group": 0.21111111342906952,
+     "n": 5760,
+     "n_groups": 90,
+     "changed": 704
+    },
+    "pure16": {
+     "single": 0.21716666221618652,
+     "group": 0.20883333683013916,
+     "n": 6000,
+     "n_groups": 375,
+     "changed": 695
+    },
+    "pure8": {
+     "single": 0.21716666221618652,
+     "group": 0.2136666625738144,
+     "n": 6000,
+     "n_groups": 750,
+     "changed": 634
+    },
+    "mixed32_32": {
+     "single": 0.2178819477558136,
+     "group": 0.21519097685813904,
+     "n": 11520,
+     "n_groups": 180,
+     "changed": 311
+    },
+    "mixed58_6": {
+     "single": 0.2178819477558136,
+     "group": 0.21475695073604584,
+     "n": 5760,
+     "n_groups": 90,
+     "changed": 643
+    }
+   }
+  }
+ ],
+ "seconds": 15.477385400001367,
+ "peak_mb": 1036.12109375
+}

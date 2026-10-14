@@ -1,0 +1,144 @@
+C:\Users\Asta\AppData\Local\Programs\Python\Python312\Lib\site-packages\torch\cuda\__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+=== N=10 seed 100
+  pool                       N=10  seed 100: acc 0.4965  bytes   4.00 MB  macs/pred    108.5 k     10s
+  replay_eq_w1024_s5         N=10  seed 100: acc 0.3285  bytes   4.00 MB  macs/pred    263.2 k      4s
+  replay_eq_w1024_s20        N=10  seed 100: acc 0.3645  bytes   4.00 MB  macs/pred    263.2 k     15s
+  replay_eq_w2048_s5         N=10  seed 100: acc 0.3315  bytes   4.00 MB  macs/pred    525.3 k      6s
+  replay_eq_w2048_s20        N=10  seed 100: acc 0.3655  bytes   4.00 MB  macs/pred    525.3 k     24s
+  knn_eq                     N=10  seed 100: acc 0.2270  bytes   4.00 MB  macs/pred   1001.0 k      0s
+  knn_all                    N=10  seed 100: acc 0.2220  bytes   4.92 MB  macs/pred   1228.8 k      0s
+  oracle_routed              N=10  seed 100: acc 0.4655  bytes   1.38 MB  macs/pred     33.8 k      1s
+  joint_w1024                N=10  seed 100: acc 0.3485  bytes   5.97 MB  macs/pred    263.2 k     10s
+  joint_w4096                N=10  seed 100: acc 0.3590  bytes   9.13 MB  macs/pred   1049.6 k     28s
+    done in 106s
+=== N=10 seed 101
+  pool                       N=10  seed 101: acc 0.5135  bytes   4.00 MB  macs/pred    107.5 k     10s
+  replay_eq_w1024_s5         N=10  seed 101: acc 0.3270  bytes   4.00 MB  macs/pred    263.2 k      5s
+  replay_eq_w1024_s20        N=10  seed 101: acc 0.3667  bytes   4.00 MB  macs/pred    263.2 k     13s
+  replay_eq_w2048_s5         N=10  seed 101: acc 0.3403  bytes   4.00 MB  macs/pred    525.3 k      4s
+  replay_eq_w2048_s20        N=10  seed 101: acc 0.3660  bytes   4.00 MB  macs/pred    525.3 k     18s
+  knn_eq                     N=10  seed 101: acc 0.2160  bytes   4.00 MB  macs/pred   1001.0 k      0s
+  knn_all                    N=10  seed 101: acc 0.2150  bytes   4.92 MB  macs/pred   1228.8 k      0s
+  oracle_routed              N=10  seed 101: acc 0.4785  bytes   1.38 MB  macs/pred     33.8 k      1s
+  joint_w1024                N=10  seed 101: acc 0.3472  bytes   5.97 MB  macs/pred    263.2 k      8s
+  joint_w4096                N=10  seed 101: acc 0.3695  bytes   9.13 MB  macs/pred   1049.6 k     23s
+    done in 91s
+=== N=10 seed 102
+  pool                       N=10  seed 102: acc 0.5120  bytes   4.00 MB  macs/pred    106.4 k      5s
+  replay_eq_w1024_s5         N=10  seed 102: acc 0.3345  bytes   4.00 MB  macs/pred    263.2 k      3s
+  replay_eq_w1024_s20        N=10  seed 102: acc 0.3632  bytes   4.00 MB  macs/pred    263.2 k     10s
+  replay_eq_w2048_s5         N=10  seed 102: acc 0.3488  bytes   4.00 MB  macs/pred    525.3 k      4s
+  replay_eq_w2048_s20        N=10  seed 102: acc 0.3742  bytes   4.00 MB  macs/pred    525.3 k     18s
+  knn_eq                     N=10  seed 102: acc 0.2138  bytes   4.00 MB  macs/pred   1001.0 k      0s
+  knn_all                    N=10  seed 102: acc 0.2182  bytes   4.92 MB  macs/pred   1228.8 k      0s
+  oracle_routed              N=10  seed 102: acc 0.4752  bytes   1.38 MB  macs/pred     33.8 k      1s
+  joint_w1024                N=10  seed 102: acc 0.3635  bytes   5.97 MB  macs/pred    263.2 k      9s
+  joint_w4096                N=10  seed 102: acc 0.3645  bytes   9.13 MB  macs/pred   1049.6 k     21s
+    done in 80s
+=== N=10 seed 103
+  pool                       N=10  seed 103: acc 0.5285  bytes   4.00 MB  macs/pred    106.0 k      5s
+  replay_eq_w1024_s5         N=10  seed 103: acc 0.3485  bytes   4.00 MB  macs/pred    263.2 k      3s
+  replay_eq_w1024_s20        N=10  seed 103: acc 0.3665  bytes   4.00 MB  macs/pred    263.2 k     11s
+  replay_eq_w2048_s5         N=10  seed 103: acc 0.3453  bytes   4.00 MB  macs/pred    525.3 k      4s
+  replay_eq_w2048_s20        N=10  seed 103: acc 0.3665  bytes   4.00 MB  macs/pred    525.3 k     16s
+  knn_eq                     N=10  seed 103: acc 0.2203  bytes   4.00 MB  macs/pred   1001.0 k      0s
+  knn_all                    N=10  seed 103: acc 0.2240  bytes   4.92 MB  macs/pred   1228.8 k      0s
+  oracle_routed              N=10  seed 103: acc 0.5163  bytes   1.38 MB  macs/pred     33.8 k      1s
+  joint_w1024                N=10  seed 103: acc 0.3532  bytes   5.97 MB  macs/pred    263.2 k      7s
+  joint_w4096                N=10  seed 103: acc 0.3690  bytes   9.13 MB  macs/pred   1049.6 k     20s
+    done in 75s
+=== N=10 seed 104
+  pool                       N=10  seed 104: acc 0.4947  bytes   4.00 MB  macs/pred    105.2 k      5s
+  replay_eq_w1024_s5         N=10  seed 104: acc 0.3447  bytes   4.00 MB  macs/pred    263.2 k      5s
+  replay_eq_w1024_s20        N=10  seed 104: acc 0.3665  bytes   4.00 MB  macs/pred    263.2 k     13s
+  replay_eq_w2048_s5         N=10  seed 104: acc 0.3502  bytes   4.00 MB  macs/pred    525.3 k      6s
+  replay_eq_w2048_s20        N=10  seed 104: acc 0.3678  bytes   4.00 MB  macs/pred    525.3 k     21s
+  knn_eq                     N=10  seed 104: acc 0.2138  bytes   4.00 MB  macs/pred   1001.0 k      0s
+  knn_all                    N=10  seed 104: acc 0.2087  bytes   4.92 MB  macs/pred   1228.8 k      0s
+  oracle_routed              N=10  seed 104: acc 0.4680  bytes   1.38 MB  macs/pred     33.8 k      1s
+  joint_w1024                N=10  seed 104: acc 0.3445  bytes   5.97 MB  macs/pred    263.2 k     10s
+  joint_w4096                N=10  seed 104: acc 0.3540  bytes   9.13 MB  macs/pred   1049.6 k     29s
+    done in 97s
+C:\Users\Asta\AppData\Local\Programs\Python\Python312\Lib\site-packages\torch\cuda\__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+=== N=30 seed 100
+  pool                       N=30  seed 100: acc 0.4984  bytes  12.01 MB  macs/pred    125.4 k     26s
+  replay_eq_w1024_s5         N=30  seed 100: acc 0.2827  bytes  12.01 MB  macs/pred    263.2 k      8s
+  replay_eq_w1024_s20        N=30  seed 100: acc 0.3087  bytes  12.01 MB  macs/pred    263.2 k     31s
+  replay_eq_w2048_s5         N=30  seed 100: acc 0.3003  bytes  12.01 MB  macs/pred    525.3 k     13s
+  replay_eq_w2048_s20        N=30  seed 100: acc 0.3306  bytes  12.01 MB  macs/pred    525.3 k     48s
+  replay_eq_w4096_s5         N=30  seed 100: acc 0.3108  bytes  12.01 MB  macs/pred   1049.6 k     22s
+  replay_eq_w4096_s20        N=30  seed 100: acc 0.3342  bytes  12.01 MB  macs/pred   1049.6 k    115s
+  replay_eq_w8192_s5         N=30  seed 100: acc 0.3029  bytes  12.01 MB  macs/pred   2098.2 k     52s
+  replay_eq_w8192_s20        N=30  seed 100: acc 0.3173  bytes  12.01 MB  macs/pred   2098.2 k    206s
+  knn_eq                     N=30  seed 100: acc 0.2196  bytes  12.01 MB  macs/pred   3003.0 k      2s
+  knn_all                    N=30  seed 100: acc 0.2177  bytes  13.11 MB  macs/pred   3276.8 k      1s
+  oracle_routed              N=30  seed 100: acc 0.4796  bytes   4.15 MB  macs/pred     33.8 k      3s
+  joint_w1024                N=30  seed 100: acc 0.2870  bytes  14.17 MB  macs/pred    263.2 k     27s
+  joint_w4096                N=30  seed 100: acc 0.3149  bytes  17.32 MB  macs/pred   1049.6 k     66s
+    done in 640s
+=== N=30 seed 101
+  pool                       N=30  seed 101: acc 0.4979  bytes  12.01 MB  macs/pred    125.9 k     20s
+  replay_eq_w1024_s5         N=30  seed 101: acc 0.2835  bytes  12.01 MB  macs/pred    263.2 k      8s
+  replay_eq_w1024_s20        N=30  seed 101: acc 0.2996  bytes  12.01 MB  macs/pred    263.2 k     33s
+  replay_eq_w2048_s5         N=30  seed 101: acc 0.3004  bytes  12.01 MB  macs/pred    525.3 k     13s
+  replay_eq_w2048_s20        N=30  seed 101: acc 0.3183  bytes  12.01 MB  macs/pred    525.3 k     52s
+  replay_eq_w4096_s5         N=30  seed 101: acc 0.3081  bytes  12.01 MB  macs/pred   1049.6 k     24s
+  replay_eq_w4096_s20        N=30  seed 101: acc 0.3188  bytes  12.01 MB  macs/pred   1049.6 k     92s
+  replay_eq_w8192_s5         N=30  seed 101: acc 0.3018  bytes  12.01 MB  macs/pred   2098.2 k     47s
+  replay_eq_w8192_s20        N=30  seed 101: acc 0.3099  bytes  12.01 MB  macs/pred   2098.2 k    189s
+  knn_eq                     N=30  seed 101: acc 0.2168  bytes  12.01 MB  macs/pred   3003.0 k      1s
+  knn_all                    N=30  seed 101: acc 0.2168  bytes  13.11 MB  macs/pred   3276.8 k      1s
+  oracle_routed              N=30  seed 101: acc 0.4755  bytes   4.15 MB  macs/pred     33.8 k      3s
+  joint_w1024                N=30  seed 101: acc 0.2758  bytes  14.17 MB  macs/pred    263.2 k     20s
+  joint_w4096                N=30  seed 101: acc 0.3028  bytes  17.32 MB  macs/pred   1049.6 k     61s
+    done in 587s
+=== N=30 seed 102
+  pool                       N=30  seed 102: acc 0.5037  bytes  12.01 MB  macs/pred    123.3 k     18s
+  replay_eq_w1024_s5         N=30  seed 102: acc 0.2868  bytes  12.01 MB  macs/pred    263.2 k      7s
+  replay_eq_w1024_s20        N=30  seed 102: acc 0.3093  bytes  12.01 MB  macs/pred    263.2 k     29s
+  replay_eq_w2048_s5         N=30  seed 102: acc 0.3036  bytes  12.01 MB  macs/pred    525.3 k     13s
+  replay_eq_w2048_s20        N=30  seed 102: acc 0.3245  bytes  12.01 MB  macs/pred    525.3 k     50s
+  replay_eq_w4096_s5         N=30  seed 102: acc 0.3178  bytes  12.01 MB  macs/pred   1049.6 k     25s
+  replay_eq_w4096_s20        N=30  seed 102: acc 0.3336  bytes  12.01 MB  macs/pred   1049.6 k     96s
+  replay_eq_w8192_s5         N=30  seed 102: acc 0.3110  bytes  12.01 MB  macs/pred   2098.2 k     50s
+  replay_eq_w8192_s20        N=30  seed 102: acc 0.3213  bytes  12.01 MB  macs/pred   2098.2 k    180s
+  knn_eq                     N=30  seed 102: acc 0.2177  bytes  12.01 MB  macs/pred   3003.0 k      2s
+  knn_all                    N=30  seed 102: acc 0.2183  bytes  13.11 MB  macs/pred   3276.8 k      1s
+  oracle_routed              N=30  seed 102: acc 0.4744  bytes   4.15 MB  macs/pred     33.8 k      3s
+  joint_w1024                N=30  seed 102: acc 0.2769  bytes  14.17 MB  macs/pred    263.2 k     23s
+  joint_w4096                N=30  seed 102: acc 0.3187  bytes  17.32 MB  macs/pred   1049.6 k     64s
+    done in 581s
+=== N=30 seed 103
+  pool                       N=30  seed 103: acc 0.4892  bytes  12.01 MB  macs/pred    120.0 k     21s
+  replay_eq_w1024_s5         N=30  seed 103: acc 0.2837  bytes  12.01 MB  macs/pred    263.2 k      8s
+  replay_eq_w1024_s20        N=30  seed 103: acc 0.3045  bytes  12.01 MB  macs/pred    263.2 k     33s
+  replay_eq_w2048_s5         N=30  seed 103: acc 0.3000  bytes  12.01 MB  macs/pred    525.3 k     14s
+  replay_eq_w2048_s20        N=30  seed 103: acc 0.3215  bytes  12.01 MB  macs/pred    525.3 k     53s
+  replay_eq_w4096_s5         N=30  seed 103: acc 0.3192  bytes  12.01 MB  macs/pred   1049.6 k     23s
+  replay_eq_w4096_s20        N=30  seed 103: acc 0.3318  bytes  12.01 MB  macs/pred   1049.6 k     93s
+  replay_eq_w8192_s5         N=30  seed 103: acc 0.3033  bytes  12.01 MB  macs/pred   2098.2 k     51s
+  replay_eq_w8192_s20        N=30  seed 103: acc 0.3146  bytes  12.01 MB  macs/pred   2098.2 k    189s
+  knn_eq                     N=30  seed 103: acc 0.2242  bytes  12.01 MB  macs/pred   3003.0 k      2s
+  knn_all                    N=30  seed 103: acc 0.2231  bytes  13.11 MB  macs/pred   3276.8 k      1s
+  oracle_routed              N=30  seed 103: acc 0.4743  bytes   4.15 MB  macs/pred     33.8 k      3s
+  joint_w1024                N=30  seed 103: acc 0.2824  bytes  14.17 MB  macs/pred    263.2 k     25s
+  joint_w4096                N=30  seed 103: acc 0.3075  bytes  17.32 MB  macs/pred   1049.6 k     92s
+    done in 632s
+=== N=30 seed 104
+  pool                       N=30  seed 104: acc 0.4978  bytes  12.01 MB  macs/pred    124.4 k     23s
+  replay_eq_w1024_s5         N=30  seed 104: acc 0.2792  bytes  12.01 MB  macs/pred    263.2 k     13s
+  replay_eq_w1024_s20        N=30  seed 104: acc 0.3008  bytes  12.01 MB  macs/pred    263.2 k     39s
+  replay_eq_w2048_s5         N=30  seed 104: acc 0.2965  bytes  12.01 MB  macs/pred    525.3 k     15s
+  replay_eq_w2048_s20        N=30  seed 104: acc 0.3232  bytes  12.01 MB  macs/pred    525.3 k     47s
+  replay_eq_w4096_s5         N=30  seed 104: acc 0.3073  bytes  12.01 MB  macs/pred   1049.6 k     19s
+  replay_eq_w4096_s20        N=30  seed 104: acc 0.3343  bytes  12.01 MB  macs/pred   1049.6 k     98s
+  replay_eq_w8192_s5         N=30  seed 104: acc 0.2983  bytes  12.01 MB  macs/pred   2098.2 k     44s
+  replay_eq_w8192_s20        N=30  seed 104: acc 0.3164  bytes  12.01 MB  macs/pred   2098.2 k    202s
+  knn_eq                     N=30  seed 104: acc 0.2168  bytes  12.01 MB  macs/pred   3003.0 k      2s
+  knn_all                    N=30  seed 104: acc 0.2169  bytes  13.11 MB  macs/pred   3276.8 k      1s
+  oracle_routed              N=30  seed 104: acc 0.4893  bytes   4.15 MB  macs/pred     33.8 k      4s
+  joint_w1024                N=30  seed 104: acc 0.2824  bytes  14.17 MB  macs/pred    263.2 k     31s
+  joint_w4096                N=30  seed 104: acc 0.3116  bytes  17.32 MB  macs/pred   1049.6 k     55s
+    done in 619s

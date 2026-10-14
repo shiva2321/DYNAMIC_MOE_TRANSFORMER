@@ -1,0 +1,302 @@
+{
+  "metadata": {
+    "title": "CVA-3A: Competence Monitor False Alarm Audit",
+    "stream": "function_regimes(n_regimes=2, n_train=20000, n_test=64)",
+    "segment": "regime 0 (first 20,000 samples = 313 batches of 64)",
+    "seeds": [
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ],
+    "d": 128,
+    "arm_monitor_after_infancy": true
+  },
+  "summary": {
+    "competence_true": {
+      "mean_alarms_per_10k": 0.05,
+      "range_alarms_per_10k": [
+        0.0,
+        0.5
+      ],
+      "mean_total_alarms": 0.1,
+      "any_seed_more_than_one_expert": false
+    },
+    "competence_false": {
+      "all_zero_alarms": true,
+      "any_seed_more_than_one_expert": false
+    }
+  },
+  "runs_competence_true": [
+    {
+      "seed": 10,
+      "competence": true,
+      "total_samples": 20000,
+      "batch_count": 313,
+      "n_alarms": 1,
+      "alarms_per_10k": 0.5,
+      "alarm_calls": [
+        92
+      ],
+      "n_spawns": 1,
+      "n_extends": 1,
+      "final_n_experts": 1,
+      "elapsed_sec": 10.74
+    },
+    {
+      "seed": 11,
+      "competence": true,
+      "total_samples": 20000,
+      "batch_count": 313,
+      "n_alarms": 0,
+      "alarms_per_10k": 0.0,
+      "alarm_calls": [],
+      "n_spawns": 1,
+      "n_extends": 0,
+      "final_n_experts": 1,
+      "elapsed_sec": 12.93
+    },
+    {
+      "seed": 12,
+      "competence": true,
+      "total_samples": 20000,
+      "batch_count": 313,
+      "n_alarms": 0,
+      "alarms_per_10k": 0.0,
+      "alarm_calls": [],
+      "n_spawns": 1,
+      "n_extends": 0,
+      "final_n_experts": 1,
+      "elapsed_sec": 10.41
+    },
+    {
+      "seed": 13,
+      "competence": true,
+      "total_samples": 20000,
+      "batch_count": 313,
+      "n_alarms": 0,
+      "alarms_per_10k": 0.0,
+      "alarm_calls": [],
+      "n_spawns": 1,
+      "n_extends": 0,
+      "final_n_experts": 1,
+      "elapsed_sec": 7.3
+    },
+    {
+      "seed": 14,
+      "competence": true,
+      "total_samples": 20000,
+      "batch_count": 313,
+      "n_alarms": 0,
+      "alarms_per_10k": 0.0,
+      "alarm_calls": [],
+      "n_spawns": 1,
+      "n_extends": 0,
+      "final_n_experts": 1,
+      "elapsed_sec": 8.05
+    },
+    {
+      "seed": 15,
+      "competence": true,
+      "total_samples": 20000,
+      "batch_count": 313,
+      "n_alarms": 0,
+      "alarms_per_10k": 0.0,
+      "alarm_calls": [],
+      "n_spawns": 1,
+      "n_extends": 0,
+      "final_n_experts": 1,
+      "elapsed_sec": 10.01
+    },
+    {
+      "seed": 16,
+      "competence": true,
+      "total_samples": 20000,
+      "batch_count": 313,
+      "n_alarms": 0,
+      "alarms_per_10k": 0.0,
+      "alarm_calls": [],
+      "n_spawns": 1,
+      "n_extends": 0,
+      "final_n_experts": 1,
+      "elapsed_sec": 9.3
+    },
+    {
+      "seed": 17,
+      "competence": true,
+      "total_samples": 20000,
+      "batch_count": 313,
+      "n_alarms": 0,
+      "alarms_per_10k": 0.0,
+      "alarm_calls": [],
+      "n_spawns": 1,
+      "n_extends": 0,
+      "final_n_experts": 1,
+      "elapsed_sec": 8.82
+    },
+    {
+      "seed": 18,
+      "competence": true,
+      "total_samples": 20000,
+      "batch_count": 313,
+      "n_alarms": 0,
+      "alarms_per_10k": 0.0,
+      "alarm_calls": [],
+      "n_spawns": 1,
+      "n_extends": 0,
+      "final_n_experts": 1,
+      "elapsed_sec": 8.75
+    },
+    {
+      "seed": 19,
+      "competence": true,
+      "total_samples": 20000,
+      "batch_count": 313,
+      "n_alarms": 0,
+      "alarms_per_10k": 0.0,
+      "alarm_calls": [],
+      "n_spawns": 1,
+      "n_extends": 0,
+      "final_n_experts": 1,
+      "elapsed_sec": 8.88
+    }
+  ],
+  "runs_competence_false": [
+    {
+      "seed": 10,
+      "competence": false,
+      "total_samples": 20000,
+      "batch_count": 313,
+      "n_alarms": 0,
+      "alarms_per_10k": 0.0,
+      "alarm_calls": [],
+      "n_spawns": 1,
+      "n_extends": 0,
+      "final_n_experts": 1,
+      "elapsed_sec": 8.69
+    },
+    {
+      "seed": 11,
+      "competence": false,
+      "total_samples": 20000,
+      "batch_count": 313,
+      "n_alarms": 0,
+      "alarms_per_10k": 0.0,
+      "alarm_calls": [],
+      "n_spawns": 1,
+      "n_extends": 0,
+      "final_n_experts": 1,
+      "elapsed_sec": 8.83
+    },
+    {
+      "seed": 12,
+      "competence": false,
+      "total_samples": 20000,
+      "batch_count": 313,
+      "n_alarms": 0,
+      "alarms_per_10k": 0.0,
+      "alarm_calls": [],
+      "n_spawns": 1,
+      "n_extends": 0,
+      "final_n_experts": 1,
+      "elapsed_sec": 8.67
+    },
+    {
+      "seed": 13,
+      "competence": false,
+      "total_samples": 20000,
+      "batch_count": 313,
+      "n_alarms": 0,
+      "alarms_per_10k": 0.0,
+      "alarm_calls": [],
+      "n_spawns": 1,
+      "n_extends": 0,
+      "final_n_experts": 1,
+      "elapsed_sec": 5.82
+    },
+    {
+      "seed": 14,
+      "competence": false,
+      "total_samples": 20000,
+      "batch_count": 313,
+      "n_alarms": 0,
+      "alarms_per_10k": 0.0,
+      "alarm_calls": [],
+      "n_spawns": 1,
+      "n_extends": 0,
+      "final_n_experts": 1,
+      "elapsed_sec": 6.18
+    },
+    {
+      "seed": 15,
+      "competence": false,
+      "total_samples": 20000,
+      "batch_count": 313,
+      "n_alarms": 0,
+      "alarms_per_10k": 0.0,
+      "alarm_calls": [],
+      "n_spawns": 1,
+      "n_extends": 0,
+      "final_n_experts": 1,
+      "elapsed_sec": 9.14
+    },
+    {
+      "seed": 16,
+      "competence": false,
+      "total_samples": 20000,
+      "batch_count": 313,
+      "n_alarms": 0,
+      "alarms_per_10k": 0.0,
+      "alarm_calls": [],
+      "n_spawns": 1,
+      "n_extends": 0,
+      "final_n_experts": 1,
+      "elapsed_sec": 9.25
+    },
+    {
+      "seed": 17,
+      "competence": false,
+      "total_samples": 20000,
+      "batch_count": 313,
+      "n_alarms": 0,
+      "alarms_per_10k": 0.0,
+      "alarm_calls": [],
+      "n_spawns": 1,
+      "n_extends": 0,
+      "final_n_experts": 1,
+      "elapsed_sec": 9.08
+    },
+    {
+      "seed": 18,
+      "competence": false,
+      "total_samples": 20000,
+      "batch_count": 313,
+      "n_alarms": 0,
+      "alarms_per_10k": 0.0,
+      "alarm_calls": [],
+      "n_spawns": 1,
+      "n_extends": 0,
+      "final_n_experts": 1,
+      "elapsed_sec": 9.1
+    },
+    {
+      "seed": 19,
+      "competence": false,
+      "total_samples": 20000,
+      "batch_count": 313,
+      "n_alarms": 0,
+      "alarms_per_10k": 0.0,
+      "alarm_calls": [],
+      "n_spawns": 1,
+      "n_extends": 0,
+      "final_n_experts": 1,
+      "elapsed_sec": 9.31
+    }
+  ]
+}

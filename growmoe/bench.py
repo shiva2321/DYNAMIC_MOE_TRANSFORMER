@@ -938,6 +938,7 @@ def _phase1_cfg(**kw) -> PhyloCfg:
     research/growmoe_results/phase1/."""
     kw.setdefault("arm_monitor_after_infancy", False)
     kw.setdefault("batch_vote", False)
+    kw.setdefault("gate_shortlist", 0)
     return PhyloCfg(**kw)
 
 

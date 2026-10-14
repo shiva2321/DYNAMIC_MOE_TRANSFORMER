@@ -1,0 +1,1 @@
+{"arm": "joint_w1024", "n_regimes": 100, "seed": 100, "acc": 0.21467500030994416, "experts": 1, "params": 264840, "stored_vectors": 81600, "bytes": 42838560, "predict_macs": 263168, "seconds": 79.94487319999826}

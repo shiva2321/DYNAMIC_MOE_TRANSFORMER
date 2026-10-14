@@ -17,3 +17,7 @@ dependencies = [
 [tool.setuptools.packages.find]
 where = ["."]
 include = ["ishmn*"]
+
+[tool.pyrefly]
+exclude = ["artifacts/**", "scratch/**", ".system_generated/**"]
+

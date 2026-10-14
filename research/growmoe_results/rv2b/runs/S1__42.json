@@ -1,0 +1,83 @@
+{
+ "spec": {
+  "stream": "S1",
+  "seed": 42,
+  "smoke": false,
+  "arms": [
+   "A_exact",
+   "A_cascade"
+  ]
+ },
+ "records": [
+  {
+   "stream": "S1",
+   "method": "A_exact",
+   "seed": 42,
+   "acc": 0.7876190500599998,
+   "per_regime": [
+    0.9466666579246521,
+    0.8866666555404663,
+    0.9266666769981384,
+    1.0,
+    0.800000011920929,
+    0.41333332657814026,
+    0.5400000214576721
+   ],
+   "forgetting": null,
+   "n_experts": 5,
+   "params": 187030,
+   "naive_params": 187030,
+   "stored_vectors": 2384,
+   "memory_bytes": 1968728,
+   "gate_macs": 152576,
+   "expert_macs": 36608,
+   "predict_macs": 189184,
+   "wall_clock": 16.944206000000122,
+   "event_counts": {
+    "spawn": 5,
+    "extend": 5,
+    "alarm": 4
+   },
+   "steps": 200,
+   "k": 1,
+   "gate_macs_pred": 152576.0,
+   "gate_macs_obs": 73099.35731414868
+  },
+  {
+   "stream": "S1",
+   "method": "A_cascade",
+   "seed": 42,
+   "acc": 0.7876190500599998,
+   "per_regime": [
+    0.9466666579246521,
+    0.8866666555404663,
+    0.9266666769981384,
+    1.0,
+    0.800000011920929,
+    0.41333332657814026,
+    0.5400000214576721
+   ],
+   "forgetting": null,
+   "n_experts": 5,
+   "params": 187030,
+   "naive_params": 187030,
+   "stored_vectors": 2384,
+   "memory_bytes": 1968728,
+   "gate_macs": 152576,
+   "expert_macs": 36608,
+   "predict_macs": 189184,
+   "wall_clock": 17.04406469999958,
+   "event_counts": {
+    "spawn": 5,
+    "extend": 5,
+    "alarm": 4
+   },
+   "steps": 200,
+   "k": 1,
+   "gate_macs_pred": 152576.0,
+   "gate_macs_obs": 73099.35731414868
+  }
+ ],
+ "seconds": 33.988693900000726,
+ "peak_mb": 855.46484375
+}

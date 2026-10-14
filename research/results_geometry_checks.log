@@ -1,0 +1,26 @@
+H1  holonomy of parallel transport around a closed geodesic triangle p->q->r->p on S^7
+   eps   mean triangle area   mean holonomy angle   max |angle-area|
+  0.05             0.001154              0.001154           5.40e-13
+   0.1             0.004592              0.004592           1.29e-13
+   0.2             0.018544              0.018544           2.30e-14
+   0.4             0.075633              0.075633           5.41e-15
+   0.8             0.331963              0.331963           2.03e-15
+  -> holonomy angle == enclosed area (curvature +1): composition of transported relations is PATH-DEPENDENT.
+  -> for an abelian group action (phasor binding) the holonomy is identically 0: g_pq g_qr g_rp = 1.
+
+H2  relation = element of T^4 acting on R^8=C^4 (a true symmetry).  error = geodesic dist(prediction, truth)
+ dist(A,C)   PT error   GRP error   (rel. size ||phases|| ~ U[0,pi])
+      0.05     0.0500    4.47e-04
+       0.2     0.1977    4.47e-04
+       0.5     0.4882    4.47e-04
+       1.0     0.9687    4.47e-04
+       1.5     1.3587    4.47e-04
+       2.5     1.8854    4.47e-04
+
+H3  relation = rotation by angle t in a random 2-plane of R^8 (SO(8) element), single (A,B) example
+dist(A,C)= 0.2: PT error 0.0862   vs  'do nothing' baseline 0.4438
+dist(A,C)= 1.0: PT error 0.4099   vs  'do nothing' baseline 0.4520
+dist(A,C)= 2.0: PT error 0.6953   vs  'do nothing' baseline 0.4435
+  -> with an SO(8)-sized hypothesis class one example does not identify the relation; the inductive bias is the GROUP.
+
+wrote research/results/geometry_checks.json

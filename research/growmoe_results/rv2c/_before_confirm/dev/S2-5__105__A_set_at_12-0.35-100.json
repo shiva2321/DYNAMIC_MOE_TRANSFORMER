@@ -1,0 +1,100 @@
+{
+ "spec": {
+  "stream": "S2-5",
+  "seed": 105,
+  "arm": "A_set@12-0.35-100",
+  "smoke": false
+ },
+ "records": [
+  {
+   "stream": "S2-5",
+   "method": "A_set",
+   "seed": 105,
+   "acc": 0.9200000047683716,
+   "per_regime": [
+    0.9700000286102295,
+    0.9399999976158142,
+    0.9200000166893005,
+    0.8799999952316284,
+    0.8899999856948853
+   ],
+   "forgetting": null,
+   "n_experts": 4,
+   "params": 139304,
+   "naive_params": 139304,
+   "stored_vectors": 3408,
+   "memory_bytes": 2302112,
+   "gate_macs": 131072,
+   "expert_macs": 34048,
+   "predict_macs": 165120,
+   "wall_clock": 4.496388999999908,
+   "event_counts": {
+    "spawn": 4,
+    "extend": 1
+   },
+   "regimes": 5,
+   "steps": 20,
+   "arm": "A_set@12-0.35-100",
+   "observe_seconds": 4.487279400003899,
+   "fn_known": 34,
+   "fn_called_novel": 0,
+   "onset_total": 4,
+   "onset_called_novel": 0,
+   "verdict_counts": {
+    "None": 5,
+    "known": 44
+   },
+   "set_stats": {
+    "tests": 128,
+    "early_stops": 44,
+    "perms": 84668,
+    "novel": 0,
+    "known": 44,
+    "override": 0,
+    "paused": 0,
+    "breaker_opens": 0,
+    "window_splits": 1
+   },
+   "breaker_opens": 0,
+   "groups": {
+    "pure64": {
+     "single": 0.9156249761581421,
+     "group": 0.9156249761581421,
+     "n": 320,
+     "n_groups": 5,
+     "changed": 0
+    },
+    "pure16": {
+     "single": 0.918749988079071,
+     "group": 0.918749988079071,
+     "n": 480,
+     "n_groups": 30,
+     "changed": 0
+    },
+    "pure8": {
+     "single": 0.918749988079071,
+     "group": 0.918749988079071,
+     "n": 480,
+     "n_groups": 60,
+     "changed": 0
+    },
+    "mixed32_32": {
+     "single": 0.9197916388511658,
+     "group": 0.9197916388511658,
+     "n": 960,
+     "n_groups": 15,
+     "changed": 0
+    },
+    "mixed58_6": {
+     "single": 0.9156249761581421,
+     "group": 0.9156249761581421,
+     "n": 320,
+     "n_groups": 5,
+     "changed": 0
+    }
+   }
+  }
+ ],
+ "seconds": 4.591423100006068,
+ "peak_mb": 955.58203125
+}

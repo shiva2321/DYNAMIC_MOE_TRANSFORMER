@@ -1,0 +1,61 @@
+{
+  "metadata": {
+    "title": "CVA-5A: Resource Accounting Recount",
+    "seed": 10,
+    "stream": "s2_permuted(seed=10, n_regimes=6, n_train=200, n_test=50, schedule=[0,1,2,3,4,5,0,1])"
+  },
+  "part1_archived": {
+    "archived_experts_present": true,
+    "expert_states": {
+      "0": {
+        "state": "active",
+        "replay_is_none": false,
+        "sig_n": 256
+      },
+      "1": {
+        "state": "archived",
+        "replay_is_none": true,
+        "sig_n": 256
+      }
+    },
+    "hand_recount": {
+      "parameters": 69652,
+      "stored_vectors": 768,
+      "gate_macs": 65536,
+      "memory_bytes": 671824
+    },
+    "pool_report": {
+      "parameters": 69652,
+      "stored_vectors": 768,
+      "gate_macs": 65536,
+      "memory_bytes": 671824
+    },
+    "matches": true,
+    "verdict": "PASS"
+  },
+  "part2_set_gate": {
+    "set_gate": true,
+    "expert_states": {
+      "0": {
+        "state": "active",
+        "sig_n": 256,
+        "replay_n": 256,
+        "windows_samples": 535
+      }
+    },
+    "hand_recount": {
+      "parameters": 34826,
+      "stored_vectors": 1047,
+      "gate_macs": 32768,
+      "memory_bytes": 675368
+    },
+    "pool_report": {
+      "parameters": 34826,
+      "stored_vectors": 1047,
+      "gate_macs": 32768,
+      "memory_bytes": 675368
+    },
+    "matches": true,
+    "verdict": "PASS"
+  }
+}

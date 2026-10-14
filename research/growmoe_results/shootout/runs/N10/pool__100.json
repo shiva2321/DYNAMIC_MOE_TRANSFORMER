@@ -1,0 +1,1 @@
+{"arm": "pool", "n_regimes": 10, "seed": 100, "acc": 0.49650000035762787, "experts": 10, "params": 345680, "stored_vectors": 5120, "bytes": 4004160, "predict_macs": 108472.32, "seconds": 9.642893799999001, "steps": 5, "gate_macs_measured": 74680.32, "expert_macs": 33792}

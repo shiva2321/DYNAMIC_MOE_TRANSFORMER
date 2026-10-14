@@ -1,0 +1,5 @@
+    T |  prep (cat, cos, sin, pad) |  SDPA core fp16 |  SDPA core fp32 |   renorm |  plain Euclid fp16
+  256 |                   0.434 ms |        0.059 ms |        0.063 ms | 0.151 ms |           0.058 ms
+ 1024 |                   0.426 ms |        0.127 ms |        0.301 ms | 0.139 ms |           0.106 ms
+ 2048 |                   0.396 ms |        0.271 ms |        0.921 ms | 0.128 ms |           0.207 ms
+ 4096 |                   0.466 ms |        0.701 ms |        3.292 ms | 0.137 ms |           0.490 ms

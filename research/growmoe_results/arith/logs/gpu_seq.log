@@ -1,0 +1,265 @@
+C:\Users\Asta\AppData\Local\Programs\Python\Python312\Lib\site-packages\torch\cuda\__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+    after block 0 (+max): max  89.8 add   1.8 sub   1.1 mod   0.0 div   3.0 mul   3.2
+    after block 1 (+add): max   4.9 add  78.3 sub   1.6 mod   0.0 div   0.2 mul   0.2
+    after block 2 (+sub): max   3.2 add   1.7 sub  58.7 mod   3.4 div   0.1 mul   0.0
+    after block 3 (+mod): max   0.4 add   0.0 sub   1.8 mod  56.3 div   2.9 mul   2.6
+    after block 4 (+div): max   2.3 add   0.7 sub   0.6 mod   3.0 div  57.9 mul   3.4
+    after block 5 (+mul): max   3.1 add   0.0 sub   0.0 mod   2.2 div   4.8 mul   8.7
+[seq FULL MLP-L-seq seed 0] fit 107s experts - total 107s
+    op      seen  unseen/in-len  unseen/new-len  digit/in  digit/new
+    add      0.0            0.0             -        22.8        -  
+    sub      0.2            0.0             -        19.7        -  
+    mul     98.4           10.5             -        61.9        -  
+    mod      2.0            1.7             -        17.3        -  
+    div      2.4            5.1             -        17.6        -  
+    max      3.6            3.2             -        23.7        -  
+    after block 0 (+max): max  89.8 add   1.8 sub   1.1 mod   0.0 div   3.0 mul   3.2
+    after block 1 (+add): max  85.4 add  77.1 sub   1.7 mod   0.0 div   2.5 mul   2.2
+    after block 2 (+sub): max  84.5 add  67.6 sub  55.8 mod   2.7 div   0.2 mul   0.0
+    after block 3 (+mod): max  73.6 add  53.5 sub  47.1 mod  55.7 div   0.4 mul   0.7
+    after block 4 (+div): max  66.1 add  34.7 sub  37.1 mod  54.0 div  57.4 mul   3.8
+    after block 5 (+mul): max  35.9 add  12.3 sub  18.5 mod  44.1 div  55.0 mul  12.0
+[seq FULL MLP-L-replay seed 0] fit 155s experts - total 155s
+    op      seen  unseen/in-len  unseen/new-len  digit/in  digit/new
+    add     12.0           11.2             -        63.1        -  
+    sub     22.2           17.2             -        67.9        -  
+    mul    100.0           12.5             -        62.3        -  
+    mod     53.0           43.9             -        78.5        -  
+    div     72.8           54.7             -        82.7        -  
+    max     35.8           34.7             -        77.7        -  
+    after block 0 (+max): max  88.4 add   0.0 sub   0.0 mod   0.0 div   0.0 mul   0.0
+    after block 1 (+add): max  88.4 add  72.0 sub   0.0 mod   0.0 div   0.0 mul   0.0
+    after block 2 (+sub): max  88.4 add  72.0 sub  52.4 mod   0.0 div   0.0 mul   0.0
+    after block 3 (+mod): max  88.4 add  72.0 sub  52.4 mod  55.3 div   0.0 mul   0.0
+    after block 4 (+div): max  88.4 add  72.0 sub  52.4 mod  55.3 div  60.9 mul   0.0
+    after block 5 (+mul): max  88.4 add  72.0 sub  52.4 mod  55.3 div  60.9 mul   9.5
+[seq FULL Oracle-op seed 0] fit 103s experts 6 total 103s
+    op      seen  unseen/in-len  unseen/new-len  digit/in  digit/new
+    add    100.0           72.2             -        93.8        -  
+    sub    100.0           51.3             -        86.1        -  
+    mul    100.0           10.5             -        63.3        -  
+    mod    100.0           55.4             -        82.3        -  
+    div    100.0           60.1             -        85.7        -  
+    max    100.0           87.9             -        96.5        -  
+C:\Users\Asta\AppData\Local\Programs\Python\Python312\Lib\site-packages\torch\cuda\__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+    after block 0 (+max): max  91.3 add   1.7 sub   1.1 mod   0.2 div   3.1 mul   2.6
+    after block 1 (+add): max   4.5 add  80.0 sub   2.0 mod   0.0 div   0.7 mul   0.5
+    after block 2 (+sub): max   3.5 add   1.5 sub  53.9 mod   3.3 div   0.0 mul   0.0
+    after block 3 (+mod): max   0.3 add   0.0 sub   2.1 mod  57.0 div   3.0 mul   2.7
+    after block 4 (+div): max   1.7 add   0.8 sub   0.7 mod   2.9 div  57.4 mul   3.4
+    after block 5 (+mul): max   2.8 add   0.0 sub   0.0 mod   2.1 div   4.9 mul  10.7
+[seq FULL MLP-L-seq seed 1] fit 121s experts - total 122s
+    op      seen  unseen/in-len  unseen/new-len  digit/in  digit/new
+    add      0.0            0.0             -        22.5        -  
+    sub      0.0            0.0             -        20.1        -  
+    mul     95.2           10.7             -        62.2        -  
+    mod      1.4            1.8             -        17.3        -  
+    div      4.4            5.1             -        16.9        -  
+    max      3.8            3.3             -        24.3        -  
+    after block 0 (+max): max  91.3 add   1.7 sub   1.1 mod   0.2 div   3.1 mul   2.6
+    after block 1 (+add): max  86.9 add  80.1 sub   1.5 mod   0.0 div   1.8 mul   1.3
+    after block 2 (+sub): max  85.5 add  70.0 sub  54.8 mod   2.3 div   0.1 mul   0.0
+    after block 3 (+mod): max  72.5 add  54.9 sub  46.0 mod  54.7 div   0.7 mul   0.5
+    after block 4 (+div): max  66.0 add  30.8 sub  32.4 mod  51.6 div  56.7 mul   3.8
+    after block 5 (+mul): max  38.4 add  13.4 sub  13.4 mod  40.6 div  55.0 mul  11.6
+[seq FULL MLP-L-replay seed 1] fit 173s experts - total 173s
+    op      seen  unseen/in-len  unseen/new-len  digit/in  digit/new
+    add     14.4           12.0             -        63.8        -  
+    sub     19.2           13.9             -        67.1        -  
+    mul    100.0           12.0             -        62.0        -  
+    mod     55.8           42.0             -        78.0        -  
+    div     74.2           54.4             -        82.5        -  
+    max     40.6           35.9             -        78.5        -  
+    after block 0 (+max): max  87.8 add   0.0 sub   0.0 mod   0.0 div   0.0 mul   0.0
+    after block 1 (+add): max  87.8 add  73.8 sub   0.0 mod   0.0 div   0.0 mul   0.0
+    after block 2 (+sub): max  87.8 add  73.8 sub  50.0 mod   0.0 div   0.0 mul   0.0
+    after block 3 (+mod): max  87.8 add  73.8 sub  50.0 mod  56.1 div   0.0 mul   0.0
+    after block 4 (+div): max  87.8 add  73.8 sub  50.0 mod  56.1 div  58.6 mul   0.0
+    after block 5 (+mul): max  87.8 add  73.8 sub  50.0 mod  56.1 div  58.6 mul  10.6
+[seq FULL Oracle-op seed 1] fit 102s experts 6 total 102s
+    op      seen  unseen/in-len  unseen/new-len  digit/in  digit/new
+    add    100.0           73.8             -        94.2        -  
+    sub    100.0           52.2             -        86.4        -  
+    mul    100.0           10.7             -        63.4        -  
+    mod    100.0           54.1             -        82.1        -  
+    div    100.0           60.4             -        85.6        -  
+    max    100.0           87.7             -        96.4        -  
+C:\Users\Asta\AppData\Local\Programs\Python\Python312\Lib\site-packages\torch\cuda\__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+    after block 0 (+max): max  84.6 add   1.6 sub   0.9 mod   0.4 div   3.0 mul   2.5
+    after block 1 (+add): max   4.3 add  66.5 sub   2.0 mod   0.0 div   0.0 mul   0.0
+    after block 2 (+sub): max   3.5 add   1.5 sub  51.2 mod   2.7 div   0.1 mul   0.0
+    after block 3 (+mod): max   0.5 add   0.4 sub   2.0 mod  50.3 div   3.2 mul   3.0
+    after block 4 (+div): max   2.5 add   0.6 sub   0.5 mod   2.9 div  55.2 mul   2.6
+    after block 5 (+mul): max   3.0 add   0.0 sub   0.0 mod   2.3 div   5.3 mul  10.5
+[seq HOLE MLP-L-seq seed 0] fit 110s experts - total 111s
+    op      seen  unseen/in-len  unseen/new-len  digit/in  digit/new
+    add      0.0            0.0             0.0      25.4       19.2
+    sub      0.2            0.0             0.0      22.6       16.8
+    mul     95.2           14.8             4.9      63.6       59.6
+    mod      2.8            2.2             1.0      19.5       14.5
+    div      3.4            7.0             2.3      20.5       12.6
+    max      4.0            4.1             1.7      26.8       18.4
+    after block 0 (+max): max  84.6 add   1.6 sub   0.9 mod   0.4 div   3.0 mul   2.5
+    after block 1 (+add): max  81.3 add  68.2 sub   1.6 mod   0.0 div   1.5 mul   1.8
+    after block 2 (+sub): max  78.5 add  59.7 sub  50.7 mod   2.6 div   0.1 mul   0.0
+    after block 3 (+mod): max  69.1 add  50.1 sub  43.2 mod  48.8 div   2.2 mul   0.4
+    after block 4 (+div): max  57.8 add  35.1 sub  33.1 mod  48.2 div  55.6 mul   3.9
+    after block 5 (+mul): max  38.8 add  12.7 sub  15.5 mod  42.9 div  53.9 mul  10.8
+[seq HOLE MLP-L-replay seed 0] fit 138s experts - total 139s
+    op      seen  unseen/in-len  unseen/new-len  digit/in  digit/new
+    add     19.8           14.3             9.2      66.8       61.3
+    sub     27.4           19.1             8.7      69.9       60.5
+    mul    100.0           15.5             5.1      63.3       57.7
+    mod     57.2           48.0            28.3      79.6       74.0
+    div     74.0           57.2            48.5      82.4       81.1
+    max     40.0           42.8            27.8      81.7       74.6
+    after block 0 (+max): max  84.7 add   0.0 sub   0.0 mod   0.0 div   0.0 mul   0.0
+    after block 1 (+add): max  84.7 add  63.8 sub   0.0 mod   0.0 div   0.0 mul   0.0
+    after block 2 (+sub): max  84.7 add  63.8 sub  48.0 mod   0.0 div   0.0 mul   0.0
+    after block 3 (+mod): max  84.7 add  63.8 sub  48.0 mod  51.8 div   0.0 mul   0.0
+    after block 4 (+div): max  84.7 add  63.8 sub  48.0 mod  51.8 div  57.2 mul   0.0
+    after block 5 (+mul): max  84.7 add  63.8 sub  48.0 mod  51.8 div  57.2 mul   9.0
+[seq HOLE Oracle-op seed 0] fit 98s experts 6 total 98s
+    op      seen  unseen/in-len  unseen/new-len  digit/in  digit/new
+    add    100.0           77.1            41.6      94.6       83.8
+    sub    100.0           59.1            28.4      87.2       76.6
+    mul    100.0           12.9             2.9      64.3       60.0
+    mod    100.0           57.4            39.9      83.0       78.3
+    div    100.0           63.1            51.3      85.5       83.8
+    max    100.0           87.7            73.9      96.3       92.5
+C:\Users\Asta\AppData\Local\Programs\Python\Python312\Lib\site-packages\torch\cuda\__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+    after block 0 (+max): max  80.5 add   0.9 sub   0.7 mod   0.3 div   2.9 mul   2.6
+    after block 1 (+add): max   3.7 add  65.6 sub   1.8 mod   0.0 div   0.2 mul   0.3
+    after block 2 (+sub): max   3.4 add   1.7 sub  49.7 mod   3.1 div   0.1 mul   0.0
+    after block 3 (+mod): max   0.8 add   0.0 sub   1.8 mod  49.2 div   3.3 mul   2.3
+    after block 4 (+div): max   2.1 add   0.9 sub   0.4 mod   2.9 div  56.2 mul   3.2
+    after block 5 (+mul): max   3.3 add   0.0 sub   0.0 mod   2.1 div   5.0 mul  10.2
+[seq HOLE MLP-L-seq seed 1] fit 88s experts - total 88s
+    op      seen  unseen/in-len  unseen/new-len  digit/in  digit/new
+    add      0.0            0.0             0.0      25.1       19.3
+    sub      0.2            0.0             0.0      21.9       16.4
+    mul     93.4           14.5             5.1      63.4       59.8
+    mod      2.8            2.1             1.0      19.1       13.8
+    div      3.2            7.2             2.2      20.4       11.9
+    max      3.8            4.2             1.8      26.7       17.2
+    after block 0 (+max): max  80.5 add   0.9 sub   0.7 mod   0.3 div   2.9 mul   2.6
+    after block 1 (+add): max  80.2 add  67.2 sub   2.0 mod   0.0 div   0.7 mul   2.1
+    after block 2 (+sub): max  80.7 add  58.4 sub  48.6 mod   2.6 div   0.1 mul   0.1
+    after block 3 (+mod): max  63.5 add  46.7 sub  40.0 mod  48.8 div   2.1 mul   0.5
+    after block 4 (+div): max  53.3 add  31.4 sub  29.7 mod  45.8 div  54.9 mul   3.5
+    after block 5 (+mul): max  33.4 add  12.4 sub  15.6 mod  40.7 div  53.3 mul  11.0
+[seq HOLE MLP-L-replay seed 1] fit 145s experts - total 146s
+    op      seen  unseen/in-len  unseen/new-len  digit/in  digit/new
+    add     18.0           13.4             8.9      63.2       59.8
+    sub     27.8           20.7            11.3      69.2       60.3
+    mul    100.0           14.9             5.8      63.3       57.4
+    mod     56.2           44.1            30.6      78.4       74.1
+    div     74.2           55.7            47.7      81.8       80.9
+    max     38.2           36.8            25.8      78.4       73.2
+    after block 0 (+max): max  79.0 add   0.0 sub   0.0 mod   0.0 div   0.0 mul   0.0
+    after block 1 (+add): max  79.0 add  64.7 sub   0.0 mod   0.0 div   0.0 mul   0.0
+    after block 2 (+sub): max  79.0 add  64.7 sub  44.5 mod   0.0 div   0.0 mul   0.0
+    after block 3 (+mod): max  79.0 add  64.7 sub  44.5 mod  49.5 div   0.0 mul   0.0
+    after block 4 (+div): max  79.0 add  64.7 sub  44.5 mod  49.5 div  56.9 mul   0.0
+    after block 5 (+mul): max  79.0 add  64.7 sub  44.5 mod  49.5 div  56.9 mul   9.3
+[seq HOLE Oracle-op seed 1] fit 98s experts 6 total 98s
+    op      seen  unseen/in-len  unseen/new-len  digit/in  digit/new
+    add    100.0           77.5            40.6      94.6       83.3
+    sub    100.0           57.8            21.1      86.6       73.9
+    mul    100.0           15.1             2.8      64.9       60.3
+    mod    100.0           56.1            36.7      82.8       77.2
+    div    100.0           62.6            49.3      85.4       83.4
+    max    100.0           85.1            67.8      95.6       90.9
+C:\Users\Asta\AppData\Local\Programs\Python\Python312\Lib\site-packages\torch\cuda\__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+    after block 0 (+max): max  34.8 add   0.9 sub   0.7 mod   3.9 div   2.0 mul   2.5
+    after block 1 (+add): max   1.9 add  35.2 sub   1.3 mod   0.0 div   0.0 mul   0.0
+    after block 2 (+sub): max   1.9 add   1.0 sub  31.4 mod   4.0 div   0.2 mul   0.0
+    after block 3 (+mod): max   0.0 add   0.4 sub   1.9 mod  48.1 div   3.0 mul   2.9
+    after block 4 (+div): max   0.7 add   0.6 sub   0.8 mod   2.9 div  51.5 mul   3.4
+    after block 5 (+mul): max   2.5 add   0.0 sub   0.0 mod   2.3 div   4.4 mul  13.1
+[seq SHORT MLP-L-seq seed 0] fit 111s experts - total 111s
+    op      seen  unseen/in-len  unseen/new-len  digit/in  digit/new
+    add      0.4            0.0             0.0      41.4       20.2
+    sub      0.0            0.0             0.0      34.9       15.8
+    mul    100.0           32.6             2.7      84.0       48.6
+    mod      2.8            2.9             1.2      32.3       18.5
+    div      5.8           11.7             1.1      34.3       14.8
+    max      5.2            7.2             0.0      37.4       18.8
+    after block 0 (+max): max  34.8 add   0.9 sub   0.7 mod   3.9 div   2.0 mul   2.5
+    after block 1 (+add): max  34.4 add  34.7 sub   1.8 mod   0.5 div   1.5 mul   1.8
+    after block 2 (+sub): max  34.7 add  32.9 sub  30.1 mod   3.6 div   0.0 mul   0.0
+    after block 3 (+mod): max  30.7 add  30.3 sub  28.4 mod  45.9 div   2.2 mul   0.8
+    after block 4 (+div): max  29.1 add  24.1 sub  23.3 mod  44.7 div  48.9 mul   2.7
+    after block 5 (+mul): max  20.2 add  10.3 sub  12.9 mod  40.9 div  47.4 mul  13.1
+[seq SHORT MLP-L-replay seed 0] fit 155s experts - total 155s
+    op      seen  unseen/in-len  unseen/new-len  digit/in  digit/new
+    add     30.8           27.8             0.1      79.8       47.3
+    sub     43.4           33.9             0.0      83.6       42.6
+    mul    100.0           33.1             2.5      84.3       49.1
+    mod     69.2           55.3            32.4      87.5       68.3
+    div     88.6           66.8            38.6      91.9       74.4
+    max     59.2           56.0             0.3      87.5       45.4
+    after block 0 (+max): max  34.7 add   0.0 sub   0.0 mod   0.0 div   0.0 mul   0.0
+    after block 1 (+add): max  34.7 add  34.7 sub   0.0 mod   0.0 div   0.0 mul   0.0
+    after block 2 (+sub): max  34.7 add  34.7 sub  30.1 mod   0.0 div   0.0 mul   0.0
+    after block 3 (+mod): max  34.7 add  34.7 sub  30.1 mod  45.8 div   0.0 mul   0.0
+    after block 4 (+div): max  34.7 add  34.7 sub  30.1 mod  45.8 div  51.4 mul   0.0
+    after block 5 (+mul): max  34.7 add  34.7 sub  30.1 mod  45.8 div  51.4 mul  13.7
+[seq SHORT Oracle-op seed 0] fit 104s experts 6 total 104s
+    op      seen  unseen/in-len  unseen/new-len  digit/in  digit/new
+    add    100.0           95.9             0.0      99.3       68.6
+    sub    100.0           84.5             0.1      96.9       52.3
+    mul    100.0           32.5             2.7      85.0       49.6
+    mod    100.0           61.4            38.0      89.5       71.1
+    div    100.0           75.3            36.7      94.4       74.4
+    max    100.0           96.1             0.0      99.1       54.0
+C:\Users\Asta\AppData\Local\Programs\Python\Python312\Lib\site-packages\torch\cuda\__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+    after block 0 (+max): max  35.2 add   0.9 sub   0.7 mod   3.6 div   2.0 mul   2.5
+    after block 1 (+add): max   1.9 add  34.9 sub   1.4 mod   0.0 div   0.0 mul   0.0
+    after block 2 (+sub): max   1.9 add   1.3 sub  30.5 mod   3.4 div   0.3 mul   0.0
+    after block 3 (+mod): max   0.1 add   0.0 sub   1.8 mod  46.4 div   3.0 mul   3.0
+    after block 4 (+div): max   1.0 add   0.4 sub   0.7 mod   2.9 div  52.3 mul   3.3
+    after block 5 (+mul): max   2.6 add   0.0 sub   0.0 mod   2.0 div   4.1 mul  11.6
+[seq SHORT MLP-L-seq seed 1] fit 103s experts - total 104s
+    op      seen  unseen/in-len  unseen/new-len  digit/in  digit/new
+    add      0.8            0.0             0.0      40.7       19.7
+    sub      0.2            0.0             0.0      34.0       15.5
+    mul    100.0           30.1             2.7      84.2       48.7
+    mod      2.8            2.7             1.2      31.3       18.0
+    div      7.4           11.4             0.9      33.5       14.2
+    max      6.2            7.3             0.0      36.7       18.5
+    after block 0 (+max): max  35.2 add   0.9 sub   0.7 mod   3.6 div   2.0 mul   2.5
+    after block 1 (+add): max  34.4 add  34.6 sub   1.5 mod   0.5 div   1.3 mul   2.3
+    after block 2 (+sub): max  34.3 add  33.2 sub  30.0 mod   3.9 div   0.1 mul   0.0
+    after block 3 (+mod): max  33.0 add  28.6 sub  27.9 mod  47.7 div   1.3 mul   0.3
+    after block 4 (+div): max  30.5 add  23.7 sub  25.0 mod  46.9 div  49.4 mul   3.3
+    after block 5 (+mul): max  15.5 add   8.9 sub  13.6 mod  43.9 div  49.6 mul  12.2
+[seq SHORT MLP-L-replay seed 1] fit 128s experts - total 128s
+    op      seen  unseen/in-len  unseen/new-len  digit/in  digit/new
+    add     37.4           30.2             0.1      81.7       48.1
+    sub     44.4           38.7             0.0      84.4       42.2
+    mul    100.0           30.5             2.5      84.0       48.7
+    mod     72.0           60.3            32.8      88.7       69.2
+    div     87.6           69.9            38.8      92.3       74.3
+    max     48.2           40.7             0.2      82.1       45.0
+    after block 0 (+max): max  34.7 add   0.0 sub   0.0 mod   0.0 div   0.0 mul   0.0
+    after block 1 (+add): max  34.7 add  33.4 sub   0.0 mod   0.0 div   0.0 mul   0.0
+    after block 2 (+sub): max  34.7 add  33.4 sub  30.8 mod   0.0 div   0.0 mul   0.0
+    after block 3 (+mod): max  34.7 add  33.4 sub  30.8 mod  47.4 div   0.0 mul   0.0
+    after block 4 (+div): max  34.7 add  33.4 sub  30.8 mod  47.4 div  52.3 mul   0.0
+    after block 5 (+mul): max  34.7 add  33.4 sub  30.8 mod  47.4 div  52.3 mul  11.3
+[seq SHORT Oracle-op seed 1] fit 101s experts 6 total 101s
+    op      seen  unseen/in-len  unseen/new-len  digit/in  digit/new
+    add    100.0           94.5             0.0      99.0       67.6
+    sub    100.0           85.9             0.1      97.1       52.9
+    mul    100.0           31.2             2.7      85.1       49.7
+    mod    100.0           66.0            37.9      90.3       71.3
+    div    100.0           78.7            37.2      95.2       74.8
+    max    100.0           96.8             0.0      99.3       53.7
+queue gpu_seq finished at Wed Oct 14 07:10:21 EDT 2026

@@ -71,6 +71,9 @@ def pool_report(pool, d: int) -> PoolReport:
                 gate += sig.n * d
             if r.replay is not None:
                 stored += r.replay.n
+            windows = r.meta.get("windows")
+            if windows is not None:                                                     # routing v2 stage 3a source windows are kept vectors too
+                stored += windows.n_samples()
         if all(r.meta.get("sig") is None for r in recs) and hasattr(pool, "keys"):     # key-gated pool: one cosine per expert
             stored += len(pool.keys)
             gate += len(pool.keys) * d
@@ -90,3 +93,11 @@ def pool_report(pool, d: int) -> PoolReport:
         return _report(len(mods), unique_param_count(mods), stored, d, stored * d, weight_macs(mods[0]))
     s = pool.summary()
     return _report(int(s.get("n_experts", 0)), int(s.get("n_params", 0)), 0, d, 0, 0)
+
+
+def measured_gate_macs_per_input(pool, phase: str = "predict") -> float:
+    """Gate multiply-adds per input that ``pool`` actually spent in ``phase`` ('observe' or 'predict'), from its own counters.
+    With the shortlist off this equals ``pool_report(pool, d).gate_macs`` (every stored vector scanned once)."""
+    s = pool.gate_stats[phase]
+    return (s["stage1"] + s["stage2"] + s["second_look"]) / max(1, s["samples"])
+

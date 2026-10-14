@@ -1,0 +1,8 @@
+tuning the learning rate per model on dev seeds 100, 101, mean over both tasks of acc at length 16 and 64
+  so3       lr 0.003: 0.530
+  so3       lr 0.01: 0.474
+  so3       lr 0.03: 0.552
+  so3       lr 0.1: 0.600
+  -> so3: lr 0.1
+z6 so3       (lr 0.1) T=16:  64.5+-19.2  T=32:  51.8+-24.7  T=64:  38.2+-28.4  T=128:  27.7+-20.0  T=256:  21.5+-13.2   [39s]
+s3 so3       (lr 0.1) T=16:  91.5+-15.4  T=32:  87.7+-16.6  T=64:  81.7+-21.5  T=128:  74.7+-24.9  T=256:  64.6+-23.9   [73s]

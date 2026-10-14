@@ -1,0 +1,24 @@
+{
+ "k": 1,
+ "min_experts": 32,
+ "force_min_for_accuracy_test": 8,
+ "expected": {
+  "C1": "PASS",
+  "C2": "PASS",
+  "C3": "PASS",
+  "C4": "PASS",
+  "G": "PASS"
+ },
+ "batch_vote_default": true,
+ "dev_gaps_points": {
+  "F-30": 0.0,
+  "S2-30": 0.0,
+  "F-15": -0.00555555025736254
+ },
+ "dev_ratios": {
+  "F-30": 0.09265625000000001,
+  "S2-30": 0.1381576161202186,
+  "F-15": 0.15496180555555555
+ },
+ "written": "2026-10-12 13:50:57"
+}

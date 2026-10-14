@@ -1,133 +1,93 @@
-import unittest
+"""
+test_dynamic_moe.py - Verification tests for DynamicYggdrasilMoE architecture.
+Tests spawning, geodesic routing, freezing, and backward autograd gradients.
+"""
+
+import pytest
 import torch
-from ishmn.dynamic_optimizer import DynamicWarmupAdamW
-from ishmn.dendritic_expert import TwoCompartmentDendriticExpert
-from ishmn.spherical_dynamic_moe import SphericalDynamicMoE
-from ishmn.continuous_self_loop import ContinuousSelfLoop, TriggeredEmission
-from ishmn.geometry import project_to_sphere
+import torch.nn.functional as F
 
-class TestDynamicMoE(unittest.TestCase):
-    def setUp(self):
-        self.device = torch.device("cpu")
-        self.d_model = 16
-        self.d_ff = 32
-        self.hyperspace_dim = 6
+from geometry.dynamic_moe import DynamicYggdrasilMoE, GeometricExpertBranch
 
-    def test_dynamic_warmup_adamw(self):
-        linear = torch.nn.Linear(10, 10)
-        optimizer = DynamicWarmupAdamW(linear.parameters(), lr=1e-3, default_group_warmup_steps=10)
-        self.assertEqual(len(optimizer.param_groups), 1)
 
-        # Dynamically spawn a new parameter
-        new_param = torch.nn.Parameter(torch.randn(10, 10))
-        optimizer.add_dynamic_param_group([new_param], group_name="spawned_test")
-        self.assertEqual(len(optimizer.param_groups), 2)
+def test_dynamic_moe_spawning_and_forward():
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    model = DynamicYggdrasilMoE(
+        in_features=16,
+        hidden_dim=32,
+        out_features=5,
+        dim_h=4,
+        dim_t=4,
+        num_prototypes_per_expert=8,
+    ).to(device)
 
-        # Check warmup progression
-        optimizer.update_dynamic_schedules()
-        self.assertLess(optimizer.param_groups[1]["lr"], optimizer.param_groups[0]["lr"])
+    assert model.num_experts == 0
 
-    def test_dendritic_expert(self):
-        expert = TwoCompartmentDendriticExpert(
-            d_model=self.d_model,
-            d_ff=self.d_ff,
-            d_context=self.d_model,
-            beta_nmda=0.5
-        )
-        x = torch.randn(2, self.d_model)
-        ctx = torch.randn(2, self.d_model)
+    # Spawning first expert
+    e0 = model.spawn_expert("task_add")
+    assert model.num_experts == 1
+    assert isinstance(e0, GeometricExpertBranch)
 
-        # Forward with context
-        y_ctx = expert(x, context=ctx)
-        self.assertEqual(y_ctx.shape, (2, self.d_model))
+    # Test forward pass with single expert
+    x = torch.randn(8, 16, device=device)
+    out = model(x)
+    assert out.shape == (8, 5)
 
-        # Forward without context
-        y_no_ctx = expert(x, context=None)
-        self.assertEqual(y_no_ctx.shape, (2, self.d_model))
+    # Spawning second expert
+    e1 = model.spawn_expert("task_sub")
+    assert model.num_experts == 2
 
-    def test_spherical_dynamic_moe_spawning_and_routing(self):
-        moe = SphericalDynamicMoE(
-            d_model=self.d_model,
-            d_ff=self.d_ff,
-            d_context=self.d_model,
-            hyperspace_dim=self.hyperspace_dim,
-            initial_experts=2,
-            max_experts=6,
-            spawn_threshold=0.80  # high threshold to trigger spawning
-        )
-        optimizer = DynamicWarmupAdamW(moe.parameters(), lr=1e-3)
-        self.assertEqual(moe.num_experts, 2)
+    # Forward with autonomous geodesic routing
+    out2, routing = model(x, return_routing=True)
+    assert out2.shape == (8, 5)
+    assert routing.shape == (8, 2)
+    # Routing probabilities sum to 1
+    assert torch.allclose(routing.sum(dim=-1), torch.ones(8, device=device), atol=1e-4)
 
-        x = torch.randn(3, self.d_model)
-        u_x = project_to_sphere(torch.randn(3, self.hyperspace_dim))
-        r_x = torch.tensor([[4.0], [4.5], [5.0]])
 
-        # Forward should trigger neurogenesis
-        moe.train()
-        out, meta = moe(x, u_x, r_x, optimizer=optimizer)
-        self.assertEqual(out.shape, (3, self.d_model))
-        self.assertGreater(moe.num_experts, 2)
-        self.assertEqual(len(optimizer.param_groups), 2)
+def test_dynamic_moe_freezing_and_training():
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    model = DynamicYggdrasilMoE(
+        in_features=8,
+        hidden_dim=16,
+        out_features=2,
+        dim_h=4,
+        dim_t=4,
+        num_prototypes_per_expert=4,
+    ).to(device)
 
-    def test_continuous_self_loop_execution(self):
-        loop = ContinuousSelfLoop(
-            d_model=self.d_model,
-            d_hidden=32,
-            hyperspace_dim=self.hyperspace_dim,
-            emission_threshold=0.01,  # low threshold to verify emission object creation
-            device=self.device
-        )
+    # Task 1: Add
+    e0 = model.spawn_expert("task_0")
+    opt = torch.optim.Adam(model.parameters(), lr=0.01)
 
-        # Inject input perturbation
-        stim = torch.randn(1, self.d_model)
-        loop.inject_input(stim, modality="continuous", tag="test_stimulus")
+    x1 = torch.randn(10, 8, device=device)
+    y1 = torch.randn(10, 2, device=device)
 
-        # Run tick
-        emission = loop.loop_tick()
-        self.assertIsNotNone(emission)
-        self.assertIsInstance(emission, TriggeredEmission)
-        self.assertEqual(emission.active_experts, loop.moe.num_experts)
-
-    def test_spherical_dynamic_moe_sleep_consolidation_and_apoptosis(self):
-        moe = SphericalDynamicMoE(
-            d_model=self.d_model,
-            d_ff=self.d_ff,
-            d_context=self.d_model,
-            hyperspace_dim=self.hyperspace_dim,
-            initial_experts=4,
-            min_experts=1,
-            merge_angle_threshold=0.30
-        )
-        optimizer = DynamicWarmupAdamW(moe.parameters(), lr=1e-3)
-        self.assertEqual(moe.num_experts, 4)
-
-        # Force expert 0 and 1 to be co-resonant (almost identical anchor angle)
-        with torch.no_grad():
-            moe.expert_u[1] = moe.expert_u[0].clone()
-            # Expert 3 is completely dormant (low usage), while others have high usage
-            moe.expert_usage = torch.tensor([50.0, 50.0, 50.0, 0.1])
-
-        # Run sleep consolidation with apoptotic threshold 0.05
-        report = moe.sleep_consolidate_and_prune(prune_usage_threshold=0.05, optimizer=optimizer)
-
-        self.assertGreaterEqual(report["merged"], 1)
-        self.assertGreaterEqual(report["pruned"], 1)
-        self.assertLess(moe.num_experts, 4)
-        self.assertGreaterEqual(moe.num_experts, moe.min_experts)
-
-        # Forward pass post-sleep to verify stability
-        x = torch.randn(2, self.d_model)
-        u_x = project_to_sphere(torch.randn(2, self.hyperspace_dim))
-        r_x = torch.tensor([[1.0], [1.5]])
-        out, meta = moe(x, u_x, r_x, optimizer=optimizer)
-        self.assertEqual(out.shape, (2, self.d_model))
-
-        # Backward pass to ensure optimizer and parameter groups are intact
-        loss = out.sum()
-        optimizer.zero_grad()
+    # Train Task 1
+    for _ in range(5):
+        opt.zero_grad()
+        loss = F.mse_loss(model(x1, expert_id=0), y1)
         loss.backward()
-        optimizer.step()
+        opt.step()
 
-if __name__ == '__main__':
-    unittest.main()
+    # Freeze Task 0
+    w0_before = [p.clone() for p in e0.parameters()]
+    model.freeze_expert(0)
 
+    # Task 2: Sub
+    e1 = model.spawn_expert("task_1")
+    # Only train e1 and encoder
+    opt2 = torch.optim.Adam(filter(lambda p: p.requires_grad, model.parameters()), lr=0.01)
+
+    x2 = torch.randn(10, 8, device=device)
+    y2 = torch.randn(10, 2, device=device)
+
+    for _ in range(5):
+        opt2.zero_grad()
+        loss = F.mse_loss(model(x2, expert_id=1), y2)
+        loss.backward()
+        opt2.step()
+
+    # Assert that expert 0 parameters did NOT change at all (exact preservation)
+    for p_before, p_after in zip(w0_before, e0.parameters()):
+        assert torch.equal(p_before, p_after)

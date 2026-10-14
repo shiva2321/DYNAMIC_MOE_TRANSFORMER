@@ -1,0 +1,1 @@
+{"arm": "knn_all", "n_regimes": 30, "seed": 102, "acc": 0.218333334227403, "experts": 1, "params": 0, "stored_vectors": 25600, "bytes": 13107200, "predict_macs": 3276800, "seconds": 1.1670247000001837}

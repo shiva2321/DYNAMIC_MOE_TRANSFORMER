@@ -1,0 +1,5 @@
+wrote D:\spherical_hyperspace_memory\research\growmoe_results\arith\RESULTS_ARITH.md
+C:\Users\Asta\AppData\Local\Programs\Python\Python312\Lib\site-packages\torch\cuda\__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+D:\spherical_hyperspace_memory\research\growmoe_results\arith\report_arith.py:465: RuntimeWarning: Mean of empty slice
+  md.append(f"| {name} | " + " | ".join(pct(v) + f" (n={int(cnt[k])})" for k, v in enumerate(np.nanmean(res, axis=0))) + " |")

@@ -1,0 +1,24 @@
+=== Table 1: Diagnostic Metric Verifications (10 Seeds, Mean +- 95% CI) ===
+Condition                 Metric                     Measured Value           Theoretical     
+--------------------------------------------------------------------------------------------
+isotropic_gaussian_32d    effective_rank             31.967 +- 0.001          ~ 32.0 (>=30.0) 
+isotropic_gaussian_32d    mean_cosine                 0.000 +- 0.000          ~ 0.00 (+-0.05) 
+isotropic_gaussian_32d    uniformity_loss            -3.752 +- 0.000          < -3.00         
+isotropic_gaussian_32d    twonn_id (high-d bias)     24.604 +- 0.251          24.0 (bias limit)
+rank1_line_32d            effective_rank              1.000 +- 0.000          1.00 (<=1.05)   
+collapsed_cluster_32d     mean_cosine                 0.988 +- 0.000          ~ 0.99 (>0.95)  
+collapsed_cluster_32d     uniformity_loss            -0.049 +- 0.000          > -0.10 (high)  
+manifold_3d_in_20d        twonn_id (3D manifold)      2.957 +- 0.044          3.00 (+-0.3)    
+manifold_2d_in_20d        twonn_id (2D manifold)      1.985 +- 0.045          2.00 (+-0.3)    
+circle_1d_in_20d          twonn_id (1D circle)        0.979 +- 0.022          1.00 (+-0.2)    
+segment_1d_in_20d         twonn_id (1D segment)       1.003 +- 0.013          1.00 (+-0.2)    
+
+=== Table 2: Protocol Integrity and Honesty Verifications ===
+Tool                      Check / Scenario                    Result          Status    
+----------------------------------------------------------------------------------------
+tune_lr                   Interior optimum (lr=0.01)          best_lr=0.01, edge=False PASS      
+tune_lr                   Boundary optimum (lr=0.03)          best_lr=0.03, edge=True PASS      
+render_poc_b_table        Dry-run poc_b char match (norm LF)  Length=1982 chars PASS      
+render_poc_b_table        Dry-run poc_b byte match (CRLF)     Bytes=2003 B    PASS      
+validate_report           Single-digit alteration detection   Caught 1-digit change PASS      
+check_prereg              PREREG precedes results.json        prereg < results: True PASS      

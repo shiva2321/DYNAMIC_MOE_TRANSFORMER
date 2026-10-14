@@ -1,0 +1,8 @@
+tuning the learning rate per model on dev seeds 100, 101, mean over both tasks of acc at length 16 and 64
+  gru       lr 0.003: 0.999
+  gru       lr 0.01: 1.000
+  gru       lr 0.03: 0.948
+  gru       lr 0.1: 0.340
+  -> gru: lr 0.01
+z6 gru       (lr 0.01) T=16: 100.0+- 0.0  T=32: 100.0+- 0.0  T=64: 100.0+- 0.0  T=128:  99.9+- 0.1  T=256:  99.8+- 0.2   [44s]
+s3 gru       (lr 0.01) T=16: 100.0+- 0.0  T=32: 100.0+- 0.0  T=64: 100.0+- 0.0  T=128:  99.9+- 0.1  T=256: 100.0+- 0.0   [77s]

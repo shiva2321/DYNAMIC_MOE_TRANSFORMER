@@ -1,0 +1,57 @@
+C:\Users\Asta\AppData\Local\Programs\Python\Python312\Lib\site-packages\torch\cuda\__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+    after block 0 (+max): max  33.3 add   1.2 sub   0.7 mod   0.7 div   2.1 mul   2.2
+    after block 1 (+add): max  31.9 add  27.7 sub   0.7 mod   0.0 div   0.1 mul   0.0
+    after block 2 (+sub): max  31.3 add  25.8 sub  23.6 mod   2.7 div   0.2 mul   0.1
+    after block 3 (+mod): max  31.7 add  25.5 sub  19.9 mod  43.8 div   0.4 mul   0.7
+    after block 4 (+div): max  30.7 add  22.8 sub  20.6 mod  35.7 div  44.7 mul   1.8
+    after block 5 (+mul): max  25.0 add  19.6 sub  18.0 mod  30.3 div  35.3 mul   9.1
+[seq SHORT GrowMoE-h512-s5-r20000+s3 seed 0] fit 890s experts 2 total 917s
+    op      seen  unseen/in-len  unseen/new-len  digit/in  digit/new
+    add     60.8           52.3             0.2      87.4       44.8
+    sub     55.4           46.9             0.1      86.6       40.7
+    mul     34.0           22.9             2.4      81.3       45.7
+    mod     56.8           46.7            21.5      83.9       61.4
+    div     54.8           51.8            27.7      85.4       68.4
+    max     68.6           71.2             0.0      91.8       47.0
+C:\Users\Asta\AppData\Local\Programs\Python\Python312\Lib\site-packages\torch\cuda\__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+    after block 0 (+max): max  78.3 add   1.1 sub   1.1 mod   0.0 div   3.0 mul   2.7
+    after block 1 (+add): max  63.4 add  36.1 sub   1.8 mod   0.0 div   0.1 mul   0.0
+    after block 2 (+sub): max  57.8 add  33.7 sub  31.1 mod   1.4 div   0.0 mul   0.0
+    after block 3 (+mod): max  39.3 add  24.8 sub  23.4 mod  45.1 div   1.2 mul   0.8
+    after block 4 (+div): max  31.8 add  18.3 sub  19.0 mod  42.9 div  44.4 mul   2.8
+    after block 5 (+mul): max  29.3 add  16.7 sub  17.4 mod  42.1 div  42.5 mul   6.0
+[seq HOLE GrowMoE-h512-s5-r20000+s3 seed 0] fit 1091s experts 4 total 1110s
+    op      seen  unseen/in-len  unseen/new-len  digit/in  digit/new
+    add     23.6           19.1            10.3      68.0       63.6
+    sub     27.4           21.9             9.3      68.4       61.3
+    mul     11.4            7.7             2.4      58.3       55.5
+    mod     56.2           46.6            29.7      78.4       74.7
+    div     55.8           46.6            42.3      78.1       78.3
+    max     39.8           33.8            23.1      73.1       69.1
+C:\Users\Asta\AppData\Local\Programs\Python\Python312\Lib\site-packages\torch\cuda\__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+    after block 0 (+max): max  66.3 add   1.9 sub   1.1 mod   0.3 div   2.5 mul   2.6
+    after block 1 (+add): max  63.4 add  22.5 sub   1.6 mod   0.2 div   0.9 mul   1.0
+C:\Users\Asta\AppData\Local\Programs\Python\Python312\Lib\site-packages\torch\cuda\__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+[iid SHORT GrowMoE seed 0] fit 175s  experts 1  params 68364  total 192s
+    op      seen  unseen/in-len  unseen/new-len  digit/in  digit/new
+    add     33.4           32.8             0.0      83.4       46.0
+    sub     21.6           18.7             0.0      77.9       37.5
+    mul     14.2           12.6             1.5      76.2       43.5
+    mod     58.6           49.8            30.3      86.1       69.8
+    div     55.8           52.2            44.9      86.5       74.9
+    max     73.2           64.9             0.0      91.7       49.4
+C:\Users\Asta\AppData\Local\Programs\Python\Python312\Lib\site-packages\torch\cuda\__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+[iid HOLE GrowMoE seed 0] fit 305s  experts 1  params 134924  total 323s
+    op      seen  unseen/in-len  unseen/new-len  digit/in  digit/new
+    add     10.0           12.4             2.2      65.4       57.1
+    sub     12.2            9.7             0.9      63.9       53.2
+    mul      4.8            6.1             1.9      54.9       53.5
+    mod     45.6           43.3            24.1      79.3       73.8
+    div     49.8           48.5            44.8      78.4       81.1
+    max     50.2           53.4            21.6      85.1       76.2
+queue cpu_seq2 finished at Wed Oct 14 07:46:40 EDT 2026

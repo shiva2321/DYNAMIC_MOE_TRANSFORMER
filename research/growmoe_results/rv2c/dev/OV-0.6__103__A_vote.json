@@ -1,0 +1,100 @@
+{
+ "spec": {
+  "stream": "OV-0.6",
+  "seed": 103,
+  "arm": "A_vote",
+  "smoke": false
+ },
+ "records": [
+  {
+   "stream": "OV-0.6",
+   "method": "A_vote",
+   "seed": 103,
+   "acc": 0.2290000006556511,
+   "per_regime": [
+    0.39750000834465027,
+    0.20000000298023224,
+    0.16750000417232513,
+    0.29249998927116394,
+    0.2175000011920929,
+    0.23499999940395355,
+    0.16750000417232513,
+    0.16500000655651093,
+    0.2549999952316284,
+    0.19249999523162842
+   ],
+   "forgetting": null,
+   "n_experts": 4,
+   "params": 138272,
+   "naive_params": 138272,
+   "stored_vectors": 1842,
+   "memory_bytes": 1496192,
+   "gate_macs": 117888,
+   "expert_macs": 33792,
+   "predict_macs": 151680,
+   "wall_clock": 8.694150700001046,
+   "event_counts": {
+    "spawn": 4,
+    "alarm": 3,
+    "extend": 1
+   },
+   "regimes": 10,
+   "steps": 5,
+   "arm": "A_vote",
+   "observe_seconds": 8.646704199971282,
+   "fn_known": 126,
+   "fn_called_novel": 0,
+   "fn_doubtful": 0,
+   "onset_total": 9,
+   "onset_called_novel": 0,
+   "onset_doubtful": 0,
+   "verdict_counts": {
+    "None": 156
+   },
+   "set_stats": null,
+   "breaker_opens": 0,
+   "sig_vectors": 921,
+   "replay_vectors": 921,
+   "window_vectors": 0,
+   "groups": {
+    "pure64": {
+     "single": 0.22942708432674408,
+     "group": 0.23229166865348816,
+     "n": 3840,
+     "n_groups": 60,
+     "changed": 237
+    },
+    "pure16": {
+     "single": 0.2290000021457672,
+     "group": 0.23274999856948853,
+     "n": 4000,
+     "n_groups": 250,
+     "changed": 251
+    },
+    "pure8": {
+     "single": 0.2290000021457672,
+     "group": 0.23350000381469727,
+     "n": 4000,
+     "n_groups": 500,
+     "changed": 245
+    },
+    "mixed32_32": {
+     "single": 0.23007813096046448,
+     "group": 0.22812500596046448,
+     "n": 7680,
+     "n_groups": 120,
+     "changed": 708
+    },
+    "mixed58_6": {
+     "single": 0.22812500596046448,
+     "group": 0.22890624403953552,
+     "n": 3840,
+     "n_groups": 60,
+     "changed": 277
+    }
+   }
+  }
+ ],
+ "seconds": 9.58955799999967,
+ "peak_mb": 935.15625
+}

@@ -1,0 +1,100 @@
+{
+ "spec": {
+  "stream": "OV-0.6",
+  "seed": 105,
+  "arm": "A_vote",
+  "smoke": false
+ },
+ "records": [
+  {
+   "stream": "OV-0.6",
+   "method": "A_vote",
+   "seed": 105,
+   "acc": 0.27625000327825544,
+   "per_regime": [
+    0.5,
+    0.25,
+    0.20749999582767487,
+    0.24500000476837158,
+    0.24500000476837158,
+    0.42500001192092896,
+    0.27250000834465027,
+    0.19750000536441803,
+    0.20000000298023224,
+    0.2199999988079071
+   ],
+   "forgetting": null,
+   "n_experts": 4,
+   "params": 138272,
+   "naive_params": 138272,
+   "stored_vectors": 2048,
+   "memory_bytes": 1601664,
+   "gate_macs": 131072,
+   "expert_macs": 33792,
+   "predict_macs": 164864,
+   "wall_clock": 4.370807300001616,
+   "event_counts": {
+    "spawn": 4,
+    "alarm": 3,
+    "extend": 2
+   },
+   "regimes": 10,
+   "steps": 5,
+   "arm": "A_vote",
+   "observe_seconds": 4.32781520001663,
+   "fn_known": 126,
+   "fn_called_novel": 0,
+   "fn_doubtful": 0,
+   "onset_total": 9,
+   "onset_called_novel": 0,
+   "onset_doubtful": 0,
+   "verdict_counts": {
+    "None": 156
+   },
+   "set_stats": null,
+   "breaker_opens": 0,
+   "sig_vectors": 1024,
+   "replay_vectors": 1024,
+   "window_vectors": 0,
+   "groups": {
+    "pure64": {
+     "single": 0.27682292461395264,
+     "group": 0.28072917461395264,
+     "n": 3840,
+     "n_groups": 60,
+     "changed": 141
+    },
+    "pure16": {
+     "single": 0.2762500047683716,
+     "group": 0.2797499895095825,
+     "n": 4000,
+     "n_groups": 250,
+     "changed": 144
+    },
+    "pure8": {
+     "single": 0.2762500047683716,
+     "group": 0.2797499895095825,
+     "n": 4000,
+     "n_groups": 500,
+     "changed": 133
+    },
+    "mixed32_32": {
+     "single": 0.27656251192092896,
+     "group": 0.2751302123069763,
+     "n": 7680,
+     "n_groups": 120,
+     "changed": 421
+    },
+    "mixed58_6": {
+     "single": 0.2734375,
+     "group": 0.27682292461395264,
+     "n": 3840,
+     "n_groups": 60,
+     "changed": 149
+    }
+   }
+  }
+ ],
+ "seconds": 5.217344199998479,
+ "peak_mb": 939.91796875
+}

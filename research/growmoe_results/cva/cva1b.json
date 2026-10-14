@@ -1,0 +1,517 @@
+{
+  "metadata": {
+    "title": "CVA-1B: Spawn Rules Verification",
+    "d": 128,
+    "cal_seeds": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "eval_seeds": [
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ],
+    "z1": 4.834713554382324,
+    "z2": 0.3271772319078445,
+    "rules": {
+      "R0": "today: evidence > log(1/0.01)",
+      "R1": "size-aware: evidence / sqrt(m) > 4.8347",
+      "R2": "per-point: evidence / m > 0.3272",
+      "R3": "exact permutation test: perm_reject(alpha=0.001)",
+      "R4": "both: R0 AND R3",
+      "R5": "exact permutation test: perm_reject(alpha=0.01)"
+    }
+  },
+  "negative_control_1exp": [
+    {
+      "n_fit": 64,
+      "m": 32,
+      "spawn_R0": 0.08,
+      "spawn_R1": 0.0,
+      "spawn_R2": 0.04,
+      "spawn_R3": 0.0,
+      "spawn_R4": 0.0,
+      "spawn_R5": 0.01
+    },
+    {
+      "n_fit": 64,
+      "m": 64,
+      "spawn_R0": 0.3,
+      "spawn_R1": 0.0,
+      "spawn_R2": 0.1,
+      "spawn_R3": 0.0,
+      "spawn_R4": 0.0,
+      "spawn_R5": 0.0
+    },
+    {
+      "n_fit": 64,
+      "m": 128,
+      "spawn_R0": 0.76,
+      "spawn_R1": 0.31,
+      "spawn_R2": 0.49,
+      "spawn_R3": 0.0,
+      "spawn_R4": 0.0,
+      "spawn_R5": 0.0
+    },
+    {
+      "n_fit": 64,
+      "m": 256,
+      "spawn_R0": 1.0,
+      "spawn_R1": 0.82,
+      "spawn_R2": 0.77,
+      "spawn_R3": 0.0,
+      "spawn_R4": 0.0,
+      "spawn_R5": 0.01
+    },
+    {
+      "n_fit": 256,
+      "m": 32,
+      "spawn_R0": 0.01,
+      "spawn_R1": 0.0,
+      "spawn_R2": 0.0,
+      "spawn_R3": 0.0,
+      "spawn_R4": 0.0,
+      "spawn_R5": 0.01
+    },
+    {
+      "n_fit": 256,
+      "m": 64,
+      "spawn_R0": 0.02,
+      "spawn_R1": 0.0,
+      "spawn_R2": 0.0,
+      "spawn_R3": 0.0,
+      "spawn_R4": 0.0,
+      "spawn_R5": 0.0
+    },
+    {
+      "n_fit": 256,
+      "m": 128,
+      "spawn_R0": 0.08,
+      "spawn_R1": 0.0,
+      "spawn_R2": 0.0,
+      "spawn_R3": 0.0,
+      "spawn_R4": 0.0,
+      "spawn_R5": 0.0
+    },
+    {
+      "n_fit": 256,
+      "m": 256,
+      "spawn_R0": 0.37,
+      "spawn_R1": 0.02,
+      "spawn_R2": 0.01,
+      "spawn_R3": 0.0,
+      "spawn_R4": 0.0,
+      "spawn_R5": 0.0
+    },
+    {
+      "n_fit": 1024,
+      "m": 32,
+      "spawn_R0": 0.0,
+      "spawn_R1": 0.0,
+      "spawn_R2": 0.0,
+      "spawn_R3": 0.0,
+      "spawn_R4": 0.0,
+      "spawn_R5": 0.01
+    },
+    {
+      "n_fit": 1024,
+      "m": 64,
+      "spawn_R0": 0.02,
+      "spawn_R1": 0.0,
+      "spawn_R2": 0.0,
+      "spawn_R3": 0.0,
+      "spawn_R4": 0.0,
+      "spawn_R5": 0.01
+    },
+    {
+      "n_fit": 1024,
+      "m": 128,
+      "spawn_R0": 0.07,
+      "spawn_R1": 0.0,
+      "spawn_R2": 0.0,
+      "spawn_R3": 0.0,
+      "spawn_R4": 0.0,
+      "spawn_R5": 0.0
+    },
+    {
+      "n_fit": 1024,
+      "m": 256,
+      "spawn_R0": 0.42,
+      "spawn_R1": 0.03,
+      "spawn_R2": 0.03,
+      "spawn_R3": 0.0,
+      "spawn_R4": 0.0,
+      "spawn_R5": 0.02
+    }
+  ],
+  "positive_control_1exp": [
+    {
+      "rho": 0.0,
+      "m": 32,
+      "n_fit": 256,
+      "spawn_R0": 1.0,
+      "spawn_R1": 1.0,
+      "spawn_R2": 1.0,
+      "spawn_R3": 1.0,
+      "spawn_R4": 1.0,
+      "spawn_R5": 1.0
+    },
+    {
+      "rho": 0.0,
+      "m": 64,
+      "n_fit": 256,
+      "spawn_R0": 1.0,
+      "spawn_R1": 1.0,
+      "spawn_R2": 1.0,
+      "spawn_R3": 1.0,
+      "spawn_R4": 1.0,
+      "spawn_R5": 1.0
+    },
+    {
+      "rho": 0.0,
+      "m": 128,
+      "n_fit": 256,
+      "spawn_R0": 1.0,
+      "spawn_R1": 1.0,
+      "spawn_R2": 1.0,
+      "spawn_R3": 1.0,
+      "spawn_R4": 1.0,
+      "spawn_R5": 1.0
+    },
+    {
+      "rho": 0.3,
+      "m": 32,
+      "n_fit": 256,
+      "spawn_R0": 1.0,
+      "spawn_R1": 1.0,
+      "spawn_R2": 1.0,
+      "spawn_R3": 1.0,
+      "spawn_R4": 1.0,
+      "spawn_R5": 1.0
+    },
+    {
+      "rho": 0.3,
+      "m": 64,
+      "n_fit": 256,
+      "spawn_R0": 1.0,
+      "spawn_R1": 1.0,
+      "spawn_R2": 1.0,
+      "spawn_R3": 1.0,
+      "spawn_R4": 1.0,
+      "spawn_R5": 1.0
+    },
+    {
+      "rho": 0.3,
+      "m": 128,
+      "n_fit": 256,
+      "spawn_R0": 1.0,
+      "spawn_R1": 1.0,
+      "spawn_R2": 1.0,
+      "spawn_R3": 1.0,
+      "spawn_R4": 1.0,
+      "spawn_R5": 1.0
+    },
+    {
+      "rho": 0.6,
+      "m": 32,
+      "n_fit": 256,
+      "spawn_R0": 1.0,
+      "spawn_R1": 1.0,
+      "spawn_R2": 1.0,
+      "spawn_R3": 1.0,
+      "spawn_R4": 1.0,
+      "spawn_R5": 1.0
+    },
+    {
+      "rho": 0.6,
+      "m": 64,
+      "n_fit": 256,
+      "spawn_R0": 1.0,
+      "spawn_R1": 1.0,
+      "spawn_R2": 1.0,
+      "spawn_R3": 1.0,
+      "spawn_R4": 1.0,
+      "spawn_R5": 1.0
+    },
+    {
+      "rho": 0.6,
+      "m": 128,
+      "n_fit": 256,
+      "spawn_R0": 1.0,
+      "spawn_R1": 1.0,
+      "spawn_R2": 1.0,
+      "spawn_R3": 1.0,
+      "spawn_R4": 1.0,
+      "spawn_R5": 1.0
+    },
+    {
+      "rho": 0.85,
+      "m": 32,
+      "n_fit": 256,
+      "spawn_R0": 0.99,
+      "spawn_R1": 0.94,
+      "spawn_R2": 0.99,
+      "spawn_R3": 1.0,
+      "spawn_R4": 0.99,
+      "spawn_R5": 1.0
+    },
+    {
+      "rho": 0.85,
+      "m": 64,
+      "n_fit": 256,
+      "spawn_R0": 1.0,
+      "spawn_R1": 1.0,
+      "spawn_R2": 1.0,
+      "spawn_R3": 1.0,
+      "spawn_R4": 1.0,
+      "spawn_R5": 1.0
+    },
+    {
+      "rho": 0.85,
+      "m": 128,
+      "n_fit": 256,
+      "spawn_R0": 1.0,
+      "spawn_R1": 1.0,
+      "spawn_R2": 1.0,
+      "spawn_R3": 1.0,
+      "spawn_R4": 1.0,
+      "spawn_R5": 1.0
+    },
+    {
+      "rho": 0.95,
+      "m": 32,
+      "n_fit": 256,
+      "spawn_R0": 0.25,
+      "spawn_R1": 0.02,
+      "spawn_R2": 0.15,
+      "spawn_R3": 1.0,
+      "spawn_R4": 0.25,
+      "spawn_R5": 1.0
+    },
+    {
+      "rho": 0.95,
+      "m": 64,
+      "n_fit": 256,
+      "spawn_R0": 0.6,
+      "spawn_R1": 0.2,
+      "spawn_R2": 0.41,
+      "spawn_R3": 1.0,
+      "spawn_R4": 0.6,
+      "spawn_R5": 1.0
+    },
+    {
+      "rho": 0.95,
+      "m": 128,
+      "n_fit": 256,
+      "spawn_R0": 1.0,
+      "spawn_R1": 0.82,
+      "spawn_R2": 0.88,
+      "spawn_R3": 1.0,
+      "spawn_R4": 1.0,
+      "spawn_R5": 1.0
+    }
+  ],
+  "negative_control_2exp": [
+    {
+      "n_fit": 64,
+      "m": 32,
+      "spawn_R0": 0.09,
+      "spawn_R1": 0.0,
+      "spawn_R2": 0.04,
+      "spawn_R3": 0.0,
+      "spawn_R4": 0.0,
+      "spawn_R5": 0.0
+    },
+    {
+      "n_fit": 64,
+      "m": 64,
+      "spawn_R0": 0.3,
+      "spawn_R1": 0.0,
+      "spawn_R2": 0.09,
+      "spawn_R3": 0.0,
+      "spawn_R4": 0.0,
+      "spawn_R5": 0.0
+    },
+    {
+      "n_fit": 64,
+      "m": 128,
+      "spawn_R0": 0.73,
+      "spawn_R1": 0.24,
+      "spawn_R2": 0.47,
+      "spawn_R3": 0.0,
+      "spawn_R4": 0.0,
+      "spawn_R5": 0.0
+    },
+    {
+      "n_fit": 64,
+      "m": 256,
+      "spawn_R0": 0.99,
+      "spawn_R1": 0.84,
+      "spawn_R2": 0.79,
+      "spawn_R3": 0.0,
+      "spawn_R4": 0.0,
+      "spawn_R5": 0.0
+    },
+    {
+      "n_fit": 256,
+      "m": 32,
+      "spawn_R0": 0.0,
+      "spawn_R1": 0.0,
+      "spawn_R2": 0.0,
+      "spawn_R3": 0.0,
+      "spawn_R4": 0.0,
+      "spawn_R5": 0.03
+    },
+    {
+      "n_fit": 256,
+      "m": 64,
+      "spawn_R0": 0.01,
+      "spawn_R1": 0.0,
+      "spawn_R2": 0.0,
+      "spawn_R3": 0.0,
+      "spawn_R4": 0.0,
+      "spawn_R5": 0.0
+    },
+    {
+      "n_fit": 256,
+      "m": 128,
+      "spawn_R0": 0.06,
+      "spawn_R1": 0.0,
+      "spawn_R2": 0.0,
+      "spawn_R3": 0.0,
+      "spawn_R4": 0.0,
+      "spawn_R5": 0.0
+    },
+    {
+      "n_fit": 256,
+      "m": 256,
+      "spawn_R0": 0.35,
+      "spawn_R1": 0.02,
+      "spawn_R2": 0.01,
+      "spawn_R3": 0.0,
+      "spawn_R4": 0.0,
+      "spawn_R5": 0.0
+    },
+    {
+      "n_fit": 1024,
+      "m": 32,
+      "spawn_R0": 0.02,
+      "spawn_R1": 0.0,
+      "spawn_R2": 0.01,
+      "spawn_R3": 0.0,
+      "spawn_R4": 0.0,
+      "spawn_R5": 0.01
+    },
+    {
+      "n_fit": 1024,
+      "m": 64,
+      "spawn_R0": 0.02,
+      "spawn_R1": 0.0,
+      "spawn_R2": 0.0,
+      "spawn_R3": 0.0,
+      "spawn_R4": 0.0,
+      "spawn_R5": 0.0
+    },
+    {
+      "n_fit": 1024,
+      "m": 128,
+      "spawn_R0": 0.08,
+      "spawn_R1": 0.0,
+      "spawn_R2": 0.0,
+      "spawn_R3": 0.0,
+      "spawn_R4": 0.0,
+      "spawn_R5": 0.0
+    },
+    {
+      "n_fit": 1024,
+      "m": 256,
+      "spawn_R0": 0.42,
+      "spawn_R1": 0.02,
+      "spawn_R2": 0.02,
+      "spawn_R3": 0.0,
+      "spawn_R4": 0.0,
+      "spawn_R5": 0.01
+    }
+  ],
+  "runtimes": {
+    "R0": {
+      "rule_step_ms": 0.0005107948755978261,
+      "total_decision_ms": 1.6458156410273006
+    },
+    "R1": {
+      "rule_step_ms": 0.0011473333212891773,
+      "total_decision_ms": 1.646452179472992
+    },
+    "R2": {
+      "rule_step_ms": 0.00043433332930129464,
+      "total_decision_ms": 1.6457391794810041
+    },
+    "R3": {
+      "rule_step_ms": 14.880190461539641,
+      "total_decision_ms": 14.880190461539641
+    },
+    "R4": {
+      "rule_step_ms": 0.0004775897541082649,
+      "total_decision_ms": 16.526006102566942
+    },
+    "R5": {
+      "rule_step_ms": 15.875742102577464,
+      "total_decision_ms": 15.875742102577464
+    }
+  },
+  "verdicts": {
+    "R0": {
+      "verdict": "FAIL",
+      "failing_cells": [
+        "NEG(n_fit=256,m=64,rate=0.02>0.01)",
+        "NEG(n_fit=256,m=128,rate=0.08>0.01)",
+        "NEG(n_fit=256,m=256,rate=0.37>0.01)",
+        "NEG(n_fit=1024,m=64,rate=0.02>0.01)",
+        "NEG(n_fit=1024,m=128,rate=0.07>0.01)",
+        "NEG(n_fit=1024,m=256,rate=0.42>0.01)"
+      ]
+    },
+    "R1": {
+      "verdict": "FAIL",
+      "failing_cells": [
+        "NEG(n_fit=256,m=256,rate=0.02>0.01)",
+        "NEG(n_fit=1024,m=256,rate=0.03>0.01)"
+      ]
+    },
+    "R2": {
+      "verdict": "FAIL",
+      "failing_cells": [
+        "NEG(n_fit=1024,m=256,rate=0.03>0.01)"
+      ]
+    },
+    "R3": {
+      "verdict": "PASS",
+      "failing_cells": []
+    },
+    "R4": {
+      "verdict": "PASS",
+      "failing_cells": []
+    },
+    "R5": {
+      "verdict": "FAIL",
+      "failing_cells": [
+        "NEG(n_fit=1024,m=256,rate=0.02>0.01)"
+      ]
+    }
+  }
+}

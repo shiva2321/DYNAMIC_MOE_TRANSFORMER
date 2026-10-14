@@ -1,0 +1,49 @@
+====================================================================================================
+1. One linear functional <w,x>_L on the hyperboloid = three neuron types, decided by the sign of <w,w>_L
+====================================================================================================
+(i)  time-like  : <p,x>_L = -cosh d(p,x)              max |error| over 2000 points = 4.26e-14
+(ii) space-like : <w,x>_L = sinh(signed d(x, H_w))     max |error| over 300 points  = 2.07e-07  (distance found by brute-force search on the line)
+(iii) light-like: -<w,x>_L = exp(Busemann_omega(x))    max |error| of the log      = 8.08e-14  (Busemann computed in the Poincare ball)
+-> a ReLU(<w,x>_L + b) neuron is a ball-around-a-point detector, a geodesic half-space, or a horosphere detector,
+   depending only on whether its weight vector is time-like, space-like or light-like. The model can learn which.
+
+====================================================================================================
+2. Yggdrasil attention (hyperbolic + torus phase + salience) as a single scaled dot product
+====================================================================================================
+float64: max |explicit pairwise - fused dot product| = 1.42e-14;  output stays on the hyperboloid: |<c,c>_L + 1/k| = 2.66e-15
+float32: max |explicit pairwise - fused dot product| = 4.05e-06;  output stays on the hyperboloid: |<c,c>_L + 1/k| = 1.91e-06
+squared-Lorentz logit  -(cosh d - 1)  vs  Gaussian-in-geodesic-distance logit  -d^2/2   for geodesic distance d = 0..6:
+  -(cosh d - 1): [  -0.    -0.5   -2.8   -9.1  -26.3  -73.2 -200.7] 
+  -d^2/2       : [ -0.   -0.5  -2.   -4.5  -8.  -12.5 -18. ]
+-> same ordering of neighbours, but the Lorentz form falls off exponentially in d (a much sharper, 'only the closest matter' kernel).
+
+====================================================================================================
+3. Precision: the logit <q,k>_L = -q0 k0 + q.k subtracts two numbers of size ~R^2 to get an O(1) answer
+====================================================================================================
+ R=|x_s| hyp. radius |          fp32          tf32          fp16          bf16     (error in nats of the neighbour logits; <0.05 is safe)
+     0.5        0.48 |        0.0000        0.0008        0.0012        0.0089
+     1.0        0.88 |        0.0000        0.0011        0.0015        0.0104
+     2.0        1.44 |        0.0000        0.0034        0.0036        0.0280
+     4.0        2.09 |        0.0000        0.0200        0.0197        0.0992
+     8.0        2.78 |        0.0000        0.0443        0.0459        0.3621
+    16.0        3.47 |        0.0001        0.1779        0.1777        1.8893
+    32.0        4.16 |        0.0004        0.6810        0.6809        3.2173
+    64.0        4.85 |        0.0011        2.4593        2.4593       11.4410
+-> with half-precision inputs the logit error grows like R^2: bf16 is unusable beyond R ~ 2 (hyperbolic radius ~1.4),
+   fp16/tf32 beyond R ~ 8. Keep the manifold part of the QK product in fp32, or keep the radius small (local frames).
+
+====================================================================================================
+4. Cost (forward + backward, causal, B=1, H=4, D=32 space dims + 8 phases): ms and extra peak MB
+====================================================================================================
+    T |   naive (T,T,D) fp32 |   manual matmul fp32 |      fused SDPA fp32 |      fused SDPA fp16 | plain Euclid SDPA fp16
+  256 |     3.26 ms     135 MB |     1.81 ms       6 MB |     1.96 ms       2 MB |     1.90 ms       1 MB |     0.23 ms       1 MB
+  512 |     9.49 ms     541 MB |     1.68 ms      23 MB |     1.99 ms       5 MB |     2.27 ms       3 MB |     0.24 ms       1 MB
+ 1024 |    (skipped: memory) |     3.20 ms      89 MB |     2.35 ms       9 MB |     1.77 ms       5 MB |     0.32 ms       2 MB
+ 2048 |    (skipped: memory) |     9.66 ms     347 MB |     5.01 ms      19 MB |     3.15 ms      10 MB |     0.74 ms       5 MB
+
+====================================================================================================
+5. The current Yggdrasil pairwise-distance kernel versus a GEMM (tensor-core style) formulation, 4096 x 4096 pairs
+====================================================================================================
+current kernel (hyperbolic + wrapped torus + log-radius, one thread per output):   2.01 ms
+one fp32 GEMM of the same shape (4096x34 @ 34x4096)  [floor of the dot-product formulation]  :   0.34 ms
+-> the two compute DIFFERENT functions; this only bounds what a dot-product formulation can reach on this GPU.

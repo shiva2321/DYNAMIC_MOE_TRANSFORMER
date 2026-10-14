@@ -1,0 +1,17 @@
+C:\Users\Asta\AppData\Local\Programs\Python\Python312\Lib\site-packages\torch\cuda\__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+DEV, exploratory, not pre-registered; tuned and scored on the same dev seeds, so optimistic for the tuned arms
+tuning A_set ...
+  A_set: tuned steps 20, table {1: 82.8, 5: 79.7, 20: 83.7, 50: 81.5}
+  A_set (tuned steps)              seed 100: acc  81.1%  experts 5  stored 4024  bytes 2.93 MB  8s  set tests 158 novel 10 held 5 known 43
+  A_set (tuned steps)              seed 101: acc  87.2%  experts 5  stored 4280  bytes 3.06 MB  8s  set tests 138 novel 10 held 5 known 43
+  A_set (tuned steps)              seed 102: acc  82.9%  experts 4  stored 4088  bytes 2.79 MB  11s  set tests 164 novel 10 held 5 known 43
+  A_set (steps 20, like A_today)   seed 100: acc  81.1%  experts 5  stored 4024  bytes 2.93 MB  8s  set tests 158 novel 10 held 5 known 43
+  A_set (steps 20, like A_today)   seed 101: acc  87.2%  experts 5  stored 4280  bytes 3.06 MB  8s  set tests 138 novel 10 held 5 known 43
+  A_set (steps 20, like A_today)   seed 102: acc  82.9%  experts 4  stored 4088  bytes 2.79 MB  9s  set tests 164 novel 10 held 5 known 43
+  A_today (steps 20, re-run)       seed 100: acc  69.9%  experts 3  stored 1536  bytes 1.31 MB  3s
+  A_today (steps 20, re-run)       seed 101: acc  72.7%  experts 1  stored 512  bytes 0.44 MB  3s
+  A_today (steps 20, re-run)       seed 102: acc  72.8%  experts 2  stored 1024  bytes 0.87 MB  3s
+
+Reference from m5b.json (same streams and seeds): {'A_today': 71.8, 'B2': 83.7, 'B4': 81.8, 'B1_128': 86.2, 'kNN_all': 87.3}
+Amended stage 3: {'A_set (tuned steps)': 83.7, 'A_set (steps 20, like A_today)': 83.7, 'A_today (steps 20, re-run)': 71.8}

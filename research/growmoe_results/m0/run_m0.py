@@ -50,7 +50,8 @@ from growmoe.streams_m1 import function_regimes                                 
 # ------------------------------------------------------------------------------------------------ pre-registered settings
 A_KW = dict(q=0.02, alpha_spawn=0.01, m_min=32, route_rule="accept_then_logf",     # Phase 1 frozen settings for A
             arm_monitor_after_infancy=False,                                     # M0 and its diagnostics predate the repair (default ON since 2026-10-10)
-            batch_vote=False)                                                    # ... and the batch vote (default ON since 2026-10-12, RV2-A)
+            batch_vote=False,                                                    # ... and the batch vote (default ON since 2026-10-12, RV2-A)
+            gate_shortlist=0)                                                    # ... and the cascade gate (default ON since 2026-10-13, RV2-B)
 C_KW = dict(c=2.0, rank=16, n_stm=32)                                                   # Phase 1 tuned setting for C
 DEV_SEEDS, TEST_SEEDS = (100, 101, 102), tuple(range(10))
 STEP_GRID, STEP_FACTOR, STEP_CAP = (1, 5, 20, 50), 2.5, 200

@@ -1,0 +1,8 @@
+tuning the learning rate per model on dev seeds 100, 101, mean over both tasks of acc at length 16 and 64
+  torus_lat lr 0.003: 0.279
+  torus_lat lr 0.01: 0.639
+  torus_lat lr 0.03: 0.621
+  torus_lat lr 0.1: 0.579
+  -> torus_lat: lr 0.01
+z6 torus_lat (lr 0.01) T=16:  95.6+- 7.6  T=32:  91.7+-17.8  T=64:  94.9+- 9.7  T=128:  93.9+-12.2  T=256:  93.8+-12.3   [25s]
+s3 torus_lat (lr 0.01) T=16:  29.1+- 5.2  T=32:  24.7+- 8.1  T=64:  27.2+- 5.3  T=128:  25.8+- 5.9  T=256:  26.4+- 5.9   [48s]
