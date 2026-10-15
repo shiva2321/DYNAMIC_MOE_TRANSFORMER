@@ -265,3 +265,18 @@ def test_a_pool_that_holds_a_fitted_router_can_be_pickled_and_copied():
     assert pool._route.name == "lda"
     for clone in (pickle.loads(pickle.dumps(pool)), copy.deepcopy(pool)):
         assert torch.equal(clone.predict(Xt).expert, ref)
+
+# ------------------------------------------------------------------------------------------------ the boundaries of the decision
+def test_restrict_accepts_an_expert_whose_p_value_equals_q():
+    """q = 0.25 is a dyadic number, so a p-value of exactly q can be written down in float32: the gate's rule is 'accepted when p >= q'."""
+    pool, a, _ = _two_blob_pool(router=True, q=0.25)
+    pool._current_route_rule().set("lda", _Prefer(2), [0, 1], {}, 80)               # always prefers expert 1
+    P = torch.tensor([[0.25, 0.0]] * 3)                                              # expert 0 sits exactly at q, expert 1 far below
+    out = pool._route_by_router(a[:3], [0, 1], P, torch.zeros(3, 2), torch.zeros(3, dtype=torch.long))
+    assert out.tolist() == [0, 0, 0]
+
+
+def test_an_expert_with_exactly_router_min_protos_prototypes_is_not_young():
+    X, y = aniso(seed=0)                                                             # 16 prototypes per expert
+    assert _hand_pool(_split(X, y, 6), router=True, router_min_protos=16)._current_route_rule().name == "lda"
+    assert _hand_pool(_split(X, y, 6), router=True, router_min_protos=17)._current_route_rule().name == "density"

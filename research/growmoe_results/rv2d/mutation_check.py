@@ -47,6 +47,7 @@ MUTANTS = [   # (group, name, file, exact old text, new text, owning tests)
     ("phylo", "growth: budget > becomes >=", "growmoe/pools/phylo.py", "self._live_params() + added > cfg.grow_budget_params", "self._live_params() + added >= cfg.grow_budget_params", GP),
     ("phylo", "transfer: min reference < becomes <=", "growmoe/pools/phylo.py", "if len(ref) < cfg.transfer_min_ref:", "if len(ref) <= cfg.transfer_min_ref:", TP),
     ("phylo", "transfer: alarm path keeps the cluster in the reference", "growmoe/pools/phylo.py", "return ref[:-exclude] if exclude > 0 else ref", "return ref", TP),
+    ("phylo", "transfer: alarm path min reference < becomes <=", "growmoe/pools/phylo.py", "len(stored) - n < cfg.transfer_min_ref", "len(stored) - n <= cfg.transfer_min_ref", TP),
     ("phylo", "transfer: margin scale", "growmoe/pools/phylo.py", "math.log(max(int(self.experts[eid].module.seen.sum()), 2))", "math.log(max(int(self.experts[eid].module.seen.sum()), 1))", TP),
 ]
 
@@ -62,7 +63,7 @@ def prepare(tmp: Path) -> None:
 
 def run_tests(tmp: Path, tests) -> bool:
     """True when the tests PASS."""
-    p = subprocess.run([sys.executable, "-m", "pytest", "-x", "-q", "-p", "no:cacheprovider", *tests], cwd=tmp, env={**os.environ, "PYTHONPATH": str(tmp)},
+    p = subprocess.run([sys.executable, "-m", "pytest", "-x", "-q", "-p", "no:cacheprovider", *tests], cwd=tmp, env={**os.environ, "PYTHONPATH": str(tmp), "OMP_NUM_THREADS": "2", "MKL_NUM_THREADS": "2"},
                        capture_output=True, text=True, timeout=1800)
     return p.returncode == 0
 

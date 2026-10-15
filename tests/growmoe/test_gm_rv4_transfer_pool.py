@@ -215,3 +215,24 @@ def test_merge_cleans_up_a_forced_duplicate(seed):
     merge cannot do it. strict=True: the day merge is repaired this test passes and the marker has to go."""
     pool, n_before = _forced_duplicate_then_merge(seed)
     assert n_before == 2 and len(pool.experts) == 1 and pool.events.of_kind("merge")
+
+def test_a_parent_needs_exactly_transfer_min_ref_reference_losses(base):
+    pool, W = _fresh(base)
+    x, y = regime_batch(W, 32, 9014)
+    pool.experts[0].meta["ref"] = deque([0.5] * 64, maxlen=512)
+    assert pool._transfer_verdict(x, y, None) is not None
+    pool.experts[0].meta["ref"] = deque([0.5] * 63, maxlen=512)
+    assert pool._transfer_verdict(x, y, None) is None
+    pool.experts[0].meta["ref"] = deque([0.5] * 96, maxlen=512)                        # alarm path: 32 of them ARE the cluster, 64 are left as the reference
+    assert pool._transfer_verdict(x, y, force_parent=0) is not None
+    pool.experts[0].meta["ref"] = deque([0.5] * 95, maxlen=512)
+    assert pool._transfer_verdict(x, y, force_parent=0) is None
+
+
+def test_the_margin_is_scaled_by_the_classes_the_parent_has_seen_with_a_floor_of_two(base):
+    pool, W = _fresh(base)
+    x, y = regime_batch(W, 32, 9015)
+    assert pool._transfer_verdict(x, y, None).margin == pytest.approx(0.25 * math.log(C))
+    pool.experts[0].module.seen.zero_()
+    pool.experts[0].module.seen[0] = True                                              # a parent that has seen a single class
+    assert pool._transfer_verdict(x, y, None).margin == pytest.approx(0.25 * math.log(2))

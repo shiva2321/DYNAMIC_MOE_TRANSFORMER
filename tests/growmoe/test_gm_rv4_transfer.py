@@ -65,3 +65,16 @@ def test_bad_arguments_are_refused():
         cluster_conflict(torch.rand(8), torch.rand(8), 0.001, 99, 0.0, generator(1))                      # 1/(1+99) > 0.001: could never reject
     with pytest.raises(ValueError):
         cluster_conflict(torch.rand(8), torch.tensor([1.0, float("inf")]), 0.01, 999, 0.0, generator(1))   # a reference must be finite
+
+def test_a_shift_of_exactly_the_margin_is_not_a_conflict():
+    c, r = torch.full((32,), 1.0), torch.full((128,), 0.75)                         # the cluster is worse by exactly 0.25 nats, and significantly so
+    at, p, diff = cluster_conflict(c, r, 0.01, 999, 0.25, generator(1))
+    assert diff == 0.25 and p <= 0.01 and not at                                   # a conflict needs MORE than the margin
+    below, _, _ = cluster_conflict(c, r, 0.01, 999, 0.2499, generator(1))
+    assert below
+
+
+def test_ties_count_as_at_least_as_extreme():
+    c, r = torch.full((32,), 1.0), torch.full((128,), 1.0)                          # every permutation gives exactly the observed statistic
+    conflict, p, diff = cluster_conflict(c, r, 0.05, 99, -1.0, generator(1))
+    assert not conflict and p == 1.0 and diff == 0.0

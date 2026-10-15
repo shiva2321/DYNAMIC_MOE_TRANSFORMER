@@ -45,15 +45,6 @@ def test_a_class_without_rows_can_never_be_chosen():
     assert bool((s.argmax(1) != 3).all())
 
 
-def test_softmax_is_class_balanced():
-    g = np.random.default_rng(1)                                                  # 90 % of the rows belong to class 0; an unbalanced fit would ignore class 1
-    a = g.standard_normal((180, 12)) + 3.0 * np.eye(12)[0]
-    b = g.standard_normal((20, 12)) + 3.0 * np.eye(12)[1]
-    X, y = torch.from_numpy(unit(np.concatenate([a, b]))), torch.tensor([0] * 180 + [1] * 20)
-    s = fit_softmax(X, y, 2, generator(5))(X)
-    assert float((s[y == 1].argmax(1) == 1).float().mean()) > 0.8
-
-
 def test_softmax_trains_even_when_the_caller_disabled_gradients():
     """predict is usually called under torch.no_grad() (the arithmetic wrapper decorates it); the lazy refit inside it must still train its softmax candidate, to the same result."""
     X, y = aniso(seed=0)
@@ -121,3 +112,26 @@ def test_a_route_rule_reports_its_cost():
     assert rule.cost(12) == (0, 48 * 12, 48 * 12)
     rule.set("density", None, [0, 1, 2], {}, 48)
     assert rule.cost(12) == (0, 0, 0)
+
+def test_softmax_is_class_balanced():
+    """500 rows of class 0 against 10 of class 1, overlapping clusters: an unweighted fit ignores the minority (recall 0.0-0.3 in a scratch check of four seeds), the balanced one finds it."""
+    for seed in range(2):
+        g = np.random.default_rng(seed)
+        a = g.standard_normal((500, 12)) + 2.0 * np.eye(12)[0]
+        b = g.standard_normal((10, 12)) + 2.0 * np.eye(12)[1]
+        X, y = torch.from_numpy(unit(np.concatenate([a, b]))), torch.tensor([0] * 500 + [1] * 10)
+        s = fit_softmax(X, y, 2, generator(5))(X)
+        assert float((s[y == 1].argmax(1) == 1).float().mean()) > 0.9
+
+
+def test_select_rule_without_a_current_rule_uses_the_margin_alone():
+    base = {"density": 0.50, "lda": 0.75, "softmax": 0.40, "knn5": 0.30}
+    assert select_rule(base, None, 0.25) == "density"                              # exactly the margin is not MORE than the margin
+    assert select_rule({**base, "lda": 0.7501}, None, 0.25) == "lda"
+    assert select_rule({"density": 0.50, "lda": 0.505, "softmax": 0.40, "knn5": 0.30}, None, 0.01) == "density"          # a lead inside the margin does not count
+
+
+def test_hysteresis_needs_strictly_more_than_the_margin_to_replace_the_current_rule():
+    cv = {"density": 0.0, "lda": 0.5, "softmax": 0.75, "knn5": 0.0}
+    assert select_rule(cv, "lda", 0.25) == "lda"                                   # softmax leads lda by exactly the margin: stay
+    assert select_rule({**cv, "softmax": 0.7501}, "lda", 0.25) == "softmax"

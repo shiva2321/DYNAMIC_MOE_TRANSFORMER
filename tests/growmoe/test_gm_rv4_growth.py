@@ -96,3 +96,10 @@ def test_the_guard_reverts_only_when_the_loss_got_worse_by_more_than_eps():
     assert guard_reverts(1.0, 1.03, 0.02)
     assert not guard_reverts(1.0, 1.02, 0.02)                                         # exactly eps is not more than eps
     assert not guard_reverts(1.0, 0.9, 0.02)
+
+def test_maturity_at_exactly_the_plateau_ratio():
+    m = GapMonitor(window=2)
+    for v in (4.0, 4.0, 2.0, 2.0):                                                    # the last window is exactly half of the one before
+        m.add(_t(v), _t(v))
+    assert m.improvement() == 0.5
+    assert m.mature(min_age=1, plateau=0.5) and not m.mature(min_age=1, plateau=0.5001)

@@ -211,3 +211,61 @@ def test_with_the_probe_rule_the_pool_is_bit_identical_to_the_recorded_golden_ru
     golden = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(golden)
     assert golden.differences(golden.QUICK) == []
+
+# ------------------------------------------------------------------------------------------------ the boundaries of the decision (a monitor with fixed answers)
+class _Ready:
+    """A monitor that always says 'mature and cooled down' and reports a fixed gap: only the comparison with the threshold and with the budget is under test."""
+
+    def __init__(self, gap):
+        self._gap = gap
+
+    def add(self, pre, post):
+        pass
+
+    def gap(self):
+        return self._gap
+
+    def mature(self, min_age, plateau):
+        return True
+
+    def cooled(self, cooldown):
+        return True
+
+    def improvement(self):
+        return 0.99
+
+    def recent_pre_mean(self, n):
+        return 1.0
+
+    def grew(self):
+        pass
+
+
+def _ready_pool(gap):
+    pool, batch = _gap_pool(4, grow_gap=0.25), _batches()
+    pool.observe(*batch(0))                                                          # founds the expert (4 hidden units, active)
+    rec = pool.experts[0]
+    rec.meta["gap"] = _Ready(gap)
+    return pool, rec, batch(1)
+
+
+def test_growth_needs_the_gap_strictly_below_the_threshold():
+    pool, rec, (x, y) = _ready_pool(0.25)
+    pool._gap_growth_step(rec, x, y, torch.ones(len(y)))
+    assert not pool.events.of_kind("grow")
+    pool, rec, (x, y) = _ready_pool(0.2499)
+    pool._gap_growth_step(rec, x, y, torch.ones(len(y)))
+    assert pool.events.of_kind("grow")
+
+
+def test_a_growth_that_exactly_fits_the_budget_is_allowed_and_one_parameter_more_is_not():
+    from growmoe.gapgrow import params_of_widen
+    added = params_of_widen(D, 1, 4)                                                  # 4 hidden units doubled: 4 more
+    pool, rec, (x, y) = _ready_pool(0.1)
+    pool.cfg.grow_budget_params = pool._live_params() + added
+    pool._gap_growth_step(rec, x, y, torch.ones(len(y)))
+    assert pool.events.of_kind("grow") and pool.events.of_kind("grow")[-1].fields["params_added"] == added
+    pool, rec, (x, y) = _ready_pool(0.1)
+    pool.cfg.grow_budget_params = pool._live_params() + added - 1
+    pool._gap_growth_step(rec, x, y, torch.ones(len(y)))
+    assert not pool.events.of_kind("grow") and pool.grow_stats["blocked_budget"] == 1
