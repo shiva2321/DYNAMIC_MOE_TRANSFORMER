@@ -1,6 +1,6 @@
 {
- "generated": "2026-10-15 10:41:38",
- "head": "5a34cde",
+ "generated": "2026-10-15 10:41:54",
+ "head": "f631852",
  "branch": "track-g-growmoe",
  "n_files": 710,
  "files": [
@@ -168,9 +168,9 @@
   },
   {
    "path": "docs/superpowers/specs/2026-10-15-routing-v2-stage4-design.md",
-   "sha256": "962ba3d444f67535cf5a1ad2c2b7d2f077e734f03150b28918ec79682ba0b3e6",
-   "bytes": 29367,
-   "last_commit": null
+   "sha256": "45197919d0510c60be42711139db7075c59a91ae46ffb2c6792fd6775e3d4831",
+   "bytes": 29592,
+   "last_commit": "f631852"
   },
   {
    "path": "geomlab/phase0_algebra.py",
