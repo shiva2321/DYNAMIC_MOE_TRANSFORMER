@@ -18,8 +18,8 @@
 | 2 router (4a) | done 2026-10-15 | 906e954 | 12 + 15 tests; the product router selects LDA on a saved arithmetic pool (CV 0.875 / 1.000 / 1.000 / 0.836); old pickled pools load |
 | 3 transfer (4b) | done 2026-10-15 | 0724b90 | 7 + 14 tests; **merge audit: 0 of 4 forced duplicates merged** (strict xfail, F-28, Q-19); early stop dropped (R-5) |
 | 4 growth (4c) | done 2026-10-15 | a6e1380 | 10 + 15 tests; full suite 801 passed + 2 expected failures; full golden bit-identical; build record E-033 |
-| 5 runner and dev runs | in progress | | |
-| 6 dev review, verdicts, mutation check | | | |
+| 5 runner and dev runs | dev1 running (157 cells, started 12:10) | 5ce5ee6, 850eafa | runner smoke-tested for all families incl. a kill and resume (identical numbers); code stamp per cell (a result counts only for the code that made it); bugs found by the smoke run and by re-reading: softmax under no_grad (85f1ae5), alarm-path scoring (R-7, 850eafa) |
+| 6 dev review, verdicts, mutation check | verdict module done (ea72e58); mutation check running; dev review waits for dev1/dev2 | ea72e58 | |
 | 7 pre-registration, then STOP for the go | | | |
 | 8 confirmatory run, audit, adoption | | | |
 
@@ -45,6 +45,7 @@
 3. **R-3, accounting.** `PoolReport` gains `extra_scalars` (default 0); `memory_bytes` adds 4 bytes per scalar. `PhyloMoE.extra_cost(d)` returns (parameters, extra predict multiply-adds, extra stored scalars): the selected router rule (LDA and softmax: k*d + k parameters and k*d multiply-adds; 5-NN: no parameters, a second scan of the stored prototypes as multiply-adds and its copy of them as scalars), the reference windows (scalars), and a live growth guard's pre-growth module (parameters).
 4. **R-4, misconfiguration is refused.** `router=True` needs a fast `route_rule` (the reference path of `route_rule="default"` is router-blind): `PhyloCfg` raises, and `predict` raises if the rule is changed to `"default"` afterwards.
 5. **R-5 (made during the build), the transfer test draws all permutations.** The spec's early stop would have made the reported p a lower bound in the `spawn` and `extend` events for no gain (a call costs about ten milliseconds, once per cluster); `cluster_conflict` reports the full exact p = (1 + c) / (1 + n_perm).
+6. **R-7 (made during the build), the alarm path uses the stored honest losses.** When the competence monitor fires, the cluster handed to `_handle_cluster` is the parent's own newest samples, which it may already have trained on; re-scoring them with the current weights understated the conflict. The transfer verdict of the alarm path takes the newest `len(cluster)` entries of the parent's reference window as the cluster's losses (honest: taken before any training on them) and the older entries as the reference.
 
 ## Review Focus (spec-implied failure modes; each has a pinned test in the owning task)
 
