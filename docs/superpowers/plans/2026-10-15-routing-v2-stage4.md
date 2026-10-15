@@ -10,6 +10,19 @@
 
 **Spec:** `docs/superpowers/specs/2026-10-15-routing-v2-stage4-design.md` (approved 2026-10-15; section 13 there records the refinements made while planning, listed below). Research: `research/GROWMOE_STAGE4_RESEARCH.md`. Spike numbers: `research/growmoe_results/stage4_spikes/RESULTS_SPIKES.md` (E-032, claims C-63 to C-66). Root-cause study: E-030.
 
+## Progress log (kept current while building)
+
+| Task | State | Commit | Notes |
+|---|---|---|---|
+| 1 scaffolding | done 2026-10-15 | 12f570d | 36 tests; suite 728 passed; full golden bit-identical |
+| 2 router (4a) | done 2026-10-15 | 906e954 | 12 + 15 tests; the product router selects LDA on a saved arithmetic pool (CV 0.875 / 1.000 / 1.000 / 0.836); old pickled pools load |
+| 3 transfer (4b) | done 2026-10-15 | 0724b90 | 7 + 14 tests; **merge audit: 0 of 4 forced duplicates merged** (strict xfail, F-28, Q-19); early stop dropped (R-5) |
+| 4 growth (4c) | done 2026-10-15 | a6e1380 | 10 + 15 tests; full suite 801 passed + 2 expected failures; full golden bit-identical; build record E-033 |
+| 5 runner and dev runs | in progress | | |
+| 6 dev review, verdicts, mutation check | | | |
+| 7 pre-registration, then STOP for the go | | | |
+| 8 confirmatory run, audit, adoption | | | |
+
 ## Global Constraints
 
 - All stage-4 flags (`router`, `spawn_rule="transfer"`, `growth_rule="gap"`) are OFF by default until task 8 decides adoption; with all flags off the pool is **bit-identical** to the recorded one (statement S4-9): `python research/growmoe_results/rv2c/golden.py check --quick` after every task, the full `check` after tasks 1, 4 and 8.
@@ -31,6 +44,7 @@
 2. **R-2, transfer rule details.** The parent is the expert with the lowest mean zero-shot loss on the cluster among those with at least `transfer_min_ref` reference losses (the nearest signature is not used). On the alarm path (`force_parent`) the newest `len(cluster)` reference entries are left out, because the cluster IS those samples. If the test cannot run (fewer than 8 labelled samples, no expert with enough reference losses) the pool takes **today's path** (probe where its conditions hold, otherwise plain spawn).
 3. **R-3, accounting.** `PoolReport` gains `extra_scalars` (default 0); `memory_bytes` adds 4 bytes per scalar. `PhyloMoE.extra_cost(d)` returns (parameters, extra predict multiply-adds, extra stored scalars): the selected router rule (LDA and softmax: k*d + k parameters and k*d multiply-adds; 5-NN: no parameters, a second scan of the stored prototypes as multiply-adds and its copy of them as scalars), the reference windows (scalars), and a live growth guard's pre-growth module (parameters).
 4. **R-4, misconfiguration is refused.** `router=True` needs a fast `route_rule` (the reference path of `route_rule="default"` is router-blind): `PhyloCfg` raises, and `predict` raises if the rule is changed to `"default"` afterwards.
+5. **R-5 (made during the build), the transfer test draws all permutations.** The spec's early stop would have made the reported p a lower bound in the `spawn` and `extend` events for no gain (a call costs about ten milliseconds, once per cluster); `cluster_conflict` reports the full exact p = (1 + c) / (1 + n_perm).
 
 ## Review Focus (spec-implied failure modes; each has a pinned test in the owning task)
 
@@ -44,7 +58,7 @@
 
 | File | Action | Responsibility |
 |---|---|---|
-| `growmoe/config.py` | modify (task 1) | 29 new `PhyloCfg` fields, all defaults OFF, validated in `__post_init__` |
+| `growmoe/config.py` | modify (task 1) | 25 new `PhyloCfg` fields, all defaults OFF, validated in `__post_init__` |
 | `growmoe/router.py` | create (task 2) | candidates, cross-validation, selection with hysteresis, `RouteRule` (pure; scorers are classes so a pool pickles) |
 | `growmoe/transfer.py` | create (task 3) | exact one-sided permutation test with a margin, `TransferVerdict` |
 | `growmoe/gapgrow.py` | create (task 4) | `GapMonitor`, `widen_increment`, `params_of_widen`, `guard_reverts`, `GrowthGuard` |
@@ -1207,8 +1221,9 @@ The plain question is: does the best existing expert already predict the new clu
 (its reference). The comparison is an exact one-sided permutation test (the cluster's mean loss is larger than the reference's) with a practical-significance margin, because inside an
 expert that holds several operators the harder one is slightly worse than the pooled reference and a bare test over-fires at large n (spike B, E-032).
 
-p = (1 + c) / (1 + n_perm) with c = permutations at least as extreme as the observed split (Phipson and Smyth 2010), valid at every level; the loop stops as soon as the answer
-"not rejected" is certain (the decision never changes, only the cost); when it stops early the returned p is a lower bound that already exceeds alpha.
+p = (1 + c) / (1 + n_perm) with c = permutations at least as extreme as the observed split (Phipson and Smyth 2010), valid at every level. All ``n_perm`` permutations are drawn
+(a call costs about ten milliseconds and happens once per cluster), so the reported p is the full exact value; the spec's early stop was dropped on purpose (refinement R-5):
+it would turn p into a lower bound in the event log.
 """
 
 import math
@@ -1244,13 +1259,10 @@ def cluster_conflict(cluster_losses: Tensor, ref_losses: Tensor, alpha: float, n
         return cm - (total - cm * n_c) / (n_all - n_c)
 
     obs = float(stat(torch.arange(n_c)[None, :])[0])
-    exceed = done = 0
-    while done < n_perm:
-        m = min(chunk, n_perm - done)
+    exceed = 0
+    for lo in range(0, n_perm, chunk):
+        m = min(chunk, n_perm - lo)
         exceed += int((stat(torch.rand(m, n_all, generator=gen).argsort(1)[:, :n_c]) >= obs).sum())
-        done += m
-        if exceed > allowed:
-            break
     p = (1 + exceed) / (1 + n_perm)
     diff = float(c.mean() - r.mean())
     return bool(p <= alpha and diff > margin), p, diff
@@ -3305,7 +3317,6 @@ MUTANTS = [   # (group, name, file, exact old text, new text, owning tests)
     ("router", "lda: empty class not masked", "growmoe/router.py", "(Z.double() @ self.w + self.b).masked_fill(~self.present, NEG_INF).float()", "(Z.double() @ self.w + self.b).float()", RT),
     ("transfer", "conflict: > margin becomes >=", "growmoe/transfer.py", "bool(p <= alpha and diff > margin)", "bool(p <= alpha and diff >= margin)", TT),
     ("transfer", "conflict: and becomes or", "growmoe/transfer.py", "bool(p <= alpha and diff > margin)", "bool(p <= alpha or diff > margin)", TT),
-    ("transfer", "early stop one late", "growmoe/transfer.py", "if exceed > allowed:", "if exceed >= allowed:", TT),
     ("transfer", "ties not counted", "growmoe/transfer.py", ">= obs).sum())", "> obs).sum())", TT),
     ("gapgrow", "gap formula", "growmoe/gapgrow.py", "else 1.0 - s_post / s_pre", "else s_post / s_pre", GT),
     ("gapgrow", "improvement inverted", "growmoe/gapgrow.py", "else last / prev", "else prev / last", GT),

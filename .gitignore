@@ -52,3 +52,11 @@ research/growmoe_results/diagnosis/queue.lock
 
 # third-party dataset download caches (re-downloadable)
 data_cache/
+
+# RV2-D runner (routing v2 stage 4): checkpoints, temporary files, the smoke folder, the scheduler lock and logs are not evidence
+research/growmoe_results/rv2d/cells/*.ckpt
+research/growmoe_results/rv2d/cells/*.tmp
+research/growmoe_results/rv2d/cells_smoke/
+research/growmoe_results/rv2d/queue.lock
+research/growmoe_results/rv2d/logs/
+research/growmoe_results/rv2d/*.tmp

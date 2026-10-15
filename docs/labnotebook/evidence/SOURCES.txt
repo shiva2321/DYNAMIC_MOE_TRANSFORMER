@@ -126,4 +126,9 @@ research/geomlab_results/phase3/checkpoint.json
 research/geomlab_results/phase3/results.json
 research/geomlab_results/phase3/tables.txt
 
-
+# --- GrowMoE diagnosis (E-030) and stage 4 (E-032 and the build record)
+docs/superpowers/specs/2026-10-15-routing-v2-stage4-design.md
+docs/superpowers/plans/2026-10-15-routing-v2-stage4.md
+research/growmoe_results/diagnosis/RESULTS_DIAGNOSIS.md
+research/growmoe_results/stage4_spikes/RESULTS_SPIKES.md
+research/growmoe_results/stage4_spikes/audit_merge.json

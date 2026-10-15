@@ -1,8 +1,8 @@
 {
- "generated": "2026-10-15 10:41:54",
- "head": "f631852",
+ "generated": "2026-10-15 11:46:43",
+ "head": "a6e1380",
  "branch": "track-g-growmoe",
- "n_files": 710,
+ "n_files": 714,
  "files": [
   {
    "path": "demos/demo_growmoe_continual_learning.py",
@@ -137,6 +137,12 @@
    "last_commit": "8312306"
   },
   {
+   "path": "docs/superpowers/plans/2026-10-15-routing-v2-stage4.md",
+   "sha256": "4f5ac29c534fec2a59d29045518ed5e34f894c2fd0f5d123701c514419e6ca11",
+   "bytes": 196886,
+   "last_commit": "c7009cf"
+  },
+  {
    "path": "docs/superpowers/specs/2026-10-04-growmoe-design.md",
    "sha256": "a885cca4fa128a9121db47a15682929994a28c8170c7ec87120f033578ad5cd2",
    "bytes": 12824,
@@ -168,9 +174,9 @@
   },
   {
    "path": "docs/superpowers/specs/2026-10-15-routing-v2-stage4-design.md",
-   "sha256": "45197919d0510c60be42711139db7075c59a91ae46ffb2c6792fd6775e3d4831",
-   "bytes": 29592,
-   "last_commit": "f631852"
+   "sha256": "f81ac1eee2a132f2a7972babb63a5093a71f46460fcb0428cd07dede109999a4",
+   "bytes": 32556,
+   "last_commit": "12f570d"
   },
   {
    "path": "geomlab/phase0_algebra.py",
@@ -429,6 +435,12 @@
    "sha256": "02959dd38bf6af9979ab78bdac6ead8c2962cc3f804a51df0291ddf863729363",
    "bytes": 7792,
    "last_commit": "8312306"
+  },
+  {
+   "path": "research/growmoe_results/diagnosis/RESULTS_DIAGNOSIS.md",
+   "sha256": "24a326c082d71be1894f3e748764034ca4430b49e5c1a1cfe136d2cab556cd04",
+   "bytes": 25220,
+   "last_commit": "5a34cde"
   },
   {
    "path": "research/growmoe_results/IMPLEMENTATION_LOG.md",
@@ -3963,6 +3975,18 @@
    "sha256": "486acd3b9d456040d7e8f42478b8ebe6068996c7be32517aaa3e5ae963ed25c5",
    "bytes": 10520,
    "last_commit": "8312306"
+  },
+  {
+   "path": "research/growmoe_results/stage4_spikes/audit_merge.json",
+   "sha256": "5293579b7c6a7e5a34fc05a04fe1a256e593463dc3eafa4434f366da20a99819",
+   "bytes": 1324,
+   "last_commit": "a6e1380"
+  },
+  {
+   "path": "research/growmoe_results/stage4_spikes/RESULTS_SPIKES.md",
+   "sha256": "ad16c5938fdcb96fd2f4e0aff0e41eaf964780b24d903499cfa22b13af7e7640",
+   "bytes": 6503,
+   "last_commit": "f631852"
   },
   {
    "path": "research/MOE_CONTINUAL_LEARNING_REPORT_2026-10.md",
