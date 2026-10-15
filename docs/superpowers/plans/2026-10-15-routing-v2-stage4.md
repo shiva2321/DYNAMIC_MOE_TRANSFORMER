@@ -3049,6 +3049,10 @@ def _edit(runs, where, **change):
                     r["router"][SEL]["acc"] = v
                 elif k == "off":
                     r["router"]["off"]["acc"] = v
+                elif k == "experts":
+                    r["n_experts"] = v
+                elif k == "grow":
+                    r["grow_events"] = [{}] * v
                 else:
                     r[k] = v
     return out
