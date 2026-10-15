@@ -86,12 +86,13 @@ def fit_softmax(X: Tensor, y: Tensor, k: int, gen: torch.Generator, steps: int =
     b = torch.zeros(k, requires_grad=True)
     opt = torch.optim.Adam([w, b], lr=lr)
     cls_w = (n / (k * counts.clamp_min(1))).float()
-    for _ in range(steps):
-        idx = torch.randint(0, n, (min(batch, n),), generator=gen)
-        loss = F.cross_entropy(X[idx] @ w + b, y[idx], weight=cls_w) + l2 * (w ** 2).sum()
-        opt.zero_grad()
-        loss.backward()
-        opt.step()
+    with torch.enable_grad():                                           # predict is usually called under torch.no_grad(), and the lazy refit inside it has to train
+        for _ in range(steps):
+            idx = torch.randint(0, n, (min(batch, n),), generator=gen)
+            loss = F.cross_entropy(X[idx] @ w + b, y[idx], weight=cls_w) + l2 * (w ** 2).sum()
+            opt.zero_grad()
+            loss.backward()
+            opt.step()
     return SoftmaxScorer(w.detach(), b.detach(), counts > 0)
 
 

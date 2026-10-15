@@ -54,6 +54,16 @@ def test_softmax_is_class_balanced():
     assert float((s[y == 1].argmax(1) == 1).float().mean()) > 0.8
 
 
+def test_softmax_trains_even_when_the_caller_disabled_gradients():
+    """predict is usually called under torch.no_grad() (the arithmetic wrapper decorates it); the lazy refit inside it must still train its softmax candidate, to the same result."""
+    X, y = aniso(seed=0)
+    reference = fit_softmax(X, y, 6, generator(5))(X)
+    with torch.no_grad():
+        scorer = fit_softmax(X, y, 6, generator(5))
+    assert float(reference.abs().max()) > 0.01                                     # it trained: an untrained scorer is all zeros
+    assert torch.allclose(scorer(X), reference, atol=1e-5)
+
+
 def test_folds_cover_every_row_once_and_spread_every_class():
     y = torch.tensor([0] * 23 + [1] * 17 + [2] * 11)
     f = fold_assignment(y, 3, 5, generator(6))

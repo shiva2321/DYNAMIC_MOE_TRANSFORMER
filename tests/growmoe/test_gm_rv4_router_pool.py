@@ -166,6 +166,16 @@ def test_a_router_with_a_reference_route_rule_is_refused_at_predict_time():
         pool.predict(a[:4])
 
 
+def test_the_lazy_refit_works_when_predict_is_called_under_no_grad():
+    """Found by the arithmetic smoke run: L.Pool.predict is decorated with torch.no_grad(), and the refit inside predict trains a softmax candidate."""
+    X, y = aniso(seed=0)
+    pool = _hand_pool(_split(X, y, 6), router=True)
+    Xt, yt = aniso(seed=1)
+    with torch.no_grad():
+        out = pool.predict(Xt)
+    assert pool._route.name == "lda" and float((out.expert == yt).float().mean()) > 0.8
+
+
 def test_group_answering_follows_the_router():
     pool, a, _ = _two_blob_pool(router=True, router_mode="free", group_vote=True, group_veto=False, group_min=4)
     pool._current_route_rule().set("lda", _Prefer(2), [0, 1], {}, 80)
