@@ -27,6 +27,8 @@ GOLDEN = HERE / "golden_flags_off.json"
 BASE = dict(q=0.02, alpha_spawn=0.01, m_min=32, inner_steps=5)
 if "set_gate" in PhyloCfg.__dataclass_fields__:                                          # after stage 3 exists: pin both flags OFF so this file keeps testing the flags-off pool
     BASE.update(set_gate=False, group_vote=False)                                       # even after a default is flipped (the recorded file is the same either way)
+if "router" in PhyloCfg.__dataclass_fields__:                                            # after stage 4 exists: pin its three switches OFF for the same reason
+    BASE.update(router=False, spawn_rule="probe", growth_rule="probe")
 CONFIGS = {
     "default": dict(route_rule="accept_then_logf"),
     "default_rule": dict(),

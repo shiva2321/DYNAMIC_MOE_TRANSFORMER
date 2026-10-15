@@ -109,6 +109,32 @@ class PhyloCfg(CommonCfg):
     no_probation: bool = False   # ablation: bypass probation buffer clustering
     sig_cls: object = None       # alternative signature class (e.g. KnnSignature)
     route_rule: str = "default"  # test prediction routing rule: "default" | "accept_then_logf" (highest log-density among p >= q; skips supersede filter at test time) | "argmax_logf" | "nearest_proto"
+    # ---- routing v2 stage 4 (docs/superpowers/specs/2026-10-15-routing-v2-stage4-design.md). Every switch is OFF until its pre-registered run (RV2-D).
+    router: bool = False         # 4a: at answer time a router chosen by cross-validation on the stored prototypes picks the expert among those the gate accepts
+    router_candidates: tuple = ("density", "lda", "softmax", "knn5")
+    router_margin: float = 0.01  # another rule must beat density's cross-validated owner accuracy by MORE than this (and the current rule by more than this to replace it)
+    router_folds: int = 5
+    router_refit_every: int = 50     # observe calls after which the next predict refits the router (it is also refitted when the expert set changed)
+    router_min_protos: int = 8       # below this many stored prototypes in any expert (or with fewer than two experts) the density rule stays
+    router_mode: str = "restrict"    # "restrict": best router score among the experts the gate accepts; "free": best score overall
+    router_softmax_max_experts: int = 64   # the softmax candidate is skipped above this many experts (bounds the refit time)
+    spawn_rule: str = "probe"    # 4b: "probe" = the 60-step interference probe of today; "transfer" = ask the labels (held-out loss of the best expert against its own reference)
+    transfer_alpha: float = 0.01
+    transfer_margin: float = 0.25    # practical-significance margin in units of ln(classes the parent has seen)
+    transfer_perms: int = 999
+    transfer_ref: int = 512          # honest per-sample losses kept per expert as its reference
+    transfer_min_ref: int = 64       # an expert with fewer reference losses cannot be the parent of a transfer test
+    spawn_pretrain_steps: int = 60   # training steps of a child born from a transfer conflict (the probe's child gets the same number)
+    growth_rule: str = "probe"   # 4c: "probe" = the shadow-trial policy of today; "gap" = widen when the within-batch fit gap is small and progress has stalled
+    grow_gap: float = 0.20       # gap below which a mature expert widens; middle of the declared grid 0.14..0.26, the calibrated value is fixed on dev seeds (RV2-D, task 5)
+    grow_window: int = 100       # batches over which the gap and the progress ratio are measured
+    grow_plateau: float = 0.95   # mature = the honest loss of the last window is at least this share of the one before it
+    grow_min_age: int = 300      # ... and the expert has trained on at least this many batches since birth or its last growth
+    grow_cooldown: int = 200     # batches between two growths of one expert (doubles after a reverted growth)
+    grow_factor: float = 2.0     # width multiplier of one growth
+    grow_guard_window: int = 100     # batches after a growth during which it can be reverted
+    grow_guard_eps: float = 0.02     # revert when the honest loss over the guard window is worse than before by more than this share
+    grow_budget_params: object = None    # optional cap on the pool's live parameters (None = only GrowthCfg.max_hidden bounds growth)
 
     def __post_init__(self) -> None:
         """Refuse stage-3 settings that would silently disable or break the test (a level the permutation count can never reach, an unknown name)."""
@@ -132,6 +158,38 @@ class PhyloCfg(CommonCfg):
                      "set_gate_window_batches", "set_gate_max_rows", "set_gate_breaker_len", "set_gate_breaker_pause", "group_min", "set_gate_confirm"):
             if int(getattr(self, name)) < 1:
                 raise ValueError(f"{name} must be at least 1, got {getattr(self, name)}")
+        # ---- routing v2 stage 4
+        if self.router_mode not in ("restrict", "free"):
+            raise ValueError(f"router_mode must be 'restrict' or 'free', got {self.router_mode!r}")
+        known = ("density", "lda", "softmax", "knn5")
+        if "density" not in self.router_candidates or any(c not in known for c in self.router_candidates):
+            raise ValueError(f"router_candidates must be drawn from {known} and include 'density' (the fallback), got {self.router_candidates!r}")
+        if self.router_folds < 2 or self.router_min_protos < self.router_folds or self.router_refit_every < 1 or self.router_softmax_max_experts < 2:
+            raise ValueError("router_folds >= 2, router_min_protos >= router_folds, router_refit_every >= 1 and router_softmax_max_experts >= 2 are required")
+        if self.router_margin < 0.0:
+            raise ValueError("router_margin must not be negative")
+        if self.router and self.route_rule == "default":
+            raise ValueError("router=True needs a fast route_rule (for example 'accept_then_logf'): the reference path used by route_rule='default' is router-blind")
+        if self.spawn_rule not in ("probe", "transfer"):
+            raise ValueError(f"spawn_rule must be 'probe' or 'transfer', got {self.spawn_rule!r}")
+        if not 0.0 < self.transfer_alpha < 1.0:
+            raise ValueError(f"transfer_alpha must lie in (0, 1), got {self.transfer_alpha}")
+        if self.transfer_perms < 1 or math.floor(self.transfer_alpha * (1 + self.transfer_perms) + 1e-9) < 1:     # the rule of growmoe.settest.max_exceedances
+            raise ValueError(f"transfer_perms={self.transfer_perms} is too small for transfer_alpha={self.transfer_alpha}: the smallest attainable p-value exceeds the level")
+        if self.transfer_margin < 0.0 or self.spawn_pretrain_steps < 0:
+            raise ValueError("transfer_margin and spawn_pretrain_steps must not be negative")
+        if self.transfer_min_ref < 8 or self.transfer_ref < self.transfer_min_ref:
+            raise ValueError("transfer_min_ref must be at least 8 and transfer_ref at least transfer_min_ref")
+        if self.growth_rule not in ("probe", "gap"):
+            raise ValueError(f"growth_rule must be 'probe' or 'gap', got {self.growth_rule!r}")
+        if not 0.0 < self.grow_gap < 1.0 or not 0.0 < self.grow_plateau <= 1.0:
+            raise ValueError("grow_gap must lie in (0, 1) and grow_plateau in (0, 1]")
+        if self.grow_window < 10 or self.grow_min_age < 1 or self.grow_cooldown < 0 or self.grow_guard_window < 1:
+            raise ValueError("grow_window >= 10, grow_min_age >= 1, grow_cooldown >= 0 and grow_guard_window >= 1 are required")
+        if self.grow_factor <= 1.0 or self.grow_guard_eps < 0.0:
+            raise ValueError("grow_factor must exceed 1 and grow_guard_eps must not be negative")
+        if self.grow_budget_params is not None and int(self.grow_budget_params) < 1:
+            raise ValueError("grow_budget_params must be None or a positive integer")
 
 
 @dataclass
