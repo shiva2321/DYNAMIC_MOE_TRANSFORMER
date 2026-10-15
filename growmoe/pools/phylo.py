@@ -35,6 +35,7 @@ from ..sources import SourceWindows
 from ..types import StepRecord, Prediction
 from ..replay import Reservoir
 from ..router import FITS, RouteRule, cv_owner_accuracy, select_rule
+from ..transfer import TransferVerdict, cluster_conflict
 from ..vmf import log_vmf_norm
 from .base import BasePool
 
@@ -118,7 +119,11 @@ class PhyloMoE(BasePool):
         assigned: Optional[Tensor] = None,
         spawned_list: Optional[List[int]] = None,
     ) -> Optional[int]:
-        if force_parent is not None:
+        verdict = self._transfer_verdict(x_taken, y_taken, force_parent) if self.cfg.spawn_rule == "transfer" else None      # routing v2 stage 4b
+        if verdict is not None:
+            parent_eid = verdict.parent                                  # the best predictor of the new labels, not the nearest signature
+            aff = self.experts[parent_eid].meta["sig"].affinity(x_taken, seed=self.step)
+        elif force_parent is not None:
             parent_eid = force_parent
             aff = self.experts[parent_eid].meta["sig"].affinity(x_taken, seed=self.step)
         else:
@@ -139,7 +144,12 @@ class PhyloMoE(BasePool):
         extended = False
         trained_child = None
 
-        if has_labels and has_affinity and has_replay:
+        if verdict is not None:                                          # routing v2 stage 4b: the labels decide, not a probe
+            if not verdict.conflict:
+                self._extend_unchanged(parent_eid, aff, x_taken, y_taken, verdict, novel_indices, x_all, assigned)
+                return None
+            trained_child = self._pretrain_child(parent_rec, aff, next_id, x_taken, y_taken)
+        elif has_labels and has_affinity and has_replay:
             # 13e Interference Probe
             rx, ry = parent_rec.replay.data
             n_rep = parent_rec.replay.n
@@ -317,6 +327,7 @@ class PhyloMoE(BasePool):
                 n_cluster=len(x_taken),
                 init=self.cfg.init_mode,
                 lam=lam,
+                **({} if verdict is None else verdict.fields()),
             )
 
             if novel_indices is not None and len(novel_indices) > 0 and x_all is not None and assigned is not None:
@@ -428,6 +439,8 @@ class PhyloMoE(BasePool):
                         rec_i.replay.add(rx_j, ry_j)
                         if rec_j.meta.get("windows") is not None:          # routing v2 stage 3a: the merged expert remembers the sources of both
                             self._windows_of(rec_i).merge_from(rec_j.meta["windows"])
+                        if self.cfg.spawn_rule == "transfer":              # routing v2 stage 4b: the merged expert keeps the references of both
+                            self._merge_refs(rec_i, rec_j)
 
                         for c_id, c_rec in list(self.experts.items()):
                             if c_rec.parent == j:
@@ -780,6 +793,9 @@ class PhyloMoE(BasePool):
                             if monitor.update(loss_val):
                                 alarm_fired = True
 
+                    if self.cfg.spawn_rule == "transfer" and not settling:      # routing v2 stage 4b: the honest per-sample losses are this expert's reference for the transfer test
+                        rec.meta.setdefault("ref", deque(maxlen=self.cfg.transfer_ref)).extend(preq_losses.tolist())
+
                     if alarm_fired and monitor is not None:
                         self.events.add(kind="alarm", step=self.step, expert=eid, statistic=monitor.statistic)
                         if recent_deque is not None and len(recent_deque) >= self.cfg.m_min:
@@ -933,12 +949,90 @@ class PhyloMoE(BasePool):
         best_accepted = S.masked_fill(~accepted, float("-inf")).argmax(dim=1)
         return torch.where(accepted.any(dim=1), best_accepted, S.argmax(dim=1))
 
+    # ------------------------------------------------------------------------------------------ routing v2 stage 4b: spawn or extend by a held-out transfer test
+    _TRANSFER_MIN_CLUSTER = 8                                           # fewer labelled samples than this cannot carry the test
+
+    def _transfer_reference(self, rec, exclude: int) -> list:
+        """The expert's honest reference losses, newest last. With ``exclude`` > 0 the newest ``exclude`` entries are left out: on the alarm path the cluster IS those samples."""
+        ref = list(rec.meta.get("ref", ()))
+        return ref[:-exclude] if exclude > 0 else ref
+
+    def _transfer_verdict(self, x_taken: Tensor, y_taken: Tensor, force_parent: Optional[int]) -> Optional[TransferVerdict]:
+        """Score the cluster's labelled samples (no training) with every expert that has at least ``transfer_min_ref`` reference losses (only ``force_parent`` on the alarm path);
+        the best one is the parent; ``cluster_conflict`` asks whether it fails on the cluster. None when the test cannot run (the caller then takes today's path)."""
+        cfg = self.cfg
+        valid = y_taken >= 0
+        if int(valid.sum()) < self._TRANSFER_MIN_CLUSTER:
+            return None
+        xv, yv = x_taken[valid], y_taken[valid]
+        exclude = int(len(x_taken)) if force_parent is not None else 0
+        best = None
+        for eid in ([force_parent] if force_parent is not None else list(self.experts)):
+            rec = self.experts[eid]
+            ref = self._transfer_reference(rec, exclude)
+            if len(ref) < cfg.transfer_min_ref:
+                continue
+            with torch.no_grad():
+                losses = F.cross_entropy(rec.module(xv), yv, reduction="none")
+            if best is None or float(losses.mean()) < best[0]:
+                best = (float(losses.mean()), eid, losses, ref)
+        if best is None:
+            return None
+        _, eid, losses, ref = best
+        margin = cfg.transfer_margin * math.log(max(int(self.experts[eid].module.seen.sum()), 2))
+        conflict, p, diff = cluster_conflict(losses, torch.tensor(ref), cfg.transfer_alpha, cfg.transfer_perms, margin, generator(cfg.seed, 0x545246, self.step, eid))
+        return TransferVerdict(parent=eid, conflict=conflict, p=p, diff=diff, loss_cluster=float(losses.mean()), loss_ref=float(np.mean(ref)), margin=margin,
+                               n_cluster=int(losses.numel()), n_ref=len(ref))
+
+    def _extend_unchanged(self, parent_eid: int, aff: float, x_taken: Tensor, y_taken: Tensor, verdict: TransferVerdict, novel_indices, x_all, assigned) -> None:
+        """No conflict: the parent already predicts these labels, so the cluster joins its signature and replay and NO weight changes (it keeps training on the stream as usual)."""
+        parent_rec = self.experts[parent_eid]
+        valid = y_taken >= 0
+        parent_rec.meta["sig"].update(x_taken)
+        parent_rec.meta["sig"].fit()
+        parent_rec.replay.add(x_taken[valid], y_taken[valid])
+        self.events.add(kind="extend", step=self.step, expert=parent_eid, affinity=aff, n_cluster=len(x_taken), **verdict.fields())
+        if novel_indices is not None and len(novel_indices) > 0 and x_all is not None and assigned is not None:
+            near = parent_rec.meta["sig"].pvalue(x_all[novel_indices]) >= self.cfg.q
+            if near.any():
+                assigned[novel_indices[near]] = parent_eid
+
+    def _pretrain_child(self, parent_rec, aff: float, next_id: int, x_taken: Tensor, y_taken: Tensor):
+        """The child of a transfer conflict: initialised exactly as the probe's child is, then ``spawn_pretrain_steps`` steps on the cluster alone (same seeds as the probe's)."""
+        cfg = self.cfg
+        if cfg.init_mode == "scratch":
+            child = MLPExpert(d_in=cfg.d, hidden=cfg.hidden, depth=cfg.depth, n_classes=cfg.n_classes, seed=cfg.seed * 1000 + next_id)
+        elif cfg.init_mode == "clone":
+            child = parent_rec.module.clone()
+        elif cfg.init_mode == "inherit":
+            child = parent_rec.module.inherit(rho=cfg.rho_max * (1.0 - aff), sigma=cfg.inherit_sigma, rng=np.random.default_rng([cfg.seed, 0x494E48, next_id]))
+        else:
+            child = parent_rec.module.shrink_perturb(lam=aff, seed=cfg.seed * 1000 + next_id)
+        valid = y_taken >= 0
+        xv, yv = x_taken[valid], y_taken[valid]
+        child.seen.zero_()
+        child.mark_seen(yv)
+        opt = torch.optim.Adam(child.parameters(), lr=cfg.lr)
+        bs = min(cfg.batch_size, int(yv.numel()))
+        for s_idx in range(cfg.spawn_pretrain_steps):
+            gen = torch.Generator().manual_seed(cfg.seed + 1000 * self.step + s_idx)
+            sel = torch.randint(0, int(yv.numel()), (bs,), generator=gen)
+            child.train_step(xv[sel], yv[sel], opt, replay=None)
+        return child
+
+    def _merge_refs(self, rec_i, rec_j) -> None:
+        """The survivor of a merge keeps the references of both (the newest ``transfer_ref`` of the union, the second expert's entries last)."""
+        if "ref" in rec_i.meta or "ref" in rec_j.meta:
+            rec_i.meta["ref"] = deque(list(rec_i.meta.get("ref", ())) + list(rec_j.meta.get("ref", ())), maxlen=self.cfg.transfer_ref)
+
     def extra_cost(self, d: int):
         """(parameters, extra multiply-adds per prediction, extra stored scalars) of the stage-4 machinery, read by ``accounting.pool_report``."""
         params = macs = scalars = 0
         if self.cfg.router and hasattr(self, "_route") and self._route.eids is not None:
             p, m, s = self._route.cost(d)
             params, macs, scalars = params + p, macs + m, scalars + s
+        if self.cfg.spawn_rule == "transfer":
+            scalars += sum(len(r.meta["ref"]) for r in self.experts.values() if "ref" in r.meta)
         return params, macs, scalars
 
     # ------------------------------------------------------------------------------------------ routing v2 stage 3a: the batch-level gate
