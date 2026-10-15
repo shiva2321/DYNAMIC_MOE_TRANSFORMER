@@ -1,0 +1,47 @@
+[
+{
+"family": "arith-seq",
+"stream": "-",
+"arm": "S3+T+G",
+"seed": 100,
+"gap": 0.2,
+"tmargin": 0.25,
+"phase": "dev"
+},
+{
+"family": "arith-mixed16",
+"stream": "-",
+"arm": "S3+G",
+"seed": 100,
+"gap": 0.2,
+"tmargin": 0.0,
+"phase": "dev"
+},
+{
+"family": "arith-mixed128",
+"stream": "-",
+"arm": "S3",
+"seed": 100,
+"gap": 0.0,
+"tmargin": 0.0,
+"phase": "dev"
+},
+{
+"family": "s3",
+"stream": "F-15",
+"arm": "S3+T+G",
+"seed": 100,
+"gap": 0.2,
+"tmargin": 0.25,
+"phase": "dev"
+},
+{
+"family": "s3",
+"stream": "OV-0.6",
+"arm": "S3",
+"seed": 100,
+"gap": 0.0,
+"tmargin": 0.0,
+"phase": "dev"
+}
+]
