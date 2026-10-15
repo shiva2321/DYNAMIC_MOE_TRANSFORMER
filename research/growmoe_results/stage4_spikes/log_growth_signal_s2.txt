@@ -1,0 +1,10 @@
+[w16 s2 @900] preq 1.200 gap 0.01 slope 1.016 senn 0.012/0.017 | random: T=20 gain -0.2% p 0.951, T=80 +0.2% p 0.044 | gradmax: T=20 gain -0.8% p 0.987, T=80 +0.6% p 0.009
+[w16 s2 @2300] preq 1.143 gap 0.02 slope 0.989 senn 0.016/0.009 | random: T=20 gain -0.0% p 0.677, T=80 +0.2% p 0.022 | gradmax: T=20 gain -0.5% p 0.836, T=80 +0.2% p 0.216
+[w32 s2 @900] preq 1.128 gap 0.06 slope 1.022 senn 0.022/0.016 | random: T=20 gain +0.2% p 0.194, T=80 +0.1% p 0.253 | gradmax: T=20 gain -0.2% p 0.721, T=80 -0.0% p 0.558
+[w32 s2 @2300] preq 1.010 gap 0.07 slope 0.982 senn 0.021/0.015 | random: T=20 gain +0.3% p 0.039, T=80 +0.3% p 0.013 | gradmax: T=20 gain -0.3% p 0.668, T=80 -0.3% p 0.867
+[w64 s2 @900] preq 1.008 gap 0.11 slope 1.039 senn 0.038/0.026 | random: T=20 gain -0.8% p 0.966, T=80 -0.3% p 0.916 | gradmax: T=20 gain -0.9% p 0.939, T=80 -0.6% p 0.985
+[w64 s2 @2300] preq 0.880 gap 0.12 slope 0.977 senn 0.038/0.034 | random: T=20 gain -1.1% p 0.950, T=80 -0.8% p 0.995 | gradmax: T=20 gain -2.7% p 0.997, T=80 -2.1% p 1.000
+[w128 s2 @900] preq 0.967 gap 0.16 slope 1.052 senn 0.067/0.063 | random: T=20 gain -0.5% p 0.897, T=80 -0.6% p 0.999 | gradmax: T=20 gain -1.0% p 0.983, T=80 -0.8% p 0.999
+[w128 s2 @2300] preq 0.857 gap 0.22 slope 1.003 senn 0.071/0.060 | random: T=20 gain -0.8% p 0.977, T=80 -0.6% p 0.995 | gradmax: T=20 gain -0.6% p 0.759, T=80 -0.6% p 0.967
+[w512 s2 @900] preq 0.984 gap 0.39 slope 1.034 senn 0.241/0.215 | random: T=20 gain -1.2% p 0.963, T=80 -1.0% p 1.000 | gradmax: T=20 gain -1.6% p 0.995, T=80 -0.9% p 0.999
+[w512 s2 @2300] preq 0.861 gap 0.47 slope 0.997 senn 0.246/0.223 | random: T=20 gain -1.3% p 0.984, T=80 -0.8% p 0.999 | gradmax: T=20 gain -1.0% p 0.984, T=80 -0.6% p 0.968

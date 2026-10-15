@@ -1,0 +1,1 @@
+{"unit": "arith-forced_spawn-s0", "experts": 6, "cv_owner_accuracy": {"density": 0.8815485168426346, "lda": 1.0, "softmax": 1.0, "knn5": 0.7857214680744092}, "end_to_end": {"density": 0.34626666666666667, "lda": 0.469, "softmax": 0.469, "knn5": 0.32253333333333334, "shipped": 0.3449333333333333, "oracle": 0.46900000000000003}, "selected": "lda", "selected_exact": 0.469}

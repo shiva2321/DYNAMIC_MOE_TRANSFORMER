@@ -1,0 +1,542 @@
+[
+ {
+  "variant": "default",
+  "seed": 0,
+  "experts": 4,
+  "shipped_exact": 0.2647333333333333,
+  "rows": [
+   {
+    "data": "protos-16",
+    "router": "softmax",
+    "train_rows": 64,
+    "routing_acc": 0.9873945945945946,
+    "exact": 0.39426666666666665
+   },
+   {
+    "data": "protos-16",
+    "router": "lda",
+    "train_rows": 64,
+    "routing_acc": 0.999945945945946,
+    "exact": 0.4064
+   },
+   {
+    "data": "protos-16",
+    "router": "ncm",
+    "train_rows": 64,
+    "routing_acc": 0.944745945945946,
+    "exact": 0.3584
+   },
+   {
+    "data": "protos-32",
+    "router": "softmax",
+    "train_rows": 128,
+    "routing_acc": 0.9993621621621621,
+    "exact": 0.40546666666666664
+   },
+   {
+    "data": "protos-32",
+    "router": "lda",
+    "train_rows": 128,
+    "routing_acc": 1.0,
+    "exact": 0.40646666666666664
+   },
+   {
+    "data": "protos-32",
+    "router": "ncm",
+    "train_rows": 128,
+    "routing_acc": 0.9922702702702703,
+    "exact": 0.399
+   },
+   {
+    "data": "protos-64",
+    "router": "softmax",
+    "train_rows": 256,
+    "routing_acc": 1.0,
+    "exact": 0.40646666666666664
+   },
+   {
+    "data": "protos-64",
+    "router": "lda",
+    "train_rows": 256,
+    "routing_acc": 1.0,
+    "exact": 0.40646666666666664
+   },
+   {
+    "data": "protos-64",
+    "router": "ncm",
+    "train_rows": 256,
+    "routing_acc": 1.0,
+    "exact": 0.40646666666666664
+   },
+   {
+    "data": "protos-128",
+    "router": "softmax",
+    "train_rows": 512,
+    "routing_acc": 1.0,
+    "exact": 0.40646666666666664
+   },
+   {
+    "data": "protos-128",
+    "router": "lda",
+    "train_rows": 512,
+    "routing_acc": 1.0,
+    "exact": 0.40646666666666664
+   },
+   {
+    "data": "protos-128",
+    "router": "ncm",
+    "train_rows": 512,
+    "routing_acc": 1.0,
+    "exact": 0.40646666666666664
+   },
+   {
+    "data": "protos-256",
+    "router": "softmax",
+    "train_rows": 1024,
+    "routing_acc": 1.0,
+    "exact": 0.40646666666666664
+   },
+   {
+    "data": "protos-256",
+    "router": "lda",
+    "train_rows": 1024,
+    "routing_acc": 1.0,
+    "exact": 0.40646666666666664
+   },
+   {
+    "data": "protos-256",
+    "router": "ncm",
+    "train_rows": 1024,
+    "routing_acc": 1.0,
+    "exact": 0.40646666666666664
+   },
+   {
+    "data": "reservoir-20000",
+    "router": "softmax",
+    "train_rows": 20768,
+    "routing_acc": 0.7797405405405405,
+    "exact": 0.25993333333333335
+   },
+   {
+    "data": "reservoir-20000",
+    "router": "lda",
+    "train_rows": 20768,
+    "routing_acc": 1.0,
+    "exact": 0.40646666666666664
+   },
+   {
+    "data": "reservoir-20000",
+    "router": "ncm",
+    "train_rows": 20768,
+    "routing_acc": 1.0,
+    "exact": 0.40646666666666664
+   }
+  ],
+  "oracle_exact": 0.40646666666666664
+ },
+ {
+  "variant": "default",
+  "seed": 1,
+  "experts": 4,
+  "shipped_exact": 0.2666,
+  "rows": [
+   {
+    "data": "protos-16",
+    "router": "softmax",
+    "train_rows": 64,
+    "routing_acc": 0.9688864864864865,
+    "exact": 0.3662666666666667
+   },
+   {
+    "data": "protos-16",
+    "router": "lda",
+    "train_rows": 64,
+    "routing_acc": 0.9998270270270271,
+    "exact": 0.40346666666666664
+   },
+   {
+    "data": "protos-16",
+    "router": "ncm",
+    "train_rows": 64,
+    "routing_acc": 0.9220324324324324,
+    "exact": 0.33613333333333334
+   },
+   {
+    "data": "protos-32",
+    "router": "softmax",
+    "train_rows": 128,
+    "routing_acc": 0.9991351351351352,
+    "exact": 0.4009333333333333
+   },
+   {
+    "data": "protos-32",
+    "router": "lda",
+    "train_rows": 128,
+    "routing_acc": 1.0,
+    "exact": 0.4036666666666667
+   },
+   {
+    "data": "protos-32",
+    "router": "ncm",
+    "train_rows": 128,
+    "routing_acc": 0.9813513513513513,
+    "exact": 0.37293333333333334
+   },
+   {
+    "data": "protos-64",
+    "router": "softmax",
+    "train_rows": 256,
+    "routing_acc": 1.0,
+    "exact": 0.4036666666666667
+   },
+   {
+    "data": "protos-64",
+    "router": "lda",
+    "train_rows": 256,
+    "routing_acc": 1.0,
+    "exact": 0.4036666666666667
+   },
+   {
+    "data": "protos-64",
+    "router": "ncm",
+    "train_rows": 256,
+    "routing_acc": 0.9991351351351352,
+    "exact": 0.4012
+   },
+   {
+    "data": "protos-128",
+    "router": "softmax",
+    "train_rows": 512,
+    "routing_acc": 1.0,
+    "exact": 0.4036666666666667
+   },
+   {
+    "data": "protos-128",
+    "router": "lda",
+    "train_rows": 512,
+    "routing_acc": 1.0,
+    "exact": 0.4036666666666667
+   },
+   {
+    "data": "protos-128",
+    "router": "ncm",
+    "train_rows": 512,
+    "routing_acc": 1.0,
+    "exact": 0.4036666666666667
+   },
+   {
+    "data": "protos-256",
+    "router": "softmax",
+    "train_rows": 1024,
+    "routing_acc": 1.0,
+    "exact": 0.4036666666666667
+   },
+   {
+    "data": "protos-256",
+    "router": "lda",
+    "train_rows": 1024,
+    "routing_acc": 1.0,
+    "exact": 0.4036666666666667
+   },
+   {
+    "data": "protos-256",
+    "router": "ncm",
+    "train_rows": 1024,
+    "routing_acc": 1.0,
+    "exact": 0.4036666666666667
+   },
+   {
+    "data": "reservoir-20000",
+    "router": "softmax",
+    "train_rows": 20768,
+    "routing_acc": 0.7919459459459459,
+    "exact": 0.2628666666666667
+   },
+   {
+    "data": "reservoir-20000",
+    "router": "lda",
+    "train_rows": 20768,
+    "routing_acc": 1.0,
+    "exact": 0.4036666666666667
+   },
+   {
+    "data": "reservoir-20000",
+    "router": "ncm",
+    "train_rows": 20768,
+    "routing_acc": 1.0,
+    "exact": 0.4036666666666667
+   }
+  ],
+  "oracle_exact": 0.4036666666666667
+ },
+ {
+  "variant": "forced_spawn",
+  "seed": 0,
+  "experts": 6,
+  "shipped_exact": 0.3449333333333333,
+  "rows": [
+   {
+    "data": "protos-16",
+    "router": "softmax",
+    "train_rows": 96,
+    "routing_acc": 0.9992432432432432,
+    "exact": 0.4683333333333333
+   },
+   {
+    "data": "protos-16",
+    "router": "lda",
+    "train_rows": 96,
+    "routing_acc": 1.0,
+    "exact": 0.469
+   },
+   {
+    "data": "protos-16",
+    "router": "ncm",
+    "train_rows": 96,
+    "routing_acc": 0.9918702702702703,
+    "exact": 0.4632
+   },
+   {
+    "data": "protos-32",
+    "router": "softmax",
+    "train_rows": 192,
+    "routing_acc": 1.0,
+    "exact": 0.469
+   },
+   {
+    "data": "protos-32",
+    "router": "lda",
+    "train_rows": 192,
+    "routing_acc": 1.0,
+    "exact": 0.469
+   },
+   {
+    "data": "protos-32",
+    "router": "ncm",
+    "train_rows": 192,
+    "routing_acc": 1.0,
+    "exact": 0.469
+   },
+   {
+    "data": "protos-64",
+    "router": "softmax",
+    "train_rows": 384,
+    "routing_acc": 1.0,
+    "exact": 0.469
+   },
+   {
+    "data": "protos-64",
+    "router": "lda",
+    "train_rows": 384,
+    "routing_acc": 1.0,
+    "exact": 0.469
+   },
+   {
+    "data": "protos-64",
+    "router": "ncm",
+    "train_rows": 384,
+    "routing_acc": 1.0,
+    "exact": 0.469
+   },
+   {
+    "data": "protos-128",
+    "router": "softmax",
+    "train_rows": 768,
+    "routing_acc": 1.0,
+    "exact": 0.469
+   },
+   {
+    "data": "protos-128",
+    "router": "lda",
+    "train_rows": 768,
+    "routing_acc": 1.0,
+    "exact": 0.469
+   },
+   {
+    "data": "protos-128",
+    "router": "ncm",
+    "train_rows": 768,
+    "routing_acc": 1.0,
+    "exact": 0.469
+   },
+   {
+    "data": "protos-256",
+    "router": "softmax",
+    "train_rows": 1536,
+    "routing_acc": 1.0,
+    "exact": 0.469
+   },
+   {
+    "data": "protos-256",
+    "router": "lda",
+    "train_rows": 1536,
+    "routing_acc": 1.0,
+    "exact": 0.469
+   },
+   {
+    "data": "protos-256",
+    "router": "ncm",
+    "train_rows": 1536,
+    "routing_acc": 1.0,
+    "exact": 0.469
+   },
+   {
+    "data": "reservoir-20000",
+    "router": "softmax",
+    "train_rows": 21280,
+    "routing_acc": 1.0,
+    "exact": 0.469
+   },
+   {
+    "data": "reservoir-20000",
+    "router": "lda",
+    "train_rows": 21280,
+    "routing_acc": 1.0,
+    "exact": 0.469
+   },
+   {
+    "data": "reservoir-20000",
+    "router": "ncm",
+    "train_rows": 21280,
+    "routing_acc": 1.0,
+    "exact": 0.469
+   }
+  ],
+  "oracle_exact": 0.469
+ },
+ {
+  "variant": "forced_spawn",
+  "seed": 1,
+  "experts": 6,
+  "shipped_exact": 0.35113333333333335,
+  "rows": [
+   {
+    "data": "protos-16",
+    "router": "softmax",
+    "train_rows": 96,
+    "routing_acc": 0.9998162162162162,
+    "exact": 0.4834
+   },
+   {
+    "data": "protos-16",
+    "router": "lda",
+    "train_rows": 96,
+    "routing_acc": 1.0,
+    "exact": 0.48373333333333335
+   },
+   {
+    "data": "protos-16",
+    "router": "ncm",
+    "train_rows": 96,
+    "routing_acc": 0.9921297297297297,
+    "exact": 0.4726
+   },
+   {
+    "data": "protos-32",
+    "router": "softmax",
+    "train_rows": 192,
+    "routing_acc": 1.0,
+    "exact": 0.48373333333333335
+   },
+   {
+    "data": "protos-32",
+    "router": "lda",
+    "train_rows": 192,
+    "routing_acc": 1.0,
+    "exact": 0.48373333333333335
+   },
+   {
+    "data": "protos-32",
+    "router": "ncm",
+    "train_rows": 192,
+    "routing_acc": 0.9999027027027027,
+    "exact": 0.48373333333333335
+   },
+   {
+    "data": "protos-64",
+    "router": "softmax",
+    "train_rows": 384,
+    "routing_acc": 1.0,
+    "exact": 0.48373333333333335
+   },
+   {
+    "data": "protos-64",
+    "router": "lda",
+    "train_rows": 384,
+    "routing_acc": 1.0,
+    "exact": 0.48373333333333335
+   },
+   {
+    "data": "protos-64",
+    "router": "ncm",
+    "train_rows": 384,
+    "routing_acc": 1.0,
+    "exact": 0.48373333333333335
+   },
+   {
+    "data": "protos-128",
+    "router": "softmax",
+    "train_rows": 768,
+    "routing_acc": 1.0,
+    "exact": 0.48373333333333335
+   },
+   {
+    "data": "protos-128",
+    "router": "lda",
+    "train_rows": 768,
+    "routing_acc": 1.0,
+    "exact": 0.48373333333333335
+   },
+   {
+    "data": "protos-128",
+    "router": "ncm",
+    "train_rows": 768,
+    "routing_acc": 1.0,
+    "exact": 0.48373333333333335
+   },
+   {
+    "data": "protos-256",
+    "router": "softmax",
+    "train_rows": 1536,
+    "routing_acc": 1.0,
+    "exact": 0.48373333333333335
+   },
+   {
+    "data": "protos-256",
+    "router": "lda",
+    "train_rows": 1536,
+    "routing_acc": 1.0,
+    "exact": 0.48373333333333335
+   },
+   {
+    "data": "protos-256",
+    "router": "ncm",
+    "train_rows": 1536,
+    "routing_acc": 1.0,
+    "exact": 0.48373333333333335
+   },
+   {
+    "data": "reservoir-20000",
+    "router": "softmax",
+    "train_rows": 21280,
+    "routing_acc": 1.0,
+    "exact": 0.48373333333333335
+   },
+   {
+    "data": "reservoir-20000",
+    "router": "lda",
+    "train_rows": 21280,
+    "routing_acc": 1.0,
+    "exact": 0.48373333333333335
+   },
+   {
+    "data": "reservoir-20000",
+    "router": "ncm",
+    "train_rows": 21280,
+    "routing_acc": 1.0,
+    "exact": 0.48373333333333335
+   }
+  ],
+  "oracle_exact": 0.48373333333333335
+ }
+]

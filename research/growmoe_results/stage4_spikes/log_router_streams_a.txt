@@ -1,0 +1,4 @@
+[OV-0.6 s100] experts 10/10 regimes | shipped 43.0 (run_fast 43.0)  router free 45.0  router restrict 44.9  oracle 45.1   24s
+[S1 s100] experts 5/7 regimes | shipped 79.0 (run_fast 79.0)  router free 56.3  router restrict 60.1  oracle 84.8   21s
+[S1 s101] experts 5/7 regimes | shipped 79.2 (run_fast 79.2)  router free 48.6  router restrict 54.5  oracle 84.6   30s
+[F-15 s101] experts 15/15 regimes | shipped 49.7 (run_fast 49.7)  router free 49.8  router restrict 49.8  oracle 49.8   39s

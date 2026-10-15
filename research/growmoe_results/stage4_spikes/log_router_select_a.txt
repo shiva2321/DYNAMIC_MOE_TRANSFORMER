@@ -1,0 +1,3 @@
+[OV-0.6-s100] experts 10 | CV density 97 lda 99 softmax 99 knn5 99 -> lda | exact: shipped 43.0 density 42.2 lda 45.0 softmax 45.1 knn5 44.9 oracle 45.1 | selected 45.0
+[F-15-s100] experts 15 | CV density 100 lda 100 softmax 100 knn5 100 -> density | exact: shipped 51.2 density 51.2 lda 51.3 softmax 51.3 knn5 51.3 oracle 51.3 | selected 51.2
+[F-15-s101] experts 15 | CV density 100 lda 100 softmax 100 knn5 100 -> density | exact: shipped 49.7 density 49.7 lda 49.8 softmax 49.8 knn5 49.8 oracle 49.8 | selected 49.7

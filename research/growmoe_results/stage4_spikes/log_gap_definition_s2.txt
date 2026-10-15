@@ -1,0 +1,10 @@
+[w16 r256 s2] preq 1.551  gap replay 0.781  recent 0.180  within-batch 0.117   9s
+[w32 r256 s2] preq 1.402  gap replay 0.885  recent 0.250  within-batch 0.155   6s
+[w64 r256 s2] preq 1.284  gap replay 0.930  recent 0.334  within-batch 0.200   7s
+[w128 r256 s2] preq 1.181  gap replay 0.955  recent 0.390  within-batch 0.245   8s
+[w512 r256 s2] preq 1.128  gap replay 0.970  recent 0.507  within-batch 0.332   13s
+[w16 r20000 s2] preq 1.200  gap replay 0.012  recent 0.094  within-batch 0.075   7s
+[w32 r20000 s2] preq 1.128  gap replay 0.062  recent 0.166  within-batch 0.119   8s
+[w64 r20000 s2] preq 1.008  gap replay 0.110  recent 0.257  within-batch 0.185   8s
+[w128 r20000 s2] preq 0.967  gap replay 0.164  recent 0.330  within-batch 0.231   13s
+[w512 r20000 s2] preq 0.984  gap replay 0.387  recent 0.571  within-batch 0.387   16s

@@ -1,0 +1,1 @@
+{"unit": "arith-default-s1", "experts": 4, "cv_owner_accuracy": {"density": 0.8720211161387631, "lda": 1.0, "softmax": 1.0, "knn5": 0.8398567119155353}, "end_to_end": {"density": 0.2678, "lda": 0.4036666666666667, "softmax": 0.4036666666666667, "knn5": 0.30146666666666666, "shipped": 0.2666, "oracle": 0.4036666666666667}, "selected": "lda", "selected_exact": 0.4036666666666667}

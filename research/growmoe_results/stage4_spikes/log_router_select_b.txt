@@ -1,0 +1,9 @@
+[S1-s100] experts 5 | CV density 92 lda 74 softmax 72 knn5 89 -> density | exact: shipped 79.0 density 80.2 lda 56.3 softmax 56.1 knn5 79.4 oracle 84.8 | selected 79.0
+[S1-s101] experts 5 | CV density 96 lda 61 softmax 61 knn5 89 -> density | exact: shipped 79.2 density 79.0 lda 48.6 softmax 47.4 knn5 78.5 oracle 84.6 | selected 79.2
+[S1-s102] experts 4 | CV density 91 lda 60 softmax 60 knn5 85 -> density | exact: shipped 78.5 density 78.8 lda 46.2 softmax 45.7 knn5 76.8 oracle 80.4 | selected 78.5
+[S2-5-s100] experts 5 | CV density 100 lda 100 softmax 100 knn5 100 -> density | exact: shipped 93.2 density 93.2 lda 93.2 softmax 93.2 knn5 93.2 oracle 93.2 | selected 93.2
+[S2-5-s101] experts 2 | CV density 100 lda 100 softmax 100 knn5 100 -> density | exact: shipped 90.4 density 90.4 lda 90.4 softmax 90.4 knn5 90.4 oracle 90.4 | selected 90.4
+[S2-5-s102] experts 3 | CV density 100 lda 100 softmax 100 knn5 100 -> density | exact: shipped 90.6 density 90.6 lda 90.6 softmax 90.6 knn5 90.6 oracle 90.6 | selected 90.6
+[banking-s100] experts 5 | CV density 95 lda 93 softmax 90 knn5 93 -> density | exact: shipped 81.1 density 81.6 lda 78.1 softmax 76.1 knn5 80.1 oracle 85.6 | selected 81.1
+[banking-s101] experts 5 | CV density 93 lda 89 softmax 87 knn5 93 -> density | exact: shipped 87.2 density 87.2 lda 79.7 softmax 77.9 knn5 85.9 oracle 90.8 | selected 87.2
+[banking-s102] experts 4 | CV density 95 lda 92 softmax 90 knn5 94 -> density | exact: shipped 82.9 density 82.8 lda 77.9 softmax 76.8 knn5 82.3 oracle 86.3 | selected 82.9

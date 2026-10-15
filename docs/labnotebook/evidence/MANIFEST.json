@@ -1,8 +1,8 @@
 {
- "generated": "2026-10-14 14:14:07",
- "head": "8312306",
+ "generated": "2026-10-15 10:41:38",
+ "head": "5a34cde",
  "branch": "track-g-growmoe",
- "n_files": 704,
+ "n_files": 710,
  "files": [
   {
    "path": "demos/demo_growmoe_continual_learning.py",
@@ -167,22 +167,28 @@
    "last_commit": "8312306"
   },
   {
+   "path": "docs/superpowers/specs/2026-10-15-routing-v2-stage4-design.md",
+   "sha256": "962ba3d444f67535cf5a1ad2c2b7d2f077e734f03150b28918ec79682ba0b3e6",
+   "bytes": 29367,
+   "last_commit": null
+  },
+  {
    "path": "geomlab/phase0_algebra.py",
    "sha256": "e48162f20b3e41281f08ae7d102a4eedc532b64e6dcbc557368c185334cdd492",
    "bytes": 10964,
-   "last_commit": null
+   "last_commit": "e821976"
   },
   {
    "path": "geomlab/phase1_capacity.py",
    "sha256": "47fc553fe1660e1faac1dcfb07534803dfd387ac4c0fac5dde8c95d872e4c6c5",
    "bytes": 8757,
-   "last_commit": null
+   "last_commit": "e821976"
   },
   {
    "path": "geomlab/phase2_composition.py",
    "sha256": "0244f3bf75f5690e80af6275798e47502b617cc7bf98ba4579f5f6ab798f3ca7",
    "bytes": 12845,
-   "last_commit": null
+   "last_commit": "e821976"
   },
   {
    "path": "growmoe/arith.py",
@@ -206,84 +212,114 @@
    "path": "research/geomlab_results/phase0/PREREG.md",
    "sha256": "664025fa77e7a28c64512f19dcdedeeb65b0754d1c6005539bbd6ddee1514c72",
    "bytes": 6310,
-   "last_commit": null
+   "last_commit": "e821976"
   },
   {
    "path": "research/geomlab_results/phase0/results.json",
    "sha256": "6d93bbd6692fff7df872fdd5424c36f57fa28d037b5f1bbb9473585f7c7f1c25",
    "bytes": 17882,
-   "last_commit": null
+   "last_commit": "e821976"
   },
   {
    "path": "research/geomlab_results/phase0/run_phase0.py",
    "sha256": "e022afe927e04a9f94ff21e556cb21c692d3083be908ac2b3c929b1c2d71e900",
    "bytes": 15872,
-   "last_commit": null
+   "last_commit": "e821976"
   },
   {
    "path": "research/geomlab_results/phase0/tables.txt",
    "sha256": "8c55ecb7e6f890135e43ceb384c63ea0199aae9495aaaf24afc737ecad151182",
    "bytes": 2313,
-   "last_commit": null
+   "last_commit": "e821976"
   },
   {
    "path": "research/geomlab_results/phase1/checkpoint.json",
    "sha256": "70dc720e746c8176f9f757783082658dc16752254e43ff72d8af76ecd083eac1",
    "bytes": 86126,
-   "last_commit": null
+   "last_commit": "e821976"
   },
   {
    "path": "research/geomlab_results/phase1/PREREG.md",
    "sha256": "e834537003734560cf8985c7a8196eca2e5c51a93a388ddb60f71ae1a23d82c2",
    "bytes": 7144,
-   "last_commit": null
+   "last_commit": "e821976"
   },
   {
    "path": "research/geomlab_results/phase1/results.json",
    "sha256": "0d5d46c1cae74be486b37487bd0d56e47f225e5e03d130940633937b8050e530",
    "bytes": 65566,
-   "last_commit": null
+   "last_commit": "e821976"
   },
   {
    "path": "research/geomlab_results/phase1/run_phase1.py",
    "sha256": "820bb3d6645c28ecbd0da4a7b9a1e3b559be1e7daa52f2dfbd6995420392f3db",
    "bytes": 25041,
-   "last_commit": null
+   "last_commit": "e821976"
   },
   {
    "path": "research/geomlab_results/phase1/tables.txt",
    "sha256": "a06ee9f7858a6f09350e282e67dcfc92a66c9fa4408a4e068d0b68d79968cb0b",
    "bytes": 4921,
-   "last_commit": null
+   "last_commit": "e821976"
   },
   {
    "path": "research/geomlab_results/phase2/checkpoint.json",
    "sha256": "1a3cda0f32e653994ae5e0b410c2705f23a5d1c384cb16365bd20414fd9c4c43",
    "bytes": 40130,
-   "last_commit": null
+   "last_commit": "e821976"
   },
   {
    "path": "research/geomlab_results/phase2/PREREG.md",
    "sha256": "26476c647b4455d53f00af7ba1d528c976a91f220e211f08e16760be09c3f90b",
    "bytes": 6992,
-   "last_commit": null
+   "last_commit": "e821976"
   },
   {
    "path": "research/geomlab_results/phase2/results.json",
    "sha256": "0b144302ef228ad3d15fd7d897ca9ef2f0cd9835b1f892831397441bc26d6799",
    "bytes": 13152,
-   "last_commit": null
+   "last_commit": "e821976"
   },
   {
    "path": "research/geomlab_results/phase2/run_phase2.py",
    "sha256": "bd2c793d7414264d8ddd18f715f9be353487525cfe3fefb1f0015ebdc17db189",
    "bytes": 21107,
-   "last_commit": null
+   "last_commit": "e821976"
   },
   {
    "path": "research/geomlab_results/phase2/tables.txt",
    "sha256": "e9593b578089974e816a29a8f3815233fb05ac5f24ebc33119322906ccdec6e9",
    "bytes": 2803,
+   "last_commit": "e821976"
+  },
+  {
+   "path": "research/geomlab_results/phase3/checkpoint.json",
+   "sha256": "15faf5ce0fc99d5c10f9bd89a88277777636ccfe2c2071f4bfef9499600340d9",
+   "bytes": 38311,
+   "last_commit": null
+  },
+  {
+   "path": "research/geomlab_results/phase3/PREREG.md",
+   "sha256": "151eb2908519e9e37a7d42271811caad62f1aefa1c75b6e364a4b47bfbd7738a",
+   "bytes": 6453,
+   "last_commit": "e821976"
+  },
+  {
+   "path": "research/geomlab_results/phase3/results.json",
+   "sha256": "750ca5cdb76d4cb700e20c3f13cfce5d9a43e14402db0dcaab84b00f00713b66",
+   "bytes": 21967,
+   "last_commit": null
+  },
+  {
+   "path": "research/geomlab_results/phase3/run_phase3.py",
+   "sha256": "2d587e4794f2248724cfd4126c1dd639f52fdb0c9cb3c4c9aafbab0fffe41e08",
+   "bytes": 22216,
+   "last_commit": null
+  },
+  {
+   "path": "research/geomlab_results/phase3/tables.txt",
+   "sha256": "35be07301a215ec083470e22473e857131c357d4431100b1defa0485e5ea1377",
+   "bytes": 1693,
    "last_commit": null
   },
   {
@@ -548,7 +584,7 @@
    "path": "research/growmoe_results/m0/run_m0.py",
    "sha256": "830a9b4976a0015b55069bb31734b352907651af630311ff62a421b342bdd8e7",
    "bytes": 37414,
-   "last_commit": "8312306"
+   "last_commit": "5a34cde"
   },
   {
    "path": "research/growmoe_results/m0/runs/F-15__0__b1.json",
@@ -4208,19 +4244,19 @@
    "path": "tests/geomlab/test_phase0.py",
    "sha256": "04d592483e7cf05b2a1664a83b5cf08add189c9949fccd9fb8bfa6baff04317a",
    "bytes": 4307,
-   "last_commit": null
+   "last_commit": "e821976"
   },
   {
    "path": "tests/geomlab/test_phase1.py",
    "sha256": "dbe43ec3c550d17178fdb110892f88e2b28e66eaf82b96d99fcc2b42cfe0f96a",
    "bytes": 2680,
-   "last_commit": null
+   "last_commit": "e821976"
   },
   {
    "path": "tests/geomlab/test_phase2.py",
    "sha256": "f78348d83af295bbe529063b3ba9c039ce0f662d42585664f7cc0ce9cf139aa5",
    "bytes": 3920,
-   "last_commit": null
+   "last_commit": "e821976"
   },
   {
    "path": "tests/growmoe/test_gm_arith.py",

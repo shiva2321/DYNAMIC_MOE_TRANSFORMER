@@ -1,0 +1,6 @@
+[S2-5 s100] experts 5/5 regimes | shipped 93.2 (run_fast 93.2)  router free 93.2  router restrict 93.2  oracle 93.2   9s
+[S2-5 s101] experts 2/5 regimes | shipped 90.4 (run_fast 90.4)  router free 90.4  router restrict 90.4  oracle 90.4   5s
+[S2-5 s102] experts 3/5 regimes | shipped 90.6 (run_fast 90.6)  router free 90.6  router restrict 90.6  oracle 90.6   5s
+[banking s100] experts 5/6 regimes | shipped 81.1 (run_fast 81.1)  router free 78.1  router restrict 79.1  oracle 85.6   66s
+[banking s101] experts 5/6 regimes | shipped 87.2 (run_fast 87.2)  router free 79.7  router restrict 81.4  oracle 90.8   57s
+[banking s102] experts 4/6 regimes | shipped 82.9 (run_fast 82.9)  router free 77.9  router restrict 79.2  oracle 86.3   63s

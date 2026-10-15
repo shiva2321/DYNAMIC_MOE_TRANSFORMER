@@ -120,5 +120,10 @@ research/geomlab_results/phase2/run_phase2.py
 research/geomlab_results/phase2/checkpoint.json
 research/geomlab_results/phase2/results.json
 research/geomlab_results/phase2/tables.txt
+research/geomlab_results/phase3/PREREG.md
+research/geomlab_results/phase3/run_phase3.py
+research/geomlab_results/phase3/checkpoint.json
+research/geomlab_results/phase3/results.json
+research/geomlab_results/phase3/tables.txt
 
 
