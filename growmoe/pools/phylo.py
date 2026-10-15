@@ -34,6 +34,7 @@ from ..settest import generator
 from ..sources import SourceWindows
 from ..types import StepRecord, Prediction
 from ..replay import Reservoir
+from ..router import FITS, RouteRule, cv_owner_accuracy, select_rule
 from ..vmf import log_vmf_norm
 from .base import BasePool
 
@@ -59,6 +60,7 @@ class PhyloMoE(BasePool):
         self._set = SetGate(self.cfg)                                  # routing v2 stage 3a; idle unless cfg.set_gate
         self._held: list = []                                          # persistence (A-15): samples of a doubtful batch that wait for the next decision
         self._held_step = -10
+        self._route_state()                                            # routing v2 stage 4a; idle unless cfg.router
 
     @staticmethod
     def _forget_competence_history(rec) -> None:
@@ -462,6 +464,7 @@ class PhyloMoE(BasePool):
 
     def observe(self, x: Tensor, y: Optional[Tensor] = None, ctx: Optional[Tensor] = None) -> StepRecord:
         """Observe a batch (x, y); routes known data, handles novelty, probes interference, and trains."""
+        router_mark = len(self.events) if self.cfg.router else 0       # routing v2 stage 4a: where this call's events start
         x = self._normalize(x.float())
         b = x.shape[0]
         start_arrival = self.samples_seen
@@ -851,6 +854,9 @@ class PhyloMoE(BasePool):
         if (self.step + 1) % self.cfg.merge_every == 0:
             self._attempt_merges()
 
+        if self.cfg.router:                                            # routing v2 stage 4a: count the call, mark the router stale on a structural change; nothing is fitted here
+            self._router_after_observe(router_mark)
+
         mean_loss = float(np.mean(losses)) if losses else float("nan")
         self.tick()
         return StepRecord(
@@ -862,6 +868,78 @@ class PhyloMoE(BasePool):
             n_experts=len(self.experts),
             meta={"set_verdict": set_verdict} if self.cfg.set_gate else {},
         )
+
+    # ------------------------------------------------------------------------------------------ routing v2 stage 4a: the router
+    _ROUTER_EVENTS = ("spawn", "extend", "merge", "archive")
+
+    def _route_state(self) -> RouteRule:
+        """The router's state, created on first use (a pool pickled before stage 4 has none)."""
+        if not hasattr(self, "_route"):
+            self._route, self._route_age, self._route_dirty = RouteRule(), 0, False
+        return self._route
+
+    def _router_after_observe(self, mark: int) -> None:
+        """Count the observe call; mark the router stale when an expert was spawned, extended, merged or archived. The router never influences training, so nothing is fitted
+        here: the next predict that finds the router stale refits it (lazily)."""
+        self._route_state()
+        self._route_age += 1
+        if any(e.kind in self._ROUTER_EVENTS for e in self.events.since(mark)):
+            self._route_dirty = True
+
+    def _route_is_stale(self) -> bool:
+        rule = self._route_state()
+        return rule.eids is None or rule.eids != sorted(self.experts) or self._route_dirty or self._route_age >= self.cfg.router_refit_every
+
+    def _current_route_rule(self) -> RouteRule:
+        if self._route_is_stale():
+            self._refit_router()
+        return self._route
+
+    def _refit_router(self) -> None:
+        """Cross-validate the candidates on the experts' stored prototypes (owner = the expert that holds the prototype), select a rule (density unless another is clearly better),
+        fit the selected scorer on all of them. With fewer than two experts, or an expert holding fewer than ``router_min_protos`` prototypes, the density rule stays."""
+        cfg, rule = self.cfg, self._route_state()
+        eids = sorted(self.experts)
+        counts = [self.experts[e].meta["sig"].n for e in eids]
+        before = rule.name
+        if len(eids) < 2 or min(counts) < cfg.router_min_protos:
+            rule.set("density", None, eids, {}, sum(counts))
+        else:
+            X = torch.cat([self.experts[e].meta["sig"].protos for e in eids])
+            y = torch.cat([torch.full((n,), i, dtype=torch.long) for i, n in enumerate(counts)])
+            names = tuple(n for n in cfg.router_candidates if not (n == "softmax" and len(eids) > cfg.router_softmax_max_experts))
+            cv = cv_owner_accuracy(X, y, len(eids), cfg.router_folds, generator(cfg.seed, 0x52544F, self.step), names)
+            chosen = select_rule(cv, before, cfg.router_margin)
+            scorer = None if chosen == "density" else FITS[chosen](X, y, len(eids), generator(cfg.seed, 0x52544C, self.step))
+            rule.set(chosen, scorer, eids, cv, int(X.shape[0]))
+        self._route_age, self._route_dirty = 0, False
+        self.events.add(kind="router_refit", step=self.step, selected=rule.name, cv=rule.cv, rows=rule.rows, experts=len(eids))
+        if rule.name != before:
+            self.events.add(kind="router_switch", step=self.step, **{"from": before, "to": rule.name})
+
+    def _route_by_router(self, x: Tensor, eids: List[int], P: Tensor, LogF: Tensor, idx: Tensor) -> Tensor:
+        """``idx`` is the density gate's choice (a column per input). With the rule 'density' selected it is returned untouched (today's path, bit for bit); with another rule the
+        scores S = scorer(x) replace it: mode 'restrict' takes the best S among the experts the gate accepts (the best S overall when it accepts none), 'free' the best S overall."""
+        if x.shape[0] == 0:
+            return idx
+        rule = self._current_route_rule()
+        if rule.name == "density":
+            return idx
+        col = {e: j for j, e in enumerate(rule.eids)}
+        S = rule.scorer(x)[:, [col[e] for e in eids]]                                   # columns in the order of ``eids``
+        if self.cfg.router_mode == "free":
+            return S.argmax(dim=1)
+        accepted = (LogF >= 0.0) if self.cfg.no_conformal else (P.double() >= float(self.cfg.q))
+        best_accepted = S.masked_fill(~accepted, float("-inf")).argmax(dim=1)
+        return torch.where(accepted.any(dim=1), best_accepted, S.argmax(dim=1))
+
+    def extra_cost(self, d: int):
+        """(parameters, extra multiply-adds per prediction, extra stored scalars) of the stage-4 machinery, read by ``accounting.pool_report``."""
+        params = macs = scalars = 0
+        if self.cfg.router and hasattr(self, "_route") and self._route.eids is not None:
+            p, m, s = self._route.cost(d)
+            params, macs, scalars = params + p, macs + m, scalars + s
+        return params, macs, scalars
 
     # ------------------------------------------------------------------------------------------ routing v2 stage 3a: the batch-level gate
     @property
@@ -1099,6 +1177,8 @@ class PhyloMoE(BasePool):
         """
         route_rule = getattr(self, "route_rule", getattr(self.cfg, "route_rule", "default"))
         if route_rule not in self._FAST_RULES or len(self.experts) == 0:
+            if self.cfg.router and route_rule not in self._FAST_RULES and len(self.experts) > 0:
+                raise ValueError(f"cfg.router needs a fast route_rule, got {route_rule!r}: the reference path is router-blind")
             return self._predict_reference(x, ctx)
 
         x = self._normalize(x.float())
@@ -1148,6 +1228,9 @@ class PhyloMoE(BasePool):
                 eligible = P.double() >= float(self.cfg.q)                              # same float64 comparison as the loop's .item()
                 best_eligible = LogF.masked_fill(~eligible, float("-inf")).argmax(dim=1)
                 idx = torch.where(eligible.any(dim=1), best_eligible, LogF.argmax(dim=1))
+
+        if self.cfg.router:                                                             # routing v2 stage 4a: the selected rule replaces the choice among experts, never the known-or-unknown decision
+            idx = self._route_by_router(x, eids, P, LogF, idx)
 
         routed_expert = torch.tensor(eids, dtype=torch.long)[idx]
         probs = torch.zeros((b, self.cfg.n_classes), dtype=torch.float32)

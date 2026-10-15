@@ -43,16 +43,17 @@ class PoolReport:
     expert_macs: int
     predict_macs: int
     naive_params: int = None       # the per-expert sum that repeats a shared module (what Pool C used to report); equals params otherwise
+    extra_scalars: int = 0         # stored scalars that are not vectors (the reference losses of the transfer test); 4 bytes each
 
     def __post_init__(self) -> None:
         if self.naive_params is None:
             self.naive_params = self.params
 
 
-def _report(n_experts: int, params: int, stored: int, d: int, gate: int, expert: int, naive: int = None) -> PoolReport:
+def _report(n_experts: int, params: int, stored: int, d: int, gate: int, expert: int, naive: int = None, scalars: int = 0) -> PoolReport:
     return PoolReport(n_experts=n_experts, params=params, stored_vectors=stored,
-                      memory_bytes=BYTES_PER_FLOAT * params + BYTES_PER_FLOAT * d * stored,
-                      gate_macs=gate, expert_macs=expert, predict_macs=gate + expert, naive_params=naive)
+                      memory_bytes=BYTES_PER_FLOAT * params + BYTES_PER_FLOAT * d * stored + BYTES_PER_FLOAT * scalars,
+                      gate_macs=gate, expert_macs=expert, predict_macs=gate + expert, naive_params=naive, extra_scalars=scalars)
 
 
 def pool_report(pool, d: int) -> PoolReport:
@@ -79,7 +80,11 @@ def pool_report(pool, d: int) -> PoolReport:
             gate += len(pool.keys) * d
         expert = int(round(sum(weight_macs(r.module) for r in recs) / len(recs)))
         naive = sum(p.numel() for r in recs for p in r.module.parameters())
-        return _report(len(recs), unique_param_count([r.module for r in recs]), stored, d, gate, expert, naive)
+        x_params = x_macs = x_scalars = 0
+        extra = getattr(pool, "extra_cost", None)                                      # routing v2 stage 4: router parameters, reference scalars, a live growth guard
+        if extra is not None:
+            x_params, x_macs, x_scalars = extra(d)
+        return _report(len(recs), unique_param_count([r.module for r in recs]) + x_params, stored, d, gate + x_macs, expert, naive + x_params, x_scalars)
     if hasattr(pool, "net"):                                                           # FineTune, JointOracle, ReplayNet
         if hasattr(pool, "buffer"):
             stored = pool.buffer.n

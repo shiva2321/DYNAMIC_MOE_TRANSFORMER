@@ -57,6 +57,10 @@ class EventLog:
     def of_kind(self, kind: str) -> list[Event]:
         return [e for e in self._events if e.kind == kind]
 
+    def since(self, n: int) -> list[Event]:
+        """The events added after the first ``n`` (the log only grows)."""
+        return self._events[n:]
+
     def __len__(self) -> int:
         return len(self._events)
 
