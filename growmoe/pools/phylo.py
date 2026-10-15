@@ -24,6 +24,7 @@ from ..config import PhyloCfg, GrowthCfg
 from ..conformal import benjamini_hochberg, conformal_pvalues
 from ..experts import MLPExpert
 from ..competence import LossChangeMonitor
+from ..gapgrow import GapMonitor, GrowthGuard, guard_reverts, params_of_widen, widen_increment
 from ..growth import GrowthPolicy, plateau
 from ..probation import Probation
 from ..signature import VmfSignature
@@ -62,6 +63,7 @@ class PhyloMoE(BasePool):
         self._held: list = []                                          # persistence (A-15): samples of a doubtful batch that wait for the next decision
         self._held_step = -10
         self._route_state()                                            # routing v2 stage 4a; idle unless cfg.router
+        self._grow_stats()                                             # routing v2 stage 4c; idle unless cfg.growth_rule == "gap"
 
     @staticmethod
     def _forget_competence_history(rec) -> None:
@@ -441,6 +443,8 @@ class PhyloMoE(BasePool):
                             self._windows_of(rec_i).merge_from(rec_j.meta["windows"])
                         if self.cfg.spawn_rule == "transfer":              # routing v2 stage 4b: the merged expert keeps the references of both
                             self._merge_refs(rec_i, rec_j)
+                        if self.cfg.growth_rule == "gap":                  # routing v2 stage 4c: the merged weights are not the guarded ones, and the old windows describe the old module
+                            self._forget_growth_state(rec_i)
 
                         for c_id, c_rec in list(self.experts.items()):
                             if c_rec.parent == j:
@@ -825,8 +829,11 @@ class PhyloMoE(BasePool):
                             losses.append(l_k)
                             rec.meta.setdefault("loss_hist", []).append(l_k)
 
+                        if self.cfg.growth_rule == "gap":              # routing v2 stage 4c: growth from the within-batch fit gap replaces the shadow-trial policy below
+                            self._gap_growth_step(rec, xk_v, yk_v, preq_losses)
+
                         # R6: Task 14 Growth inside Architecture A
-                        if (
+                        elif (
                             self.cfg.grow
                             and rec.state == "active"
                             and rec.replay is not None
@@ -1025,6 +1032,81 @@ class PhyloMoE(BasePool):
         if "ref" in rec_i.meta or "ref" in rec_j.meta:
             rec_i.meta["ref"] = deque(list(rec_i.meta.get("ref", ())) + list(rec_j.meta.get("ref", ())), maxlen=self.cfg.transfer_ref)
 
+    # ------------------------------------------------------------------------------------------ routing v2 stage 4c: growth from the within-batch fit gap
+    def _grow_stats(self) -> dict:
+        """Counters of the growth controller (the steps at which growth was wanted but blocked are counted per step). No wall-clock."""
+        if not hasattr(self, "grow_stats"):
+            self.grow_stats = {"post_rows": 0, "train_rows": 0, "blocked_cap": 0, "blocked_budget": 0, "reverts": 0}
+        return self.grow_stats
+
+    def _live_params(self) -> int:
+        return sum(r.module.num_params() for r in self.experts.values())
+
+    @staticmethod
+    def _forget_growth_state(rec) -> None:
+        rec.meta.pop("guard", None)
+        rec.meta.pop("gap", None)
+
+    def _gap_growth_step(self, rec, x: Tensor, y: Tensor, pre: Tensor) -> None:
+        """Called after an active expert trained on this batch. ``pre`` = its honest per-sample losses on the batch BEFORE the steps (the competence monitor's input); the losses on
+        the same rows AFTER the steps cost one no-grad forward of at most 64 rows. See ``growmoe.gapgrow`` for the signals; the decision: mature, gap below ``grow_gap``, cooled
+        down, room under the width cap and the parameter budget -> widen by ``grow_factor`` (function-preserving), keep the old expert for ``grow_guard_window`` batches."""
+        cfg, stats = self.cfg, self._grow_stats()
+        if not cfg.grow or rec.state != "active":
+            return
+        m = min(64, int(y.numel()))
+        with torch.no_grad():
+            post = F.cross_entropy(rec.module(x[:m]), y[:m], reduction="none")
+        stats["post_rows"] += m
+        stats["train_rows"] += int(y.numel())
+        mon = rec.meta.get("gap")
+        if mon is None:
+            mon = rec.meta["gap"] = GapMonitor(cfg.grow_window)
+        mon.add(pre[:m], post)
+        guard = rec.meta.get("guard")
+        if guard is not None:                                          # a growth is on probation: no new decision until it is confirmed or undone
+            guard.losses.append(float(pre.mean()))
+            if len(guard.losses) >= cfg.grow_guard_window:
+                self._close_guard(rec, guard, mon)
+            return
+        gap = mon.gap()
+        if gap is None or gap >= cfg.grow_gap or not mon.mature(cfg.grow_min_age, cfg.grow_plateau) or not mon.cooled(rec.meta.get("grow_cooldown", cfg.grow_cooldown)):
+            return
+        k = widen_increment(rec.module.hidden, cfg.grow_factor, self.grow_cfg.max_hidden, self.grow_cfg.min_widen)
+        if k == 0:
+            stats["blocked_cap"] += 1
+            return
+        added = params_of_widen(rec.module.d_in, len(rec.module.blocks), k)
+        if cfg.grow_budget_params is not None and self._live_params() + added > cfg.grow_budget_params:
+            stats["blocked_budget"] += 1
+            return
+        self._widen_expert(rec, mon, k, added, gap)
+
+    def _widen_expert(self, rec, mon: GapMonitor, k: int, added: int, gap: float) -> None:
+        cfg = self.cfg
+        old_module, old_opt = rec.module, rec.opt
+        new_module = old_module.clone()
+        new_module.widen(k, np.random.default_rng([cfg.seed, 0x47524F57, rec.id, self.step]))
+        rec.module, rec.opt = new_module, self.make_optimizer(new_module, rec.lr_mult)       # growth replaces parameters: the optimiser is rebuilt, as after any committed growth
+        rec.meta["guard"] = GrowthGuard(module=old_module, opt=old_opt, before=mon.recent_pre_mean(cfg.grow_guard_window), hidden_before=old_module.hidden)
+        improvement = mon.improvement()
+        mon.grew()
+        self.events.add("grow", self.step, expert=rec.id, kind="widen", increment=k, gap=gap, improvement=improvement, hidden_before=old_module.hidden,
+                        hidden_after=new_module.hidden, params_added=added, rule="gap")
+
+    def _close_guard(self, rec, guard: GrowthGuard, mon: GapMonitor) -> None:
+        """The guard window is over: keep the growth, or undo it (the expert and optimiser as they were) when the honest loss got worse by more than ``grow_guard_eps``."""
+        cfg = self.cfg
+        rec.meta.pop("guard", None)
+        after = sum(guard.losses) / len(guard.losses)
+        if guard_reverts(guard.before, after, cfg.grow_guard_eps):
+            grown = rec.module.hidden
+            rec.module, rec.opt = guard.module, guard.opt
+            rec.meta["grow_cooldown"] = 2 * rec.meta.get("grow_cooldown", cfg.grow_cooldown)
+            mon.grew()
+            self._grow_stats()["reverts"] += 1
+            self.events.add("grow_revert", self.step, expert=rec.id, hidden_from=grown, hidden_to=rec.module.hidden, before=guard.before, after=after)
+
     def extra_cost(self, d: int):
         """(parameters, extra multiply-adds per prediction, extra stored scalars) of the stage-4 machinery, read by ``accounting.pool_report``."""
         params = macs = scalars = 0
@@ -1033,6 +1115,8 @@ class PhyloMoE(BasePool):
             params, macs, scalars = params + p, macs + m, scalars + s
         if self.cfg.spawn_rule == "transfer":
             scalars += sum(len(r.meta["ref"]) for r in self.experts.values() if "ref" in r.meta)
+        if self.cfg.growth_rule == "gap":                                # a live growth guard keeps the pre-growth module: its parameters are real memory
+            params += sum(r.meta["guard"].module.num_params() for r in self.experts.values() if "guard" in r.meta)
         return params, macs, scalars
 
     # ------------------------------------------------------------------------------------------ routing v2 stage 3a: the batch-level gate
