@@ -40,6 +40,8 @@ def dev2():
         cells += [Cell("banking", "-", arm, s, **kw) for s in DEV_BANK]
         if "T" not in arm:
             cells += [Cell(f, "-", arm, s, **kw) for f in ("arith-mixed16", "arith-mixed128") for s in DEV_MIXED]
+        else:
+            cells += [Cell("arith-mixed128", "-", arm, s, **kw) for s in DEV_MIXED]            # diagnostic (dev only): does the transfer rule found false experts on a one-function stream?
     return cells
 
 

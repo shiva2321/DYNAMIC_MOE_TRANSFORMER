@@ -139,6 +139,22 @@ def test_the_alarm_path_leaves_the_cluster_itself_out_of_the_reference(base):
     assert pool._transfer_verdict(x, y, force_parent=None).n_ref == 512
 
 
+def test_on_the_alarm_path_the_cluster_is_judged_by_its_stored_honest_losses_not_by_a_rescoring(base):
+    """The competence alarm hands over the expert's own last samples, which it may already have trained on: re-scoring them with the current weights would understate how badly it did.
+    Here the stored losses say 'bad' (4.0) while the samples handed over are from the function the expert knows (a re-score would say 'good'): the verdict must follow the stored losses."""
+    pool, W = _fresh(base)
+    rec = pool.experts[0]
+    rec.meta["ref"] = deque([0.45] * 400 + [4.0] * 32, maxlen=512)
+    x, y = regime_batch(W, 32, 9012)                                                   # the known function: a re-score would give about 0.45
+    v = pool._transfer_verdict(x, y, force_parent=0)
+    assert v.conflict and v.loss_cluster == pytest.approx(4.0) and v.loss_ref == pytest.approx(0.45) and v.n_ref == 400 and v.n_cluster == 32
+    pool._handle_cluster(x, y, evidence=0.0, force_parent=0)
+    assert pool.events.of_kind("spawn")[-1].fields["p_conflict"] <= 0.01 and sorted(pool.experts) == [0, 1]
+    rec.meta["ref"] = deque([0.45] * 432, maxlen=512)                                  # the other way round: nothing bad was stored, whatever the samples handed over look like
+    x2, y2 = regime_batch(W, 32, 9013, perm=1)
+    assert not pool._transfer_verdict(x2, y2, force_parent=0).conflict
+
+
 def test_the_parent_is_the_expert_with_the_lowest_loss_on_the_cluster(base):
     pool, W = _fresh(base)
     pool._handle_cluster(*regime_batch(W, 48, 9007, perm=1), evidence=50.0)         # expert 1 knows the permuted function

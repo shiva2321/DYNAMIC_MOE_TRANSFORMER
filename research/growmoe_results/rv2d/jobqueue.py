@@ -35,8 +35,8 @@ class Job:
         self.name, self.args, self.markers, self.threads = name, list(args), list(markers), threads
         self.match = f"--cid {name}"
 
-    def done(self) -> bool:
-        return all(R.valid_json(HERE / m) for m in self.markers)
+    def done(self, stamp: str) -> bool:
+        return all(R.cell_done(HERE / m, stamp) for m in self.markers)
 
     def checkpoint(self) -> bool:
         return any((HERE / m).with_name(Path(m).stem + ".ckpt").exists() for m in self.markers)
@@ -66,8 +66,8 @@ def is_running(job, lines):
 
 
 def states(jobs):
-    lines = running_command_lines()
-    return {j.name: "DONE" if j.done() else ("RUNNING" if is_running(j, lines) else "PENDING") for j in jobs}
+    lines, stamp = running_command_lines(), R.code_stamp()                        # a result of other code than the present counts as missing
+    return {j.name: "DONE" if j.done(stamp) else ("RUNNING" if is_running(j, lines) else "PENDING") for j in jobs}
 
 
 def cmd_status(phase, verbose=False):

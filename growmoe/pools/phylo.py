@@ -971,21 +971,30 @@ class PhyloMoE(BasePool):
         valid = y_taken >= 0
         if int(valid.sum()) < self._TRANSFER_MIN_CLUSTER:
             return None
-        xv, yv = x_taken[valid], y_taken[valid]
-        exclude = int(len(x_taken)) if force_parent is not None else 0
-        best = None
-        for eid in ([force_parent] if force_parent is not None else list(self.experts)):
-            rec = self.experts[eid]
-            ref = self._transfer_reference(rec, exclude)
-            if len(ref) < cfg.transfer_min_ref:
-                continue
-            with torch.no_grad():
-                losses = F.cross_entropy(rec.module(xv), yv, reduction="none")
-            if best is None or float(losses.mean()) < best[0]:
-                best = (float(losses.mean()), eid, losses, ref)
-        if best is None:
-            return None
-        _, eid, losses, ref = best
+        if force_parent is not None:
+            # Alarm path (refinement R-7): the cluster is the parent's own newest samples, which it may already have trained on, so re-scoring them with the current weights would
+            # understate how badly it did. Their HONEST losses (taken before any training on them) are the newest entries of its reference: those are the cluster's losses, the
+            # older entries are the reference.
+            n = int(len(x_taken))
+            stored = list(self.experts[force_parent].meta.get("ref", ()))
+            if n > len(stored) or len(stored) - n < cfg.transfer_min_ref:
+                return None
+            eid, losses, ref = force_parent, torch.tensor(stored[-n:]), self._transfer_reference(self.experts[force_parent], n)
+        else:
+            xv, yv = x_taken[valid], y_taken[valid]
+            best = None
+            for e in list(self.experts):
+                rec = self.experts[e]
+                ref = self._transfer_reference(rec, 0)
+                if len(ref) < cfg.transfer_min_ref:
+                    continue
+                with torch.no_grad():
+                    scored = F.cross_entropy(rec.module(xv), yv, reduction="none")
+                if best is None or float(scored.mean()) < best[0]:
+                    best = (float(scored.mean()), e, scored, ref)
+            if best is None:
+                return None
+            _, eid, losses, ref = best
         margin = cfg.transfer_margin * math.log(max(int(self.experts[eid].module.seen.sum()), 2))
         conflict, p, diff = cluster_conflict(losses, torch.tensor(ref), cfg.transfer_alpha, cfg.transfer_perms, margin, generator(cfg.seed, 0x545246, self.step, eid))
         return TransferVerdict(parent=eid, conflict=conflict, p=p, diff=diff, loss_cluster=float(losses.mean()), loss_ref=float(np.mean(ref)), margin=margin,

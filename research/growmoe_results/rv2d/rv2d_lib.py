@@ -52,6 +52,20 @@ def arm_flags(cell: Cell) -> dict:
     return kw
 
 
+def code_stamp(root: Path = None, files=None) -> str:
+    """Short sha256 of the source a cell result depends on (every .py file of the growmoe package and this module; CRLF and LF hash alike). A result is valid only for the code
+    that produced it: ``Job.done`` accepts a cell only when its stamp is the current one, and the pre-registration records the stamp it was frozen at."""
+    import hashlib
+    root = ROOT if root is None else Path(root)
+    if files is None:
+        files = sorted(str(f.relative_to(root)).replace("\\", "/") for f in (root / "growmoe").rglob("*.py")) + ["research/growmoe_results/rv2d/rv2d_lib.py"]
+    h = hashlib.sha256()
+    for rel in files:
+        h.update(rel.encode("utf-8"))
+        h.update((root / rel).read_bytes().replace(b"\r\n", b"\n"))
+    return h.hexdigest()[:16]
+
+
 def atomic_write_text(path, text: str) -> None:
     path = Path(path)
     tmp = path.with_name(path.name + ".tmp")
@@ -60,6 +74,16 @@ def atomic_write_text(path, text: str) -> None:
         fh.flush()
         os.fsync(fh.fileno())
     os.replace(tmp, path)
+
+
+def cell_done(path, stamp: str = None) -> bool:
+    """A cell is done only when its result parses AND was produced by the current code (its ``code_stamp`` equals the given or the current stamp)."""
+    try:
+        with open(path, "r", encoding="utf-8") as fh:
+            rec = json.load(fh)
+    except Exception:
+        return False
+    return rec.get("code_stamp") == (stamp if stamp is not None else code_stamp())
 
 
 def valid_json(path) -> bool:

@@ -87,3 +87,16 @@ def test_choose_transfer_margin_prefers_the_default_on_a_tie_and_respects_the_ex
                 rows.append(_row(fam, stream, "S3+T", seed, 0.30 + gain, tmargin=t, experts=exp))
     out = S.choose_transfer_margin(rows)
     assert out["chosen"] == 0.25                                               # 0.35 breaks the 1.2x expert guard; 0.15 and 0.25 tie, the default wins
+
+
+def test_the_code_stamp_changes_with_any_stamped_file_and_ignores_line_endings(tmp_path):
+    """A cell result is valid only for the code that produced it: the stamp is a hash of the source files, with CRLF and LF alike."""
+    (tmp_path / "a.py").write_bytes(b"x = 1\r\n")
+    (tmp_path / "b.py").write_bytes(b"y = 1\n")
+    first = R.code_stamp(tmp_path, ["a.py", "b.py"])
+    (tmp_path / "a.py").write_bytes(b"x = 1\n")
+    assert R.code_stamp(tmp_path, ["a.py", "b.py"]) == first
+    (tmp_path / "b.py").write_bytes(b"y = 2\n")
+    assert R.code_stamp(tmp_path, ["a.py", "b.py"]) != first
+    assert R.code_stamp(tmp_path, ["a.py"]) != R.code_stamp(tmp_path, ["a.py", "b.py"])
+    assert len(R.code_stamp()) == 16                                                   # the default: every source file of the growmoe package and this module

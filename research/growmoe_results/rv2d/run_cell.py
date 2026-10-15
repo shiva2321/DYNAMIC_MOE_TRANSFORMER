@@ -17,11 +17,14 @@ def main():
     ap.add_argument("--cid", required=True)
     a = ap.parse_args()
     out = R.CELLS / f"{a.cid}.json"
-    if R.valid_json(out):
+    stamp = R.code_stamp()                                            # taken before the run: the result is valid for the code that was there when the cell started
+    if R.cell_done(out, stamp):
         return
     cells = {R.Cell(**c).cid: R.Cell(**c) for c in json.loads((HERE / f"cells_{a.phase}.json").read_text(encoding="utf-8"))}
     R.CELLS.mkdir(exist_ok=True)
-    R.atomic_write_text(out, json.dumps(R.run_cell(cells[a.cid])))
+    rec = R.run_cell(cells[a.cid])
+    rec["code_stamp"] = stamp
+    R.atomic_write_text(out, json.dumps(rec))
 
 
 if __name__ == "__main__":
