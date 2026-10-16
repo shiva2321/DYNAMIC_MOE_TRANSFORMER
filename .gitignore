@@ -60,3 +60,8 @@ research/growmoe_results/rv2d/cells_smoke/
 research/growmoe_results/rv2d/queue.lock
 research/growmoe_results/rv2d/logs/
 research/growmoe_results/rv2d/*.tmp
+research/growmoe_results/rv2d/cells_devview/
+research/growmoe_results/rv2d/cells_s3u/*.ckpt
+research/growmoe_results/rv2d/cells_s3u/*.tmp
+research/growmoe_results/rv2d/cells_s3d_*/*.ckpt
+research/growmoe_results/rv2d/cells_s3d_*/*.tmp

@@ -10,7 +10,8 @@ paired) with two changes made in the process, no product file touched:
 The results go to `cells_s3d_<variant>/` and carry the code stamp that was current when the cell started.
 
     python run_s3_dedupe.py list --variant x1
-    python run_s3_dedupe.py run --variant x1 --workers 2        # run what is missing (safe to repeat after a power cut)
+    python run_s3_dedupe.py run --variant x1 --workers 2             # the 30 function-regime cells; run what is missing (safe to repeat after a power cut)
+    python run_s3_dedupe.py run --variant x1 --workers 2 --set real  # arith-seq, banking and arith-mixed128 (11 cells), compared with the dev cells in cells/
 """
 
 import argparse
@@ -44,6 +45,21 @@ def cells():
     return [R.Cell("s3", st, arm, s, gap=g if "G" in arm else 0.0, tmargin=t if "T" in arm else 0.0) for st in STREAMS for s in SEEDS for arm in ARMS]
 
 
+def real_cells():
+    """The streams the stage-4 results come from (arithmetic, real text): their baseline is the dev cells in `cells/`, which have no head start to remove."""
+    g, t = CONST["grow_gap"], CONST["transfer_margin"]
+    out = []
+    for arm in ("S3", "S3+T+G"):
+        kw = dict(gap=g if "G" in arm else 0.0, tmargin=t if "T" in arm else 0.0)
+        out += [R.Cell("arith-seq", "-", arm, s, **kw) for s in (100, 101)] + [R.Cell("banking", "-", arm, s, **kw) for s in (100, 101)]
+    out += [R.Cell("arith-mixed128", "-", "S3", s) for s in SEEDS]
+    return out
+
+
+def chosen(which: str):
+    return {"s3": cells, "real": real_cells}[which]()
+
+
 def patch_signature() -> None:
     from growmoe.signature import VmfSignature
     original = VmfSignature.update
@@ -69,7 +85,9 @@ def run_cell_here(cell: R.Cell, variant: str) -> None:
     patch_signature()
     orig = R3.arm_cfg
     relax = VARIANTS[variant]
-    R3.arm_cfg = lambda arm, st, seed, steps: dataclasses.replace(orig(arm, st, seed, steps), seed=seed + OFFSET, infant_relax=relax)
+    R3.arm_cfg = lambda arm, st, seed, steps: dataclasses.replace(orig(arm, st, seed, steps), seed=seed + OFFSET, infant_relax=relax)     # the s3 family only: pool seed offset + the relaxation
+    flags = R.arm_flags
+    R.arm_flags = lambda c: {**flags(c), "infant_relax": relax}                          # every family: the relaxation (the arithmetic and banking pools keep their own seeds)
     R.CELLS = out                                                                       # checkpoints and results of this driver live apart from every other cell folder
     out.mkdir(exist_ok=True)
     cpu0 = time.process_time()
@@ -82,14 +100,14 @@ def run_cell_here(cell: R.Cell, variant: str) -> None:
 
 
 def cmd_run(args) -> None:
-    todo = [c for c in cells() if not R.cell_done(out_dir(args.variant) / f"{c.cid}.json", R.code_stamp())]
-    print(f"{len(todo)} cells to run of {len(cells())} (variant {args.variant})", flush=True)
+    todo = [c for c in chosen(args.set) if not R.cell_done(out_dir(args.variant) / f"{c.cid}.json", R.code_stamp())]
+    print(f"{len(todo)} cells to run of {len(chosen(args.set))} (set {args.set}, variant {args.variant})", flush=True)
     running = []
     while todo or running:
         running = [p for p in running if p.poll() is None]
         while todo and len(running) < args.workers:
             c = todo.pop(0)
-            running.append(subprocess.Popen([sys.executable, str(Path(__file__).resolve()), "one", "--cid", c.cid, "--variant", args.variant]))
+            running.append(subprocess.Popen([sys.executable, str(Path(__file__).resolve()), "one", "--cid", c.cid, "--variant", args.variant, "--set", args.set]))
             time.sleep(1)
         time.sleep(5)
     print("all cells finished", flush=True)
@@ -99,13 +117,14 @@ if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("cmd", choices=("list", "run", "one"))
     ap.add_argument("--variant", default="x1", choices=tuple(VARIANTS))
+    ap.add_argument("--set", default="s3", choices=("s3", "real"))
     ap.add_argument("--workers", type=int, default=2)
     ap.add_argument("--cid")
     a = ap.parse_args()
     if a.cmd == "list":
-        for c in cells():
+        for c in chosen(a.set):
             print(c.cid)
     elif a.cmd == "run":
         cmd_run(a)
     else:
-        run_cell_here({c.cid: c for c in cells()}[a.cid], a.variant)
+        run_cell_here({c.cid: c for c in cells() + real_cells()}[a.cid], a.variant)
