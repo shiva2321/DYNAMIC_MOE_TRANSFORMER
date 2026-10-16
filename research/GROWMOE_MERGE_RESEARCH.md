@@ -198,8 +198,8 @@ the younger of two experts that give the same answer on at least 80 % (or 50 %) 
 trains on it, so paired loss differences accumulate for free; a pair is retired when the survivor's loss is not worse than the retiree's by more than 0.1 ln K (one-sided, 99 %, at least 96 samples). `held-out samples`: 1 in
 8 samples is withheld from every expert's training, filed under the expert the pool routes it to, and the pair is tested on those never-trained samples (paired, one-sided, same margin). `answer-time averaging`: no merge; the
 answers of the chosen expert and of every overlapping expert that also accepts the input are averaged. Extras measured in `RESULTS_HEALING2.md`: a guard that the survivor must beat the chance-level loss by 0.2 nats
-(it removed the one wrong merge we saw in an earlier, head-start version of the study), moving the retiree's knowledge into the survivor by weight midpoint (66.5 %), distillation (66.5 %) or
-fine-tuning, against 66.7 % for the plain redirect: no gain.
+(it removed the one wrong merge we saw in an earlier, head-start version of the study), moving the retiree's knowledge into the survivor by weight midpoint (66.5 %) or distillation (66.5 %),
+against 66.7 % for the plain redirect: no gain (fine-tuning the survivor on the stored samples was measured only in the head-start version of the study: no gain either).
 
 What the table says, in order of importance:
 
