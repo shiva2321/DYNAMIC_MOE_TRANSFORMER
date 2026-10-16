@@ -135,6 +135,11 @@ class PhyloCfg(CommonCfg):
     grow_guard_window: int = 100     # batches after a growth during which it can be reverted
     grow_guard_eps: float = 0.02     # revert when the honest loss over the guard window is worse than before by more than this share
     grow_budget_params: object = None    # optional cap on the pool's live parameters (None = only GrowthCfg.max_hidden bounds growth)
+    # ---- stage 4.1 (docs/superpowers/specs/2026-10-16-stage4-1-cap-and-telemetry.md). Matters only once max_experts is reached.
+    cap_policy: str = "share"    # what a full pool does with a cluster that would found an expert: "share" = add it to the nearest expert (nothing is deleted, nothing is dropped, the sharing is
+    #                              reported); "drop" = the shipped behaviour (the cluster is lost). Both report it (events cap_reached, cap_blocked, cap_share; summary()["cap"]).
+    sig_dedupe: bool = False     # True: a signature never holds a point twice. Today the founding cluster of an expert enters its signature twice (once at the spawn, once in the training loop), which
+    #                              wrecks the calibration of the new expert for a few batches (the x4 infant relaxation hides it). OFF until it has passed its own test.
 
     def __post_init__(self) -> None:
         """Refuse stage-3 settings that would silently disable or break the test (a level the permutation count can never reach, an unknown name)."""
@@ -190,6 +195,8 @@ class PhyloCfg(CommonCfg):
             raise ValueError("grow_factor must exceed 1 and grow_guard_eps must not be negative")
         if self.grow_budget_params is not None and int(self.grow_budget_params) < 1:
             raise ValueError("grow_budget_params must be None or a positive integer")
+        if self.cap_policy not in ("share", "drop"):
+            raise ValueError(f"cap_policy must be 'share' or 'drop', got {self.cap_policy!r}")
 
 
 @dataclass

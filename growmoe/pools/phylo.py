@@ -12,6 +12,7 @@ Stages:
 
 from collections import deque
 import math
+import warnings
 from typing import Dict, List, Optional
 
 import numpy as np
@@ -64,6 +65,8 @@ class PhyloMoE(BasePool):
         self._held_step = -10
         self._route_state()                                            # routing v2 stage 4a; idle unless cfg.router
         self._grow_stats()                                             # routing v2 stage 4c; idle unless cfg.growth_rule == "gap"
+        self._cap_state()                                              # stage 4.1: what the cap did; counters only
+        self._infant_state()                                           # stage 4.1: samples the infant relaxation let through; counters only
 
     @staticmethod
     def _forget_competence_history(rec) -> None:
@@ -74,6 +77,10 @@ class PhyloMoE(BasePool):
         recent = rec.meta.get("recent")
         if recent is not None:
             recent.clear()
+
+    def _new_sig(self, seed: int):
+        """A fresh signature of the configured class. ``dedupe`` is passed only when ``sig_dedupe`` is on, so a custom ``sig_cls`` without that argument keeps working."""
+        return self.sig_cls(d=self.cfg.d, max_protos=256, seed=seed, **({"dedupe": True} if self.cfg.sig_dedupe else {}))
 
     def _normalize(self, x: Tensor) -> Tensor:
         norm = x.norm(dim=-1, keepdim=True).clamp_min(1e-12)
@@ -247,8 +254,8 @@ class PhyloMoE(BasePool):
                 trained_child = child_mod
 
         if not extended:
-            if len(self.experts) >= self.cfg.max_experts:
-                return None
+            if len(self.experts) >= self.cfg.max_experts:                 # a full pool: stage 4.1 reports it and, by default, shares the cluster with the nearest expert instead of losing it
+                return self._cap_cluster(parent_eid, aff, x_taken, y_taken, novel_indices, x_all, assigned)
 
             if trained_child is not None:
                 child_mod = trained_child
@@ -284,11 +291,7 @@ class PhyloMoE(BasePool):
             if valid_labels.numel() > 0:
                 child_mod.mark_seen(valid_labels)
 
-            child_sig = self.sig_cls(
-                d=self.cfg.d,
-                max_protos=256,
-                seed=self.cfg.seed * 1000 + next_id,
-            )
+            child_sig = self._new_sig(self.cfg.seed * 1000 + next_id)
             child_sig.update(x_taken)
             child_sig.fit()
 
@@ -553,7 +556,7 @@ class PhyloMoE(BasePool):
                 n_classes=self.cfg.n_classes,
                 seed=self.cfg.seed * 1000 + 0,
             )
-            sig = self.sig_cls(d=self.cfg.d, max_protos=256, seed=self.cfg.seed * 1000 + 0)
+            sig = self._new_sig(self.cfg.seed * 1000 + 0)
             sig.update(all_x)
             sig.fit()
             monitor = LossChangeMonitor(
@@ -605,6 +608,7 @@ class PhyloMoE(BasePool):
             assigned = torch.full((b,), rec.id, dtype=torch.long)
             p_nov = sig.pvalue(x)
             novel = benjamini_hochberg(p_nov, self.cfg.q)
+            self._note_cap_reached()
             self.tick()
             return StepRecord(
                 novel=novel,
@@ -619,6 +623,7 @@ class PhyloMoE(BasePool):
         # ------------------------------------------------ 13b Gate & Routing
         eids = list(self.experts.keys())
         P, LogF = self._gate_matrices(x, eids, phase="observe")               # (B, K) each
+        self._count_infant_suppression(x, P, eids)                            # stage 4.1: read-only counters
 
         if self.cfg.no_conformal:
             max_logf = torch.max(LogF, dim=1).values
@@ -664,8 +669,11 @@ class PhyloMoE(BasePool):
 
         # ------------------------------------------------ 13c Probation Buffer
         novel_indices = torch.where(probation_mask)[0]
+        full = len(self.experts) >= self.cfg.max_experts                       # stage 4.1: a full pool still looks at its novel samples when it shares (cap_policy), and says so when it drops
         if self.cfg.no_probation:
-            if len(novel_indices) > 0 and len(self.experts) < self.cfg.max_experts:
+            if len(novel_indices) > 0 and full and self.cfg.cap_policy == "drop":
+                self._note_cap_blocked(int(len(novel_indices)))
+            if len(novel_indices) > 0 and (not full or self.cfg.cap_policy == "share"):
                 x_nov = x[novel_indices]
                 y_nov = y_t[novel_indices] if y_t is not None else torch.full((len(x_nov),), -1, dtype=torch.long)
                 self._handle_cluster(
@@ -690,7 +698,9 @@ class PhyloMoE(BasePool):
             ttl = int(math.ceil(self.cfg.m_min / self.cfg.min_share))
             self.probation.expire(now=self.samples_seen, ttl=ttl)
 
-            if len(self.probation) >= self.cfg.m_min and len(self.experts) < self.cfg.max_experts:
+            if len(novel_indices) > 0 and len(self.probation) >= self.cfg.m_min and full and self.cfg.cap_policy == "drop":
+                self._note_cap_blocked(int(len(novel_indices)))
+            if len(self.probation) >= self.cfg.m_min and (not full or self.cfg.cap_policy == "share"):
                 cand_clusters = self.probation.clusters(
                     min_neighbors=self.cfg.min_neighbors,
                     m_min=self.cfg.m_min,
@@ -704,11 +714,7 @@ class PhyloMoE(BasePool):
                     else:
                         cx_sub = cx
 
-                    sig_c = self.sig_cls(
-                        d=self.cfg.d,
-                        max_protos=256,
-                        seed=self.cfg.seed * 1000 + len(self.experts),
-                    )
+                    sig_c = self._new_sig(self.cfg.seed * 1000 + len(self.experts))
                     sig_c.update(cx_sub)
                     sig_c.fit()
 
@@ -881,6 +887,7 @@ class PhyloMoE(BasePool):
             self._router_after_observe(router_mark)
 
         mean_loss = float(np.mean(losses)) if losses else float("nan")
+        self._note_cap_reached()
         self.tick()
         return StepRecord(
             novel=novel,
@@ -1128,6 +1135,123 @@ class PhyloMoE(BasePool):
             params += sum(r.meta["guard"].module.num_params() for r in self.experts.values() if "guard" in r.meta)
         return params, macs, scalars
 
+    # ------------------------------------------------------------------------------------------ stage 4.1: a full pool is loud and shares; read-only telemetry
+    def _cap_state(self) -> dict:
+        """What the expert cap did (counters only). Created on first use, so a pool pickled before stage 4.1 has them too."""
+        if not hasattr(self, "_cap"):
+            self._cap = {"reached_step": None, "warned": False, "blocked": 0, "blocked_samples": 0, "shared": 0, "shared_samples": 0}
+        return self._cap
+
+    def _infant_state(self) -> dict:
+        """What the infants' relaxed gate did (counters only); see ``_count_infant_suppression``."""
+        if not hasattr(self, "_infant"):
+            self._infant = {"batches_with_infant": 0, "novel_to_mature": 0, "suppressed": 0}
+        return self._infant
+
+    def _note_cap_reached(self) -> None:
+        """The first time the pool holds ``max_experts`` experts: one ``cap_reached`` event. Reaching the cap changes nothing by itself, so it does not warn; the first time the cap acts it does."""
+        st = self._cap_state()
+        if st["reached_step"] is None and len(self.experts) >= self.cfg.max_experts:
+            st["reached_step"] = self.step
+            self.events.add(kind="cap_reached", step=self.step, experts=len(self.experts), cap=self.cfg.max_experts, policy=self.cfg.cap_policy)
+
+    def _warn_cap_once(self) -> None:
+        """The first time a full pool turns a cluster away or shares it: one ``RuntimeWarning`` per pool that says what the cap does from now on."""
+        st = self._cap_state()
+        if st["warned"]:
+            return
+        st["warned"] = True
+        share = self.cfg.cap_policy == "share"
+        what = ("is added to the nearest expert (cap_policy='share'): nothing is deleted, but that expert now serves more than one thing"
+                if share else "is NOT learned (cap_policy='drop'): its samples are lost")
+        warnings.warn(f"PhyloMoE: the pool is at max_experts={self.cfg.max_experts} (step {self.step}), so a region the pool has never seen {what}. "
+                      "Raise max_experts if the stream can hold more distinct regions than that.", RuntimeWarning, stacklevel=3)
+
+    def _note_cap_blocked(self, samples: int) -> None:
+        """cap_policy 'drop': novel samples met a full pool and nothing was founded. Every time is counted; an event is written the 1st, 2nd, 4th, 8th ... time (a pool stuck at its cap would write one per batch)."""
+        st = self._cap_state()
+        st["blocked"] += 1
+        st["blocked_samples"] += int(samples)
+        self._warn_cap_once()
+        if st["blocked"] & (st["blocked"] - 1) == 0:
+            self.events.add(kind="cap_blocked", step=self.step, samples=int(samples), blocked=st["blocked"], experts=len(self.experts), cap=self.cfg.max_experts)
+
+    def _cap_cluster(self, parent_eid: int, aff: float, x_taken: Tensor, y_taken: Tensor, novel_indices, x_all, assigned) -> None:
+        """A cluster that would found an expert met a full pool. 'drop' = the shipped behaviour (nothing is founded, the cluster is lost), now counted and reported. 'share' (default) = the cluster
+        joins the signature and the replay of the nearest expert and no weight changes; from then on the gate sends the region to that expert, which trains on it like on any of its own samples
+        (when the labels conflict it becomes a compromise, which is the price of the cap; nothing is deleted and nothing is lost)."""
+        n = int(x_taken.shape[0])
+        if self.cfg.cap_policy == "drop":
+            self._note_cap_blocked(n)
+            return None
+        st = self._cap_state()
+        parent_rec = self.experts[parent_eid]
+        valid = y_taken >= 0
+        parent_rec.meta["sig"].update(x_taken)
+        parent_rec.meta["sig"].fit()
+        if parent_rec.replay is not None:                              # an archived expert has no replay yet; it gets a fresh one when it revives
+            parent_rec.replay.add(x_taken[valid], y_taken[valid])
+        st["shared"] += 1
+        st["shared_samples"] += n
+        self._warn_cap_once()
+        self.events.add(kind="cap_share", step=self.step, expert=parent_eid, samples=n, experts=len(self.experts), cap=self.cfg.max_experts, affinity=aff)
+        if novel_indices is not None and len(novel_indices) > 0 and x_all is not None and assigned is not None:
+            near = parent_rec.meta["sig"].pvalue(x_all[novel_indices]) >= self.cfg.q
+            if near.any():
+                assigned[novel_indices[near]] = parent_eid
+        return None
+
+    def _count_infant_suppression(self, x: Tensor, P: Tensor, eids: List[int]) -> None:
+        """Read-only counters of what the infants' relaxed gate hides (nothing here changes the pool). In every observe call that has an infant: ``novel_to_mature`` adds the samples the mature
+        experts alone flag as novel (Benjamini-Hochberg on their best p-value) and ``suppressed`` adds the samples that the batch would have flagged had the infants' p-values not been multiplied
+        by ``infant_relax`` but that the relaxed gate let through. Always suppressed <= novel_to_mature (BH is monotone in the p-values); ``infant_relax`` = 1 gives 0. Exact for the exact gate;
+        with ``gate_shortlist`` > 0 the mature columns outside the shortlist are 0, so both counts are upper bounds there."""
+        infants = [k for k, e in enumerate(eids) if self.experts[e].state == "infant"]
+        if not infants:
+            return
+        st = self._infant_state()
+        st["batches_with_infant"] += 1
+        if len(infants) == len(eids) or self.cfg.no_conformal:
+            return
+        is_infant = torch.zeros(len(eids), dtype=torch.bool)
+        is_infant[infants] = True
+        q = self.cfg.q
+        novel_mature = benjamini_hochberg(P[:, ~is_infant].max(dim=1).values, q)
+        st["novel_to_mature"] += int(novel_mature.sum())
+        if self.cfg.infant_relax <= 1.0 or not bool(novel_mature.any()):
+            return
+        plain = P.clone()
+        for k in infants:
+            plain[:, k] = self.experts[eids[k]].meta["sig"].pvalue(x)             # the infant's p-value without the relaxation
+        flagged_plain = benjamini_hochberg(plain.max(dim=1).values, q)
+        flagged = benjamini_hochberg(P.max(dim=1).values, q)
+        st["suppressed"] += int((flagged_plain & ~flagged).sum())
+
+    def redundancy_report(self, limit: int = 64) -> dict:
+        """Which pairs of experts cover the same inputs. Read-only: nothing is merged, moved, trained or deleted and no event is written.
+
+        ``overlap`` is the shipped merge rule's number: the mean conformal p-value of one expert's prototypes under the other's signature, the smaller of the two directions (about 0.5 for two samples
+        of one region, near the floor 1/(n+1) for disjoint regions). Pairs at or above ``merge_overlap`` are listed with their ``agreement``: the share of both experts' prototypes on which the two
+        predict the same class. Overlap says the inputs coincide, not that the functions do: a high overlap with a low agreement is two different functions on shared inputs, and neither may be evicted
+        for it. Only the ``limit`` experts with the most prototypes are compared (the cost grows with limit squared); ``truncated`` says whether others were left out."""
+        eids = sorted(e for e, r in self.experts.items() if r.meta["sig"].protos is not None and len(r.meta["sig"].protos) >= 2)
+        truncated = len(eids) > limit
+        if truncated:
+            eids = sorted(sorted(eids, key=lambda e: -len(self.experts[e].meta["sig"].protos))[:limit])
+        pairs = []
+        for a, i in enumerate(eids):
+            sig_i = self.experts[i].meta["sig"]
+            for j in eids[a + 1:]:
+                sig_j = self.experts[j].meta["sig"]
+                overlap = min(float(sig_j.pvalue(sig_i.protos).mean()), float(sig_i.pvalue(sig_j.protos).mean()))
+                if overlap < self.cfg.merge_overlap:
+                    continue
+                x = torch.cat([sig_i.protos, sig_j.protos])
+                with torch.no_grad():
+                    agreement = float((self.experts[i].module(x).argmax(-1) == self.experts[j].module(x).argmax(-1)).float().mean())
+                pairs.append({"a": i, "b": j, "overlap": overlap, "agreement": agreement})
+        return {"experts": len(self.experts), "compared": len(eids), "pairs": pairs, "truncated": truncated}
+
     # ------------------------------------------------------------------------------------------ routing v2 stage 3a: the batch-level gate
     @property
     def set_stats(self) -> dict:
@@ -1138,6 +1262,10 @@ class PhyloMoE(BasePool):
         out = super().summary()
         if self.cfg.set_gate:
             out["set_stats"] = dict(self._set.stats)
+        cap = self._cap_state()                                        # stage 4.1: what a full pool did, and what the infants' relaxed gate hid
+        out["cap"] = {"policy": self.cfg.cap_policy, "cap": self.cfg.max_experts, "reached_step": cap["reached_step"], "blocked": cap["blocked"],
+                      "blocked_samples": cap["blocked_samples"], "shared": cap["shared"], "shared_samples": cap["shared_samples"]}
+        out["infant"] = dict(self._infant_state())
         return out
 
     def _windows_of(self, rec) -> SourceWindows:

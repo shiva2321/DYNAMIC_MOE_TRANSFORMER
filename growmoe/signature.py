@@ -26,7 +26,7 @@ DEFAULT_KAPPA_GRID = (2.0, 4.0, 8.0, 16.0, 32.0, 64.0, 128.0, 256.0)
 
 class VmfSignature:
     def __init__(self, d: int, max_protos: int = 256,
-                 kappa_grid: Sequence[float] = DEFAULT_KAPPA_GRID, seed: int = 0) -> None:
+                 kappa_grid: Sequence[float] = DEFAULT_KAPPA_GRID, seed: int = 0, dedupe: bool = False) -> None:
         grid = tuple(sorted(float(k) for k in kappa_grid))
         if d < 2 or max_protos < 2 or not grid or grid[0] <= 0.0:
             raise ValueError("need d >= 2, max_protos >= 2 and a non-empty positive kappa_grid")
@@ -34,6 +34,7 @@ class VmfSignature:
         self.max_protos = max_protos
         self.kappa_grid = grid
         self.seed = seed
+        self.dedupe = dedupe                      # True: a point already held is not added again (see ``update``)
         self.seen = 0
         self._rng = np.random.default_rng([seed, 0x5167])
         self._log_c = {k: log_vmf_norm(d, k) for k in grid}
@@ -85,8 +86,14 @@ class VmfSignature:
 
     # ----------------------------------------------------------------- update
     def update(self, x) -> None:
-        """Stream points into the reservoir (Algorithm R: every point seen so far is kept w.p. max_protos/seen)."""
+        """Stream points into the reservoir (Algorithm R: every point seen so far is kept w.p. max_protos/seen). With ``dedupe`` a point that is already a prototype (cosine within 1e-5 of
+        1, which is float32 rounding of the same vector) is skipped and not counted as seen: a signature that holds a point and its copy has a twin for that point in every leave-one-out score,
+        which drives all calibration scores to the same value and the p-value of fresh points of the same region to the floor 1/(n+1)."""
         x = self._unit(x)
+        if getattr(self, "dedupe", False) and self._n > 0:
+            x = x[(x @ self.protos.T).max(dim=1).values < 1.0 - 1e-5]
+            if x.shape[0] == 0:
+                return
         b = x.shape[0]
         ts = self.seen + np.arange(b, dtype=np.int64)
         fill = min(b, self.max_protos - self._n)

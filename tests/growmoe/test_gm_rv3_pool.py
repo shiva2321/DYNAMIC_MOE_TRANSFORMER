@@ -163,7 +163,7 @@ def test_a_paused_gate_leaves_the_vote_alone_and_says_so(two_source_pool, monkey
 
 def test_the_breaker_opens_in_a_live_pool_pauses_and_resumes():
     cA, cC = _centres(0.85)
-    pool = _pool(set_gate=True, set_gate_breaker_len=3, set_gate_breaker_rate=0.5, set_gate_breaker_pause=4, max_experts=1)    # max_experts=1: novel batches cannot spawn
+    pool = _pool(set_gate=True, set_gate_breaker_len=3, set_gate_breaker_rate=0.5, set_gate_breaker_pause=4, max_experts=1, cap_policy="drop")    # max_experts=1 with cap_policy="drop" (the pre-4.1 behaviour): novel batches cannot spawn and are not shared either
     _teach(pool, cA, 6, 10)                                                               # the last three verdicts in the breaker's memory are "known"
     verdicts = [pool.observe(_draw(cC, 64, 300 + k), _labels(64, 400 + k)).meta["set_verdict"] for k in range(6)]
     # known, known, novel -> 1/3; known, novel, novel -> 2/3 > 0.5 opens it at the second foreign batch; paused while step < opening step + 4 (three batches).

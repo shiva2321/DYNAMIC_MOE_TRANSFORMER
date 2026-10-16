@@ -263,7 +263,7 @@ def test_a_stale_hold_is_cleared_when_a_new_run_of_doubtful_batches_starts(monke
 
 def test_the_breaker_is_fed_the_raw_verdict_and_not_the_held_one():
     cA, cC = _centres(0.85)
-    pool = _pool(set_gate_confirm=2, set_gate_breaker_len=3, set_gate_breaker_rate=0.5, set_gate_breaker_pause=4, max_experts=1)        # max_experts=1: novel batches cannot spawn
+    pool = _pool(set_gate_confirm=2, set_gate_breaker_len=3, set_gate_breaker_rate=0.5, set_gate_breaker_pause=4, max_experts=1, cap_policy="drop")        # max_experts=1 with cap_policy="drop" (the pre-4.1 behaviour): novel batches cannot spawn and are not shared either
     _teach(pool, cA, 6, 10)
     verdicts = [pool.observe(_draw(cC, 64, 300 + k), _labels(64, 400 + k)).meta["set_verdict"] for k in range(6)]
     # raw: novel, novel -> the breaker (3 slots, more than half doubtful) opens at the SECOND foreign batch, exactly as without persistence
