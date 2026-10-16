@@ -1,0 +1,1 @@
+{"arm": "oracle_routed_unaliased", "n_regimes": 30, "seed": 102, "acc": 0.38733333349227905, "experts": 30, "params": 1037040, "stored_vectors": 0, "bytes": 4148160, "predict_macs": 33792, "seconds": 5.491367099981289}

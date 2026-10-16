@@ -69,6 +69,9 @@ def smoke():
 if __name__ == "__main__":
     which = sys.argv[1]
     cells = {"dev1": dev1, "dev2": dev2, "confirm": confirm, "smoke": smoke}[which]()
+    if "--skip-family" in sys.argv:                                  # dev2 of 2026-10-16: the s3 family (function regimes) is run without the seed-aliasing head start by run_s3_unaliased.py instead (E-035)
+        skip = sys.argv[sys.argv.index("--skip-family") + 1]
+        cells = [c for c in cells if c.family != skip]
     seen, uniq = set(), []
     for c in cells:
         if c.cid not in seen:

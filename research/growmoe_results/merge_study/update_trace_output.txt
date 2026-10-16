@@ -1,0 +1,5 @@
+observe call 10 (the first batch of regime 1) founded expert 1; signature updates during this ONE call (signature id suffix, points already seen, rows added, rows that were already prototypes):
+   signature ...58256: seen    0, adds  64 rows,   0 of them were already held
+   signature ...29312: seen    0, adds  64 rows,   0 of them were already held
+   signature ...29312: seen   64, adds  64 rows,  64 of them were already held
+signatures: {0: '...58304', 1: '...29312'}
