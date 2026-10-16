@@ -100,3 +100,14 @@ def test_the_code_stamp_changes_with_any_stamped_file_and_ignores_line_endings(t
     assert R.code_stamp(tmp_path, ["a.py", "b.py"]) != first
     assert R.code_stamp(tmp_path, ["a.py"]) != R.code_stamp(tmp_path, ["a.py", "b.py"])
     assert len(R.code_stamp()) == 16                                                   # the default: every source file of the growmoe package and this module
+
+
+def test_the_selection_cli_can_write_the_router_curve_whose_keys_are_tuples():
+    """The router curve is keyed by (family, stream); the first real dev1 run crashed on json.dumps with 'keys must be str ... not tuple'."""
+    import json
+    import rv2d_select_cli as C
+    out = C._plain({("s3", "OV-0.85"): {"gain": 0.1}, "a": [{("x", "y"): 1}], 3: "n"})
+    assert out == {"s3:OV-0.85": {"gain": 0.1}, "a": [{"x:y": 1}], "3": "n"}
+    json.dumps(out)
+    rows = [{"family": "s3", "stream": "OV-0.85", "arm": "S3", "seed": 100, "router": {"off": {"acc": 0.3}, "restrict-0.01": {"acc": 0.4}, "restrict-0.03": {"acc": 0.4}, "free-0.01": {"acc": 0.4}, "free-0.03": {"acc": 0.4}}}]
+    json.dumps(C._plain(S.choose_router_setting(rows)))

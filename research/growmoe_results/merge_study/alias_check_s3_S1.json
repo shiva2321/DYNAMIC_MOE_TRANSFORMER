@@ -1,0 +1,82 @@
+[
+ {
+  "stream": "S1",
+  "arm": "S3",
+  "stream_seed": 100,
+  "pool_seed": 100,
+  "acc": 0.7952380946704319,
+  "experts": 4,
+  "regimes": 7,
+  "seconds": 90.82703099999344
+ },
+ {
+  "stream": "S1",
+  "arm": "S3",
+  "stream_seed": 100,
+  "pool_seed": 107,
+  "acc": 0.7866666615009308,
+  "experts": 4,
+  "regimes": 7,
+  "seconds": 43.41955050002434
+ },
+ {
+  "stream": "S1",
+  "arm": "S3+T",
+  "stream_seed": 100,
+  "pool_seed": 100,
+  "acc": 0.8095237995897021,
+  "experts": 7,
+  "regimes": 7,
+  "seconds": 52.62314380001044
+ },
+ {
+  "stream": "S1",
+  "arm": "S3+T",
+  "stream_seed": 100,
+  "pool_seed": 107,
+  "acc": 0.808571423803057,
+  "experts": 7,
+  "regimes": 7,
+  "seconds": 49.34442849998595
+ },
+ {
+  "stream": "S1",
+  "arm": "S3",
+  "stream_seed": 101,
+  "pool_seed": 101,
+  "acc": 0.8000000076634544,
+  "experts": 5,
+  "regimes": 7,
+  "seconds": 87.20894760001102
+ },
+ {
+  "stream": "S1",
+  "arm": "S3",
+  "stream_seed": 101,
+  "pool_seed": 108,
+  "acc": 0.7914285617215293,
+  "experts": 4,
+  "regimes": 7,
+  "seconds": 96.44947069999762
+ },
+ {
+  "stream": "S1",
+  "arm": "S3+T",
+  "stream_seed": 101,
+  "pool_seed": 101,
+  "acc": 0.8142857210976737,
+  "experts": 8,
+  "regimes": 7,
+  "seconds": 79.27638650001609
+ },
+ {
+  "stream": "S1",
+  "arm": "S3+T",
+  "stream_seed": 101,
+  "pool_seed": 108,
+  "acc": 0.7885714258466449,
+  "experts": 7,
+  "regimes": 7,
+  "seconds": 68.09143369999947
+ }
+]

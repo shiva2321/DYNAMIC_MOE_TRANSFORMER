@@ -1,0 +1,87 @@
+C:\Users\Asta\AppData\Local\Programs\Python\Python312\Lib\site-packages\torch\cuda\__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+seed 0 injections at batches (3,): pool sizes hold 24, rival 24, preq 24
+regime  0 N= 0 D= 1 acc N 67.5 D 47.0 | overlap 0.59/0.57 agree 0.58 | assigned N 1280 D 1
+  preq retire N: diff +0.71 p 0.001 margin 0.14 -> REFUSE (replay 256, ref 512)
+  preq retire D: n/a (replay 65, ref 1)
+  hold retire N: n=108 mean +1.15 se 0.21 ucb +1.63 margin 0.14 -> refuse
+  hold retire D: n=44 mean -1.26 se 0.35 ucb -0.43 margin 0.14 -> pass
+  rival retire N: n=512 mean +0.81 se 0.07 ucb +0.98
+  rival retire D: n=251 mean -0.66 se 0.10 ucb -0.42
+regime  1 N= 2 D= 3 acc N 56.0 D 69.0 | overlap 0.55/0.26 agree 0.68 | assigned N 192 D 448
+  preq retire N: n/a (replay 256, ref 0)
+  preq retire D: diff +0.25 p 0.014 margin 0.14 -> pass (replay 256, ref 192)
+  hold retire N: n=39 mean -0.27 se 0.16 ucb +0.11 margin 0.14 -> pass
+  hold retire D: n=41 mean +0.43 se 0.20 ucb +0.89 margin 0.14 -> refuse
+  rival retire N: n=31 mean -0.94 se 0.22 ucb -0.44
+  rival retire D: n=97 mean +0.34 se 0.14 ucb +0.67
+regime  2 N= 4 D= 5 acc N 53.5 D 65.0 | overlap 0.58/0.27 agree 0.66 | assigned N 191 D 448
+  preq retire N: n/a (replay 254, ref 0)
+  preq retire D: diff +0.23 p 0.035 margin 0.14 -> pass (replay 256, ref 192)
+  hold retire N: n=39 mean -0.34 se 0.22 ucb +0.18 margin 0.14 -> refuse
+  hold retire D: n=41 mean +0.27 se 0.23 ucb +0.80 margin 0.14 -> refuse
+  rival retire N: n=39 mean -0.48 se 0.18 ucb -0.05
+  rival retire D: n=89 mean +0.15 se 0.11 ucb +0.40
+regime  3 N= 6 D= 7 acc N 60.0 D 75.0 | overlap 0.57/0.37 agree 0.67 | assigned N 256 D 384
+  preq retire N: diff -0.42 p 0.997 margin 0.14 -> pass (replay 256, ref 64)
+  preq retire D: diff +0.16 p 0.114 margin 0.14 -> pass (replay 256, ref 128)
+  hold retire N: n=43 mean -0.04 se 0.21 ucb +0.43 margin 0.14 -> refuse
+  hold retire D: n=37 mean +0.15 se 0.21 ucb +0.63 margin 0.14 -> refuse
+  rival retire N: n=38 mean -0.23 se 0.23 ucb +0.30
+  rival retire D: n=90 mean +0.14 se 0.10 ucb +0.38
+regime  4 N= 8 D= 9 acc N 54.0 D 71.0 | overlap 0.55/0.28 agree 0.62 | assigned N 192 D 448
+  preq retire N: n/a (replay 256, ref 0)
+  preq retire D: diff +0.40 p 0.003 margin 0.14 -> REFUSE (replay 256, ref 192)
+  hold retire N: n=46 mean -0.69 se 0.21 ucb -0.20 margin 0.14 -> pass
+  hold retire D: n=34 mean +0.71 se 0.31 ucb +1.45 margin 0.14 -> refuse
+  rival retire N: n=43 mean -0.48 se 0.21 ucb +0.01
+  rival retire D: n=85 mean +0.70 se 0.16 ucb +1.07
+regime  5 N=10 D=11 acc N 59.5 D 68.5 | overlap 0.55/0.28 agree 0.72 | assigned N 192 D 448
+  preq retire N: n/a (replay 256, ref 0)
+  preq retire D: diff +0.19 p 0.032 margin 0.14 -> pass (replay 256, ref 192)
+  hold retire N: n=41 mean -0.41 se 0.16 ucb -0.03 margin 0.14 -> pass
+  hold retire D: n=39 mean +0.48 se 0.16 ucb +0.85 margin 0.14 -> refuse
+  rival retire N: n=40 mean -0.28 se 0.14 ucb +0.05
+  rival retire D: n=88 mean +0.17 se 0.12 ucb +0.46
+regime  6 N=12 D=13 acc N 58.5 D 72.0 | overlap 0.57/0.29 agree 0.67 | assigned N 192 D 1088
+  preq retire N: n/a (replay 256, ref 0)
+  preq retire D: diff +0.44 p 0.001 margin 0.14 -> REFUSE (replay 256, ref 512)
+  hold retire N: n=68 mean -0.45 se 0.15 ucb -0.10 margin 0.14 -> pass
+  hold retire D: n=92 mean +0.62 se 0.12 ucb +0.90 margin 0.14 -> refuse
+  rival retire N: n=219 mean -0.37 se 0.08 ucb -0.18
+  rival retire D: n=512 mean +0.56 se 0.07 ucb +0.72
+regime  7 N=14 D=15 acc N 50.5 D 59.0 | overlap 0.57/0.27 agree 0.58 | assigned N 192 D 448
+  preq retire N: n/a (replay 256, ref 0)
+  preq retire D: diff +0.43 p 0.001 margin 0.14 -> REFUSE (replay 256, ref 192)
+  hold retire N: n=41 mean -0.92 se 0.24 ucb -0.36 margin 0.14 -> pass
+  hold retire D: n=39 mean +0.66 se 0.21 ucb +1.16 margin 0.14 -> refuse
+  rival retire N: n=40 mean -0.61 se 0.21 ucb -0.14
+  rival retire D: n=88 mean +0.40 se 0.14 ucb +0.72
+regime  8 N=16 D=17 acc N 52.5 D 70.5 | overlap 0.59/0.28 agree 0.63 | assigned N 192 D 448
+  preq retire N: n/a (replay 256, ref 0)
+  preq retire D: diff +0.57 p 0.001 margin 0.14 -> REFUSE (replay 256, ref 192)
+  hold retire N: n=43 mean -0.57 se 0.27 ucb +0.07 margin 0.14 -> pass
+  hold retire D: n=37 mean +0.50 se 0.20 ucb +0.96 margin 0.14 -> refuse
+  rival retire N: n=51 mean -0.75 se 0.28 ucb -0.09
+  rival retire D: n=77 mean +0.26 se 0.19 ucb +0.71
+regime  9 N=18 D=19 acc N 46.5 D 58.0 | overlap 0.53/0.32 agree 0.62 | assigned N 192 D 448
+  preq retire N: n/a (replay 256, ref 0)
+  preq retire D: diff +0.61 p 0.001 margin 0.14 -> REFUSE (replay 256, ref 192)
+  hold retire N: n=38 mean -0.71 se 0.29 ucb -0.02 margin 0.14 -> pass
+  hold retire D: n=42 mean +0.56 se 0.25 ucb +1.13 margin 0.14 -> refuse
+  rival retire N: n=36 mean -0.64 se 0.19 ucb -0.21
+  rival retire D: n=92 mean +0.52 se 0.15 ucb +0.87
+regime 10 N=20 D=21 acc N 60.0 D 70.5 | overlap 0.59/0.28 agree 0.69 | assigned N 192 D 448
+  preq retire N: n/a (replay 256, ref 0)
+  preq retire D: diff +0.23 p 0.032 margin 0.14 -> pass (replay 256, ref 192)
+  hold retire N: n=42 mean -0.48 se 0.19 ucb -0.04 margin 0.14 -> pass
+  hold retire D: n=38 mean +0.07 se 0.18 ucb +0.50 margin 0.14 -> refuse
+  rival retire N: n=43 mean -0.03 se 0.19 ucb +0.43
+  rival retire D: n=85 mean +0.27 se 0.12 ucb +0.54
+regime 11 N=22 D=23 acc N 56.5 D 74.0 | overlap 0.57/0.30 agree 0.71 | assigned N 192 D 448
+  preq retire N: n/a (replay 256, ref 0)
+  preq retire D: diff +0.27 p 0.013 margin 0.14 -> pass (replay 256, ref 192)
+  hold retire N: n=41 mean -0.61 se 0.22 ucb -0.08 margin 0.14 -> pass
+  hold retire D: n=39 mean +0.23 se 0.27 ucb +0.84 margin 0.14 -> refuse
+  rival retire N: n=41 mean -0.27 se 0.21 ucb +0.22
+  rival retire D: n=87 mean +0.34 se 0.13 ucb +0.65

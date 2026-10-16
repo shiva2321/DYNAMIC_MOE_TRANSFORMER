@@ -32,3 +32,5 @@
 | Evidence grade | how much to trust a result | A / B / C / L / R / H (README section 3) |
 | AMENDMENT | a recorded change to a pre-registered protocol | never edits the PREREG; explains what changed and why |
 | Hash-freeze | a fingerprint of a file taken before it is used | sha256 stored in `*.sha256`; the run refuses to start if the file changed |
+| False spawn | A new expert that duplicates one that already knows the function. The pool cannot remove it afterwards (the merge routine never fires). | an expert founded by a spawn decision on data an existing expert already predicts; E-034 |
+| Seed aliasing (head start) | The expert and the teacher that makes the labels are built from the same random numbers, so the expert starts with some of the teacher's own units. It flatters pools whose expert ids line up with the regimes. | MLPExpert(seed = cfg.seed*1000 + id) against the teacher MLPExpert(seed = stream seed*1000 + regime); E-035 |

@@ -1,0 +1,272 @@
+[
+ {
+  "seed": 0,
+  "length": 10,
+  "relax": 4.0,
+  "experts": 12,
+  "regimes_with_expert": 12,
+  "acc": 0.6820833384990692,
+  "regimes": 12
+ },
+ {
+  "seed": 1,
+  "length": 10,
+  "relax": 4.0,
+  "experts": 12,
+  "regimes_with_expert": 12,
+  "acc": 0.694583331545194,
+  "regimes": 12
+ },
+ {
+  "seed": 2,
+  "length": 10,
+  "relax": 4.0,
+  "experts": 12,
+  "regimes_with_expert": 12,
+  "acc": 0.6541666636864344,
+  "regimes": 12
+ },
+ {
+  "seed": 0,
+  "length": 5,
+  "relax": 4.0,
+  "experts": 10,
+  "regimes_with_expert": 10,
+  "acc": 0.5570833360155424,
+  "regimes": 12
+ },
+ {
+  "seed": 1,
+  "length": 5,
+  "relax": 4.0,
+  "experts": 12,
+  "regimes_with_expert": 12,
+  "acc": 0.6237500011920929,
+  "regimes": 12
+ },
+ {
+  "seed": 2,
+  "length": 5,
+  "relax": 4.0,
+  "experts": 5,
+  "regimes_with_expert": 5,
+  "acc": 0.4687500049670537,
+  "regimes": 12
+ },
+ {
+  "seed": 0,
+  "length": 3,
+  "relax": 4.0,
+  "experts": 1,
+  "regimes_with_expert": 1,
+  "acc": 0.33791666477918625,
+  "regimes": 12
+ },
+ {
+  "seed": 1,
+  "length": 3,
+  "relax": 4.0,
+  "experts": 11,
+  "regimes_with_expert": 11,
+  "acc": 0.5404166604081789,
+  "regimes": 12
+ },
+ {
+  "seed": 2,
+  "length": 3,
+  "relax": 4.0,
+  "experts": 8,
+  "regimes_with_expert": 8,
+  "acc": 0.4845833306511243,
+  "regimes": 12
+ },
+ {
+  "seed": 0,
+  "length": 2,
+  "relax": 4.0,
+  "experts": 1,
+  "regimes_with_expert": 1,
+  "acc": 0.31541666636864346,
+  "regimes": 12
+ },
+ {
+  "seed": 1,
+  "length": 2,
+  "relax": 4.0,
+  "experts": 3,
+  "regimes_with_expert": 3,
+  "acc": 0.3529166653752327,
+  "regimes": 12
+ },
+ {
+  "seed": 2,
+  "length": 2,
+  "relax": 4.0,
+  "experts": 4,
+  "regimes_with_expert": 4,
+  "acc": 0.3850000041226546,
+  "regimes": 12
+ },
+ {
+  "seed": 0,
+  "length": 1,
+  "relax": 4.0,
+  "experts": 5,
+  "regimes_with_expert": 5,
+  "acc": 0.3425000011920929,
+  "regimes": 12
+ },
+ {
+  "seed": 1,
+  "length": 1,
+  "relax": 4.0,
+  "experts": 5,
+  "regimes_with_expert": 5,
+  "acc": 0.375,
+  "regimes": 12
+ },
+ {
+  "seed": 2,
+  "length": 1,
+  "relax": 4.0,
+  "experts": 5,
+  "regimes_with_expert": 5,
+  "acc": 0.3408333323895931,
+  "regimes": 12
+ },
+ {
+  "seed": 0,
+  "length": 10,
+  "relax": 1.0,
+  "experts": 121,
+  "regimes_with_expert": 12,
+  "acc": 0.5308333337306976,
+  "regimes": 12
+ },
+ {
+  "seed": 1,
+  "length": 10,
+  "relax": 1.0,
+  "experts": 121,
+  "regimes_with_expert": 12,
+  "acc": 0.5304166699449221,
+  "regimes": 12
+ },
+ {
+  "seed": 2,
+  "length": 10,
+  "relax": 1.0,
+  "experts": 69,
+  "regimes_with_expert": 10,
+  "acc": 0.44999999552965164,
+  "regimes": 12
+ },
+ {
+  "seed": 0,
+  "length": 5,
+  "relax": 1.0,
+  "experts": 26,
+  "regimes_with_expert": 6,
+  "acc": 0.4037500011424224,
+  "regimes": 12
+ },
+ {
+  "seed": 1,
+  "length": 5,
+  "relax": 1.0,
+  "experts": 57,
+  "regimes_with_expert": 12,
+  "acc": 0.5183333332339922,
+  "regimes": 12
+ },
+ {
+  "seed": 2,
+  "length": 5,
+  "relax": 1.0,
+  "experts": 15,
+  "regimes_with_expert": 6,
+  "acc": 0.41374999781449634,
+  "regimes": 12
+ },
+ {
+  "seed": 0,
+  "length": 3,
+  "relax": 1.0,
+  "experts": 1,
+  "regimes_with_expert": 1,
+  "acc": 0.33791666477918625,
+  "regimes": 12
+ },
+ {
+  "seed": 1,
+  "length": 3,
+  "relax": 1.0,
+  "experts": 27,
+  "regimes_with_expert": 10,
+  "acc": 0.455416664481163,
+  "regimes": 12
+ },
+ {
+  "seed": 2,
+  "length": 3,
+  "relax": 1.0,
+  "experts": 12,
+  "regimes_with_expert": 6,
+  "acc": 0.37083333482344943,
+  "regimes": 12
+ },
+ {
+  "seed": 0,
+  "length": 2,
+  "relax": 1.0,
+  "experts": 1,
+  "regimes_with_expert": 1,
+  "acc": 0.31541666636864346,
+  "regimes": 12
+ },
+ {
+  "seed": 1,
+  "length": 2,
+  "relax": 1.0,
+  "experts": 6,
+  "regimes_with_expert": 4,
+  "acc": 0.34458333750565845,
+  "regimes": 12
+ },
+ {
+  "seed": 2,
+  "length": 2,
+  "relax": 1.0,
+  "experts": 9,
+  "regimes_with_expert": 6,
+  "acc": 0.39541666954755783,
+  "regimes": 12
+ },
+ {
+  "seed": 0,
+  "length": 1,
+  "relax": 1.0,
+  "experts": 13,
+  "regimes_with_expert": 12,
+  "acc": 0.44583333283662796,
+  "regimes": 12
+ },
+ {
+  "seed": 1,
+  "length": 1,
+  "relax": 1.0,
+  "experts": 13,
+  "regimes_with_expert": 12,
+  "acc": 0.4799999992052714,
+  "regimes": 12
+ },
+ {
+  "seed": 2,
+  "length": 1,
+  "relax": 1.0,
+  "experts": 13,
+  "regimes_with_expert": 12,
+  "acc": 0.4412499989072482,
+  "regimes": 12
+ }
+]

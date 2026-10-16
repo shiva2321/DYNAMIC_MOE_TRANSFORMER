@@ -49,3 +49,20 @@ arXiv IDs below were collected on 2026-10-09 (routing note) and 2026-10-06 (geom
 ## Our own earlier documents
 
 `research/DYNAMIC_MOE_RESEARCH_AND_DESIGN.md` (design literature), `research/MOE_CONTINUAL_LEARNING_REPORT_2026-10.md`, `research/GEOMETRY_ATLAS_2026-10.md` (about 50 arXiv IDs), `research/VSA_GEOMETRY_TO_INTELLIGENCE.md`.
+
+## Wrongly created experts: merging, budgets, stream mining (collected 2026-10-16; see `research/GROWMOE_MERGE_RESEARCH.md` section 3)
+
+| Reference | Why it matters here | Tag |
+|---|---|---|
+| Hughes, Sudderth (2013), Memoized online variational inference for Dirichlet process mixture models, NeurIPS | births always accepted, merges judged by an exactly tracked full-data objective; noisy single-batch merge scores can accept harmful merges | V (merge passages) |
+| Wang, Crammer, Vucetic (2012), Breaking the curse of kernelization: budgeted stochastic gradient descent, JMLR 13 | budget maintenance as a source of error, least-degradation choice, merging best; validating on stored examples misleads | V (budget passages) |
+| Guo et al. (2025), Dynamic mixture of experts, ICLR, arXiv 2405.14297 | experts added when tokens activate none, removed when no token activates them | V (add/remove rule) |
+| Li et al. (2024), Merge, then compress (MC-SMoE), ICLR, arXiv 2310.01334 | naive expert merging fails without permutation alignment; activation-frequency weights; distillation | V (alignment passages) |
+| Miller, Harrison (2013), A simple example of Dirichlet process mixture inconsistency for the number of components, NeurIPS, arXiv 1301.2708 | adding components without control over-counts | L |
+| Kolter, Maloof (2007), Dynamic weighted majority, JMLR 8 | add experts on error, remove by weight | L |
+| Gomes et al. (2017), Adaptive random forests for evolving data stream classification, Machine Learning 106 | background learner beside the incumbent, replaced on confirmed drift | L |
+| Wortsman et al. (2022), Model soups, arXiv 2203.05482; Frankle et al. (2020), arXiv 1912.05671; Entezari et al. (2022), arXiv 2110.06296; Ainsworth et al. (2023), Git Re-Basin, arXiv 2209.04836 | weight averaging works inside one basin; permutation alignment otherwise | L |
+| Matena, Raffel (2022), Fisher-weighted averaging, arXiv 2111.09832; Jin et al. (2023), RegMean, arXiv 2212.09849 | dataless closed-form merging | L |
+| Schwarz et al. (2018), Progress and Compress, arXiv 1805.06370; Hinton et al. (2015), Distilling the knowledge in a neural network, arXiv 1503.02531 | consolidation by distillation | L |
+| Wang et al. (2025), SEMA, arXiv 2403.18886; Lee et al. (2020), CN-DPM, arXiv 2001.00689; Aljundi et al. (2017), Expert Gate, arXiv 1611.06194 | expansion-based continual learners; growth control at the novelty detector | L |
+| Lakens (2017), Equivalence tests: a practical primer, Social Psychological and Personality Science | equivalence and non-inferiority testing against a smallest effect of interest | L |

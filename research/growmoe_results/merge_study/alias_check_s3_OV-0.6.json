@@ -1,0 +1,38 @@
+[
+ {
+  "stream": "OV-0.6",
+  "stream_seed": 100,
+  "pool_seed": 100,
+  "acc": 0.4307500034570694,
+  "experts": 10,
+  "regimes": 10,
+  "seconds": 67.97200199999497
+ },
+ {
+  "stream": "OV-0.6",
+  "stream_seed": 100,
+  "pool_seed": 107,
+  "acc": 0.42549999952316286,
+  "experts": 10,
+  "regimes": 10,
+  "seconds": 44.22853289998602
+ },
+ {
+  "stream": "OV-0.6",
+  "stream_seed": 101,
+  "pool_seed": 101,
+  "acc": 0.42174999713897704,
+  "experts": 10,
+  "regimes": 10,
+  "seconds": 48.38227130001178
+ },
+ {
+  "stream": "OV-0.6",
+  "stream_seed": 101,
+  "pool_seed": 108,
+  "acc": 0.4067499995231628,
+  "experts": 10,
+  "regimes": 10,
+  "seconds": 51.29247819999
+ }
+]

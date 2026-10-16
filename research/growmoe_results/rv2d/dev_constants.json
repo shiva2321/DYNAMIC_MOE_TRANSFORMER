@@ -1,0 +1,339 @@
+{
+ "grow_gap": 0.17,
+ "transfer_margin": 0.25,
+ "router_setting": "free-0.01",
+ "router_mode": "free",
+ "router_margin": 0.01,
+ "constants": {
+  "grow_gap": 0.17,
+  "transfer_margin": 0.25,
+  "router_setting": "free-0.01",
+  "router_mode": "free",
+  "router_margin": 0.01
+ },
+ "chosen_by_rule": {
+  "grow_gap": true,
+  "transfer_margin": false,
+  "router_setting": true
+ },
+ "reasons": {
+  "grow_gap": "largest score -0.0094 among the values that satisfy the guards",
+  "transfer_margin": "no margin satisfies the guards: the transfer rule stays off",
+  "router_setting": "best mean gain 0.1179 on the target streams among the settings that hurt no guard stream by more than 0.5 points"
+ },
+ "curves": {
+  "grow_gap": {
+   "0.14": {
+    "groups": {
+     "arith16": {
+      "gain": -0.009999999999999934,
+      "rel_params": 0.42709287689313813,
+      "grow_events": 3.3333333333333335,
+      "score": -0.052709287689313745
+     },
+     "arith128": {
+      "gain": 0.0,
+      "rel_params": 0.0,
+      "grow_events": 0.0,
+      "score": 0.0
+     },
+     "stage3": {
+      "gain": 0.0,
+      "rel_params": 0.0,
+      "grow_events": 0.0,
+      "score": 0.0
+     }
+    },
+    "score": -0.017569762563104583,
+    "guards_ok": true
+   },
+   "0.17": {
+    "groups": {
+     "arith16": {
+      "gain": 0.015900000000000043,
+      "rel_params": 0.42709287689313813,
+      "grow_events": 3.3333333333333335,
+      "score": -0.02680928768931377
+     },
+     "arith128": {
+      "gain": -0.0012555555555555653,
+      "rel_params": 0.0,
+      "grow_events": 0.3333333333333333,
+      "score": -0.0012555555555555653
+     },
+     "stage3": {
+      "gain": 0.0,
+      "rel_params": 0.0,
+      "grow_events": 0.0,
+      "score": 0.0
+     }
+    },
+    "score": -0.009354947748289778,
+    "guards_ok": true
+   },
+   "0.2": {
+    "groups": {
+     "arith16": {
+      "gain": 0.03185555555555564,
+      "rel_params": 1.7651856621592616,
+      "grow_events": 4.333333333333333,
+      "score": -0.14466301066037054
+     },
+     "arith128": {
+      "gain": 0.010566666666666724,
+      "rel_params": 0.9376353893512711,
+      "grow_events": 1.0,
+      "score": -0.0831968722684604
+     },
+     "stage3": {
+      "gain": 0.0,
+      "rel_params": 0.0,
+      "grow_events": 0.0,
+      "score": 0.0
+     }
+    },
+    "score": -0.07595329430961031,
+    "guards_ok": false
+   },
+   "0.23": {
+    "groups": {
+     "arith16": {
+      "gain": 0.035566666666666746,
+      "rel_params": 1.7651856621592616,
+      "grow_events": 4.333333333333333,
+      "score": -0.14095189954925944
+     },
+     "arith128": {
+      "gain": 0.01970000000000009,
+      "rel_params": 0.9376353893512711,
+      "grow_events": 1.3333333333333333,
+      "score": -0.07406353893512703
+     },
+     "stage3": {
+      "gain": 0.0,
+      "rel_params": 0.0,
+      "grow_events": 0.0,
+      "score": 0.0
+     }
+    },
+    "score": -0.07167181282812883,
+    "guards_ok": false
+   },
+   "0.26": {
+    "groups": {
+     "arith16": {
+      "gain": 0.03177777777777785,
+      "rel_params": 4.441371232691509,
+      "grow_events": 5.333333333333333,
+      "score": -0.41235934549137304
+     },
+     "arith128": {
+      "gain": 0.01867777777777781,
+      "rel_params": 2.812906168053814,
+      "grow_events": 3.0,
+      "score": -0.26261283902760363
+     },
+     "stage3": {
+      "gain": 0.0,
+      "rel_params": 0.0,
+      "grow_events": 0.0,
+      "score": 0.0
+     }
+    },
+    "score": -0.22499072817299223,
+    "guards_ok": false
+   }
+  },
+  "transfer_margin": {
+   "0.15": {
+    "target_gain": 0.08210000000000003,
+    "per_stream": {
+     "arith-seq:-": {
+      "gain": 0.08210000000000003,
+      "expert_ratio": 1.5
+     },
+     "banking:-": {
+      "gain": 0.014444445570309994,
+      "expert_ratio": 1.2
+     },
+     "s3:F-15": {
+      "gain": 0.010944440629747143,
+      "expert_ratio": 1.0
+     },
+     "s3:OV-0.6": {
+      "gain": 0.00433333317438761,
+      "expert_ratio": 1.0
+     },
+     "s3:OV-0.85": {
+      "gain": -0.0008333305517832698,
+      "expert_ratio": 0.9677419354838709
+     },
+     "s3:S1": {
+      "gain": 0.040634918780553884,
+      "expert_ratio": 1.5333333333333334
+     },
+     "s3:S2-5": {
+      "gain": 0.01733333667119345,
+      "expert_ratio": 1.5
+     }
+    },
+    "guards_ok": false
+   },
+   "0.25": {
+    "target_gain": 0.08210000000000003,
+    "per_stream": {
+     "arith-seq:-": {
+      "gain": 0.08210000000000003,
+      "expert_ratio": 1.5
+     },
+     "banking:-": {
+      "gain": 0.014444445570309994,
+      "expert_ratio": 1.2
+     },
+     "s3:F-15": {
+      "gain": 0.010944440629747143,
+      "expert_ratio": 1.0
+     },
+     "s3:OV-0.6": {
+      "gain": 0.00433333317438761,
+      "expert_ratio": 1.0
+     },
+     "s3:OV-0.85": {
+      "gain": -0.0008333305517832698,
+      "expert_ratio": 0.9677419354838709
+     },
+     "s3:S1": {
+      "gain": 0.040634918780553884,
+      "expert_ratio": 1.5333333333333334
+     },
+     "s3:S2-5": {
+      "gain": 0.01733333667119345,
+      "expert_ratio": 1.5
+     }
+    },
+    "guards_ok": false
+   },
+   "0.35": {
+    "target_gain": 0.08210000000000003,
+    "per_stream": {
+     "arith-seq:-": {
+      "gain": 0.08210000000000003,
+      "expert_ratio": 1.5
+     },
+     "banking:-": {
+      "gain": 0.014444445570309994,
+      "expert_ratio": 1.2
+     },
+     "s3:F-15": {
+      "gain": 0.010944440629747143,
+      "expert_ratio": 1.0
+     },
+     "s3:OV-0.6": {
+      "gain": 0.00433333317438761,
+      "expert_ratio": 1.0
+     },
+     "s3:OV-0.85": {
+      "gain": -0.0008333305517832698,
+      "expert_ratio": 0.9677419354838709
+     },
+     "s3:S1": {
+      "gain": 0.040634918780553884,
+      "expert_ratio": 1.5333333333333334
+     },
+     "s3:S2-5": {
+      "gain": 0.01733333667119345,
+      "expert_ratio": 1.5
+     }
+    },
+    "guards_ok": false
+   }
+  },
+  "router_setting": {
+   "restrict-0.01": {
+    "target_gain": 0.11458333446582158,
+    "worst_guard": 0.0,
+    "per_stream": {
+     "arith-mixed128:-": 0.0,
+     "arith-mixed16:-": 0.0,
+     "arith-seq:-": 0.13675,
+     "banking:-": 0.0,
+     "s3:F-15": 0.0,
+     "s3:F-30": 0.0,
+     "s3:OV-0.0": 0.0,
+     "s3:OV-0.3-MIXED": 0.0009166657924652063,
+     "s3:OV-0.3": 0.0,
+     "s3:OV-0.6": 0.017999999721845,
+     "s3:OV-0.85": 0.09241666893164317,
+     "s3:S1": 0.01428571485337756,
+     "s3:S2-30": 0.0,
+     "s3:S2-5": 0.0
+    },
+    "guards_ok": true
+   },
+   "restrict-0.03": {
+    "target_gain": 0.11458333446582158,
+    "worst_guard": 0.0,
+    "per_stream": {
+     "arith-mixed128:-": 0.0,
+     "arith-mixed16:-": 0.0,
+     "arith-seq:-": 0.13675,
+     "banking:-": 0.0,
+     "s3:F-15": 0.0,
+     "s3:F-30": 0.0,
+     "s3:OV-0.0": 0.0,
+     "s3:OV-0.3-MIXED": 0.0,
+     "s3:OV-0.3": 0.0,
+     "s3:OV-0.6": 0.017999999721845,
+     "s3:OV-0.85": 0.09241666893164317,
+     "s3:S1": 0.01428571485337756,
+     "s3:S2-30": 0.0,
+     "s3:S2-5": 0.0
+    },
+    "guards_ok": true
+   },
+   "free-0.01": {
+    "target_gain": 0.11793333373069763,
+    "worst_guard": 0.0,
+    "per_stream": {
+     "arith-mixed128:-": 0.0,
+     "arith-mixed16:-": 0.0,
+     "arith-seq:-": 0.14086666666666667,
+     "banking:-": 0.0,
+     "s3:F-15": 0.0,
+     "s3:F-30": 0.0,
+     "s3:OV-0.0": 0.0,
+     "s3:OV-0.3-MIXED": 0.0009166657924652063,
+     "s3:OV-0.3": 0.0,
+     "s3:OV-0.6": 0.01849999924500782,
+     "s3:OV-0.85": 0.09500000079472859,
+     "s3:S1": 0.009841268970852801,
+     "s3:S2-30": 0.0,
+     "s3:S2-5": 0.0
+    },
+    "guards_ok": true
+   },
+   "free-0.03": {
+    "target_gain": 0.11793333373069763,
+    "worst_guard": 0.0,
+    "per_stream": {
+     "arith-mixed128:-": 0.0,
+     "arith-mixed16:-": 0.0,
+     "arith-seq:-": 0.14086666666666667,
+     "banking:-": 0.0,
+     "s3:F-15": 0.0,
+     "s3:F-30": 0.0,
+     "s3:OV-0.0": 0.0,
+     "s3:OV-0.3-MIXED": 0.0,
+     "s3:OV-0.3": 0.0,
+     "s3:OV-0.6": 0.01849999924500782,
+     "s3:OV-0.85": 0.09500000079472859,
+     "s3:S1": 0.009841268970852801,
+     "s3:S2-30": 0.0,
+     "s3:S2-5": 0.0
+    },
+    "guards_ok": true
+   }
+  }
+ },
+ "cells": 157
+}

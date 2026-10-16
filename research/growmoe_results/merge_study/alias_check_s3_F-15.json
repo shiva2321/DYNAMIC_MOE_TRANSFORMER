@@ -1,0 +1,82 @@
+[
+ {
+  "stream": "F-15",
+  "stream_seed": 100,
+  "pool_seed": 100,
+  "acc": 0.5115000049273173,
+  "experts": 15,
+  "regimes": 15,
+  "seconds": 79.38460630000918,
+  "arm": "S3"
+ },
+ {
+  "stream": "F-15",
+  "stream_seed": 100,
+  "pool_seed": 107,
+  "acc": 0.429666668176651,
+  "experts": 15,
+  "regimes": 15,
+  "seconds": 76.20953490000102,
+  "arm": "S3"
+ },
+ {
+  "stream": "F-15",
+  "stream_seed": 101,
+  "pool_seed": 101,
+  "acc": 0.49683333436648053,
+  "experts": 15,
+  "regimes": 15,
+  "seconds": 81.2184495999827,
+  "arm": "S3"
+ },
+ {
+  "stream": "F-15",
+  "stream_seed": 101,
+  "pool_seed": 108,
+  "acc": 0.4193333347638448,
+  "experts": 15,
+  "regimes": 15,
+  "seconds": 165.7489568000019,
+  "arm": "S3"
+ },
+ {
+  "stream": "F-15",
+  "arm": "S3+T",
+  "stream_seed": 100,
+  "pool_seed": 100,
+  "acc": 0.5228333314259846,
+  "experts": 15,
+  "regimes": 15,
+  "seconds": 96.92192189997877
+ },
+ {
+  "stream": "F-15",
+  "arm": "S3+T",
+  "stream_seed": 100,
+  "pool_seed": 107,
+  "acc": 0.4324999988079071,
+  "experts": 15,
+  "regimes": 15,
+  "seconds": 47.48038190000807
+ },
+ {
+  "stream": "F-15",
+  "arm": "S3+T",
+  "stream_seed": 101,
+  "pool_seed": 101,
+  "acc": 0.5141666650772094,
+  "experts": 15,
+  "regimes": 15,
+  "seconds": 58.00109119998524
+ },
+ {
+  "stream": "F-15",
+  "arm": "S3+T",
+  "stream_seed": 101,
+  "pool_seed": 108,
+  "acc": 0.41799999872843424,
+  "experts": 15,
+  "regimes": 15,
+  "seconds": 37.409468700003345
+ }
+]

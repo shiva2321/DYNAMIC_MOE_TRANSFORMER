@@ -1,0 +1,48 @@
+C:\Users\Asta\AppData\Local\Programs\Python\Python312\Lib\site-packages\torch\cuda\__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+n_train 640 seed 0: per regime  N alone | D alone | routed | N+D average | oracle(either right) | share routed to D | samples assigned N / D
+regime  0 N= 0 D= 1   67.5 |  47.0 |  64.5 |  62.0 |  74.0 |   28 % | 1280 / 1
+regime  1 N= 2 D= 3   56.0 |  69.0 |  63.5 |  63.5 |  77.5 |   63 % | 192 / 448
+regime  2 N= 4 D= 5   53.5 |  65.0 |  62.5 |  64.0 |  74.5 |   71 % | 191 / 448
+regime  3 N= 6 D= 7   60.0 |  75.0 |  73.0 |  70.5 |  81.5 |   63 % | 256 / 384
+regime  4 N= 8 D= 9   54.0 |  71.0 |  64.5 |  66.5 |  77.5 |   69 % | 192 / 448
+regime  5 N=10 D=11   59.5 |  68.5 |  62.0 |  62.5 |  79.0 |   64 % | 192 / 448
+regime  6 N=12 D=13   58.5 |  72.0 |  66.5 |  68.5 |  80.5 |   72 % | 192 / 1088
+regime  7 N=14 D=15   50.5 |  59.0 |  53.5 |  61.5 |  71.0 |   65 % | 192 / 448
+regime  8 N=16 D=17   52.5 |  70.5 |  66.0 |  65.5 |  83.0 |   67 % | 192 / 448
+regime  9 N=18 D=19   46.5 |  58.0 |  56.0 |  57.5 |  70.0 |   69 % | 192 / 448
+regime 10 N=20 D=21   60.0 |  70.5 |  69.0 |  70.5 |  80.5 |   67 % | 192 / 448
+regime 11 N=22 D=23   56.5 |  74.0 |  68.0 |  66.5 |  79.0 |   73 % | 192 / 448
+mean         56.3 |  66.6 |  64.1 |  64.9 |  77.3 |   64 %
+C:\Users\Asta\AppData\Local\Programs\Python\Python312\Lib\site-packages\torch\cuda\__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+n_train 1280 seed 0: per regime  N alone | D alone | routed | N+D average | oracle(either right) | share routed to D | samples assigned N / D
+regime  0 N= 0 D= 1   69.5 |  68.5 |  66.0 |  69.0 |  79.5 |   38 % | 1856 / 704
+regime  1 N= 2 D= 3   57.0 |  69.5 |  68.0 |  62.0 |  79.0 |   73 % | 192 / 1088
+regime  2 N= 4 D= 5   51.5 |  68.5 |  66.0 |  63.5 |  78.0 |   73 % | 192 / 1088
+regime  3 N= 6 D= 7   56.0 |  73.5 |  74.0 |  73.5 |  85.0 |   96 % | 192 / 1088
+regime  4 N= 8 D= 9   56.5 |  73.5 |  70.0 |  68.5 |  80.5 |   73 % | 192 / 1088
+regime  5 N=10 D=11   51.5 |  72.0 |  67.5 |  67.5 |  79.5 |   68 % | 192 / 1088
+regime  6 N=12 D=13   52.5 |  68.5 |  66.0 |  63.5 |  75.5 |   74 % | 192 / 2304
+regime  7 N=14 D=15   52.5 |  70.0 |  66.5 |  68.5 |  82.5 |   70 % | 192 / 1088
+regime  8 N=16 D=17   46.5 |  74.0 |  68.0 |  62.5 |  79.5 |   70 % | 192 / 1088
+regime  9 N=18 D=19   55.0 |  69.5 |  66.0 |  64.5 |  78.5 |   75 % | 192 / 1088
+regime 10 N=20 D=21   56.5 |  75.0 |  73.0 |  70.0 |  84.0 |   79 % | 192 / 1088
+regime 11 N=22 D=23   50.0 |  73.0 |  72.0 |  66.0 |  82.5 |   94 % | 192 / 1088
+mean         54.6 |  71.3 |  68.6 |  66.6 |  80.3 |   74 %
+C:\Users\Asta\AppData\Local\Programs\Python\Python312\Lib\site-packages\torch\cuda\__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+n_train 1280 seed 0: per regime  N alone | D alone | routed | N+D average | oracle(either right) | share routed to D | samples assigned N / D
+regime  0 N= 0 D= 1   65.5 |  63.5 |  66.5 |  67.5 |  77.5 |   49 % | 2176 / 384
+regime  1 N= 2 D= 3   68.5 |  60.0 |  65.5 |  61.5 |  76.5 |   50 % | 1152 / 128
+regime  2 N= 4 D= 5   65.0 |  62.0 |  64.0 |  67.0 |  75.5 |   40 % | 1280 / 0
+regime  3 N= 6 D= 7   72.5 |  63.5 |  70.0 |  71.0 |  83.5 |   43 % | 1280 / 0
+regime  4 N= 8 D= 9   74.5 |  62.5 |  73.0 |  64.5 |  80.0 |   34 % | 1280 / 0
+regime  5 N=10 D=11   75.5 |  64.5 |  69.0 |  71.5 |  83.0 |   49 % | 1280 / 0
+regime  6 N=12 D=13   71.0 |  71.5 |  69.0 |  70.5 |  82.0 |   52 % | 1024 / 1536
+regime  7 N=14 D=15   69.0 |  61.0 |  64.5 |  65.5 |  76.0 |   47 % | 1280 / 0
+regime  8 N=16 D=17   72.5 |  64.5 |  68.0 |  69.5 |  80.0 |   36 % | 1280 / 0
+regime  9 N=18 D=19   73.0 |  68.0 |  67.5 |  71.5 |  82.5 |   46 % | 1152 / 128
+regime 10 N=20 D=21   79.0 |  68.0 |  75.5 |  78.0 |  86.5 |   40 % | 1280 / 0
+regime 11 N=22 D=23   73.5 |  61.0 |  68.5 |  67.5 |  82.5 |   43 % | 1280 / 0
+mean         71.6 |  64.2 |  68.4 |  68.8 |  80.5 |   44 %

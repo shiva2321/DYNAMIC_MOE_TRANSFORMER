@@ -132,3 +132,21 @@ docs/superpowers/plans/2026-10-15-routing-v2-stage4.md
 research/growmoe_results/diagnosis/RESULTS_DIAGNOSIS.md
 research/growmoe_results/stage4_spikes/RESULTS_SPIKES.md
 research/growmoe_results/stage4_spikes/audit_merge.json
+
+# --- merge-repair research and the seed-aliasing audit (E-034, E-035)
+research/GROWMOE_MERGE_RESEARCH.md
+research/growmoe_results/merge_study/RESULTS_MERGE_STUDY.md
+research/growmoe_results/merge_study/RESULTS_HEALING2.md
+research/growmoe_results/merge_study/RESULTS_INFANT.md
+research/growmoe_results/merge_study/healing2_n_*.json
+research/growmoe_results/merge_study/infant_study.json
+research/growmoe_results/merge_study/arith_check.json
+research/growmoe_results/merge_study/pairs/*.json
+research/growmoe_results/merge_study/alias_check_s3_*.json
+research/growmoe_results/merge_study/*_output.txt
+research/growmoe_results/merge_study/idshift_check_offset*.txt
+research/growmoe_results/merge_study/*.py
+research/growmoe_results/merge_study/report_template.md
+research/growmoe_results/rv2d/DEV_SELECTION.md
+research/growmoe_results/rv2d/RESULTS_DEV.md
+research/growmoe_results/rv2d/dev_constants.json

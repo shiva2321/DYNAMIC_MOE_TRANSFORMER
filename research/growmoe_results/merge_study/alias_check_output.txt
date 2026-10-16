@@ -1,0 +1,11 @@
+C:\Users\Asta\AppData\Local\Programs\Python\Python312\Lib\site-packages\torch\cuda\__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+seed 0: expert's first 8 hidden units == teacher's hidden units: True   (an expert with another seed: False)
+seed 1: expert's first 8 hidden units == teacher's hidden units: True   (an expert with another seed: False)
+seed 5: expert's first 8 hidden units == teacher's hidden units: True   (an expert with another seed: False)
+n_train 640 stream seed 0: pool seed = stream seed (aliased) 74.5 (12 experts) | pool seed = stream seed + 7 (not aliased) 68.2 (12 experts)
+n_train 640 stream seed 1: pool seed = stream seed (aliased) 73.5 (12 experts) | pool seed = stream seed + 7 (not aliased) 69.5 (12 experts)
+n_train 640 stream seed 2: pool seed = stream seed (aliased) 72.2 (12 experts) | pool seed = stream seed + 7 (not aliased) 65.4 (12 experts)
+n_train 1280 stream seed 0: pool seed = stream seed (aliased) 76.8 (12 experts) | pool seed = stream seed + 7 (not aliased) 71.4 (12 experts)
+n_train 1280 stream seed 1: pool seed = stream seed (aliased) 76.5 (12 experts) | pool seed = stream seed + 7 (not aliased) 72.3 (12 experts)
+n_train 1280 stream seed 2: pool seed = stream seed (aliased) 75.5 (12 experts) | pool seed = stream seed + 7 (not aliased) 68.9 (12 experts)

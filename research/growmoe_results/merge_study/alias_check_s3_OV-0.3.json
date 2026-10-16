@@ -1,0 +1,82 @@
+[
+ {
+  "stream": "OV-0.3",
+  "arm": "S3",
+  "stream_seed": 100,
+  "pool_seed": 100,
+  "acc": 0.46775000393390653,
+  "experts": 10,
+  "regimes": 10,
+  "seconds": 35.078548599994974
+ },
+ {
+  "stream": "OV-0.3",
+  "arm": "S3",
+  "stream_seed": 100,
+  "pool_seed": 107,
+  "acc": 0.4142500042915344,
+  "experts": 10,
+  "regimes": 10,
+  "seconds": 21.876255700015463
+ },
+ {
+  "stream": "OV-0.3",
+  "arm": "S3+T",
+  "stream_seed": 100,
+  "pool_seed": 100,
+  "acc": 0.4800000011920929,
+  "experts": 10,
+  "regimes": 10,
+  "seconds": 19.459694700024556
+ },
+ {
+  "stream": "OV-0.3",
+  "arm": "S3+T",
+  "stream_seed": 100,
+  "pool_seed": 107,
+  "acc": 0.41025000214576723,
+  "experts": 10,
+  "regimes": 10,
+  "seconds": 18.639760899997782
+ },
+ {
+  "stream": "OV-0.3",
+  "arm": "S3",
+  "stream_seed": 101,
+  "pool_seed": 101,
+  "acc": 0.44324999749660493,
+  "experts": 10,
+  "regimes": 10,
+  "seconds": 23.670380199997453
+ },
+ {
+  "stream": "OV-0.3",
+  "arm": "S3",
+  "stream_seed": 101,
+  "pool_seed": 108,
+  "acc": 0.40149999856948854,
+  "experts": 10,
+  "regimes": 10,
+  "seconds": 17.35437240000465
+ },
+ {
+  "stream": "OV-0.3",
+  "arm": "S3+T",
+  "stream_seed": 101,
+  "pool_seed": 101,
+  "acc": 0.45799999833106997,
+  "experts": 10,
+  "regimes": 10,
+  "seconds": 16.99993859999813
+ },
+ {
+  "stream": "OV-0.3",
+  "arm": "S3+T",
+  "stream_seed": 101,
+  "pool_seed": 108,
+  "acc": 0.39974999725818633,
+  "experts": 10,
+  "regimes": 10,
+  "seconds": 16.984908100013854
+ }
+]

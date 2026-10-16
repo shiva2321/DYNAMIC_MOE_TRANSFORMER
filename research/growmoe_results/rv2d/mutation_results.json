@@ -1,0 +1,125 @@
+{
+ "stamp": "4aa1432323563938",
+ "results": [
+  {
+   "group": "router",
+   "name": "margin: > becomes >=",
+   "killed": true
+  },
+  {
+   "group": "router",
+   "name": "margin dropped",
+   "killed": true
+  },
+  {
+   "group": "router",
+   "name": "hysteresis: > becomes >=",
+   "killed": true
+  },
+  {
+   "group": "router",
+   "name": "folds: one extra fold id",
+   "killed": true
+  },
+  {
+   "group": "router",
+   "name": "folds: train on the held-out fold",
+   "killed": true
+  },
+  {
+   "group": "router",
+   "name": "softmax: class weights dropped",
+   "killed": true
+  },
+  {
+   "group": "router",
+   "name": "lda: empty class not masked",
+   "killed": true
+  },
+  {
+   "group": "transfer",
+   "name": "conflict: > margin becomes >=",
+   "killed": true
+  },
+  {
+   "group": "transfer",
+   "name": "conflict: and becomes or",
+   "killed": true
+  },
+  {
+   "group": "transfer",
+   "name": "ties not counted",
+   "killed": true
+  },
+  {
+   "group": "gapgrow",
+   "name": "gap formula",
+   "killed": true
+  },
+  {
+   "group": "gapgrow",
+   "name": "improvement inverted",
+   "killed": true
+  },
+  {
+   "group": "gapgrow",
+   "name": "plateau: >= becomes >",
+   "killed": true
+  },
+  {
+   "group": "gapgrow",
+   "name": "age: >= becomes >",
+   "killed": true
+  },
+  {
+   "group": "gapgrow",
+   "name": "guard: > becomes >=",
+   "killed": true
+  },
+  {
+   "group": "gapgrow",
+   "name": "increment: >= becomes >",
+   "killed": true
+  },
+  {
+   "group": "phylo",
+   "name": "router: restrict accepts p == q no more",
+   "killed": true
+  },
+  {
+   "group": "phylo",
+   "name": "router: young expert threshold",
+   "killed": true
+  },
+  {
+   "group": "phylo",
+   "name": "growth: gap >= becomes >",
+   "killed": true
+  },
+  {
+   "group": "phylo",
+   "name": "growth: budget > becomes >=",
+   "killed": true
+  },
+  {
+   "group": "phylo",
+   "name": "transfer: min reference < becomes <=",
+   "killed": true
+  },
+  {
+   "group": "phylo",
+   "name": "transfer: alarm path keeps the cluster in the reference",
+   "killed": true
+  },
+  {
+   "group": "phylo",
+   "name": "transfer: alarm path min reference < becomes <=",
+   "killed": true
+  },
+  {
+   "group": "phylo",
+   "name": "transfer: margin scale",
+   "killed": true
+  }
+ ]
+}
