@@ -7,6 +7,7 @@ A survivor needs either a new test (red, green) or a written reason that the mut
 """
 
 import argparse
+import hashlib
 import json
 import os
 import shutil
@@ -62,39 +63,72 @@ def prepare(tmp: Path) -> None:
 
 
 def run_tests(tmp: Path, tests) -> bool:
-    """True when the tests PASS."""
+    """True when the tests PASS. No timeout on purpose: when the PC sleeps the monotonic clock jumps and subprocess raised a negative TimeoutExpired in the first run."""
     p = subprocess.run([sys.executable, "-m", "pytest", "-x", "-q", "-p", "no:cacheprovider", *tests], cwd=tmp, env={**os.environ, "PYTHONPATH": str(tmp), "OMP_NUM_THREADS": "2", "MKL_NUM_THREADS": "2"},
-                       capture_output=True, text=True, timeout=1800)
+                       capture_output=True, text=True)
     return p.returncode == 0
+
+
+def stamp() -> str:
+    """Hash of everything a mutation result depends on: the code under test, the tests and the list of mutants."""
+    h = hashlib.sha256(repr(MUTANTS).encode("utf-8"))
+    for f in sorted((ROOT / "growmoe").rglob("*.py")) + sorted((ROOT / "tests" / "growmoe").glob("*.py")):
+        h.update(str(f.relative_to(ROOT)).encode("utf-8"))
+        h.update(f.read_bytes().replace(b"\r\n", b"\n"))
+    return h.hexdigest()[:16]
+
+
+def load_done(out: Path, st: str) -> list:
+    """Results of an earlier, interrupted run of the SAME code, tests and mutants (so a power cut or a sleep costs one mutant, not the whole run)."""
+    try:
+        d = json.loads(out.read_text(encoding="utf-8"))
+        return d["results"] if d.get("stamp") == st else []
+    except Exception:
+        return []
+
+
+def save(out: Path, st: str, results: list) -> None:
+    tmp = out.with_name(out.name + ".tmp")
+    with open(tmp, "w", encoding="utf-8") as fh:
+        fh.write(json.dumps({"stamp": st, "results": results}, indent=1))
+        fh.flush()
+        os.fsync(fh.fileno())
+    os.replace(tmp, out)
 
 
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--only", default=None)
     a = ap.parse_args()
-    with tempfile.TemporaryDirectory(prefix="rv2d_mut_") as t:
-        tmp = Path(t)
-        prepare(tmp)
-        owners = sorted({tuple(m[5]) for m in MUTANTS if a.only in (None, m[0])})
-        for tests in owners:
-            assert run_tests(tmp, list(tests)), f"the unmutated tests {tests} do not pass in the copy: fix that first"
-        results = []
-        for group, name, rel, old, new, tests in MUTANTS:
-            if a.only not in (None, group):
-                continue
-            path = tmp / rel
-            src = path.read_text(encoding="utf-8")
-            assert src.count(old) == 1, f"{name}: the old text occurs {src.count(old)} times in {rel}"
-            path.write_text(src.replace(old, new), encoding="utf-8")
-            try:
-                survived = run_tests(tmp, tests)
-            finally:
-                path.write_text(src, encoding="utf-8")
-            results.append({"group": group, "name": name, "killed": not survived})
-            print(f"{'KILLED  ' if not survived else 'SURVIVED'} {group}: {name}", flush=True)
+    out, st = HERE / "mutation_results.json", stamp()
+    results = load_done(out, st)
+    done = {r["name"] for r in results}
+    todo = [m for m in MUTANTS if a.only in (None, m[0]) and m[1] not in done]
+    if results:
+        print(f"resuming: {len(results)} mutants already judged for this code and these tests", flush=True)
+    if todo:
+        with tempfile.TemporaryDirectory(prefix="rv2d_mut_") as t:
+            tmp = Path(t)
+            prepare(tmp)
+            for tests in sorted({tuple(m[5]) for m in todo}):
+                assert run_tests(tmp, list(tests)), f"the unmutated tests {tests} do not pass in the copy: fix that first"
+            for group, name, rel, old, new, tests in todo:
+                path = tmp / rel
+                src = path.read_text(encoding="utf-8")
+                assert src.count(old) == 1, f"{name}: the old text occurs {src.count(old)} times in {rel}"
+                path.write_text(src.replace(old, new), encoding="utf-8")
+                try:
+                    survived = run_tests(tmp, tests)
+                finally:
+                    path.write_text(src, encoding="utf-8")
+                results.append({"group": group, "name": name, "killed": not survived})
+                save(out, st, results)
+                print(f"{'KILLED  ' if not survived else 'SURVIVED'} {group}: {name}", flush=True)
     killed = sum(r["killed"] for r in results)
     print(f"\n{killed}/{len(results)} mutants killed ({100 * killed / max(len(results), 1):.0f} %)")
-    (HERE / "mutation_results.json").write_text(json.dumps(results, indent=1), encoding="utf-8")
+    for r in results:
+        if not r["killed"]:
+            print("  survivor:", r["group"], "-", r["name"])
 
 
 if __name__ == "__main__":

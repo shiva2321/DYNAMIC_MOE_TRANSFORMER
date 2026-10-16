@@ -3,6 +3,7 @@
 import argparse
 import json
 import sys
+import time
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
@@ -22,7 +23,9 @@ def main():
         return
     cells = {R.Cell(**c).cid: R.Cell(**c) for c in json.loads((HERE / f"cells_{a.phase}.json").read_text(encoding="utf-8"))}
     R.CELLS.mkdir(exist_ok=True)
-    rec = R.run_cell(cells[a.cid])
+    cpu0 = time.process_time()                                        # CPU seconds of this process (all threads): a cost measure that a sleeping PC or busy neighbours cannot distort,
+    rec = R.run_cell(cells[a.cid])                                    # unlike the wall-clock "seconds" (a cell that was frozen overnight reported 78,000 of them). A resumed cell counts its own part only.
+    rec["cpu_seconds"] = time.process_time() - cpu0
     rec["code_stamp"] = stamp
     R.atomic_write_text(out, json.dumps(rec))
 

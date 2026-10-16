@@ -43,7 +43,7 @@ def load(phase: str, stamp: str = None) -> list:
         rows.append({"family": c["family"], "stream": c["stream"], "arm": c["arm"], "seed": int(c["seed"]), "gap": c["gap"], "tmargin": c["tmargin"], "acc": rec["acc"],
                      "params": rec["params"], "n_grow": len(rec["grow_events"]), "n_experts": rec["n_experts"], "router": rec["router"], "forgetting": rec.get("forgetting"),
                      "grow_events": rec["grow_events"], "final_hidden": rec["final_hidden"], "grow_stats": rec["grow_stats"], "inner_steps": rec["inner_steps"], "events": rec["events"],
-                     "regimes": rec.get("regimes"), "seconds": rec["seconds"]})
+                     "regimes": rec.get("regimes"), "seconds": rec["seconds"], "cpu_seconds": rec.get("cpu_seconds")})
     return rows
 
 
@@ -146,9 +146,15 @@ def section_gamma(rows):
 
 
 def section_cost(rows):
-    out = ["## Wall-clock per cell (seconds, mean)\n", "| unit | " + " | ".join(ARM_ORDER) + " |", "|---|---|---|---|---|"]
+    """CPU seconds of the process that ran each cell (a cost that a sleeping PC or busy neighbours cannot distort); cells without the field fall back to wall-clock and are marked with a star."""
+    def cost(sub):
+        have = [r["cpu_seconds"] for r in sub if r.get("cpu_seconds") is not None]
+        if len(have) == len(sub):
+            return f"{np.mean(have):.0f}"
+        return f"{np.mean([r['seconds'] for r in sub]):.0f}*"
+    out = ["## Cost per cell (CPU seconds, mean; * = wall-clock of a cell that did not record CPU time)\n", "| unit | " + " | ".join(ARM_ORDER) + " |", "|---|---|---|---|---|"]
     for u in units(rows):
-        out.append(f"| {label(u)} | " + " | ".join(f"{np.mean([r['seconds'] for r in rows if (r['family'], r['stream']) == u and r['arm'] == a]):.0f}" if any((r['family'], r['stream']) == u and r['arm'] == a for r in rows) else "-" for a in ARM_ORDER) + " |")
+        out.append(f"| {label(u)} | " + " | ".join(cost([r for r in rows if (r['family'], r['stream']) == u and r['arm'] == a]) if any((r['family'], r['stream']) == u and r['arm'] == a for r in rows) else "-" for a in ARM_ORDER) + " |")
     return out + [""]
 
 
