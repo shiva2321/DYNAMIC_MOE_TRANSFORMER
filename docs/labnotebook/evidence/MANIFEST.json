@@ -1,6 +1,6 @@
 {
- "generated": "2026-10-16 15:06:05",
- "head": "91ca317",
+ "generated": "2026-10-16 15:08:37",
+ "head": "6abfcc8",
  "branch": "track-g-growmoe",
  "n_files": 798,
  "files": [
@@ -398,7 +398,7 @@
    "path": "research/GROWMOE_MERGE_RESEARCH.md",
    "sha256": "891cf153fdfabda30379179b87c09d2ecee73d1c045f9548f681e1fd705836c3",
    "bytes": 55331,
-   "last_commit": null
+   "last_commit": "6abfcc8"
   },
   {
    "path": "research/growmoe_results/arith/arith_lib.py",
@@ -1718,481 +1718,481 @@
    "path": "research/growmoe_results/merge_study/alias_check.py",
    "sha256": "c90769bbbb0d2aa049ef5363bbf05c58550ba79bf1c3f91a837f71c565023fac",
    "bytes": 2068,
-   "last_commit": null
+   "last_commit": "6abfcc8"
   },
   {
    "path": "research/growmoe_results/merge_study/alias_check_output.txt",
    "sha256": "2c7d0bdbb3c346c4caa0160a427ca1f3bb86e61f6f7ff6e6a77d5e1a3c95ce33",
    "bytes": 1536,
-   "last_commit": null
+   "last_commit": "6abfcc8"
   },
   {
    "path": "research/growmoe_results/merge_study/alias_check_s3.py",
    "sha256": "69fa92212c4127f320087a43bef993cd4cf4ec126888875766b5b8940a776d25",
    "bytes": 3819,
-   "last_commit": null
+   "last_commit": "6abfcc8"
   },
   {
    "path": "research/growmoe_results/merge_study/alias_check_s3_F-15.json",
    "sha256": "76cd3bc290c541b1fd800fa0fd62a216c324c98b833c14e084f7b2658300dd03",
    "bytes": 1516,
-   "last_commit": null
+   "last_commit": "6abfcc8"
   },
   {
    "path": "research/growmoe_results/merge_study/alias_check_s3_OV-0.3.json",
    "sha256": "c43bb5a3218eeae85f085d2971927ffedfef14262e728a5f6de96f5b9de548be",
    "bytes": 1543,
-   "last_commit": null
+   "last_commit": "6abfcc8"
   },
   {
    "path": "research/growmoe_results/merge_study/alias_check_s3_OV-0.6.json",
    "sha256": "d8d056dcd2a98d2421a0757b01c28c6e5376c5070cd32d7193fd67300721c048",
    "bytes": 698,
-   "last_commit": null
+   "last_commit": "6abfcc8"
   },
   {
    "path": "research/growmoe_results/merge_study/alias_check_s3_S1.json",
    "sha256": "adb6787348a85beb435182e5d1bb5a7d1e46cb7f4fd6522159e37a6b55db2b12",
    "bytes": 1482,
-   "last_commit": null
+   "last_commit": "6abfcc8"
   },
   {
    "path": "research/growmoe_results/merge_study/alias_check_s3_S2-5.json",
    "sha256": "9ae305cc063227c0dcda2a9af4fc4ae7c199939f8660115a67f70a559fe665b6",
    "bytes": 1505,
-   "last_commit": null
+   "last_commit": "6abfcc8"
   },
   {
    "path": "research/growmoe_results/merge_study/arith_check.json",
    "sha256": "89b063fa69ab08df17dafc2a5eb3fb4dea062be0071997476ddef9b90d3b520b",
    "bytes": 12083,
-   "last_commit": null
+   "last_commit": "6abfcc8"
   },
   {
    "path": "research/growmoe_results/merge_study/arith_check.py",
    "sha256": "2f6045630eba2b82c706f0fcb3d18466cc2901842044b2234712dcde7b007435",
    "bytes": 8326,
-   "last_commit": null
+   "last_commit": "6abfcc8"
   },
   {
    "path": "research/growmoe_results/merge_study/build_report.py",
    "sha256": "c40d69fda051a357ddfd7638ed1a322790549d79a6409afbdde47ba425ab5242",
    "bytes": 16894,
-   "last_commit": null
+   "last_commit": "6abfcc8"
   },
   {
    "path": "research/growmoe_results/merge_study/healing2_diag.py",
    "sha256": "649e688dc1f38b22284347bdaea2889d778daed13085ba5b4858c74e31a66030",
    "bytes": 6357,
-   "last_commit": null
+   "last_commit": "6abfcc8"
   },
   {
    "path": "research/growmoe_results/merge_study/healing2_diag_output.txt",
    "sha256": "a1016e00ff2fb51684ac08cbba9f5b889af5519cf681d11e5230de3b06552f37",
    "bytes": 6073,
-   "last_commit": null
+   "last_commit": "6abfcc8"
   },
   {
    "path": "research/growmoe_results/merge_study/healing2_n_a.json",
    "sha256": "28b06bae923652ee2e5c149c8ee2b03e3ed4643e7ea7afe9594537709ed21095",
    "bytes": 144876,
-   "last_commit": null
+   "last_commit": "6abfcc8"
   },
   {
    "path": "research/growmoe_results/merge_study/healing2_n_a15.json",
    "sha256": "a4e0fd181fe884dc141b411a6b832048da039dbc1a4f379fb1b34e017d75cdd5",
    "bytes": 64998,
-   "last_commit": null
+   "last_commit": "6abfcc8"
   },
   {
    "path": "research/growmoe_results/merge_study/healing2_n_a20.json",
    "sha256": "abaece7b46c73bfd9e458a6d15ebed2fbac31155795e4614d795238462486363",
    "bytes": 88612,
-   "last_commit": null
+   "last_commit": "6abfcc8"
   },
   {
    "path": "research/growmoe_results/merge_study/healing2_n_b.json",
    "sha256": "993f9a3bfe5eba5313e966b8a349232aa6eeee9792fef565135a27870c59ee59",
    "bytes": 106643,
-   "last_commit": null
+   "last_commit": "6abfcc8"
   },
   {
    "path": "research/growmoe_results/merge_study/healing2_n_cap16.json",
    "sha256": "57283e530fde064247fc00af10ef7547db5c7426c5fb06b456ec9b00fd9ce46e",
    "bytes": 60930,
-   "last_commit": null
+   "last_commit": "6abfcc8"
   },
   {
    "path": "research/growmoe_results/merge_study/healing2_n_cap20.json",
    "sha256": "37fda5ab3150a63504f775582cd703bc41a665272bffb7b540292ef8d266eef6",
    "bytes": 41687,
-   "last_commit": null
+   "last_commit": "6abfcc8"
   },
   {
    "path": "research/growmoe_results/merge_study/healing2_n_cap8clean.json",
    "sha256": "89a5425c0f5631c1e536bfd07f933283d4e674962741242c44a922aae841c8d9",
    "bytes": 32875,
-   "last_commit": null
+   "last_commit": "6abfcc8"
   },
   {
    "path": "research/growmoe_results/merge_study/healing2_n_m12.json",
    "sha256": "50fe21da18a39aaf508cdba1650679b351fe4cffba12314b7bae643a84c9547f",
    "bytes": 48210,
-   "last_commit": null
+   "last_commit": "6abfcc8"
   },
   {
    "path": "research/growmoe_results/merge_study/healing2_study.py",
    "sha256": "9134651a24107f0390ecf38984b491452c3c610cab320a1d4001de4f99e962fa",
    "bytes": 32288,
-   "last_commit": null
+   "last_commit": "6abfcc8"
   },
   {
    "path": "research/growmoe_results/merge_study/healing_diag.py",
    "sha256": "9660338350f4a448ebacc2b3c4772bc3515b6ba1e48cdd4c7aa71c8e0812080f",
    "bytes": 5485,
-   "last_commit": null
+   "last_commit": "6abfcc8"
   },
   {
    "path": "research/growmoe_results/merge_study/healing_study.py",
    "sha256": "a3a360e3cb743bca650be4797c6f39ef7defce890d110e29b8806544a1af6180",
    "bytes": 8871,
-   "last_commit": null
+   "last_commit": "6abfcc8"
   },
   {
    "path": "research/growmoe_results/merge_study/idshift_check.py",
    "sha256": "4935d8ae0f5eb4ede5dbd60c5ad3a99f1536243fd317aee2226538884857d40a",
    "bytes": 3087,
-   "last_commit": null
+   "last_commit": "6abfcc8"
   },
   {
    "path": "research/growmoe_results/merge_study/idshift_check_offset0.txt",
    "sha256": "90fbaf1c2fbc8c94f26270cfd419826ab6fac145ce6392578e1da7fbc390c52b",
    "bytes": 863,
-   "last_commit": null
+   "last_commit": "6abfcc8"
   },
   {
    "path": "research/growmoe_results/merge_study/idshift_check_offset7.txt",
    "sha256": "e0e7eb2e246132e57c894b6af22cb9920edac4f34dea03c3a1196520068821f4",
    "bytes": 863,
-   "last_commit": null
+   "last_commit": "6abfcc8"
   },
   {
    "path": "research/growmoe_results/merge_study/infant_study.json",
    "sha256": "e246c105e5e50f437cced0613a133cf81c06219e88f09903eb655e6a6609f30e",
    "bytes": 4507,
-   "last_commit": null
+   "last_commit": "6abfcc8"
   },
   {
    "path": "research/growmoe_results/merge_study/infant_study.py",
    "sha256": "5f891df9887bb59e3d43f93766b5bce96eac74e0d45e4e5fac98faec93bdd04e",
    "bytes": 3467,
-   "last_commit": null
+   "last_commit": "6abfcc8"
   },
   {
    "path": "research/growmoe_results/merge_study/pairs/distinct_perm_s0.json",
    "sha256": "6c77a99bb0bfd5efeffd69eb2b525dd91d1aba8ee85a0bd9f7286e33511c672a",
    "bytes": 1197,
-   "last_commit": null
+   "last_commit": "6abfcc8"
   },
   {
    "path": "research/growmoe_results/merge_study/pairs/distinct_perm_s1.json",
    "sha256": "10ec5141b7d8eaffc88ff8eac532dba170f8d04c36806c356a1a82e94407d300",
    "bytes": 1205,
-   "last_commit": null
+   "last_commit": "6abfcc8"
   },
   {
    "path": "research/growmoe_results/merge_study/pairs/distinct_perm_s2.json",
    "sha256": "969d7b36860be0d779e271d20cb13cb8bb87d1f111ff189a32fecdfc36c351be",
    "bytes": 1215,
-   "last_commit": null
+   "last_commit": "6abfcc8"
   },
   {
    "path": "research/growmoe_results/merge_study/pairs/distinct_perm_s3.json",
    "sha256": "abd6f81570d83a7c4180b7894adae9e30b23732e7660dc7cbb91f4bce012da99",
    "bytes": 1208,
-   "last_commit": null
+   "last_commit": "6abfcc8"
   },
   {
    "path": "research/growmoe_results/merge_study/pairs/distinct_perm_s4.json",
    "sha256": "ba019784e59a79a0aa46aa0a4788fceb450aa5e95419fa2903c3109785b22c0d",
    "bytes": 1203,
-   "last_commit": null
+   "last_commit": "6abfcc8"
   },
   {
    "path": "research/growmoe_results/merge_study/pairs/distinct_perm_s5.json",
    "sha256": "581418a145d27aa54c62dba214326689ffe7b6dbb270bb0294fc128d6683a354",
    "bytes": 1211,
-   "last_commit": null
+   "last_commit": "6abfcc8"
   },
   {
    "path": "research/growmoe_results/merge_study/pairs/distinct_region_s0.json",
    "sha256": "eb6f195229958c7fc720118cb51cc315219d00ed2718a8ecabee29848038e742",
    "bytes": 1214,
-   "last_commit": null
+   "last_commit": "6abfcc8"
   },
   {
    "path": "research/growmoe_results/merge_study/pairs/distinct_region_s1.json",
    "sha256": "82971ff91644156a23561eb9927a9813d5642c3924ddefee1ff6799bb21a2559",
    "bytes": 1209,
-   "last_commit": null
+   "last_commit": "6abfcc8"
   },
   {
    "path": "research/growmoe_results/merge_study/pairs/distinct_region_s2.json",
    "sha256": "e7cb5eb85b1f0b5d6619bc2dbbef065310a82bfb7fd41ed32f8611162c7e80bb",
    "bytes": 1201,
-   "last_commit": null
+   "last_commit": "6abfcc8"
   },
   {
    "path": "research/growmoe_results/merge_study/pairs/distinct_region_s3.json",
    "sha256": "462e65b9c077a2eff75da54fdf4a4714ba6e620410946037140b7bd35aaa394e",
    "bytes": 1209,
-   "last_commit": null
+   "last_commit": "6abfcc8"
   },
   {
    "path": "research/growmoe_results/merge_study/pairs/distinct_region_s4.json",
    "sha256": "0e0222a61fa0664b33ae538004b39f2f413e7908e9b52847de34c94089a14f6d",
    "bytes": 1211,
-   "last_commit": null
+   "last_commit": "6abfcc8"
   },
   {
    "path": "research/growmoe_results/merge_study/pairs/distinct_region_s5.json",
    "sha256": "14ae1b5359834aa488486b72979b416caf6609af8163555bcd394e4baae5e78f",
    "bytes": 1210,
-   "last_commit": null
+   "last_commit": "6abfcc8"
   },
   {
    "path": "research/growmoe_results/merge_study/pairs/dominated_s0.json",
    "sha256": "b569e2853c2b851e19770ce5b0812acbe6034f74e9ea37582935bb384bba97e4",
    "bytes": 1206,
-   "last_commit": null
+   "last_commit": "6abfcc8"
   },
   {
    "path": "research/growmoe_results/merge_study/pairs/dominated_s1.json",
    "sha256": "221ce943eba9a0fa36c683f040db30ad2bb22b08001bb2e45006268c1791a181",
    "bytes": 1196,
-   "last_commit": null
+   "last_commit": "6abfcc8"
   },
   {
    "path": "research/growmoe_results/merge_study/pairs/dominated_s2.json",
    "sha256": "53b2a5921339641ebeb56252bdaade646d0a39958a50c7ccada3bd05a75bdd63",
    "bytes": 1200,
-   "last_commit": null
+   "last_commit": "6abfcc8"
   },
   {
    "path": "research/growmoe_results/merge_study/pairs/dominated_s3.json",
    "sha256": "7ad5154c2f35cbe3712c248b67e61a8e906bcee9fab62ae6033ef45afd1a4808",
    "bytes": 1208,
-   "last_commit": null
+   "last_commit": "6abfcc8"
   },
   {
    "path": "research/growmoe_results/merge_study/pairs/dominated_s4.json",
    "sha256": "16f5cb2cb370d7726805fd1088723796b51dec126e1c6816dd51e573d96bd7bc",
    "bytes": 1207,
-   "last_commit": null
+   "last_commit": "6abfcc8"
   },
   {
    "path": "research/growmoe_results/merge_study/pairs/dominated_s5.json",
    "sha256": "3e02c5bb497c1cf33cfd0562d7915294b203d582b47e8eed2cda12f675636281",
    "bytes": 1204,
-   "last_commit": null
+   "last_commit": "6abfcc8"
   },
   {
    "path": "research/growmoe_results/merge_study/pairs/dup_ancestry_s0.json",
    "sha256": "df4d7706e75477629d37ffd4c25b7e280d5342175cf206e086d06840357a2434",
    "bytes": 1298,
-   "last_commit": null
+   "last_commit": "6abfcc8"
   },
   {
    "path": "research/growmoe_results/merge_study/pairs/dup_ancestry_s1.json",
    "sha256": "08b529734a427d26c2850aab611751bcf83b79d1b314936e95ee2621a80c44c9",
    "bytes": 1284,
-   "last_commit": null
+   "last_commit": "6abfcc8"
   },
   {
    "path": "research/growmoe_results/merge_study/pairs/dup_ancestry_s2.json",
    "sha256": "98626499196d0f46f04fa50f700782578e19838f2dbd15a80d5761e83a38740a",
    "bytes": 1283,
-   "last_commit": null
+   "last_commit": "6abfcc8"
   },
   {
    "path": "research/growmoe_results/merge_study/pairs/dup_ancestry_s3.json",
    "sha256": "a2545e231255d316946ab2d58721d813cf12e0924535f3f5610f04ebdc585a26",
    "bytes": 1296,
-   "last_commit": null
+   "last_commit": "6abfcc8"
   },
   {
    "path": "research/growmoe_results/merge_study/pairs/dup_ancestry_s4.json",
    "sha256": "324d8f5530d0cd62522a889885aa8c37be897b675018b740341d85b7ab16a2c6",
    "bytes": 1271,
-   "last_commit": null
+   "last_commit": "6abfcc8"
   },
   {
    "path": "research/growmoe_results/merge_study/pairs/dup_ancestry_s5.json",
    "sha256": "c7575f723524192526c8d7ede8df8327274783f669e07392996d914f1c366b8d",
    "bytes": 1287,
-   "last_commit": null
+   "last_commit": "6abfcc8"
   },
   {
    "path": "research/growmoe_results/merge_study/pairs/dup_independent_s0.json",
    "sha256": "2088b82367eb71eba569651f6b12473e1076e21d1a720a76f75a4d0445225efa",
    "bytes": 1293,
-   "last_commit": null
+   "last_commit": "6abfcc8"
   },
   {
    "path": "research/growmoe_results/merge_study/pairs/dup_independent_s1.json",
    "sha256": "80f6e2451ff11a21856d162b7c8fd6a5f84951b9656dfa76819ec771e89484c6",
    "bytes": 1290,
-   "last_commit": null
+   "last_commit": "6abfcc8"
   },
   {
    "path": "research/growmoe_results/merge_study/pairs/dup_independent_s2.json",
    "sha256": "e9615442da848b10ffe595a7d9e4fff3d38dd6c1b4f44db4e958d654d64d361b",
    "bytes": 1285,
-   "last_commit": null
+   "last_commit": "6abfcc8"
   },
   {
    "path": "research/growmoe_results/merge_study/pairs/dup_independent_s3.json",
    "sha256": "03e40ad18475c8d01be2138aff3a95feb5a38f490b87686907a06be2dbad35b9",
    "bytes": 1293,
-   "last_commit": null
+   "last_commit": "6abfcc8"
   },
   {
    "path": "research/growmoe_results/merge_study/pairs/dup_independent_s4.json",
    "sha256": "423ba51c045ce89e720d17ea0184ae2ba56e7c5639cecf97e630c8ced4bcd881",
    "bytes": 1296,
-   "last_commit": null
+   "last_commit": "6abfcc8"
   },
   {
    "path": "research/growmoe_results/merge_study/pairs/dup_independent_s5.json",
    "sha256": "e96c320b72c9660da0c70cf50200ba08d054a71eb09b5d2f1d4cde0caa82c0b6",
    "bytes": 1297,
-   "last_commit": null
+   "last_commit": "6abfcc8"
   },
   {
    "path": "research/growmoe_results/merge_study/pairs/partial20_s0.json",
    "sha256": "152e78bbd541ffdf367ab2bbbe8bcdaf412483b138696874e5ef6d08bb23e5f8",
    "bytes": 1209,
-   "last_commit": null
+   "last_commit": "6abfcc8"
   },
   {
    "path": "research/growmoe_results/merge_study/pairs/partial20_s1.json",
    "sha256": "c9ff5abf4b0b23c324de2e61c659d61f3dfc1c1205c05ab89c8277ac824bd650",
    "bytes": 1210,
-   "last_commit": null
+   "last_commit": "6abfcc8"
   },
   {
    "path": "research/growmoe_results/merge_study/pairs/partial20_s2.json",
    "sha256": "1059df14002b79c9c7a1cb88cad46c4e0e59dce79796d62d6ea1f974a7012483",
    "bytes": 1208,
-   "last_commit": null
+   "last_commit": "6abfcc8"
   },
   {
    "path": "research/growmoe_results/merge_study/pairs/partial20_s3.json",
    "sha256": "56f8da135c3030a231da57832a9d23d062c6f25021b45e95dee11e9fad6feba2",
    "bytes": 1209,
-   "last_commit": null
+   "last_commit": "6abfcc8"
   },
   {
    "path": "research/growmoe_results/merge_study/pairs/partial20_s4.json",
    "sha256": "5469ba31b023b019687b480aa8fea4c9c0a3cd3d8819f053a9ac68ba5bc1d8bd",
    "bytes": 1196,
-   "last_commit": null
+   "last_commit": "6abfcc8"
   },
   {
    "path": "research/growmoe_results/merge_study/pairs/partial20_s5.json",
    "sha256": "0f77c46abcf2e59d0b81fef5e29f27b2f1ef1a5dc3cae1c235cf2a57070c8236",
    "bytes": 1210,
-   "last_commit": null
+   "last_commit": "6abfcc8"
   },
   {
    "path": "research/growmoe_results/merge_study/pairs/partial5_s0.json",
    "sha256": "2e4f70b9251d64c1a5c01f1eae61567f0b1465893cccfcdb352411f45d95ae38",
    "bytes": 1203,
-   "last_commit": null
+   "last_commit": "6abfcc8"
   },
   {
    "path": "research/growmoe_results/merge_study/pairs/partial5_s1.json",
    "sha256": "e90ba282af38f34dc68357927879e5971c751646fe25a84f32aba31f0001847d",
    "bytes": 1214,
-   "last_commit": null
+   "last_commit": "6abfcc8"
   },
   {
    "path": "research/growmoe_results/merge_study/pairs/partial5_s2.json",
    "sha256": "ee2458b4984a290c932bfe081f7f2a18a2099b8dc4ac1d75813c8a37edcb3056",
    "bytes": 1198,
-   "last_commit": null
+   "last_commit": "6abfcc8"
   },
   {
    "path": "research/growmoe_results/merge_study/pairs/partial5_s3.json",
    "sha256": "b2722edf3e573433d78a90fc71854c13dcad89579db256e5db0e6c70e9ff0548",
    "bytes": 1204,
-   "last_commit": null
+   "last_commit": "6abfcc8"
   },
   {
    "path": "research/growmoe_results/merge_study/pairs/partial5_s4.json",
    "sha256": "023b2b64d2751660b301a11317447aaa1e3001f5d1083777d852c224c8d1585e",
    "bytes": 1194,
-   "last_commit": null
+   "last_commit": "6abfcc8"
   },
   {
    "path": "research/growmoe_results/merge_study/pairs/partial5_s5.json",
    "sha256": "cdbb14105e6cabec228f58a0c7c96b46a7cac9a2b067364b9fc792a802b820f9",
    "bytes": 1209,
-   "last_commit": null
+   "last_commit": "6abfcc8"
   },
   {
    "path": "research/growmoe_results/merge_study/report_healing2.py",
    "sha256": "36d30f15905ea111993e1df17f2ffa0c4353fa1c7f258d9ef1feb1c315fcc4a1",
    "bytes": 7578,
-   "last_commit": null
+   "last_commit": "6abfcc8"
   },
   {
    "path": "research/growmoe_results/merge_study/report_template.md",
    "sha256": "4a7bde12690c950aa462609b3ab0f1ba4dc5246ef8513a5b803ba95f0c742bd9",
    "bytes": 43896,
-   "last_commit": null
+   "last_commit": "6abfcc8"
   },
   {
    "path": "research/growmoe_results/merge_study/RESULTS_HEALING2.md",
    "sha256": "55df2ac44861ee8b0adbd74a39a4e5ffcee908280ef28e685e01e61e379a8ddc",
    "bytes": 16915,
-   "last_commit": null
+   "last_commit": "6abfcc8"
   },
   {
    "path": "research/growmoe_results/merge_study/RESULTS_INFANT.md",
    "sha256": "52d1ab5183e9e39509d2ce57a3a80adef4303a93e46c4f4bf549a2c68fc8f1e7",
    "bytes": 746,
-   "last_commit": null
+   "last_commit": "6abfcc8"
   },
   {
    "path": "research/growmoe_results/merge_study/RESULTS_MERGE_STUDY.md",
    "sha256": "8a59c9bca39bf07a202da134eeee1b0c3388275287e5ad28c06a8fe811e30af4",
    "bytes": 6611,
-   "last_commit": null
+   "last_commit": "6abfcc8"
   },
   {
    "path": "research/growmoe_results/merge_study/run_study.py",
    "sha256": "08414b22b22f2f1063da9f44c04d34e39b238e6c290b8968eddac1b7d0cf39db",
    "bytes": 10581,
-   "last_commit": null
+   "last_commit": "6abfcc8"
   },
   {
    "path": "research/growmoe_results/merge_study/study_lib.py",
    "sha256": "55d0c9f96aa06fa9d7f7c8f49c7f6f6dc0c01935a8e2425cf893e0efb6a446f7",
    "bytes": 13060,
-   "last_commit": null
+   "last_commit": "6abfcc8"
   },
   {
    "path": "research/growmoe_results/merge_study/twin_diag.py",
    "sha256": "3035ff83e6d9be6d001b8408a21b4567c6cd3a24428a859ac31623ef7fbec4a1",
    "bytes": 2874,
-   "last_commit": null
+   "last_commit": "6abfcc8"
   },
   {
    "path": "research/growmoe_results/merge_study/twin_diag_output.txt",
    "sha256": "a4a6e3d9b774ad074ec9e28bcc2c5d4d0e0ef23a7b342851d622e0987140ae2a",
    "bytes": 4586,
-   "last_commit": null
+   "last_commit": "6abfcc8"
   },
   {
    "path": "research/growmoe_results/phase0/spike1_novelty.json",
@@ -4058,19 +4058,19 @@
    "path": "research/growmoe_results/rv2d/dev_constants.json",
    "sha256": "9185f7d325f1f48e1b7d44cee0e4d0947d789e192ee690798c4f57bc38de7710",
    "bytes": 7979,
-   "last_commit": null
+   "last_commit": "6abfcc8"
   },
   {
    "path": "research/growmoe_results/rv2d/DEV_SELECTION.md",
    "sha256": "439eb944bd2afe0e28f8b70c4ee336367bc3fa99ed8cc01ef3ea140d9a358b61",
    "bytes": 2261,
-   "last_commit": null
+   "last_commit": "6abfcc8"
   },
   {
    "path": "research/growmoe_results/rv2d/RESULTS_DEV.md",
    "sha256": "e0f1868fea9d2265add67ac37de7701714061f664ce72fe18c0305b44f307e41",
    "bytes": 5568,
-   "last_commit": null
+   "last_commit": "6abfcc8"
   },
   {
    "path": "research/growmoe_results/rv3/compare_variants.py",
