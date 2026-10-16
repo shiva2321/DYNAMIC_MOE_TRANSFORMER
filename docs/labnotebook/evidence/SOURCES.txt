@@ -150,3 +150,13 @@ research/growmoe_results/merge_study/report_template.md
 research/growmoe_results/rv2d/DEV_SELECTION.md
 research/growmoe_results/rv2d/RESULTS_DEV.md
 research/growmoe_results/rv2d/dev_constants.json
+
+# --- E-036 to E-038 (stage 4.1, the twice-counted founding cluster, the shootout and the dev cells without the head start)
+research/growmoe_results/merge_study/RESULTS_INFANT_DEDUPE.md
+research/growmoe_results/merge_study/infant_dedupe_study.json
+research/growmoe_results/merge_study/twin_signature_diag_output.txt
+research/growmoe_results/merge_study/update_trace_output.txt
+research/growmoe_results/shootout/RESULTS_SHOOTOUT_UNALIASED.md
+research/growmoe_results/shootout/runs_unaliased/*/*.json
+research/growmoe_results/rv2d/RESULTS_S3_UNALIASED.md
+research/growmoe_results/rv2d/cells_s3u/*.json

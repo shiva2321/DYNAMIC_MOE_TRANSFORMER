@@ -2,6 +2,7 @@
 
     python report_rv2d.py dev        # RESULTS_DEV.md: router, transfer, growth, full stack and cost tables on the dev seeds (cells of dev1 and dev2)
     python report_rv2d.py confirm    # RESULTS_RV2D.md: the pre-registered statements S4-1 to S4-9 with verdicts, then the same tables on seeds 85-99
+    python report_rv2d.py dev --cells DIR --out NAME.md   # the same tables from another folder of cell records (for example a merged view without the aliased function-regime cells), written to NAME.md
 """
 
 import json
@@ -160,6 +161,8 @@ def section_cost(rows):
 
 def main():
     phase = sys.argv[1] if len(sys.argv) > 1 else "dev"
+    if "--cells" in sys.argv:
+        R.CELLS = Path(sys.argv[sys.argv.index("--cells") + 1]).resolve()
     frozen = json.loads((HERE / "bars_rv2d.json").read_text(encoding="utf-8")).get("code_stamp") if phase == "confirm" and (HERE / "bars_rv2d.json").exists() else None
     rows = load(phase, frozen)
     if not rows:
@@ -187,7 +190,7 @@ def main():
     if phase == "dev":
         md += section_gamma(rows)
     md += section_cost(rows)
-    out = HERE / ("RESULTS_DEV.md" if phase == "dev" else "RESULTS_RV2D.md")
+    out = HERE / (sys.argv[sys.argv.index("--out") + 1] if "--out" in sys.argv else "RESULTS_DEV.md" if phase == "dev" else "RESULTS_RV2D.md")
     R.atomic_write_text(out, "\n".join(md) + "\n")
     print("wrote", out)
 

@@ -1,0 +1,218 @@
+[
+{
+"family": "arith-seq",
+"stream": "-",
+"arm": "S3+T",
+"seed": 100,
+"gap": 0.0,
+"tmargin": 0.25,
+"phase": "dev"
+},
+{
+"family": "arith-seq",
+"stream": "-",
+"arm": "S3+T",
+"seed": 101,
+"gap": 0.0,
+"tmargin": 0.25,
+"phase": "dev"
+},
+{
+"family": "banking",
+"stream": "-",
+"arm": "S3+T",
+"seed": 100,
+"gap": 0.0,
+"tmargin": 0.25,
+"phase": "dev"
+},
+{
+"family": "banking",
+"stream": "-",
+"arm": "S3+T",
+"seed": 101,
+"gap": 0.0,
+"tmargin": 0.25,
+"phase": "dev"
+},
+{
+"family": "arith-mixed128",
+"stream": "-",
+"arm": "S3+T",
+"seed": 100,
+"gap": 0.0,
+"tmargin": 0.25,
+"phase": "dev"
+},
+{
+"family": "arith-mixed128",
+"stream": "-",
+"arm": "S3+T",
+"seed": 101,
+"gap": 0.0,
+"tmargin": 0.25,
+"phase": "dev"
+},
+{
+"family": "arith-mixed128",
+"stream": "-",
+"arm": "S3+T",
+"seed": 102,
+"gap": 0.0,
+"tmargin": 0.25,
+"phase": "dev"
+},
+{
+"family": "arith-seq",
+"stream": "-",
+"arm": "S3+G",
+"seed": 100,
+"gap": 0.17,
+"tmargin": 0.0,
+"phase": "dev"
+},
+{
+"family": "arith-seq",
+"stream": "-",
+"arm": "S3+G",
+"seed": 101,
+"gap": 0.17,
+"tmargin": 0.0,
+"phase": "dev"
+},
+{
+"family": "banking",
+"stream": "-",
+"arm": "S3+G",
+"seed": 100,
+"gap": 0.17,
+"tmargin": 0.0,
+"phase": "dev"
+},
+{
+"family": "banking",
+"stream": "-",
+"arm": "S3+G",
+"seed": 101,
+"gap": 0.17,
+"tmargin": 0.0,
+"phase": "dev"
+},
+{
+"family": "arith-mixed16",
+"stream": "-",
+"arm": "S3+G",
+"seed": 100,
+"gap": 0.17,
+"tmargin": 0.0,
+"phase": "dev"
+},
+{
+"family": "arith-mixed16",
+"stream": "-",
+"arm": "S3+G",
+"seed": 101,
+"gap": 0.17,
+"tmargin": 0.0,
+"phase": "dev"
+},
+{
+"family": "arith-mixed16",
+"stream": "-",
+"arm": "S3+G",
+"seed": 102,
+"gap": 0.17,
+"tmargin": 0.0,
+"phase": "dev"
+},
+{
+"family": "arith-mixed128",
+"stream": "-",
+"arm": "S3+G",
+"seed": 100,
+"gap": 0.17,
+"tmargin": 0.0,
+"phase": "dev"
+},
+{
+"family": "arith-mixed128",
+"stream": "-",
+"arm": "S3+G",
+"seed": 101,
+"gap": 0.17,
+"tmargin": 0.0,
+"phase": "dev"
+},
+{
+"family": "arith-mixed128",
+"stream": "-",
+"arm": "S3+G",
+"seed": 102,
+"gap": 0.17,
+"tmargin": 0.0,
+"phase": "dev"
+},
+{
+"family": "arith-seq",
+"stream": "-",
+"arm": "S3+T+G",
+"seed": 100,
+"gap": 0.17,
+"tmargin": 0.25,
+"phase": "dev"
+},
+{
+"family": "arith-seq",
+"stream": "-",
+"arm": "S3+T+G",
+"seed": 101,
+"gap": 0.17,
+"tmargin": 0.25,
+"phase": "dev"
+},
+{
+"family": "banking",
+"stream": "-",
+"arm": "S3+T+G",
+"seed": 100,
+"gap": 0.17,
+"tmargin": 0.25,
+"phase": "dev"
+},
+{
+"family": "banking",
+"stream": "-",
+"arm": "S3+T+G",
+"seed": 101,
+"gap": 0.17,
+"tmargin": 0.25,
+"phase": "dev"
+},
+{
+"family": "arith-mixed128",
+"stream": "-",
+"arm": "S3+T+G",
+"seed": 100,
+"gap": 0.17,
+"tmargin": 0.25,
+"phase": "dev"
+},
+{
+"family": "arith-mixed128",
+"stream": "-",
+"arm": "S3+T+G",
+"seed": 101,
+"gap": 0.17,
+"tmargin": 0.25,
+"phase": "dev"
+},
+{
+"family": "arith-mixed128",
+"stream": "-",
+"arm": "S3+T+G",
+"seed": 102,
+"gap": 0.17,
+"tmargin": 0.25,
+"phase": "dev"
+}
+]
