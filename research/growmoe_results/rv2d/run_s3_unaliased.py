@@ -9,6 +9,7 @@ records of `cells_s3u/` were produced before that change, and it still gives the
 
     python run_s3_unaliased.py list                  # the cells
     python run_s3_unaliased.py run --workers 2       # run what is missing (safe to repeat after a power cut)
+    python run_s3_unaliased.py run --phase gapgrid --workers 3     # S3+G on F-15 and OV-0.6 at the grid values other than the chosen one (24 cells), for the growth-threshold selection
 """
 
 import argparse
@@ -29,12 +30,14 @@ OFFSET = 7
 OUT = HERE / "cells_s3u"
 SEEDS = (100, 101, 102)
 CONST = json.loads((HERE / "dev_constants.json").read_text(encoding="utf-8")) if (HERE / "dev_constants.json").exists() else {"grow_gap": 0.17, "transfer_margin": 0.25}
-PHASES = {"core": ("F-15", "OV-0.6", "OV-0.85", "S1", "S2-5"), "rest": ("F-30", "S2-30", "OV-0.0", "OV-0.3", "OV-0.3-MIXED")}
+PHASES = {"core": ("F-15", "OV-0.6", "OV-0.85", "S1", "S2-5"), "rest": ("F-30", "S2-30", "OV-0.0", "OV-0.3", "OV-0.3-MIXED"), "gapgrid": ("F-15", "OV-0.6")}
 
 
 def cells(phase: str):
     g, t = CONST["grow_gap"], CONST["transfer_margin"]
     out = []
+    if phase == "gapgrid":                                       # the growth-threshold calibration streams of dev1 (spec 6.7), run again without the head start: S3+G at the other grid values
+        return [R.Cell("s3", st, "S3+G", s, gap=gg) for st in PHASES[phase] for gg in R.GAP_GRID if gg != g for s in SEEDS]
     for st in PHASES[phase]:
         for s in SEEDS:
             for arm in (("S3", "S3+T", "S3+G", "S3+T+G") if phase == "core" else ("S3",)):
