@@ -13,9 +13,9 @@ VIEW = HERE / "cells_devview"
 
 
 def main() -> None:
-    if VIEW.exists():
-        shutil.rmtree(VIEW)
-    VIEW.mkdir()
+    VIEW.mkdir(exist_ok=True)
+    for old in VIEW.glob("*"):                                         # empty the folder instead of removing it (Windows refuses to remove a folder some other program has open)
+        old.unlink()
     kept = dropped = 0
     for f in sorted((HERE / "cells").glob("*.json")):
         if f.name.startswith("s3__"):
