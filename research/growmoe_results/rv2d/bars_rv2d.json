@@ -1,0 +1,132 @@
+{
+ "arms": [
+  "S3",
+  "S3+T",
+  "S3+G",
+  "S3+T+G"
+ ],
+ "bars": {
+  "S4_1_lo": 5.0,
+  "S4_2_lo": 4.0,
+  "S4_3": -0.5,
+  "S4_4_forgetting": 9.0,
+  "S4_4_gain": 5.0,
+  "S4_4_min_experts": 5,
+  "S4_4_seeds_below_allowed": 1,
+  "S4_5_gain": -0.5,
+  "S4_5_ratio": 1.2,
+  "S4_6_cost": 0.05,
+  "S4_6_frac": 0.9,
+  "S4_6_seed_share": 0.8666666666666667,
+  "S4_6_width": [
+   64,
+   256
+  ],
+  "S4_7_gain": -0.5,
+  "S4_7_grow": 1.0,
+  "S4_7_params": 0.25,
+  "S4_8_acc": 44.0,
+  "S4_8_forgetting": 8.0
+ },
+ "code_stamp": "ff3438232c5f0dfa",
+ "constants": {
+  "grow_gap": 0.17,
+  "router_margin": 0.01,
+  "router_mode": "free",
+  "router_setting": "free-0.01",
+  "transfer_margin": 0.25
+ },
+ "dev_cells": 165,
+ "dev_stamp": "e468a8911472d079",
+ "dev_verdicts": {
+  "S4-1": "PASS",
+  "S4-2": "PASS",
+  "S4-3": "PASS",
+  "S4-4": "PASS",
+  "S4-5": "NOT MEASURABLE",
+  "S4-6": "PASS",
+  "S4-7": "NOT MEASURABLE",
+  "S4-8": "PASS",
+  "S4-9": "PASS"
+ },
+ "expected": {
+  "S4-1": "PASS",
+  "S4-2": "PASS",
+  "S4-3": "PASS",
+  "S4-4": "PASS",
+  "S4-5": "PASS",
+  "S4-6": "PASS",
+  "S4-7": "PASS",
+  "S4-8": "PASS",
+  "S4-9": "PASS"
+ },
+ "golden": {
+  "differences": [],
+  "recorded_sha256": "b5df97133437"
+ },
+ "overrides": {},
+ "seeds": {
+  "arith-mixed": [
+   85,
+   86,
+   87,
+   88,
+   89,
+   90,
+   91,
+   92,
+   93,
+   94,
+   95,
+   96,
+   97,
+   98,
+   99
+  ],
+  "arith-seq": [
+   85,
+   86,
+   87,
+   88,
+   89,
+   90
+  ],
+  "banking": [
+   85,
+   86,
+   87,
+   88,
+   89
+  ],
+  "s3": [
+   85,
+   86,
+   87,
+   88,
+   89,
+   90,
+   91,
+   92,
+   93,
+   94,
+   95,
+   96,
+   97,
+   98,
+   99
+  ]
+ },
+ "streams": [
+  "F-30",
+  "S2-30",
+  "F-15",
+  "OV-0.85",
+  "OV-0.6",
+  "OV-0.3",
+  "OV-0.3-MIXED",
+  "OV-0.0",
+  "S1",
+  "S2-5"
+ ],
+ "written": "2026-10-17 10:37:04"
+}
