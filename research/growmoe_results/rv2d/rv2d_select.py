@@ -72,7 +72,7 @@ def choose_router_setting(rows) -> dict:
 
 def choose_transfer_margin(rows) -> dict:
     """Among the declared margins: the best mean paired accuracy gain over S3 on the target (arithmetic operator-by-operator) subject to the guards on the other streams: mean
-    difference >= -0.005 and mean expert count <= 1.2 x S3's. Ties go to the default 0.25."""
+    difference >= -0.005 and mean expert count <= 1.2 x the number of true functions of the stream (amendment A4-1; S3's count for a stream that records none). Ties go to the default 0.25."""
     curve = {}
     for t in TRANSFER_GRID:
         gains, ok = {}, True
@@ -81,7 +81,9 @@ def choose_transfer_margin(rows) -> dict:
             if not pairs:
                 continue
             gain = float(np.mean([o["acc"] - b["acc"] for b, o in pairs]))
-            ratio = float(np.mean([o["n_experts"] for _, o in pairs]) / max(np.mean([b["n_experts"] for b, _ in pairs]), 1e-9))
+            truth = [o.get("regimes") for _, o in pairs]
+            denominator = float(np.mean(truth)) if all(isinstance(x, (int, float)) and x > 0 for x in truth) else max(float(np.mean([b["n_experts"] for b, _ in pairs])), 1e-9)
+            ratio = float(np.mean([o["n_experts"] for _, o in pairs]) / denominator)
             gains[f"{fam}:{st}"] = {"gain": gain, "expert_ratio": ratio}
             if fam != "arith-seq" and not (gain >= -0.005 and ratio <= 1.2):
                 ok = False

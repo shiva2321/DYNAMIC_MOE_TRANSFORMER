@@ -81,11 +81,16 @@ def rv2d_verdicts(runs: Sequence[dict], bars: dict, golden: Optional[dict] = Non
     detail["S4-4"] = d4
 
     def transfer_guard(family, stream):
+        """Amendment A4-1: the experts of S3+T are counted against the number of true functions (the stream's ``regimes``) when every record has it, else against S3's count. The shipped pool
+        under-spawns on several streams, so a ratio to S3 calls the transfer rule's correct count a cascade; the purpose of the statement is no false spawns."""
         a, b = g(family, stream, "S3+T"), g(family, stream, "S3")
         d = _diff(a, b, acc, acc)
         if d is not None:
-            ratio = _mean(a, lambda r: r["n_experts"]) / max(_mean(b, lambda r: r["n_experts"]), 1e-9)
-            d.update(expert_ratio=ratio)
+            truth = [r.get("regimes") for r in a.values()]
+            known = all(isinstance(x, (int, float)) and x > 0 for x in truth)
+            mean_t, mean_s3 = _mean(a, lambda r: r["n_experts"]), max(_mean(b, lambda r: r["n_experts"]), 1e-9)
+            ratio = mean_t / float(np.mean(truth)) if known else mean_t / mean_s3
+            d.update(expert_ratio=ratio, ratio_against="true functions" if known else "S3's count", expert_ratio_vs_s3=mean_t / mean_s3)
             d["holds"] = bool(d["mean_diff_points"] >= bars["S4_5_gain"] and ratio <= bars["S4_5_ratio"])
         return d
     detail["S4-5"] = {f"{f}:{s}": transfer_guard(f, s) for f, s in [("s3", s) for s in GUARD_STREAMS] + [("banking", "-")]}
@@ -130,7 +135,7 @@ def rv2d_verdicts(runs: Sequence[dict], bars: dict, golden: Optional[dict] = Non
         "S4-3": f"each other stage-3 stream and banking77, S3 pools: router minus no router, mean >= {bars['S4_3']:+.1f} points",
         "S4-4": f"arithmetic operator-by-operator: S3+T minus S3 mean >= +{bars['S4_4_gain']:.1f} points, mean forgetting <= {bars['S4_4_forgetting']:.1f} points, at most "
                 f"{bars['S4_4_seeds_below_allowed']} seed with fewer than {bars['S4_4_min_experts']} experts",
-        "S4-5": f"each other stage-3 stream and banking77: S3+T minus S3 mean >= {bars['S4_5_gain']:+.1f} points and mean experts <= {bars['S4_5_ratio']} x S3's",
+        "S4-5": f"each other stage-3 stream and banking77: S3+T minus S3 mean >= {bars['S4_5_gain']:+.1f} points and mean experts <= {bars['S4_5_ratio']} x the number of true functions of the stream (S3's count where there is none; amendment A4-1)",
         "S4-6": f"arithmetic mixed from 16 units, S3+G: accuracy >= {bars['S4_6_frac']} x the 128-unit S3 of the same seed in at least {bars['S4_6_seed_share']:.2f} of the seeds, mean final width in "
                 f"{bars['S4_6_width']}, extra forward cost <= {100 * bars['S4_6_cost']:.0f} % of training",
         "S4-7": f"arithmetic mixed from 128 units and every stage-3 stream: S3+G minus S3 mean >= {bars['S4_7_gain']:+.1f} points, growth events per run <= {bars['S4_7_grow']}, "

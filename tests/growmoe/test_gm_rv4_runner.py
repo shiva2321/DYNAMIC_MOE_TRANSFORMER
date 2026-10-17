@@ -30,6 +30,15 @@ def test_arm_flags_follow_the_arm_and_refuse_a_missing_constant():
         R.arm_flags(R.Cell("s3", "F-15", "S3+T"))                      # a transfer arm without its margin
 
 
+def test_function_regime_cells_get_a_pool_seed_that_differs_from_the_stream_seed():
+    """E-035: with pool seed == stream seed the expert founded for regime r starts with regime r's teacher units. Amendment A4-2: the function-regime family uses stream seed + 7."""
+    assert R.POOL_SEED_OFFSET == 7
+    for stream in ("F-15", "OV-0.6", "S1", "S2-5"):
+        assert R.pool_seed(R.Cell("s3", stream, "S3", 100)) == 107
+    for family in ("arith-seq", "arith-mixed16", "arith-mixed128", "banking"):                 # no teacher in these streams: their seeds are untouched
+        assert R.pool_seed(R.Cell(family, "-", "S3", 100)) == 100
+
+
 def _row(family, stream, arm, seed, acc, params=1000, n_grow=0, gap=0.0, tmargin=0.0, experts=4, router=None):
     return {"family": family, "stream": stream, "arm": arm, "seed": seed, "gap": gap, "tmargin": tmargin, "acc": acc, "params": params, "n_grow": n_grow, "n_experts": experts,
             "router": router or {}}
@@ -87,6 +96,20 @@ def test_choose_transfer_margin_prefers_the_default_on_a_tie_and_respects_the_ex
                 rows.append(_row(fam, stream, "S3+T", seed, 0.30 + gain, tmargin=t, experts=exp))
     out = S.choose_transfer_margin(rows)
     assert out["chosen"] == 0.25                                               # 0.35 breaks the 1.2x expert guard; 0.15 and 0.25 tie, the default wins
+
+
+def test_choose_transfer_margin_counts_experts_against_the_true_functions_when_the_rows_have_them():
+    """Amendment A4-1: S3 under-spawns (3 experts for 5 functions); the transfer rule's 5 are right and must not break the expert guard, 9 are a cascade."""
+    rows = []
+    for seed in (100, 101):
+        rows.append(_row("arith-seq", "-", "S3", seed, 0.30, experts=4))
+        rows.append(dict(_row("s3", "S2-5", "S3", seed, 0.30, experts=3), regimes=5))
+        for t, exp in ((0.15, 5), (0.25, 5), (0.35, 9)):
+            rows.append(_row("arith-seq", "-", "S3+T", seed, 0.40, tmargin=t, experts=6))
+            rows.append(dict(_row("s3", "S2-5", "S3+T", seed, 0.31, tmargin=t, experts=exp), regimes=5))
+    out = S.choose_transfer_margin(rows)
+    assert out["curve"][0.25]["guards_ok"] is True and out["curve"][0.15]["guards_ok"] is True and out["curve"][0.35]["guards_ok"] is False
+    assert out["chosen"] == 0.25
 
 
 def test_the_code_stamp_changes_with_any_stamped_file_and_ignores_line_endings(tmp_path):

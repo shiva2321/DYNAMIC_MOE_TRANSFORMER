@@ -78,6 +78,23 @@ def test_breaking_one_effect_breaks_exactly_its_statement(sid):
     assert {k: v["verdict"] != "PASS" for k, v in res.items()} == {k: k == sid for k in IDS}
 
 
+def test_s4_5_counts_experts_against_the_true_number_of_functions_when_the_stream_has_one():
+    """Amendment A4-1: the shipped pool under-spawns (S2-5: 3 experts for 5 regimes), so '1.2 x S3's experts' called the transfer rule's correct 5 a cascade."""
+    runs = _edit(good_runs(), lambda r: r["stream"] == "S2-5", regimes=5)
+    runs = _edit(runs, lambda r: r["stream"] == "S2-5" and r["arm"] == "S3", experts=3)
+    runs = _edit(runs, lambda r: r["stream"] == "S2-5" and r["arm"] == "S3+T", experts=5)
+    res = rv2d_verdicts(runs, BARS, {"differences": []})
+    d = res["S4-5"]["detail"]["s3:S2-5"]
+    assert res["S4-5"]["verdict"] == "PASS" and d["ratio_against"] == "true functions" and d["expert_ratio"] == pytest.approx(1.0) and d["expert_ratio_vs_s3"] == pytest.approx(5 / 3)
+    cascade = _edit(runs, lambda r: r["stream"] == "S2-5" and r["arm"] == "S3+T", experts=7)                       # 7 experts for 5 functions is a cascade whatever S3 did
+    assert rv2d_verdicts(cascade, BARS, {"differences": []})["S4-5"]["verdict"] != "PASS"
+
+
+def test_s4_5_falls_back_to_the_s3_count_for_records_without_a_ground_truth():
+    res = rv2d_verdicts(good_runs(), BARS, {"differences": []})                                                       # the synthetic records carry no 'regimes'
+    assert res["S4-5"]["detail"]["banking:-"]["ratio_against"] == "S3's count"
+
+
 def test_the_decision_rule_adopts_each_component_on_its_own_statements():
     d = rv2d_decision(rv2d_verdicts(BREAKS["S4-3"](good_runs()), BARS, {"differences": []}))
     assert (d["4a"], d["4b"], d["4c"]) == (False, True, True)                      # the router guard failed: 4a stays off, the others proceed

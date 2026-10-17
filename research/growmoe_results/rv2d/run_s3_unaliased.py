@@ -4,6 +4,9 @@
 with the pool seed shifted by 7, through the unchanged `rv2d_lib.run_cell`, by patching `run_rv2c.arm_cfg` in the process. It touches no stamped file: the results go to `cells_s3u/` and carry the code
 stamp that was current when the cell started, so they are comparable with `cells/`.
 
+Since amendment A4-2 (docs/superpowers/specs/2026-10-15-routing-v2-stage4-AMENDMENTS.md) `rv2d_lib.run_s3` applies the same offset itself (`rv2d_lib.pool_seed`); this driver is kept because the
+records of `cells_s3u/` were produced before that change, and it still gives the same seed (the library's replace wins, with the same value).
+
     python run_s3_unaliased.py list                  # the cells
     python run_s3_unaliased.py run --workers 2       # run what is missing (safe to repeat after a power cut)
 """

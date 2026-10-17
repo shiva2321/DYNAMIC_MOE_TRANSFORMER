@@ -62,7 +62,7 @@ class PhyloCfg(CommonCfg):
     merge_every: int = 50        # interval of observe calls to check for expert merges
     delta_merge: float = 0.02    # maximum tolerated accuracy drop on probe sets during merge
     merge_overlap: float = 0.2   # mutual prototype coverage required to propose a merge
-    max_experts: int = 256       # maximum live experts before pool abstains
+    max_experts: int = 256       # maximum live experts; a full pool follows cap_policy (stage 4.1: "share" by default = the cluster joins the nearest expert, "drop" = it is lost) and says so
     agem: bool = False           # enable A-GEM gradient projection during training
     competence: bool = True      # enable prequential loss-change monitor
     monitor_alpha: float = 0.01

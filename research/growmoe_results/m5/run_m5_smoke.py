@@ -104,6 +104,7 @@ def main():
                     alpha_spawn=0.01,
                     m_min=32,
                     max_experts=1,
+                    cap_policy="drop",          # pinned (stage 4.1 made "share" the default): this baseline was run with the cluster dropped, so its numbers keep their meaning (E-036)
                 )
                 make_pool = lambda cfg=cfg: PhyloMoE(cfg)
             elif arm_key == "c_knn":

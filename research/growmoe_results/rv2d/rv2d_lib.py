@@ -16,11 +16,18 @@ SMOKE = bool(os.environ.get("RV2D_SMOKE"))               # tiny streams and a se
 CELLS = HERE / ("cells_smoke" if SMOKE else "cells")
 N_PER_OP, PER_CELL, SEQ_CELL = (300, 10, 5) if SMOKE else (8000, 200, 40)
 S3_ARM = "A_set@12-0.5-100"                    # the stage-3 arm of the stage-4 spikes (batch-level gate, breaker len 12, rate 0.5, pause 100)
+POOL_SEED_OFFSET = 7                           # function-regime streams only (amendment A4-2, E-035): the pool seed is the stream seed + 7. With the same seed the expert founded for regime r starts with
+#                                                regime r's teacher units (MLPExpert(seed = s*1000 + r) on both sides); the dev1 cells of this family carry that head start, the unaliased dev cells and the confirmatory run do not
 STREAMS = ["F-30", "S2-30", "F-15", "OV-0.85", "OV-0.6", "OV-0.3", "OV-0.3-MIXED", "OV-0.0", "S1", "S2-5"]      # the ten pre-registered stage-3 streams
 ARMS = {"S3": {}, "S3+T": {"spawn_rule": "transfer"}, "S3+G": {"growth_rule": "gap"}, "S3+T+G": {"spawn_rule": "transfer", "growth_rule": "gap"}}
 ROUTER_SETTINGS = [("restrict", 0.01), ("restrict", 0.03), ("free", 0.01), ("free", 0.03)]
 GAP_GRID = (0.14, 0.17, 0.20, 0.23, 0.26)     # declared in spec section 6.7
 TRANSFER_GRID = (0.15, 0.25, 0.35)            # declared in spec section 8
+
+
+def pool_seed(cell) -> int:
+    """The seed of a cell's pool: the stream seed + POOL_SEED_OFFSET for the function-regime family ("s3"), the stream seed for the others (arithmetic and banking have no teacher)."""
+    return cell.seed + POOL_SEED_OFFSET if cell.family == "s3" else cell.seed
 
 
 @dataclass(frozen=True)
@@ -139,7 +146,7 @@ def run_s3(cell: Cell) -> dict:
     t0 = time.perf_counter()
     st = R3.build_stream(cell.stream, cell.seed, SMOKE)
     steps = R3.steps_for(cell.stream)
-    cfg = dataclasses.replace(R3.arm_cfg(S3_ARM, st, cell.seed, steps), **arm_flags(cell))
+    cfg = dataclasses.replace(R3.arm_cfg(S3_ARM, st, cell.seed, steps), seed=pool_seed(cell), **arm_flags(cell))
     holder = []
 
     def make():

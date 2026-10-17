@@ -48,6 +48,18 @@ def load(phase: str, stamp: str = None) -> list:
     return rows
 
 
+def folder_stamp(folder) -> str:
+    """The code stamp shared by every record of a folder. The dev folders were produced by one version of the code (the stage-4 build before stage 4.1 and amendment A4-2 were merged); a
+    merged view with two stamps is an error, not something to average over."""
+    stamps = set()
+    for f in Path(folder).glob("*.json"):
+        if R.valid_json(f):
+            stamps.add(json.loads(f.read_text(encoding="utf-8")).get("code_stamp"))
+    if len(stamps) != 1:
+        raise ValueError(f"{folder}: expected records of exactly one code stamp, found {sorted(map(str, stamps))}")
+    return stamps.pop()
+
+
 def pm(d: dict, digits: int = 1) -> str:
     lo, hi = d["ci_lo"], d["ci_hi"]
     ci = "n/a" if not np.isfinite(lo) else f"[{lo:+.{digits}f}, {hi:+.{digits}f}]"
