@@ -90,6 +90,15 @@ def test_s4_5_counts_experts_against_the_true_number_of_functions_when_the_strea
     assert rv2d_verdicts(cascade, BARS, {"differences": []})["S4-5"]["verdict"] != "PASS"
 
 
+def test_s4_5_uses_the_true_count_only_when_every_record_of_the_stream_has_it():
+    runs = _edit(good_runs(), lambda r: r["stream"] == "S2-5", regimes=5)
+    runs = _edit(runs, lambda r: r["stream"] == "S2-5" and r["arm"] == "S3", experts=3)
+    runs = _edit(runs, lambda r: r["stream"] == "S2-5" and r["arm"] == "S3+T", experts=5)
+    first = next(r for r in runs if r["stream"] == "S2-5" and r["arm"] == "S3+T")
+    del first["regimes"]                                                                                             # one seed has no ground truth: the whole stream falls back to S3's count
+    assert rv2d_verdicts(runs, BARS, {"differences": []})["S4-5"]["detail"]["s3:S2-5"]["ratio_against"] == "S3's count"
+
+
 def test_s4_5_falls_back_to_the_s3_count_for_records_without_a_ground_truth():
     res = rv2d_verdicts(good_runs(), BARS, {"differences": []})                                                       # the synthetic records carry no 'regimes'
     assert res["S4-5"]["detail"]["banking:-"]["ratio_against"] == "S3's count"

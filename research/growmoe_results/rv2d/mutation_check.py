@@ -24,6 +24,7 @@ TT = ["tests/growmoe/test_gm_rv4_transfer.py"]
 TP = ["tests/growmoe/test_gm_rv4_transfer_pool.py"]
 GT = ["tests/growmoe/test_gm_rv4_growth.py"]
 GP = ["tests/growmoe/test_gm_rv4_growth_pool.py"]
+VT = ["tests/growmoe/test_gm_rv4_verdicts.py"]
 
 MUTANTS = [   # (group, name, file, exact old text, new text, owning tests)
     ("router", "margin: > becomes >=", "growmoe/router.py", 'cv[best] > cv["density"] + margin', 'cv[best] >= cv["density"] + margin', RT),
@@ -49,6 +50,9 @@ MUTANTS = [   # (group, name, file, exact old text, new text, owning tests)
     ("phylo", "transfer: min reference < becomes <=", "growmoe/pools/phylo.py", "if len(ref) < cfg.transfer_min_ref:", "if len(ref) <= cfg.transfer_min_ref:", TP),
     ("phylo", "transfer: alarm path keeps the cluster in the reference", "growmoe/pools/phylo.py", "return ref[:-exclude] if exclude > 0 else ref", "return ref", TP),
     ("phylo", "transfer: alarm path min reference < becomes <=", "growmoe/pools/phylo.py", "len(stored) - n < cfg.transfer_min_ref", "len(stored) - n <= cfg.transfer_min_ref", TP),
+    ("verdict", "S4-5: ratio against S3 even when the true count is known", "growmoe/verdicts_rv4.py", "ratio = mean_t / float(np.mean(truth)) if known else mean_t / mean_s3", "ratio = mean_t / mean_s3", VT),
+    ("verdict", "S4-5: one record with a true count is enough", "growmoe/verdicts_rv4.py", "known = all(isinstance(x, (int, float)) and x > 0 for x in truth)", "known = any(isinstance(x, (int, float)) and x > 0 for x in truth)", VT),
+    ("verdict", "S4-5: the ratio bar is ignored", "growmoe/verdicts_rv4.py", 'd["holds"] = bool(d["mean_diff_points"] >= bars["S4_5_gain"] and ratio <= bars["S4_5_ratio"])', 'd["holds"] = bool(d["mean_diff_points"] >= bars["S4_5_gain"])', VT),
     ("phylo", "transfer: margin scale", "growmoe/pools/phylo.py", "math.log(max(int(self.experts[eid].module.seen.sum()), 2))", "math.log(max(int(self.experts[eid].module.seen.sum()), 1))", TP),
 ]
 

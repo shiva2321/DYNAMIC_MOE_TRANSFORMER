@@ -176,6 +176,8 @@ def main():
     if "--cells" in sys.argv:
         R.CELLS = Path(sys.argv[sys.argv.index("--cells") + 1]).resolve()
     frozen = json.loads((HERE / "bars_rv2d.json").read_text(encoding="utf-8")).get("code_stamp") if phase == "confirm" and (HERE / "bars_rv2d.json").exists() else None
+    if frozen is None and "--cells" in sys.argv:
+        frozen = folder_stamp(R.CELLS)                                   # another folder of records is read with the code stamp those records carry (the dev cells predate the merge of stage 4.1)
     rows = load(phase, frozen)
     if not rows:
         sys.exit(f"no cell records for phase {phase} in {R.CELLS} with the code stamp {frozen or R.code_stamp()}")

@@ -4,7 +4,7 @@
 - **Date:** 2026-10-16
 - **Track:** G
 - **Type:** design (with the build and its tests)
-- **Status:** completed on branch `stage4-1-cap-and-telemetry`; NOT yet merged into `track-g-growmoe` (it waits for the stage-4 dev review, so that the running dev queue keeps its code stamp)
+- **Status:** completed; merged into `track-g-growmoe` on 2026-10-17 (fast-forward to ba0e2e4) after the stage-4 dev review and before the freeze, so that the dev queues kept their code stamp while they ran
 - **Evidence grade:** A for the tests and the flag-off identity (script-generated, run by me); B for the sizes quoted from E-034
 - **Code / commit:** branch `stage4-1-cap-and-telemetry` (worktree `D:/shm_stage41`), commit 9fc4084; spec docs/superpowers/specs/2026-10-16-stage4-1-cap-and-telemetry.md (on the branch)
 - **People:** the user decided the policy; Claude designed, built and tested it; not reviewed by anyone else
@@ -47,7 +47,7 @@ Plain words. A full pool used to forget silently; now it says so once, shares th
 - My first test of the share policy compared `sig.n` before and after; the signature was already full (256 prototypes) so `n` could not grow. The test now compares `seen` and the p-value of fresh inputs of the new region.
 
 ## Consequence
-Merge into `track-g-growmoe` after the stage-4 dev review and before the freeze. Stage 5 (separate pre-registration): rival-tracking repair, certified-redundancy eviction, answer-time averaging. E-037 (the twin signature) is the infant-window answer.
+Merged on 2026-10-17 (E-039). The historical single-network baseline of the M5 runs pins `cap_policy="drop"`. Stage 5 (separate pre-registration): rival-tracking repair, certified-redundancy eviction, answer-time averaging. E-037 (the twin signature) is the infant-window answer.
 
 ## Evidence
 - docs/superpowers/specs/2026-10-16-stage4-1-cap-and-telemetry.md (on the branch)
