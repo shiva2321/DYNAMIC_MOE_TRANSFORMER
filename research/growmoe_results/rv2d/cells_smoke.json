@@ -43,5 +43,14 @@
 "gap": 0.0,
 "tmargin": 0.0,
 "phase": "dev"
+},
+{
+"family": "banking",
+"stream": "-",
+"arm": "S3+T+G",
+"seed": 100,
+"gap": 0.2,
+"tmargin": 0.25,
+"phase": "dev"
 }
 ]

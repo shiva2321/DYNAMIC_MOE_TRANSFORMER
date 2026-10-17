@@ -63,7 +63,7 @@ def confirm():
 def smoke():
     """One cell of every family (run with RV2D_SMOKE=1: tiny streams, a separate result folder)."""
     return [Cell("arith-seq", "-", "S3+T+G", 100, gap=0.20, tmargin=0.25), Cell("arith-mixed16", "-", "S3+G", 100, gap=0.20), Cell("arith-mixed128", "-", "S3", 100),
-            Cell("s3", "F-15", "S3+T+G", 100, gap=0.20, tmargin=0.25), Cell("s3", "OV-0.6", "S3", 100)]
+            Cell("s3", "F-15", "S3+T+G", 100, gap=0.20, tmargin=0.25), Cell("s3", "OV-0.6", "S3", 100), Cell("banking", "-", "S3+T+G", 100, gap=0.20, tmargin=0.25)]       # banking77 has no tiny variant: it runs in full
 
 
 if __name__ == "__main__":

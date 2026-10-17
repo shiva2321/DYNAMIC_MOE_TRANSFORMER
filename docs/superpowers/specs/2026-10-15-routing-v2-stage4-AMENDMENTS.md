@@ -2,7 +2,7 @@
 
 The spec `2026-10-15-routing-v2-stage4-design.md` was approved on 2026-10-15. Since then the dev runs finished (dev1: 157 cells; dev2 core: 24 cells) and the function-regime family was run again without the seed-aliasing head start (60 cells, `cells_s3u/`). The review below is built from `research/growmoe_results/rv2d/RESULTS_DEV_REVIEW.md`, which `report_rv2d.py dev --cells cells_devview --out RESULTS_DEV_REVIEW.md` generates from `cells_devview/` (all dev1 and dev2 records of the arithmetic and banking families plus the unaliased function-regime records; `make_devview.py` builds it). Code stamp of all these cells: `e468a8911472d079`.
 
-No bar changes. **A4-1 changes the denominator of one pre-registered statement, S4-5 (and of the dev-selection guard that mirrors it)**; it is the only amendment that touches the approved text, it is made before the freeze and on dev evidence only, and I ask the user to accept it at the go (if not, `growmoe/verdicts_rv4.py` and `rv2d_select.py` go back to the S3-relative reading, which will then fail S4-5 on S1 and S2-5 for the reason below).
+No bar changes. **A4-1 changes the denominator of one pre-registered statement, S4-5 (and of the dev-selection guard that mirrors it)**; it is the only amendment that touches the approved text, it is made before the freeze and on dev evidence only. **The user accepted A4-1 on 2026-10-17 ("yes accept A4-1 and continue").**
 
 | ID | Spec says | Now | Why |
 |---|---|---|---|

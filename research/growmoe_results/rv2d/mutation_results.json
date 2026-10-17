@@ -1,5 +1,5 @@
 {
- "stamp": "4aa1432323563938",
+ "stamp": "539b8e4a8d025519",
  "results": [
   {
    "group": "router",
@@ -114,6 +114,21 @@
   {
    "group": "phylo",
    "name": "transfer: alarm path min reference < becomes <=",
+   "killed": true
+  },
+  {
+   "group": "verdict",
+   "name": "S4-5: ratio against S3 even when the true count is known",
+   "killed": true
+  },
+  {
+   "group": "verdict",
+   "name": "S4-5: one record with a true count is enough",
+   "killed": true
+  },
+  {
+   "group": "verdict",
+   "name": "S4-5: the ratio bar is ignored",
    "killed": true
   },
   {

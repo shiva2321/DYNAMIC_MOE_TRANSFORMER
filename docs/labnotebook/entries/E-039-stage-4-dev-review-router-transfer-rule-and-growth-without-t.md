@@ -4,7 +4,7 @@
 - **Date:** 2026-10-17
 - **Track:** G
 - **Type:** audit (the dev review of the stage-4 plan, task 6)
-- **Status:** completed; the amendments wait for the user's OK (A4-1) and the pre-registration is rehearsed, not frozen
+- **Status:** completed; A4-1 was accepted by the user on 2026-10-17; the pre-registration was rehearsed, then frozen after the smoke test of the merged runner (see the freeze commit)
 - **Evidence grade:** B (dev seeds 100-102 for the function-regime and mixed-arithmetic streams, 100-101 for operator-by-operator arithmetic and banking77; script-generated; exploratory; none of this is a confirmatory result)
 - **Code / commit:** dev cells produced with code stamp `e468a8911472d079` (the stage-4 build of 2026-10-15 before stage 4.1 and the amendments); reports and amendments in the commit that adds this entry; merged code stamp `ff3438232c5f0dfa`
 - **People:** Claude ran and read it; the choices that change a pre-registered statement are flagged for the user; not reviewed by anyone else
@@ -43,7 +43,7 @@ The one thing that needs a decision is A4-1: the pre-registered statement S4-5 c
 - New dev cells had to be produced at the dev-time code stamp after the merge changed the stamp; a second worktree at the dev commit did that (`D:/shm_dev_e468`, removable).
 
 ## Consequence
-D-35: amend S4-5 (A4-1), pool seed offset in the confirmatory run (A4-2), twin fix outside the confirmatory run (A4-7); stage 4.1 merged before the freeze. Next: the user's OK of A4-1, then freeze, then the user's explicit go before seeds 85-99. Claims C-80 to C-83.
+D-35: amend S4-5 (A4-1, accepted by the user on 2026-10-17), pool seed offset in the confirmatory run (A4-2), twin fix outside the confirmatory run (A4-7); stage 4.1 merged before the freeze. Next: smoke test of the merged runner, freeze, then the user's explicit go before seeds 85-99. Claims C-80 to C-83.
 
 ## Evidence
 - `research/growmoe_results/rv2d/RESULTS_DEV_REVIEW.md`, `DEV_SELECTION.md`, `dev_constants.json`
