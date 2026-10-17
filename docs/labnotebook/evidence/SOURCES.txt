@@ -167,3 +167,9 @@ research/growmoe_results/rv2d/RESULTS_S3_DEDUPE.md
 research/growmoe_results/rv2d/DEV_SELECTION.md
 docs/superpowers/specs/2026-10-15-routing-v2-stage4-AMENDMENTS.md
 research/growmoe_results/rv2d/cells_s3d_x1/*.json
+
+# --- E-040 (frozen pre-registration)
+research/growmoe_results/rv2d/PREREG.md
+research/growmoe_results/rv2d/bars_rv2d.json
+research/growmoe_results/rv2d/bars_rv2d.sha256
+research/growmoe_results/rv2d/cells_confirm.json
