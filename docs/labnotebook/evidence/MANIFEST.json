@@ -1,8 +1,8 @@
 {
- "generated": "2026-10-17 10:06:49",
- "head": "646bd40",
+ "generated": "2026-10-17 10:38:55",
+ "head": "f71ce86",
  "branch": "track-g-growmoe",
- "n_files": 977,
+ "n_files": 981,
  "files": [
   {
    "path": "demos/demo_growmoe_continual_learning.py",
@@ -138,9 +138,9 @@
   },
   {
    "path": "docs/superpowers/plans/2026-10-15-routing-v2-stage4.md",
-   "sha256": "5569cd7ba783bcc8dc3cb1b786d2efd94c04abe12288085ec9b91cc5c5f03e1d",
-   "bytes": 199719,
-   "last_commit": "646bd40"
+   "sha256": "46bb7fd3931a010b414c94c86f85e416d30cdef61d1317505ee82e518126bf19",
+   "bytes": 199913,
+   "last_commit": "f71ce86"
   },
   {
    "path": "docs/superpowers/specs/2026-10-04-growmoe-design.md",
@@ -174,9 +174,9 @@
   },
   {
    "path": "docs/superpowers/specs/2026-10-15-routing-v2-stage4-AMENDMENTS.md",
-   "sha256": "89fe2921f4c222b3d118fa0803fbe2369bff67e441561c654863004742d61fdc",
-   "bytes": 8791,
-   "last_commit": "0fd76e3"
+   "sha256": "7ec5c2f22ce3f07db000b819a891d1ea55f0bbb973a4d109b74b3962f8e2ad2f",
+   "bytes": 8668,
+   "last_commit": "882c68b"
   },
   {
    "path": "docs/superpowers/specs/2026-10-15-routing-v2-stage4-design.md",
@@ -4109,6 +4109,24 @@
    "last_commit": "f881cb3"
   },
   {
+   "path": "research/growmoe_results/rv2d/bars_rv2d.json",
+   "sha256": "f445f86018dc10349375a1f424b69dd3176d551014b67b09973db676783d3d0d",
+   "bytes": 1888,
+   "last_commit": "44edd74"
+  },
+  {
+   "path": "research/growmoe_results/rv2d/bars_rv2d.sha256",
+   "sha256": "ab4a93bf581008f14d82273c64420f5873a324efacf23f19d2ef74539cbc9655",
+   "bytes": 66,
+   "last_commit": "44edd74"
+  },
+  {
+   "path": "research/growmoe_results/rv2d/cells_confirm.json",
+   "sha256": "3fcf19c354c03dd5dd645093e5b8a05107f7d3690a212fdbb2275528c2906ba5",
+   "bytes": 88111,
+   "last_commit": "44edd74"
+  },
+  {
    "path": "research/growmoe_results/rv2d/cells_s3d_x1/arith-mixed128__-__S3__s100__g0p0__t0p0.json",
    "sha256": "36f460054f2913c22ad4b695c8c62bf844bf7fc005c2ce6afbbdf8e14283dcea",
    "bytes": 1041,
@@ -4959,6 +4977,12 @@
    "sha256": "296c7e4dda9a6583d45921d8c26c3bb0fe8ae119a22ebb9c42628258b8f95e97",
    "bytes": 2374,
    "last_commit": "646bd40"
+  },
+  {
+   "path": "research/growmoe_results/rv2d/PREREG.md",
+   "sha256": "ecb3d327e34f4827451010d7c1c0387df01dea13f2eca11d0d482885be177d20",
+   "bytes": 6172,
+   "last_commit": "44edd74"
   },
   {
    "path": "research/growmoe_results/rv2d/RESULTS_DEV.md",
