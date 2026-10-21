@@ -173,3 +173,8 @@ research/growmoe_results/rv2d/PREREG.md
 research/growmoe_results/rv2d/bars_rv2d.json
 research/growmoe_results/rv2d/bars_rv2d.sha256
 research/growmoe_results/rv2d/cells_confirm.json
+
+# --- E-041 (confirmatory results)
+research/growmoe_results/rv2d/RESULTS_RV2D.md
+research/growmoe_results/rv2d/verdicts_rv2d.json
+research/growmoe_results/rv2d/AUDIT_RV2D.md

@@ -27,7 +27,8 @@ LOGS = HERE / "logs"
 LOCK = HERE / "queue.lock"
 PY = sys.executable
 REPORT_OF = {"dev1": "dev", "dev2": "dev", "confirm": "confirm"}               # which report a finished phase rebuilds (the smoke phase has none)
-BUDGET = 9                                                     # CPU threads this machine may give (3 cells x 3 threads), so that it stays usable for other work
+BUDGET = int(os.environ.get("RV2D_BUDGET", "9"))              # CPU threads this machine may give (default 3 cells x 3 threads, so that it stays usable); `run --budget N` raises it
+THREADS_OF = {"arith-seq": 1, "arith-mixed16": 1, "arith-mixed128": 1, "banking": 2, "s3": 1}     # CORES a cell needs, for the budget. The arithmetic cells still set 3 torch threads themselves (the numbers do not change), but measured on this machine 3 threads make an expert step only 11 % faster than 1 (3.12 against 2.79 ms; the GPU 2.59 ms): the cell is Python-bound, so it needs about one core. A function-regime cell needs about 0.8.
 
 
 class Job:
@@ -48,7 +49,7 @@ def build_jobs(phase):
     jobs = []
     for c in sorted(cells, key=lambda c: (order[c["family"]], c["seed"])):
         cid = R.Cell(**c).cid
-        jobs.append(Job(cid, ["run_cell.py", "--phase", phase, "--cid", cid], [f"{R.CELLS.name}/{cid}.json"], 3))
+        jobs.append(Job(cid, ["run_cell.py", "--phase", phase, "--cid", cid], [f"{R.CELLS.name}/{cid}.json"], THREADS_OF[c["family"]]))
     return jobs
 
 
@@ -86,18 +87,37 @@ def launch(job, phase):
     out = open(LOGS / f"q_{job.name}.log", "ab")
     err = open(LOGS / f"q_{job.name}.err", "ab")
     flags = subprocess.CREATE_NEW_PROCESS_GROUP | getattr(subprocess, "CREATE_NO_WINDOW", 0x08000000)         # hidden console, own process group: survives the shell that started it
-    p = subprocess.Popen([PY, str(HERE / job.args[0])] + [str(a) for a in job.args[1:]], cwd=str(HERE), stdin=subprocess.DEVNULL, stdout=out, stderr=err, creationflags=flags, close_fds=True)
+    if BUDGET > 9:
+        flags |= getattr(subprocess, "BELOW_NORMAL_PRIORITY_CLASS", 0x00004000)                               # a wide budget runs below normal priority so that the PC stays usable
+    env = {**os.environ, "OMP_NUM_THREADS": str(job.threads), "MKL_NUM_THREADS": str(job.threads)}           # without this a cell that sets no thread count takes all 12 cores and three of them fight
+    if BUDGET > 9:
+        env.update({"OMP_WAIT_POLICY": "PASSIVE", "KMP_BLOCKTIME": "0"})                                    # more threads than cores: idle worker threads sleep instead of spinning (same partition of the work, same numbers)
+    p = subprocess.Popen([PY, str(HERE / job.args[0])] + [str(a) for a in job.args[1:]], cwd=str(HERE), stdin=subprocess.DEVNULL, stdout=out, stderr=err, creationflags=flags, close_fds=True, env=env)
     print(f"{time.strftime('%H:%M:%S')} launched {job.name} (pid {p.pid})", flush=True)
 
 
+def command_line_of(pid: int) -> str:
+    ps = f"(Get-CimInstance Win32_Process -Filter 'ProcessId={int(pid)}').CommandLine"
+    try:
+        return subprocess.run(["powershell", "-NoProfile", "-Command", ps], capture_output=True, text=True, timeout=60).stdout.strip()
+    except (OSError, subprocess.SubprocessError) as exc:
+        print(f"{time.strftime('%H:%M:%S')} could not read the command line of pid {pid}: {exc}", flush=True)
+        return ""
+
+
 def scheduler_alive() -> bool:
+    """True when the scheduler named in queue.lock is still running. A lock left behind by a power cut names a dead process (or a new one that is not a scheduler), and the scheduler that is being
+    started now carries --wait itself, so the command lines of all python processes cannot be used for this."""
     if not LOCK.exists():
         return False
     try:
         pid = int(LOCK.read_text().split()[0])
-    except Exception:
+    except (OSError, ValueError, IndexError):
         return False
-    return pid != os.getpid() and any("jobqueue.py" in ln and "run" in ln and "--wait" in ln for ln in running_command_lines())
+    if pid == os.getpid():
+        return False
+    line = command_line_of(pid)
+    return "jobqueue.py" in line and "--wait" in line
 
 
 def cmd_run(phase, wait):
@@ -136,7 +156,7 @@ def cmd_detach(phase):
     LOGS.mkdir(exist_ok=True)
     out = open(LOGS / "queue_scheduler.log", "ab")
     flags = subprocess.CREATE_NEW_PROCESS_GROUP | getattr(subprocess, "CREATE_NO_WINDOW", 0x08000000)
-    p = subprocess.Popen([PY, str(HERE / "jobqueue.py"), "run", "--phase", phase, "--wait"], cwd=str(HERE), stdin=subprocess.DEVNULL, stdout=out, stderr=out, creationflags=flags, close_fds=True)
+    p = subprocess.Popen([PY, str(HERE / "jobqueue.py"), "run", "--phase", phase, "--wait", "--budget", str(BUDGET)], cwd=str(HERE), stdin=subprocess.DEVNULL, stdout=out, stderr=out, creationflags=flags, close_fds=True)
     print(f"scheduler for {phase} started in the background (pid {p.pid}); log: logs/queue_scheduler.log; check with: python jobqueue.py status --phase {phase}")
 
 
@@ -147,7 +167,10 @@ if __name__ == "__main__":
     ap.add_argument("--wait", action="store_true")
     ap.add_argument("--detach", action="store_true")
     ap.add_argument("-v", action="store_true")
+    ap.add_argument("--budget", type=int, default=None, help="CPU threads the queue may use (default 9, or RV2D_BUDGET)")
     a = ap.parse_args()
+    if a.budget is not None:
+        BUDGET = a.budget
     if a.cmd == "status":
         cmd_status(a.phase, a.v)
     elif a.detach:

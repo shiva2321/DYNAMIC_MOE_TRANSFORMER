@@ -1,0 +1,373 @@
+{
+ "S4-1": {
+  "rule": "arithmetic operator-by-operator, S3 pools: exact match with the router minus without, interval lower bound >= +5.0 points",
+  "verdict": "PASS",
+  "detail": {
+   "n": 6,
+   "mean_diff_points": 12.95444444444444,
+   "ci_lo": 10.532742840171686,
+   "ci_hi": 15.376146048717196,
+   "holds": true
+  },
+  "expected": "PASS",
+  "as_expected": true
+ },
+ "S4-2": {
+  "rule": "OV-0.85, S3 pools: router minus no router, interval lower bound >= +4.0 points",
+  "verdict": "PASS",
+  "detail": {
+   "n": 15,
+   "mean_diff_points": 10.105000108480453,
+   "ci_lo": 9.605055357250265,
+   "ci_hi": 10.604944859710642,
+   "holds": true
+  },
+  "expected": "PASS",
+  "as_expected": true
+ },
+ "S4-3": {
+  "rule": "each other stage-3 stream and banking77, S3 pools: router minus no router, mean >= -0.5 points",
+  "verdict": "PASS",
+  "detail": {
+   "s3:F-30": {
+    "n": 15,
+    "mean_diff_points": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "holds": true
+   },
+   "s3:S2-30": {
+    "n": 15,
+    "mean_diff_points": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "holds": true
+   },
+   "s3:F-15": {
+    "n": 15,
+    "mean_diff_points": 0.11111112435658772,
+    "ci_lo": -0.05141935917739786,
+    "ci_hi": 0.2736416078905733,
+    "holds": true
+   },
+   "s3:OV-0.6": {
+    "n": 15,
+    "mean_diff_points": 1.716666618982951,
+    "ci_lo": 1.3992039631517375,
+    "ci_hi": 2.0341292748141644,
+    "holds": true
+   },
+   "s3:OV-0.3": {
+    "n": 15,
+    "mean_diff_points": 0.43333325783411664,
+    "ci_lo": 0.07035789038132123,
+    "ci_hi": 0.796308625286912,
+    "holds": true
+   },
+   "s3:OV-0.3-MIXED": {
+    "n": 15,
+    "mean_diff_points": 0.14833335081736246,
+    "ci_lo": -0.02239097190926878,
+    "ci_hi": 0.3190576735439937,
+    "holds": true
+   },
+   "s3:OV-0.0": {
+    "n": 15,
+    "mean_diff_points": 0.14999999602635702,
+    "ci_lo": -0.08113093350855141,
+    "ci_hi": 0.3811309255612655,
+    "holds": true
+   },
+   "s3:S1": {
+    "n": 15,
+    "mean_diff_points": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "holds": true
+   },
+   "s3:S2-5": {
+    "n": 15,
+    "mean_diff_points": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "holds": true
+   },
+   "banking:-": {
+    "n": 5,
+    "mean_diff_points": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "holds": true
+   }
+  },
+  "expected": "PASS",
+  "as_expected": true
+ },
+ "S4-4": {
+  "rule": "arithmetic operator-by-operator: S3+T minus S3 mean >= +5.0 points, mean forgetting <= 9.0 points, at most 1 seed with fewer than 5 experts",
+  "verdict": "PASS",
+  "detail": {
+   "n": 6,
+   "mean_diff_points": 6.139444444444444,
+   "ci_lo": 4.281935566288262,
+   "ci_hi": 7.996953322600626,
+   "forgetting_points": 7.3916666666666675,
+   "seeds_below_min_experts": 0,
+   "n_seeds": 6,
+   "holds": true
+  },
+  "expected": "PASS",
+  "as_expected": true
+ },
+ "S4-5": {
+  "rule": "each other stage-3 stream and banking77: S3+T minus S3 mean >= -0.5 points and mean experts <= 1.2 x the number of true functions of the stream (S3's count where there is none; amendment A4-1)",
+  "verdict": "PASS",
+  "detail": {
+   "s3:F-30": {
+    "n": 15,
+    "mean_diff_points": -0.4311110774675996,
+    "ci_lo": -0.6632236529296235,
+    "ci_hi": -0.1989985020055757,
+    "expert_ratio": 1.0,
+    "ratio_against": "true functions",
+    "expert_ratio_vs_s3": 0.9933774834437087,
+    "holds": true
+   },
+   "s3:S2-30": {
+    "n": 15,
+    "mean_diff_points": 2.9266666968663553,
+    "ci_lo": 2.1843397617220095,
+    "ci_hi": 3.668993632010701,
+    "expert_ratio": 1.0,
+    "ratio_against": "true functions",
+    "expert_ratio_vs_s3": 1.5,
+    "holds": true
+   },
+   "s3:F-15": {
+    "n": 15,
+    "mean_diff_points": -0.3388888438542689,
+    "ci_lo": -0.7401214236838282,
+    "ci_hi": 0.062343735975290415,
+    "expert_ratio": 1.0,
+    "ratio_against": "true functions",
+    "expert_ratio_vs_s3": 0.9911894273127754,
+    "holds": true
+   },
+   "s3:OV-0.6": {
+    "n": 15,
+    "mean_diff_points": 0.6216666301091512,
+    "ci_lo": -0.17234720283244198,
+    "ci_hi": 1.4156804630507445,
+    "expert_ratio": 1.0066666666666666,
+    "ratio_against": "true functions",
+    "expert_ratio_vs_s3": 0.9805194805194805,
+    "holds": true
+   },
+   "s3:OV-0.3": {
+    "n": 15,
+    "mean_diff_points": 0.20999988913536072,
+    "ci_lo": -0.5251550224370755,
+    "ci_hi": 0.9451548007077969,
+    "expert_ratio": 1.0066666666666666,
+    "ratio_against": "true functions",
+    "expert_ratio_vs_s3": 0.9805194805194805,
+    "holds": true
+   },
+   "s3:OV-0.3-MIXED": {
+    "n": 15,
+    "mean_diff_points": 0.055000096559524536,
+    "ci_lo": -0.8916956845071776,
+    "ci_hi": 1.0016958776262266,
+    "expert_ratio": 0.5733333333333334,
+    "ratio_against": "true functions",
+    "expert_ratio_vs_s3": 0.9885057471264368,
+    "holds": true
+   },
+   "s3:OV-0.0": {
+    "n": 15,
+    "mean_diff_points": -0.05500000715255737,
+    "ci_lo": -0.5177414715025905,
+    "ci_hi": 0.40774145719747584,
+    "expert_ratio": 1.0,
+    "ratio_against": "true functions",
+    "expert_ratio_vs_s3": 0.986842105263158,
+    "holds": true
+   },
+   "s3:S1": {
+    "n": 15,
+    "mean_diff_points": 0.95238095238095,
+    "ci_lo": -0.5062295235855886,
+    "ci_hi": 2.4109914283474887,
+    "expert_ratio": 1.0666666666666667,
+    "ratio_against": "true functions",
+    "expert_ratio_vs_s3": 1.5555555555555556,
+    "holds": true
+   },
+   "s3:S2-5": {
+    "n": 15,
+    "mean_diff_points": 1.8133338292439778,
+    "ci_lo": 0.45075039313645915,
+    "ci_hi": 3.1759172653514964,
+    "expert_ratio": 1.0,
+    "ratio_against": "true functions",
+    "expert_ratio_vs_s3": 1.5625,
+    "holds": true
+   },
+   "banking:-": {
+    "n": 5,
+    "mean_diff_points": 2.566666205724084,
+    "ci_lo": 1.0362746449348692,
+    "ci_hi": 4.097057766513299,
+    "expert_ratio": 1.0,
+    "ratio_against": "true functions",
+    "expert_ratio_vs_s3": 1.4285714285714286,
+    "holds": true
+   }
+  },
+  "expected": "PASS",
+  "as_expected": true
+ },
+ "S4-6": {
+  "rule": "arithmetic mixed from 16 units, S3+G: accuracy >= 0.9 x the 128-unit S3 of the same seed in at least 0.87 of the seeds, mean final width in [64, 256], extra forward cost <= 5 % of training",
+  "verdict": "PASS",
+  "detail": {
+   "n": 15,
+   "seeds_reaching": 15,
+   "needed": 13,
+   "mean_final_width": 124.26666666666667,
+   "extra_forward_cost": 0.03333333333333333,
+   "holds": true
+  },
+  "expected": "PASS",
+  "as_expected": true
+ },
+ "S4-7": {
+  "rule": "arithmetic mixed from 128 units and every stage-3 stream: S3+G minus S3 mean >= -0.5 points, growth events per run <= 1.0, relative parameter increase <= 0.25",
+  "verdict": "PASS",
+  "detail": {
+   "arith-mixed128:-": {
+    "n": 15,
+    "mean_diff_points": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "growth_events_per_run": 0.0,
+    "rel_params": 0.0,
+    "holds": true
+   },
+   "s3:F-30": {
+    "n": 15,
+    "mean_diff_points": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "growth_events_per_run": 0.0,
+    "rel_params": 0.0,
+    "holds": true
+   },
+   "s3:S2-30": {
+    "n": 15,
+    "mean_diff_points": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "growth_events_per_run": 0.0,
+    "rel_params": 0.0,
+    "holds": true
+   },
+   "s3:F-15": {
+    "n": 15,
+    "mean_diff_points": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "growth_events_per_run": 0.0,
+    "rel_params": 0.0,
+    "holds": true
+   },
+   "s3:OV-0.85": {
+    "n": 15,
+    "mean_diff_points": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "growth_events_per_run": 0.0,
+    "rel_params": 0.0,
+    "holds": true
+   },
+   "s3:OV-0.6": {
+    "n": 15,
+    "mean_diff_points": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "growth_events_per_run": 0.0,
+    "rel_params": 0.0,
+    "holds": true
+   },
+   "s3:OV-0.3": {
+    "n": 15,
+    "mean_diff_points": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "growth_events_per_run": 0.0,
+    "rel_params": 0.0,
+    "holds": true
+   },
+   "s3:OV-0.3-MIXED": {
+    "n": 15,
+    "mean_diff_points": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "growth_events_per_run": 0.0,
+    "rel_params": 0.0,
+    "holds": true
+   },
+   "s3:OV-0.0": {
+    "n": 15,
+    "mean_diff_points": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "growth_events_per_run": 0.0,
+    "rel_params": 0.0,
+    "holds": true
+   },
+   "s3:S1": {
+    "n": 15,
+    "mean_diff_points": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "growth_events_per_run": 0.0,
+    "rel_params": 0.0,
+    "holds": true
+   },
+   "s3:S2-5": {
+    "n": 15,
+    "mean_diff_points": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "growth_events_per_run": 0.0,
+    "rel_params": 0.0,
+    "holds": true
+   }
+  },
+  "expected": "PASS",
+  "as_expected": true
+ },
+ "S4-8": {
+  "rule": "arithmetic operator-by-operator, S3+T+G with the router: exact match >= 44 points and forgetting <= 8 points",
+  "verdict": "PASS",
+  "detail": {
+   "n": 6,
+   "exact_match_points": 46.58611111111111,
+   "forgetting_points": 7.080555555555555,
+   "holds": true
+  },
+  "expected": "PASS",
+  "as_expected": true
+ },
+ "S4-9": {
+  "rule": "all stage-4 flags off: the pool is bit-identical to the recorded one (golden fingerprints of rv2c/golden.py)",
+  "verdict": "PASS",
+  "detail": {
+   "differences": [],
+   "holds": true
+  },
+  "expected": "PASS",
+  "as_expected": true
+ }
+}
