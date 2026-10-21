@@ -1,8 +1,8 @@
 {
- "generated": "2026-10-17 10:39:56",
- "head": "6204826",
+ "generated": "2026-10-21 17:30:42",
+ "head": "d6bde2e",
  "branch": "track-g-growmoe",
- "n_files": 981,
+ "n_files": 985,
  "files": [
   {
    "path": "demos/demo_growmoe_continual_learning.py",
@@ -95,6 +95,12 @@
    "last_commit": "08c1a7a"
   },
   {
+   "path": "docs/superpowers/handoff/REVIEW_BRIEF_RV2D_CONFIRMATORY_2026-10-21.md",
+   "sha256": "e28ba7464209460850050644b56fdf84000f9b163b884c944240b4d87d9b97a5",
+   "bytes": 4123,
+   "last_commit": "1821943"
+  },
+  {
    "path": "docs/superpowers/handoff/ROUTING_V2_HANDOFF.md",
    "sha256": "61f5f07fe75e51acaff9ae948570ec3ca6236e280e17740b765f206cb5fd4aa0",
    "bytes": 9949,
@@ -138,9 +144,9 @@
   },
   {
    "path": "docs/superpowers/plans/2026-10-15-routing-v2-stage4.md",
-   "sha256": "46bb7fd3931a010b414c94c86f85e416d30cdef61d1317505ee82e518126bf19",
-   "bytes": 199913,
-   "last_commit": "f71ce86"
+   "sha256": "8918172f5668c94c1fbc01a3ab3efd665eed90edd9a7dd4db6efedd0648f6f69",
+   "bytes": 200282,
+   "last_commit": "d6bde2e"
   },
   {
    "path": "docs/superpowers/specs/2026-10-04-growmoe-design.md",
@@ -4109,6 +4115,12 @@
    "last_commit": "f881cb3"
   },
   {
+   "path": "research/growmoe_results/rv2d/AUDIT_RV2D.md",
+   "sha256": "f92a1e2def230dfede14e8b5eb5f920f95d1d303165e5b5b87cb109a667c99f5",
+   "bytes": 1553,
+   "last_commit": "d6bde2e"
+  },
+  {
    "path": "research/growmoe_results/rv2d/bars_rv2d.json",
    "sha256": "f445f86018dc10349375a1f424b69dd3176d551014b67b09973db676783d3d0d",
    "bytes": 1888,
@@ -4997,6 +5009,12 @@
    "last_commit": "646bd40"
   },
   {
+   "path": "research/growmoe_results/rv2d/RESULTS_RV2D.md",
+   "sha256": "b8e5e2a40f5358a25246f5cefe93bf9dc160771363d1caab159a5daffaa56406",
+   "bytes": 10331,
+   "last_commit": "d6bde2e"
+  },
+  {
    "path": "research/growmoe_results/rv2d/RESULTS_S3_DEDUPE.md",
    "sha256": "94d2948a155920aa1e2d1bbc8d33dabc4816e92748ff72c3c41872faf97cb67a",
    "bytes": 2618,
@@ -5007,6 +5025,12 @@
    "sha256": "28c67370342bfa8076897344a250641f27019ac4e07d2f285422ff9287f168e4",
    "bytes": 2981,
    "last_commit": "7bb7a72"
+  },
+  {
+   "path": "research/growmoe_results/rv2d/verdicts_rv2d.json",
+   "sha256": "3a77f9eb47e061bbebb05207eec08556c58b5ff4becd787e068faf77f5dae177",
+   "bytes": 9552,
+   "last_commit": "d6bde2e"
   },
   {
    "path": "research/growmoe_results/rv3/compare_variants.py",
