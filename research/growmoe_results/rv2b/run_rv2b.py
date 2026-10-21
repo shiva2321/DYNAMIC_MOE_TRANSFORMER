@@ -33,7 +33,8 @@ from growmoe.fairfight import BARS_RV2B, rv2b_decision, rv2b_verdicts, run_fast,
 from growmoe.metrics import paired_diff                                                 # noqa: E402
 from growmoe.pools.phylo import PhyloMoE                                                # noqa: E402
 
-BASE = dict(q=0.02, alpha_spawn=0.01, m_min=32, route_rule="accept_then_logf", arm_monitor_after_infancy=True)   # M0's A_KW without its historical pins
+BASE = dict(q=0.02, alpha_spawn=0.01, m_min=32, route_rule="accept_then_logf", arm_monitor_after_infancy=True,   # M0's A_KW without its historical pins
+            router=False, spawn_rule="probe", growth_rule="probe")                      # stage 4 did not exist then (router and transfer rule default ON since 2026-10-21, RV2-D)
 STREAMS = ["F-30", "S2-30", "F-15", "OV-0.3", "S1", "S2-5"]
 DEV_STREAMS = ["F-30", "S2-30", "F-15"]
 ARMS = ("A_exact", "A_cascade")
@@ -51,7 +52,7 @@ def out_dir(args) -> Path:
 def steps_for(name: str) -> int:
     """The budget of whichever stage-1 arm is the default now (so A_exact is exactly today's pool)."""
     fam = A.family(name)
-    if PhyloCfg().batch_vote:
+    if PhyloCfg(router=False, spawn_rule="probe", growth_rule="probe").batch_vote:
         return json.loads((ROOT / "research/growmoe_results/rv2a/tuning_rv2a.json").read_text(encoding="utf-8"))["A_vote"][fam]["steps"]
     return json.loads(A.M2A_TUNING.read_text(encoding="utf-8"))["A_new"][fam]["steps"]
 
@@ -121,7 +122,7 @@ def cmd_prereg(args) -> None:
                 "C3": "PASS" if all(ratios[n] <= BARS_RV2B["C3"][n] for n in ratios) else "FAIL",
                 "C4": "PASS" if rv2b_verdicts([], scaling)["C4"]["verdict"] == "PASS" else "FAIL", "G": "PASS"}
     bars_path = out / "bars_rv2b.json"
-    base_default = PhyloCfg().batch_vote
+    base_default = PhyloCfg(router=False, spawn_rule="probe", growth_rule="probe").batch_vote
     bars_path.write_text(json.dumps({"k": k, "min_experts": min_experts, "force_min_for_accuracy_test": FORCE_MIN, "expected": expected, "batch_vote_default": base_default,
                                      "dev_gaps_points": dict(zip(DEV_STREAMS, gaps)), "dev_ratios": ratios, "written": time.strftime("%Y-%m-%d %H:%M:%S")}, indent=1),
                          encoding="utf-8")

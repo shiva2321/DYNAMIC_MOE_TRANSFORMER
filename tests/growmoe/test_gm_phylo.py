@@ -17,7 +17,7 @@ import pytest
 import torch
 import torch.nn.functional as F
 
-from growmoe.config import PhyloCfg, GrowthCfg
+from growmoe.config import PRE_STAGE4, PhyloCfg, GrowthCfg
 from growmoe.experts import MLPExpert
 from growmoe.growth import plateau
 from growmoe.pools.phylo import PhyloMoE
@@ -388,7 +388,7 @@ def test_phylo_spawn_parent_max_affinity():
 # --------------------------------------------------------------------------- R4 Tests
 def test_phylo_probe_aligned_task_extends():
     seed = 113
-    cfg = PhyloCfg(d=64, n_classes=8, m_min=32, delta_forget=0.20, seed=seed)
+    cfg = PhyloCfg(d=64, n_classes=8, m_min=32, delta_forget=0.20, seed=seed, **PRE_STAGE4)             # the interference probe is the Phase-1 spawn rule; the transfer rule is tested in test_gm_rv4_*
     pool = PhyloMoE(cfg=cfg)
 
     # Establish Expert 0 with 4 batches of 32 samples (128 samples total)
@@ -422,7 +422,7 @@ def test_phylo_probe_aligned_task_extends():
 
 def test_phylo_probe_conflicting_task_spawns():
     seed = 114
-    cfg = PhyloCfg(d=64, n_classes=8, m_min=32, delta_forget=0.05, seed=seed)
+    cfg = PhyloCfg(d=64, n_classes=8, m_min=32, delta_forget=0.05, seed=seed, **PRE_STAGE4)
     pool = PhyloMoE(cfg=cfg)
 
     rng = np.random.default_rng(seed)
@@ -484,14 +484,14 @@ def test_phylo_probe_delta_forget_threshold_flip():
     y1 = torch.ones(64, dtype=torch.long)
 
     # 1. Strict threshold -> spawns
-    pool_strict = PhyloMoE(cfg=PhyloCfg(d=64, n_classes=8, m_min=32, delta_forget=0.0001, seed=seed))
+    pool_strict = PhyloMoE(cfg=PhyloCfg(d=64, n_classes=8, m_min=32, delta_forget=0.0001, seed=seed, **PRE_STAGE4))
     pool_strict.observe(x0.clone(), y0.clone())
     pool_strict.observe(x1.clone(), y1.clone())
     assert len(pool_strict.experts) == 2
     assert len(pool_strict.events.of_kind("spawn")) == 2
 
     # 2. Permissive threshold -> extends
-    pool_perm = PhyloMoE(cfg=PhyloCfg(d=64, n_classes=8, m_min=32, delta_forget=10.0, seed=seed))
+    pool_perm = PhyloMoE(cfg=PhyloCfg(d=64, n_classes=8, m_min=32, delta_forget=10.0, seed=seed, **PRE_STAGE4))
     pool_perm.observe(x0.clone(), y0.clone())
     pool_perm.observe(x1.clone(), y1.clone())
     assert len(pool_perm.experts) == 1
@@ -500,7 +500,7 @@ def test_phylo_probe_delta_forget_threshold_flip():
 
 def test_phylo_infant_protection_subclusters():
     seed = 116
-    cfg = PhyloCfg(d=64, n_classes=8, m_min=32, infant_calls=10, delta_forget=0.20, seed=seed)
+    cfg = PhyloCfg(d=64, n_classes=8, m_min=32, infant_calls=10, delta_forget=0.20, seed=seed, **PRE_STAGE4)
     pool = PhyloMoE(cfg=cfg)
 
     rng = np.random.default_rng(seed)
@@ -800,7 +800,7 @@ def test_phylo_growth_on_plateau_improves_loss():
     with torch.no_grad():
         y_all = teacher(x_norm).argmax(dim=-1)
 
-    cfg = PhyloCfg(d=D, hidden=4, depth=1, n_classes=C, replay_size=3000, m_min=32, lr=3e-3, seed=seed)
+    cfg = PhyloCfg(d=D, hidden=4, depth=1, n_classes=C, replay_size=3000, m_min=32, lr=3e-3, seed=seed, growth_rule="probe")      # the shadow-trial policy of Phase 1; growth from the fit gap is tested in test_gm_rv4_*
     grow_cfg = GrowthCfg(train_steps=480, n_boot=200)
     pool = PhyloMoE(cfg=cfg, grow_cfg=grow_cfg)
 
@@ -859,7 +859,7 @@ def test_phylo_growth_never_grows_on_data_limited_regime():
     seed = 126
     D, C = 32, 8
     # 60 training samples: replay capacity or total regime has only 60 points
-    cfg = PhyloCfg(d=D, hidden=4, depth=1, n_classes=C, replay_size=60, m_min=32, seed=seed)
+    cfg = PhyloCfg(d=D, hidden=4, depth=1, n_classes=C, replay_size=60, m_min=32, seed=seed, growth_rule="probe")
     grow_cfg = GrowthCfg(train_steps=60, n_boot=50)
     pool = PhyloMoE(cfg=cfg, grow_cfg=grow_cfg)
 
@@ -890,7 +890,7 @@ def test_phylo_growth_replay_size_power_comparison():
     teacher = MLPExpert(d_in=D, hidden=4, depth=1, n_classes=C, seed=1234)
     teacher.mark_seen(torch.arange(C))
 
-    cfg_small = PhyloCfg(d=D, hidden=4, depth=1, n_classes=C, replay_size=256, m_min=32, seed=seed)
+    cfg_small = PhyloCfg(d=D, hidden=4, depth=1, n_classes=C, replay_size=256, m_min=32, seed=seed, growth_rule="probe")
     pool_small = PhyloMoE(cfg=cfg_small, grow_cfg=GrowthCfg(train_steps=80, n_boot=100))
 
     rng = np.random.default_rng(seed)

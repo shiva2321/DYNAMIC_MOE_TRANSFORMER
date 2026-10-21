@@ -10,7 +10,7 @@ import pytest
 import torch
 
 from growmoe.accounting import pool_report
-from growmoe.config import PhyloCfg
+from growmoe.config import PRE_STAGE4, PhyloCfg
 from growmoe.experts import MLPExpert
 from growmoe.pools.phylo import PhyloMoE
 from growmoe.signature import VmfSignature
@@ -20,11 +20,14 @@ from rv4_helpers import aniso, antipodal, unit
 
 ROOT = Path(__file__).resolve().parents[2]
 K = 4                                                                              # label space of the hand-built experts (they are never trained)
+# These tests compare "the router off" with "the router on", so the base configuration keeps the router OFF (and the restrict mode these tests were written for) until a test asks
+# otherwise; since the adoption (E-041) a plain PhyloCfg with a fast route rule has the router on and the mode "free".
+BASE = {**PRE_STAGE4, "router_mode": "restrict"}
 
 
 def _hand_pool(Xs, **kw):
     """A pool whose experts are built by hand from the given prototype matrices (one per expert). The experts are untrained: these tests look at WHICH expert answers."""
-    cfg = dict(q=0.02, set_gate=False, group_vote=False, route_rule="accept_then_logf")
+    cfg = dict(q=0.02, set_gate=False, group_vote=False, route_rule="accept_then_logf", **BASE)
     cfg.update(kw)
     pool = PhyloMoE(PhyloCfg(d=Xs[0].shape[1], hidden=8, n_classes=K, seed=1, **cfg))
     for c, X in enumerate(Xs):
@@ -65,7 +68,7 @@ def _two_blob_pool(**kw):
 
 def _stream_pool(**kw):
     st = function_regimes(100, overlap=0.6, n_regimes=4, n_train=128, n_test=64)
-    cfg = PhyloCfg(seed=7, d=st.d, n_classes=st.n_classes, inner_steps=1, q=0.02, alpha_spawn=0.01, m_min=32, route_rule="accept_then_logf", set_gate=False, group_vote=False, **kw)
+    cfg = PhyloCfg(seed=7, d=st.d, n_classes=st.n_classes, inner_steps=1, q=0.02, alpha_spawn=0.01, m_min=32, route_rule="accept_then_logf", set_gate=False, group_vote=False, **{**BASE, **kw})
     return st, PhyloMoE(cfg)
 
 

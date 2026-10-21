@@ -30,7 +30,7 @@ LABEL = "DEV, exploratory, not pre-registered; tuned and scored on the same dev 
 
 
 def cfg_for(st, seed, steps, set_gate):
-    return PhyloCfg(d=st.d, n_classes=st.n_classes, seed=seed, inner_steps=steps, route_rule="accept_then_logf", q=0.02, alpha_spawn=0.01, m_min=32, set_gate=set_gate)
+    return PhyloCfg(router=False, spawn_rule="probe", growth_rule="probe", d=st.d, n_classes=st.n_classes, seed=seed, inner_steps=steps, route_rule="accept_then_logf", q=0.02, alpha_spawn=0.01, m_min=32, set_gate=set_gate)
 
 
 def main():

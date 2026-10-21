@@ -41,7 +41,7 @@ for sd in SEEDS:
             hold = []
 
             def mk():
-                p = PhyloMoE(PhyloCfg(seed=sd, q=0.02, alpha_spawn=0.01, m_min=32, route_rule="accept_then_logf", inner_steps=k))
+                p = PhyloMoE(PhyloCfg(router=False, spawn_rule="probe", growth_rule="probe", seed=sd, q=0.02, alpha_spawn=0.01, m_min=32, route_rule="accept_then_logf", inner_steps=k))
                 hold.append(p)
                 return p
 

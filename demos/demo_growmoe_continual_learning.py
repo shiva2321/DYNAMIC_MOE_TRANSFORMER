@@ -15,17 +15,22 @@ Use it on your own data (any feature vectors: embeddings, sensor windows, ...; l
 
     from growmoe.config import PhyloCfg
     from growmoe.pools.phylo import PhyloMoE
-    pool = PhyloMoE(PhyloCfg(d=128, n_classes=10, inner_steps=5))     # d = length of your feature vectors
+    pool = PhyloMoE(PhyloCfg(d=128, n_classes=10, inner_steps=5, route_rule="accept_then_logf"))     # d = length of your feature vectors
     for x, y in batches:                                              # x: float tensor (batch, d); y: long tensor (batch,)
         pool.observe(x, y)                                            # learns; adds an expert when the data is new
     out = pool.predict(x_new)                                         # out.probs, out.expert (who answered), out.unknown (True = "nothing like this seen before")
 
-The inputs are normalised inside (only their direction matters).
+The inputs are normalised inside (only their direction matters). Since 2026-10-21 two of the stage-4 repairs are on by default: a spawn-or-extend test that asks the labels, and a learned
+router that picks the expert at answer time. The router needs the routing rule route_rule="accept_then_logf" that every measured pool used, so set it as above. To run the pool as it was
+before stage 4: PhyloCfg(..., **growmoe.config.PRE_STAGE4). The router refits itself when the set of experts changes (about 2 s per refit at 12 experts, most of it one candidate); if the
+tasks never overlap it changes no answer, and router=False saves that time. (Growth of a starved expert from the fit gap, growth_rule="gap", is tested but not the default.)
 
-Honest limits (measured; see research/growmoe_results/shootout and m5): GrowMoE wins when the tasks are DIFFERENT RULES over the input: at the same memory it
-beats a replay network by 14 points on 10 hidden-rule tasks, and a nearest-neighbour lookup fails there. When the tasks are categories that a lookup can recognise
-(real text intents, banking77), GrowMoE with the stage-3 gate is level with a replay network of the same memory (82.3 against 83.4 %, fresh seeds) but a plain kNN
-(86.5 %) is still ahead.
+Honest limits (measured; see research/growmoe_results/shootout, m5 and rv2d): GrowMoE wins when the tasks are DIFFERENT RULES over the input: at the same memory it beats the
+best replay network by 6 points on 10 hidden-rule tasks, 9 on 30 and 13 on 100 (dev seeds, measured before stage 4 became the default; the transfer rule moves this pool by about
+-0.3 points on such streams, fresh seeds), and a nearest-neighbour lookup fails there. This demo gives the pool its own random seed (the stream's seed + 7): with the same seed the expert founded
+for task r would start with task r's own hidden units, a head start worth about 8 points that an earlier version of this demo included. When the tasks are categories that a lookup
+can recognise (real text intents, banking77), GrowMoE with the stage-3 gate is level with a replay network of the same memory (82.3 against 83.4 %, fresh seeds) and a plain kNN
+(86.5 %) is ahead; the transfer rule lifts the pool from 81.8 to 84.3 % on five other fresh seeds, which closes some of that gap (the replay and kNN numbers are from the earlier seeds).
 """
 
 import argparse
@@ -87,7 +92,7 @@ def main():
 
     results, pools = {}, {}
     results["GrowMoE"], pools["GrowMoE"] = train("GrowMoE", lambda: PhyloMoE(PhyloCfg(
-        seed=seed, d=st.d, n_classes=st.n_classes, inner_steps=5, q=0.02, alpha_spawn=0.01, m_min=32, route_rule="accept_then_logf", gate_shortlist_min_experts=2)))
+        seed=seed + 7, d=st.d, n_classes=st.n_classes, inner_steps=5, q=0.02, alpha_spawn=0.01, m_min=32, route_rule="accept_then_logf", gate_shortlist_min_experts=2)))      # seed + 7: not the stream's seed (E-035)
     budget = results["GrowMoE"].report.memory_bytes                              # the fair comparison gets exactly GrowMoE's bytes
     width = 2048
     buffer = max(512, min(samples, int((budget - 4 * MLPExpert(st.d, width, 1, st.n_classes).num_params()) // (4 * st.d))))

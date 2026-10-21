@@ -7,6 +7,9 @@ written, compares every verdict with verdicts_rv2d.json.
     python audit_rv2d.py --write                                 # also writes AUDIT_RV2D.md (confirm) or AUDIT_RV2D_DEV.md (dev)
 
 S4-9 (golden) is not recomputed here: it needs `python research/growmoe_results/rv2c/golden.py check` (about six minutes); the audit reports the value stored in the verdicts file.
+
+Since the independent review (E-042, 2026-10-21) the audit (1) reads S4-5 over all eleven units the spec names ("each other stream and banking77": the ten stage-3 streams and banking77;
+the verdict code of the run, growmoe/verdicts_rv4.py, uses ten and leaves out OV-0.85, review finding SF-4; the verdict is the same) and (2) compares the record set with cells_confirm.json.
 """
 
 import argparse
@@ -109,8 +112,9 @@ def audit(R: Records, setting: str, bars: dict) -> dict:
                        "pass": bool(d[1] >= bars["S4_4_gain"] and forget <= bars["S4_4_forgetting"] and few <= bars["S4_4_seeds_below_allowed"]), "bar": "gain >= +5, forgetting <= 9, at most 1 seed with < 5 experts"}
 
     # S4-5 (amendment A4-1): accuracy and expert count of S3+T on every other stream, experts against the number of true functions
+    units5 = [("s3", s) for s in ALL_S3] + [("banking", "-")]                        # all eleven: OV-0.85 is S4-2's target, not S4-5's exception (review SF-4)
     rows, complete = [], True
-    for f, s in units:
+    for f, s in units5:
         a, b = R.get(f, s, "S3+T"), R.get(f, s, "S3")
         d = paired(a, b, acc, acc)
         if d is None:
@@ -126,7 +130,7 @@ def audit(R: Records, setting: str, bars: dict) -> dict:
     else:
         good = all(m >= bars["S4_5_gain"] and r <= bars["S4_5_ratio"] for _, m, r, _ in rows)
         worst_m, worst_r = min(m for _, m, _, _ in rows), max(r for _, _, r, _ in rows)
-        out["S4-5"] = {"value": f"worst accuracy mean {worst_m:+.2f}, largest expert ratio {worst_r:.2f}, {len(rows)}/{len(units)} units", "pass": bool(good) if complete else None,
+        out["S4-5"] = {"value": f"worst accuracy mean {worst_m:+.2f}, largest expert ratio {worst_r:.2f}, {len(rows)}/{len(units5)} units", "pass": bool(good) if complete else None,
                        "bar": "every mean >= -0.5 and experts <= 1.2 x true functions (A4-1)"}
 
     # S4-6: growth from 16 units reaches 90 % of the fixed 128-unit expert in enough seeds, width in the band, forward cost small
@@ -190,6 +194,11 @@ def main() -> int:
         folder, phase, seeds = HERE / "cells", "confirm", set(range(85, 100))
         stamp, reported_name, out_name = bars_file["code_stamp"], "verdicts_rv2d.json", "AUDIT_RV2D.md"
     R = Records(folder, phase, seeds, stamp)
+    if not a.dry_run_dev:                                                                  # the record set must be exactly the cells that were listed before the run (review N-4)
+        listed = {tuple(sorted(c.items())) for c in json.loads((HERE / "cells_confirm.json").read_text(encoding="utf-8"))}
+        found = {tuple(sorted(rec["cell"].items())) for recs in R.by.values() for rec in recs.values()}
+        R.problems += [f"cell listed in cells_confirm.json but without a record: {dict(c)}" for c in sorted(listed - found)[:10]]
+        R.problems += [f"record that cells_confirm.json does not list: {dict(c)}" for c in sorted(found - listed)[:10]]
     res = audit(R, setting, bars)
     lines = [f"# Independent audit of the RV2-D verdicts ({'DRY RUN on the dev records' if a.dry_run_dev else 'confirmatory records'})\n",
              f"Records read: {R.n} of phase {phase} with the code stamp {stamp}; integrity problems: {len(R.problems)}.\n"]

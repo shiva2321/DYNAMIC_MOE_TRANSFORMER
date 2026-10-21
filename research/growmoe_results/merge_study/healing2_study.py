@@ -371,7 +371,7 @@ POOL_SEED_OFFSET = 7        # the pool's seed is the stream's seed + 7. With off
 
 def make_pool(arm: str, seed: int, cap):
     policy = CAP_POLICY.get(arm)
-    cfg = PhyloCfg(d=D, hidden=32, n_classes=C, seed=seed + POOL_SEED_OFFSET, q=0.02, alpha_spawn=0.01, m_min=32, inner_steps=5, route_rule="accept_then_logf", set_gate=False, group_vote=False,
+    cfg = PhyloCfg(router=False, growth_rule="probe", d=D, hidden=32, n_classes=C, seed=seed + POOL_SEED_OFFSET, q=0.02, alpha_spawn=0.01, m_min=32, inner_steps=5, route_rule="accept_then_logf", set_gate=False, group_vote=False,
                    spawn_rule="transfer", transfer_min_ref=64, merge_every=(10 ** 9 if arm in NO_MERGE else 10), max_experts=256 if policy else (cap if cap else 256))
     return RepairPhylo(cfg, mode=MODE.get(arm, "shipped"), agree_min=0.5 if arm == "agree50" else 0.8, ft_steps=20 if arm == "rival_ft" else 0, abs_margin=0.2 if arm.endswith("_g") else None,
                        consolidate={"hold_soup": "soup", "hold_distill": "distill"}.get(arm), cap=cap if policy else None, cap_policy=policy)

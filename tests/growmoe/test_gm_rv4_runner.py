@@ -20,10 +20,11 @@ def test_cell_ids_are_unique_file_safe_and_dot_free():
 
 
 def test_arm_flags_follow_the_arm_and_refuse_a_missing_constant():
-    assert R.arm_flags(R.Cell("s3", "F-15", "S3")) == {}
-    assert R.arm_flags(R.Cell("s3", "F-15", "S3+G", gap=0.2)) == {"growth_rule": "gap", "grow_gap": 0.2}
-    assert R.arm_flags(R.Cell("s3", "F-15", "S3+T", tmargin=0.25)) == {"spawn_rule": "transfer", "transfer_margin": 0.25}
-    assert R.arm_flags(R.Cell("s3", "F-15", "S3+T+G", gap=0.23, tmargin=0.15)) == {"spawn_rule": "transfer", "growth_rule": "gap", "grow_gap": 0.23, "transfer_margin": 0.15}
+    off = {"router": False, "spawn_rule": "probe", "growth_rule": "probe"}      # the arms are defined against the pool before stage 4 (the default since the adoption of 2026-10-21): an arm lists what it turns ON
+    assert R.arm_flags(R.Cell("s3", "F-15", "S3")) == off
+    assert R.arm_flags(R.Cell("s3", "F-15", "S3+G", gap=0.2)) == {**off, "growth_rule": "gap", "grow_gap": 0.2}
+    assert R.arm_flags(R.Cell("s3", "F-15", "S3+T", tmargin=0.25)) == {**off, "spawn_rule": "transfer", "transfer_margin": 0.25}
+    assert R.arm_flags(R.Cell("s3", "F-15", "S3+T+G", gap=0.23, tmargin=0.15)) == {**off, "spawn_rule": "transfer", "growth_rule": "gap", "grow_gap": 0.23, "transfer_margin": 0.15}
     with pytest.raises(ValueError):
         R.arm_flags(R.Cell("s3", "F-15", "S3+G"))                      # a growth arm without its threshold
     with pytest.raises(ValueError):

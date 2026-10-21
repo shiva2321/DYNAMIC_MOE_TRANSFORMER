@@ -10,7 +10,7 @@ import pytest
 import torch
 
 from growmoe import streams as S
-from growmoe.config import PhyloCfg
+from growmoe.config import PRE_STAGE4, PhyloCfg
 from growmoe.experts import MLPExpert
 from growmoe.pools.phylo import PhyloMoE
 from growmoe.signature import VmfSignature
@@ -36,7 +36,7 @@ def _signature(seed, n=128, centre=None, d=D):
 
 def _fake_pool(n_experts, rule, no_conformal=False, share_first_two=False):
     """Experts with random signatures, every fifth one an infant (relaxed gate); optionally two identical experts (exact ties)."""
-    pool = PhyloMoE(PhyloCfg(d=D, hidden=16, n_classes=4, seed=0, route_rule=rule, no_conformal=no_conformal, max_experts=4096))
+    pool = PhyloMoE(PhyloCfg(d=D, hidden=16, n_classes=4, seed=0, route_rule=rule, no_conformal=no_conformal, max_experts=4096, router=False))   # the reference loop is router-blind
     centres = _unit(n_experts, seed=99)
     for e in range(n_experts):
         sig = _signature(e, centre=centres[e])
@@ -56,7 +56,7 @@ def _same(fast, ref):
 @pytest.mark.parametrize("rule", RULES)
 def test_vectorised_predict_matches_the_reference_loop_on_a_trained_pool(rule):
     st = S.s2_permuted(0, n_regimes=3, schedule=[0, 1, 2, 0], n_train=200, n_test=60)
-    pool = PhyloMoE(PhyloCfg(seed=0, q=0.02, route_rule=rule))
+    pool = PhyloMoE(PhyloCfg(seed=0, q=0.02, route_rule=rule, **PRE_STAGE4))                  # the reference loop is router-blind, and the pool must grow to >= 2 experts on this short stream
     for x, y, _ in st.algo_batches(64, seed=0):
         pool.observe(x, y)
     assert len(pool.experts) >= 2

@@ -76,7 +76,7 @@ def run_experiment():
     # Part 1: Standard pool on s2_permuted
     stream = s2_permuted(seed=SEED, n_regimes=6, n_train=200, n_test=50, schedule=[0, 1, 2, 3, 4, 5, 0, 1])
     d = stream.d
-    cfg = PhyloCfg(
+    cfg = PhyloCfg(router=False, spawn_rule="probe", growth_rule="probe",
         seed=SEED,
         d=d,
         n_classes=stream.n_classes,
@@ -129,7 +129,7 @@ def run_experiment():
 
     # Part 2: Repeat with set_gate=True after observe calls
     print("VERIFICATION (criteria fixed in advance by Claude, 2026-10-14): Starting Part 2 (set_gate=True)")
-    cfg_set = PhyloCfg(
+    cfg_set = PhyloCfg(router=False, spawn_rule="probe", growth_rule="probe",
         seed=SEED,
         d=d,
         n_classes=stream.n_classes,

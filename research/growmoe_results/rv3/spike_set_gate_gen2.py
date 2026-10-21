@@ -132,7 +132,7 @@ class SetGatePool(PhyloMoE):
 def run(name: str, seed: int, variant: str) -> dict:
     t0 = time.time()
     st = A.get_stream(name, seed, False)
-    pool = SetGatePool(PhyloCfg(seed=seed, d=st.d, n_classes=st.n_classes, inner_steps=STEPS[A.family(name)], q=0.02, alpha_spawn=0.01, m_min=32, route_rule="accept_then_logf"),
+    pool = SetGatePool(PhyloCfg(router=False, spawn_rule="probe", growth_rule="probe", seed=seed, d=st.d, n_classes=st.n_classes, inner_steps=STEPS[A.family(name)], q=0.02, alpha_spawn=0.01, m_min=32, route_rule="accept_then_logf"),
                        set_cfg=VARIANTS[variant])
     lab_counts = {f"{lab}_{ev}": 0 for lab in ("onset", "known") for ev in ("novel", "known", "skip", "none")}
     last_seg, within = None, 0

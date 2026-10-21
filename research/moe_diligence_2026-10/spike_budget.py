@@ -20,7 +20,7 @@ for sd in SEEDS:
                "s1": s1_types(seed=sd, n_train=400, n_test=150)}
     for sname, st in streams.items():
         for k in STEPS:
-            res = run_stream(lambda: PhyloMoE(PhyloCfg(seed=sd, q=0.02, alpha_spawn=0.01, m_min=32,
+            res = run_stream(lambda: PhyloMoE(PhyloCfg(router=False, spawn_rule="probe", growth_rule="probe", seed=sd, q=0.02, alpha_spawn=0.01, m_min=32,
                                                        route_rule="accept_then_logf", inner_steps=k)), st, seed=sd)
             out.setdefault(("A", sname, k), []).append((res.accuracy_stats["avg"], res.accuracy_stats["forgetting"],
                                                         res.pool_summary["n_experts"]))

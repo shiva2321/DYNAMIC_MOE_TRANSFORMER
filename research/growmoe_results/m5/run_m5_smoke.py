@@ -82,7 +82,7 @@ def main():
             t0 = time.perf_counter()
 
             if arm_key == "a_pool":
-                cfg = PhyloCfg(
+                cfg = PhyloCfg(router=False, spawn_rule="probe", growth_rule="probe",
                     d=st.d,
                     n_classes=st.n_classes,
                     seed=sd,
@@ -94,7 +94,7 @@ def main():
                 )
                 make_pool = lambda cfg=cfg: PhyloMoE(cfg)
             elif arm_key == "b_single":
-                cfg = PhyloCfg(
+                cfg = PhyloCfg(router=False, spawn_rule="probe", growth_rule="probe",
                     d=st.d,
                     n_classes=st.n_classes,
                     seed=sd,

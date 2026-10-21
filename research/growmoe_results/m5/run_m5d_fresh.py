@@ -45,7 +45,7 @@ def main():
             return CommonCfg(seed=sd, d=st.d, n_classes=st.n_classes, inner_steps=STEPS, **kw)
 
         def pool(set_gate):
-            return lambda: PhyloMoE(PhyloCfg(d=st.d, n_classes=st.n_classes, seed=sd, inner_steps=STEPS, route_rule="accept_then_logf", q=0.02, alpha_spawn=0.01, m_min=32, set_gate=set_gate))
+            return lambda: PhyloMoE(PhyloCfg(router=False, spawn_rule="probe", growth_rule="probe", d=st.d, n_classes=st.n_classes, seed=sd, inner_steps=STEPS, route_rule="accept_then_logf", q=0.02, alpha_spawn=0.01, m_min=32, set_gate=set_gate))
         r_set = run_fast(pool(True), st, sd, eval_every="final")
         budget = r_set.report.memory_bytes
         out = {"A_set": r_set, "A_today": run_fast(pool(False), st, sd, eval_every="final"),

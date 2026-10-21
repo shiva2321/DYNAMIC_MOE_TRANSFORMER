@@ -2,6 +2,7 @@
 
 import math
 from dataclasses import dataclass
+from typing import Optional
 
 
 @dataclass
@@ -37,6 +38,13 @@ class GrowthCfg:
     max_backoff: int = 64
     max_hidden: int = 1024
     max_depth: int = 8
+
+
+# The three stage-4 repairs were switched OFF until their pre-registered run (RV2-D, 2026-10-21, E-041: all nine statements PASS). Two of them are the defaults since (the router, with a
+# fast route rule, and the transfer spawn rule); growth from the fit gap is not, pending the user's decision (E-042, E-043). Pass `**PRE_STAGE4` to run the pool as it was before
+# (Phase 1 to stage 4.1: the recorded results of those stages were produced with the interference-probe spawn rule, the shadow-trial growth policy and without the router). The dict names
+# all three switches, although growth_rule's default is still "probe": every pinned script then stays right whatever is decided about growth.
+PRE_STAGE4 = {"router": False, "spawn_rule": "probe", "growth_rule": "probe"}
 
 
 @dataclass
@@ -109,24 +117,32 @@ class PhyloCfg(CommonCfg):
     no_probation: bool = False   # ablation: bypass probation buffer clustering
     sig_cls: object = None       # alternative signature class (e.g. KnnSignature)
     route_rule: str = "default"  # test prediction routing rule: "default" | "accept_then_logf" (highest log-density among p >= q; skips supersede filter at test time) | "argmax_logf" | "nearest_proto"
-    # ---- routing v2 stage 4 (docs/superpowers/specs/2026-10-15-routing-v2-stage4-design.md). Every switch is OFF until its pre-registered run (RV2-D).
-    router: bool = False         # 4a: at answer time a router chosen by cross-validation on the stored prototypes picks the expert among those the gate accepts
+    # ---- routing v2 stage 4 (docs/superpowers/specs/2026-10-15-routing-v2-stage4-design.md). The router (with a fast route rule) and the transfer rule are ON by default since 2026-10-21
+    #      (RV2-D, fresh seeds 85-99, all nine pre-registered statements PASS, research/growmoe_results/rv2d/RESULTS_RV2D.md, notebook E-041, reviewed in E-042); growth from the fit gap
+    #      passed too but is NOT the default (see growth_rule); the runs of Phase 1 to stage 4.1 had all three OFF: pass `**PRE_STAGE4` to reproduce them.
+    router: Optional[bool] = None    # 4a: at answer time a router chosen by cross-validation on the stored prototypes picks the expert among those the gate accepts.
+    #                              None (the default) = on with a fast route rule (the only way it was tested), off with the reference path route_rule="default", which applies the supersede filter
+    #                              and is router-blind (every measured pool used route_rule="accept_then_logf", so set it to get the router);
+    #                              the value is resolved in __post_init__ (so a copy of a config keeps it), and an explicit True with route_rule="default" is refused.
     router_candidates: tuple = ("density", "lda", "softmax", "knn5")
     router_margin: float = 0.01  # another rule must beat density's cross-validated owner accuracy by MORE than this (and the current rule by more than this to replace it)
     router_folds: int = 5
     router_refit_every: int = 50     # observe calls after which the next predict refits the router (it is also refitted when the expert set changed)
     router_min_protos: int = 8       # below this many stored prototypes in any expert (or with fewer than two experts) the density rule stays
-    router_mode: str = "restrict"    # "restrict": best router score among the experts the gate accepts; "free": best score overall
+    router_mode: str = "free"        # "restrict": best router score among the experts the gate accepts; "free": best score overall (the setting chosen on dev seeds by the declared rule and confirmed)
     router_softmax_max_experts: int = 64   # the softmax candidate is skipped above this many experts (bounds the refit time)
-    spawn_rule: str = "probe"    # 4b: "probe" = the 60-step interference probe of today; "transfer" = ask the labels (held-out loss of the best expert against its own reference)
+    spawn_rule: str = "transfer"     # 4b: "transfer" = ask the labels (held-out loss of the best expert against its own reference); "probe" = the 60-step interference probe of Phase 1 to stage 3
     transfer_alpha: float = 0.01
     transfer_margin: float = 0.25    # practical-significance margin in units of ln(classes the parent has seen)
     transfer_perms: int = 999
     transfer_ref: int = 512          # honest per-sample losses kept per expert as its reference
     transfer_min_ref: int = 64       # an expert with fewer reference losses cannot be the parent of a transfer test
     spawn_pretrain_steps: int = 60   # training steps of a child born from a transfer conflict (the probe's child gets the same number)
-    growth_rule: str = "probe"   # 4c: "probe" = the shadow-trial policy of today; "gap" = widen when the within-batch fit gap is small and progress has stalled
-    grow_gap: float = 0.20       # gap below which a mature expert widens; middle of the declared grid 0.14..0.26, the calibrated value is fixed on dev seeds (RV2-D, task 5)
+    growth_rule: str = "probe"   # 4c: "probe" = the shadow-trial policy of Phase 1 to stage 4.1 (can widen AND deepen; about half of its wall time is trials that commit nothing);
+    #                              "gap" = widen x2 when the within-batch fit gap is small and progress has stalled; it REPLACES the shadow trial, so it never deepens. "gap" passed its
+    #                              pre-registered statements (RV2-D S4-6, S4-7: it rescues a 16-unit expert in 15 of 15 seeds where the shipped policy does in 6 of 15, and is silent at 128 units)
+    #                              but on operator-by-operator arithmetic the shipped deepening is worth 1.2 to 1.9 points (not significant, six seeds), so it is not the default until the user decides (E-042)
+    grow_gap: float = 0.17       # gap below which a mature expert widens (growth_rule="gap"); chosen on dev seeds by the declared rule from the grid 0.14..0.26 (RV2-D) and used in the confirmatory run
     grow_window: int = 100       # batches over which the gap and the progress ratio are measured
     grow_plateau: float = 0.95   # mature = the honest loss of the last window is at least this share of the one before it
     grow_min_age: int = 300      # ... and the expert has trained on at least this many batches since birth or its last growth
@@ -173,8 +189,11 @@ class PhyloCfg(CommonCfg):
             raise ValueError("router_folds >= 2, router_min_protos >= router_folds, router_refit_every >= 1 and router_softmax_max_experts >= 2 are required")
         if self.router_margin < 0.0:
             raise ValueError("router_margin must not be negative")
-        if self.router and self.route_rule == "default":
-            raise ValueError("router=True needs a fast route_rule (for example 'accept_then_logf'): the reference path used by route_rule='default' is router-blind")
+        if self.router is None:
+            self.router = self.route_rule != "default"                    # on with a fast route rule, off with the router-blind reference path
+        elif self.router and self.route_rule == "default":
+            raise ValueError("router=True needs a fast route_rule (for example 'accept_then_logf'): the reference path used by route_rule='default' is router-blind "
+                             "(when you copy a config with dataclasses.replace and switch the route rule to 'default', pass router=False as well)")
         if self.spawn_rule not in ("probe", "transfer"):
             raise ValueError(f"spawn_rule must be 'probe' or 'transfer', got {self.spawn_rule!r}")
         if not 0.0 < self.transfer_alpha < 1.0:

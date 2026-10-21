@@ -92,7 +92,7 @@ def run_arm(seed: int, arm_name: str) -> Tuple[object, dict]:
     stream = s2_permuted(seed, n_regimes=30, n_train=200, n_test=100, schedule=sched)
 
     if arm_name == "LIFE_ON":
-        cfg = PhyloCfg(
+        cfg = PhyloCfg(router=False, spawn_rule="probe", growth_rule="probe",
             seed=seed,
             d=stream.d,
             n_classes=stream.n_classes,
@@ -106,7 +106,7 @@ def run_arm(seed: int, arm_name: str) -> Tuple[object, dict]:
             merge_every=50,
         )
     else:  # LIFE_OFF
-        cfg = PhyloCfg(
+        cfg = PhyloCfg(router=False, spawn_rule="probe", growth_rule="probe",
             seed=seed,
             d=stream.d,
             n_classes=stream.n_classes,

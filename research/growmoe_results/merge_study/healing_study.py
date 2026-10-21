@@ -95,7 +95,7 @@ class HealingPhylo(PhyloMoE):
 
 
 def make_pool(arm: str, seed: int, cap):
-    cfg = PhyloCfg(d=D, hidden=32, n_classes=C, seed=seed, q=0.02, alpha_spawn=0.01, m_min=32, inner_steps=5, route_rule="accept_then_logf", set_gate=False, group_vote=False,
+    cfg = PhyloCfg(router=False, growth_rule="probe", d=D, hidden=32, n_classes=C, seed=seed, q=0.02, alpha_spawn=0.01, m_min=32, inner_steps=5, route_rule="accept_then_logf", set_gate=False, group_vote=False,
                    spawn_rule="transfer", transfer_min_ref=64, merge_every=(10 ** 9 if arm in ("clean", "none") else 10), max_experts=cap if cap else 256)
     return HealingPhylo(cfg) if arm == "redirect" else PhyloMoE(cfg)
 

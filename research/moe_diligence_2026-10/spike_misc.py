@@ -57,7 +57,7 @@ for sd in range(3):
     holda = []
 
     def mk_a():
-        p = PhyloMoE(PhyloCfg(seed=sd, q=0.02, alpha_spawn=0.01, m_min=32, route_rule="accept_then_logf"))
+        p = PhyloMoE(PhyloCfg(router=False, spawn_rule="probe", growth_rule="probe", seed=sd, q=0.02, alpha_spawn=0.01, m_min=32, route_rule="accept_then_logf"))
         holda.append(p)
         return p
 
@@ -139,7 +139,7 @@ from growmoe.experts import MLPExpert as _E  # noqa: E402
 from growmoe.signature import VmfSignature  # noqa: E402
 
 for E in (8, 32, 128, 512):
-    pool = PhyloMoE(PhyloCfg(seed=0, route_rule="accept_then_logf", max_experts=2048))
+    pool = PhyloMoE(PhyloCfg(router=False, spawn_rule="probe", growth_rule="probe", seed=0, route_rule="accept_then_logf", max_experts=2048))
     g = np.random.default_rng(E)
     for e in range(E):
         sig = VmfSignature(128, 256, seed=e)

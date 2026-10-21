@@ -72,7 +72,7 @@ for sd in SEEDS:
     sep["hash"].append(one_nn_regime_acc(s_hash))
     sep["minilm"].append(one_nn_regime_acc(s_mini))
     for tag, st in (("hash", s_hash), ("minilm", s_mini)):
-        res = run_stream(lambda: PhyloMoE(PhyloCfg(seed=sd, q=0.02, alpha_spawn=0.01, m_min=32, route_rule="accept_then_logf")), st, seed=sd)
+        res = run_stream(lambda: PhyloMoE(PhyloCfg(router=False, spawn_rule="probe", growth_rule="probe", seed=sd, q=0.02, alpha_spawn=0.01, m_min=32, route_rule="accept_then_logf")), st, seed=sd)
         acc[f"A_{tag}"].append(res.accuracy_stats["avg"])
         per_regime[f"A_{tag}"].append([res.final_regime_acc[r] for r in range(7)])
         hold = []

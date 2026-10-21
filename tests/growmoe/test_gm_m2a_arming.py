@@ -14,7 +14,7 @@ import numpy as np
 import pytest
 import torch
 
-from growmoe.config import PhyloCfg
+from growmoe.config import PRE_STAGE4, PhyloCfg
 from growmoe.pools.phylo import PhyloMoE
 from growmoe.streams_m1 import function_regimes
 from growmoe.vmf import sample_vmf
@@ -67,7 +67,7 @@ def test_the_phase_one_entry_point_pins_the_old_behaviour_so_recorded_results_re
 def test_control_with_the_flag_off_every_newborn_alarms_on_itself_at_its_second_batch():
     """The Phase-1 / M0 behaviour. If this stops being true the scenario no longer reproduces the fault and the tests below prove nothing."""
     st = _stream()
-    pool = PhyloMoE(PhyloCfg(seed=100, d=st.d, n_classes=st.n_classes, inner_steps=50, arm_monitor_after_infancy=False, **A_KW))
+    pool = PhyloMoE(PhyloCfg(seed=100, d=st.d, n_classes=st.n_classes, inner_steps=50, arm_monitor_after_infancy=False, **A_KW, **PRE_STAGE4))     # the fault was measured with the probe rule
     _run(st, pool)
     ev = _events(pool)
     assert ev["spawn"] == 3 and ev["alarm"] >= 2 and ev["extend"] >= 2
