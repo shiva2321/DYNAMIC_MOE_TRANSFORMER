@@ -2,6 +2,8 @@
 
 Date 2026-10-15. Status: **written spec for review** (path: architectural; the scope was approved by the user on 2026-10-14, this written spec and then the plan still need their own approvals). Nothing here is built; every new behaviour sits behind a flag that is OFF by default, and with all flags off the pool is bit-identical to today's (statement S4-9). Research behind it: `research/GROWMOE_STAGE4_RESEARCH.md`. Spike numbers: `research/growmoe_results/stage4_spikes/RESULTS_SPIKES.md` (script-generated; notebook entry E-032, claims C-63 to C-66). Root-cause study: notebook entry E-030, `research/growmoe_results/diagnosis/RESULTS_DIAGNOSIS.md`.
 
+> **Status update (2026-10-21).** Built, pre-registered and run (RV2-D, notebook E-039 to E-041) and independently reviewed (E-042). 4a (the router, with a fast route rule) and 4b (the transfer rule) are the defaults since 2026-10-21 (E-043, D-38). 4c (growth from the fit gap) passed its statements, but it REPLACES the shipped widen-and-deepen policy (section 6.2 calls the old rule 'probe = today's policy', and 6.4 leaves depth out), so its default waits for the user's decision. `growmoe.config.PRE_STAGE4` pins the old pool.
+
 ## In plain words
 
 GrowMoE is a pool of small expert networks. The root-cause study found three parts of it that do not do what they are meant to, and they can be repaired without touching the experts themselves.
