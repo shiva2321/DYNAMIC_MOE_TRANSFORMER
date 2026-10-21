@@ -178,3 +178,13 @@ research/growmoe_results/rv2d/cells_confirm.json
 research/growmoe_results/rv2d/RESULTS_RV2D.md
 research/growmoe_results/rv2d/verdicts_rv2d.json
 research/growmoe_results/rv2d/AUDIT_RV2D.md
+
+# --- E-042 (independent review) and E-043 (adoption)
+docs/superpowers/handoff/REVIEW_RV2D_CONFIRMATORY_2026-10-21.md
+research/growmoe_results/rv2d/REVIEW_FOLLOWUP_CHECKS.md
+research/growmoe_results/rv2d/review_followup_checks.py
+research/growmoe_results/PRE_STAGE4_PINS.md
+research/growmoe_results/rv2d/CONFIRM_CLOSED.json
+tests/growmoe/test_gm_adopt_stage4.py
+demos/demo_growmoe_continual_learning.py
+demos/growmoe_demo.png

@@ -23,7 +23,7 @@ Tests first: `tests/growmoe/test_gm_adopt_stage4.py` was written red, then `grow
 
 The router follows the routing rule. `router` is `None` by default and resolved in `__post_init__`: on with a fast `route_rule`, off with the reference path `route_rule="default"` (it applies the supersede filter and is router-blind). `router=True` with "default" is still refused. Reason: every measured pool used `route_rule="accept_then_logf"`, and the review noted (N-11) that an unconditional `router=True` would raise for every bare `PhyloCfg()`.
 
-Because the adoption changes `growmoe/config.py`, the code stamp of today differs from the stamp of the 704 confirmatory records, and `jobqueue.py` would read them as missing and run seeds 85-99 again. `rv2d/CONFIRM_CLOSED.json` closes the phase: the queue refuses to start it and reads its status at the recorded stamp.
+Because the adoption changes `growmoe/config.py`, the code stamp of today differs from the stamp of the 704 confirmatory records, and `jobqueue.py` would read them as missing and run seeds 85-99 again. `research/growmoe_results/rv2d/CONFIRM_CLOSED.json` closes the phase: the queue refuses to start it and reads its status at the recorded stamp.
 
 ## Results (what came out)
 - Suite: `python -m pytest tests/growmoe` 868 passed, 2 xfailed (the two known merge audit results), 5 minutes. Golden check (S4-9): bit-identical. Smoke phase of the RV2-D runner (6 cells: arithmetic, banking77, function regimes) runs end to end with each arm showing the events it names. `report_rv2d.py confirm` regenerates `RESULTS_RV2D.md` and `verdicts_rv2d.json` from the 704 records unchanged (line endings aside). Audit: all verdicts unchanged.
