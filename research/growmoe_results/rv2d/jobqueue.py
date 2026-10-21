@@ -5,7 +5,7 @@
     python jobqueue.py run    --phase dev1 --wait     stay and keep launching as slots free up, until everything is done (then rebuild the report)
     python jobqueue.py run    --phase dev1 --detach   start the --wait scheduler as a hidden background process and return at once  (this is what RESUME_RV2D.cmd does)
 
-Phases: dev1 (baselines and the calibration sweeps), dev2 (every arm at the chosen constants), confirm (seeds 85-99, single use, only after the user's go).
+Phases: dev1 (baselines and the calibration sweeps), dev2 (every arm at the chosen constants), confirm (seeds 85-99, single use; run on 2026-10-21 and CLOSED since: see CONFIRM_CLOSED.json).
 Safe to run again and again: finished cells are skipped, a running cell is not started twice, an interrupted cell resumes from its own checkpoint (arithmetic cells save one after
 every block or every 150 batches). After a power cut: run ``RESUME_RV2D.cmd <phase>``.
 """
@@ -25,6 +25,7 @@ import rv2d_lib as R  # noqa: E402
 
 LOGS = HERE / "logs"
 LOCK = HERE / "queue.lock"
+CLOSED = HERE / "CONFIRM_CLOSED.json"                         # present once the confirmatory run is finished and reported: seeds 85-99 are single use, so that phase can never be started again
 PY = sys.executable
 REPORT_OF = {"dev1": "dev", "dev2": "dev", "confirm": "confirm"}               # which report a finished phase rebuilds (the smoke phase has none)
 BUDGET = int(os.environ.get("RV2D_BUDGET", "9"))              # CPU threads this machine may give (default 3 cells x 3 threads, so that it stays usable); `run --budget N` raises it
@@ -66,19 +67,27 @@ def is_running(job, lines):
     return any(job.match in ln and "run_cell.py" in ln for ln in lines)
 
 
-def states(jobs):
-    lines, stamp = running_command_lines(), R.code_stamp()                        # a result of other code than the present counts as missing
+def closed_note(phase):
+    """The record of a closed phase (only ``confirm`` can be closed), or None."""
+    return json.loads(CLOSED.read_text(encoding="utf-8")) if phase == "confirm" and CLOSED.exists() else None
+
+
+def states(jobs, stamp=None):
+    lines, stamp = running_command_lines(), stamp or R.code_stamp()               # a result of other code than the present counts as missing
     return {j.name: "DONE" if j.done(stamp) else ("RUNNING" if is_running(j, lines) else "PENDING") for j in jobs}
 
 
 def cmd_status(phase, verbose=False):
     jobs = build_jobs(phase)
-    st = states(jobs)
+    closed = closed_note(phase)
+    st = states(jobs, closed["stamp"] if closed else None)                        # a closed phase is read at the stamp it was run at, not at the (adopted) code of today
     for j in jobs:
         if st[j.name] != "DONE" and (verbose or st[j.name] == "RUNNING"):
             print(f"{j.name:<90s} {st[j.name]:<8s}{'  [checkpoint present: will resume]' if (st[j.name] != 'DONE' and j.checkpoint()) else ''}")
     counts = {k: sum(1 for v in st.values() if v == k) for k in ("DONE", "RUNNING", "PENDING")}
     print(f"{phase}: {counts['DONE']} done, {counts['RUNNING']} running, {counts['PENDING']} pending (of {len(jobs)} cells)")
+    if closed:
+        print(f"{phase} is CLOSED since {closed['date']}: {closed['note']}")
     return st
 
 
@@ -120,7 +129,16 @@ def scheduler_alive() -> bool:
     return "jobqueue.py" in line and "--wait" in line
 
 
+def refuse_if_closed(phase) -> bool:
+    closed = closed_note(phase)
+    if closed:
+        print(f"the {phase} phase is CLOSED ({closed['note']}); its seeds are single use, so nothing was started")
+    return bool(closed)
+
+
 def cmd_run(phase, wait):
+    if refuse_if_closed(phase):
+        return
     if wait and scheduler_alive():
         print("another scheduler is already running (queue.lock); nothing to do")
         return
@@ -153,6 +171,8 @@ def cmd_run(phase, wait):
 
 
 def cmd_detach(phase):
+    if refuse_if_closed(phase):
+        return
     LOGS.mkdir(exist_ok=True)
     out = open(LOGS / "queue_scheduler.log", "ab")
     flags = subprocess.CREATE_NEW_PROCESS_GROUP | getattr(subprocess, "CREATE_NO_WINDOW", 0x08000000)

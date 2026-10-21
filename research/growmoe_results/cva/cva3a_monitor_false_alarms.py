@@ -34,7 +34,7 @@ EXPECTED_BATCHES = 313  # ceil(20000 / 64) = 313
 
 def run_single_stream(seed: int, competence: bool) -> dict:
     """Run PhyloMoE on segment 0 (20,000 samples) of function_regimes."""
-    cfg = PhyloCfg(
+    cfg = PhyloCfg(router=False, spawn_rule="probe", growth_rule="probe",
         seed=seed,
         d=128,
         n_classes=8,

@@ -35,7 +35,8 @@ from growmoe.metrics import paired_diff                                         
 from growmoe.pools.phylo import PhyloMoE                                                # noqa: E402
 from growmoe.streams_order import label_sorted                                          # noqa: E402
 
-BASE = dict(q=0.02, alpha_spawn=0.01, m_min=32, route_rule="accept_then_logf", arm_monitor_after_infancy=True)   # M0's A_KW without its historical pins
+BASE = dict(q=0.02, alpha_spawn=0.01, m_min=32, route_rule="accept_then_logf", arm_monitor_after_infancy=True,   # M0's A_KW without its historical pins
+            router=False, spawn_rule="probe", growth_rule="probe")                      # stage 4 did not exist then (router and transfer rule default ON since 2026-10-21, RV2-D)
 STREAMS = ["F-30", "S2-30", "F-15", "OV-0.85", "OV-0.6", "OV-0.3", "OV-0.3-MIXED", "OV-0.0", "S1", "S2-5"]      # the ten pre-registered streams, heaviest first
 SORTED = "F-15-SORTED"                                                                   # reported guard: the same F-15 data with every batch ordered by label
 GRID = [(12, 0.35, 100), (12, 0.50, 100), (20, 0.30, 100), (30, 0.30, 100)]            # (len, rate, pause): declared in spec section 8

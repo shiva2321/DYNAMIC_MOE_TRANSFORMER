@@ -292,7 +292,8 @@ class Transformer(Learner):
 
 
 class Pool(Learner):
-    """GrowMoE (PhyloMoE) with its product defaults (``set_gate`` = the stage-3 batch gate). Sees the examples in batches of 64, one pass."""
+    """GrowMoE (PhyloMoE) with the product defaults of stage 3 (``set_gate`` = the stage-3 batch gate). Sees the examples in batches of 64, one pass. The stage-4 switches (the router and the
+    transfer rule are the defaults since 2026-10-21; growth from the fit gap is an option) stay OFF here unless ``cfg_kw`` turns them on, so that the recorded arithmetic results reproduce."""
     cpu = True
 
     def __init__(self, steps=5, set_gate=False, name=None, **cfg_kw):
@@ -300,11 +301,11 @@ class Pool(Learner):
         self.name = name or ("GrowMoE+stage3" if set_gate else "GrowMoE")
 
     def _new(self, seed):
-        from growmoe.config import PhyloCfg
+        from growmoe.config import PRE_STAGE4, PhyloCfg
         from growmoe.pools.phylo import PhyloMoE
         torch.set_num_threads(3)
         cfg = PhyloCfg(seed=seed, d=A.D_MODEL, n_classes=A.N_CLASS, inner_steps=self.steps, q=0.02, alpha_spawn=0.01, m_min=32, route_rule="accept_then_logf",
-                       set_gate=self.set_gate, **self.cfg_kw)
+                       set_gate=self.set_gate, **{**PRE_STAGE4, **self.cfg_kw})
         self.pool = PhyloMoE(cfg)
 
     def _feed(self, tr, idx):

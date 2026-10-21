@@ -9,7 +9,7 @@ import pytest
 import torch
 
 from growmoe.accounting import pool_report
-from growmoe.config import PhyloCfg
+from growmoe.config import PRE_STAGE4, PhyloCfg
 from growmoe.experts import MLPExpert
 from growmoe.pools.phylo import PhyloMoE
 from growmoe.setgate import SetDecision
@@ -45,7 +45,7 @@ def _pool(**kw):
     kw.setdefault("set_gate", False)                                                        # explicit: these tests must not change meaning if a default is flipped later
     kw.setdefault("group_vote", False)
     kw.setdefault("set_gate_confirm", 1)                                                  # these tests exercise the act-at-once mechanics; the persistence rule (A-15) has test_gm_rv3_confirm.py
-    return PhyloMoE(PhyloCfg(d=D, hidden=16, n_classes=C, seed=3, q=0.02, alpha_spawn=0.01, m_min=32, inner_steps=1, route_rule="accept_then_logf", **kw))
+    return PhyloMoE(PhyloCfg(d=D, hidden=16, n_classes=C, seed=3, q=0.02, alpha_spawn=0.01, m_min=32, inner_steps=1, route_rule="accept_then_logf", **{**PRE_STAGE4, **kw}))   # stage 3 as it was built (stage 4 has its own tests)
 
 
 def _teach(pool, c, n_batches, seed0):
@@ -76,7 +76,7 @@ def test_with_both_flags_off_the_pool_is_bit_identical_to_the_recorded_golden_ru
 
 def test_with_the_flags_off_nothing_of_stage_3_is_created_or_reported():
     st = function_regimes(100, overlap=0.6, n_regimes=4, n_train=128, n_test=64)
-    pool = PhyloMoE(PhyloCfg(seed=7, d=st.d, n_classes=st.n_classes, inner_steps=1, q=0.02, alpha_spawn=0.01, m_min=32, route_rule="accept_then_logf", set_gate=False, group_vote=False))
+    pool = PhyloMoE(PhyloCfg(seed=7, d=st.d, n_classes=st.n_classes, inner_steps=1, q=0.02, alpha_spawn=0.01, m_min=32, route_rule="accept_then_logf", set_gate=False, group_vote=False, **PRE_STAGE4))
     for x, y, ctx in st.algo_batches(64, 7):
         rec = pool.observe(x, y, ctx)
         assert rec.meta == {}
@@ -192,7 +192,7 @@ def test_two_identical_pools_give_identical_verdicts_and_assignments():
 def test_every_combination_of_vote_cascade_and_set_gate_runs_and_keeps_its_invariants(vote, shortlist):
     st = function_regimes(100, overlap=0.6, n_regimes=4, n_train=128, n_test=64)
     pool = PhyloMoE(PhyloCfg(seed=7, d=st.d, n_classes=st.n_classes, inner_steps=1, q=0.02, alpha_spawn=0.01, m_min=32, route_rule="accept_then_logf",
-                             batch_vote=vote, gate_shortlist=shortlist, gate_shortlist_min_experts=2, set_gate=True))
+                             batch_vote=vote, gate_shortlist=shortlist, gate_shortlist_min_experts=2, set_gate=True, **PRE_STAGE4))
     for x, y, ctx in st.algo_batches(64, 7):
         rec = pool.observe(x, y, ctx)
         assert rec.meta["set_verdict"] in (None, "known", "novel", "paused", "held")

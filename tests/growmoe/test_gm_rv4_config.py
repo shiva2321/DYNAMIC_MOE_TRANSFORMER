@@ -1,11 +1,14 @@
-"""RV4 scaffolding: every stage-4 flag exists, is OFF by default, carries the declared constants and is validated (spec sections 4.3, 5.3, 6.5)."""
+"""RV4 scaffolding: every stage-4 flag exists, carries the declared constants and is validated (spec sections 4.3, 5.3, 6.5).
+
+The flags were OFF until the pre-registered run (RV2-D); the router (with a fast route rule) and the transfer rule are ON by default since its adoption (2026-10-21, E-041 to E-043,
+test_gm_adopt_stage4.py), growth from the fit gap is validated but not the default; `PRE_STAGE4` restores the old behaviour."""
 
 import importlib.util
 from pathlib import Path
 
 import pytest
 
-from growmoe.config import PhyloCfg
+from growmoe.config import PRE_STAGE4, PhyloCfg
 
 ROOT = Path(__file__).resolve().parents[2]
 
@@ -17,19 +20,22 @@ def _golden():
     return mod
 
 
-def test_every_stage_4_flag_is_off_by_default():
-    cfg = PhyloCfg()
-    assert cfg.router is False and cfg.spawn_rule == "probe" and cfg.growth_rule == "probe"
+def test_the_router_and_the_transfer_rule_are_on_by_default_growth_is_not_and_pre_stage_4_turns_all_three_off():
+    cfg = PhyloCfg(route_rule="accept_then_logf")
+    assert cfg.router is True and cfg.spawn_rule == "transfer" and cfg.growth_rule == "probe"
+    old = PhyloCfg(route_rule="accept_then_logf", **PRE_STAGE4)
+    assert old.router is False and old.spawn_rule == "probe" and old.growth_rule == "probe"
+    assert set(PRE_STAGE4) == {"router", "spawn_rule", "growth_rule"}                  # the three switches, nothing else
 
 
 def test_the_stage_4_constants_have_the_declared_defaults():
-    cfg = PhyloCfg()
+    cfg = PhyloCfg(route_rule="accept_then_logf")
     assert (cfg.router_candidates, cfg.router_margin, cfg.router_folds, cfg.router_refit_every, cfg.router_min_protos, cfg.router_mode,
-            cfg.router_softmax_max_experts) == (("density", "lda", "softmax", "knn5"), 0.01, 5, 50, 8, "restrict", 64)
+            cfg.router_softmax_max_experts) == (("density", "lda", "softmax", "knn5"), 0.01, 5, 50, 8, "free", 64)
     assert (cfg.transfer_alpha, cfg.transfer_margin, cfg.transfer_perms, cfg.transfer_ref, cfg.transfer_min_ref, cfg.spawn_pretrain_steps) == (0.01, 0.25, 999, 512, 64, 60)
     assert (cfg.grow_window, cfg.grow_plateau, cfg.grow_min_age, cfg.grow_cooldown, cfg.grow_factor, cfg.grow_guard_window, cfg.grow_guard_eps,
             cfg.grow_budget_params) == (100, 0.95, 300, 200, 2.0, 100, 0.02, None)
-    assert 0.0 < cfg.grow_gap < 1.0
+    assert cfg.grow_gap == 0.17                                                         # chosen on dev seeds by the declared rule, frozen in the pre-registration
 
 
 def test_valid_stage_4_settings_are_accepted():

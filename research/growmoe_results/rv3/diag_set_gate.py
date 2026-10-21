@@ -15,7 +15,7 @@ from growmoe.config import PhyloCfg
 name, seed, variant = sys.argv[1], int(sys.argv[2]), sys.argv[3]
 trace = len(sys.argv) > 4 and sys.argv[4] == "trace"
 st = A.get_stream(name, seed, False)
-pool = G.SetGatePool(PhyloCfg(seed=seed, d=st.d, n_classes=st.n_classes, inner_steps=G.STEPS[A.family(name)], q=0.02, alpha_spawn=0.01, m_min=32, route_rule="accept_then_logf"),
+pool = G.SetGatePool(PhyloCfg(router=False, spawn_rule="probe", growth_rule="probe", seed=seed, d=st.d, n_classes=st.n_classes, inner_steps=G.STEPS[A.family(name)], q=0.02, alpha_spawn=0.01, m_min=32, route_rule="accept_then_logf"),
                      set_cfg=G.VARIANTS[variant])
 orig = pool._set_decide
 log = []

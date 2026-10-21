@@ -1,0 +1,7 @@
+{
+  "date": "2026-10-21",
+  "stamp": "ff3438232c5f0dfa",
+  "cells": 704,
+  "bars_sha256": "f445f86018dc10349375a1f424b69dd3176d551014b67b09973db676783d3d0d",
+  "note": "all 704 cells ran to the end at code stamp ff3438232c5f0dfa (seeds 85-99, 2026-10-21 00:44 to 04:18 EDT) and are reported in RESULTS_RV2D.md (notebook E-041, reviewed in E-042); the adoption of the router and the transfer rule as defaults (E-043) changed growmoe/config.py, so the code stamp of today differs and these cells now read as 'missing' at the current stamp: the queue must never re-run them, because the seeds are single use"
+}

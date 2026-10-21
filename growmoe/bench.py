@@ -933,12 +933,15 @@ def compute_verdicts_from_per_seed(
 
 # --------------------------------------------------------------------------- Phase-1 Comparative Benchmark Runner
 def _phase1_cfg(**kw) -> PhyloCfg:
-    """PhyloCfg as Phase 1 recorded it: the competence monitor armed at birth and per-sample assignment (no batch vote). The defaults flipped
-    to the repaired behaviour on 2026-10-10 (M2-A) and 2026-10-12 (RV2-A); this keeps ``python -m growmoe.bench --phase 1`` reproducing
+    """PhyloCfg as Phase 1 recorded it: the competence monitor armed at birth, per-sample assignment (no batch vote), no router, the shadow-trial spawn and growth rules. The defaults
+    flipped to the repaired behaviour on 2026-10-10 (M2-A), 2026-10-12 (RV2-A) and 2026-10-21 (stage 4: the router and the transfer rule, RV2-D); this keeps ``python -m growmoe.bench --phase 1`` reproducing
     research/growmoe_results/phase1/."""
     kw.setdefault("arm_monitor_after_infancy", False)
     kw.setdefault("batch_vote", False)
     kw.setdefault("gate_shortlist", 0)
+    kw.setdefault("router", False)
+    kw.setdefault("spawn_rule", "probe")
+    kw.setdefault("growth_rule", "probe")
     return PhyloCfg(**kw)
 
 

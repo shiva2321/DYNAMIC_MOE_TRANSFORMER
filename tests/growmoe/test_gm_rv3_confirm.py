@@ -11,7 +11,7 @@ import pytest
 import torch
 
 from growmoe.accounting import pool_report
-from growmoe.config import PhyloCfg
+from growmoe.config import PRE_STAGE4, PhyloCfg
 from growmoe.fairfight import rv2c_verdicts
 from growmoe.pools.phylo import PhyloMoE
 from growmoe.setgate import SetDecision, SetGate
@@ -45,7 +45,7 @@ def _pool(**kw):
     kw.setdefault("set_gate", True)
     kw.setdefault("group_vote", False)
     kw.setdefault("set_gate_confirm", 2)
-    return PhyloMoE(PhyloCfg(d=D, hidden=16, n_classes=C, seed=3, q=0.02, alpha_spawn=0.01, m_min=32, inner_steps=1, route_rule="accept_then_logf", **kw))
+    return PhyloMoE(PhyloCfg(d=D, hidden=16, n_classes=C, seed=3, q=0.02, alpha_spawn=0.01, m_min=32, inner_steps=1, route_rule="accept_then_logf", **{**PRE_STAGE4, **kw}))   # stage 3 as it was built and recorded
 
 
 def _teach(pool, c, n_batches, seed0):
@@ -144,7 +144,7 @@ def test_with_confirm_one_the_pool_is_bit_identical_to_the_first_build(seed, ove
     want = FIRST_BUILD[(seed, overlap)]
     st = function_regimes(100 + seed, overlap=overlap, n_regimes=4, n_train=128, n_test=64)
     pool = PhyloMoE(PhyloCfg(seed=seed, d=st.d, n_classes=st.n_classes, inner_steps=1, q=0.02, alpha_spawn=0.01, m_min=32, route_rule="accept_then_logf",
-                             set_gate=True, group_vote=False, set_gate_confirm=1))
+                             set_gate=True, group_vote=False, set_gate_confirm=1, **PRE_STAGE4))                   # the fingerprints were recorded before stage 4 existed
     h, verdicts = hashlib.sha256(), []
     for x, y, ctx in st.algo_batches(64, seed):
         rec = pool.observe(x, y, ctx)
@@ -289,7 +289,7 @@ def test_two_identical_pools_with_persistence_give_identical_runs():
 def test_the_pool_keeps_its_invariants_for_every_confirm_setting(confirm):
     st = function_regimes(100, overlap=0.6, n_regimes=4, n_train=128, n_test=64)
     pool = PhyloMoE(PhyloCfg(seed=7, d=st.d, n_classes=st.n_classes, inner_steps=1, q=0.02, alpha_spawn=0.01, m_min=32, route_rule="accept_then_logf",
-                             set_gate=True, set_gate_confirm=confirm))
+                             set_gate=True, set_gate_confirm=confirm, **PRE_STAGE4))
     seen = []
     for x, y, ctx in st.algo_batches(64, 7):
         rec = pool.observe(x, y, ctx)

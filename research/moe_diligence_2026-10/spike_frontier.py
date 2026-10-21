@@ -45,7 +45,7 @@ for sd in SEEDS:
         hold = []
 
         def mk():
-            cfg = PhyloCfg(seed=sd, q=0.02, alpha_spawn=0.01, m_min=32, route_rule="accept_then_logf", **kw)
+            cfg = PhyloCfg(seed=sd, q=0.02, alpha_spawn=0.01, m_min=32, route_rule="accept_then_logf", router=False, spawn_rule="probe", growth_rule="probe", **kw)   # pre-stage-4 pool
             if sigp is not None:
                 cfg.sig_cls = sig_factory(sigp)
             p = PhyloMoE(cfg)

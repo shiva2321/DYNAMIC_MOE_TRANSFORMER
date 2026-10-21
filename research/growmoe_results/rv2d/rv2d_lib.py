@@ -56,7 +56,8 @@ def arm_flags(cell: Cell) -> dict:
         if cell.tmargin <= 0.0:
             raise ValueError(f"{cell.cid}: a transfer arm needs transfer_margin")
         kw["transfer_margin"] = cell.tmargin
-    return kw
+    from growmoe.config import PRE_STAGE4
+    return {**PRE_STAGE4, **kw}              # the arms are defined against the pool before stage 4 (the router and the transfer rule are the default only since the adoption of 2026-10-21, E-043): an arm lists what it turns ON
 
 
 def code_stamp(root: Path = None, files=None) -> str:

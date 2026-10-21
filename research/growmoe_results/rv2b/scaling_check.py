@@ -35,7 +35,7 @@ def _unit(a):
 def build(n_experts: int, shortlist: int, k: int, seed: int = 0):
     rng = np.random.default_rng(seed)
     centres = _unit(rng.standard_normal((n_experts, D)))
-    pool = PhyloMoE(PhyloCfg(d=D, hidden=16, n_classes=4, seed=seed, q=0.02, max_experts=4096, route_rule="accept_then_logf",
+    pool = PhyloMoE(PhyloCfg(router=False, spawn_rule="probe", growth_rule="probe", d=D, hidden=16, n_classes=4, seed=seed, q=0.02, max_experts=4096, route_rule="accept_then_logf",
                              gate_shortlist=shortlist, gate_fingerprint_k=k, gate_shortlist_min_experts=2))
     for e in range(n_experts):
         sig = VmfSignature(D, 256, seed=e)

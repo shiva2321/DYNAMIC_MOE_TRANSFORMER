@@ -209,7 +209,7 @@ def summarize_recent(a2: list) -> None:
 
 def run_a2(rho: float, seed: int) -> dict:
     st = function_regimes(seed, n_regimes=10, overlap=rho)
-    pool = POOL_CLS(PhyloCfg(seed=seed, d=st.d, n_classes=st.n_classes, inner_steps=5, q=0.02, alpha_spawn=0.01, m_min=32, route_rule="accept_then_logf"))
+    pool = POOL_CLS(PhyloCfg(router=False, spawn_rule="probe", growth_rule="probe", seed=seed, d=st.d, n_classes=st.n_classes, inner_steps=5, q=0.02, alpha_spawn=0.01, m_min=32, route_rule="accept_then_logf"))
     walk = list(st._walk(BS, seed))
     last_seg, within = None, 0
     for (k, seg, _), (x, y, ctx) in zip(walk, st.algo_batches(BS, seed)):

@@ -33,7 +33,7 @@ ALL_ARMS = ("A_today", "B2", "B4", "B1_128", "kNN_all")
 
 def make_arm(arm_name: str, st, seed: int, steps: int):
     if arm_name == "A_today":
-        cfg = PhyloCfg(
+        cfg = PhyloCfg(router=False, spawn_rule="probe", growth_rule="probe",
             d=st.d,
             n_classes=st.n_classes,
             seed=seed,
@@ -132,7 +132,7 @@ def main():
 
     for sd in SEEDS:
         st = streams[sd]
-        cfg_a = PhyloCfg(
+        cfg_a = PhyloCfg(router=False, spawn_rule="probe", growth_rule="probe",
             d=st.d,
             n_classes=st.n_classes,
             seed=sd,

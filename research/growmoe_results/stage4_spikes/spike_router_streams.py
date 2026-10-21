@@ -85,7 +85,7 @@ def run_unit(stream: str, seed: int):
         from run_m0 import HybridFrontend
         from growmoe.config import PhyloCfg
         st = banking_incremental(seed=seed, frontend=HybridFrontend(d=128, seed=0))
-        cfg = PhyloCfg(d=st.d, n_classes=st.n_classes, seed=seed, inner_steps=20, route_rule="accept_then_logf", q=0.02, alpha_spawn=0.01, m_min=32, set_gate=True)
+        cfg = PhyloCfg(router=False, spawn_rule="probe", growth_rule="probe", d=st.d, n_classes=st.n_classes, seed=seed, inner_steps=20, route_rule="accept_then_logf", q=0.02, alpha_spawn=0.01, m_min=32, set_gate=True)
     else:
         st = R.build_stream(stream, seed, False)
         cfg = R.arm_cfg(ARM, st, seed, R.steps_for(stream))

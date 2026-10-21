@@ -93,7 +93,7 @@ def run_experiment_1_1():
                 sig.update(x_fit)
                 sig.fit()
 
-                pool = PhyloMoE(PhyloCfg(d=D, hidden=16, n_classes=8, seed=seed, q=q, route_rule="accept_then_logf"))
+                pool = PhyloMoE(PhyloCfg(router=False, spawn_rule="probe", growth_rule="probe", d=D, hidden=16, n_classes=8, seed=seed, q=q, route_rule="accept_then_logf"))
                 pool.add_expert(MLPExpert(D, 16, 1, 8, seed=seed), parent=None, state="active", meta={"sig": sig})
 
                 x_fresh = draw(a, 5000, rng)
@@ -160,7 +160,7 @@ def run_experiment_1_2():
             sig.update(x_fit)
             sig.fit()
 
-            pool = PhyloMoE(PhyloCfg(d=D, hidden=16, n_classes=8, seed=seed, q=q, route_rule="accept_then_logf"))
+            pool = PhyloMoE(PhyloCfg(router=False, spawn_rule="probe", growth_rule="probe", d=D, hidden=16, n_classes=8, seed=seed, q=q, route_rule="accept_then_logf"))
             pool.add_expert(MLPExpert(D, 16, 1, 8, seed=seed), parent=None, state="active", meta={"sig": sig})
 
             x_A = draw(a, 5000, rng)
