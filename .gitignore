@@ -65,3 +65,4 @@ research/growmoe_results/rv2d/cells_s3u/*.ckpt
 research/growmoe_results/rv2d/cells_s3u/*.tmp
 research/growmoe_results/rv2d/cells_s3d_*/*.ckpt
 research/growmoe_results/rv2d/cells_s3d_*/*.tmp
+research/knowledge_status/_cache/
