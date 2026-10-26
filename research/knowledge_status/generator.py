@@ -173,6 +173,56 @@ def make_near_twin(rng: np.random.Generator, msg: Message, to_skill: str) -> Mes
     return Message(msg.text[:p.start] + new_req + msg.text[p.end:], tuple(parts), msg.family, (msg.template_ids[0], msg.template_ids[1] + "->" + to_skill), msg.pool, msg.seed)
 
 
+# ------------------------------------------------------------------------------------------------------------------------------------ tangled messages
+SEPARATORS = (" ", " Also: ", " By the way: ", " Another thing: ", " Separately: ", " One more thing: ", " Next: ", " New topic: ", " Different question: ")   # end in a colon, so the next segment may start with a capital
+_TANGLED_FAMILIES = ("S1", "S3", "S4", "S5")      # digit forms, so a span's operands can be read straight off its text
+
+
+def _segment(text: str, closing: str) -> str:
+    text = text.strip()
+    return text if text[-1] in ".?!" else text + closing
+
+
+def make_tangled(rng: np.random.Generator, pool: str, kinds: Tuple[str, str], skill_labels: Tuple[Optional[str], Optional[str]] = (None, None),
+                 families: Tuple[str, ...] = _TANGLED_FAMILIES, digits: Tuple[int, int] = (1, 2), seed: int = -1) -> Message:
+    """Two parts in one message, each either a request ("skill") or an everyday sentence ("other"), in a random order, joined by a separator from SEPARATORS.
+    The parts are exactly the two segments: the first starts at 0, the second ends at len(text), and the separator belongs to neither. A request segment is the
+    request's core only (a frame would add words that belong to no part); ``skill_labels[i]`` names the skill of ``kinds[i]`` (None draws one), and two requests always
+    use two different skills. ``families`` are the surface families the requests are drawn from."""
+    if len(kinds) != 2 or any(k not in ("skill", "other") for k in kinds):
+        raise ValueError(f"kinds must be two of 'skill' / 'other', got {kinds!r}")
+    if kinds == ("other", "other"):
+        raise ValueError("a tangled message needs at least one request")
+    chosen: List[Optional[str]] = [skill_labels[i] if kinds[i] == "skill" else None for i in range(2)]
+    if chosen[0] is not None and chosen[0] == chosen[1]:
+        raise ValueError("the two requests of a tangled message must use different skills")
+    for i in range(2):
+        if kinds[i] == "skill" and chosen[i] is None:
+            taken = {s for s in chosen if s is not None}
+            options = [s for s in skills.SKILLS if s not in taken]
+            chosen[i] = options[int(rng.integers(0, len(options)))]
+    segments = []                  # (text, Part with start/end relative to the segment, template id)
+    for i in range(2):
+        if kinds[i] == "other":
+            text = _segment(corpora.sample_other(rng), ".")
+            segments.append((text, Part(0, len(text), "other"), "other"))
+            continue
+        fams = [f for f in families if f != "S5" or chosen[i] in skills.COMMUTATIVE]
+        if not fams:
+            raise ValueError(f"none of the families {families} can express the skill {chosen[i]!r}")
+        one = make_single(rng, pool, chosen[i], fams[int(rng.integers(0, len(fams)))], digits)
+        p = next(x for x in one.parts if x.kind == "skill")
+        text = _segment(one.text[p.start:p.end], "?")
+        segments.append((text, Part(0, len(text), "skill", p.skill, p.a, p.b, p.answer), one.template_ids[1]))
+    if rng.random() < 0.5:
+        segments.reverse()
+    sep = SEPARATORS[int(rng.integers(0, len(SEPARATORS)))]
+    (t1, p1, id1), (t2, p2, id2) = segments
+    offset = len(t1) + len(sep)
+    parts = (p1, Part(p2.start + offset, p2.end + offset, p2.kind, p2.skill, p2.a, p2.b, p2.answer))
+    return Message(t1 + sep + t2, parts, "tangled", (id1, id2), pool, seed)
+
+
 def _single_other(text: str, kind: str, family: str, template_id: str, pool: str, seed: int) -> Message:
     return Message(text, (Part(0, len(text), kind),), family, (template_id,), pool, seed)
 
