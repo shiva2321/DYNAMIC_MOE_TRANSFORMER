@@ -79,4 +79,9 @@ POOL = Pool(
              "Sorry to bother you again.", "My friend asked me about this earlier.", "This is for a little project of mine.", "Let me know if anything is unclear.",
              "I have been meaning to ask this for a while.", "Anyway, here is my question.", "It has been a long week.", "I will explain why I need it later."),
     things=("apples", "marbles", "stickers", "coins", "books"),
+    traps=("Add me to the guest list for the {n}th of July, please.", "My plus one is arriving at about {n} in the evening.", "He has been a mod on that forum for {n} years now.",
+           "The max volume on this speaker is too loud for the {n} am class.", "The remainder of the {n} pizzas went to the neighbours.",
+           "We watched that film three times and it earned a {n} out of ten.", "Please double check the {n}th page of the report before sending.",
+           "She won the product design prize in {n} different cities.", "The total silence in room {n} was almost spooky.",
+           "A multiplied sense of dread followed me on bus {n}."),
 )

@@ -4,12 +4,14 @@ Families: S1 symbols, S2 number words, S3 verbal phrasing, S4 short stories, S5 
 S7 typos / casing / spacing noise, S8 register (formal, casual, terse). A message is a frame (tone, chatter slots) around a core (the request); only the core names the skill.
 """
 
+import re
 import string
 from dataclasses import dataclass
 from typing import List, Optional, Tuple
 
 import numpy as np
 
+import corpora
 import pools
 import skills
 from growmoe.arith import draw_numbers
@@ -130,3 +132,63 @@ def make_single(rng: np.random.Generator, pool: str, skill: str, family: str, di
     parts: List[Part] = [Part(*spans["core"], "skill", skill, a, b, skills.truth(skill, a, b))]
     parts += [Part(*spans[k], "other") for k in ("pre", "post") if k in spans]
     return Message(text, tuple(sorted(parts, key=lambda q: q.start)), family, (frame.frame_id, core.core_id), pool, seed)
+
+
+# ------------------------------------------------------------------------------------------------------------------------------------ controls
+_WORD_CUE = re.compile(r"divided by|plus|minus|times|mod|max")
+_SYMBOL_CUE = re.compile(r"[+\-*/%]")
+_SYM = {"add": "+", "sub": "-", "mul": "*", "div": "/", "mod": "%"}
+_WORD = {"add": "plus", "sub": "minus", "mul": "times", "div": "divided by", "mod": "mod", "max": "max"}
+
+
+def make_near_twin(rng: np.random.Generator, msg: Message, to_skill: str) -> Message:
+    """The same message with only the operator cue changed (a word stays a word, a symbol stays a symbol), operands untouched. Defined for the infix cores of S1 and S2
+    (and the frames that wrap them); verbal, story and max cores have no parallel form and raise ValueError, as does a twin that would divide by zero."""
+    p = next(x for x in msg.parts if x.kind == "skill")
+    if not msg.template_ids[1].startswith(("S1.", "S2.")) or p.skill == "max":
+        raise ValueError("a near-twin exists only for the infix cores of S1 and S2 (not max)")
+    if to_skill == p.skill:
+        raise ValueError("a near-twin must change the skill")
+    if to_skill in ("div", "mod") and p.b == 0:
+        raise ValueError("the twin would divide by zero")
+    req = msg.text[p.start:p.end]
+    hit = _WORD_CUE.search(req)
+    if hit:
+        cue = _WORD[to_skill]
+    else:
+        hit = _SYMBOL_CUE.search(req)
+        if not hit:
+            raise ValueError(f"no operator cue found in {req!r}")
+        cue = _SYM.get(to_skill, "max")
+    new_req = req[:hit.start()] + cue + req[hit.end():]
+    delta = len(new_req) - len(req)
+    parts = []
+    for x in msg.parts:
+        if x is p:
+            parts.append(Part(x.start, x.end + delta, "skill", to_skill, x.a, x.b, skills.truth(to_skill, x.a, x.b)))
+        elif x.start >= p.end:
+            parts.append(Part(x.start + delta, x.end + delta, x.kind, x.skill, x.a, x.b, x.answer))
+        else:
+            parts.append(x)
+    return Message(msg.text[:p.start] + new_req + msg.text[p.end:], tuple(parts), msg.family, (msg.template_ids[0], msg.template_ids[1] + "->" + to_skill), msg.pool, msg.seed)
+
+
+def _single_other(text: str, kind: str, family: str, template_id: str, pool: str, seed: int) -> Message:
+    return Message(text, (Part(0, len(text), kind),), family, (template_id,), pool, seed)
+
+
+def make_trap(rng: np.random.Generator, pool: str, seed: int = -1) -> Message:
+    """Arithmetic words or digits used for something else: a word-matcher calls it a request, but its skill is None and its kind is 'other'."""
+    P = pools.load_pool(pool)
+    k = int(rng.integers(0, len(P.traps)))
+    return _single_other(P.traps[k].format(n=int(rng.integers(2, 99))), "other", "trap", f"trap.{k}", pool, seed)
+
+
+def make_other(rng: np.random.Generator, pool: str, seed: int = -1) -> Message:
+    """An everyday sentence (banking77 or AG News): known "Other content", never a skill."""
+    return _single_other(corpora.sample_other(rng), "other", "other", "other", pool, seed)
+
+
+def make_unseen_content(rng: np.random.Generator, pool: str, seed: int = -1) -> Message:
+    """A sentence of a content type that is never taught (a science question): the easy cross-type novelty control."""
+    return _single_other(corpora.sample_unseen(rng), "unseen_content", "unseen", "unseen", pool, seed)

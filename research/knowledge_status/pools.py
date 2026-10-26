@@ -43,6 +43,7 @@ class Pool:
     core_sources: Dict[str, Tuple[str, ...]]       # families S6..S8 -> the families whose cores they wrap
     chatter: Tuple[str, ...]
     things: Tuple[str, ...]
+    traps: Tuple[str, ...] = ()                    # sentences that use arithmetic words or numbers for something else; slots {n}
 
 
 @lru_cache(maxsize=None)
