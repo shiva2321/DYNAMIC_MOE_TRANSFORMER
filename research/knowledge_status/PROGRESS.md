@@ -24,3 +24,11 @@ One short block per finished task: what we did, what we learned, what comes next
 **What we learned.** Nothing about the science yet; this is plumbing. The tests fixed two things that would have bitten later: dividing or taking a remainder by zero is refused loudly, and a half-written result file is never mistaken for a finished one.
 
 **Next.** Task 3: the test messages (the same arithmetic request written eight different ways) with exact labels.
+
+## 2026-10-26, Task 3: the test messages
+
+**What we did.** Built the machine that writes the test messages. Every message is one arithmetic request (add, subtract, multiply, divide, remainder, larger-of) written in one of eight styles: symbols ("17 + 5"), number words ("seventeen plus five"), verbal ("the product of 7 and 5"), little stories, operands in the other order, chatter around the request, typos and odd casing, and formal / casual / terse tone. Each message carries an exact label: which skill, which two numbers, the true answer, and exactly where in the text the request sits. A message is built from a "frame" (the wrapper: tone, punctuation, chatter) around a "core" (the request itself). Only the core names the operation, so the wrapper can never give the answer away; a test confirms that the wrapper alone predicts the skill no better than chance (about 19 %, against 17 % for a blind guess; the small excess is because one style only exists for three of the six skills). 16 new tests check the labels with a separate, independent reader of the text, zero and negative cases, determinism, and that typos never touch digits.
+
+**What we learned.** The plumbing works and the messages look natural enough: for example "Thanks for helping me out. Here it is: what is ninety-six times five" and "Each of 4 children gets 2 books. How many books are given out? Thanks!". One design fact surfaced: the "other order" style can only exist for operations where order does not matter (add, multiply, larger-of), so that style is deliberately limited to those three.
+
+**Next.** Task 4: the controls a word-matcher should fail (the same sentence with only the operation changed, look-alike traps) and everyday-sentence chatter taken from real text, with checks that the chatter never smuggles in numbers or operation words.
