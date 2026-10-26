@@ -70,6 +70,7 @@ class Example:
     b: int
     family: str
     template_ids: Tuple[str, ...]            # (frame id, request wording id)
+    span: str = ""                            # the request itself, without the frame or chatter (the gold part)
 
 
 def text_keys(examples) -> FrozenSet[str]:
@@ -92,7 +93,7 @@ def _draw(rng: np.random.Generator, pool: str, skill: str, n: int, families: Tup
         p = next(x for x in msg.parts if x.kind == "skill")
         if bool(arith.heldout(op, np.array([p.a]), np.array([p.b]))[0]) != held_out:
             continue
-        ex = Example(msg.text, skill, p.answer, p.a, p.b, msg.family, msg.template_ids)
+        ex = Example(msg.text, skill, p.answer, p.a, p.b, msg.family, msg.template_ids, msg.text[p.start:p.end])
         if text_keys([ex]) & exclude:
             continue
         out.append(ex)

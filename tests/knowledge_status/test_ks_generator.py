@@ -258,3 +258,18 @@ def test_confirm_pool_is_blocked_without_the_flag(monkeypatch):
         pools.load_pool("confirm")
     with pytest.raises(KeyError):
         pools.load_pool("nonsense")
+
+
+def test_explicit_operands_are_used_for_every_family_and_validated():
+    rng = np.random.default_rng(11)
+    for family in ("S1", "S2", "S3", "S4", "S6", "S7", "S8"):
+        for skill in skills.SKILLS:
+            msg = G.make_single(rng, "dev", skill, family, operands=(17, 5))
+            p = next(x for x in msg.parts if x.kind == "skill")
+            assert (p.a, p.b, p.answer) == (17, 5, skills.truth(skill, 17, 5))
+    msg = G.make_single(rng, "dev", "sub", "S1", operands=(3, 40))
+    assert next(x for x in msg.parts if x.kind == "skill").answer == -37
+    with pytest.raises(ValueError):
+        G.make_single(rng, "dev", "div", "S1", operands=(17, 0))                     # a zero divisor is refused, not rendered
+    with pytest.raises(ValueError):
+        G.make_single(rng, "dev", "add", "S2", operands=(12345, 5))                  # number words exist only up to 9999

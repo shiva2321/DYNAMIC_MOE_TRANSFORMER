@@ -108,8 +108,10 @@ def _assemble(frame_text: str, core_text: str, pre: str, post: str) -> Tuple[str
     return out, spans
 
 
-def make_single(rng: np.random.Generator, pool: str, skill: str, family: str, digits: Tuple[int, int] = (1, 2), seed: int = -1) -> Message:
-    """One request of ``skill`` in surface ``family``. Operands have between digits[0] and digits[1] digits; div and mod never get a zero divisor."""
+def make_single(rng: np.random.Generator, pool: str, skill: str, family: str, digits: Tuple[int, int] = (1, 2), seed: int = -1,
+                operands: Optional[Tuple[int, int]] = None) -> Message:
+    """One request of ``skill`` in surface ``family``. Operands have between digits[0] and digits[1] digits; div and mod never get a zero divisor.
+    ``operands=(a, b)`` fixes the numbers instead (to render the same request in two wordings); a zero divisor is then a ValueError."""
     if family == "S5" and skill not in skills.COMMUTATIVE:
         raise ValueError("S5 (operands in the other order) exists only for commutative skills")
     P = pools.load_pool(pool)
@@ -117,9 +119,14 @@ def make_single(rng: np.random.Generator, pool: str, skill: str, family: str, di
     cores = [c for c in P.cores[source] if c.skill == skill]
     core = cores[int(rng.integers(0, len(cores)))]
     frame = P.frames[family][int(rng.integers(0, len(P.frames[family])))]
-    la, lb = (int(rng.integers(digits[0], digits[1] + 1)) for _ in range(2))
-    a = int(draw_numbers(rng, np.array([la]))[0])
-    b = int(draw_numbers(rng, np.array([lb]), nonzero=skill in ("div", "mod"))[0])
+    if operands is not None:
+        a, b = operands
+        if b == 0 and skill in ("div", "mod"):
+            raise ValueError(f"{skill} with a zero divisor")
+    else:
+        la, lb = (int(rng.integers(digits[0], digits[1] + 1)) for _ in range(2))
+        a = int(draw_numbers(rng, np.array([la]))[0])
+        b = int(draw_numbers(rng, np.array([lb]), nonzero=skill in ("div", "mod"))[0])
     things = P.things[int(rng.integers(0, len(P.things)))]
     core_text = core.text.format(a=a, b=b, aw=number_to_words(a), bw=number_to_words(b), things=things)
     if frame.noise:

@@ -1,0 +1,31 @@
+B1a accuracy by test wording family, dev seed 100, probe C fixed at 0.1 (S4 stories, S5 swapped order, S6 chatter, S7 typos, S8 register; the last three rows are the 'none' class)
+R0_hash: overall 0.514
+   S4      n= 206  accuracy 0.04
+   S5      n=  86  accuracy 0.93
+   S6      n= 200  accuracy 0.34
+   S7      n= 190  accuracy 0.54
+   S8      n= 218  accuracy 0.73
+   other   n=  50  accuracy 0.94
+   trap    n=  50  accuracy 0.56
+   unseen  n=  50  accuracy 0.92
+   per class: add 0.37, div 0.57, max 0.61, mod 0.45, mul 0.45, none 0.81, sub 0.35
+R1_minilm384: overall 0.829
+   S4      n= 206  accuracy 0.45
+   S5      n=  86  accuracy 1.00
+   S6      n= 200  accuracy 0.96
+   S7      n= 190  accuracy 0.78
+   S8      n= 218  accuracy 1.00
+   other   n=  50  accuracy 1.00
+   trap    n=  50  accuracy 0.72
+   unseen  n=  50  accuracy 0.94
+   per class: add 0.81, div 0.93, max 0.89, mod 0.74, mul 0.73, none 0.89, sub 0.81
+R4_qwen_L18: overall 0.840
+   S4      n= 206  accuracy 0.64
+   S5      n=  86  accuracy 0.98
+   S6      n= 200  accuracy 0.83
+   S7      n= 190  accuracy 0.75
+   S8      n= 218  accuracy 0.98
+   other   n=  50  accuracy 1.00
+   trap    n=  50  accuracy 0.98
+   unseen  n=  50  accuracy 0.90
+   per class: add 0.91, div 0.71, max 0.94, mod 0.83, mul 0.84, none 0.96, sub 0.68

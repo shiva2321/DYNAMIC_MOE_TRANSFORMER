@@ -84,3 +84,32 @@ Written before any E1 result exists, so that we can see afterwards where I was w
 2. **Sentence models and BERT (R1, R2, R3).** B1a 0.50 to 0.80 (strong on "arithmetic against everyday text", weak on "which operation"); B1b below 0.5 (0.15 to 0.45): same wording with another operator looks more alike than the same operator worded differently; B1c 0.55 to 0.75.
 3. **Language-model states after the "operation requested is" line (R4).** The best chance, because the model has just been asked. B1a for Qwen at the middle layers 0.75 to 0.95, GPT-2 0.60 to 0.85. B1b not above 0.6 (a plain distance does not care about the question); B1c 0.55 to 0.75.
 4. **Overall.** I expect none of R1 to R4 to pass all three draft bars, with B1b (pure distance, no training) failing for all of them. That would mean the learned map (Task 9) is needed. A pass of Qwen on B1a alone would not surprise me; a pass on B1b by any off-the-shelf model would, and I would then suspect the test bed before believing it.
+
+## 2026-10-27, Task 8 (the numbers): can any off-the-shelf representation tell the operations apart?
+
+**What we did.** Built the information-ceiling test and ran it on all eleven representations, five development seeds each (55 small result files, safe to re-run after a power cut). Three questions per representation, none of them involves a detector: B1a, can a probe trained on three wordings say which operation (or "none") a message asks for in five new wordings; B1b, with no training, is a request closer to the same request reworded than to its near-twin (same wrapper, same numbers, other operation); B1c, are parts of taught skills closer to the taught examples than parts of untaught skills. Table: `results/E1_TABLE.md`. Test bed check (B2): the letter-pattern counter R0 misses the B1a bar by 0.41 and the B1b bar by 0.95, far more than the required 0.15, so **the test bed is valid**: a word-counter cannot pass it, and a perfect fake representation does (that is in the tests).
+
+**The result, in plain words.** No representation passes any of the three draft bars.
+
+| representation | B1a (bar 0.95) | B1b (bar 0.95) | B1c (bar 0.90) |
+|---|---|---|---|
+| R0 letter counter (control) | 0.54 | 0.00 | 0.68 |
+| R1 MiniLM (384) | 0.81 | 0.03 | 0.74 |
+| R1 MiniLM squeezed to 128 (what the pool uses now) | 0.73 | 0.04 | 0.69 |
+| R2 mpnet | 0.80 | 0.10 | 0.74 |
+| R3 BERT | 0.62 | 0.00 | 0.62 |
+| R4 GPT-2, layers 4 / 6 / 8 | 0.52 / 0.53 / 0.57 | 0.00 / 0.01 / 0.01 | 0.53 / 0.53 / 0.53 |
+| R4 Qwen, layers 9 / 14 / 18 | 0.67 / 0.74 / 0.85 | 0.01 / 0.01 / 0.04 | 0.55 / 0.58 / 0.61 |
+
+(Chance is 0.14 for B1a and 0.50 for B1b and B1c.)
+
+1. **B1b is the clearest finding, and it is not "chance", it is the wrong way round.** A score of 0.00 does not mean "cannot tell"; it means that in practically every pair the near-twin ("same sentence, other operation") looks closer than the same request in other words. Every representation, including the language-model states after "The operation requested is", organises sentences by how they are worded, not by which operation they ask for. Subtracting the average first (centring) barely helps (best 0.10). This is exactly the "17 + 5 looks like 17 x 5" problem from the design, now measured.
+2. **B1a shows the information is partly there.** A trained probe on the middle-late layer of Qwen reaches 0.85 against 0.14 chance, and it climbs with depth (0.67, 0.74, 0.85 at layers 9, 14, 18), so layers deeper than 18 may be better still (not tested). MiniLM reaches 0.81. GPT-2 is much weaker (0.52 to 0.57), hardly better than the letter counter.
+3. **B1c is poor everywhere**: 0.53 to 0.74. The best (MiniLM, 0.74) is only a little better than counting letters (0.68), so for "is this part of a skill we were taught?" the sentence models are mostly seeing shared words.
+4. **Where B1a breaks (a side check, dev seed 100 only, `diag_b1a_by_family.py`, output `results/E1_DIAG_B1A_BY_FAMILY.txt`).** By test wording: swapped operand order (S5) and register (S8) are ~1.00 for MiniLM and 0.98 for Qwen, chatter (S6) 0.96 and 0.83, typos (S7) 0.78 and 0.75, and **short stories (S4) only 0.45 for MiniLM and 0.64 for Qwen**. So the encoders carry the operation when it is said in a way close to what was taught, and fail mainly when the operation has to be worked out from a story. Subtraction and division are the weakest classes for Qwen (0.68, 0.71).
+
+**How my prediction did.** Direction right, size wrong in places. Right: R0 fails B1b badly and B1a is middling (0.54, predicted 0.35 to 0.60); R1 to R3 B1c (0.62 to 0.74, predicted 0.55 to 0.75); Qwen layer 18 B1a (0.85, predicted 0.75 to 0.95); none of them passes all three bars. Wrong: I expected sentence models to reach B1b 0.15 to 0.45 and got 0.00 to 0.10, so the wording problem is worse than I guessed; I expected GPT-2 at 0.60 to 0.85 on B1a and got 0.52 to 0.57; Qwen layers 9 and 14 (0.67 and 0.74) are just below the 0.75 to 0.95 I gave; MiniLM (0.81) is just above the 0.50 to 0.80 I gave. Nothing here came out better than predicted on the question that matters (B1b), so no reason to suspect the test bed.
+
+**What it means for the next step.** Plain distance on any of these representations cannot work as a skill detector: it would call the near-twin "known" and the reworded request "new", the opposite of the truth. The probe numbers say a learned map on top has something to work with (0.85 on Qwen). One honest caution for later: the weakest family is the story wording (S4), where the operation must be understood, not matched, and a map trained only on the three teaching wordings (symbols, number words, verbal phrasing) may stay weak there whatever we do. The 0.95 bar is currently an average over all five test wordings; I have not changed it, and whether it should be set per wording family is a decision for the dev review (Task 11) and the freeze (Task 14), not for now.
+
+**Next.** STOP POINT 1: the decision on Task 9 (build the learned map) is yours.
