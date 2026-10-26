@@ -7,19 +7,24 @@ from pathlib import Path
 from typing import Sequence
 
 
-def atomic_write_text(path, text: str) -> None:
-    """Write ``text`` so that a reader sees either the old file or the complete new one, never half of it."""
+def atomic_write_bytes(path, data: bytes) -> None:
+    """Write ``data`` so that a reader sees either the old file or the complete new one, never half of it."""
     path = Path(path)
     tmp = path.with_name(path.name + ".tmp")
     try:
         with open(tmp, "wb") as fh:
-            fh.write(text.encode("utf-8"))
+            fh.write(data)
             fh.flush()
             os.fsync(fh.fileno())
         os.replace(tmp, path)
     except BaseException:
         tmp.unlink(missing_ok=True)
         raise
+
+
+def atomic_write_text(path, text: str) -> None:
+    """Text version of atomic_write_bytes (UTF-8)."""
+    atomic_write_bytes(path, text.encode("utf-8"))
 
 
 def code_stamp(files: Sequence[Path]) -> str:
