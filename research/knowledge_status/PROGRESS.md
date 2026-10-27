@@ -197,3 +197,52 @@ The map settings hardly matter: 12 variations (width, strength, number of steps,
 - Standard detectors: none beats the status machine by more than 0.05 on both false unseen and unseen found at the same calibration; kNN and Mahalanobis are the strongest. The pool's own gate (vMF) is the weakest on the Thin skill.
 - Two-part messages (gold parts): B4a leftover is the unseen part **0.45 to 0.75**, known part not flagged **0.80 to 0.93**; B4b nothing flagged **0.75 to 0.90**, Other labelled **0.85 to 0.95**. Automatic cutting: within 0.10 of the gold number for sentence/clause pieces, not for sliding windows.
 - Group tests: unseen skills found rises with the batch size (0.85 or more at 16); false unseen for batches of taught skills stays at or below 0.15.
+
+## 2026-10-27, your decision: a from-scratch reader as one more arm (Task 11b, after Stop Point 2)
+
+**What we decided.** After you have seen the Task 11 results, I build a reader trained from scratch (no pretrained language model) and run it through the same tests as the others. The rule, written before there is any result:
+- **If it helps or comes close** to the pretrained reader with the learned map (within 0.05 on the four numbers: near-twin test B1b, taught-against-untaught B1c, overall status score, and false "unseen" on new wordings), it is worth keeping on its merits.
+- **If it is a bit behind** (within 0.15), it is not thrown away. It is parked, with its code and numbers, until you decide whether the whole system will be built from scratch. If yes, a reader that is a bit behind is worth it, because one custom architecture whose parts are designed to work together is the aim. If no, the pretrained reader stays.
+- **If it is much further behind** than 0.15, it is not worth building further for now.
+
+**Two versions, because a fair test needs both.** (a) *Strict*: trained only on the teaching data of this project (three wording families), the hardest case. (b) *With pre-training*: first learns general language from the everyday-text collections already on this PC (banking, news, chat), never from the new wordings S4-S8 or the test templates, then the same contrastive training. A from-scratch reader that has only seen three wordings cannot be expected to understand a story or a typo, so (b) is closer to what a real "own architecture" would do.
+
+**What it does not test.** This is the reader (the "eyes") only. Decoders, which an expert needs to produce its answers, are a separate later piece.
+
+## 2026-10-27, Task 11 (the numbers): the machine finds new skills well; the false alarms on new wordings come almost entirely from two wordings
+
+**What we did.** Ran E2 (single parts) and E3 (two-part messages) on 30 dev seeds with three readers: 90 pieces, all finished. Results: `results/E2_TABLE.md` (full tables), `results/E2_DIAG.txt` (where the misses come from). Suite: 206 tests pass.
+
+**Headline: learned-map reader, status machine, q = 0.05, calibration on S1 to S3 only (mean over 30 seeds, [lowest - highest]).**
+
+| measure | bar | result | what I predicted |
+|---|---|---|---|
+| Overall status score (macro F1 over solid / thin / unseen) | at least 0.85 | **0.855** [0.52 - 0.92] PASS, by 0.005 | 0.60 - 0.80 (better than predicted) |
+| Known skills wrongly called "unseen" on new wordings S4-S8 | at most 0.05 | **0.289** [0.17 - 0.43] **fail** | 0.08 - 0.25 (worse) |
+| the same on the taught wordings S1-S3 | - | 0.05 | 0.03 - 0.08 (right) |
+| Thin separated from Solid (AUROC) | at least 0.85 | **0.844** fail, by 0.006 | 0.95 or more (wrong) |
+| Everyday content called unseen | at most 0.05 | **0.249** fail (but see point 4) | 0.04 - 0.12 |
+| Never-taught skills found as unseen | - | 0.89 | 0.35 - 0.65 (better) |
+| Adapted condition, known skills called unseen | - | 0.17 | 0.05 - 0.10 (worse) |
+| Two-part: leftover is the unseen part (B4a) | at least 0.85 | 0.66 fail | 0.45 - 0.75 (right) |
+| Two-part: known part not flagged (B4a) | at least 0.95 | 0.67 fail | 0.80 - 0.93 (worse) |
+| Two-part: nothing flagged, request plus everyday text (B4b) | at least 0.95 | 0.64 fail | 0.75 - 0.90 (worse) |
+| Two-part: everyday part labelled "other" (B4b) | at least 0.95 | 0.97 PASS | 0.85 - 0.95 (right) |
+| Automatic cutting within 0.10 of the gold number (B6) | - | 13 % of seeds (sentences), 7 % (sliding windows) | "sentences yes, windows no" (sentences also no) |
+
+The wording claim from the calibration rule is **"fails"**: even with a few new-wording examples in the calibration (adapted) the rate is 0.17, not below 0.05. Plain Qwen without the learned map: 0.39 (the map helps by 10 points). The word-matcher control: 0.12 but it finds only 0.36 of the new skills, which is the failure it is supposed to show. All dev-fixed bars equal the draft bars: no dev result beat a draft bar by enough to tighten it.
+
+**What this means, in plain words.**
+1. **The false alarms are concentrated in two wordings.** Known skills are wrongly called new in **67 % of short stories (S4)** and **47 % of typo / case / spacing noise (S7)**; swapped operand order (S5) 19 %; chatter (S6) 4 % and register (S8) 7 % are about as good as the taught wordings (2 to 9 %). Stories and noisy text sit systematically farther from the taught examples (best cosine 0.95 and 0.89 against 0.99; median p-value 0.025 and 0.07 against about 0.5). The group test shows the same: a batch of 16 known-skill parts in new wordings is called new in 78 % of cases, a whole-group shift, not noise. Caveat: with gold spans a part is the request alone, so S6 and S8 (which differ from the taught wordings mostly in the sentence around the request) are not really tested by this unit.
+2. **New skills are found well:** 80 to 95 % per skill (division 80 %, remainder 87 %, the rest 90 to 95 %). The misses are taken by the **remainder or division group**: they absorb each other (97 to 99 %), and also most of the rest.
+3. **Against the standard methods the machine is level, not better.** At the same alarm level, kNN, Mahalanobis and the pool's own gate give false alarms 0.31 to 0.33 and find 0.95 to 0.97; the machine gives 0.29 and 0.89: the same trade-off. Classifier confidence and energy raise fewer false alarms but miss half the new skills (found 0.41 to 0.51); Relative Mahalanobis fails (AUROC 0.44). The value of the machine is the statuses (thin, other, calibrated per group), not detection power.
+4. **The "everyday content" number is misleading.** Ordinary everyday sentences are called new only 3.3 % of the time (fine). The 25 % is dragged up by the hand-written chatter sentences of the S6 template (52 %), which are not the same kind of text as the taught everyday content, and by traps with test-only templates (47 %); never-taught content (science questions) is found only 62 % of the time. This is a **defect of my test bed** (the spec says the chatter should be drawn from the same corpora; the dev pool uses a hand-written list). I found it after seeing the numbers, so I record it as found afterwards.
+5. **The Thin-vs-Solid failure is the wording problem again:** the local evidence of a Solid part in a story or noisy wording is about zero (median 0 and 1, against 33 to 76 in taught wordings).
+6. **My own declared rule fired:** 17 of 60 "Solid" skills (28 %, over the quarter I set) are not solid by measured accuracy. With 2,000 examples the small solver learns addition (0.94), subtraction (0.91) and maximum (0.95) but not multiplication (0.33), division (0.72) or remainder (0.58). I did not change any threshold; the choice is yours (see below).
+7. **Offline cost estimate** (not gated, an estimate): 269 pool points per seed for the learned-map reader, 305 for plain Qwen, 994 for the word-matcher.
+
+**What I propose, not yet done (your call at Stop Point 2).**
+- **A. One bounded round on the wording problem before Task 12**, with its prediction written first: (i) calibrate on *leave-one-wording-out* data (each taught wording is tested against prototypes of the other taught wordings, which uses S1-S3 only and teaches the alarm what a wording shift looks like); (ii) reading the text after generic clean-up (case and spacing). Training with S7-style noise would break the rule that S4-S8 are never used for teaching, so I would not do that without your say.
+- **B. Fix the test bed** (teach the everyday content from the same source as the chatter) before the freeze, and say so.
+- **C. The small solver:** improve it for multiplication, division and remainder, or accept that only addition, subtraction and maximum can be Solid.
+- Then Task 12 (worked traces), and the from-scratch reader (Task 11b) as you decided.

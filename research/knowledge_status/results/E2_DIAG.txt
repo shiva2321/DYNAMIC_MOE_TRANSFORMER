@@ -1,0 +1,56 @@
+Diagnosis of E2, R5_R4_qwen_L26, status machine q = 0.05, standard condition, seeds 100-129
+
+1. False unseen of taught skills (solid or thin truth), by wording family
+   S1  n=  737    8.7%   (taught wording)
+   S2  n=  736    4.6%   (taught wording)
+   S3  n=  717    2.0%   (taught wording)
+   S4  n=  604   66.6%   (held-out wording)
+   S5  n=  353   19.3%   (held-out wording)
+   S6  n=  634    4.1%   (held-out wording)
+   S7  n=  646   46.7%   (held-out wording)
+   S8  n=  683    7.0%   (held-out wording)
+   by skill and taught state, held-out wordings only:
+   add  solid n=  320   34.4%
+   add  thin  n=  200   26.5%
+   div  thin  n=  240   21.7%
+   max  solid n=  440   27.7%
+   max  thin  n=  240   23.3%
+   mod  thin  n=  440   23.2%
+   mul  thin  n=  600   35.8%
+   sub  solid n=  280   37.1%
+   sub  thin  n=  160   20.0%
+
+2. Untaught skills: found as unseen, and (when missed) which group took the part
+   add  n= 1120 found  90.0%   missed parts taken by: mod 59%, sub 37%, div 4%, other 1%
+   sub  n= 1050 found  90.3%   missed parts taken by: mod 92%, other 3%, div 2%, add 2%, max 1%
+   mul  n= 1050 found  94.6%   missed parts taken by: mod 86%, div 14%
+   div  n=  980 found  80.3%   missed parts taken by: mod 99%, sub 1%
+   mod  n= 1190 found  86.9%   missed parts taken by: div 97%, max 2%, other 1%
+   max  n=  910 found  94.7%   missed parts taken by: mod 88%, div 4%, add 4%, other 2%, sub 2%
+
+3. Other content called unseen
+   other           S6      n= 2414   51.8%
+   other           other   n= 3000    3.3%
+   trap            trap    n= 1800   47.2%
+   unseen_content  unseen  n= 1800   62.2%
+
+4. Distance of the wordings from the taught prototypes (taught skills): mean best cosine to the own group's prototypes, and the median conformal p-value (0.5 is what in-distribution parts give)
+   S1  mean best cosine 0.992   median p 0.488
+   S2  mean best cosine 0.994   median p 0.446
+   S3  mean best cosine 0.997   median p 0.545
+   S4  mean best cosine 0.950   median p 0.025
+   S5  mean best cosine 0.994   median p 0.463
+   S6  mean best cosine 0.991   median p 0.504
+   S7  mean best cosine 0.894   median p 0.070
+   S8  mean best cosine 0.992   median p 0.488
+
+5. Local evidence of parts a skill covers (taught count: Solid 2000, Thin 20)
+   Solid, S1  n=  244 median    33.5   10th percentile     1.0
+   Solid, S2  n=  251 median    13.0   10th percentile     2.0
+   Solid, S3  n=  246 median    76.0   10th percentile    12.0
+   Solid, S4  n=   41 median     0.0   10th percentile     0.0
+   Solid, S5  n=  113 median    10.0   10th percentile     0.0
+   Solid, S6  n=  224 median    34.5   10th percentile     3.0
+   Solid, S7  n=   97 median     1.0   10th percentile     0.0
+   Solid, S8  n=  229 median    47.0   10th percentile     2.0
+   Thin  all wordings n= 2703 median    20.0   90th percentile   117.0
