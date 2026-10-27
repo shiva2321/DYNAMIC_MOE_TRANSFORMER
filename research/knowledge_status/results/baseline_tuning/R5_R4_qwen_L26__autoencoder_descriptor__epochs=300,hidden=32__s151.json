@@ -1,0 +1,1 @@
+{"reader": "R5_R4_qwen_L26", "name": "autoencoder_descriptor", "params": {"hidden": 32, "epochs": 300}, "seed": 151, "code_stamp": "6b8608127d622a48", "auroc_taught_vs_untaught": 0.831360544217687, "unseen_recall": 0.7, "false_unseen_heldout": 0.3, "other_as_unseen": 0.22807017543859648}

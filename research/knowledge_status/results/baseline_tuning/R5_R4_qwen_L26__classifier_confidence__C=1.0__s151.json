@@ -1,0 +1,1 @@
+{"reader": "R5_R4_qwen_L26", "name": "classifier_confidence", "params": {"C": 1.0}, "seed": 151, "code_stamp": "6b8608127d622a48", "auroc_taught_vs_untaught": 0.5139455782312925, "unseen_recall": 0.4523809523809524, "false_unseen_heldout": 0.4, "other_as_unseen": 0.1111111111111111}

@@ -1,0 +1,1 @@
+{"reader": "R5_R4_qwen_L26", "name": "vmf_conformal", "params": {"max_protos": 1024}, "seed": 154, "code_stamp": "6b8608127d622a48", "auroc_taught_vs_untaught": 0.9411791383219955, "unseen_recall": 0.8952380952380953, "false_unseen_heldout": 0.16666666666666666, "other_as_unseen": 0.03414634146341464}

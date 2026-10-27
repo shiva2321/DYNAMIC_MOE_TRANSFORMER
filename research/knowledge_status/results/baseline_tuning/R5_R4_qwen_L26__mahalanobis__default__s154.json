@@ -1,0 +1,1 @@
+{"reader": "R5_R4_qwen_L26", "name": "mahalanobis", "params": {}, "seed": 154, "code_stamp": "6b8608127d622a48", "auroc_taught_vs_untaught": 0.9822902494331065, "unseen_recall": 0.9904761904761905, "false_unseen_heldout": 0.2916666666666667, "other_as_unseen": 0.2097560975609756}

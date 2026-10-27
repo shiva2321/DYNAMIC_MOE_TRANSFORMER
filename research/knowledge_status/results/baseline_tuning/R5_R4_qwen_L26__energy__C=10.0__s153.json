@@ -1,0 +1,1 @@
+{"reader": "R5_R4_qwen_L26", "name": "energy", "params": {"C": 10.0}, "seed": 153, "code_stamp": "6b8608127d622a48", "auroc_taught_vs_untaught": 0.6125510204081632, "unseen_recall": 0.1523809523809524, "false_unseen_heldout": 0.0375, "other_as_unseen": 0.2154696132596685}

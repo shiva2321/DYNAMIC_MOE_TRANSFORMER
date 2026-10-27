@@ -47,7 +47,9 @@ BARS: Dict[str, Tuple[float, str]] = {
     "macro_f1": (0.85, "min"), "false_unseen_heldout": (0.05, "max"), "thin_vs_solid_auroc": (0.85, "min"), "other_as_unseen": (0.05, "max"),
     "b4a_residual_hit": (0.85, "min"), "b4a_known_not_flagged": (0.95, "min"), "b4b_nothing_flagged": (0.95, "min"), "b4b_other_labelled": (0.95, "min"),
 }
-BASELINE_PARAMS: Dict[str, dict] = {}          # per-baseline settings; filled from the tuning on seeds 150 to 154 (tune_baselines.py) before the report run
+# per-baseline settings chosen on seeds 150 to 154 (results/BASELINE_TUNING.md, tune_baselines.py) before the report run; an empty dict keeps the default
+BASELINE_PARAMS: Dict[str, dict] = {"knn_distance": {"k": 1}, "vmf_conformal": {"max_protos": 64}, "mahalanobis": {}, "relative_mahalanobis": {}, "classifier_confidence": {},
+                                    "energy": {"C": 10.0}, "autoencoder_descriptor": {"hidden": 64, "epochs": 100}}
 
 
 @dataclass(frozen=True)

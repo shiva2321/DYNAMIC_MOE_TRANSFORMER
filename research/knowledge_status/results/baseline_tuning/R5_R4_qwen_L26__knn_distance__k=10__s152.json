@@ -1,0 +1,1 @@
+{"reader": "R5_R4_qwen_L26", "name": "knn_distance", "params": {"k": 10}, "seed": 152, "code_stamp": "6b8608127d622a48", "auroc_taught_vs_untaught": 0.9113605442176871, "unseen_recall": 0.919047619047619, "false_unseen_heldout": 0.425, "other_as_unseen": 0.2087912087912088}
