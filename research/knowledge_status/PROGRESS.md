@@ -132,3 +132,26 @@ The map settings hardly matter: 12 variations (width, strength, number of steps,
 1. **Qwen layer 26 + map:** B1b 0.99 or more, also for story partners; B1a 0.90 to 0.95; B1c 0.86 to 0.92. I expect B1b to pass its 0.95 bar and B1a and B1c to land within about 0.03 of their bars: whether the mean crosses 0.95 or 0.90 is close to a coin flip, and B1a is more likely to stay just below.
 2. **mpnet + map and MiniLM + map:** B1b 0.93 to 0.96 (just at the bar, driven by the stories: 0.83), B1a 0.78 to 0.86 and B1c 0.72 to 0.80, both clearly failing.
 3. **A caution I am writing down now so we do not forget it.** "B1b with a taught-wording partner = 1.000" is *in-distribution*: those wrapper phrases were seen during the map's training with other numbers, so it is the expected result, not evidence of generalising. The real evidence of wording invariance is the story column (never taught) and B1a on S4 to S8. And all of this is on the **dev pool**: its templates are the ones I looked at while designing, so dev numbers are optimistic. The confirmatory pool has different templates and is the only honest test.
+
+## 2026-10-27, Task 9 (the numbers): the learned map nearly closes the gap, and stops short of two bars
+
+**What we did.** Ran the map on the report seeds 100 to 104 for the three readers and added the rows to `results/E1_TABLE.md` (plus the plain Qwen layers 22 and 26). Side check of where the remaining misses are: `diag_r5_failures.py`, output `results/E1_DIAG_R5_FAILURES.txt` (one seed). Suite: 100 tests pass.
+
+**Result (mean over 5 seeds; bars B1a 0.95, B1b 0.95, B1c 0.90).**
+
+| reader | B1a which operation | B1b twin vs reworded (story partner) | B1c taught vs untaught |
+|---|---|---|---|
+| Qwen layer 26, plain | 0.93 | 0.64 (0.42) | 0.84 |
+| **Qwen layer 26 + map** | **0.92 (fail)** | **0.997 (0.99) PASS** | **0.89 (fail, by 0.012)** |
+| MiniLM + map | 0.79 | 0.949 (0.85) | 0.78 |
+| mpnet + map | 0.80 | 0.93 (0.79) | 0.76 |
+
+**What this means, in plain words.**
+1. **The wording problem is solved for the best reader.** In every test where a message is compared with another by distance alone, the reworded request is now closer than its near-twin: B1b goes from 0.04 (Qwen layer 18, the original table) to 0.997, and the story partners, a wording the map never saw, score 0.99. The taught-and-untaught test (B1c) climbs from 0.61 to 0.89.
+2. **The map does not add information, and B1a shows it.** B1a is a trained probe, so it measures how much "which operation" the reader holds at all; the map only re-sorts, so it cannot raise it (0.93 plain, 0.92 with the map). The 0.92 against a bar of 0.95 is therefore a limit of the reader, not of the map.
+3. **Where the misses are (side check on one seed).** B1a mistakes are mostly division read as remainder (27 of the mistakes on that seed) and the "trap" sentences (arithmetic-looking but not a request) that get read as an operation (0.64 correct). Stories are now fine (0.86, they were 0.64 before the deeper layer). B1c is weakest exactly for division and remainder as the untaught skill (0.77 and 0.83): remainder messages sit nearest to division ones (66 to 77 %). In the design these two are also "Related" (remainder is built from division), so this is partly honest relatedness, not only a flaw; as a test of "taught vs untaught" it still counts as a miss.
+4. **MiniLM and mpnet with the map are not enough**: B1a 0.79 to 0.80 and B1c 0.76 to 0.78. The small readers cannot carry the operation well enough, whatever the map does. The pool's current input (MiniLM) would need replacing by the larger reader.
+
+**How my prediction did.** Every number landed inside the range I wrote down before looking (Qwen map: B1b 0.99 or more, B1a 0.90 to 0.95, B1c 0.86 to 0.92; the two small readers: B1b 0.93 to 0.96, B1a 0.78 to 0.86, B1c 0.72 to 0.80). That is expected, since the tuning seeds and the report seeds come from the same dev pool; it says the result is stable, not that it will hold on the confirmatory pool, whose templates differ. The caution I wrote beforehand stands: "B1b with a taught-wording partner = 1.00" is in-distribution; the evidence of real wording invariance is the story partner (0.99) and the story/typo/chatter cases in B1a.
+
+**The rule says stop here.** The plan, step 5 of Task 9: "if R5 also fails B1, STOP and report the negative result". R5 on Qwen layer 26 passes one of the three bars and misses the other two narrowly (B1a by 0.03, B1c by 0.012). I have not changed any bar. What happens next is your decision (options below in the chat message and in the ledger).

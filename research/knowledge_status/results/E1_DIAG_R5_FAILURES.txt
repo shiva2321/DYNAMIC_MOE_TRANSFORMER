@@ -1,0 +1,22 @@
+R5 on R4_qwen_L26, dev seed 100
+
+B1a by test wording family (probe C 0.1): overall 0.913
+   S4      n= 206  accuracy 0.86
+   S5      n=  86  accuracy 1.00
+   S6      n= 200  accuracy 0.92
+   S7      n= 190  accuracy 0.86
+   S8      n= 218  accuracy 1.00
+   other   n=  50  accuracy 1.00
+   trap    n=  50  accuracy 0.64
+   unseen  n=  50  accuracy 0.94
+   by class: add 0.99, div 0.79, max 0.93, mod 0.92, mul 0.96, none 0.86, sub 0.95
+   most common mistakes (true -> said): div->mod x27, none->max x21, mod->sub x9, sub->none x7, max->none x6, mul->none x3
+
+B1c by the untaught skill (AUROC of that skill's parts against the taught skills' parts, mean over the teaching assignments where it is untaught)
+   add: AUROC 0.92 (n=11)  nearest taught skill: sub 64%, mul 19%, max 14%
+   sub: AUROC 0.94 (n=7)  nearest taught skill: add 53%, max 15%, mul 13%
+   mul: AUROC 0.96 (n=11)  nearest taught skill: div 30%, add 29%, sub 17%
+   div: AUROC 0.77 (n=11)  nearest taught skill: mod 77%, sub 17%, mul 3%
+   mod: AUROC 0.83 (n=8)  nearest taught skill: div 66%, sub 30%, max 2%
+   max: AUROC 0.92 (n=12)  nearest taught skill: add 35%, sub 31%, div 21%
+   untaught skill whose parent skill is taught (Related in the design): AUROC 0.88 (n=34); no parent taught: 0.90 (n=26)
