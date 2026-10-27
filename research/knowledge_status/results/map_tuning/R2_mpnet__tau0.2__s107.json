@@ -1,0 +1,1 @@
+{"b1a": 0.82, "b1b": 0.932, "b1c": 0.7719144032921812, "b1b_taught": 1.0, "b1b_story": 0.7973000000000001, "b1c_raw": 0.7628905349794238, "secs": 9.3, "base": "R2_mpnet", "name": "tau0.2", "seed": 107, "hyper": {"out_dim": 64, "hidden": 0, "tau": 0.2, "twin_weight": 4.0, "epochs": 300, "lr": 0.003, "weight_decay": 0.01}, "code_stamp": "889d5e42edb2e225"}

@@ -113,3 +113,22 @@ Written before any E1 result exists, so that we can see afterwards where I was w
 **What it means for the next step.** Plain distance on any of these representations cannot work as a skill detector: it would call the near-twin "known" and the reworded request "new", the opposite of the truth. The probe numbers say a learned map on top has something to work with (0.85 on Qwen). One honest caution for later: the weakest family is the story wording (S4), where the operation must be understood, not matched, and a map trained only on the three teaching wordings (symbols, number words, verbal phrasing) may stay weak there whatever we do. The 0.95 bar is currently an average over all five test wordings; I have not changed it, and whether it should be set per wording family is a decision for the dev review (Task 11) and the freeze (Task 14), not for now.
 
 **Next.** STOP POINT 1: the decision on Task 9 (build the learned map) is yours.
+
+## 2026-10-27, Task 9 (before the report-seed numbers): what I expect from the learned map
+
+**What we did.** You decided to build the learned map (R5). Before looking at the main table again, three things happened that you should know about, in order. (1) I added a deeper look at the language model: layers 22 and 26 (the plan had 9, 14, 18). With no map at all they are far better than layer 18 (see below), so a bigger part of the earlier "fail" was *where we read the model*, not only the wording problem. (2) I built the map (`learned_map.py`, 7 tests, each of three deliberate breakages of the code is caught by a test). It is one small linear layer that is trained so that the same operation in different words moves closer together and the same wording with another operation moves apart, with extra push on exactly those near-twins. It refuses by construction to see an untaught skill or a test wording (S4 to S8). (3) I tuned it on **other** dev seeds (105 to 107; the E1 table uses 100 to 104) so that tuning cannot flatter the table. I also re-ran the whole E1 baseline under the new code: all 55 earlier numbers came out identical, so adding the map changed nothing about the old results.
+
+**Tuning facts (seeds 105 to 107, no report-seed number was looked at for this).**
+
+| reader | plain: B1a / B1b / B1c | with the map: B1a / B1b / B1c (B1b with a story partner) |
+|---|---|---|
+| mpnet | 0.80 / 0.10 / 0.74 | 0.82 / 0.94 (0.83) / 0.76 |
+| MiniLM 384 | 0.81 / 0.03 / 0.74 | 0.79 / 0.95 (0.84) / 0.78 |
+| Qwen layer 26 | 0.94 / 0.62 / 0.84 | 0.92 / 0.999 (0.997) / 0.89 |
+
+The map settings hardly matter: 12 variations (width, strength, number of steps, sharpness, an extra hidden layer) all land within about 0.01 of each other, so I keep one default operating point for every reader (64 numbers out, weight decay 0.01, near-twin push 4x, sharpness 0.1, 300 steps). The layer scan on the same seeds: layer 20 B1b 0.05, layer 22 0.47, layer 24 0.55, **layer 26 0.62**, layer 28 0.37; so the model seems to settle "which operation" between layers 20 and 22, and layer 26 is the best place to read. The map is therefore run on three readers: mpnet, MiniLM and Qwen layer 26.
+
+**Prediction for seeds 100 to 104** (written before those numbers exist; they should look like the tuning seeds above, give or take 0.03):
+1. **Qwen layer 26 + map:** B1b 0.99 or more, also for story partners; B1a 0.90 to 0.95; B1c 0.86 to 0.92. I expect B1b to pass its 0.95 bar and B1a and B1c to land within about 0.03 of their bars: whether the mean crosses 0.95 or 0.90 is close to a coin flip, and B1a is more likely to stay just below.
+2. **mpnet + map and MiniLM + map:** B1b 0.93 to 0.96 (just at the bar, driven by the stories: 0.83), B1a 0.78 to 0.86 and B1c 0.72 to 0.80, both clearly failing.
+3. **A caution I am writing down now so we do not forget it.** "B1b with a taught-wording partner = 1.000" is *in-distribution*: those wrapper phrases were seen during the map's training with other numbers, so it is the expected result, not evidence of generalising. The real evidence of wording invariance is the story column (never taught) and B1a on S4 to S8. And all of this is on the **dev pool**: its templates are the ones I looked at while designing, so dev numbers are optimistic. The confirmatory pool has different templates and is the only honest test.

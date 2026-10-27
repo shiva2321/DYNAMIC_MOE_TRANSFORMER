@@ -1,0 +1,1 @@
+{"b1a": 0.8047619047619048, "b1b": 0.958, "b1c": 0.8052074074074073, "b1b_taught": 1.0, "b1b_story": 0.8654442148760331, "b1c_raw": 0.7786436213991769, "secs": 9.6, "base": "R1_minilm384", "name": "hid256", "seed": 106, "hyper": {"out_dim": 64, "hidden": 256, "tau": 0.1, "twin_weight": 4.0, "epochs": 300, "lr": 0.003, "weight_decay": 0.01}, "code_stamp": "889d5e42edb2e225"}

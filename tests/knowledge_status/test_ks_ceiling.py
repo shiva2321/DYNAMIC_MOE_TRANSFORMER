@@ -145,3 +145,60 @@ def test_b2_validity_rule_needs_r0_to_fail_by_at_least_015():
     assert not ok                                                                         # R0 passes both: the test bed cannot tell a word-matcher from a reader
     assert run_e1.b2_validity({"b1a": 0.96, "b1b": 0.80})[0]                              # exactly 0.15 below the bar counts
     assert not run_e1.b2_validity({"b1a": 0.96, "b1b": 0.81})[0]
+
+
+# ------------------------------------------------------------------------------------------------------------------------------ the hook for a learned map (Task 9)
+class Spy:
+    """A mapper that does nothing but remembers what it was asked to learn from."""
+
+    def __init__(self):
+        self.calls = []
+
+    def __call__(self, X, items, taught):
+        self.calls.append((X.shape, list(items), tuple(taught)))
+        return lambda Z: Z
+
+
+def test_an_identity_mapper_changes_no_number():
+    items = C.build_items(100, "dev", SMALL)
+    stub = stub_for(items, lambda i: i.label)
+    plain = C.run_ceiling("oracle", 100, "dev", sizes=SMALL, rep=stub)
+    same = C.run_ceiling("oracle", 100, "dev", sizes=SMALL, rep=stub, mapper=Spy())
+    for k in ("b1a", "b1a_span", "b1b", "b1b_raw", "b1c", "b1c_raw", "b1c_min", "b1b_taught", "b1b_story"):
+        assert same[k] == pytest.approx(plain[k]), k
+
+
+def test_the_mapper_only_sees_taught_skills_taught_wordings_and_no_evaluation_text():
+    items = C.build_items(100, "dev", SMALL)
+    spy = Spy()
+    C.run_ceiling("oracle", 100, "dev", sizes=SMALL, rep=stub_for(items, lambda i: i.label), mapper=spy)
+    assert len(spy.calls) == 1 + SMALL.assignments                                        # one map for B1a and B1b, one per teaching assignment for B1c
+    shape, train, taught = spy.calls[0]
+    assert set(taught) == set(skills.SKILLS) and shape[0] == len(train)
+    evaluation_texts = {i.text for i in items.all if i.role in ("anchor", "twin", "partner", "test")}
+    for _, train, taught in spy.calls:
+        assert {i.role for i in train} == {"teach"} and not ({i.text for i in train} & evaluation_texts)
+        assert {i.label for i in train} <= set(taught) | {"none"}                         # an untaught skill never reaches the map
+        assert {i.family for i in train} <= set(assignments.TEACH_FAMILIES) | {"other", "trap"}
+    sizes_taught = {len(t) for _, _, t in spy.calls[1:]}
+    assert sizes_taught == {3}                                                            # the default assignment: two Solid and one Thin
+
+
+def test_b1b_is_also_reported_for_partners_in_taught_wordings_and_for_stories():
+    e = np.eye(4)
+    # six triples: taught-wording partners that sit on the anchor and twins that do not, then story partners that do not and twins that sit on the anchor
+    rows = [e[0], e[0], e[2]] * 3 + [e[0], e[1], e[0]] * 3                                 # anchor, partner, twin for each triple
+    X = np.array(rows)
+    n = 6
+    anchors, partners, twins = X[0::3], X[1::3], X[2::3]
+    Xb = np.vstack([anchors, partners, twins])
+    same, other = [(k, n + k) for k in range(n)], [(k, 2 * n + k) for k in range(n)]
+    res = C.b1b_by_partner_family(Xb, same, other, ["S3", "S1", "S2", "S4", "S4", "S4"])
+    assert res == {"b1b_taught": pytest.approx(1.0), "b1b_story": pytest.approx(0.0)}
+    assert np.isnan(C.b1b_by_partner_family(Xb, same, other, ["S1"] * 6)["b1b_story"])     # no story partner at all: not a number, not a crash
+
+
+def test_run_ceiling_reports_the_split_b1b_and_it_is_one_for_an_oracle():
+    items = C.build_items(100, "dev", SMALL)
+    res = C.run_ceiling("oracle", 100, "dev", sizes=SMALL, rep=stub_for(items, lambda i: i.label))
+    assert res["b1b_taught"] > 0.99 and res["b1b_story"] > 0.99

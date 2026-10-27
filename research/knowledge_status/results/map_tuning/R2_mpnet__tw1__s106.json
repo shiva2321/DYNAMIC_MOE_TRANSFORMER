@@ -1,0 +1,1 @@
+{"b1a": 0.7971428571428572, "b1b": 0.9426888888888889, "b1c": 0.754359670781893, "b1b_taught": 1.0, "b1b_story": 0.8179235537190083, "b1c_raw": 0.726361316872428, "secs": 9.4, "base": "R2_mpnet", "name": "tw1", "seed": 106, "hyper": {"out_dim": 64, "hidden": 0, "tau": 0.1, "twin_weight": 1.0, "epochs": 300, "lr": 0.003, "weight_decay": 0.01}, "code_stamp": "889d5e42edb2e225"}

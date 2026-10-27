@@ -1,0 +1,1 @@
+{"b1a": 0.82, "b1b": 0.9454111111111111, "b1c": 0.7744510288065842, "b1b_taught": 1.0, "b1b_story": 0.8314999999999999, "b1c_raw": 0.7675275720164608, "secs": 9.4, "base": "R2_mpnet", "name": "wd1e-1", "seed": 107, "hyper": {"out_dim": 64, "hidden": 0, "tau": 0.1, "twin_weight": 4.0, "epochs": 300, "lr": 0.003, "weight_decay": 0.1}, "code_stamp": "889d5e42edb2e225"}

@@ -12,7 +12,7 @@ import time
 import warnings
 from dataclasses import asdict, dataclass
 from pathlib import Path
-from typing import Dict, List, Optional, Sequence, Tuple
+from typing import Callable, Dict, List, Optional, Sequence, Tuple
 
 import numpy as np
 from sklearn.exceptions import ConvergenceWarning
@@ -39,6 +39,9 @@ class Sizes:
 
 
 SIZES = Sizes()
+
+# a learned map (Task 9): given the embeddings of the training items, the items themselves and the skills taught, it returns the function that applies the map
+Mapper = Callable[[np.ndarray, List["Item"], Sequence[str]], Callable[[np.ndarray], np.ndarray]]
 
 
 @dataclass(frozen=True)
@@ -117,6 +120,16 @@ def taught_auroc(protos: np.ndarray, X: np.ndarray, is_taught: np.ndarray) -> fl
     return float(roc_auc_score(np.asarray(is_taught, dtype=int), -d))
 
 
+def b1b_by_partner_family(X: np.ndarray, same: Sequence[Tuple[int, int]], other: Sequence[Tuple[int, int]], partner_family: Sequence[str]) -> Dict[str, float]:
+    """B1b again, separately for triples whose reworded partner is in a taught wording (S1 to S3) and for those whose partner is a story (S4, never taught)."""
+    fam = np.asarray(partner_family)
+    out: Dict[str, float] = {}
+    for key, chosen in (("b1b_taught", np.isin(fam, assignments.TEACH_FAMILIES)), ("b1b_story", fam == "S4")):
+        ks = np.flatnonzero(chosen)
+        out[key] = pair_auroc(X, [same[k] for k in ks], [other[k] for k in ks]) if len(ks) else float("nan")
+    return out
+
+
 # ------------------------------------------------------------------------------------------------------------------------------------ the test bed
 def _draw_none(rng, pool: str, n: int, kind: str, parity: Optional[int], exclude: set, role: str) -> List[Item]:
     """``n`` distinct "none" messages of one kind ("other" everyday sentence, "trap", or "unseen" science question). Traps are split by template parity so a test
@@ -178,8 +191,11 @@ def build_items(seed: int, pool: str = "dev", sizes: Sizes = SIZES) -> Items:
 
 
 # ------------------------------------------------------------------------------------------------------------------------------------ one cell
-def run_ceiling(rep_id: str, seed: int, pool: str = "dev", sizes: Sizes = SIZES, rep: Optional[reps.Representation] = None, cache_dir: Optional[Path] = None) -> dict:
-    """B1a, B1b, B1c (and their raw and span variants) for one representation and one seed. ``rep`` replaces the representation named by ``rep_id`` (used for fakes)."""
+def run_ceiling(rep_id: str, seed: int, pool: str = "dev", sizes: Sizes = SIZES, rep: Optional[reps.Representation] = None, cache_dir: Optional[Path] = None,
+                mapper: Optional[Mapper] = None) -> dict:
+    """B1a, B1b, B1c (and their raw and span variants) for one representation and one seed. ``rep`` replaces the representation named by ``rep_id`` (used for fakes).
+    ``mapper`` is a learned map put on top of the representation (R5): it is fitted once on the teaching messages of all six skills (for B1a and B1b) and once per
+    teaching assignment on the taught skills only (for B1c), never on an evaluation text, a held-out wording or an untaught skill. The default is no map."""
     t0 = time.time()
     items = build_items(seed, pool, sizes)
     rep = rep or reps.get_rep(rep_id)
@@ -193,25 +209,32 @@ def run_ceiling(rep_id: str, seed: int, pool: str = "dev", sizes: Sizes = SIZES,
     teach, test = items.role("teach"), items.role("test")
     ytr, yte = np.array([i.label for i in teach]), np.array([i.label for i in test])
     folds = np.array([i.family if i.family in assignments.TEACH_FAMILIES else assignments.TEACH_FAMILIES[k % 3] for k, i in enumerate(teach)])
+    fit = mapper or (lambda Xtr, train, taught: (lambda Z: Z))
+    held = {i.text for i in items.all if i.role in ("anchor", "twin", "partner")}           # a map is never fitted on a message it is later asked about
+    fit_pool = [i for i in teach if i.text not in held]
+    f = fit(emb(fit_pool), fit_pool, skills.SKILLS)
     out: Dict[str, object] = {"rep": rep_id, "seed": seed, "pool": pool}
-    out["b1a"] = probe_accuracy(emb(teach), ytr, emb(test), yte, folds)
-    out["b1a_span"] = probe_accuracy(emb(teach, "span"), ytr, emb(test, "span"), yte, folds)
+    out["b1a"] = probe_accuracy(f(emb(teach)), ytr, f(emb(test)), yte, folds)
+    out["b1a_span"] = probe_accuracy(f(emb(teach, "span")), ytr, f(emb(test, "span")), yte, folds)
 
-    anchors, twins, partners = (emb(items.role(r)) for r in ("anchor", "twin", "partner"))
+    anchors, twins, partners = (f(emb(items.role(r))) for r in ("anchor", "twin", "partner"))
     n = len(anchors)
     Xb = np.vstack([anchors, partners, twins])
     same, other = [(k, n + k) for k in range(n)], [(k, 2 * n + k) for k in range(n)]
-    centre = emb(teach).mean(axis=0)
+    centre = f(emb(teach)).mean(axis=0)
+    Xc = _unit(Xb - centre)
     out["b1b_raw"] = pair_auroc(Xb, same, other)
-    out["b1b"] = pair_auroc(_unit(Xb - centre), same, other)
+    out["b1b"] = pair_auroc(Xc, same, other)
+    out.update(b1b_by_partner_family(Xc, same, other, [p.family for p in items.role("partner")]))
 
     arng = np.random.default_rng([seed, 0xE1C])
     test_sk = [i for i in test if i.label != "none"]
-    Xt, lab = emb(test_sk), np.array([i.label for i in test_sk])
+    Xt0, lab = emb(test_sk), np.array([i.label for i in test_sk])
+    nones = [i for i in fit_pool if i.label == "none"]
     raw, cen = [], []
     for _ in range(sizes.assignments):
         asg = assignments.draw_assignment(arng)
-        rows, keys = [], []
+        rows, keys, trained_on = [], [], []
         for skill in skills.SKILLS:
             if asg[skill] == "unseen":
                 continue
@@ -219,7 +242,10 @@ def run_ceiling(rep_id: str, seed: int, pool: str = "dev", sizes: Sizes = SIZES,
             mine = mine[:min(len(mine), assignments.COUNTS[asg[skill]])]      # a Thin skill was taught only a handful of messages
             rows.append(emb(mine))
             keys += [(skill, i.family) for i in mine]
-        T = np.vstack(rows)
+            trained_on += [i for i in mine if i.text not in held]
+        T0 = np.vstack(rows)
+        g = fit(np.vstack([emb(trained_on), emb(nones)]), trained_on + nones, [s for s in skills.SKILLS if asg[s] != "unseen"])
+        T, Xt = g(T0), g(Xt0)
         is_taught = np.array([asg[s] != "unseen" for s in lab])
 
         def protos(Z):

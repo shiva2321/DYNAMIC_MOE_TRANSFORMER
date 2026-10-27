@@ -1,0 +1,1 @@
+{"b1a": 0.8380952380952381, "b1b": 0.9433555555555555, "b1c": 0.767646913580247, "b1b_taught": 1.0, "b1b_story": 0.8379138321995465, "b1c_raw": 0.7604008230452676, "secs": 5.4, "base": "R2_mpnet", "name": "ep150", "seed": 105, "hyper": {"out_dim": 64, "hidden": 0, "tau": 0.1, "twin_weight": 4.0, "epochs": 150, "lr": 0.003, "weight_decay": 0.01}, "code_stamp": "889d5e42edb2e225"}
