@@ -113,14 +113,15 @@ def conformal_p(cal_sorted: np.ndarray, scores: np.ndarray) -> np.ndarray:
     return (1.0 + np.searchsorted(cal_sorted, scores, side="right")) / (n + 1.0)
 
 
-def macro_f1(truth: Sequence[str], pred: Sequence[str], classes: Sequence[str] = SCORED) -> dict:
+def macro_f1(truth: Sequence[str], pred: Sequence[str], classes: Sequence[str] = SCORED, outside: Sequence[str] = ()) -> dict:
     """Macro F1 over the classes that are PRESENT, i.e. that occur in the truth or in the predictions. A class that occurs in neither is left out and listed in ``absent`` (its F1 is
-    undefined, and counting it as 0 or 1 would move the score for no reason); a class the machine predicts although the truth never has it is present and scores 0."""
+    undefined, and counting it as 0 or 1 would move the score for no reason); a class the machine predicts although the truth never has it is present and scores 0. A prediction
+    listed in ``outside`` (for example "other" for an arithmetic part) is not a class of this score: it is a miss of the true class and a false positive of nothing."""
     if len(truth) != len(pred):
         raise ValueError("truth and pred must have the same length")
     if len(truth) == 0:
         raise ValueError("cannot score an empty list")
-    unknown = (set(truth) | set(pred)) - set(classes)
+    unknown = (set(truth) - set(classes)) | (set(pred) - set(classes) - set(outside))
     if unknown:
         raise ValueError(f"unknown labels {sorted(unknown)}; the scored classes are {list(classes)} (filter grey and other cases out first)")
     t, p = np.asarray(truth), np.asarray(pred)

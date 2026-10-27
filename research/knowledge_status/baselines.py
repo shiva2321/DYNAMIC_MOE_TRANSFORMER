@@ -29,6 +29,7 @@ from growmoe.signature import VmfSignature
 
 BASELINE_NAMES = ("vmf_conformal", "knn_distance", "mahalanobis", "relative_mahalanobis", "classifier_confidence", "energy", "autoencoder_descriptor")
 _CHUNK = 2048
+_TIE_BREAK = 1e-7
 
 
 # ---------------------------------------------------------------------------------------------------------------------------------- helpers
@@ -141,9 +142,14 @@ class VmfConformal(_Detector):
             self._sigs.append(sig.fit())
 
     def _score(self, X) -> np.ndarray:
+        """1 - the best conformal p-value over the classes (the pool's gate), with the continuous kernel score as a tie-break. The p-values of a class of n examples come in steps of
+        1/(n+1), so a small class (a Thin skill) can never say "novel" more strongly than 1/(n+1): without a tie-break every far point ties with the calibration points that sit at that
+        maximum and a shared threshold flags nothing. The tie-break is 1e-7 times the highest kernel log-density over the classes (low for a point far from every class, high for one
+        near some class), far below one p-value step, so the p-value ordering stays the primary key."""
         U = _unit(X).astype(np.float32)
-        best = np.max([s.pvalue(U).double().numpy() for s in self._sigs], axis=0)
-        return 1.0 - best
+        best_p = np.max([s.pvalue(U).double().numpy() for s in self._sigs], axis=0)
+        best_density = np.max([s.score(U).double().numpy() for s in self._sigs], axis=0)
+        return 1.0 - best_p - _TIE_BREAK * best_density
 
 
 class KnnDistance(_Detector):
@@ -217,12 +223,18 @@ class RelativeMahalanobis(Mahalanobis):
 
 
 class _LogisticLogits(_Detector):
-    """A multinomial logistic regression on standardised vectors, the classifier whose logits the two output-space detectors read."""
+    """A multinomial logistic regression on standardised vectors, the classifier whose logits the two output-space detectors read. ``C`` is the inverse regularisation strength."""
+
+    def __init__(self, C: float = 1.0) -> None:
+        super().__init__()
+        if not C > 0:
+            raise ValueError(f"C must be positive, got {C}")
+        self.C = C
 
     def _fit(self, X, y) -> None:
         _classes(y, at_least=2)
         self._scaler = StandardScaler().fit(X)
-        self._clf = LogisticRegression(C=1.0, max_iter=1000).fit(self._scaler.transform(X), y)
+        self._clf = LogisticRegression(C=self.C, max_iter=1000).fit(self._scaler.transform(X), y)
 
     def _logits(self, X) -> np.ndarray:
         z = self._clf.decision_function(self._scaler.transform(X))

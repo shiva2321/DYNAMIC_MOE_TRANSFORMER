@@ -292,6 +292,16 @@ def test_macro_f1_ignores_an_absent_class_and_reports_it():
     assert r2["macro_f1"] == pytest.approx((2 * 3 / (2 * 3 + 1 + 0) + 0.0) / 2)
 
 
+def test_macro_f1_counts_a_prediction_outside_the_scored_classes_as_a_miss():
+    """An arithmetic part that the machine calls Other content is a miss of its true class; "other" is not a class of this score and earns no false positive anywhere."""
+    r = ST.macro_f1(["solid", "solid", "unseen"], ["solid", "other", "unseen"], outside=("other",))
+    assert r["per_class"] == {"solid": pytest.approx(2 * 1 / (2 * 1 + 0 + 1)), "unseen": 1.0} and r["absent"] == ["thin"]
+    with pytest.raises(ValueError, match="unknown"):
+        ST.macro_f1(["solid"], ["other"])
+    with pytest.raises(ValueError, match="unknown"):
+        ST.macro_f1(["other"], ["solid"], outside=("other",))                 # the truth side must be a scored class
+
+
 def test_macro_f1_refuses_labels_it_does_not_know_and_empty_input():
     with pytest.raises(ValueError, match="unknown"):
         ST.macro_f1(["solid", "grey"], ["solid", "solid"])
@@ -352,6 +362,38 @@ def test_conformal_threshold_cannot_flag_with_too_few_calibration_scores():
         BL.conformal_threshold(np.array([]), 0.05)
     with pytest.raises(ValueError, match="q must"):
         BL.conformal_threshold(np.arange(30.0), 1.0)
+
+
+def test_the_pool_gate_is_not_saturated_by_a_small_group():
+    """The pool's own gate (best conformal p-value of the signatures) can say no more than 1/(n+1) for a group of n examples, so with a group of 8 every far point ties with the
+    calibration points at the same maximum and the shared threshold flags nothing. The continuous score breaks those ties; the p-value ordering stays the primary key."""
+    w = make_toy(n_proto=300, n_cal=600)
+    X = np.vstack([w["protos"]["A"], w["protos"]["B"], w["protos"]["C"][:8]])
+    y = np.array(["A"] * 300 + ["B"] * 300 + ["C"] * 8)
+    det = BL.make_baseline("vmf_conformal").fit(X, y)
+    cal = np.vstack([w["cal"]["A"], w["cal"]["B"], w["cal"]["C"][:200]])
+    thr = BL.conformal_threshold(det.novelty_score(cal), 0.05)
+    far = det.novelty_score(w["fresh"]("U", 400))
+    assert float((far > thr).mean()) >= 0.8, float((far > thr).mean())
+    assert float((det.novelty_score(np.vstack([w["fresh"]("A", 500), w["fresh"]("B", 500)])) > thr).mean()) <= 0.08
+    # the primary key is still the p-value: a point with a smaller best p-value is never scored lower than one with a larger best p-value
+    pts = np.vstack([w["fresh"]("A", 50), w["fresh"]("U", 50)])
+    sigs = det._sigs
+    best = np.max([s.pvalue(pts / np.linalg.norm(pts, axis=1, keepdims=True)).double().numpy() for s in sigs], axis=0)
+    nov = det.novelty_score(pts)
+    order = np.argsort(best)
+    assert np.all(np.diff(best[order]) >= 0) and all(nov[i] >= nov[j] - 1e-5 for i in order for j in order if best[i] < best[j] - 1e-9)
+
+
+def test_the_logistic_baselines_take_a_regularisation_strength():
+    w, X, y = fit_world()
+    pts = w["fresh"]("U", 100)
+    for name in ("classifier_confidence", "energy"):
+        weak, strong = BL.make_baseline(name, C=100.0).fit(X, y), BL.make_baseline(name, C=0.001).fit(X, y)
+        assert not np.allclose(weak.novelty_score(pts), strong.novelty_score(pts))
+        np.testing.assert_array_equal(BL.make_baseline(name).fit(X, y).novelty_score(pts), BL.make_baseline(name, C=1.0).fit(X, y).novelty_score(pts))
+    with pytest.raises(ValueError, match="C must"):
+        BL.make_baseline("energy", C=0.0)
 
 
 def test_baselines_refuse_what_they_cannot_fit():
