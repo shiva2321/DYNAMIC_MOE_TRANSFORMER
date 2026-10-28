@@ -27,8 +27,41 @@ class PerfectSolver:
         return np.array([skills.truth(self.skill, int(x), int(y)) if not (self.skill in ("div", "mod") and int(y) == 0) else -10 ** 9 for x, y in zip(a, b)], dtype=np.int64)
 
 
+def apply_batch_check(assessed, texts, answers, solvers, competent, acc, k: int = 4, need: int = 3, seed: int = 0):
+    """The function check over a small batch: parts called unseen by their look are grouped by their nearest skill into batches of ``k`` (the last batch may be smaller; one with fewer than
+    ``need`` parts cannot be confirmed); a batch is confirmed for a skill if that skill explains at least ``need`` of its parts (or all of a smaller batch), and then the parts it explains are overturned."""
+    from dataclasses import replace
+    import function_check as FC
+    rng = np.random.default_rng([seed, 0xB47C])
+    idx = [i for i, a in enumerate(assessed) if a.status == "unseen" and answers[i] is not None]
+    hits = dict(zip(idx, FC.explain_many(solvers, competent, [texts[i] for i in idx], [int(answers[i]) for i in idx]))) if idx else {}
+    out, which = list(assessed), [None] * len(assessed)
+    by_group: Dict[str, List[int]] = {}
+    for i in idx:
+        by_group.setdefault(assessed[i].nearest, []).append(i)
+    for rows in by_group.values():
+        rows = [rows[int(j)] for j in rng.permutation(len(rows))]
+        for s0 in range(0, len(rows), k):
+            batch = rows[s0:s0 + k]
+            if len(batch) < need:
+                continue
+            counts: Dict[str, int] = {}
+            for i in batch:
+                for sk in hits[i]:
+                    counts[sk] = counts.get(sk, 0) + 1
+            ok = [sk for sk, c in counts.items() if c >= need]
+            if not ok:
+                continue
+            sk = max(ok, key=lambda x: counts[x])
+            for i in batch:
+                if sk in hits[i]:
+                    out[i] = replace(assessed[i], status="solid", skill=sk, competence=float(acc[sk]))
+                    which[i] = sk
+    return out, which
+
+
 def main(seeds) -> None:
-    rows: Dict[str, List[dict]] = {"i: perfect for Solid-state skills": [], "ii: perfect for every taught skill": []}
+    rows: Dict[str, List[dict]] = {"i: perfect for Solid-state skills": [], "ii: perfect for every taught skill": [], "i, batches of 4 (3 of 4 must agree)": [], "ii, batches of 4 (3 of 4 must agree)": []}
     base: List[dict] = []
     for seed in seeds:
         world = R.build_world(seed, "dev", R.SIZES)
@@ -48,8 +81,12 @@ def main(seeds) -> None:
         untaught = [i for i, c in enumerate(cases) if c.kind == "arith" and c.status == "unseen"]
         b = EV.status_scores(assessed, cases)
         base.append({"false": b["false_unseen_heldout"], "found": b["unseen_recall"], "f1": b["macro_f1"]["macro_f1"]})
-        for name, competent in (("i: perfect for Solid-state skills", [s for s in world.taught if world.assignment[s] == "solid"]), ("ii: perfect for every taught skill", list(world.taught))):
-            new, which = LF.apply_function_check(assessed, texts, answers, solvers, competent, acc)
+        solid = [s for s in world.taught if world.assignment[s] == "solid"]
+        for name, competent in (("i: perfect for Solid-state skills", solid), ("ii: perfect for every taught skill", list(world.taught)), ("i, batches of 4 (3 of 4 must agree)", solid), ("ii, batches of 4 (3 of 4 must agree)", list(world.taught))):
+            if "batches" in name:
+                new, which = apply_batch_check(assessed, texts, answers, solvers, competent, acc, seed=seed)
+            else:
+                new, which = LF.apply_function_check(assessed, texts, answers, solvers, competent, acc)
             a = EV.status_scores(new, cases)
             over = [i for i in held if which[i] is not None]
             rows[name].append({"false": a["false_unseen_heldout"], "found": a["unseen_recall"], "f1": a["macro_f1"]["macro_f1"],

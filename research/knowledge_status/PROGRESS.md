@@ -355,3 +355,34 @@ Stories 62 % to 56 %, noisy text 45 % to 39 %. Never-taught parts wrongly vouche
 This decides whether improving the solvers (your pending question about multiplication, division and remainder) is worth the effort. Same seeds, same machine, but the solvers are replaced by perfect ones, so nothing is trained: (i) perfect solvers for the Solid-state skills only; (ii) perfect solvers for every taught skill, including those taught only 20 examples (a best case no 20-example learner has reached).
 
 Prediction: (i) overall false alarm 0.256 to **0.08-0.15**; (ii) to **0.03-0.08**, close to the bar; never-taught skills found falls by **0.02 to 0.08** from coincidences (an answer that a taught skill happens to give too). These are upper bounds, not forecasts for real solvers.
+
+## 2026-10-28, the ceiling with perfect solvers: the single-example check is a bad trade; evidence over a batch is the next test
+
+Files: `results/FUNCTION_CEILING.md`. With perfect solvers the false alarm on known skills falls from 0.256 to 0.104 (perfect for the Solid skills) or to 0.000 (perfect for every taught skill, the 20-example ones too), but the never-taught skills found fall from 0.903 to 0.749 and 0.739, the macro F1 from 0.866 to 0.656 and 0.655, and the skill named is the right one only 61 % and 96 % of the time. The cause is COINCIDENCE: 15 % and 16 % of never-taught parts are explained by some taught skill that happens to give the same answer (the numbers are small, and the check tries two orders of the numbers for each taught skill). With the recorded costs (a missed new skill about 7 pool points, a false alarm about 4) a single-example check would be a net loss. My earlier prediction for the ceiling (found down 0.02 to 0.08) was wrong: it fell by 0.15.
+
+**Next test, prediction written before running.** A real known skill is explained again and again by the SAME skill; a coincidence is not. So the check is made over a small batch: the parts called unseen by their look are grouped by their nearest skill into batches of four, and a skill is accepted only if it explains at least three of the four; then the parts it explains are overturned. Same perfect solvers, same seeds, nothing trained. Prediction: coincidences fall from 15 % to below 2 %; never-taught skills found stay within 0.03 of 0.903; the false alarm on known skills stays near the single-example ceiling (0.10 with perfect Solid solvers, 0.03 or less with perfect solvers for every taught skill). If that holds, the function check has a future, but only for skills whose solver is competent: so the open question moves to the solvers.
+
+## 2026-10-28, the function check: verdict
+
+Files: `results/FUNCTION_CEILING.md`, `results/FUNCTION_LAB.md`. All on the tuning seeds, learned-map reader, status machine at q = 0.05; the ceilings use PERFECT solvers (nothing trained), so they are upper bounds.
+
+| | known skills called unseen (bar 0.05) | never-taught skills found | coincidences | right skill when overturned |
+|---|---|---|---|---|
+| nothing | 0.256 | 0.903 | - | - |
+| the real check (real solvers, one example at a time) | 0.223 | 0.889 | 1.4 % | 92 % |
+| ceiling: perfect solvers for the Solid skills, one example | 0.104 | 0.749 | 15.4 % | 61 % |
+| ceiling: perfect solvers for every taught skill, one example | 0.000 | 0.739 | 16.4 % | 96 % |
+| ceiling: perfect Solid solvers, batches of 4 (3 must agree) | 0.213 | 0.885 | 1.8 % | 100 % |
+| ceiling: perfect solvers for every taught skill, batches of 4 | 0.174 | 0.882 | 2.1 % | 91 % |
+
+(The macro F1 of the ceiling rows is not meaningful: an overturned part is always labelled Solid, which does not match the measured truth for weak skills.)
+
+**What we learned.**
+1. **The idea is sound where a skill is competent**: 0.30 to 0.00 on the parts of competent skills, numbers read in 100 % of requests in every wording, the operator never read.
+2. **One example is weak evidence**: with 1-2 digit numbers and two orders tried per taught skill, 15 % of never-taught parts are "explained" by a taught skill by chance; with perfect solvers that cost (found down 0.15) is larger than the gain. With the recorded costs (a missed new skill 7 pool points, a false alarm 4) a single-example check would be a net loss.
+3. **A batch fixes the coincidences** (2 %, found down only 0.02) but my crude batches (grouped by nearest skill) mix true skills and rescue only part of the false alarms (0.256 to 0.17-0.21). A better way to group would help, but there is a harder limit:
+4. **A skill taught only 20 examples cannot be verified**: its solver cannot be competent, and it makes up a third of the known parts. Even with perfect solvers for every Solid skill and perfect batching, the Thin skill's parts keep roughly 0.09-0.10 of false alarms. So this route cannot reach the 0.05 bar in Phase 1.
+
+**Predictions.** Right: the number reader, the competent skills' result, found barely changes, coincidences below 2 % in batches. Wrong: the share of competent skills (10 %, not 35-45 %), the size of the coincidence cost, and the false alarm of batches (0.17-0.21, not 0.03-0.10).
+
+**Verdict.** Not the fix for the wording claim in Phase 1. Kept, because Task 12 (worked traces) needs exactly the same number reader and verifier, and because in the final architecture it is how an expert that is competent can check whether a new example is its own skill in new words, the extend-or-spawn question of the pool; it needs competent experts and evidence over several examples, not one. Not worth more work now.
