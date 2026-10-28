@@ -246,3 +246,16 @@ The wording claim from the calibration rule is **"fails"**: even with a few new-
 - **B. Fix the test bed** (teach the everyday content from the same source as the chatter) before the freeze, and say so.
 - **C. The small solver:** improve it for multiplication, division and remainder, or accept that only addition, subtraction and maximum can be Solid.
 - Then Task 12 (worked traces), and the from-scratch reader (Task 11b) as you decided.
+
+## 2026-10-28, your go: investigate WHY the new wordings set off the alarm, then try fixes (option A first)
+
+**What we decided to do.** (1) Find out why stories (S4) and noisy text (S7) sit farther from the taught examples, before choosing a fix. (2) Then try mitigations, option A first. To keep the numbers honest: all investigations and the choice between mitigations run on the TUNING seeds 150-154; the chosen design is then run ONCE on the report seeds 100-129. Anything that teaches the reader a held-out wording (for example training with S7-style noise) stays out unless you say so.
+
+**Five questions, and my guess for each (written before measuring).**
+1. **Is it the learned map or the reader?** Guess: the reader. Plain Qwen shows the same pattern (worst on stories and noise), so the map is not the cause, though it does not remove it.
+2. **Which kind of noise hurts?** I test case flips, typos and extra spaces separately on taught-wording parts. Guess: case flips hurt most (they change how the text is cut into tokens), then typos, extra spaces least.
+3. **Is the stories shift a few directions or spread everywhere?** Guess: a few. Stories add content (objects, names) that the map never saw in the taught wordings, so it never learned to ignore those directions. Test (a diagnostic, not a fix, because it peeks at the test wording): remove the top 1, 2, 4 shift directions from story parts and see how much of the false alarm disappears. Guess: removing 4 directions removes more than half of it.
+4. **Does a different score separate "known skill in a new wording" from "a skill I was never taught"?** The current alarm asks "is this close to what I was taught?". The alternative asks "is one skill clearly nearer than the others?" (the margin). Guess: the margin separates much better on stories and noise (AUROC 0.85 or more) than closeness does (0.6 to 0.75), because a story is far from the examples but still clearly nearest to its own skill (94 % of the time), while a never-taught skill is not clearly nearest to anything.
+5. **Is it just text length?** Guess: partly. Stories are long, and false alarms grow with the number of words even within the taught wordings.
+
+**Option A as I will build it (not yet built).** (i) Calibrate on leave-one-wording-out scores: each taught wording (S1, S2, S3) is scored against prototypes of the other two, so the alarm learns what a wording shift looks like. (ii) Read the text after generic clean-up (case and spacing). Prediction for A on the report seeds, written now: false alarms on new wordings fall from 0.29 to **0.20 - 0.27** (a small gain: S1-S3 differ little from each other compared with stories and noise), unseen skills found fall from 0.89 to **0.80 - 0.88**; the clean-up helps the noise wording most (S7 from 0.47 to **0.25 - 0.40**) and stories not at all. I do not expect A alone to reach the 0.05 bar.
