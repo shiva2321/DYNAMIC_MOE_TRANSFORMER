@@ -386,3 +386,20 @@ Files: `results/FUNCTION_CEILING.md`, `results/FUNCTION_LAB.md`. All on the tuni
 **Predictions.** Right: the number reader, the competent skills' result, found barely changes, coincidences below 2 % in batches. Wrong: the share of competent skills (10 %, not 35-45 %), the size of the coincidence cost, and the false alarm of batches (0.17-0.21, not 0.03-0.10).
 
 **Verdict.** Not the fix for the wording claim in Phase 1. Kept, because Task 12 (worked traces) needs exactly the same number reader and verifier, and because in the final architecture it is how an expert that is competent can check whether a new example is its own skill in new words, the extend-or-spawn question of the pool; it needs competent experts and evidence over several examples, not one. Not worth more work now.
+
+## 2026-10-28, option (a): wording diversity in teaching. Built; plan and predictions before the first real run
+
+**What was built (all tested; 26 + 11 tests; 15 planted bugs, all caught after two test gaps were closed).**
+- `rewrites.py`: Qwen (the reader's own model) writes rewrites of teaching sentences from four GENERIC instructions ("in different words", "a different sentence structure", "the way a person would naturally put it", "using more words so it is very clear"). A guard test forbids any instruction that names a test wording (stories, typos, register, chatter) or a skill. A rewrite is kept only if (1) it has exactly the same numbers as its source, says something different, is one line and not chatter, AND (2) Qwen, asked to solve it, gives the true answer of the teaching example it came from.
+- Why (2): reading 92 sample rewrites by hand showed the operation drifting in about 11 % (concentrated in remainder and maximum: "the result of dividing 4 by 11" for a remainder, "no more than 44 or 74" for a maximum, swapped numbers, nonsense); a rewrite that changes the operation would teach the map that division wording means remainder, which makes a never-taught division look known. The answer check removes those; reading the survivors of the same sample, I found none with a wrong operation. The price: only 52 % survive (remainder 30 %), biased toward what Qwen can solve.
+- `lab_rewrites.py`: three arms, tuning seeds 150-154. **map only**: the rewrites are extra positives for the learned map; prototypes and calibration are the originals. **full**: also extra prototypes and extra calibration parts (the rewrites of the calibration examples); the taught COUNT stays the number of original examples. **ceiling**: like full, but the writer is told to produce stories, typos and registers: a CONTAMINATED DIAGNOSTIC that names the held-out wordings; its numbers on those wordings are never a wording-invariance claim; it only shows how much diversity could buy at best.
+
+**Finding before the run (from the 45-sentence sample).** Even the clean survivors are all of the form "What is the remainder when 41 is divided by 9?" or "Find the maximum value between ...": the phrasing of S3. Not one is a story and none has noise. Generic instructions do not produce stories. So I expect the clean arms to help little, and the ceiling arm is there to say whether more diversity is worth designing.
+
+**Rule for going on, fixed now.** For the clean arms (map only, full): the false alarm on S4-S8 must fall by at least 0.05 (from 0.256 to 0.206 or lower) with never-taught skills found falling by at most 0.05 and macro F1 at 0.80 or more; then that arm is run on report seeds 100-109 (about 8 minutes of generation per seed). Otherwise it is a recorded negative result. The ceiling arm decides nothing by itself; it informs the next proposal to you.
+
+**Predictions (tuning seeds).**
+- Kept after both filters: generic 40-55 % of what is generated; ceiling 25-45 %.
+- map only: 0.256 to **0.235-0.260** (no real gain). full: **0.20-0.25**; stories 55-65 % (from 62 %); noisy text 40-46 % (from 45 %).
+- ceiling (contaminated): overall **0.08-0.16**; stories 15-40 %; noisy text 15-40 %; found 0.84-0.90.
+- The go-on rule for the clean arms is not met.
