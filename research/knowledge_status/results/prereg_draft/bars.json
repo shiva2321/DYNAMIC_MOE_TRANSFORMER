@@ -1,0 +1,543 @@
+{
+ "b6_primary": "auto_sentence",
+ "bars": {
+  "b1a": {
+   "bar": 0.95,
+   "dev_max": 0.9323809523809524,
+   "dev_mean": 0.9220952380952381,
+   "dev_min": 0.9142857142857143,
+   "dev_sd": 0.006814683359999389,
+   "direction": "min",
+   "draft": 0.95,
+   "n_dev_seeds": 5,
+   "rule": "max(draft, mean - 2 sd) over the dev seeds"
+  },
+  "b1b": {
+   "bar": 0.9908607324558985,
+   "dev_max": 0.9997,
+   "dev_mean": 0.9966888888888888,
+   "dev_min": 0.9924555555555556,
+   "dev_sd": 0.0029140782164951825,
+   "direction": "min",
+   "draft": 0.95,
+   "n_dev_seeds": 5,
+   "rule": "max(draft, mean - 2 sd) over the dev seeds"
+  },
+  "b1c": {
+   "bar": 0.9,
+   "dev_max": 0.8934108641975309,
+   "dev_mean": 0.8900813333333332,
+   "dev_min": 0.8842449382716049,
+   "dev_sd": 0.003456498076728518,
+   "direction": "min",
+   "draft": 0.9,
+   "n_dev_seeds": 5,
+   "rule": "max(draft, mean - 2 sd) over the dev seeds"
+  },
+  "b2_gap": {
+   "bar": 0.15,
+   "dev_max": null,
+   "dev_mean": null,
+   "dev_min": null,
+   "dev_sd": null,
+   "direction": "min",
+   "draft": 0.15,
+   "n_dev_seeds": 0,
+   "rule": "draft stands (no dev value exists for this measure)"
+  },
+  "b4a_known_not_flagged": {
+   "bar": 0.95,
+   "dev_max": 0.85,
+   "dev_mean": 0.6716666666666667,
+   "dev_min": 0.5,
+   "dev_sd": 0.08703282509305417,
+   "direction": "min",
+   "draft": 0.95,
+   "n_dev_seeds": 30,
+   "rule": "max(draft, mean - 2 sd) over the dev seeds"
+  },
+  "b4a_residual_hit": {
+   "bar": 0.85,
+   "dev_max": 0.85,
+   "dev_mean": 0.66,
+   "dev_min": 0.15,
+   "dev_sd": 0.14362907207396275,
+   "direction": "min",
+   "draft": 0.85,
+   "n_dev_seeds": 30,
+   "rule": "max(draft, mean - 2 sd) over the dev seeds"
+  },
+  "b4b_nothing_flagged": {
+   "bar": 0.95,
+   "dev_max": 0.775,
+   "dev_mean": 0.6433333333333333,
+   "dev_min": 0.475,
+   "dev_sd": 0.07958224257542215,
+   "direction": "min",
+   "draft": 0.95,
+   "n_dev_seeds": 30,
+   "rule": "max(draft, mean - 2 sd) over the dev seeds"
+  },
+  "b4b_other_labelled": {
+   "bar": 0.95,
+   "dev_max": 1.0,
+   "dev_mean": 0.9683333333333334,
+   "dev_min": 0.9,
+   "dev_sd": 0.030038289741173882,
+   "direction": "min",
+   "draft": 0.95,
+   "n_dev_seeds": 30,
+   "rule": "max(draft, mean - 2 sd) over the dev seeds"
+  },
+  "b5_decoy_worst": {
+   "bar": 0.0,
+   "dev_max": 0.0,
+   "dev_mean": 0.0,
+   "dev_min": 0.0,
+   "dev_sd": 0.0,
+   "direction": "max",
+   "draft": 0.1,
+   "n_dev_seeds": 10,
+   "rule": "min(draft, mean + 2 sd) over the dev seeds"
+  },
+  "b5_div_parent": {
+   "bar": 0.9,
+   "dev_max": 0.625,
+   "dev_mean": 0.5075000000000001,
+   "dev_min": 0.4,
+   "dev_sd": 0.05407042732502778,
+   "direction": "min",
+   "draft": 0.9,
+   "n_dev_seeds": 10,
+   "rule": "max(draft, mean - 2 sd) over the dev seeds"
+  },
+  "b5_mul_parent": {
+   "bar": 0.9,
+   "dev_max": 0.625,
+   "dev_mean": 0.44749999999999995,
+   "dev_min": 0.2,
+   "dev_sd": 0.11633882508527503,
+   "direction": "min",
+   "draft": 0.9,
+   "n_dev_seeds": 10,
+   "rule": "max(draft, mean - 2 sd) over the dev seeds"
+  },
+  "b6_gap": {
+   "bar": 0.1,
+   "dev_max": 0.30000000000000004,
+   "dev_mean": 0.17833333333333337,
+   "dev_min": 0.02499999999999991,
+   "dev_sd": 0.07093383674525366,
+   "direction": "max",
+   "draft": 0.1,
+   "n_dev_seeds": 30,
+   "rule": "min(draft, mean + 2 sd) over the dev seeds"
+  },
+  "b7_gap": {
+   "bar": 0.1,
+   "dev_max": null,
+   "dev_mean": null,
+   "dev_min": null,
+   "dev_sd": null,
+   "direction": "max",
+   "draft": 0.1,
+   "n_dev_seeds": 0,
+   "rule": "draft stands (no dev value exists for this measure)"
+  },
+  "false_unseen_heldout": {
+   "bar": 0.05,
+   "dev_max": 0.43333333333333335,
+   "dev_mean": 0.28944444444444445,
+   "dev_min": 0.175,
+   "dev_sd": 0.06112700072074259,
+   "direction": "max",
+   "draft": 0.05,
+   "n_dev_seeds": 30,
+   "rule": "min(draft, mean + 2 sd) over the dev seeds"
+  },
+  "macro_f1": {
+   "bar": 0.85,
+   "dev_max": 0.9239533651298357,
+   "dev_mean": 0.8546840443739369,
+   "dev_min": 0.5178414974113899,
+   "dev_sd": 0.07911467843532456,
+   "direction": "min",
+   "draft": 0.85,
+   "n_dev_seeds": 30,
+   "rule": "max(draft, mean - 2 sd) over the dev seeds"
+  },
+  "other_as_unseen": {
+   "bar": 0.05,
+   "dev_max": 0.35555555555555557,
+   "dev_mean": 0.24863102120379388,
+   "dev_min": 0.11052631578947368,
+   "dev_sd": 0.05487555352613433,
+   "direction": "max",
+   "draft": 0.05,
+   "n_dev_seeds": 30,
+   "rule": "min(draft, mean + 2 sd) over the dev seeds"
+  },
+  "thin_vs_solid_auroc": {
+   "bar": 0.85,
+   "dev_max": 0.9805825242718447,
+   "dev_mean": 0.8435483913944761,
+   "dev_min": 0.5949052500776638,
+   "dev_sd": 0.10028367091389578,
+   "direction": "min",
+   "draft": 0.85,
+   "n_dev_seeds": 20,
+   "rule": "max(draft, mean - 2 sd) over the dev seeds"
+  }
+ },
+ "baseline_params": {
+  "autoencoder_descriptor": {
+   "epochs": 100,
+   "hidden": 64
+  },
+  "classifier_confidence": {},
+  "energy": {
+   "C": 10.0
+  },
+  "knn_distance": {
+   "k": 1
+  },
+  "mahalanobis": {},
+  "relative_mahalanobis": {},
+  "vmf_conformal": {
+   "max_protos": 64
+  }
+ },
+ "chance": {
+  "b1a": 0.14285714285714285,
+  "b1b": 0.5,
+  "b1c": 0.5
+ },
+ "code_files": [
+  "assignments.py",
+  "baselines.py",
+  "ceiling.py",
+  "check_length_leak.py",
+  "copy_table.py",
+  "corpora.py",
+  "diag_b1a_by_family.py",
+  "diag_e2.py",
+  "diag_r5_failures.py",
+  "diag_shift.py",
+  "evaluate.py",
+  "freeze_prereg.py",
+  "function_check.py",
+  "generator.py",
+  "lab_function.py",
+  "lab_function_ceiling.py",
+  "lab_rewrites.py",
+  "lab_wording.py",
+  "layer_scan.py",
+  "learned_map.py",
+  "pool_confirm.py",
+  "pool_dev.py",
+  "pools.py",
+  "report.py",
+  "reps.py",
+  "rewrites.py",
+  "run_competence.py",
+  "run_confirm.py",
+  "run_e1.py",
+  "run_e2.py",
+  "run_e2w.py",
+  "run_e3.py",
+  "runlib.py",
+  "segment.py",
+  "skills.py",
+  "status.py",
+  "traces.py",
+  "tune_baselines.py",
+  "tune_map.py",
+  "verdict.py",
+  "wording.py",
+  "growmoe/arith.py",
+  "growmoe/conformal.py",
+  "growmoe/frontend.py",
+  "growmoe/settest.py",
+  "growmoe/signature.py",
+  "growmoe/vmf.py"
+ ],
+ "code_stamp": "dc015a0facb9766e",
+ "dev_cells": {
+  "b1a": 5,
+  "b1b": 5,
+  "b1c": 5,
+  "b4a_known_not_flagged": 30,
+  "b4a_residual_hit": 30,
+  "b4b_nothing_flagged": 30,
+  "b4b_other_labelled": 30,
+  "b5_decoy_worst": 10,
+  "b5_div_parent": 10,
+  "b5_mul_parent": 10,
+  "b6_gap": 30,
+  "false_unseen_heldout": 30,
+  "macro_f1": 30,
+  "other_as_unseen": 30,
+  "r0_b1a": 5,
+  "r0_b1b": 5,
+  "thin_vs_solid_auroc": 20,
+  "unseen_recall": 30
+ },
+ "dev_extras": {
+  "unseen_recall": 0.893968253968254
+ },
+ "e4_n_per_kind": 40,
+ "frozen_for": "Phase 1 confirmatory run, single use",
+ "group_sizes": [
+  1,
+  4,
+  8,
+  16
+ ],
+ "headline_representation": "R5_R4_qwen_L26",
+ "pool_confirm_sha256": "85951b2b6ade867e534afd03b590b4c138748fa9f40919bceede43aa9a0a0012",
+ "pool_overlap": {
+  "five_gram_all": 0.027874564459930314,
+  "five_gram_by_family": {
+   "S1": 0.04,
+   "S2": 0.09803921568627451,
+   "S3": 0.01282051282051282,
+   "S4": 0.03067484662576687,
+   "S5": 0.046511627906976744,
+   "S6": 0.0,
+   "S7": 0.0,
+   "S8": 0.0
+  },
+  "identical_templates": 0
+ },
+ "q": 0.05,
+ "q_curve": [
+  0.01,
+  0.02,
+  0.05,
+  0.1
+ ],
+ "representations": [
+  "R5_R4_qwen_L26",
+  "R4_qwen_L26",
+  "R0_hash"
+ ],
+ "seeds": {
+  "confirm": [
+   400,
+   401,
+   402,
+   403,
+   404,
+   405,
+   406,
+   407,
+   408,
+   409,
+   410,
+   411,
+   412,
+   413,
+   414,
+   415,
+   416,
+   417,
+   418,
+   419,
+   420,
+   421,
+   422,
+   423,
+   424,
+   425,
+   426,
+   427,
+   428,
+   429
+  ],
+  "dev": [
+   100,
+   101,
+   102,
+   103,
+   104,
+   105,
+   106,
+   107,
+   108,
+   109,
+   110,
+   111,
+   112,
+   113,
+   114,
+   115,
+   116,
+   117,
+   118,
+   119,
+   120,
+   121,
+   122,
+   123,
+   124,
+   125,
+   126,
+   127,
+   128,
+   129
+  ]
+ },
+ "sizes": {
+  "adapt_per_family": 6,
+  "background": 800,
+  "batch_sizes": [
+   1,
+   4,
+   8,
+   16
+  ],
+  "batches": 20,
+  "cal": 120,
+  "counts": [
+   [
+    "solid",
+    2000
+   ],
+   [
+    "thin",
+    20
+   ]
+  ],
+  "map_cap": 300,
+  "other_teach": 600,
+  "others": 100,
+  "qs": [
+   0.01,
+   0.02,
+   0.05,
+   0.1
+  ],
+  "tangled": 40,
+  "test_heldout": 40,
+  "test_taught": 30,
+  "traps": 60,
+  "twins": 60,
+  "unseen_content": 60
+ },
+ "statements": {
+  "B1a": {
+   "expected": "fail",
+   "measures": [
+    "b1a"
+   ],
+   "note": "",
+   "rule": "pass when the mean over the 30 confirmatory seeds is at least the frozen bar; the headline reader is R5_R4_qwen_L26",
+   "text": "Wording invariance: a linear probe for skill identity (six skills plus none), trained on S1 to S3, is right on the held-out wordings S4 to S8 (chance 1/7)."
+  },
+  "B1b": {
+   "expected": "pass",
+   "measures": [
+    "b1b"
+   ],
+   "note": "",
+   "rule": "pass when the mean over the 30 seeds is at least the frozen bar",
+   "text": "Near-twin separation: by distance alone, parts of the same skill are closer than a part and its near-twin (same sentence, other operator); AUROC (chance 0.5)."
+  },
+  "B1c": {
+   "expected": "fail",
+   "measures": [
+    "b1c"
+   ],
+   "note": "",
+   "rule": "pass when the mean over the 30 seeds is at least the frozen bar",
+   "text": "Taught against untaught: the distance to the nearest taught prototype separates parts of taught skills from parts of untaught skills; AUROC (chance 0.5)."
+  },
+  "B2": {
+   "expected": "pass",
+   "measures": [
+    "r0_b1a",
+    "r0_b1b",
+    "b2_gap"
+   ],
+   "note": "",
+   "rule": "pass when R0 (mean over the 30 seeds) is below the frozen B1a bar OR the frozen B1b bar by at least the frozen margin; a fail makes the whole run invalid",
+   "text": "Validity of the test bed: the word-matcher control R0 falls short of the B1a bar or the B1b bar by at least 0.15; otherwise the test bed is broken and no result counts (anti-goal A1)."
+  },
+  "B3a": {
+   "expected": "fail",
+   "measures": [
+    "macro_f1",
+    "false_unseen_heldout",
+    "thin_vs_solid_auroc",
+    "other_as_unseen"
+   ],
+   "note": "EXPECTED TO FAIL on the calibration claim: known skills in wordings that were not taught (above all short stories and noisy text) are called new far more often than the bar allows. Dev: the reader, not the detector, causes the shift (E-046; results/WORDING_LAB_STAGE1/2.md, FUNCTION_LAB.md, REWRITE_LAB.md); none of the repairs tried reached the bar. What is expected to hold is the part that finds NEW skills (see the unseen-found prediction below) and the Solid / Thin / Other reporting.",
+   "rule": "pass only when ALL FOUR measures pass (macro F1 and AUROC at or above their bars, the two false-new rates at or below theirs); gated on the STANDARD calibration; the adapted condition is reported beside it and cannot pass the claim",
+   "text": "Statuses of arithmetic parts: macro F1 over Solid / Thin / Unseen; false 'Unseen' on the held-out wordings S4 to S8 of Solid skills at q = 0.05 with calibration on S1 to S3 only (the wording claim); Thin separated from Solid by AUROC; Other content called new arithmetic."
+  },
+  "B3b": {
+   "expected": "reported",
+   "measures": [],
+   "note": "",
+   "rule": "reported only; no gate",
+   "text": "The baselines of spec 6.2 (vMF conformal, k-nearest neighbour, Mahalanobis, Relative Mahalanobis, classifier confidence, energy, autoencoder descriptor, group test) are reported on the same cases with the same calibration, so every claim has its control. Reported, not gated."
+  },
+  "B4a": {
+   "expected": "fail",
+   "measures": [
+    "b4a_residual_hit",
+    "b4a_known_not_flagged"
+   ],
+   "note": "Expected to fail for the same reason: a known part written in a new wording is flagged, so the 'known part not flagged' number is low.",
+   "rule": "pass only when both numbers are at or above their bars (gold spans)",
+   "text": "A known part plus a new arithmetic part (gold spans): the left-over part is the truly unseen one, and the known part is not flagged."
+  },
+  "B4b": {
+   "expected": "fail",
+   "measures": [
+    "b4b_nothing_flagged",
+    "b4b_other_labelled"
+   ],
+   "note": "Expected to fail: the 'nothing flagged' number is low on dev (table above) for the same wording reason, while 'Other part labelled Other' is near its bar.",
+   "rule": "pass only when both numbers are at or above their bars (gold spans)",
+   "text": "An arithmetic part plus Other content (gold spans): nothing is flagged as new arithmetic, and the Other part is labelled as Other."
+  },
+  "B5": {
+   "expected": "fail",
+   "measures": [
+    "b5_mul_parent",
+    "b5_div_parent",
+    "b5_decoy_worst"
+   ],
+   "note": "Expected to FAIL on the genuine traces (the dev means are in the table above; my prediction of 0.85 to 0.97, written before the dev run, missed) and to PASS on the decoys. By wording on dev (results/E4_TABLE.md): verbal and number-word traces work, symbol traces ('4 + 4 = 8') and story traces almost never. Likely cause (not tested): the machine does not call those step texts Solid, a new-wording problem again. The confirmatory pool writes its S1 requests differently, so the symbol rows may move; this is stated, not predicted. The decoy bar is 0.000 because every dev decoy rate was exactly 0 (the rule min(draft, mean + 2 sd) leaves no room when there is no spread); a single false relation in the confirmatory run would fail that measure, and the genuine rows are expected to fail B5 regardless.",
+   "rule": "pass only when the multiplication rate and the division rate are at or above their bars AND the worst decoy rate is at or below its bar",
+   "text": "Relation from worked traces: the parent set of a multiplication trace is exactly {add} and of a division trace exactly {sub}; decoy traces get a false relation rarely."
+  },
+  "B6": {
+   "expected": "fail",
+   "measures": [
+    "b6_gap"
+   ],
+   "note": "Expected to fail: the dev mean of the larger gap (table above) is well over the bar.",
+   "rule": "pass when the larger gap between the automatic and the gold-span B4a numbers is at or below the bar",
+   "text": "With automatic segmentation (the sentence / clause cutter, chosen on dev) the two B4a numbers stay within 0.10 of the gold-span numbers (the larger of the two gaps)."
+  },
+  "B7": {
+   "expected": "not_run",
+   "measures": [
+    "b7_gap"
+   ],
+   "note": "NOT RUN: the realism set of Task 13 could not be built from the local data (GSM8K gives 0 to 11 one-step problems; no other labelled set is cached; nothing is downloaded, NG5). Stated here so that its absence is part of the registration.",
+   "rule": "pass when the gap is at or below the bar; NOT RUN in Phase 1 if no realism set exists (see Not run)",
+   "text": "Realism: the Solid-against-Unseen result on a real-text set agrees with the template result within 0.10."
+  }
+ },
+ "surprise_rule": "A confirmatory mean outside [dev min, dev max] widened by one dev standard deviation is reported as a surprise next to its verdict.",
+ "thresholds": {
+  "solid_min_acc": 0.9,
+  "solid_min_count": 500,
+  "thin_acc_margin": 0.1,
+  "thin_max_acc": 0.6,
+  "thin_max_count": 100
+ }
+}
