@@ -286,3 +286,29 @@ Files: `results/E2_WHY.txt` (from `diag_shift.py`). Each line: my guess, then wh
 - Leave-one-wording-out: a small gain only (0.00 to 0.03), because the taught wordings differ far less from each other than stories and noise differ from them.
 - Margin gate 0.25: the false alarm drops by 0.05 to 0.10 but the found rate drops by 0.10 to 0.20 (the margin separates weakly), so the 0.50 version probably breaks the 0.80 floor.
 - Best design overall: false alarm 0.15 to 0.25. None reaches 0.05.
+
+## 2026-10-28, the mitigations lab (tuning seeds 150-154): no cheap fix works; the winner by the declared rule is "no change"
+
+Files: `results/WORDING_LAB_STAGE1.md`, `results/WORDING_LAB_STAGE2.md`. False alarm = known skills in new wordings S4-S8 called unseen (now 0.256 on these seeds; bar 0.05).
+
+| what was tried | false alarm | never-taught skills found | macro F1 | verdict |
+|---|---|---|---|---|
+| nothing (the machine as it is) | 0.256 | 0.903 | 0.866 | the reference |
+| clean-up of case and spacing before reading | 0.250 | 0.890 | 0.861 | noisy text 45 % to 38 %, stories unchanged; gain too small to count |
+| closing prompt P1 ("ignoring any story...") | 0.333 | 0.869 | 0.821 | **worse**; stories 62 % to 93 % |
+| closing prompt P2 ("in one word...") | 0.309 | 0.877 | 0.828 | **worse**; stories 62 % to 77 % |
+| clean-up with a prompt | 0.251 / 0.261 | 0.863 / 0.872 | 0.843 / 0.838 | noisy text down to 30-32 %, stories worse |
+| leave-one-wording-out calibration (option A) | 0.252 | 0.891 | 0.858 | gain 0.004: nothing |
+| margin gate 0.10 | 0.063 | **0.250** | 0.511 | reaches the bar only by finding almost no new skill |
+| margin gate 0.25 | 0.068 | **0.292** | 0.542 | same |
+| margin gate 0.50 | 0.114 | 0.722 | 0.785 | below both floors |
+
+**The declared rule picks "as is"**: no variant that keeps finding at least 0.80 of the new skills and a macro F1 of at least 0.80 lowers the false alarm by more than the 0.01 tie margin. So the planned single run on the report seeds would repeat numbers we already have; it was **not run** (it would have cost about 45 minutes of GPU for nothing).
+
+**How the predictions did.** Right: clean-up (noisy text 45 to 38 %, stories unchanged), leave-one-wording-out (0.00 to 0.03 gain), "none reaches 0.05". Wrong: the prompts (I guessed even odds of a gain; they hurt), and the size of the margin gate's cost (I predicted found would fall by 0.10-0.20; it fell by 0.61).
+
+**What the margin gate teaches.** Most never-taught skills sit CLEARLY nearest to some taught skill (a large margin), just as known stories do. So neither closeness nor margin can separate "known skill in an unfamiliar wording" from "skill never taught" for these two wordings with this reader. The reader is the limit, not the alarm.
+
+## 2026-10-28, reading: Focus On Facts (FOF), what it adds
+
+Read: the poster abstract and the model card (the full paper is not reachable; `RELATED_WORK.md` updated). Their problem is ours: an embedding prefers a near-copy with one changed fact to a faithful rewrite (99.58 % of 8,327 held-out triplets). Their cure is full fine-tuning on 83,263 triplets of LLM-written rewrites with hard negatives; the wrong preference falls only to 29.37 % (mean separation +0.033, tiny), and the model gets worse at other tasks (SNLI 71 % to 53 %). Their listed failure modes match ours: a typo is read as a changed entity ("orthographic brittleness"), cosine values are poorly calibrated (so only the ordering is trusted), and the training text is normalised to stop shortcuts through formatting. What it means for us: (1) the field's best known cure for this problem is wording DIVERSITY in training (many LLM-written rewrites), which our rule "teaching uses S1-S3 only" excludes on purpose; (2) even that cure does not reach a low error, so we should not expect miracles from any encoder trained on a few wordings (this includes the from-scratch encoder); (3) specialising an encoder costs it other abilities, which matters for a one-size-fits-all custom architecture.

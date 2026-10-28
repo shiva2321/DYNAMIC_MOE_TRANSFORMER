@@ -179,3 +179,117 @@ def test_prompted_rep_changes_only_the_closing_prompt():
     assert other.id != plain.id and other.tag != same.tag and other.dim == plain.dim                # its cache files never mix with another prompt's
     np.testing.assert_array_equal(other.encode(texts), other.encode(texts))
     assert other.suffix_ids != plain.suffix_ids
+
+
+# ------------------------------------------------------------------------------------------------------------------------------ the lab driver
+import assignments  # noqa: E402
+import lab_wording as LAB  # noqa: E402
+import run_e2 as R  # noqa: E402
+
+TINY = R.Sizes(counts=(("solid", 60), ("thin", 8)), other_teach=45, cal=30, adapt_per_family=2, test_heldout=12, test_taught=8, twins=12, traps=12, others=15,
+               unseen_content=10, tangled=6, batches=4, batch_sizes=(1, 4), background=40, map_cap=40, qs=(0.05,))
+
+
+@pytest.fixture
+def tiny_thresholds(monkeypatch):
+    for k, v in dict(solid_min_count=50, thin_max_count=20).items():
+        monkeypatch.setitem(assignments.THRESHOLDS, k, v)
+
+
+def fake_competence(pool, skill, count, seed):
+    return {"accuracy": 0.97 if count >= 60 else 0.5, "chance": 0.1}
+
+
+def test_the_wording_of_every_calibration_part_is_read_back_exactly(tiny_thresholds):
+    world = R.build_world(100, "dev", TINY, fake_competence)
+    fam = LAB.cal_family_labels(world)
+    assert set(fam) == set(world.taught)
+    for s in world.taught:
+        assert len(fam[s]) == len(world.cal[s]) == TINY.cal and set(fam[s].tolist()) <= set(assignments.TEACH_FAMILIES)
+    rows = LAB.family_arrays(world)
+    assert len(rows["cal"]) == sum(len(v) for v in world.cal.values())
+    assert set(rows["proto"]) == set(world.taught) and all(len(rows["proto"][s]) == len(world.teach[s]) for s in world.taught)
+
+
+def row(name, false_unseen, found, f1, rank):
+    return {"name": name, "false_unseen": false_unseen, "found": found, "macro_f1": f1, "rank": rank}
+
+
+def test_the_winner_is_the_lowest_false_alarm_among_variants_that_still_find_new_skills():
+    rows = [row("plain", 0.28, 0.89, 0.85, 0), row("clean", 0.24, 0.88, 0.85, 1), row("p1", 0.15, 0.70, 0.80, 2), row("p2", 0.16, 0.85, 0.79, 3), row("clean+p1", 0.17, 0.84, 0.82, 4)]
+    assert LAB.choose_winner(rows)["name"] == "clean+p1"                                  # p1 finds too few, p2's score is too low
+    rows[1]["false_unseen"] = 0.171
+    assert LAB.choose_winner(rows)["name"] == "clean"                                      # clean is within 0.01 of the best allowed one and simpler
+    assert LAB.choose_winner([row("plain", 0.28, 0.5, 0.6, 0), row("clean", 0.1, 0.5, 0.6, 1)])["name"] == "plain"        # nothing qualifies: no change
+    with pytest.raises(ValueError, match="no variants"):
+        LAB.choose_winner([])
+
+
+def test_lofo_calibration_scores_are_exactly_the_cross_wording_scores():
+    """Rebuilt by hand: for each wording, a signature without that wording's prototypes (kernel width of the full signature) scores that wording's held-out parts."""
+    from growmoe.signature import VmfSignature
+    w = make_world()
+    lofo = machine(w, W.WordingMachine, lofo=True)
+    j, name = 0, lofo.names[0]
+    P = lofo._P[j]
+    fam = w["proto_fam"][name]
+    cal = w["cal"][w["cal_grp"] == name]
+    cal = (cal / np.linalg.norm(cal, axis=1, keepdims=True)).astype(np.float32)
+    cal_fam = w["cal_fam"][w["cal_grp"] == name]
+    expected = []
+    for f in sorted(set(cal_fam.tolist())):
+        sig = VmfSignature(lofo.d, max_protos=256, seed=0, dedupe=True)
+        sig.update(P[fam != f])
+        sig.fit()
+        sig._kappa = lofo._sig[j].kappa
+        expected.append(sig.score(cal[cal_fam == f]).double().numpy())
+    np.testing.assert_allclose(lofo._cal[j], np.sort(np.concatenate(expected)), atol=1e-5)
+
+
+def test_margin_gate_never_overrides_a_part_whose_nearest_group_is_other_content():
+    w = make_world()
+    plain, gated = machine(w), machine(w, W.WordingMachine, margin_q=0.9)
+    broad = vmf(unit(np.random.default_rng(3).standard_normal(D)) * 0 + (w["protos"]["O"].mean(axis=0) / np.linalg.norm(w["protos"]["O"].mean(axis=0))), 3.0, 600, np.random.default_rng(4))
+    a, b = plain.assess_many(broad), gated.assess_many(broad)
+    nearest_other = [x.nearest == "O" for x in a]
+    assert any(nearest_other) and sum(x.status == "unseen" for x in a) > 20
+    assert all(x == y for x, y, o in zip(a, b, nearest_other) if o)                                 # parts nearest to Other content: identical to the machine without the gate
+    assert not gated.last_overridden[np.array(nearest_other)].any()
+
+
+def test_the_margin_calibration_uses_the_skill_parts_only():
+    w = make_world()
+    gated = machine(w, W.WordingMachine, margin_q=0.25)
+    assert len(gated._margins) == int((w["cal_grp"] != "O").sum()) and np.all(np.diff(gated._margins) >= 0)
+
+
+def test_lofo_scores_use_the_full_kernel_width_even_when_leaving_a_wording_out_would_pick_another():
+    from growmoe.signature import VmfSignature
+    rng = np.random.default_rng(11)
+    mu = unit(rng.standard_normal(D))
+    mean = lambda off: unit(mu + 0.6 * off)
+    offs = {f: unit(rng.standard_normal(D)) for f in ("f1", "f2", "f3")}
+    kap = {"f1": 2000.0, "f2": 12.0, "f3": 12.0}                                    # one very tight wording and two broad ones: dropping the tight one changes the best kernel width
+    protos = np.vstack([vmf(mean(offs[f]), kap[f], 150, rng) for f in offs])
+    fam = np.array([f for f in offs for _ in range(150)])
+    cal = np.vstack([vmf(mean(offs[f]), kap[f], 40, rng) for f in offs])
+    cal_fam = np.array([f for f in offs for _ in range(40)])
+    other_p = vmf(unit(rng.standard_normal(D)), 20.0, 200, rng)
+    other_c = vmf(unit(rng.standard_normal(D)), 20.0, 100, rng)
+    groups = {"A": ST.SkillGroup("A", protos, 2000, None, 0.97)}
+    m = W.WordingMachine(groups, ST.SkillGroup("O", other_p, 300, None, 1.0), np.vstack([cal, other_c]), np.array(["A"] * 120 + ["O"] * 100), q=0.05,
+                         proto_families={"A": fam}, cal_families=np.r_[cal_fam, ["other"] * 100], lofo=True, max_protos=512)
+    P, calu = m._P[0], (cal / np.linalg.norm(cal, axis=1, keepdims=True)).astype(np.float32)
+    full_kappa = m._sig[0].kappa
+    own_kappas, with_full, with_own = [], [], []
+    for f in offs:
+        sig = VmfSignature(D, max_protos=512, seed=0, dedupe=True)
+        sig.update(P[fam != f])
+        sig.fit()
+        own_kappas.append(sig.kappa)
+        with_own.append(sig.score(calu[cal_fam == f]).double().numpy())
+        sig._kappa = full_kappa
+        with_full.append(sig.score(calu[cal_fam == f]).double().numpy())
+    assert any(k != full_kappa for k in own_kappas), "the toy must make the leave-one-out kernel width differ"
+    np.testing.assert_allclose(m._cal[0], np.sort(np.concatenate(with_full)), atol=1e-5)
+    assert not np.allclose(np.sort(np.concatenate(with_own)), np.sort(np.concatenate(with_full)), atol=1e-3)

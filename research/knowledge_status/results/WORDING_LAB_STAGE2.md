@@ -1,0 +1,15 @@
+# Mitigations lab, stage 2 (machine variants, tuning seeds 150-154)
+
+### Machine variants on the `plain` reader (the stage-1 winner; the choice is made here)
+
+| machine | false alarm S4-S8 | stories S4 | noisy text S7 | swapped order S5 | taught wordings | never-taught skills found | macro F1 | Other called unseen | passed by the margin gate |
+|---|---|---|---|---|---|---|---|---|---|
+| as is | 0.256 | 0.624 | 0.450 | 0.183 | 0.037 | 0.903 | 0.866 | 0.275 | 0 |
+| lofo | 0.252 | 0.624 | 0.433 | 0.183 | 0.033 | 0.891 | 0.858 | 0.275 | 0 |
+| margin 0.10 | 0.063 | 0.113 | 0.185 | 0.000 | 0.013 | 0.250 | 0.511 | 0.195 | 210 |
+| margin 0.25 | 0.068 | 0.130 | 0.185 | 0.000 | 0.013 | 0.292 | 0.542 | 0.204 | 198 |
+| margin 0.50 | 0.114 | 0.195 | 0.286 | 0.000 | 0.018 | 0.722 | 0.785 | 0.266 | 66 |
+| lofo + margin 0.25 | 0.068 | 0.130 | 0.185 | 0.000 | 0.013 | 0.284 | 0.536 | 0.204 | 196 |
+
+**Winner by the declared rule: `as is`**
+

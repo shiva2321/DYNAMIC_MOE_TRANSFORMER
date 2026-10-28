@@ -100,9 +100,10 @@ How it was read. Each paper was fetched as text (ar5iv or arXiv HTML, or the PDF
 
 ## 4. Embeddings, composition and reuse
 
-**Focus On Facts (FOF), NeurIPS 2026 listing and model card [abstract only]**
+**Focus On Facts (FOF), NeurIPS 2026 poster abstract and the FOF-80M model card [read 2026-10-28; the full paper is not reachable, so no claim may rest on method details]**
 - Reports: a base embedding model prefers a near-copy with one corrupted fact over a fact-preserving rewrite (99.58 % of held-out triplets); fine-tuning with a contrastive objective lowers that to 29.37 %; the tuned model "penalizes omission" and transfers poorly to directional tasks.
-- Does NOT: the paper itself was not read; treat the numbers as a listing's claim.
+- Also reported (poster abstract and model card): 83,263 triplets over five domains; base model preference for the corrupted copy 99.58 %, after fine-tuning 29.37 % (mean separation -0.1650 to +0.0329); cross-style similarity on an external corpus 0.7905 to 0.9559; SNLI 71.07 % to 52.91 % and SummEval correlation 0.2061 to 0.0198 (the specialised model gets worse elsewhere). Stated failure modes: it penalises omissions, matching entities can overpower relational errors, a typo can be read as a changed entity, and absolute cosines are poorly calibrated (many pairs sit in a high-cosine region). The training text was normalised (Unicode NFKD, straight quotes, ASCII only, whitespace collapsed) to prevent shortcut learning through formatting.
+- Does NOT: say how the rewrites were made (LLM, styles, prompts), the loss details, or whether test styles were unseen in training; the full paper was not read.
 - Versus us: the evidence behind our worry that off-the-shelf embeddings blur near-twins; R5 is our version of the same cure.
 
 **SCAN, Lake and Baroni, arXiv 1711.00350 [full]**
