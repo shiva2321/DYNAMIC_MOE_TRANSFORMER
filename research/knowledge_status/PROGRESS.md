@@ -403,3 +403,32 @@ Files: `results/FUNCTION_CEILING.md`, `results/FUNCTION_LAB.md`. All on the tuni
 - map only: 0.256 to **0.235-0.260** (no real gain). full: **0.20-0.25**; stories 55-65 % (from 62 %); noisy text 40-46 % (from 45 %).
 - ceiling (contaminated): overall **0.08-0.16**; stories 15-40 %; noisy text 15-40 %; found 0.84-0.90.
 - The go-on rule for the clean arms is not met.
+
+## 2026-10-28, option (a), wording diversity in teaching: the clean version fails; even the contaminated ceiling halves the false alarm and stops far from the bar
+
+Files: `results/REWRITE_LAB.md`, `results/rewrite_lab/` (tuning seeds 150-154, learned-map reader, status machine q = 0.05). Known skills in new wordings called "unseen" (bar 0.05):
+
+| arm | false alarm | stories S4 | noisy text S7 | register S8 | never-taught skills found | macro F1 |
+|---|---|---|---|---|---|---|
+| nothing (the machine as it is) | 0.256 | 0.624 | 0.450 | 0.048 | 0.903 | 0.866 |
+| generic rewrites, map only | 0.262 | 0.656 | 0.462 | 0.017 | **0.762** | 0.783 |
+| generic rewrites, full (also prototypes and calibration) | 0.232 | 0.559 | 0.435 | 0.017 | **0.740** | 0.776 |
+| ceiling (CONTAMINATED: the writer is told to produce stories, typos, registers) | **0.144** | 0.307 | 0.310 | 0.017 | 0.860 | 0.871 |
+
+About 350 rewrites per seed were kept after both filters (about 50 % of those with the right numbers).
+
+**The clean arms fail the rule fixed beforehand** (false alarm down by at least 0.05 with found down by at most 0.05): map only is 0.006 WORSE, full is 0.024 better, and both lose 0.14 to 0.16 of the never-taught skills found. The loss is not an accident of one seed: found falls in four of the five seeds, from 0.94 to 0.87 in one, 0.95 to 0.90 in another, and from 0.81 to 0.25 / 0.18 in seed 154. I did not predict this harm. A likely cause (not tested): the generic rewrites are all question-shaped ("What is the remainder when ... ?") and come only from taught skills, so the map learns that question-shaped arithmetic is familiar, and the untaught skills phrased the same way land inside the taught groups.
+
+**The ceiling shows what diversity could buy at best: the false alarm halves (0.256 to 0.144), stories 62 to 31 %, noisy text 45 to 31 %, and found stays within 0.04**; but it is still three times the bar, it is not a clean claim (the writer was told to produce the held-out wordings), and it is uneven: seed 150 does not move at all (stories 100 % to 100 %), because the answer check is strictest on remainder and multiplication, where Qwen's own arithmetic is weakest, so those skills get the fewest story rewrites.
+
+**Predictions.** Right: the clean arms give no real gain (0.262 and 0.232), the ceiling's false alarm (0.144, inside 0.08-0.16), stories and noise (31 %, inside 15-40 %), found for the ceiling (0.860, inside 0.84-0.90), the go-on rule not met. Not predicted: that the generic rewrites cost 0.14 to 0.16 of the found rate.
+
+## 2026-10-28, the verdict on the wording problem, for now
+
+Tried, all on the tuning seeds with the pre-declared rules: clean-up of case and spacing, two closing prompts, leave-one-wording-out calibration, a margin gate, the function check (single example and batches, with perfect solvers as the ceiling), generic rewrites in teaching (map only and full), and rewrites that name the held-out wordings (the contaminated ceiling). **None brings the false alarm on known skills in new wordings to the 0.05 bar; the best clean result is 0.250 (clean-up) and the best contaminated one is 0.144.** The literature points the same way: the best-known cure (FOF, 83,000 LLM-written rewrites, full fine-tuning) leaves 29 % wrong. So the claim "calibrated on S1 to S3 only, the false alarm on S4 to S8 stays at or below 0.05" FAILS for this reader, and the honest Phase 1 finding is: the machine finds new skills (0.89) and reports solid, thin and other; it does not yet trust a known skill in a wording it was not taught, above all stories and noisy text.
+
+## 2026-10-28, Task 12 (E4, relation from worked traces): built; plan and predictions before the dev run
+
+**Built and tested** (27 + 7 tests; planted-bug check: 15 mutants of `traces.py`, all caught after the chain checks got targeted tests). `traces.py`: worked traces of multiplication (repeated addition) and division (repeated subtraction) in four wordings (symbols, verbal, number words, a story), and three decoys (wrong steps; a maximum request with correct but irrelevant additions; a remainder request whose steps are additions that do not compute it). The verifier reads only the numbers (never an operator word or symbol); a step counts for a skill only if the status machine assigns it to that skill as SOLID and the taught solver reproduces its result; the chain must link, start at the right number, take the right number of steps and end at the stated answer; only a valid chain names parents. `run_e3.py`: the dev runner. A seed qualifies only if addition and subtraction are REALLY Solid there (their solvers reach 0.90): subtraction does in about half of the seeds (9 of 17 cells so far), so the runner picks 10 qualifying seeds and says how many candidates it had to scan.
+
+**Prediction (written before the run).** Qualifying seeds: about 40-50 % of the candidates, so 10 seeds are reached by about seed 125. The step texts ("4 + 4 = 8") are a new wording (the taught requests have no result in them), so the machine will call 55-85 % of the steps Solid; a trace needs only one verified step among two to four, so the parent is named exactly right in **0.85-0.97** of the genuine multiplication and division traces (B5 asks for 0.90, so the genuine rows may land either side of the bar); weakest in the number-word and story wordings (0.70-0.90). The decoys name a false parent in **at most 0.02** (the chain check makes this close to zero by construction).
