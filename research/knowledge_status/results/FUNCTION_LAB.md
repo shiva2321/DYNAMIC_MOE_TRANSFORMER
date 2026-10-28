@@ -1,0 +1,23 @@
+# Function-check lab (tuning seeds 150-154, learned-map reader, status machine q = 0.05)
+
+A part called unseen by its look is overturned when a COMPETENT taught skill (Solid state, solver at 0.90 on unseen problems) reproduces the stated answer from the numbers in the message.
+
+| | before | after |
+|---|---|---|
+| known skills in new wordings called unseen (bar 0.05) | 0.256 | 0.223 |
+| ... of competent skills (add, sub, max when Solid) | 0.300 | 0.000 |
+| ... of the other taught skills (thin, weak solver) | 0.266 | 0.261 |
+| never-taught skills found | 0.903 | 0.889 |
+| macro F1 | 0.866 | 0.864 |
+
+- wording S4: called unseen 0.624 -> 0.563
+- wording S5: called unseen 0.183 -> 0.142
+- wording S6: called unseen 0.039 -> 0.039
+- wording S7: called unseen 0.450 -> 0.393
+- wording S8: called unseen 0.048 -> 0.048
+
+- share of the known test parts that belong to competent skills (the most the check can rescue): 0.100
+- when a known part is overturned, the explaining skill is the right one: 0.923
+- never-taught parts wrongly explained by a taught skill (coincidence): 0.014
+- two numbers found in the message: S1 1.000, S2 1.000, S3 1.000, S4 1.000, S5 1.000, S6 1.000, S7 1.000, S8 1.000
+- competent skills per seed: 150: max; 151: none; 152: none; 153: none; 154: none

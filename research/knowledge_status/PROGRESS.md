@@ -329,3 +329,29 @@ Read: the poster abstract and the model card (the full paper is not reachable; `
 - For the parts of competent skills the false alarm falls from about 0.30 to 0.05-0.12; for thin and weak skills it does not move (about 0.30).
 - Overall false alarm: 0.256 to 0.15-0.20. Never-taught skills found: 0.90 to 0.86-0.90 (a few coincidences, where some taught skill happens to give the same answer). When a known part is overturned, the skill is the right one in at least 97 % of cases.
 - It does NOT reach the 0.05 bar overall, because the skills that cannot be checked make up more than half of the parts.
+
+## 2026-10-28, the function check, first result (tuning seeds 150-154): it works where it can act, and it can act on very little
+
+Files: `results/FUNCTION_LAB.md`, `results/function_lab/`. Known skills in new wordings called "unseen" (bar 0.05):
+
+| | before | after |
+|---|---|---|
+| all known skills | 0.256 | **0.223** |
+| of competent skills (the check can vouch for them) | 0.300 | **0.000** |
+| of the other taught skills (thin, or a weak solver) | 0.266 | 0.261 |
+| never-taught skills found | 0.903 | 0.889 |
+| macro F1 | 0.866 | 0.864 |
+
+Stories 62 % to 56 %, noisy text 45 % to 39 %. Never-taught parts wrongly vouched for by a taught skill (coincidence): 1.4 %. The number reader found exactly two numbers in 100 % of the requests of every wording.
+
+**By the rule fixed beforehand, it does not go on to the report seeds:** the false alarm fell by 0.033, not the 0.05 required, and when a known part was overturned the skill named was the right one 92.3 % of the time, not 95 %. (The wrong cases are parts of OTHER taught skills whose answer happens to equal the competent skill's, for example multiplying by one.)
+
+**Why so little.** Only 10 % of the known parts belonged to a competent skill (I predicted 35 to 45 %). The draws of these five seeds gave the Solid slots mostly to multiplication, division and remainder, whose solvers score 0.52 to 0.67 with 2,000 examples; subtraction scored 0.85, 0.87 and 0.89, just under the 0.90 bar; the Thin skills (20 examples) score 0.02 to 0.44. The idea works exactly as intended where a skill is competent (0.30 to 0.00); the limit is the solvers.
+
+**How my prediction did.** Right: the number reader (100 %), the competent skills' false alarm (0.30 to 0.00), found barely changes, the 0.05 bar is not reached. Wrong: the share of competent skills (10 %, not 35 to 45 %), and so the overall gain (0.033, not 0.06 to 0.11).
+
+## 2026-10-28, next: what would the function check give with GOOD solvers? (ceiling, before running)
+
+This decides whether improving the solvers (your pending question about multiplication, division and remainder) is worth the effort. Same seeds, same machine, but the solvers are replaced by perfect ones, so nothing is trained: (i) perfect solvers for the Solid-state skills only; (ii) perfect solvers for every taught skill, including those taught only 20 examples (a best case no 20-example learner has reached).
+
+Prediction: (i) overall false alarm 0.256 to **0.08-0.15**; (ii) to **0.03-0.08**, close to the bar; never-taught skills found falls by **0.02 to 0.08** from coincidences (an answer that a taught skill happens to give too). These are upper bounds, not forecasts for real solvers.
