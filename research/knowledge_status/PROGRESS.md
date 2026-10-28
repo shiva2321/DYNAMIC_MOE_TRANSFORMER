@@ -259,3 +259,30 @@ The wording claim from the calibration rule is **"fails"**: even with a few new-
 5. **Is it just text length?** Guess: partly. Stories are long, and false alarms grow with the number of words even within the taught wordings.
 
 **Option A as I will build it (not yet built).** (i) Calibrate on leave-one-wording-out scores: each taught wording (S1, S2, S3) is scored against prototypes of the other two, so the alarm learns what a wording shift looks like. (ii) Read the text after generic clean-up (case and spacing). Prediction for A on the report seeds, written now: false alarms on new wordings fall from 0.29 to **0.20 - 0.27** (a small gain: S1-S3 differ little from each other compared with stories and noise), unseen skills found fall from 0.89 to **0.80 - 0.88**; the clean-up helps the noise wording most (S7 from 0.47 to **0.25 - 0.40**) and stories not at all. I do not expect A alone to reach the 0.05 bar.
+
+## 2026-10-28, why the new wordings set off the alarm: what the measurements say (tuning seeds 150-154)
+
+Files: `results/E2_WHY.txt` (from `diag_shift.py`). Each line: my guess, then what was found.
+
+1. **Map or reader?** Guess: the reader. **Found: the reader.** Plain Qwen vectors already sit 5.6 standard deviations farther from the taught examples on stories and 3.3 on noisy text. The learned map helps on stories (97 % of known stories flagged without it, 67 % with it) but cannot remove the shift; in standard deviations it makes the noise shift look bigger (it packs the taught wordings tighter).
+2. **Which noise?** Guess: case, then typos, then spaces. **Found, as guessed:** case flips 62 % false alarm (and the nearest skill is right only 67 % of the time, so even the sorting breaks), typos 31 % (81 % right), extra spaces 10 % (97 % right).
+3. **A few directions?** Guess: a few. **Found: no.** Removing the top shift directions of the story wording lowers the false alarm only from 62 % to 54 %, and removing random directions of the same number makes it worse (69 to 80 %). The displacement is scattered (each story moves in its own direction), so a projection fix will not work.
+4. **A better score?** Guess: the margin (nearest minus second nearest skill) separates well. **Found: it does not.** Known skill against never-taught skill in the same wording: stories closeness 0.79, density 0.82, margin 0.83; noisy text 0.74, 0.77, 0.69. On the taught wordings the margin is clearly worse (0.78 to 0.85 against 0.97 to 0.99). A first look at one seed had suggested 0.90; five seeds say no.
+5. **Length?** Guess: partly. **Found: partly.** In new wordings the false alarm grows with length (12 % / 14 % / 64 % for short / middle / long), but in the taught wordings it does not (5 % / 3 % / 0 %). So length alone is not the cause; the story content is.
+
+**What this tells us.** The reader gives stories and noisy text a systematically different reading; the alarm, calibrated only on three short template wordings, is right to find them unusual. The sorting is still mostly right (stories 89 %, typos 81 %, case flips 67 %).
+
+## 2026-10-28, mitigations lab: plan and predictions, written before running it
+
+**Mitigation arms (new module `wording.py`, so the earlier results stay valid).**
+- Reader: (a) the plain reader; (b) *clean-up* (lower case, one space between words); (c) a closing prompt that says to ignore extra words (P1: "Ignoring any story or extra words, the arithmetic operation asked for is"); (d) another prompt (P2: "In one word, the arithmetic operation that this asks for is"); and clean-up combined with each prompt. The prompts do not name any skill (that would give the reader the label set).
+- Machine: (a) as it is; (b) *leave-one-wording-out* calibration (option A); (c) a *margin gate* at 0.10, 0.25, 0.50 (a part every group flags is called unseen only if it is also ambiguous between skills).
+
+**Procedure, fixed now.** Stage 1: the six reader variants with the machine as it is. Stage 2: the machine variants on the stage-1 winner. Everything on the tuning seeds 150-154. The rule for choosing a winner: the lowest false alarm on S4-S8 among variants that still find at least 0.80 of the never-taught skills and keep macro F1 at 0.80 or more; within 0.01 the simpler variant wins (plain, clean-up, prompt, both). The winner is then run ONCE on the report seeds 100-129 and compared with the numbers already on disk; no bar changes.
+
+**Predictions (tuning seeds, false alarm on S4-S8 now about 0.28).**
+- Clean-up: S7 from about 45 % to 25-38 %, stories unchanged; overall 0.22 to 0.27.
+- Prompts: stories from 67 % to somewhere between 45 % and 65 %; I give it even odds that a prompt gives a material gain (more than 0.05 overall). Found stays 0.85 to 0.92.
+- Leave-one-wording-out: a small gain only (0.00 to 0.03), because the taught wordings differ far less from each other than stories and noise differ from them.
+- Margin gate 0.25: the false alarm drops by 0.05 to 0.10 but the found rate drops by 0.10 to 0.20 (the margin separates weakly), so the 0.50 version probably breaks the 0.80 floor.
+- Best design overall: false alarm 0.15 to 0.25. None reaches 0.05.

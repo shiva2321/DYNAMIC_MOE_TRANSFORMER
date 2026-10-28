@@ -1,0 +1,59 @@
+Why do new wordings set off the alarm?  tuning seeds 150-154, status machine q = 0.05, standard condition
+
+Q1. Stage by stage: how far each wording sits below the taught wordings, in standard deviations of the best cosine to the own skill's examples (0 = as close as a taught wording; negative = farther)
+    wording          raw Qwen   plain (centred)   learned-map reader
+    S1                 +0.07        +0.09            -0.19
+    S2                 -0.14        -0.17            -0.03
+    S3                 +0.07        +0.08            +0.19
+    S4                 -5.61        -5.50            -5.91
+    S5                 -0.90        -1.45            -0.62
+    S6                 -0.17        -0.17            +0.04
+    S7                 -3.26        -3.60           -33.59
+    S8                 +0.09        +0.04            -1.29
+    noise:case         -2.96        -3.56           -30.31
+    noise:space        -0.49        -0.54            -1.08
+    noise:typo         -1.82        -2.33           -18.63
+
+    known skills called unseen, and nearest group right:   plain reader | learned-map reader
+    S1              n=  85   unseen   1.2% |   5.9%    nearest right  98.8% | 100.0%
+    S2              n=  89   unseen   6.7% |   3.4%    nearest right  98.9% | 100.0%
+    S3              n=  96   unseen   3.1% |   1.0%    nearest right  99.0% |  97.9%
+    S4              n=  73   unseen  97.3% |  67.1%    nearest right  82.2% |  89.0%
+    S5              n=  45   unseen  31.1% |  22.2%    nearest right 100.0% | 100.0%
+    S6              n=  83   unseen   6.0% |   7.2%    nearest right  98.8% |  97.6%
+    S7              n=  78   unseen  59.0% |  44.9%    nearest right  70.5% |  73.1%
+    S8              n=  81   unseen   2.5% |   4.9%    nearest right  95.1% |  96.3%
+    noise:case      n= 240   unseen  65.4% |  61.7%    nearest right  66.7% |  66.7%
+    noise:space     n= 255   unseen   9.8% |   9.8%    nearest right  96.1% |  96.9%
+    noise:typo      n= 202   unseen  39.6% |  30.7%    nearest right  87.1% |  81.2%
+
+Q3. ORACLE (looks at the test wording, a diagnostic and not a fix): false alarm after removing the top k shift directions of that wording, learned-map reader
+    S4:  k=0: top  62.4%   k=1: top  53.6% / random  69.1%   k=2: top  53.6% / random  74.6%   k=4: top  53.6% / random  75.4%   k=8: top  53.6% / random  80.0%
+    S7:  k=0: top  45.0%   k=1: top  60.1% / random  49.6%   k=2: top  66.7% / random  70.3%   k=4: top  82.0% / random  66.7%   k=8: top  82.0% / random  96.0%
+    S5:  k=0: top  18.3%   k=1: top  13.3% / random  50.0%   k=2: top  20.0% / random  33.3%   k=4: top  20.0% / random  53.7%   k=8: top  20.0% / random  85.0%
+
+Q4. AUROC of 'known skill in this wording' (0) against 'never-taught skill in the same wording' (1); 0.5 is chance
+    wording  closeness (best cosine)              kernel density                       margin (nearest minus second neare
+    S1                                    0.971                                0.982                                0.783
+    S2                                    0.983                                0.990                                0.828
+    S3                                    0.986                                0.988                                0.850
+    S4                                    0.793                                0.815                                0.830
+    S5                                    0.991                                0.998                                0.917
+    S6                                    0.978                                0.979                                0.797
+    S7                                    0.738                                0.770                                0.689
+    S8                                    0.946                                0.971                                0.786
+
+Q5. Length
+    S1              words median   3.0   false alarm   5.9%
+    S2              words median   5.0   false alarm   3.4%
+    S3              words median   6.0   false alarm   1.0%
+    S4              words median  14.0   false alarm  67.1%
+    S5              words median   5.0   false alarm  22.2%
+    S6              words median   4.0   false alarm   7.2%
+    S7              words median   6.0   false alarm  44.9%
+    S8              words median   4.0   false alarm   4.9%
+    noise:case      words median   5.0   false alarm  61.7%
+    noise:space     words median   5.0   false alarm   9.8%
+    noise:typo      words median   5.0   false alarm  30.7%
+    taught wordings S1-S3: Spearman(words, best cosine) +0.11;  false alarm by length third (short/middle/long):   5.0% /   2.5% /   0.0%
+    held-out wordings S4-S8: Spearman(words, best cosine) -0.45;  false alarm by length third (short/middle/long):  11.7% /  14.2% /  63.7%
