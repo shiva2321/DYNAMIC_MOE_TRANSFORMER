@@ -77,6 +77,11 @@ def five_gram_overlap(pool, other, family: Optional[str] = None, n: int = 5) -> 
 
 
 # ------------------------------------------------------------------------------------------------------------------------------------ the hash and the code stamp
+def file_sha256(path: Path) -> str:
+    """sha256 of a file with CRLF folded to LF (as ``runlib.code_stamp`` does), so a Windows checkout that rewrites line endings does not look like a changed file."""
+    return hashlib.sha256(Path(path).read_bytes().replace(b"\r\n", b"\n")).hexdigest()
+
+
 def bars_hash(obj) -> str:
     """sha256 of the canonical JSON of the frozen record (sorted keys, no spaces), so the formatting of bars.json does not matter but every value does."""
     return hashlib.sha256(json.dumps(obj, sort_keys=True, separators=(",", ":"), ensure_ascii=True).encode("ascii")).hexdigest()
@@ -295,7 +300,7 @@ def freeze(out_dir: Path = HERE, results_dir: Path = HERE / "results", pool_file
         "frozen_for": "Phase 1 confirmatory run, single use", "bars": bars, "statements": statement_rows(bars, means), "thresholds": dict(assignments.THRESHOLDS),
         "e4_n_per_kind": E4_N_PER_KIND, "q": Q, "q_curve": Q_CURVE, "group_sizes": GROUP_SIZES, "sizes": asdict(run_e2.SIZES), "baseline_params": run_e2.BASELINE_PARAMS,
         "representations": REPRESENTATIONS, "headline_representation": HEADLINE, "b6_primary": B6_PRIMARY,
-        "seeds": {"confirm": CONFIRM_SEEDS, "dev": DEV_SEEDS}, "pool_confirm_sha256": hashlib.sha256(pool_file.read_bytes()).hexdigest(),
+        "seeds": {"confirm": CONFIRM_SEEDS, "dev": DEV_SEEDS}, "pool_confirm_sha256": file_sha256(pool_file),
         "code_stamp": runlib.code_stamp(code_files), "code_files": [_label(f) for f in code_files],
         "dev_cells": {k: len(v) for k, v in sorted(dev.items())}, "dev_extras": {"unseen_recall": means["unseen_recall"]}, "chance": CHANCE, "surprise_rule": SURPRISE,
         "pool_overlap": _pool_overlap() if pool_file.resolve() == (HERE / "pool_confirm.py").resolve() else None,
@@ -344,7 +349,7 @@ def check_frozen(out_dir: Path = HERE, pool_file: Optional[Path] = None, code_fi
         return {"ok": False, "problem": f"cannot read the frozen files: {e}"}
     if bars_hash(rec) != want:
         return {"ok": False, "problem": "bars.json no longer matches bars.sha256"}
-    if pool_file is not None and hashlib.sha256(Path(pool_file).read_bytes()).hexdigest() != rec["pool_confirm_sha256"]:
+    if pool_file is not None and file_sha256(pool_file) != rec["pool_confirm_sha256"]:
         return {"ok": False, "problem": "pool_confirm.py is not the file that was frozen"}
     if code_files is not None and runlib.code_stamp(sorted((Path(f) for f in code_files), key=lambda f: (f.parent.name == "growmoe", f.name))) != rec["code_stamp"]:
         return {"ok": False, "problem": "the code is not what was frozen (code stamp differs)"}

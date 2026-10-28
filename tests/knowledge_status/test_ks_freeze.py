@@ -370,7 +370,7 @@ def test_bars_follow_the_rule_written_before_the_dev_run(tmp_path):
 def test_freeze_records_the_pool_hash_and_the_code_stamp(tmp_path):
     import hashlib
     rec, out, pool, code = freeze_into(tmp_path)
-    assert rec["pool_confirm_sha256"] == hashlib.sha256(pool.read_bytes()).hexdigest()
+    assert rec["pool_confirm_sha256"] == hashlib.sha256(pool.read_bytes().replace(b"\r\n", b"\n")).hexdigest()          # line endings do not matter
     import runlib
     assert rec["code_stamp"] == runlib.code_stamp(sorted(code.glob("*.py"))) and rec["code_files"] == ["a.py", "b.py"]
     assert (out / "PREREG.md").read_text(encoding="utf-8").count(rec["pool_confirm_sha256"]) >= 1
@@ -574,3 +574,12 @@ def test_the_prereg_table_shows_dev_numbers_directions_and_the_overlap_of_the_re
     rec2 = FZ.freeze(out_dir=out2, results_dir=results, pool_file=FZ.HERE / "pool_confirm.py", code_files=[some], expected_stamps=STAMPS)
     assert rec2["pool_overlap"]["identical_templates"] == 0 and rec2["pool_overlap"]["five_gram_all"] < 0.2
     assert "shares no template with the dev pool" in (out2 / "PREREG.md").read_text(encoding="utf-8")
+
+
+def test_a_windows_checkout_that_rewrites_line_endings_is_not_a_changed_pool_file(tmp_path):
+    rec, out, pool, code = freeze_into(tmp_path)
+    pool.write_bytes(pool.read_bytes().replace(b"\r\n", b"\n").replace(b"\n", b"\r\n"))     # the same text with CRLF line endings
+    assert FZ.check_frozen(out, pool_file=pool)["ok"] is True
+    assert FZ.file_sha256(pool) == rec["pool_confirm_sha256"]
+    pool.write_bytes(b"POOL = 2\r\n")
+    assert FZ.check_frozen(out, pool_file=pool)["ok"] is False

@@ -9,7 +9,7 @@ Everything in this file and in `bars.json` is fixed BEFORE any confirmatory seed
 - Calibration: held-out S1 to S3 parts only; headline level q = 0.05; the curve over q in [0.01, 0.02, 0.05, 0.1] is reported; group-test sizes [1, 4, 8, 16].
 - Taught-state rule (`THRESHOLDS`): {"solid_min_acc": 0.9, "solid_min_count": 500, "thin_acc_margin": 0.1, "thin_max_acc": 0.6, "thin_max_count": 100}.
 - Test messages: the confirmatory template pool `pool_confirm.py`, sha256 `85951b2b6ade867e534afd03b590b4c138748fa9f40919bceede43aa9a0a0012`.
-- Code: stamp `dc015a0facb9766e` over 47 files (all of `research/knowledge_status/*.py` and the `growmoe` files they import); the runners must refuse to run if it differs.
+- Code: stamp `c5c87b008aa642af` over 47 files (all of `research/knowledge_status/*.py` and the `growmoe` files they import); the runners must refuse to run if it differs.
 - Sizes and baseline settings: see `bars.json` (`sizes`, `baseline_params`).
 - How many dev seeds stand behind each bar is in the table (E1 ran on dev seeds 100 to 104 only, E4 on the seeds where addition and subtraction are really Solid, the AUROC for Thin against Solid only where a seed has both); a bar rests on fewer seeds where that column is small.
 
