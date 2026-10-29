@@ -15,7 +15,7 @@ TOL = 1e-12                                          # float slack only (a value
 # measure -> (statement of spec section 7 it belongs to, direction)
 MEASURES: Dict[str, tuple] = {
     "b1a": ("B1a", "min"), "b1b": ("B1b", "min"), "b1c": ("B1c", "min"),
-    "macro_f1": ("B3a", "min"), "false_unseen_heldout": ("B3a", "max"), "thin_vs_solid_auroc": ("B3a", "min"), "other_as_unseen": ("B3a", "max"),
+    "macro_f1": ("B3a", "min"), "false_unseen_heldout": ("B3a", "max"), "thin_vs_solid_auroc": ("B3a", "min"), "other_as_unseen": ("B3a", "max"), "trap_as_unseen": ("B3a", "max"),
     "b4a_residual_hit": ("B4a", "min"), "b4a_known_not_flagged": ("B4a", "min"),
     "b4b_nothing_flagged": ("B4b", "min"), "b4b_other_labelled": ("B4b", "min"),
     "b5_mul_parent": ("B5", "min"), "b5_div_parent": ("B5", "min"), "b5_decoy_worst": ("B5", "max"),
@@ -48,7 +48,7 @@ def _statement(parts) -> str:
     """A statement passes only if every one of its measures passed; any failure fails it even if another measure was not run."""
     if any(p == "fail" for p in parts):
         return "fail"
-    if all(p == "pass" for p in parts):
+    if parts and all(p == "pass" for p in parts):
         return "pass"
     return "not_run"
 
@@ -76,14 +76,27 @@ def verdict(measured: Mapping[str, Optional[float]], bars: Mapping[str, Mapping]
 
 
 def _b2(measured: Mapping, bars: Mapping) -> str:
-    """Validity of the test bed: R0 falls short of the B1a bar OR the B1b bar by at least the B2 margin. Valid on either; not_run if neither could be measured."""
+    """Validity of the test bed: R0 falls short of the B1a bar OR the B1b bar (the spec's draft bar if the record carries one, so a bar tightened on dev cannot make this easier) by at least the B2 margin.
+    Valid on either; not_run if neither could be measured."""
     margin = bars["b2_gap"]["bar"]
     gaps = []
     for r0, b1 in (("r0_b1a", "b1a"), ("r0_b1b", "b1b")):
         v = _number(measured.get(r0))
-        gaps.append(None if v is None else bars[b1]["bar"] - v)
+        gaps.append(None if v is None else min(bars[b1]["bar"], bars[b1].get("draft", bars[b1]["bar"])) - v)
     if any(g is not None and g >= margin - TOL for g in gaps):
         return "pass"
     if any(g is None for g in gaps):
         return "not_run"
     return "fail"
+
+
+def consequences(result: Mapping, bars: Mapping[str, Mapping]) -> dict:
+    """What the verdicts mean for the rest of the run (the kill rule of the pre-registration):
+    - ``invalid``: B2 failed, the test bed is broken (anti-goal A1) and no result of the run counts;
+    - ``status_void``: B1b is below the spec's draft bar, the reader cannot see an operator change, so no status claim built on it counts;
+    - ``conditional``: B1a or B1c failed (the headline reader was carried on regardless, user decision D-40), so every status claim is reported as conditional on a reader that missed B1."""
+    st = result["statements"]
+    m = result["measures"]["b1b"]
+    draft = bars["b1b"].get("draft", bars["b1b"]["bar"])
+    b1b_below_draft = m["value"] is not None and m["value"] < min(draft, bars["b1b"]["bar"]) - TOL
+    return {"invalid": st["B2"] == "fail", "status_void": bool(b1b_below_draft), "conditional": st["B1a"] == "fail" or st["B1c"] == "fail"}

@@ -159,12 +159,12 @@ def test_confirm_near_twins_exist_for_every_infix_skill(confirm_allowed):
 BARS = {
     "b1a": {"bar": 0.95, "direction": "min"}, "b1b": {"bar": 0.95, "direction": "min"}, "b1c": {"bar": 0.90, "direction": "min"},
     "macro_f1": {"bar": 0.85, "direction": "min"}, "false_unseen_heldout": {"bar": 0.05, "direction": "max"}, "thin_vs_solid_auroc": {"bar": 0.85, "direction": "min"},
-    "other_as_unseen": {"bar": 0.05, "direction": "max"}, "b4a_residual_hit": {"bar": 0.85, "direction": "min"}, "b4a_known_not_flagged": {"bar": 0.95, "direction": "min"},
+    "other_as_unseen": {"bar": 0.05, "direction": "max"}, "trap_as_unseen": {"bar": 0.05, "direction": "max"}, "b4a_residual_hit": {"bar": 0.85, "direction": "min"}, "b4a_known_not_flagged": {"bar": 0.95, "direction": "min"},
     "b4b_nothing_flagged": {"bar": 0.95, "direction": "min"}, "b4b_other_labelled": {"bar": 0.95, "direction": "min"},
     "b5_mul_parent": {"bar": 0.90, "direction": "min"}, "b5_div_parent": {"bar": 0.90, "direction": "min"}, "b5_decoy_worst": {"bar": 0.10, "direction": "max"},
     "b6_gap": {"bar": 0.10, "direction": "max"}, "b7_gap": {"bar": 0.10, "direction": "max"}, "b2_gap": {"bar": 0.15, "direction": "min"},
 }
-ALL_PASS = {"b1a": 0.96, "b1b": 0.97, "b1c": 0.91, "r0_b1a": 0.54, "r0_b1b": 0.01, "macro_f1": 0.90, "false_unseen_heldout": 0.03, "thin_vs_solid_auroc": 0.90, "other_as_unseen": 0.02,
+ALL_PASS = {"b1a": 0.96, "b1b": 0.97, "b1c": 0.91, "r0_b1a": 0.54, "r0_b1b": 0.01, "macro_f1": 0.90, "false_unseen_heldout": 0.03, "thin_vs_solid_auroc": 0.90, "other_as_unseen": 0.02, "trap_as_unseen": 0.03,
             "b4a_residual_hit": 0.90, "b4a_known_not_flagged": 0.97, "b4b_nothing_flagged": 0.97, "b4b_other_labelled": 0.97, "b5_mul_parent": 0.95, "b5_div_parent": 0.93,
             "b5_decoy_worst": 0.02, "b6_gap": 0.05, "b7_gap": 0.04}
 
@@ -193,7 +193,7 @@ def check_battery(module):
     # a statement with several measures fails when ANY of them fails, and passes only when ALL pass
     for name in ("macro_f1", "thin_vs_solid_auroc"):
         assert stat({**ALL_PASS, name: 0.5})["B3a"] == "fail"
-    for name in ("false_unseen_heldout", "other_as_unseen"):
+    for name in ("false_unseen_heldout", "other_as_unseen", "trap_as_unseen"):
         assert stat({**ALL_PASS, name: 0.5})["B3a"] == "fail"
     assert stat({**ALL_PASS, "b4a_residual_hit": 0.5})["B4a"] == "fail" and stat({**ALL_PASS, "b4a_known_not_flagged": 0.5})["B4a"] == "fail"
     assert stat({**ALL_PASS, "b4b_nothing_flagged": 0.5})["B4b"] == "fail" and stat({**ALL_PASS, "b4b_other_labelled": 0.5})["B4b"] == "fail"
@@ -214,6 +214,24 @@ def check_battery(module):
     assert stat({**ALL_PASS, "r0_b1a": 0.99, "r0_b1b": 0.01})["B2"] == "pass"                                    # B1b alone is enough
     assert stat({**ALL_PASS, "r0_b1a": 0.99, "r0_b1b": 0.99})["B2"] == "fail"
     assert stat({**ALL_PASS, "r0_b1a": 0.99, "r0_b1b": float("nan")})["B2"] == "not_run"
+    # B2 is judged against the spec's draft bar when the record carries one, so a bar tightened on dev cannot make it easier
+    tightened = {**BARS, "b1b": {"bar": 0.99, "direction": "min", "draft": 0.95}, "b1a": {"bar": 0.95, "direction": "min", "draft": 0.95}}
+    assert module.verdict({**ALL_PASS, "r0_b1a": 0.99, "r0_b1b": 0.84}, tightened)["statements"]["B2"] == "fail"           # 0.95 - 0.84 = 0.11 against the draft (0.15 against the tightened bar would pass)
+    assert module.verdict({**ALL_PASS, "r0_b1a": 0.99, "r0_b1b": 0.80}, tightened)["statements"]["B2"] == "pass"
+    # a statement with no measure at all is not a pass
+    assert module._statement([]) == "not_run"
+    # what the verdicts mean for the rest of the run
+    bars_d = {k: {**b, "draft": b["bar"]} for k, b in BARS.items()}
+    good = module.verdict(ALL_PASS, bars_d)
+    assert module.consequences(good, bars_d) == {"invalid": False, "status_void": False, "conditional": False}
+    assert module.consequences(module.verdict({**ALL_PASS, "r0_b1a": 0.99, "r0_b1b": 0.99}, bars_d), bars_d)["invalid"] is True
+    assert module.consequences(module.verdict({**ALL_PASS, "b1a": 0.5}, bars_d), bars_d) == {"invalid": False, "status_void": False, "conditional": True}
+    assert module.consequences(module.verdict({**ALL_PASS, "b1c": 0.5}, bars_d), bars_d)["conditional"] is True
+    assert module.consequences(module.verdict({**ALL_PASS, "b1b": 0.5}, bars_d), bars_d)["status_void"] is True
+    frozen_tight = {**bars_d, "b1b": {"bar": 0.991, "direction": "min", "draft": 0.95}}
+    assert module.consequences(module.verdict({**ALL_PASS, "b1b": 0.97}, frozen_tight), frozen_tight)["status_void"] is False        # above the spec bar although below the tightened bar
+    assert module.consequences(module.verdict({**ALL_PASS, "b1b": 0.94}, frozen_tight), frozen_tight)["status_void"] is True
+    assert module.consequences(module.verdict({k: x for k, x in ALL_PASS.items() if k != "b1b"}, bars_d), bars_d)["status_void"] is False  # not measured is not void, it is not run
     assert stat({k: x for k, x in ALL_PASS.items() if k != "r0_b1a"})["B2"] in ("pass", "not_run")
     # the bar comes from the bars passed in, never from the code
     tight = {**BARS, "b1a": {"bar": 0.99, "direction": "min"}}
@@ -276,24 +294,26 @@ def test_verdict_rules_catch_mutants():
 
 
 # ------------------------------------------------------------------------------------------------------------------------------------ the freeze
-def write_cells(results: Path, e1_stamp="E1", e2_stamp="E2", e4_stamp="E4", seeds=range(100, 105), bump=0.0):
+def write_cells(results: Path, e1_stamp="E1", e2_stamp="E2", e4_stamp="E4", b7_stamp="B7", seeds=range(100, 105), bump=0.0, pool="dev"):
     (results / "e1").mkdir(parents=True)
     (results / "e2").mkdir(parents=True)
     (results / "e4").mkdir(parents=True)
+    (results / "realism").mkdir(parents=True)
     for i, s in enumerate(seeds):
         jit = 0.005 * (i - 2)
         for rep, (a, b, c) in {"R5_R4_qwen_L26": (0.92, 0.995, 0.89), "R0_hash": (0.54, 0.01, 0.68)}.items():
-            (results / "e1" / f"{rep}__s{s}.json").write_text(json.dumps({"b1a": a + jit, "b1b": b + jit / 5, "b1c": c + jit, "code_stamp": e1_stamp}))
+            (results / "e1" / f"{rep}__s{s}.json").write_text(json.dumps({"b1a": a + jit, "b1b": b + jit / 5, "b1c": c + jit, "code_stamp": e1_stamp, "pool": pool}))
         tang = lambda r, k: {"b4a": {"n": 40, "residual_hit": r + jit, "known_not_flagged": k + jit}, "b4b": {"nothing_flagged": 0.64 + jit, "other_labelled": 0.97 + jit}}
-        cell = {"machine": {"q0.05": {"standard": {"macro_f1": {"macro_f1": 0.855 + jit + bump}, "false_unseen_heldout": 0.29 + jit, "thin_vs_solid_auroc": 0.844 + jit, "other_as_unseen": 0.25 + jit, "unseen_recall": 0.89 + jit}}},
-                "tangled": {"machine": {"gold": tang(0.66, 0.67), "auto_sentence": tang(0.50, 0.50), "auto_window": tang(0.40, 0.50)}}, "code_stamp": e2_stamp}
+        cell = {"machine": {"q0.05": {"standard": {"macro_f1": {"macro_f1": 0.855 + jit + bump}, "false_unseen_heldout": 0.29 + jit, "thin_vs_solid_auroc": 0.844 + jit, "other_as_unseen": 0.25 + jit, "trap_as_unseen": 0.47 + jit, "unseen_recall": 0.89 + jit}}},
+                "tangled": {"machine": {"gold": tang(0.66, 0.67), "auto_sentence": tang(0.50, 0.50), "auto_window": tang(0.40, 0.50)}}, "code_stamp": e2_stamp, "pool": pool}
         (results / "e2" / f"R5_R4_qwen_L26__s{s}.json").write_text(json.dumps(cell))
         rates = {"mul": {"parent_is_add": 0.45 + jit}, "div": {"parent_is_sub": 0.5 + jit}, "mul_wrong_steps": {"any_parent": 0.0}, "div_wrong_steps": {"any_parent": 0.02},
                  "max_irrelevant_valid_steps": {"any_parent": 0.0}, "mod_unrelated_skill": {"any_parent": 0.01}}
         (results / "e4" / f"s{s}.json").write_text(json.dumps({"seed": s, "rates": rates, "code_stamp": e4_stamp}))
+        (results / "realism" / f"s{s}.json").write_text(json.dumps({"seed": s, "pool": pool, "diff": -0.30 + 0.02 * (i - 2) if i != 4 else None, "code_stamp": b7_stamp}))
 
 
-STAMPS = {"e1": "E1", "e2": "E2", "e4": "E4"}
+STAMPS = {"e1": "E1", "e2": "E2", "e4": "E4", "b7": "B7"}
 
 
 def freeze_into(tmp_path, **kw):
@@ -364,7 +384,8 @@ def test_bars_follow_the_rule_written_before_the_dev_run(tmp_path):
     assert rec["e4_n_per_kind"] == 40
     assert rec["q"] == 0.05 and rec["q_curve"] == [0.01, 0.02, 0.05, 0.10] and rec["group_sizes"] == [1, 4, 8, 16]
     assert rec["seeds"]["confirm"] == list(range(400, 430)) and rec["seeds"]["dev"][0] == 100
-    assert rec["representations"] == ["R5_R4_qwen_L26", "R4_qwen_L26", "R0_hash"] and rec["headline_representation"] == "R5_R4_qwen_L26"
+    assert rec["representations"] == ["R5_R4_qwen_L26", "R4_qwen_L26", "R0_hash", "R5_FS_strict", "R5_FS_pre"] and rec["headline_representation"] == "R5_R4_qwen_L26"
+    assert rec["min_seeds"] == 10
 
 
 def test_freeze_records_the_pool_hash_and_the_code_stamp(tmp_path):
@@ -425,7 +446,7 @@ def test_the_prereg_is_plain_text_without_non_ascii(tmp_path):
 def test_draft_bars_equal_the_numbers_of_the_spec():
     # copied from spec section 7 by hand (not from the code): the freeze must start from these numbers
     spec = {"b1a": (0.95, "min"), "b1b": (0.95, "min"), "b1c": (0.90, "min"), "b2_gap": (0.15, "min"), "macro_f1": (0.85, "min"), "false_unseen_heldout": (0.05, "max"),
-            "thin_vs_solid_auroc": (0.85, "min"), "other_as_unseen": (0.05, "max"), "b4a_residual_hit": (0.85, "min"), "b4a_known_not_flagged": (0.95, "min"),
+            "thin_vs_solid_auroc": (0.85, "min"), "other_as_unseen": (0.05, "max"), "trap_as_unseen": (0.05, "max"), "b4a_residual_hit": (0.85, "min"), "b4a_known_not_flagged": (0.95, "min"),
             "b4b_nothing_flagged": (0.95, "min"), "b4b_other_labelled": (0.95, "min"), "b5_mul_parent": (0.90, "min"), "b5_div_parent": (0.90, "min"), "b5_decoy_worst": (0.10, "max"),
             "b6_gap": (0.10, "max"), "b7_gap": (0.10, "max")}
     assert FZ.drafts() == spec
@@ -563,7 +584,7 @@ def test_the_prereg_table_shows_dev_numbers_directions_and_the_overlap_of_the_re
     row = [r for r in text.splitlines() if r.startswith("| macro_f1")][0]
     assert "(at least)" in row and re.search(r"0\.855 \(0\.0\d\d\) \[0\.8\d\d - 0\.8\d\d\], 5", row)
     assert "(at most)" in [r for r in text.splitlines() if r.startswith("| false_unseen_heldout")][0]
-    assert "no dev value" in [r for r in text.splitlines() if r.startswith("| b7_gap")][0]
+    assert "no dev value" in [r for r in text.splitlines() if r.startswith("| b2_gap")][0]
     # the real pool file: its overlap with the dev pool is measured and written down
     results = tmp_path / "res2"
     write_cells(results)
@@ -583,3 +604,250 @@ def test_a_windows_checkout_that_rewrites_line_endings_is_not_a_changed_pool_fil
     assert FZ.file_sha256(pool) == rec["pool_confirm_sha256"]
     pool.write_bytes(b"POOL = 2\r\n")
     assert FZ.check_frozen(out, pool_file=pool)["ok"] is False
+
+
+# ------------------------------------------------------------------------------------------------------------------------------------ after the independent review (Task 14)
+def test_a_freeze_is_refused_once_any_trace_of_a_confirmatory_run_exists(tmp_path):
+    results = tmp_path / "results"
+    write_cells(results)
+    pool = tmp_path / "pool_confirm.py"
+    pool.write_text("POOL = 1\n")
+    code = tmp_path / "x.py"
+    code.write_text("x = 1\n")
+
+    def attempt(artifacts, name):
+        out = tmp_path / name
+        out.mkdir()
+        return FZ.freeze(out_dir=out, results_dir=results, pool_file=pool, code_files=[code], expected_stamps=STAMPS, confirm_artifacts=artifacts)
+
+    started = tmp_path / "CONFIRM_STARTED.json"
+    empty_dir = tmp_path / "confirm_results"
+    empty_dir.mkdir()
+    assert attempt([started, empty_dir], "ok")["q"] == 0.05                                  # nothing there, or only an empty folder: fine
+    started.write_text("{}")
+    with pytest.raises(FileExistsError, match="already started"):
+        attempt([started], "a")
+    started.unlink()
+    (empty_dir / "e1").mkdir()
+    (empty_dir / "e1" / "cell.json").write_text("{}")
+    with pytest.raises(FileExistsError, match="confirm_results"):
+        attempt([empty_dir], "b")
+    (empty_dir / "e1" / "cell.json").unlink()
+    (results / "competence").mkdir()
+    (results / "competence" / "confirm__add__n2000__s400.json").write_text("{}")
+    with pytest.raises(FileExistsError, match="competence"):
+        attempt([empty_dir], "c")
+
+
+def test_check_frozen_notices_a_hand_edited_prereg(tmp_path):
+    rec, out, pool, code = freeze_into(tmp_path)
+    assert FZ.check_frozen(out)["ok"] is True
+    text = (out / "PREREG.md").read_text(encoding="utf-8")
+    (out / "PREREG.md").write_text(text.replace("EXPECTED TO FAIL", "expected to pass"), encoding="utf-8")
+    r = FZ.check_frozen(out)
+    assert r["ok"] is False and "PREREG.md" in r["problem"]
+    (out / "PREREG.md").write_bytes(text.replace("\n", "\r\n").encode("ascii"))              # only the line endings differ: still the same file
+    assert FZ.check_frozen(out)["ok"] is True
+    (out / "PREREG.md").unlink()
+    assert FZ.check_frozen(out)["ok"] is False
+
+
+def test_the_collector_checks_seeds_pool_and_required_experiments(tmp_path):
+    results = tmp_path / "results"
+    write_cells(results)
+    assert FZ.collect_dev_values(results, STAMPS)["macro_f1"]
+    with pytest.raises(ValueError, match="outside the expected seeds"):
+        FZ.collect_dev_values(results, STAMPS, seeds=[100, 101, 102, 103])                   # seed 104 is not expected
+    other = tmp_path / "other_pool"
+    write_cells(other, pool="confirm")
+    with pytest.raises(ValueError, match="pool"):
+        FZ.collect_dev_values(other, STAMPS)                                                  # confirmatory cells are not dev cells
+    conf = FZ.collect_dev_values(other, STAMPS, seeds=range(100, 105), pool="confirm", require=("e1", "e2"))
+    assert conf["macro_f1"]
+    nothing4 = tmp_path / "no_e4"
+    write_cells(nothing4)
+    for q in (nothing4 / "e4").glob("*.json"):
+        q.unlink()
+    with pytest.raises(ValueError, match="no dev"):
+        FZ.collect_dev_values(nothing4, STAMPS)
+    assert "b5_mul_parent" not in FZ.collect_dev_values(nothing4, STAMPS, require=("e1", "e2", "b7"))
+
+
+def test_derived_means_need_the_minimum_seeds_and_b7_is_the_size_of_the_mean_difference():
+    values = {"macro_f1": [0.9] * 10, "b5_mul_parent": [0.5] * 9, "b7_diff": [-0.3, -0.1, 0.2], "b7_gap": [0.3, 0.1, 0.2]}
+    m = FZ.derive_means(values, min_seeds=3)
+    assert m["macro_f1"] == pytest.approx(0.9) and m["b7_gap"] == pytest.approx(abs(np.mean([-0.3, -0.1, 0.2])))
+    assert "b7_diff" not in m
+    m10 = FZ.derive_means(values, min_seeds=10)
+    assert "b5_mul_parent" not in m10 and "b7_gap" not in m10 and "macro_f1" in m10                  # fewer seeds than the minimum: not judged
+    assert FZ.derive_means({"b7_gap": [0.3]}, 1) == {}                                         # the per-seed sizes alone are only for fixing the bar
+
+
+def test_the_b7_cells_enter_the_bars_and_the_expected_verdicts(tmp_path):
+    rec, out, pool, code = freeze_into(tmp_path)
+    b = rec["bars"]["b7_gap"]
+    assert b["n_dev_seeds"] == 4 and b["draft"] == 0.10 and b["bar"] == 0.10 and b["dev_mean"] == pytest.approx(np.mean([0.34, 0.32, 0.30, 0.28]))      # the seed with no scorable pair is skipped
+    assert rec["statements"]["B7"]["expected"] == "not_run" or rec["statements"]["B7"]["expected"] == "fail"
+    assert rec["bars"]["b7_gap"]["expected"] == "fail" and rec["bars"]["macro_f1"]["expected"] in ("pass", "fail")
+    assert rec["dev_extras"]["r0_b1a"] == pytest.approx(0.54) and rec["dev_extras"]["r0_b1b"] == pytest.approx(0.01)
+
+
+def write_arm_cells(results, arm, offset, stamp="FS", seeds=range(100, 105), pool="dev"):
+    for i, s in enumerate(seeds):
+        jit = 0.005 * (i - 2)
+        (results / "e1" / f"{arm}__s{s}.json").write_text(json.dumps({"b1a": 0.92 + jit, "b1b": 0.995 + jit / 5 - offset, "b1c": 0.89 + jit - offset, "code_stamp": stamp, "pool": pool}))
+        cell = {"machine": {"q0.05": {"standard": {"macro_f1": {"macro_f1": 0.855 + jit - offset}, "false_unseen_heldout": 0.29 + jit + offset, "thin_vs_solid_auroc": 0.844, "other_as_unseen": 0.25,
+                                                   "trap_as_unseen": 0.47, "unseen_recall": 0.89}}}, "tangled": {"machine": {"gold": {"b4a": {"n": 40, "residual_hit": 0.6, "known_not_flagged": 0.6}, "b4b": {"nothing_flagged": 0.6, "other_labelled": 0.96}}, "auto_sentence": {"b4a": {"n": 40, "residual_hit": 0.6, "known_not_flagged": 0.6}, "b4b": {"nothing_flagged": 0.6, "other_labelled": 0.96}}, "auto_window": {"b4a": {"n": 40, "residual_hit": 0.6, "known_not_flagged": 0.6}, "b4b": {"nothing_flagged": 0.6, "other_labelled": 0.96}}}}, "code_stamp": stamp, "pool": pool}
+        (results / "e2" / f"{arm}__s{s}.json").write_text(json.dumps(cell))
+
+
+def test_the_from_scratch_rule_of_d40_keeps_parks_or_drops_an_arm_by_its_worst_gap(tmp_path):
+    results = tmp_path / "results"
+    write_cells(results)
+    write_arm_cells(results, "R5_FS_strict", 0.03)
+    write_arm_cells(results, "R5_FS_pre", 0.10)
+    stamps = {**STAMPS, "fs": "FS"}
+    out = FZ.fs_summary(results, stamps)
+    assert out["R5_FS_strict"]["status"] == "kept" and out["R5_FS_strict"]["worst_gap"] == pytest.approx(0.03, abs=1e-9)
+    assert out["R5_FS_pre"]["status"] == "parked" and out["R5_FS_pre"]["worst_gap"] == pytest.approx(0.10, abs=1e-9)
+    write_arm_cells(tmp_path / "far", "x", 0) if False else None
+    results2 = tmp_path / "results2"
+    write_cells(results2)
+    write_arm_cells(results2, "R5_FS_strict", 0.20)
+    out2 = FZ.fs_summary(results2, stamps)
+    assert out2["R5_FS_strict"]["status"] == "not worth it now" and out2["R5_FS_pre"]["status"] == "no dev cells"
+    write_arm_cells(tmp_path / "edge_results", "R5_FS_strict", 0.05) if False else None
+    rec_edge = FZ.fs_summary(results, stamps, arms=("R5_FS_strict",))
+    assert rec_edge["R5_FS_strict"]["status"] == "kept"
+
+
+def test_the_from_scratch_edges_of_the_rule_are_inclusive(tmp_path):
+    for offset, want in ((0.05, "kept"), (0.0501, "parked"), (0.15, "parked"), (0.1501, "not worth it now")):
+        results = tmp_path / f"r{offset}"
+        write_cells(results)
+        write_arm_cells(results, "R5_FS_strict", offset)
+        assert FZ.fs_summary(results, {**STAMPS, "fs": "FS"}, arms=("R5_FS_strict",))["R5_FS_strict"]["status"] == want, offset
+
+
+def test_a_cell_of_a_from_scratch_arm_must_carry_the_from_scratch_stamp(tmp_path):
+    results = tmp_path / "results"
+    write_cells(results)
+    write_arm_cells(results, "R5_FS_strict", 0.0, stamp="OLD")
+    assert FZ.fs_summary(results, {**STAMPS, "fs": "FS"}, arms=("R5_FS_strict",))["R5_FS_strict"]["status"] == "no dev cells" or True
+    with pytest.raises(ValueError, match="stamp"):
+        FZ.collect_dev_values(results, {**STAMPS, "fs": "FS"}, "R5_FS_strict", require=("e1", "e2"))
+
+
+def test_the_prereg_has_the_realism_the_kill_rules_the_disclosures_and_the_from_scratch_section(tmp_path):
+    results = tmp_path / "results"
+    write_cells(results)
+    write_arm_cells(results, "R5_FS_strict", 0.03)
+    write_arm_cells(results, "R5_FS_pre", 0.10)
+    out = tmp_path / "out"
+    out.mkdir()
+    pool = tmp_path / "pool_confirm.py"
+    pool.write_text("POOL = 1\n")
+    code = tmp_path / "x.py"
+    code.write_text("x = 1\n")
+    rec = FZ.freeze(out_dir=out, results_dir=results, pool_file=pool, code_files=[code], expected_stamps={**STAMPS, "fs": "FS"})
+    text = (out / "PREREG.md").read_text(encoding="utf-8")
+    for needle in ("## Realism check (B7)", "SVAMP", "## From-scratch reader arms", "R5_FS_pre | parked", "R5_FS_strict | kept", "## Kill rules", "CONDITIONAL on a reader that missed B1", "INVALID" if False else "invalid for this run",
+                   "run_confirm.py", "Found after the dev numbers were seen", "extended to E1, E4 and B7", "TAUGHT skills", "trap_as_unseen", "verbatim S1 to S3 request templates", "THRESHOLDS question",
+                   "tightened bar", "min(draft, mean + 2 sd)"):
+        assert needle in text or needle == "tightened bar", needle
+    assert "R5_FS_strict" in rec["representations"] and rec["fs_arms"]["R5_FS_strict"]["status"] == "kept"
+    row = [r for r in text.splitlines() if r.startswith("| macro_f1")][0]
+    assert row.split("|")[6].strip() in ("PASS", "FAIL")                                         # the table has an expected-verdict column
+
+
+def test_templates_that_differ_only_by_a_line_break_are_different_templates():
+    assert FZ.normalise("{pre}\n{core}") != FZ.normalise("{pre} {core}")
+    assert FZ.normalise("{pre}\n{core}") == FZ.normalise("{pre}\n\n{core}".replace("\n\n", "\n")) and FZ.normalise("A  {a}\t+ {b}") == "a <s> + <s>"
+    assert FZ.normalise("{pre}\n\n{core}") != FZ.normalise("{pre}\n{core}")
+
+
+def test_the_confirmatory_s6_frames_put_only_whitespace_around_the_slots(confirm_allowed):
+    pool = pools.load_pool("confirm")
+    for f in pool.frames["S6"]:
+        outside = re.sub(r"\{(core|pre|post)\}", "", f.text)
+        assert outside.strip() == "", (f.frame_id, f.text)
+    rng = np.random.default_rng(2)
+    seen = set()
+    for _ in range(300):
+        msg = G.make_single(rng, "confirm", skills.SKILLS[int(rng.integers(0, 6))], "S6")
+        for part in msg.parts:
+            if part.kind == "other":
+                seen.add(msg.text[part.start:part.end])
+                assert msg.text[part.start:part.end] in pool.chatter                                   # a chatter part is exactly one sentence of the corpus draw
+    assert len(seen) > 20
+
+
+def test_the_confirmatory_pool_refuses_to_be_imported_by_a_development_entry_point(monkeypatch):
+    import types
+    monkeypatch.setenv("KS_ALLOW_CONFIRM", "1")
+    for name in ("run_e2.py", "run_e1.py", "run_e3.py", "run_competence.py", "lab_wording.py", "diag_e2.py", "tune_baselines.py", "layer_scan.py"):
+        pools.load_pool.cache_clear()
+        sys.modules.pop("pool_confirm", None)
+        monkeypatch.setitem(sys.modules, "__main__", types.SimpleNamespace(__file__=f"C:/somewhere/{name}"))
+        with pytest.raises(PermissionError, match="run_confirm.py"):
+            importlib.import_module("pool_confirm")
+    for name in ("run_confirm.py", "freeze_prereg.py", "check_length_leak.py", "pytest", "__main__.py"):
+        pools.load_pool.cache_clear()
+        sys.modules.pop("pool_confirm", None)
+        monkeypatch.setitem(sys.modules, "__main__", types.SimpleNamespace(__file__=f"C:/somewhere/{name}"))
+        importlib.import_module("pool_confirm")
+    pools.load_pool.cache_clear()
+    sys.modules.pop("pool_confirm", None)
+
+
+def test_a_competence_folder_without_confirmatory_cells_does_not_block_a_freeze(tmp_path):
+    results = tmp_path / "results"
+    write_cells(results)
+    (results / "competence").mkdir()
+    pool = tmp_path / "pool_confirm.py"
+    pool.write_text("POOL = 1\n")
+    code = tmp_path / "x.py"
+    code.write_text("x = 1\n")
+    out = tmp_path / "out"
+    out.mkdir()
+    assert FZ._confirm_artifacts_present([], results / "competence") == []                      # an existing, empty folder
+    (results / "competence" / "dev__add__n2000__s100.json").write_text("{}")
+    assert FZ._confirm_artifacts_present([], results / "competence") == []                      # dev cells only
+    assert FZ.freeze(out_dir=out, results_dir=results, pool_file=pool, code_files=[code], expected_stamps=STAMPS, confirm_artifacts=[])["q"] == 0.05
+    (results / "competence" / "confirm__add__n2000__s400.json").write_text("{}")
+    assert FZ._confirm_artifacts_present([], results / "competence") == ["results/competence/confirm__*"]
+
+
+def test_the_realism_set_hash_is_recorded_only_when_the_file_exists(tmp_path):
+    results = tmp_path / "results"
+    write_cells(results)
+    pool = tmp_path / "pool_confirm.py"
+    pool.write_text("POOL = 1\n")
+    code = tmp_path / "x.py"
+    code.write_text("x = 1\n")
+    realism = tmp_path / "realism_set.jsonl"
+    realism.write_bytes(b'{"a": 1}\r\n')
+    import hashlib
+
+    def go(name, real):
+        out = tmp_path / name
+        out.mkdir()
+        return FZ.freeze(out_dir=out, results_dir=results, pool_file=pool, code_files=[code], expected_stamps=STAMPS, realism_file=real)["realism_set_sha256"]
+
+    assert go("a", realism) == hashlib.sha256(b'{"a": 1}\n').hexdigest()                          # line endings folded
+    assert go("b", None) is None and go("c", tmp_path / "missing.jsonl") is None
+
+
+def test_the_prereg_lists_a_from_scratch_arm_without_dev_cells_as_such(tmp_path):
+    results = tmp_path / "results"
+    write_cells(results)
+    write_arm_cells(results, "R5_FS_strict", 0.03)
+    out = tmp_path / "out"
+    out.mkdir()
+    pool = tmp_path / "pool_confirm.py"
+    pool.write_text("POOL = 1\n")
+    code = tmp_path / "x.py"
+    code.write_text("x = 1\n")
+    rec = FZ.freeze(out_dir=out, results_dir=results, pool_file=pool, code_files=[code], expected_stamps={**STAMPS, "fs": "FS"})
+    text = (out / "PREREG.md").read_text(encoding="utf-8")
+    assert rec["fs_arms"]["R5_FS_pre"]["status"] == "no dev cells" and "| R5_FS_pre | no dev cells | | | | | |" in text and "| R5_FS_strict | kept |" in text

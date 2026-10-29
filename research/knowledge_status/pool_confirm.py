@@ -9,9 +9,15 @@ here, before the freeze, and the dev numbers on chatter are therefore not compar
 """
 
 import os
+import re
+import sys
 
 if os.environ.get("KS_ALLOW_CONFIRM") != "1":
     raise PermissionError("the confirmatory pool is single-use: set KS_ALLOW_CONFIRM=1 only for the pre-registered confirmatory run")
+
+_ENTRY = os.path.basename(getattr(sys.modules.get("__main__"), "__file__", "") or "")
+if re.match(r"(run_|lab_|diag_|tune_|layer_scan)", _ENTRY) and _ENTRY != "run_confirm.py":
+    raise PermissionError(f"{_ENTRY} is a development entry point and writes into the dev result folders; the confirmatory pool is run only through run_confirm.py")
 
 from pools import Core, Frame, Pool
 
@@ -31,7 +37,7 @@ S1 = {   # symbols and infix words, digits
     "mul": ["( {a} * {b} )", "{a} * {b} = ?", "{a} times {b} gives", "compute {a}*{b}"],
     "div": ["( {a} / {b} )", "{a} / {b} = ?", "{a} divided by {b} gives", "compute {a}/{b}"],
     "mod": ["( {a} % {b} )", "{a} % {b} = ?", "{a} mod {b} gives", "compute {a}%{b}"],
-    "max": ["max of ( {a} , {b} )", "max ( {a} ; {b} ) = ?", "maximum value ( {a} , {b} )", "pick the max: {a} {b}"],
+    "max": ["max of ( {a} , {b} )", "max [ {a} , {b} ] = ?", "maximum value ( {a} , {b} )", "pick the max: {a} {b}"],
 }
 S2 = {   # the same requests in number words
     "add": ["how much is {aw} plus {bw}", "( {aw} plus {bw} )", "what do I get from {aw} plus {bw}", "{aw} plus {bw}, written out"],
@@ -52,7 +58,7 @@ S3 = {   # verbal phrasing, digits (some phrasings name the operands in the othe
 }
 S4 = {   # short stories
     "add": ["A baker made {a} {things} before noon and {b} more after lunch. What is the day's count?", "Tom's left pocket has {a} {things} and his right pocket has {b}. How many is he carrying?",
-            "Mia found {a} {things} at the park, then {b} more at home. How many does she own now?"],
+            "Mia found {a} {things} at the park and then {b} more at home. How many does she own now?"],
     "sub": ["A baker made {a} {things} and sold {b} of them by noon. How many are still on the tray?", "Tom started with {a} {things} but dropped {b} along the way. What does he have left?",
             "The box held {a} {things} until {b} were taken out. How many stay in the box?"],
     "mul": ["A baker fills {a} trays with {b} {things} on each tray. What is the count of {things} baked?", "Each of {a} pockets holds {b} {things}. How many {things} can all the pockets carry?",
@@ -66,9 +72,9 @@ S4 = {   # short stories
             "A club had {a} visitors in winter and {b} in summer. What is its busiest season's count?"],
 }
 S5 = {   # commutative skills with the operands shown in the other order
-    "add": ["{b} with {a} included, in total", "start from {b} and add {a}", "( {b} + {a} )"],
-    "mul": ["{b} copies of {a}, counted up", "( {b} * {a} )", "{b} multiplied up by {a}"],
-    "max": ["the top one of {b} and {a}", "( max {b} , {a} )", "{b} against {a}, the bigger wins"],
+    "add": ["{b} with {a} included, in total", "start from {b} and add {a}", "{b} + {a} , totalled"],
+    "mul": ["{b} copies of {a}, counted up", "{b} * {a} , multiplied out", "{b} multiplied up by {a}"],
+    "max": ["the top one of {b} and {a}", "{b} against {a}, bigger wins", "the top of {b} and {a}"],
 }
 
 CORES = {fam: tuple(c for skill, texts in table.items() for c in _cores(fam, skill, texts, swap=(fam == "S5")))
@@ -80,9 +86,8 @@ FRAMES = {
     "S3": _frames("S3", ["Problem: {core}", "Hello, would you tell me {core}", "Could you answer: {core}", "Need a hand with: {core}", "One thing I wonder: {core}"]),
     "S4": _frames("S4", ["Little riddle for you. {core}", "{core} A number is all I need.", "From a workbook: {core}", "Imagine this. {core}", "{core} Show only the final count."]),
     "S5": _frames("S5", ["Find {core}", "How about {core}", "Look at {core}", "Reckon {core}", "I wonder about {core}"]),
-    "S6": _frames("S6", ["{pre} So, {core}", "By the way, {core} {post}", "{pre} Now then, {core}. {post}", "Before I forget, {core}. {post}", "{pre} Oh, and {core}",
-                         "{core}, if you do not mind. {post}"]),
-    "S7": _frames("S7", ["{core} when you can", "Okay: {core}", "{core} thank you", "Hmm {core}", "A quick one - {core}"], noises=["typo", "typo", "case", "space", "mix"]),
+    "S6": _frames("S6", ["{pre}\n{core}", "{core}\n{post}", "{pre}\n{core}\n{post}", "{pre}\n\n{core}", "{core}\n\n{post}", "{pre}\n\n{core}\n\n{post}"]),   # only whitespace outside the slots: the parts scored as Other are exactly the corpus sentences
+    "S7": _frames("S7", ["{core} when you can", "Okay: {core}", "{core} thank you", "Hmm {core}", "Small request: {core}"], noises=["typo", "typo", "case", "space", "mix"]),
     "S8": _frames("S8", ["Dear assistant, may I request the result of: {core}", "Respectfully, I ask you to evaluate: {core}", "sup, can u do {core}", "lol {core}", "{core} thx"]),
 }
 
