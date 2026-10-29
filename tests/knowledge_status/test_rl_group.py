@@ -115,3 +115,17 @@ def test_holm_stops_at_the_first_skill_that_fails_its_threshold():
     nums, ans = parts("add", [(11, 22), (33, 44), (55, 12), (61, 29), (73, 15), (88, 7)])
     res = GC.explained_window(SOLVERS, ["sub", "add"], nums, ans, rng, alpha=0.01, n_perm=200)
     assert res["add"]["present"] and res["add"]["p"] < res["sub"]["p"]
+
+
+def test_a_zero_divisor_never_explains_in_either_order_and_other_skills_may_use_a_zero_operand():
+    assert GC.hit_matrix(SOLVERS["div"], [[0, 0]], [0], "div").sum() == 0                        # 0 // 0 is never computed, so the solver's placeholder 0 cannot "explain" an answer of 0
+    assert GC.hit_matrix(SOLVERS["mod"], [[0, 0]], [0], "mod").sum() == 0
+    assert GC.hit_matrix(SOLVERS["sub"], [[5, 0]], [5], "sub")[0, 0] == 1                        # a zero second operand is fine for subtraction: 5 - 0 == 5 (the other order gives -5)
+
+
+def test_overturn_follows_the_nearest_skill_whichever_one_it_is():
+    nums = [[a, 0] for a in (40, 50, 60, 70, 80, 90)]
+    ans = [a for a, _ in nums]
+    for near in ("add", "max"):
+        got = GC.overturn(list(range(6)), dict(enumerate(nums)), dict(enumerate(ans)), SOLVERS, ["add", "max"], window=6, rng=np.random.default_rng(6), nearest={i: near for i in range(6)})
+        assert set(got.values()) == {near} and len(got) == 6

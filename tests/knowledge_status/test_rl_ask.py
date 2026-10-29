@@ -190,3 +190,29 @@ def test_the_hybrid_rule_lets_the_none_class_cover_other_content_before_the_nami
     P2 = np.stack([row(mul=0.3, none=0.93)])
     assert RU.unseen_flags("plain", P2, ["add", "sub"], m).tolist() == [False] or True
     assert RU.unseen_flags("hyb0.0", P2, ["add", "sub"], m).tolist() == [False]
+
+
+def test_assess_by_rule_gives_each_rule_its_statuses():
+    import ask_rules as RU
+    m = machine()
+    states, comp, counts = {"add": "solid", "sub": "thin"}, {"add": 0.95, "sub": 0.4}, {"add": 2000, "sub": 20}
+    P = np.stack([row(add=0.97), row(sub=0.97), row(mul=0.97), row(none=0.97)])
+    plain = RU.assess_by_rule("tau0.5", P, ["add", "sub"], states, comp, counts, m)
+    assert [a.status for a in plain] == ["solid", "thin", "unseen", "other"]
+    assert (plain[0].skill, plain[0].evidence, plain[0].competence) == ("add", 2000, 0.95) and (plain[1].skill, plain[1].evidence) == ("sub", 20)
+    assert plain[2].skill is None and math.isnan(plain[2].competence) and plain[2].nearest == "mul"
+    assert plain[3].skill is None and plain[3].competence == 1.0
+    assert [a.status for a in RU.assess_by_rule("hyb0.5", P, ["add", "sub"], states, comp, counts, m)] == ["solid", "thin", "unseen", "other"]
+    conf = RU.assess_by_rule("conf0.05", P, ["add", "sub"], states, comp, counts, m)
+    assert conf == m.assess_many(P) and m.q == 0.05
+
+
+def test_the_hybrid_takes_a_part_the_calibrated_none_class_covers_even_when_the_model_names_an_untaught_operation():
+    import ask_rules as RU
+    rng = np.random.default_rng(1)
+    cal = {"add": np.stack([row(add=0.9 + 0.09 * rng.random()) for _ in range(40)]), "none": np.stack([row(none=0.30 + 0.2 * rng.random(), mul=0.2) for _ in range(40)])}
+    m = AR.AskMachine(cal, {"add": "solid"}, {"add": 0.95}, {"add": 2000}, q=0.05)
+    states, comp, counts = {"add": "solid"}, {"add": 0.95}, {"add": 2000}
+    P = np.stack([row(mul=0.45, none=0.35)])                                                       # mul is the top option, but the none class covers it (as it covers the traps in calibration)
+    assert RU.assess_by_rule("tau0.5", P, ["add"], states, comp, counts, m)[0].status == "unseen"
+    assert RU.assess_by_rule("hyb0.5", P, ["add"], states, comp, counts, m)[0].status == "other"
