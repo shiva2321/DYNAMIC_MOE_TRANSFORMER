@@ -507,3 +507,12 @@ Nothing here changes the frozen-run machinery; all new code is in `routing_lab/`
 - Real problems: operation named correctly 0.75-0.92; problems of a taught skill called unseen 0.10-0.35 (the look-based machine: 0.98); never-taught skills found 0.60-0.90.
 - Thin against Solid is not improved (it needs competence, not reading): AUROC 0.75-0.90, as before.
 - Rule for going on: Lab A is a success if the false alarm on S4-S8 is at most 0.12 AND never-taught found is at least 0.80 AND real-problem false alarm is at most 0.35. Otherwise it is a recorded negative result.
+
+
+### Addendum to the Lab A plan (before the first real run): several experts, and one fix
+
+**Your note, built in.** Routing does not have to pick ONE expert: it may use any number, but only as many as are reasonable, usable and helpful, and the ones used share what matters. The design that follows: the router answers with a SET of experts whose size adapts. Empty set = nothing taught explains the part (novel); one expert = a confident route; several = ambiguous, or a part that needs more than one (a tangled message, a skill built from a parent). An expert enters the set only if (1) it is competent enough to be usable in that region, (2) it adds coverage that the others do not, and (3) its compute is worth that gain; the cap and the cost rule are tested in Lab D. "Sharing what matters" is read as: the numbers read from the message are read once and handed to every expert in the set, and their agreement or disagreement is the evidence for the group test of Lab B.
+
+**The fix.** My first unit test showed a flaw in my own design before any real run: the conformity score was class-agnostic (the largest known probability), so every known class "covered" every confident part. It is now class-specific (the probability the model gives that class, ranked among the held-out parts of that class), the standard class-conditional conformal set. The prediction block above is unchanged; the code now also reports the covering sets.
+
+**Extra predictions (sets).** Known skills in the taught wordings S1-S3: true skill in the set 0.93-0.99. Known skills in new wordings S4-S8: 0.75-0.92. Two or more experts in the set: under 0.10 of the parts (the asked probabilities are peaked); mean size when not empty 1.0-1.2. Never-taught skills: empty set 0.75-0.92 (the same as "found").

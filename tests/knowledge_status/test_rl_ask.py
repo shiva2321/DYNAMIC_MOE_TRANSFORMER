@@ -36,10 +36,11 @@ def test_softmax_is_a_distribution_and_stable():
     assert p.sum() == pytest.approx(1.0) and p.argmax() == 1 and np.isfinite(p).all()
 
 
-def test_known_conformity_is_the_largest_known_probability():
-    P = np.stack([row(add=0.9), row(mul=0.9), row(none=0.6)])
-    s = AR.known_conformity(P, ["add", "sub", "none"])
-    assert s[0] == pytest.approx(0.9) and s[1] < 0.1 and s[2] == pytest.approx(0.6)
+def test_a_class_covers_a_part_through_its_own_probability_only():
+    m = machine()
+    cov = m.covering(np.stack([row(add=0.97), row(sub=0.97), row(none=0.97), row(add=0.5, sub=0.45)]))
+    assert cov[0].tolist() == [True, False, False] and cov[1].tolist() == [False, True, False] and cov[2].tolist() == [False, False, True]
+    assert not cov[3].any()                                                                    # torn between two classes, neither is confident enough: nothing covers it
 
 
 def test_a_confidently_named_taught_skill_is_covered_and_gets_its_state():
@@ -146,3 +147,22 @@ def test_letters_must_be_single_distinct_tokens():
 
     with pytest.raises(RuntimeError, match="single token"):
         AR.letter_ids(Multi())
+
+
+def test_the_covering_set_is_empty_for_a_novel_part_single_for_a_clear_one_and_matches_the_assessment():
+    m = machine()
+    P = np.stack([row(add=0.97), row(mul=0.97), np.full(len(AR.OPS), 1.0 / len(AR.OPS))])
+    cov = m.covering(P)
+    assert cov.shape == (3, 3) and m.known == ["add", "sub", "none"]
+    assert cov[0].tolist() == [True, False, False] and not cov[1].any() and not cov[2].any()
+    assert [a.status == "unseen" for a in m.assess_many(P)] == [not c.any() for c in cov]
+
+
+def test_set_stats_counts_coverage_empty_single_and_multi():
+    cov = np.array([[1, 0, 0], [1, 1, 0], [0, 0, 0], [0, 1, 0]], dtype=bool)
+    s = LA.set_stats(cov, [0, 1, 2, 3], [0, 0, 1, 0])
+    assert s["n"] == 4 and s["coverage"] == pytest.approx(0.5) and s["empty"] == pytest.approx(0.25) and s["single"] == pytest.approx(0.5) and s["multi"] == pytest.approx(0.25)
+    assert s["mean_size_nonempty"] == pytest.approx(4 / 3)
+    never = LA.set_stats(cov, [2], [None])
+    assert never["empty"] == 1.0 and math.isnan(never["coverage"]) and math.isnan(never["mean_size_nonempty"])
+    assert LA.set_stats(cov, [], [])["n"] == 0

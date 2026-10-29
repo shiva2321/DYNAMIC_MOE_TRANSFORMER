@@ -1,9 +1,10 @@
 """A reader that ASKS instead of comparing: the language model is shown the message and a multiple-choice question ("which operation does it ask for?"), and the probabilities of the answer letters
 are the reader's output. Wording is handled by the model's own language understanding, not by a distance in an embedding space.
 
-A message gets a probability for each of the six operations and for "none". The status of a part is decided exactly as the look-based machine decides it (class-conditional conformal p-values,
-calibration on held-out parts of the taught skills in wordings S1 to S3 only, level q): the score of a part is 1 - the largest probability among the KNOWN classes (the taught skills and "none"),
-so a part the model names as an operation nobody taught gets a high score and is called unseen.
+A message gets a probability for each of the six operations and for "none". The status of a part is decided as the look-based machine decides it (class-conditional conformal p-values,
+calibration on held-out parts of the taught skills in wordings S1 to S3 only, level q): the conformity of a part to a known class (a taught skill, or "none") is the probability the model gives
+that class, and its p-value is the rank of that probability among the held-out parts OF THAT CLASS (small p = novel, as in status.conformal_p). The classes whose p-value is above q form the
+COVERING SET of the part: empty = nothing taught explains it (unseen), one class = a confident route, several = ambiguous or a part that needs more than one expert.
 
 Declared limits (they are the point of the lab, not a footnote): the reader relies on the model's prior knowledge of the operation vocabulary, so it can name a skill nobody taught here (that is what
 makes "never-taught" detectable) but it can NOT recognise a skill outside that vocabulary; and "none" lumps every non-arithmetic content together, so unseen content types are not told apart from
@@ -108,13 +109,6 @@ def probabilities(texts: Sequence[str], cache_path: Path, ask=_ask_model) -> np.
     return np.array([cache[_key(t)] for t in texts], dtype=np.float64).reshape(len(texts), len(OPS))
 
 
-def known_conformity(P: np.ndarray, known: Sequence[str]) -> np.ndarray:
-    """The largest probability among the known classes: near 1 when the model names a known class with confidence, near 0 when it names something nobody taught
-    (higher = more typical, the convention of status.conformal_p, where a small p-value means novel)."""
-    cols = [OPS.index(k) for k in known]
-    return np.asarray(P, dtype=np.float64)[:, cols].max(axis=1)
-
-
 class AskMachine:
     """The status decision on the asked probabilities. ``cal`` maps each known class ("none" for Other content) to the probabilities of its held-out calibration parts;
     ``states`` maps each taught skill to "solid" or "thin" and ``competence`` / ``counts`` give its evidence fields."""
@@ -127,13 +121,20 @@ class AskMachine:
             if k not in cal or len(cal[k]) == 0:
                 raise ValueError(f"no calibration parts for the known class {k!r}")
         self.states, self.competence, self.counts, self.q = dict(states), dict(competence), dict(counts), q
-        self._cal = {k: np.sort(known_conformity(np.asarray(cal[k]), self.known)) for k in self.known}
+        self._cal = {k: np.sort(np.asarray(cal[k], dtype=np.float64)[:, OPS.index(k)]) for k in self.known}
+
+    def p_values(self, P: np.ndarray) -> np.ndarray:
+        """(n, known classes): the conformal p-value of each part against each known class, from the probability the model gives that class; a class COVERS a part when its p-value is above q."""
+        P = np.asarray(P, dtype=np.float64)
+        return np.stack([ST.conformal_p(self._cal[k], P[:, OPS.index(k)]) for k in self.known], axis=1)
+
+    def covering(self, P: np.ndarray) -> np.ndarray:
+        return self.p_values(P) > self.q
 
     def assess_many(self, P: np.ndarray) -> List[ST.Assessment]:
         P = np.asarray(P, dtype=np.float64)
-        score = known_conformity(P, self.known)
         cols = [OPS.index(k) for k in self.known]
-        p = np.stack([ST.conformal_p(self._cal[k], score) for k in self.known], axis=1)          # (n, known): p-value of the part against each known class
+        p = self.p_values(P)                                                                       # (n, known): p-value of the part against each known class
         covered = p > self.q
         named = np.where(covered, P[:, cols], -np.inf).argmax(axis=1)                              # the covering class the model gives the highest probability
         nearest = P[:, cols].argmax(axis=1)

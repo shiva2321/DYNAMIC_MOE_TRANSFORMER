@@ -41,6 +41,16 @@ def naming_rule(P: np.ndarray, taught: Sequence[str]) -> List[str]:
     return ["known" if AR.OPS[int(np.argmax(r))] in known else "unseen" for r in P]
 
 
+def set_stats(cov: np.ndarray, rows: Sequence[int], true_col: Sequence) -> dict:
+    """The covering sets of the rows: how often the true class is in the set, how many are empty (nothing explains the part), singletons, larger sets, and the mean size of the non-empty sets."""
+    if not rows:
+        return {"n": 0, "coverage": float("nan"), "empty": float("nan"), "single": float("nan"), "multi": float("nan"), "mean_size_nonempty": float("nan")}
+    sz = cov[list(rows)].sum(axis=1)
+    hit = [bool(cov[i, c]) for i, c in zip(rows, true_col) if c is not None]
+    return {"n": len(rows), "coverage": float(np.mean(hit)) if hit else float("nan"), "empty": float(np.mean(sz == 0)), "single": float(np.mean(sz == 1)), "multi": float(np.mean(sz >= 2)),
+            "mean_size_nonempty": float(sz[sz > 0].mean()) if (sz > 0).any() else float("nan")}
+
+
 def realism_rows(path: Path = REALISM) -> List[dict]:
     return [json.loads(line) for line in Path(path).read_text(encoding="utf-8").splitlines() if line.strip()]
 
@@ -77,7 +87,11 @@ def run_seed(seed: int, out_dir, stamp: str, pool: str = "dev", q: float = 0.05,
     rate = lambda idx, flags: float(np.mean([flags[i] for i in idx])) if idx else float("nan")
     unseen_flag = [a.status == "unseen" for a in assessed]
     rule_flag = [r == "unseen" for r in rule]
-    rec = {"seed": seed, "code_stamp": stamp, "q": q, "assignment": world.assignment, "scores": R._native(scores),
+    cov = machine.covering(Pt)
+    taught_rows = [i for i in arith if cases[i].family in TAUGHT_FAMILIES and cases[i].skill in world.taught]
+    sets = {"held": set_stats(cov, held, [machine.known.index(cases[i].skill) for i in held]), "taught_wordings": set_stats(cov, taught_rows, [machine.known.index(cases[i].skill) for i in taught_rows]),
+            "never": set_stats(cov, never, [None] * len(never))}
+    rec = {"seed": seed, "code_stamp": stamp, "q": q, "assignment": world.assignment, "scores": R._native(scores), "sets": sets,
            "false_new_conformal": rate(held, unseen_flag), "found_conformal": rate(never, unseen_flag),
            "false_new_rule": rate(held, rule_flag), "found_rule": rate(never, rule_flag),
            "false_new_taught_wordings": rate([i for i in arith if cases[i].family in TAUGHT_FAMILIES and cases[i].skill in world.taught], unseen_flag),
@@ -119,6 +133,10 @@ def report(rows: List[dict], seeds: Sequence[int], pool: str) -> str:
     L += ["Operation named correctly (top option = the true operation), by wording: " + ", ".join(f"{f} {_m(rows, lambda r: r['naming_accuracy'].get(f, float('nan'))):.3f}" for f in sorted(rows[0]['naming_accuracy']) if f != 'all'),
           "By skill: " + ", ".join(f"{s} {_m(rows, lambda r: r['naming_by_skill'][s]):.3f}" for s in skills.SKILLS),
           "Known skills called unseen, by new wording: " + ", ".join(f"{f} {_m(rows, lambda r: r['false_new_by_family'][f]):.3f}" for f in HELD), ""]
+    for key, label in (("taught_wordings", "known skills, taught wordings S1-S3"), ("held", "known skills, new wordings S4-S8"), ("never", "never-taught skills")):
+        L.append(f"Covering set, {label}: true skill in the set {_m(rows, lambda r: r['sets'][key]['coverage']):.3f}, empty {_m(rows, lambda r: r['sets'][key]['empty']):.3f}, "
+                 f"one expert {_m(rows, lambda r: r['sets'][key]['single']):.3f}, two or more {_m(rows, lambda r: r['sets'][key]['multi']):.3f}, mean size when not empty {_m(rows, lambda r: r['sets'][key]['mean_size_nonempty']):.2f}")
+    L.append("")
     real = [r for r in rows if "realism" in r]
     if real:
         L += ["Real problems (SVAMP, 300 one-step problems, add / sub / mul / div; reported once, never used to choose anything):",
