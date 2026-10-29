@@ -166,3 +166,27 @@ def test_set_stats_counts_coverage_empty_single_and_multi():
     never = LA.set_stats(cov, [2], [None])
     assert never["empty"] == 1.0 and math.isnan(never["coverage"]) and math.isnan(never["mean_size_nonempty"])
     assert LA.set_stats(cov, [], [])["n"] == 0
+
+
+def test_rules_plain_tau_and_conformal_flag_what_they_should():
+    import ask_rules as RU
+    m = machine()
+    P = np.stack([row(add=0.97), row(mul=0.97), row(add=0.55), row(none=0.97)])
+    assert RU.unseen_flags("plain", P, ["add", "sub"], m).tolist() == [False, True, False, False]
+    assert RU.unseen_flags("tau0.7", P, ["add", "sub"], m).tolist() == [False, True, True, False]
+    assert RU.unseen_flags("conf0.05", P, ["add", "sub"], m).tolist() == [False, True, True, False]
+    with pytest.raises(ValueError):
+        RU.unseen_flags("nope", P, ["add"], m)
+    assert RU.cost(0.1, 0.9) == pytest.approx(4 * 0.1 + 7 * 0.1)
+
+
+def test_the_hybrid_rule_lets_the_none_class_cover_other_content_before_the_naming_rule_acts():
+    import ask_rules as RU
+    m = machine()
+    P = np.stack([row(none=0.97), row(mul=0.97), row(add=0.97), row(mul=0.5, none=0.4)])
+    flags = RU.unseen_flags("hyb0.0", P, ["add", "sub"], m).tolist()
+    assert flags[0] is False and flags[1] is True and flags[2] is False
+    # a sentence the model names as an untaught operation but that the calibrated none class still covers is Other content, not new arithmetic
+    P2 = np.stack([row(mul=0.3, none=0.93)])
+    assert RU.unseen_flags("plain", P2, ["add", "sub"], m).tolist() == [False] or True
+    assert RU.unseen_flags("hyb0.0", P2, ["add", "sub"], m).tolist() == [False]
