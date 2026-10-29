@@ -538,8 +538,8 @@ def render_prereg(rec: Mapping) -> str:
               f"- Expected verdict: **{st['expected'].replace('_', ' ').upper()}**." + (f" {st['note']}" if st["note"] else ""), ""]
     L += ["## Realism check (B7)", "",
           "One-step arithmetic word problems written by people (SVAMP, MIT licence), downloaded once with the user's permission, restricted to problems whose reference equation is one operation on two "
-          "numbers of the problem; 300 rows (" + ", ".join(f"{k} {v}" for k, v in sorted((rec.get("realism_counts") or {}).items())) + "; SVAMP has no remainder or maximum problems and only a few "
-          "dozen usable multiplication problems), drawn with seed 100 and fixed in `results/realism_set.jsonl`, whose hash the runner checks before it starts. No code other than the realism runner "
+          "numbers of the problem; 300 rows (" + ", ".join(f"{k} {v}" for k, v in sorted((rec.get("realism_counts") or {}).items())) + "; SVAMP has no remainder or maximum problems and fewer usable "
+          "multiplication problems than the other operations), drawn with seed 100 and fixed in `results/realism_set.jsonl`, whose hash the runner checks before it starts. No code other than the realism runner "
           "loads SVAMP, and the runner refuses any realism problem found among teaching, calibration or adaptation texts (`realism.assert_not_realism`). Per seed the same machine judges (a) the template parts of the held-out wordings S4 to S8 and (b) the realism problems; on each the balanced accuracy of the "
           "call 'Unseen or not' is taken over parts whose skill is Solid (should not be called Unseen) and parts whose skill is Unseen (should be); the template side holds the same four operations. B7 is the "
           "absolute value of the mean difference (realism minus templates) over the seeds that have both a Solid and an Unseen skill among add, sub, mul, div. A 50-row spot check of the labels "
