@@ -48,16 +48,32 @@ def build_prompt(tok, text: str) -> str:
     return tok.apply_chat_template([{"role": "user", "content": QUESTION.format(text=cut)}], tokenize=False, add_generation_prompt=True)
 
 
-def letter_ids(tok) -> List[int]:
+GATE_QUESTION = ("Does the message below ask for an arithmetic calculation on numbers (adding, subtracting, multiplying, dividing, a remainder, or the larger of two numbers)? "
+                 "A message that only mentions numbers or arithmetic words without asking to calculate something does not count.\n\n"
+                 "Message: {text}\n\nAnswer with Yes or No.")
+GATE_OPTIONS = ("Yes", "No")
+
+
+def build_gate_prompt(tok, text: str) -> str:
+    """The chat-formatted yes / no prompt of the boundary question: does the message ask for a calculation at all?"""
+    ids = tok(text, add_special_tokens=False, truncation=True, max_length=MAX_TEXT_TOKENS)["input_ids"]
+    return tok.apply_chat_template([{"role": "user", "content": GATE_QUESTION.format(text=tok.decode(ids))}], tokenize=False, add_generation_prompt=True)
+
+
+def option_ids(tok, options: Sequence[str]) -> List[int]:
     ids = []
-    for ch in LETTERS:
-        t = tok(ch, add_special_tokens=False)["input_ids"]
+    for o in options:
+        t = tok(o, add_special_tokens=False)["input_ids"]
         if len(t) != 1:
-            raise RuntimeError(f"option letter {ch!r} is not a single token for this tokenizer: {t}")
+            raise RuntimeError(f"option {o!r} is not a single token for this tokenizer: {t}")
         ids.append(t[0])
     if len(set(ids)) != len(ids):
-        raise RuntimeError("option letters share a token")
+        raise RuntimeError("options share a token")
     return ids
+
+
+def letter_ids(tok) -> List[int]:
+    return option_ids(tok, list(LETTERS))
 
 
 def softmax(z: np.ndarray) -> np.ndarray:
@@ -69,14 +85,23 @@ def softmax(z: np.ndarray) -> np.ndarray:
 
 def _ask_model(texts: Sequence[str], gpu: bool = True) -> np.ndarray:
     """(n, 7) probabilities over the option letters; one forward pass per message, no generation."""
+    return _choice_model(texts, build_prompt, list(LETTERS), gpu)
+
+
+def _gate_model(texts: Sequence[str], gpu: bool = True) -> np.ndarray:
+    """(n, 2) probabilities of Yes and No for the boundary question; one forward pass per message."""
+    return _choice_model(texts, build_gate_prompt, list(GATE_OPTIONS), gpu)
+
+
+def _choice_model(texts: Sequence[str], builder, options: Sequence[str], gpu: bool = True) -> np.ndarray:
     import torch
     import reps
     tok, model = reps._hf_model(MODEL, "AutoModelForCausalLM", gpu, gpu)
-    ids_l = letter_ids(tok)
+    ids_l = option_ids(tok, options)
     pad = tok.pad_token_id if tok.pad_token_id is not None else (tok.eos_token_id or 0)
     out = []
     for s in range(0, len(texts), BATCH):
-        enc = [tok(build_prompt(tok, t), add_special_tokens=False)["input_ids"] for t in texts[s:s + BATCH]]
+        enc = [tok(builder(tok, t), add_special_tokens=False)["input_ids"] for t in texts[s:s + BATCH]]
         n = max(len(x) for x in enc)
         batch = torch.tensor([x + [pad] * (n - len(x)) for x in enc], device=model.device)
         mask = torch.tensor([[1] * len(x) + [0] * (n - len(x)) for x in enc], device=model.device)
@@ -92,7 +117,7 @@ def _key(text: str) -> str:
     return hashlib.sha1(text.encode("utf-8", "surrogatepass")).hexdigest()
 
 
-def probabilities(texts: Sequence[str], cache_path: Path, ask=_ask_model) -> np.ndarray:
+def probabilities(texts: Sequence[str], cache_path: Path, ask=_ask_model, width: int = len(OPS)) -> np.ndarray:
     """Probabilities for the texts, from a cache file (json, one entry per distinct text, written atomically) and the model for the texts not yet in it."""
     cache: Dict[str, List[float]] = {}
     if Path(cache_path).exists():
@@ -100,13 +125,13 @@ def probabilities(texts: Sequence[str], cache_path: Path, ask=_ask_model) -> np.
     todo = list(dict.fromkeys(t for t in texts if _key(t) not in cache))
     if todo:
         P = ask(todo)
-        if len(P) != len(todo) or P.shape[1] != len(OPS):
+        if len(P) != len(todo) or P.shape[1] != width:
             raise RuntimeError(f"the reader returned {P.shape} for {len(todo)} texts")
         for t, row in zip(todo, P):
             cache[_key(t)] = [float(x) for x in row]
         Path(cache_path).parent.mkdir(parents=True, exist_ok=True)
         runlib.atomic_write_text(Path(cache_path), json.dumps(cache))
-    return np.array([cache[_key(t)] for t in texts], dtype=np.float64).reshape(len(texts), len(OPS))
+    return np.array([cache[_key(t)] for t in texts], dtype=np.float64).reshape(len(texts), width)
 
 
 class AskMachine:
@@ -157,3 +182,13 @@ def top1_accuracy(P: np.ndarray, truth: Sequence[Optional[str]]) -> float:
     if not rows:
         return float("nan")
     return float(np.mean([OPS[int(np.argmax(P[i]))] == truth[i] for i in rows]))
+
+
+def gate_probabilities(texts: Sequence[str], cache_path: Path, ask=_gate_model) -> np.ndarray:
+    """(n, 2) probabilities of Yes and No for the boundary question, cached like ``probabilities``."""
+    return probabilities(texts, cache_path, ask, width=len(GATE_OPTIONS))
+
+
+def p_yes(G: np.ndarray) -> np.ndarray:
+    G = np.asarray(G, dtype=np.float64)
+    return G[:, 0] / (G[:, 0] + G[:, 1])

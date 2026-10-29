@@ -3,3 +3,7 @@ C:\Users\Asta\AppData\Local\Programs\Python\Python312\Lib\site-packages\torch\cu
 `torch_dtype` is deprecated! Use `dtype` instead!
 seed 100: tau0.5 false-new 0.013 found 0.943 real nan | look 0.212 0.752
 seed 101: tau0.5 false-new 0.042 found 0.995 real 0.24 | look 0.283 0.819
+seed 102: tau0.5 false-new 0.025 found 0.986 real nan | look 0.237 0.667
+seed 103: tau0.5 false-new 0.050 found 0.976 real 0.11842105263157894 | look 0.433 1.000
+seed 104: tau0.5 false-new 0.000 found 0.952 real nan | look 0.325 0.938
+seed 105: tau0.5 false-new 0.075 found 1.000 real 0.25 | look 0.250 0.695
