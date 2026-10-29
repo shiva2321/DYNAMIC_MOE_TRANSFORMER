@@ -111,8 +111,10 @@ def test_jobs_cover_every_cell_exactly_once(tmp_path):
     rec = {**rec, "seeds": {"confirm": list(range(400, 430)), "dev": rec["seeds"]["dev"]}, "representations": rec["representations"] + ["R5_FS_strict", "R5_FS_pre"]}
     js = RC.jobs(rec, [400, 401, 405])
     n_rep = len(rec["representations"])
-    assert len(js) == n_rep * 30 * 2 + 30 + 3 and len(set(js)) == len(js)
-    assert {j[0] for j in js} == {"e1", "e2", "e4", "b7"} and {j[1] for j in js if j[0] in ("e1", "e2")} == set(rec["representations"])
+    assert rec["e1_only_readers"] == ["R1_minilm384", "R2_mpnet", "R3_bert", "R4_gpt2_L8", "R4_qwen_L22"]
+    assert len(js) == n_rep * 30 * 2 + len(rec["e1_only_readers"]) * 30 + 30 + 3 and len(set(js)) == len(js)
+    assert ("e1", "R2_mpnet", 417) in js and ("e2", "R2_mpnet", 417) not in js                    # the ladder readers get the information ceiling only
+    assert {j[0] for j in js} == {"e1", "e2", "e4", "b7"} and {j[1] for j in js if j[0] in ("e1", "e2")} == set(rec["representations"]) | set(rec["e1_only_readers"])
     assert "R5_FS_pre" in rec["representations"] and ("e1", "R5_FS_strict", 400) in js
     assert RC.cell_path(Path("o"), ("e1", "R0_hash", 400)) == Path("o/e1/R0_hash__s400.json") and RC.cell_path(Path("o"), ("e4", None, 7)) == Path("o/e4/s7.json")
     assert RC.cell_path(Path("o"), ("b7", None, 7)) == Path("o/realism/s7.json")
@@ -320,7 +322,8 @@ def test_strip_marks_removes_the_draft_marks_the_b2_line_and_the_dev_fixed_secti
                       "The claim may fail in prose and PASS here.", "| trace | bar |", "| mul | at least 0.90: fail |", "## Bars: draft and dev-fixed", "| x | y |"])
     out = RP.strip_marks(text)
     assert "PASS |" not in out and "fail |" not in out and "B2 validity" not in out and "dev-fixed" not in out
-    assert "| R5 | 0.98 [0.97 - 0.99] |" in out and "| mul | at least 0.90 |" in out and "may fail in prose and PASS here." in out
+    assert "| R5 | 0.98 [0.97 - 0.99] |" in out and "| mul | |" in out and "may fail in prose and PASS here." in out
+    assert "at least 0.90" not in out                                                              # a bar printed from the draft constants is removed with the mark
 
 
 def test_the_full_report_appends_the_experiment_tables_without_their_marks(tmp_path, monkeypatch):
@@ -336,7 +339,7 @@ def test_the_full_report_appends_the_experiment_tables_without_their_marks(tmp_p
     monkeypatch.setattr(run_realism, "report_b7", lambda cells, label="": f"B7 table {label} {len(cells)}")
     text, _ = RP.build(rec, confirm, STAMPS, full=True)
     tail = text.split("## Experiment tables (diagnostic)")[1]
-    assert "| R5 | 0.98 |" in tail and "| R5 | 0.40 |" in tail and "| mul | at least 0.90 |" in tail and "Bars: draft and dev-fixed" not in tail and "B2 validity" not in tail and "B7 table confirmatory 10" in tail
+    assert "| R5 | 0.98 |" in tail and "| R5 | 0.40 |" in tail and "| mul | |" in tail and "Bars: draft and dev-fixed" not in tail and "B2 validity" not in tail and "B7 table confirmatory 10" in tail
 
 
 def test_report_main_refuses_when_nothing_is_frozen(capsys):

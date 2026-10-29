@@ -10,13 +10,13 @@ Everything in this file and in `bars.json` is fixed BEFORE any confirmatory seed
 - Taught-state rule (`THRESHOLDS`): {"solid_min_acc": 0.9, "solid_min_count": 500, "thin_acc_margin": 0.1, "thin_max_acc": 0.6, "thin_max_count": 100}.
 - Test messages: the confirmatory template pool `pool_confirm.py`, sha256 `257e56f31fb04f5286f55605037fd202acb72679a293a7818a43742a9e8dc6a4`.
 - Realism set (B7): `results/realism_set.jsonl` (SVAMP one-step problems), sha256 `6f1582f212e12372ecd0b529e54cdd9f5758adb99f6a1cce61cdbbe21bdcf812`.
-- Code: stamp `926643114694641a` over 52 files (all of `research/knowledge_status/*.py` and the `growmoe` files they import); the runners must refuse to run if it differs.
+- Code: stamp `ff3b592e1c3af520` over 52 files (all of `research/knowledge_status/*.py` and the `growmoe` files they import); the runners must refuse to run if it differs.
 - Sizes and baseline settings: see `bars.json` (`sizes`, `baseline_params`). A measure needs at least 10 confirmatory seeds that define it, otherwise it is not judged.
 - How many dev seeds stand behind each bar is in the table (E1 ran on dev seeds 100 to 104 only; E4 on the seeds where addition and subtraction are really Solid; the AUROC for Thin against Solid only where a seed has both kinds of part; B7 only where a seed has a Solid and an Unseen skill among add, sub, mul, div); a bar rests on fewer seeds where that column is small.
 
 The confirmatory pool shares no template with the dev pool (identical normalised templates: 0); the share of its word 5-grams found in the dev pool is 0.028 overall and at most 0.098 in any one family (limit 0.2).
 
-Message length as a cue (anti-goal A1, no model; `check_length_leak.py`): accuracy of guessing the skill from the length of the request / of the whole message alone, inside one wording family, dev pool against confirmatory pool (chance 0.167, or 0.333 in S5). Some leak is natural and the two pools are comparable; the real test of surface cues is B2.
+Message length as a cue (anti-goal A1, no model; `check_length_leak.py`): accuracy of guessing the skill from the length of the request / of the whole message alone, inside one wording family, dev pool against confirmatory pool (chance 0.167, or 0.333 in S5). Some leak is natural; the confirmatory pool is somewhat higher in a few families (S8, S1, S4, S7 on the request length) and the check is within one family only. The real test of surface cues is B2.
 
 | family | dev: request, whole | confirmatory: request, whole |
 |---|---|---|
@@ -52,7 +52,7 @@ Bars come from the rule written before the dev run: a bar to stay above is max(d
 | b5_div_parent (at least) | B5 | 0.900 | 0.900 | 0.508 (0.054) [0.400 - 0.625], 10 | FAIL | max(draft, mean - 2 sd) over the dev seeds |
 | b5_decoy_worst (at most) | B5 | 0.000 | 0.100 | 0.000 (0.000) [0.000 - 0.000], 10 | PASS | min(draft, mean + 2 sd) over the dev seeds |
 | b6_gap (at most) | B6 | 0.100 | 0.100 | 0.178 (0.071) [0.025 - 0.300], 30 | FAIL | min(draft, mean + 2 sd) over the dev seeds |
-| b7_gap (at most) | B7 | 0.100 | 0.100 | 0.327 (0.044) [0.248 - 0.421], 13 | FAIL | min(draft, mean + 2 sd) over the dev seeds |
+| b7_gap (at most) | B7 | 0.100 | 0.100 | 0.325 (0.044) [0.248 - 0.428], 13 | FAIL | min(draft, mean + 2 sd) over the dev seeds |
 
 ### Statements (spec section 7), decision rule and expected verdict
 
@@ -72,7 +72,7 @@ Bars come from the rule written before the dev run: a bar to stay above is max(d
 - Expected verdict: **FAIL**.
 
 **B2.** Validity of the test bed: the word-matcher control R0 falls short of the B1a bar or the B1b bar by at least 0.15; otherwise the test bed is broken and no result counts (anti-goal A1).
-- Decision rule: pass when R0 (mean over the 30 seeds) is below the frozen B1a bar OR the frozen B1b bar by at least the frozen margin; a fail makes the whole run invalid.
+- Decision rule: pass when R0 (mean over the 30 seeds) is below the spec's B1a bar OR the spec's B1b bar (the draft bar, or the frozen bar if that is lower) by at least the frozen margin; a fail makes the whole run invalid.
 - Measures: r0_b1a, r0_b1b, b2_gap.
 - Expected verdict: **PASS**.
 
@@ -113,16 +113,19 @@ Bars come from the rule written before the dev run: a bar to stay above is max(d
 
 ## Realism check (B7)
 
-One-step arithmetic word problems written by people (SVAMP, MIT licence), downloaded once with the user's permission, restricted to problems whose reference equation is one operation on two numbers of the problem; 300 rows, 75 of each operation (SVAMP has no remainder or maximum problems), drawn with seed 100. They are never used for teaching, calibration or tuning (`realism.assert_not_realism`). Per seed the same machine judges (a) the template parts of the held-out wordings S4 to S8 and (b) the realism problems; on each the balanced accuracy of the call 'Unseen or not' is taken over parts whose skill is Solid (should not be called Unseen) and parts whose skill is Unseen (should be). B7 is the absolute value of the mean difference (realism minus templates) over the seeds that have both a Solid and an Unseen skill among add, sub, mul, div. A 50-row spot check of the labels is in `results/realism_spotcheck.md`.
+One-step arithmetic word problems written by people (SVAMP, MIT licence), downloaded once with the user's permission, restricted to problems whose reference equation is one operation on two numbers of the problem; 300 rows (add 75, div 75, mul 74, sub 76; SVAMP has no remainder or maximum problems and only a few dozen usable multiplication problems), drawn with seed 100 and fixed in `results/realism_set.jsonl`, whose hash the runner checks before it starts. No code other than the realism runner loads SVAMP, and the runner refuses any realism problem found among teaching, calibration or adaptation texts (`realism.assert_not_realism`). Per seed the same machine judges (a) the template parts of the held-out wordings S4 to S8 and (b) the realism problems; on each the balanced accuracy of the call 'Unseen or not' is taken over parts whose skill is Solid (should not be called Unseen) and parts whose skill is Unseen (should be); the template side holds the same four operations. B7 is the absolute value of the mean difference (realism minus templates) over the seeds that have both a Solid and an Unseen skill among add, sub, mul, div. A 50-row spot check of the labels (`results/realism_spotcheck.md`) was read by an independent reviewer: 48 of 50 clearly right, two doubtful, none wrong.
+Two confounds are named, not removed: a realism problem is a whole story with two to five numbers, a template part is one request, and about a quarter of the problems have an operand above 99 (the template bed uses one or two digits). A row restricted to problems whose operands are both at most 99 is reported next to B7 and not gated. Only about 4 in 10 dev seeds can be scored (13 of the 30 dev seeds), so there is a real chance (about 1 in 10 by a binomial estimate) that fewer than the minimum number of confirmatory seeds can be scored, in which case B7 is not judged.
 
 ## From-scratch reader arms (Task 11b, user decision D-40)
 
 No pretrained model. `R5_FS_strict`: a hashed bag of word pieces, a small network trained contrastively on the teaching data only. `R5_FS_pre`: the same network first pre-trained without labels on everyday sentences from the local corpora, then trained the same way. Operating points were chosen on tuning seeds 150 to 154 (results/FS_TUNING.md). The rule of D-40, applied to the dev means: within 0.05 of the headline reader on B1b, B1c, macro F1 and false-new = kept; within 0.15 = parked (not deleted) until the user decides the whole system is from scratch; further = not worth it now. Only a kept arm is run in the confirmatory run (measured and reported, never gated); an arm that is not kept is not run there, and its dev result below is the finding.
 
-| arm | status on dev | worst gap | B1b | B1c | macro F1 | false-new |
-|---|---|---|---|---|---|---|
-| R5_FS_pre | not worth it now | 0.425 | 0.859 | 0.686 | 0.429 | 0.008 |
-| R5_FS_strict | not worth it now | 0.478 | 0.798 | 0.586 | 0.376 | 0.015 |
+| arm | status on dev | worst gap | B1b | B1c | macro F1 | false-new | never-taught skills found |
+|---|---|---|---|---|---|---|---|
+| R5_FS_pre | not worth it now | 0.425 | 0.859 | 0.686 | 0.429 | 0.008 | 0.008 |
+| R5_FS_strict | not worth it now | 0.478 | 0.798 | 0.586 | 0.376 | 0.015 | 0.027 |
+
+The gap counts only being worse than the headline reader (a better value is no gap). A low false-new rate here is not a fix of the wording problem: these arms call almost nothing new, as the last column shows (the headline reader finds 0.894).
 
 ## Predictions that are not bars
 
@@ -135,20 +138,21 @@ No pretrained model. `R5_FS_strict`: a hashed bag of word pieces, a small networ
 
 1. Each statement is judged from the mean over the confirmatory seeds that have the measure (all 30, except where a seed cannot define it: Thin against Solid needs both kinds of part; the E4 traces need a seed where addition and subtraction are really Solid; B7 needs a Solid and an Unseen skill among add, sub, mul, div; fewer than the minimum number of seeds means the measure is not judged) against its frozen bar, by `verdict.py` (flip-tested), nothing else.
 2. The wording claim is gated on the STANDARD calibration (S1 to S3 only). The adapted condition (a few S4 to S8 parts in the calibration) is reported, never gated: if only it reaches the bar, the claim reads 'needs adaptation to new wording'.
-3. B3b (baselines) is reported with every claim; nothing is gated on it. Conflict, the offline consequence estimate, the group-test numbers, the per-wording B5 rows and the from-scratch arms are reported and not gated.
+3. B3b (baselines) is reported with every claim; nothing is gated on it. The offline consequence estimate, the group-test numbers, the per-wording B5 rows, the small-operand B7 row and the information-ceiling readers that are run for E1 only are reported and not gated.
 4. No bar, pool, seed, constant or code file is changed after the run; the run is not repeated; a failure is reported with its number. `run_confirm.py` is the only entry point; the development runners refuse the confirmatory pool.
 
 ## Kill rules and paper decision (computed by `verdict.consequences`, printed at the top of the result)
 
 - B2 fails: the test bed is invalid for this run (anti-goal A1) and none of the other results counts.
 - B1b is below the spec's draft bar (or the frozen bar if that is lower) for the headline reader: that reader cannot see an operator change; no status claim built on it counts and Phase 1 ends with that negative result (spec section 7).
-- B1a or B1c fails for the headline reader: the spec says a representation that fails B1 is not used for status. The user decided (D-40) to carry the reader on regardless; therefore every status claim (B3a to B6) is reported as CONDITIONAL on a reader that missed B1, and a pass of such a claim is not a spec pass.
+- B1a or B1c fails for the headline reader: the spec says a representation that fails B1 is not used for status. The user decided (D-40) to carry the reader on regardless; therefore every status claim (B3a to B7) is reported as CONDITIONAL on a reader that missed B1, and a pass of such a claim is not a spec pass. B1a and B1c are expected to fail (dev), so the result is expected to carry the CONDITIONAL banner.
 - A statement whose bar is missed is a reported negative result, not a reason to re-run. Single use means exactly once.
 - Paper rule (spec section 10): write a paper if the test bed and the information-ceiling analysis (C-a and C-b) are done on fresh seeds and the reading finds nothing that already does them; add a method claim (C-c status machine, C-d relation from traces) only for statements whose bars passed.
 
 ## Not run, stated in advance
 
-- Conflict status: reported if it fires on its few cases, not gated (spec 5.6).
+- The Conflict condition of spec 5.6 (a rule change on a taught skill) was not built; only `flag_conflict` is unit-tested. Nothing about Conflict is reported.
+- The information-ceiling ladder beyond the readers run here (the E1-only readers listed above) is dev-only evidence; C-b on fresh seeds covers exactly those readers.
 - The spec 5.6 count sweep (one skill taught 5, 20, 100, 500, 2000 examples) is not part of this run.
 - A5 (right on templates and wrong on real phrasing) is checked only by B7, on one real-text source and four operations.
 - The open THRESHOLDS question: on dev about a quarter of the skills taught as 'Solid' (2000 examples) are not solid by measured accuracy (multiplication, division and remainder are hard for the small solver); the thresholds stay at the draft values and the status truth is taken from the measured accuracy.

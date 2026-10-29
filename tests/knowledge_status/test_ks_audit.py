@@ -91,3 +91,62 @@ def test_the_audit_names_a_missing_start_record_and_a_start_under_another_freeze
     assert "the run was started under another freeze" in AU.audit(root, spec_with_ids(tmp_path), pool, files, stamps=STAMPS)
     (confirm / "verdict.json").unlink()
     assert AU.audit(root, spec_with_ids(tmp_path), pool, files, stamps=STAMPS)[0].startswith("cannot read bars.json or results/confirm/verdict.json")
+
+
+# ------------------------------------------------------------------------------------------------------------------------------------ the audit recomputes from the raw cells
+def tiny_run(tmp_path):
+    rec, root, pool, files, confirm, result = finished_run(tmp_path)
+    tiny = {**rec, "seeds": {"confirm": list(range(400, 410)), "dev": rec["seeds"]["dev"]}}
+    (root / "bars.json").write_text(json.dumps(tiny))
+    (root / "bars.sha256").write_text(f"{FZ.bars_hash(tiny)}  bars.json\n")
+    (root / "PREREG.md").write_text(FZ.render_prereg(tiny))
+    return tiny, root, pool, files, confirm, result
+
+
+def only_real(problems):
+    return [p.replace(chr(92), "/") for p in problems if not p.startswith("missing cell")]
+
+
+def test_the_audit_recomputes_every_verdict_from_the_raw_cells_and_finds_nothing_in_a_clean_run(tmp_path):
+    tiny, root, pool, files, confirm, result = tiny_run(tmp_path)
+    assert only_real(run_audit(tmp_path, root, pool, files, tiny)) == []
+    raw = AU.raw_measures(confirm, tiny, [])
+    assert raw["b1a"] == pytest.approx(result["means"]["b1a"]) and raw["b6_gap"] == pytest.approx(result["means"]["b6_gap"])
+    assert raw["b5_decoy_worst"] == pytest.approx(result["means"]["b5_decoy_worst"]) and "b7_gap" not in raw          # nine realism seeds are fewer than the minimum
+
+
+def test_the_audit_names_a_wrong_statement_verdict_a_wrong_value_and_wrong_consequences(tmp_path):
+    tiny, root, pool, files, confirm, result = tiny_run(tmp_path)
+    bad = json.loads(json.dumps(result, default=float))
+    bad["verdict"]["statements"]["B3a"] = "pass"
+    bad["verdict"]["measures"]["macro_f1"]["value"] = 0.123
+    bad["consequences"] = {"invalid": True, "status_void": False, "conditional": False}
+    (confirm / "verdict.json").write_text(json.dumps(bad))
+    probs = only_real(run_audit(tmp_path, root, pool, files, tiny))
+    assert any(p.startswith("B3a: verdict.json says pass, recomputing gives fail") for p in probs)
+    assert any(p.startswith("macro_f1: verdict.json holds the value 0.123") for p in probs)
+    assert any(p.startswith("consequences in verdict.json") for p in probs)
+
+
+def test_the_audit_checks_the_measures_against_the_frozen_record_not_against_the_verdict_code(tmp_path):
+    tiny, root, pool, files, confirm, result = tiny_run(tmp_path)
+    dropped = json.loads(json.dumps(result, default=float))
+    del dropped["verdict"]["measures"]["trap_as_unseen"]                                 # a measure silently dropped from the code that judges
+    (confirm / "verdict.json").write_text(json.dumps(dropped))
+    probs = only_real(run_audit(tmp_path, root, pool, files, tiny))
+    assert any(p.startswith("B3a was judged on") and "trap_as_unseen" not in p.split("the frozen record lists")[0] and "trap_as_unseen" in p for p in probs)
+
+
+def test_an_unreadable_cell_is_named_and_the_audit_goes_on(tmp_path):
+    tiny, root, pool, files, confirm, result = tiny_run(tmp_path)
+    (confirm / "e2" / "R5_R4_qwen_L26__s403.json").write_text("{not json")
+    probs = only_real(run_audit(tmp_path, root, pool, files, tiny))
+    assert any("cannot read cell R5_R4_qwen_L26__s403.json" in p for p in probs) and any("is not stamped with this freeze" in p for p in probs)
+    (confirm / "e2" / "R5_R4_qwen_L26__s403.json").write_text(json.dumps({"code_stamp": "E2", "pool": "confirm"}))
+    probs2 = only_real(run_audit(tmp_path, root, pool, files, tiny))
+    assert any("cell R5_R4_qwen_L26__s403.json lacks" in p for p in probs2)
+
+
+def test_the_judge_applies_the_bar_in_the_right_direction_with_float_slack():
+    assert AU.judge(0.95, 0.95, "min") == "pass" and AU.judge(0.9499, 0.95, "min") == "fail" and AU.judge(0.05, 0.05, "max") == "pass" and AU.judge(0.0501, 0.05, "max") == "fail"
+    assert AU.judge(None, 0.5, "min") == "not_run" and AU.judge(0.95 - 1e-13, 0.95, "min") == "pass"

@@ -25,6 +25,8 @@ def test_the_real_runners_hand_the_confirmatory_pool_to_every_experiment_and_fre
     monkeypatch.setattr(scratch_reader, "run_e2_cell", lambda arm, seed, pool, out, stamp: calls.append(("fs-e2", arm, seed, pool, str(out), stamp)))
     monkeypatch.setattr(RC, "run_e4_cell", lambda seed, out, stamp, n: calls.append(("e4", None, seed, "wrapper", str(out), stamp, n)))
     monkeypatch.setattr(reps, "clear_models", lambda: freed.append(len(calls)))
+    monkeypatch.setattr(RC, "realism_rows", lambda rec, path=None: ["frozen rows"])
+    monkeypatch.setattr(run_realism, "run_seed", lambda seed, out, stamp, pool="dev", rows=None: calls.append(("b7", None, seed, pool, str(out), stamp, rows)))
     run = RC.real_runners({"e4_n_per_kind": 7})
     run["e1"]("R5_R4_qwen_L26", 400, "o1", "s1")
     run["e1"]("R5_R4_qwen_L26", 401, "o1", "s1")
@@ -40,6 +42,7 @@ def test_the_real_runners_hand_the_confirmatory_pool_to_every_experiment_and_fre
     assert [c[0] for c in calls] == ["e1", "e1", "e1", "e2", "e2", "fs-e1", "fs-e2", "b7", "e4"]
     assert [c[3] for c in calls if c[0] != "e4"] == ["confirm"] * 8                       # never the default pool
     assert calls[-1] == ("e4", None, 402, "wrapper", "o4", "s4", 7)
+    assert calls[-2][6] == ["frozen rows"]                                                  # B7 gets the frozen problems, not a rebuild from the cache
     assert RC.real_runners({})["e4"] is not None
     assert len(freed) == 6                                                               # every change of reader frees the GPU
 

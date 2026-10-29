@@ -93,7 +93,7 @@ def test_the_template_set_is_exactly_the_held_out_wording_parts_of_solid_and_uns
     rows = rows_for()
     world = RR.build_realism_world(100, "dev", TINY, fake_competence, rows)
     rec = RR.run_seed(100, tmp_path, "s", sizes=TINY, rep=Oracle(world, rows), competence_fn=fake_competence, cache_dir=None, rows=rows)
-    want = {k: sum(1 for c in world.test_cases if c.kind == "arith" and c.family in assignments.TEST_FAMILIES and c.status == k) for k in ("solid", "unseen")}
+    want = {k: sum(1 for c in world.test_cases if c.kind == "arith" and c.family in assignments.TEST_FAMILIES and c.status == k and c.skill in ("add", "sub", "mul", "div")) for k in ("solid", "unseen")}
     assert rec["n_template"] == want and want["solid"] > 0 and want["unseen"] > 0
     assert any(c.kind != "arith" or c.family not in assignments.TEST_FAMILIES or c.status not in ("solid", "unseen") for c in world.test_cases)        # so the filter is not vacuous
 
@@ -115,3 +115,35 @@ def test_the_report_averages_the_realism_rates_over_the_seeds_that_have_them():
     assert "Solid skills called Unseen 0.300" in text and "Unseen skills found 0.700" in text
     none = [{"diff": 0.0, "template_bal": 0.8, "real_bal": 0.8, "real_false_unseen": None, "real_unseen_found": None}]
     assert "called Unseen nan" in RR.report_b7(none) and "found nan" in RR.report_b7(none)
+
+
+def test_the_template_side_holds_only_the_four_operations_the_realism_set_has(tmp_path):
+    import assignments
+    rows = rows_for()
+    world = RR.build_realism_world(100, "dev", TINY, fake_competence, rows)
+    rec = RR.run_seed(100, tmp_path, "s", sizes=TINY, rep=Oracle(world, rows), competence_fn=fake_competence, cache_dir=None, rows=rows)
+    six = {k: sum(1 for c in world.test_cases if c.kind == "arith" and c.family in assignments.TEST_FAMILIES and c.status == k) for k in ("solid", "unseen")}
+    assert sum(rec["n_template"].values()) < sum(six.values())                                # mod and max parts are not counted on the template side
+    assert RR.REALISM_SKILLS == ("add", "sub", "mul", "div")
+
+
+def test_the_small_operand_row_keeps_only_problems_whose_operands_are_both_two_digits_at_most(tmp_path):
+    rows = rows_for(120)
+    world = RR.build_realism_world(100, "dev", TINY, fake_competence, rows)
+    rec = RR.run_seed(100, tmp_path, "s", sizes=TINY, rep=Oracle(world, rows), competence_fn=fake_competence, cache_dir=None, rows=rows)
+    eligible = [r for r in rows if world.truth.get(r["skill"]) in ("solid", "unseen")]
+    small = [r for r in eligible if max(r["operands"]) <= 99]
+    assert 0 < len(small) < len(eligible) and sum(rec["n_real_small"].values()) == len(small)
+    assert rec["real_bal_small"] is not None and rec["diff_small"] == pytest.approx(rec["real_bal_small"] - rec["template_bal"])
+    cells = [{"diff": 0.1, "template_bal": 0.8, "real_bal": 0.9, "real_false_unseen": 0.1, "real_unseen_found": 0.9, "real_bal_small": 0.7, "diff_small": -0.1},
+             {"diff": 0.0, "template_bal": 0.8, "real_bal": 0.8, "real_false_unseen": 0.1, "real_unseen_found": 0.9, "real_bal_small": None, "diff_small": None}]
+    text = RR.report_b7(cells)
+    assert "operands are both at most 99" in text and "1 seeds can be scored" in text and "0.700 against 0.800" in text and "-0.100" in text
+    assert "operands are both at most" not in RR.report_b7([{**cells[1]}])
+
+
+def test_the_report_gives_the_realism_rates_when_every_seed_has_them():
+    cells = [{"diff": 0.05, "template_bal": 0.8, "real_bal": 0.85, "real_false_unseen": 0.1, "real_unseen_found": 0.9},
+             {"diff": -0.03, "template_bal": 0.7, "real_bal": 0.67, "real_false_unseen": 0.3, "real_unseen_found": 0.7}]
+    text = RR.report_b7(cells)
+    assert "Solid skills called Unseen 0.200" in text and "Unseen skills found 0.800" in text

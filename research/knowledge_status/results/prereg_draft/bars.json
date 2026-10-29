@@ -147,10 +147,10 @@
   },
   "b7_gap": {
    "bar": 0.1,
-   "dev_max": 0.42144039735099337,
-   "dev_mean": 0.32653491793545975,
+   "dev_max": 0.42769039735099335,
+   "dev_mean": 0.325092610243152,
    "dev_min": 0.2480654761904762,
-   "dev_sd": 0.044062828081833386,
+   "dev_sd": 0.04360705895899484,
    "direction": "max",
    "draft": 0.1,
    "expected": "fail",
@@ -295,7 +295,7 @@
   "growmoe/signature.py",
   "growmoe/vmf.py"
  ],
- "code_stamp": "926643114694641a",
+ "code_stamp": "ff3b592e1c3af520",
  "dev_cells": {
   "b1a": 5,
   "b1b": 5,
@@ -309,6 +309,7 @@
   "b5_mul_parent": 10,
   "b6_gap": 30,
   "b7_diff": 13,
+  "b7_diff_small": 13,
   "b7_gap": 13,
   "false_unseen_heldout": 30,
   "macro_f1": 30,
@@ -320,20 +321,30 @@
   "unseen_recall": 30
  },
  "dev_extras": {
+  "b7_diff_small": -0.32453813703813705,
   "r0_b1a": 0.543047619047619,
   "r0_b1b": 0.0025155555555555547,
   "unseen_recall": 0.893968253968254
  },
+ "e1_only_readers": [
+  "R1_minilm384",
+  "R2_mpnet",
+  "R3_bert",
+  "R4_gpt2_L8",
+  "R4_qwen_L22"
+ ],
  "e4_n_per_kind": 40,
  "frozen_for": "Phase 1 confirmatory run, single use",
  "fs_arms": {
   "R5_FS_pre": {
+   "found": 0.008253968253968255,
    "gaps": {
     "b1b": 0.13722888888888884,
     "b1c": 0.20417985185185172,
-    "false_unseen_heldout": 0.2811111111111111,
+    "false_unseen_heldout": 0.0,
     "macro_f1": 0.4253835688668259
    },
+   "headline_found": 0.893968253968254,
    "headline_means": {
     "b1b": 0.9966888888888888,
     "b1c": 0.8900813333333332,
@@ -350,12 +361,14 @@
    "worst_gap": 0.4253835688668259
   },
   "R5_FS_strict": {
+   "found": 0.027460317460317463,
    "gaps": {
     "b1b": 0.19873333333333332,
     "b1c": 0.3042993086419751,
-    "false_unseen_heldout": 0.2743055555555556,
+    "false_unseen_heldout": 0.0,
     "macro_f1": 0.47849850258834903
    },
+   "headline_found": 0.893968253968254,
    "headline_means": {
     "b1b": 0.9966888888888888,
     "b1c": 0.8900813333333332,
@@ -488,6 +501,12 @@
   0.05,
   0.1
  ],
+ "realism_counts": {
+  "add": 75,
+  "div": 75,
+  "mul": 74,
+  "sub": 76
+ },
  "realism_set_sha256": "6f1582f212e12372ecd0b529e54cdd9f5758adb99f6a1cce61cdbbe21bdcf812",
  "representations": [
   "R5_R4_qwen_L26",
@@ -633,7 +652,7 @@
     "b2_gap"
    ],
    "note": "",
-   "rule": "pass when R0 (mean over the 30 seeds) is below the frozen B1a bar OR the frozen B1b bar by at least the frozen margin; a fail makes the whole run invalid",
+   "rule": "pass when R0 (mean over the 30 seeds) is below the spec's B1a bar OR the spec's B1b bar (the draft bar, or the frozen bar if that is lower) by at least the frozen margin; a fail makes the whole run invalid",
    "text": "Validity of the test bed: the word-matcher control R0 falls short of the B1a bar or the B1b bar by at least 0.15; otherwise the test bed is broken and no result counts (anti-goal A1)."
   },
   "B3a": {

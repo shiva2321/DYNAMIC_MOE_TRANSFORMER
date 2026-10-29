@@ -55,10 +55,11 @@ def strip_marks(text: str) -> str:
         text = text[:cut]
     out = []
     for line in text.splitlines():
-        if line.startswith("**B2 validity"):
+        if line.startswith("**B2 validity") or "PASS / fail is the mean against the DRAFT bar" in line or line.startswith("B5: the parent set of a multiplication trace is exactly"):
             continue
         if line.startswith("|"):
             line = re.sub(r":? (?:PASS|fail)(?=\s*\|)", "", line)
+            line = re.sub(r" at (?:least|most) \d\.\d\d(?=\s*\|)", "", line)               # a bar printed from the DRAFT constants (the frozen bar is in the table at the top)
         out.append(line)
     return "\n".join(out)
 
@@ -68,10 +69,10 @@ def banners(cons: Mapping) -> list:
     if cons["invalid"]:
         out.append("**INVALID: B2 failed. The test bed is broken for this run (anti-goal A1); none of the results below counts.**")
     if cons["status_void"]:
-        out.append("**STATUS CLAIMS VOID: B1b is below its bar for the headline reader, which cannot see an operator change; no status claim (B3a to B6) built on it counts.**")
+        out.append("**STATUS CLAIMS VOID: B1b is below its bar for the headline reader, which cannot see an operator change; no status claim (B3a to B7) built on it counts.**")
     if cons["conditional"]:
         out.append("**STATUS CLAIMS CONDITIONAL: the headline reader missed B1a or B1c (the spec says such a reader is not used for status; the run carried it on by the user's decision D-40). "
-                   "Every pass of B3a to B6 below is conditional on that, and not a spec pass.**")
+                   "Every pass of B3a to B7 below is conditional on that, and not a spec pass.**")
     return out
 
 
@@ -102,11 +103,14 @@ def build(rec: Mapping, results_dir: Path = OUT, stamps: Optional[Mapping] = Non
         want = rec["statements"][sid]["expected"]
         L.append(f"| {sid} | {got.replace('_', ' ').upper()} | {want.replace('_', ' ').upper()} | {'yes' if got == want else 'NO'} |")
     r0 = {k: means.get(k) for k in ("r0_b1a", "r0_b1b")}
+    small = means.get("b7_diff_small")
     L += ["", "**B2, the word-matcher control R0** (gap = the spec's draft bar minus R0's value; B2 needs one gap of at least "
           f"{rec['bars']['b2_gap']['bar']:.2f}): " + "; ".join(f"{k} {('n/a' if x is None else format(x, '.3f'))}" + ("" if x is None else f", gap {rec['bars'][b]['draft'] - x:+.3f}")
                                                                 for (k, x), b in zip(r0.items(), ("b1a", "b1b"))) + ".", "",
           f"**Wording claim** (false 'unseen' on S4 to S8, standard calibration, bar {rec['bars']['false_unseen_heldout']['bar']:.2f}): {claim['claim']}; standard "
-          f"{means.get('false_unseen_heldout', float('nan')):.3f}, adapted {adapted if adapted is None else format(adapted, '.3f')} (adapted is reported, never gated).", ""]
+          f"{means.get('false_unseen_heldout', float('nan')):.3f}, adapted {adapted if adapted is None else format(adapted, '.3f')} (adapted is reported, never gated).", "",
+          "**B7 on the problems whose operands are both at most 99** (reported, not gated; dev " + ("n/a" if rec['dev_extras'].get('b7_diff_small') is None else format(rec['dev_extras']['b7_diff_small'], '+.3f'))
+          + "): " + ("n/a" if small is None else format(small, '+.3f')) + " (realism minus templates, mean over the seeds that can be scored).", ""]
     fs_rows = {}
     for arm in rec["representations"]:
         if arm in FZ.FS_ARMS:
@@ -127,7 +131,7 @@ def build(rec: Mapping, results_dir: Path = OUT, stamps: Optional[Mapping] = Non
         import run_realism
         diag = ["## Experiment tables (diagnostic)", "", "Appended from the experiment reports. Their PASS / fail marks (against the DRAFT bars) and the dev-fixed-bars section were removed: "
                 "the verdict is the table at the top, made from the frozen bars.", ""]
-        L += diag + [strip_marks(run_e1.report_e1(Path(results_dir) / "e1", rec["representations"], seeds, stamps["e1"], "confirm")),
+        L += diag + [strip_marks(run_e1.report_e1(Path(results_dir) / "e1", list(rec["representations"]) + list(rec.get("e1_only_readers", [])), seeds, stamps["e1"], "confirm")),
                      strip_marks(run_e2.report_e2(Path(results_dir) / "e2", rec["representations"], seeds, stamps["e2"], "confirm"))]
         e4 = [json.loads(p.read_text(encoding="utf-8")) for p in sorted((Path(results_dir) / "e4").glob("s*.json"))]
         if e4:

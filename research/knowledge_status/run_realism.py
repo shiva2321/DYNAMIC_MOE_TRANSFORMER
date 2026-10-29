@@ -27,6 +27,8 @@ HERE = Path(__file__).resolve().parent
 OUT = HERE / "results" / "realism"
 STAMP_FILES = R.STAMP_FILES + [HERE / "run_realism.py", HERE / "realism.py", R.LEARNED_MAP]
 REALISM_N, REALISM_SEED = 300, 100
+REALISM_SKILLS = ("add", "sub", "mul", "div")                  # the operations the realism set has; the template side is restricted to the same four so both sides hold the same skills
+SMALL = 99                                                       # the template bed uses operands of one or two digits; the reported "small operands" row keeps problems whose operands are both at most this
 RealismRows = List[dict]
 
 
@@ -77,21 +79,25 @@ def run_seed(seed: int, out_dir, stamp: str, pool: str = "dev", sizes: R.Sizes =
 
     tmpl = {"solid": [], "unseen": []}
     for text, case in zip(world.test_texts, world.test_cases):
-        if case.kind == "arith" and case.family in assignments.TEST_FAMILIES and case.status in tmpl:
+        if case.kind == "arith" and case.family in assignments.TEST_FAMILIES and case.status in tmpl and case.skill in REALISM_SKILLS:
             tmpl[case.status].append(unseen(text))
     real = {"solid": [], "unseen": []}
+    small = {"solid": [], "unseen": []}
     per_skill: Dict[str, dict] = {}
     for r in rows:
         truth = world.truth.get(r["skill"])
         if truth in real:
             flag = unseen(r["text"])
             real[truth].append(flag)
+            if max(r["operands"]) <= SMALL:
+                small[truth].append(flag)
             d = per_skill.setdefault(r["skill"], {"truth": truth, "n": 0, "called_unseen": 0})
             d["n"] += 1
             d["called_unseen"] += int(flag)
-    t_bal, r_bal = balanced(tmpl["solid"], tmpl["unseen"]), balanced(real["solid"], real["unseen"])
+    t_bal, r_bal, s_bal = balanced(tmpl["solid"], tmpl["unseen"]), balanced(real["solid"], real["unseen"]), balanced(small["solid"], small["unseen"])
     rec = {"seed": seed, "pool": pool, "rep": rep_id, "assignment": world.assignment, "truth": world.truth, "template_bal": t_bal, "real_bal": r_bal,
-           "diff": None if t_bal is None or r_bal is None else r_bal - t_bal, "n_template": {k: len(v) for k, v in tmpl.items()}, "n_real": {k: len(v) for k, v in real.items()},
+           "diff": None if t_bal is None or r_bal is None else r_bal - t_bal, "real_bal_small": s_bal, "diff_small": None if t_bal is None or s_bal is None else s_bal - t_bal,
+           "n_real_small": {k: len(v) for k, v in small.items()}, "n_template": {k: len(v) for k, v in tmpl.items()}, "n_real": {k: len(v) for k, v in real.items()},
            "real_false_unseen": float(np.mean(real["solid"])) if real["solid"] else None, "real_unseen_found": float(np.mean(real["unseen"])) if real["unseen"] else None,
            "per_skill": per_skill, "code_stamp": stamp}
     Path(out_dir).mkdir(parents=True, exist_ok=True)
@@ -108,8 +114,13 @@ def report_b7(cells: List[dict], label: str = "dev") -> str:
     t, r = float(np.mean([c["template_bal"] for c in ok])), float(np.mean([c["real_bal"] for c in ok]))
     fu = float(np.mean([c["real_false_unseen"] for c in ok if c["real_false_unseen"] is not None])) if any(c["real_false_unseen"] is not None for c in ok) else float("nan")
     uf = float(np.mean([c["real_unseen_found"] for c in ok if c["real_unseen_found"] is not None])) if any(c["real_unseen_found"] is not None for c in ok) else float("nan")
-    L += ["| set | balanced accuracy |", "|---|---|", f"| templates (S4 to S8) | {t:.3f} |", f"| realism problems | {r:.3f} |", f"| gap (realism - templates), mean over seeds | {r - t:+.3f} |", "",
+    L += ["| set | balanced accuracy |", "|---|---|", f"| templates (S4 to S8, the same four operations) | {t:.3f} |", f"| realism problems | {r:.3f} |", f"| gap (realism - templates), mean over seeds | {r - t:+.3f} |", "",
           f"On the realism problems: Solid skills called Unseen {fu:.3f}; Unseen skills found {uf:.3f}."]
+    sm = [c for c in cells if c.get("diff_small") is not None]
+    if sm:
+        L += ["", f"Reported, not gated: on the problems whose operands are both at most {SMALL} (the size the template bed uses), {len(sm)} seeds can be scored, balanced accuracy "
+              f"{float(np.mean([c['real_bal_small'] for c in sm])):.3f} against {float(np.mean([c['template_bal'] for c in sm])):.3f} on the templates "
+              f"(gap {float(np.mean([c['diff_small'] for c in sm])):+.3f})."]
     return "\n".join(L) + "\n"
 
 

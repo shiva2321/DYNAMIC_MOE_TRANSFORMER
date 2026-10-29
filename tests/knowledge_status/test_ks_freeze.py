@@ -828,7 +828,7 @@ def test_the_realism_set_hash_is_recorded_only_when_the_file_exists(tmp_path):
     code = tmp_path / "x.py"
     code.write_text("x = 1\n")
     realism = tmp_path / "realism_set.jsonl"
-    realism.write_bytes(b'{"a": 1}\r\n')
+    realism.write_bytes(b'{"skill": "add"}\r\n{"skill": "mul"}\r\n{"skill": "add"}\r\n')
     import hashlib
 
     def go(name, real):
@@ -836,8 +836,9 @@ def test_the_realism_set_hash_is_recorded_only_when_the_file_exists(tmp_path):
         out.mkdir()
         return FZ.freeze(out_dir=out, results_dir=results, pool_file=pool, code_files=[code], expected_stamps=STAMPS, realism_file=real)["realism_set_sha256"]
 
-    assert go("a", realism) == hashlib.sha256(b'{"a": 1}\n').hexdigest()                          # line endings folded
+    assert go("a", realism) == hashlib.sha256(b'{"skill": "add"}\n{"skill": "mul"}\n{"skill": "add"}\n').hexdigest()          # line endings folded
     assert go("b", None) is None and go("c", tmp_path / "missing.jsonl") is None
+    assert FZ._realism_counts(realism) == {"add": 2, "mul": 1} and FZ._realism_counts(None) == {} and FZ._realism_counts(tmp_path / "missing.jsonl") == {}
 
 
 def test_the_prereg_lists_a_from_scratch_arm_without_dev_cells_as_such(tmp_path):

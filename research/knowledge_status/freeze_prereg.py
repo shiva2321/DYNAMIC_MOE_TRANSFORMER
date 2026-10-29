@@ -30,6 +30,7 @@ GROW = HERE.parents[1] / "growmoe"
 FROZEN_FILES = ("bars.json", "bars.sha256", "PREREG.md")
 HEADLINE = "R5_R4_qwen_L26"
 FS_ARMS = ("R5_FS_strict", "R5_FS_pre")                       # the from-scratch reader arms (Task 11b); reported, never gated
+E1_ONLY_READERS = ["R1_minilm384", "R2_mpnet", "R3_bert", "R4_gpt2_L8", "R4_qwen_L22"]      # the rest of the ladder: the information ceiling (E1) only, reported, never gated (paper rule C-b)
 BASE_REPRESENTATIONS = ["R5_R4_qwen_L26", "R4_qwen_L26", "R0_hash"]      # a from-scratch arm joins the confirmatory run only if the D-40 rule keeps it on dev
 Q, Q_CURVE, GROUP_SIZES = 0.05, [0.01, 0.02, 0.05, 0.10], [1, 4, 8, 16]
 DEV_SEEDS, CONFIRM_SEEDS = list(range(100, 130)), list(range(400, 430))
@@ -202,6 +203,8 @@ def collect_dev_values(results_dir: Path, expected_stamps: Mapping, headline: st
     for c in b7:
         if c.get("diff") is not None:
             add("b7_diff", c["diff"])                                  # realism balanced accuracy minus template balanced accuracy, per seed
+            if c.get("diff_small") is not None:
+                add("b7_diff_small", c["diff_small"])                   # the same on the problems whose operands are both at most 99 (reported, not gated)
             add("b7_gap", abs(c["diff"]))                              # the per-seed size of the gap (only used to fix the bar; the verdict uses |mean diff|)
     for c in e4:
         r = c["rates"]
@@ -273,7 +276,7 @@ RULES = {
     "B1a": "pass when the mean over the 30 confirmatory seeds is at least the frozen bar; the headline reader is R5_R4_qwen_L26",
     "B1b": "pass when the mean over the 30 seeds is at least the frozen bar",
     "B1c": "pass when the mean over the 30 seeds is at least the frozen bar",
-    "B2": "pass when R0 (mean over the 30 seeds) is below the frozen B1a bar OR the frozen B1b bar by at least the frozen margin; a fail makes the whole run invalid",
+    "B2": "pass when R0 (mean over the 30 seeds) is below the spec's B1a bar OR the spec's B1b bar (the draft bar, or the frozen bar if that is lower) by at least the frozen margin; a fail makes the whole run invalid",
     "B3a": "pass only when ALL FIVE measures pass (macro F1 and AUROC at or above their bars, the three false-new rates at or below theirs); gated on the STANDARD calibration; the adapted condition is reported beside it and cannot pass the claim",
     "B3b": "reported only; no gate",
     "B4a": "pass only when both numbers are at or above their bars (gold spans)",
@@ -301,7 +304,7 @@ SURPRISE = "A confirmatory mean outside [dev min, dev max] widened by one dev st
 
 
 def statement_rows(bars: Mapping[str, dict], dev_means: Mapping[str, Optional[float]]) -> Dict[str, dict]:
-    v = VD.verdict(dev_means, {k: {"bar": r["bar"], "direction": r["direction"]} for k, r in bars.items()})
+    v = VD.verdict(dev_means, {k: {"bar": r["bar"], "direction": r["direction"], "draft": r["draft"]} for k, r in bars.items()})
     rows = {}
     for sid, spec in STATEMENTS.items():
         expected = "reported" if sid == "B3b" else v["statements"][sid]
@@ -330,6 +333,7 @@ def fs_summary(results_dir: Path, expected_stamps: Mapping, arms: Sequence[str] 
     out: Dict[str, dict] = {}
     base = collect_dev_values(results_dir, expected_stamps, headline, require=("e1", "e2"))
     keys = ("b1b", "b1c", "macro_f1", "false_unseen_heldout")
+    lower_is_better = {"false_unseen_heldout"}
     for arm in arms:
         try:
             vals = collect_dev_values(results_dir, expected_stamps, arm, require=("e1", "e2"))
@@ -338,11 +342,23 @@ def fs_summary(results_dir: Path, expected_stamps: Mapping, arms: Sequence[str] 
                 raise
             out[arm] = {"status": "no dev cells"}
             continue
-        gaps = {k: abs(float(np.mean(vals[k])) - float(np.mean(base[k]))) for k in keys}
+        gaps = {k: max(0.0, (float(np.mean(vals[k])) - float(np.mean(base[k]))) if k in lower_is_better else (float(np.mean(base[k])) - float(np.mean(vals[k])))) for k in keys}      # only being WORSE counts
         worst = max(gaps.values())
         out[arm] = {"means": {k: float(np.mean(vals[k])) for k in keys}, "headline_means": {k: float(np.mean(base[k])) for k in keys}, "gaps": gaps, "worst_gap": worst,
+                    "found": float(np.mean(vals["unseen_recall"])), "headline_found": float(np.mean(base["unseen_recall"])),
                     "status": "kept" if worst <= 0.05 + 1e-12 else ("parked" if worst <= 0.15 + 1e-12 else "not worth it now")}
     return out
+
+
+def _realism_counts(realism_file: Optional[Path]) -> Dict[str, int]:
+    if realism_file is None or not Path(realism_file).exists():
+        return {}
+    counts: Dict[str, int] = {}
+    for line in Path(realism_file).read_text(encoding="utf-8").splitlines():
+        if line.strip():
+            skill = json.loads(line)["skill"]
+            counts[skill] = counts.get(skill, 0) + 1
+    return counts
 
 
 def freeze(out_dir: Path = HERE, results_dir: Path = HERE / "results", pool_file: Path = HERE / "pool_confirm.py", code_files: Optional[Sequence[Path]] = None,
@@ -360,7 +376,7 @@ def freeze(out_dir: Path = HERE, results_dir: Path = HERE / "results", pool_file
     dev = collect_dev_values(results_dir, expected_stamps)
     bars = fix_bars(dev)
     means = derive_means(dev)
-    simple = {k: {"bar": r["bar"], "direction": r["direction"]} for k, r in bars.items()}
+    simple = {k: {"bar": r["bar"], "direction": r["direction"], "draft": r["draft"]} for k, r in bars.items()}
     vd = VD.verdict(means, simple)
     for name, row in vd["measures"].items():
         bars[name]["expected"] = row["verdict"]
@@ -377,12 +393,13 @@ def freeze(out_dir: Path = HERE, results_dir: Path = HERE / "results", pool_file
     rec = {
         "frozen_for": "Phase 1 confirmatory run, single use", "bars": bars, "statements": statement_rows(bars, means), "thresholds": dict(assignments.THRESHOLDS),
         "e4_n_per_kind": E4_N_PER_KIND, "min_seeds": MIN_SEEDS, "q": Q, "q_curve": Q_CURVE, "group_sizes": GROUP_SIZES, "sizes": asdict(run_e2.SIZES), "baseline_params": run_e2.BASELINE_PARAMS,
-        "representations": representations, "headline_representation": HEADLINE, "b6_primary": B6_PRIMARY,
+        "representations": representations, "e1_only_readers": E1_ONLY_READERS, "headline_representation": HEADLINE, "b6_primary": B6_PRIMARY,
         "seeds": {"confirm": CONFIRM_SEEDS, "dev": DEV_SEEDS}, "pool_confirm_sha256": file_sha256(pool_file),
         "realism_set_sha256": file_sha256(realism_file) if realism_file is not None and Path(realism_file).exists() else None,
+        "realism_counts": _realism_counts(realism_file),
         "code_stamp": runlib.code_stamp(code_files), "code_files": [_label(f) for f in code_files],
         "dev_cells": {k: len(v) for k, v in sorted(dev.items())},
-        "dev_extras": {"unseen_recall": means["unseen_recall"], "r0_b1a": means["r0_b1a"], "r0_b1b": means["r0_b1b"]}, "chance": CHANCE, "surprise_rule": SURPRISE,
+        "dev_extras": {"unseen_recall": means["unseen_recall"], "r0_b1a": means["r0_b1a"], "r0_b1b": means["r0_b1b"], "b7_diff_small": means.get("b7_diff_small")}, "chance": CHANCE, "surprise_rule": SURPRISE,
         "fs_arms": fs,
         "pool_overlap": _pool_overlap() if real else None, "length_leak": _length_leak() if real else None,
     }
@@ -494,7 +511,8 @@ def render_prereg(rec: Mapping) -> str:
     ll = rec.get("length_leak")
     if ll:
         L += ["Message length as a cue (anti-goal A1, no model; `check_length_leak.py`): accuracy of guessing the skill from the length of the request / of the whole message alone, inside one wording "
-              "family, dev pool against confirmatory pool (chance 0.167, or 0.333 in S5). Some leak is natural and the two pools are comparable; the real test of surface cues is B2.", "",
+              "family, dev pool against confirmatory pool (chance 0.167, or 0.333 in S5). Some leak is natural; the confirmatory pool is somewhat higher in a few families (S8, S1, S4, S7 on the request length) and the check is within one family only. The real "
+              "test of surface cues is B2.", "",
               "| family | dev: request, whole | confirmatory: request, whole |", "|---|---|---|"]
         for fam in sorted(ll["dev"]):
             d, c = ll["dev"][fam], ll["confirm"][fam]
@@ -520,24 +538,31 @@ def render_prereg(rec: Mapping) -> str:
               f"- Expected verdict: **{st['expected'].replace('_', ' ').upper()}**." + (f" {st['note']}" if st["note"] else ""), ""]
     L += ["## Realism check (B7)", "",
           "One-step arithmetic word problems written by people (SVAMP, MIT licence), downloaded once with the user's permission, restricted to problems whose reference equation is one operation on two "
-          "numbers of the problem; 300 rows, 75 of each operation (SVAMP has no remainder or maximum problems), drawn with seed 100. They are never used for teaching, calibration or tuning "
-          "(`realism.assert_not_realism`). Per seed the same machine judges (a) the template parts of the held-out wordings S4 to S8 and (b) the realism problems; on each the balanced accuracy of the "
-          "call 'Unseen or not' is taken over parts whose skill is Solid (should not be called Unseen) and parts whose skill is Unseen (should be). B7 is the absolute value of the mean difference "
-          "(realism minus templates) over the seeds that have both a Solid and an Unseen skill among add, sub, mul, div. A 50-row spot check of the labels is in `results/realism_spotcheck.md`.", ""]
+          "numbers of the problem; 300 rows (" + ", ".join(f"{k} {v}" for k, v in sorted((rec.get("realism_counts") or {}).items())) + "; SVAMP has no remainder or maximum problems and only a few "
+          "dozen usable multiplication problems), drawn with seed 100 and fixed in `results/realism_set.jsonl`, whose hash the runner checks before it starts. No code other than the realism runner "
+          "loads SVAMP, and the runner refuses any realism problem found among teaching, calibration or adaptation texts (`realism.assert_not_realism`). Per seed the same machine judges (a) the template parts of the held-out wordings S4 to S8 and (b) the realism problems; on each the balanced accuracy of the "
+          "call 'Unseen or not' is taken over parts whose skill is Solid (should not be called Unseen) and parts whose skill is Unseen (should be); the template side holds the same four operations. B7 is the "
+          "absolute value of the mean difference (realism minus templates) over the seeds that have both a Solid and an Unseen skill among add, sub, mul, div. A 50-row spot check of the labels "
+          "(`results/realism_spotcheck.md`) was read by an independent reviewer: 48 of 50 clearly right, two doubtful, none wrong.",
+          "Two confounds are named, not removed: a realism problem is a whole story with two to five numbers, a template part is one request, and about a quarter of the problems have an operand above 99 "
+          "(the template bed uses one or two digits). A row restricted to problems whose operands are both at most 99 is reported next to B7 and not gated. Only about 4 in 10 dev seeds can be scored "
+          "(" + str(rec["dev_cells"].get("b7_diff", 0)) + " of the 30 dev seeds), so there is a real chance (about 1 in 10 by a binomial estimate) that fewer than the minimum number of confirmatory seeds "
+          "can be scored, in which case B7 is not judged.", ""]
     if fs:
         L += ["## From-scratch reader arms (Task 11b, user decision D-40)", "",
               "No pretrained model. `R5_FS_strict`: a hashed bag of word pieces, a small network trained contrastively on the teaching data only. `R5_FS_pre`: the same network first pre-trained without labels "
               "on everyday sentences from the local corpora, then trained the same way. Operating points were chosen on tuning seeds 150 to 154 (results/FS_TUNING.md). The rule of D-40, applied to the dev "
               "means: within 0.05 of the headline reader on B1b, B1c, macro F1 and false-new = kept; within 0.15 = parked (not deleted) until the user decides the whole system is from scratch; further = "
               "not worth it now. Only a kept arm is run in the confirmatory run (measured and reported, never gated); an arm that is not kept is not run there, and its dev result below is the finding.", "",
-              "| arm | status on dev | worst gap | B1b | B1c | macro F1 | false-new |", "|---|---|---|---|---|---|---|"]
+              "| arm | status on dev | worst gap | B1b | B1c | macro F1 | false-new | never-taught skills found |", "|---|---|---|---|---|---|---|---|"]
         for arm, f in sorted(fs.items()):
             if "means" in f:
                 m = f["means"]
-                L.append(f"| {arm} | {f['status']} | {f['worst_gap']:.3f} | {m['b1b']:.3f} | {m['b1c']:.3f} | {m['macro_f1']:.3f} | {m['false_unseen_heldout']:.3f} |")
+                L.append(f"| {arm} | {f['status']} | {f['worst_gap']:.3f} | {m['b1b']:.3f} | {m['b1c']:.3f} | {m['macro_f1']:.3f} | {m['false_unseen_heldout']:.3f} | {f['found']:.3f} |")
             else:
-                L.append(f"| {arm} | {f['status']} | | | | | |")
-        L.append("")
+                L.append(f"| {arm} | {f['status']} | | | | | | |")
+        L += ["", "The gap counts only being worse than the headline reader (a better value is no gap). A low false-new rate here is not a fix of the wording problem: these arms call almost nothing "
+              "new, as the last column shows (the headline reader finds " + _fmt(next((f["headline_found"] for _, f in sorted(fs.items()) if "headline_found" in f), None)) + ").", ""]
     x = rec["dev_extras"]
     L += ["## Predictions that are not bars", "",
           f"- Finding new skills stays high: the share of never-taught arithmetic parts called unseen is expected near its dev mean ({x['unseen_recall']:.3f}); no bar is registered for it.",
@@ -553,8 +578,8 @@ def render_prereg(rec: Mapping) -> str:
           "against its frozen bar, by `verdict.py` (flip-tested), nothing else.",
           "2. The wording claim is gated on the STANDARD calibration (S1 to S3 only). The adapted condition (a few S4 to S8 parts in the calibration) is reported, never gated: if only it reaches the bar, "
           "the claim reads 'needs adaptation to new wording'.",
-          "3. B3b (baselines) is reported with every claim; nothing is gated on it. Conflict, the offline consequence estimate, the group-test numbers, the per-wording B5 rows and the from-scratch arms "
-          "are reported and not gated.",
+          "3. B3b (baselines) is reported with every claim; nothing is gated on it. The offline consequence estimate, the group-test numbers, the per-wording B5 rows, the small-operand B7 row and the "
+          "information-ceiling readers that are run for E1 only are reported and not gated.",
           "4. No bar, pool, seed, constant or code file is changed after the run; the run is not repeated; a failure is reported with its number. `run_confirm.py` is the only entry point; the development "
           "runners refuse the confirmatory pool.", "",
           "## Kill rules and paper decision (computed by `verdict.consequences`, printed at the top of the result)", "",
@@ -562,12 +587,14 @@ def render_prereg(rec: Mapping) -> str:
           "- B1b is below the spec's draft bar (or the frozen bar if that is lower) for the headline reader: that reader cannot see an operator change; no status claim built on it counts and Phase 1 ends "
           "with that negative result (spec section 7).",
           "- B1a or B1c fails for the headline reader: the spec says a representation that fails B1 is not used for status. The user decided (D-40) to carry the reader on regardless; therefore every "
-          "status claim (B3a to B6) is reported as CONDITIONAL on a reader that missed B1, and a pass of such a claim is not a spec pass.",
+          "status claim (B3a to B7) is reported as CONDITIONAL on a reader that missed B1, and a pass of such a claim is not a spec pass. B1a and B1c are expected to fail (dev), so the result is "
+          "expected to carry the CONDITIONAL banner.",
           "- A statement whose bar is missed is a reported negative result, not a reason to re-run. Single use means exactly once.",
           "- Paper rule (spec section 10): write a paper if the test bed and the information-ceiling analysis (C-a and C-b) are done on fresh seeds and the reading finds nothing that already does them; add "
           "a method claim (C-c status machine, C-d relation from traces) only for statements whose bars passed.", "",
           "## Not run, stated in advance", "",
-          "- Conflict status: reported if it fires on its few cases, not gated (spec 5.6).",
+          "- The Conflict condition of spec 5.6 (a rule change on a taught skill) was not built; only `flag_conflict` is unit-tested. Nothing about Conflict is reported.",
+          "- The information-ceiling ladder beyond the readers run here (the E1-only readers listed above) is dev-only evidence; C-b on fresh seeds covers exactly those readers.",
           "- The spec 5.6 count sweep (one skill taught 5, 20, 100, 500, 2000 examples) is not part of this run.",
           "- A5 (right on templates and wrong on real phrasing) is checked only by B7, on one real-text source and four operations.",
           "- The open THRESHOLDS question: on dev about a quarter of the skills taught as 'Solid' (2000 examples) are not solid by measured accuracy (multiplication, division and remainder are hard for the "

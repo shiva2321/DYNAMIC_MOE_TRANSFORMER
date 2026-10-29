@@ -250,7 +250,7 @@
 
 ### Task 15: The confirmatory run (single use, only on the user's go)
 
-**Files:** Create `research/knowledge_status/CONFIRM_CLOSED.json` after the run; use `run_e1.py`, `run_e2.py`, `run_e3.py` with `--pool confirm --seeds 400-429` and `KS_ALLOW_CONFIRM=1`.
+**Files:** Create `research/knowledge_status/CONFIRM_CLOSED.json` after the run; run it ONLY through `research/knowledge_status/run_confirm.py` with `KS_ALLOW_CONFIRM=1` (it calls the E1, E2, E4 and realism runners on the confirmatory pool, checks the freeze first, stamps its cells, and writes `CONFIRM_STARTED.json` and `CONFIRM_CLOSED.json`); the development runners `run_e1.py`, `run_e2.py`, `run_e3.py` refuse the confirmatory pool (Ruling of 2026-10-29, after the second independent review). Right after the freeze commit the freeze files, and right after the start commit `CONFIRM_STARTED.json`.
 
 - [ ] **Step 1: Preconditions:** clean repository; code stamp equals the frozen one; `bars.sha256` matches; no record exists for seeds 400 to 429.
 - [ ] **Step 2: Launch** with the idempotent command; after a power cut relaunch the same command. Write nothing about results until all cells exist.

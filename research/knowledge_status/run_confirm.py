@@ -28,10 +28,12 @@ from unittest import mock
 
 import freeze_prereg as FZ
 import runlib
+import realism
 
 HERE = Path(__file__).resolve().parent
 OUT = HERE / "results" / "confirm"
 COMPETENCE = HERE / "results" / "competence"
+REALISM_FILE = HERE / "results" / "realism_set.jsonl"
 STARTED, CLOSED = HERE / "CONFIRM_STARTED.json", HERE / "CONFIRM_CLOSED.json"
 POOL = "confirm"
 FOLDER = {"e1": "e1", "e2": "e2", "e4": "e4", "b7": "realism"}
@@ -65,8 +67,19 @@ def earlier_results(out: Path = OUT, competence_dir: Path = COMPETENCE) -> List[
     return found
 
 
+def realism_rows(rec: Mapping, path: Path = REALISM_FILE) -> List[dict]:
+    """The frozen realism problems, read from the file whose sha256 the freeze recorded (never rebuilt from the cache, which can change); ConfirmRefused if the file is not the frozen one."""
+    want = rec.get("realism_set_sha256")
+    if want is None:
+        raise ConfirmRefused("no realism set was frozen")
+    if not Path(path).exists() or FZ.file_sha256(path) != want:
+        raise ConfirmRefused("results/realism_set.jsonl is not the realism set that was frozen")
+    return [json.loads(line) for line in Path(path).read_text(encoding="utf-8").splitlines() if line.strip()]
+
+
 def preflight(frozen_dir: Path = HERE, pool_file: Path = HERE / "pool_confirm.py", code_files: Optional[Sequence[Path]] = None, environ: Mapping[str, str] = os.environ,
-              closed: Path = CLOSED, started: Path = STARTED, out: Path = OUT, competence_dir: Path = COMPETENCE, environment: Optional[dict] = None) -> dict:
+              closed: Path = CLOSED, started: Path = STARTED, out: Path = OUT, competence_dir: Path = COMPETENCE, environment: Optional[dict] = None,
+              realism_file: Path = REALISM_FILE) -> dict:
     """The frozen record (bars.json) if the run may go ahead; ConfirmRefused with the reason otherwise."""
     if Path(closed).exists():
         raise ConfirmRefused(f"single use: {Path(closed).name} exists, the confirmatory run is finished and is not repeated")
@@ -76,13 +89,14 @@ def preflight(frozen_dir: Path = HERE, pool_file: Path = HERE / "pool_confirm.py
     if not chk["ok"]:
         raise ConfirmRefused(f"what was frozen is not what is on disk: {chk['problem']}")
     rec = json.loads((Path(frozen_dir) / "bars.json").read_text(encoding="utf-8"))
+    realism_rows(rec, realism_file)
     if Path(started).exists():
         was = json.loads(Path(started).read_text(encoding="utf-8"))
         if was.get("bars_sha256") != FZ.bars_hash(rec):
             raise ConfirmRefused("a confirmatory run was started under a different freeze; this is not a resume")
         now = environment if environment is not None else environment_record()
         if was.get("environment") != now:
-            raise ConfirmRefused(f"the run was started on another set-up (library versions or device): started {was.get('environment')}, now {now}")
+            raise ConfirmRefused(f"the run was started on another set-up (library versions or device): started {was.get('environment')}, now {now}; restore the recorded set-up (same libraries, same device) and start again")
     else:
         leftovers = earlier_results(out, competence_dir)
         if leftovers:
@@ -114,7 +128,7 @@ def jobs(rec: Mapping, e4_seeds: Optional[Sequence[int]]) -> List[tuple]:
     """(experiment, representation or None, seed) for every cell of the run, in the order they are computed: the ceiling (E1), the status of parts and tangled messages (E2), the realism
     check (B7), the traces (E4)."""
     seeds, reps = rec["seeds"]["confirm"], rec["representations"]
-    out = [("e1", r, s) for r in reps for s in seeds] + [("e2", r, s) for r in reps for s in seeds] + [("b7", None, s) for s in seeds]
+    out = [("e1", r, s) for r in list(reps) + list(rec.get("e1_only_readers", [])) for s in seeds] + [("e2", r, s) for r in reps for s in seeds] + [("b7", None, s) for s in seeds]
     return out + [("e4", None, s) for s in (e4_seeds or [])]
 
 
@@ -210,9 +224,11 @@ def real_runners(rec: Mapping) -> Dict[str, Callable]:
             return scratch_reader.run_e2_cell(rep, seed, POOL, out_dir, stamp)
         return run_e2.run_cell(rep, seed, POOL, out_dir, stamp)
 
+    rows = realism_rows(rec)
+
     def b7(_rep, seed, out_dir, stamp):
         switch("b7")
-        return run_realism.run_seed(seed, out_dir, stamp, pool=POOL)
+        return run_realism.run_seed(seed, out_dir, stamp, pool=POOL, rows=rows)
 
     def e4(_rep, seed, out_dir, stamp):
         switch("e4")
@@ -223,7 +239,7 @@ def real_runners(rec: Mapping) -> Dict[str, Callable]:
 
 def main(argv: Optional[Sequence[str]] = None) -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--max-cells", type=int, default=None, help="stop after this many NEW cells (for a short test of the plumbing; the run is not closed until every cell exists)")
+    ap.add_argument("--max-cells", type=int, default=None, help="stop after this many NEW cells. This STARTS the single-use run (it writes CONFIRM_STARTED.json and real confirmatory cells); use it only to stop on purpose, for example at a time limit. The run closes only when every cell exists")
     args = ap.parse_args(argv)
     runlib.set_threads(3)
     try:
