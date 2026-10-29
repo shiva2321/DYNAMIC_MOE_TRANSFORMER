@@ -1,0 +1,5 @@
+C:\Users\Asta\AppData\Local\Programs\Python\Python312\Lib\site-packages\torch\cuda\__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+`torch_dtype` is deprecated! Use `dtype` instead!
+seed 100: tau0.5 false-new 0.013 found 0.943 real nan | look 0.212 0.752
+seed 101: tau0.5 false-new 0.042 found 0.995 real 0.24 | look 0.283 0.819
