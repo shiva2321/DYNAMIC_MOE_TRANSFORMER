@@ -37,3 +37,12 @@ def test_apply_turns_a_changed_part_solid_with_the_skill_and_leaves_the_rest():
     b = ST.Assessment("thin", "sub", 0.5, 20, 0.3, 1, "sub")
     out = LG.apply([a, b], {0: "add"}, {"add": 0.93})
     assert (out[0].status, out[0].skill, out[0].competence, out[0].nearest) == ("solid", "add", 0.93, "sub") and out[1] is b
+
+
+def test_windows_by_name_keep_each_name_together_and_cut_each_group_into_windows_of_g():
+    import lab_group_asked as LGA
+    names = {0: "add", 1: "add", 2: "mul", 3: "add", 4: "mul", 5: "add", 6: "sub"}
+    w = LGA.windows_by_name(list(range(7)), names, 2, np.random.default_rng(0))
+    assert sorted(sum(w, [])) == list(range(7)) and all(len({names[r] for r in win}) == 1 for win in w)
+    assert sorted(len(x) for x in w) == [1, 2, 2, 2]
+    assert LGA.windows_by_name(list(range(7)), names, 2, np.random.default_rng(0)) == w
