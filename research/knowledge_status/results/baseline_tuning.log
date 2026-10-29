@@ -1,0 +1,168 @@
+C:\Users\Asta\AppData\Local\Programs\Python\Python312\Lib\site-packages\torch\cuda\__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+`torch_dtype` is deprecated! Use `dtype` instead!
+R5_R4_qwen_L26 seed 150 knn_distance             k=1                    AUROC 0.912  found 0.848  false-unseen 0.312
+R5_R4_qwen_L26 seed 150 knn_distance             k=5                    AUROC 0.890  found 0.800  false-unseen 0.275
+R5_R4_qwen_L26 seed 150 knn_distance             k=10                   AUROC 0.877  found 0.790  false-unseen 0.237
+R5_R4_qwen_L26 seed 150 knn_distance             k=20                   AUROC 0.841  found 0.700  false-unseen 0.250
+R5_R4_qwen_L26 seed 150 knn_distance             k=50                   AUROC 0.549  found 0.090  false-unseen 0.138
+R5_R4_qwen_L26 seed 150 vmf_conformal            max_protos=64          AUROC 0.934  found 0.886  false-unseen 0.338
+R5_R4_qwen_L26 seed 150 vmf_conformal            max_protos=256         AUROC 0.926  found 0.852  false-unseen 0.338
+R5_R4_qwen_L26 seed 150 vmf_conformal            max_protos=1024        AUROC 0.923  found 0.867  false-unseen 0.338
+R5_R4_qwen_L26 seed 150 mahalanobis              default                AUROC 0.926  found 0.876  false-unseen 0.300
+R5_R4_qwen_L26 seed 150 relative_mahalanobis     default                AUROC 0.509  found 0.090  false-unseen 0.025
+R5_R4_qwen_L26 seed 150 classifier_confidence    C=0.01                 AUROC 0.577  found 0.138  false-unseen 0.113
+R5_R4_qwen_L26 seed 150 classifier_confidence    C=0.1                  AUROC 0.645  found 0.324  false-unseen 0.212
+R5_R4_qwen_L26 seed 150 classifier_confidence    C=1.0                  AUROC 0.701  found 0.481  false-unseen 0.188
+R5_R4_qwen_L26 seed 150 classifier_confidence    C=10.0                 AUROC 0.579  found 0.481  false-unseen 0.237
+R5_R4_qwen_L26 seed 150 energy                   C=0.01                 AUROC 0.521  found 0.019  false-unseen 0.100
+R5_R4_qwen_L26 seed 150 energy                   C=0.1                  AUROC 0.509  found 0.162  false-unseen 0.100
+R5_R4_qwen_L26 seed 150 energy                   C=1.0                  AUROC 0.503  found 0.324  false-unseen 0.125
+R5_R4_qwen_L26 seed 150 energy                   C=10.0                 AUROC 0.626  found 0.238  false-unseen 0.013
+R5_R4_qwen_L26 seed 150 autoencoder_descriptor   epochs=100,hidden=8    AUROC 0.828  found 0.624  false-unseen 0.237
+R5_R4_qwen_L26 seed 150 autoencoder_descriptor   epochs=300,hidden=8    AUROC 0.841  found 0.686  false-unseen 0.237
+R5_R4_qwen_L26 seed 150 autoencoder_descriptor   epochs=100,hidden=16   AUROC 0.843  found 0.676  false-unseen 0.237
+R5_R4_qwen_L26 seed 150 autoencoder_descriptor   epochs=300,hidden=16   AUROC 0.845  found 0.686  false-unseen 0.225
+R5_R4_qwen_L26 seed 150 autoencoder_descriptor   epochs=100,hidden=32   AUROC 0.850  found 0.695  false-unseen 0.225
+R5_R4_qwen_L26 seed 150 autoencoder_descriptor   epochs=300,hidden=32   AUROC 0.817  found 0.648  false-unseen 0.225
+R5_R4_qwen_L26 seed 150 autoencoder_descriptor   epochs=100,hidden=64   AUROC 0.877  found 0.767  false-unseen 0.300
+R5_R4_qwen_L26 seed 150 autoencoder_descriptor   epochs=300,hidden=64   AUROC 0.829  found 0.676  false-unseen 0.225
+R5_R4_qwen_L26 seed 151 knn_distance             k=1                    AUROC 0.933  found 0.900  false-unseen 0.300
+R5_R4_qwen_L26 seed 151 knn_distance             k=5                    AUROC 0.918  found 0.852  false-unseen 0.350
+R5_R4_qwen_L26 seed 151 knn_distance             k=10                   AUROC 0.898  found 0.824  false-unseen 0.350
+R5_R4_qwen_L26 seed 151 knn_distance             k=20                   AUROC 0.794  found 0.738  false-unseen 0.325
+R5_R4_qwen_L26 seed 151 knn_distance             k=50                   AUROC 0.231  found 0.138  false-unseen 0.150
+R5_R4_qwen_L26 seed 151 vmf_conformal            max_protos=64          AUROC 0.949  found 0.900  false-unseen 0.225
+R5_R4_qwen_L26 seed 151 vmf_conformal            max_protos=256         AUROC 0.949  found 0.910  false-unseen 0.250
+R5_R4_qwen_L26 seed 151 vmf_conformal            max_protos=1024        AUROC 0.946  found 0.905  false-unseen 0.225
+R5_R4_qwen_L26 seed 151 mahalanobis              default                AUROC 0.970  found 0.976  false-unseen 0.275
+R5_R4_qwen_L26 seed 151 relative_mahalanobis     default                AUROC 0.608  found 0.276  false-unseen 0.000
+R5_R4_qwen_L26 seed 151 classifier_confidence    C=0.01                 AUROC 0.237  found 0.148  false-unseen 0.300
+R5_R4_qwen_L26 seed 151 classifier_confidence    C=0.1                  AUROC 0.478  found 0.443  false-unseen 0.350
+R5_R4_qwen_L26 seed 151 classifier_confidence    C=1.0                  AUROC 0.514  found 0.452  false-unseen 0.400
+R5_R4_qwen_L26 seed 151 classifier_confidence    C=10.0                 AUROC 0.586  found 0.538  false-unseen 0.375
+R5_R4_qwen_L26 seed 151 energy                   C=0.01                 AUROC 0.306  found 0.295  false-unseen 0.225
+R5_R4_qwen_L26 seed 151 energy                   C=0.1                  AUROC 0.514  found 0.510  false-unseen 0.325
+R5_R4_qwen_L26 seed 151 energy                   C=1.0                  AUROC 0.526  found 0.467  false-unseen 0.350
+R5_R4_qwen_L26 seed 151 energy                   C=10.0                 AUROC 0.631  found 0.500  false-unseen 0.200
+R5_R4_qwen_L26 seed 151 autoencoder_descriptor   epochs=100,hidden=8    AUROC 0.854  found 0.729  false-unseen 0.325
+R5_R4_qwen_L26 seed 151 autoencoder_descriptor   epochs=300,hidden=8    AUROC 0.855  found 0.733  false-unseen 0.325
+R5_R4_qwen_L26 seed 151 autoencoder_descriptor   epochs=100,hidden=16   AUROC 0.855  found 0.738  false-unseen 0.325
+R5_R4_qwen_L26 seed 151 autoencoder_descriptor   epochs=300,hidden=16   AUROC 0.867  found 0.748  false-unseen 0.300
+R5_R4_qwen_L26 seed 151 autoencoder_descriptor   epochs=100,hidden=32   AUROC 0.854  found 0.733  false-unseen 0.325
+R5_R4_qwen_L26 seed 151 autoencoder_descriptor   epochs=300,hidden=32   AUROC 0.831  found 0.700  false-unseen 0.300
+R5_R4_qwen_L26 seed 151 autoencoder_descriptor   epochs=100,hidden=64   AUROC 0.865  found 0.724  false-unseen 0.300
+R5_R4_qwen_L26 seed 151 autoencoder_descriptor   epochs=300,hidden=64   AUROC 0.889  found 0.729  false-unseen 0.250
+R5_R4_qwen_L26 seed 152 knn_distance             k=1                    AUROC 0.940  found 0.962  false-unseen 0.550
+R5_R4_qwen_L26 seed 152 knn_distance             k=5                    AUROC 0.921  found 0.943  false-unseen 0.450
+R5_R4_qwen_L26 seed 152 knn_distance             k=10                   AUROC 0.911  found 0.919  false-unseen 0.425
+R5_R4_qwen_L26 seed 152 knn_distance             k=20                   AUROC 0.879  found 0.876  false-unseen 0.450
+R5_R4_qwen_L26 seed 152 knn_distance             k=50                   AUROC 0.300  found 0.205  false-unseen 0.150
+R5_R4_qwen_L26 seed 152 vmf_conformal            max_protos=64          AUROC 0.951  found 0.952  false-unseen 0.475
+R5_R4_qwen_L26 seed 152 vmf_conformal            max_protos=256         AUROC 0.950  found 0.952  false-unseen 0.475
+R5_R4_qwen_L26 seed 152 vmf_conformal            max_protos=1024        AUROC 0.948  found 0.952  false-unseen 0.325
+R5_R4_qwen_L26 seed 152 mahalanobis              default                AUROC 0.964  found 0.938  false-unseen 0.400
+R5_R4_qwen_L26 seed 152 relative_mahalanobis     default                AUROC 0.032  found 0.000  false-unseen 0.000
+R5_R4_qwen_L26 seed 152 classifier_confidence    C=0.01                 AUROC 0.306  found 0.271  false-unseen 0.275
+R5_R4_qwen_L26 seed 152 classifier_confidence    C=0.1                  AUROC 0.552  found 0.538  false-unseen 0.350
+R5_R4_qwen_L26 seed 152 classifier_confidence    C=1.0                  AUROC 0.695  found 0.681  false-unseen 0.450
+R5_R4_qwen_L26 seed 152 classifier_confidence    C=10.0                 AUROC 0.620  found 0.567  false-unseen 0.400
+R5_R4_qwen_L26 seed 152 energy                   C=0.01                 AUROC 0.080  found 0.081  false-unseen 0.400
+R5_R4_qwen_L26 seed 152 energy                   C=0.1                  AUROC 0.200  found 0.181  false-unseen 0.225
+R5_R4_qwen_L26 seed 152 energy                   C=1.0                  AUROC 0.325  found 0.267  false-unseen 0.175
+R5_R4_qwen_L26 seed 152 energy                   C=10.0                 AUROC 0.540  found 0.300  false-unseen 0.025
+R5_R4_qwen_L26 seed 152 autoencoder_descriptor   epochs=100,hidden=8    AUROC 0.909  found 0.924  false-unseen 0.475
+R5_R4_qwen_L26 seed 152 autoencoder_descriptor   epochs=300,hidden=8    AUROC 0.914  found 0.924  false-unseen 0.475
+R5_R4_qwen_L26 seed 152 autoencoder_descriptor   epochs=100,hidden=16   AUROC 0.909  found 0.919  false-unseen 0.475
+R5_R4_qwen_L26 seed 152 autoencoder_descriptor   epochs=300,hidden=16   AUROC 0.893  found 0.914  false-unseen 0.475
+R5_R4_qwen_L26 seed 152 autoencoder_descriptor   epochs=100,hidden=32   AUROC 0.901  found 0.933  false-unseen 0.500
+R5_R4_qwen_L26 seed 152 autoencoder_descriptor   epochs=300,hidden=32   AUROC 0.884  found 0.924  false-unseen 0.575
+R5_R4_qwen_L26 seed 152 autoencoder_descriptor   epochs=100,hidden=64   AUROC 0.897  found 0.943  false-unseen 0.550
+R5_R4_qwen_L26 seed 152 autoencoder_descriptor   epochs=300,hidden=64   AUROC 0.873  found 0.905  false-unseen 0.500
+R5_R4_qwen_L26 seed 153 knn_distance             k=1                    AUROC 0.923  found 0.952  false-unseen 0.362
+R5_R4_qwen_L26 seed 153 knn_distance             k=5                    AUROC 0.907  found 0.924  false-unseen 0.388
+R5_R4_qwen_L26 seed 153 knn_distance             k=10                   AUROC 0.892  found 0.895  false-unseen 0.438
+R5_R4_qwen_L26 seed 153 knn_distance             k=20                   AUROC 0.826  found 0.714  false-unseen 0.350
+R5_R4_qwen_L26 seed 153 knn_distance             k=50                   AUROC 0.479  found 0.000  false-unseen 0.037
+R5_R4_qwen_L26 seed 153 vmf_conformal            max_protos=64          AUROC 0.935  found 0.929  false-unseen 0.312
+R5_R4_qwen_L26 seed 153 vmf_conformal            max_protos=256         AUROC 0.936  found 0.938  false-unseen 0.312
+R5_R4_qwen_L26 seed 153 vmf_conformal            max_protos=1024        AUROC 0.929  found 0.938  false-unseen 0.312
+R5_R4_qwen_L26 seed 153 mahalanobis              default                AUROC 0.924  found 0.981  false-unseen 0.350
+R5_R4_qwen_L26 seed 153 relative_mahalanobis     default                AUROC 0.568  found 0.014  false-unseen 0.062
+R5_R4_qwen_L26 seed 153 classifier_confidence    C=0.01                 AUROC 0.580  found 0.195  false-unseen 0.138
+R5_R4_qwen_L26 seed 153 classifier_confidence    C=0.1                  AUROC 0.663  found 0.476  false-unseen 0.188
+R5_R4_qwen_L26 seed 153 classifier_confidence    C=1.0                  AUROC 0.710  found 0.571  false-unseen 0.200
+R5_R4_qwen_L26 seed 153 classifier_confidence    C=10.0                 AUROC 0.792  found 0.681  false-unseen 0.237
+R5_R4_qwen_L26 seed 153 energy                   C=0.01                 AUROC 0.517  found 0.048  false-unseen 0.212
+R5_R4_qwen_L26 seed 153 energy                   C=0.1                  AUROC 0.629  found 0.410  false-unseen 0.237
+R5_R4_qwen_L26 seed 153 energy                   C=1.0                  AUROC 0.581  found 0.095  false-unseen 0.037
+R5_R4_qwen_L26 seed 153 energy                   C=10.0                 AUROC 0.613  found 0.152  false-unseen 0.037
+R5_R4_qwen_L26 seed 153 autoencoder_descriptor   epochs=100,hidden=8    AUROC 0.840  found 0.690  false-unseen 0.362
+R5_R4_qwen_L26 seed 153 autoencoder_descriptor   epochs=300,hidden=8    AUROC 0.833  found 0.714  false-unseen 0.388
+R5_R4_qwen_L26 seed 153 autoencoder_descriptor   epochs=100,hidden=16   AUROC 0.842  found 0.729  false-unseen 0.375
+R5_R4_qwen_L26 seed 153 autoencoder_descriptor   epochs=300,hidden=16   AUROC 0.884  found 0.810  false-unseen 0.375
+R5_R4_qwen_L26 seed 153 autoencoder_descriptor   epochs=100,hidden=32   AUROC 0.851  found 0.733  false-unseen 0.400
+R5_R4_qwen_L26 seed 153 autoencoder_descriptor   epochs=300,hidden=32   AUROC 0.876  found 0.729  false-unseen 0.338
+R5_R4_qwen_L26 seed 153 autoencoder_descriptor   epochs=100,hidden=64   AUROC 0.885  found 0.800  false-unseen 0.325
+R5_R4_qwen_L26 seed 153 autoencoder_descriptor   epochs=300,hidden=64   AUROC 0.856  found 0.671  false-unseen 0.263
+R5_R4_qwen_L26 seed 154 knn_distance             k=1                    AUROC 0.938  found 0.886  false-unseen 0.175
+R5_R4_qwen_L26 seed 154 knn_distance             k=5                    AUROC 0.951  found 0.838  false-unseen 0.133
+R5_R4_qwen_L26 seed 154 knn_distance             k=10                   AUROC 0.950  found 0.829  false-unseen 0.133
+R5_R4_qwen_L26 seed 154 knn_distance             k=20                   AUROC 0.936  found 0.748  false-unseen 0.125
+R5_R4_qwen_L26 seed 154 knn_distance             k=50                   AUROC 0.748  found 0.000  false-unseen 0.033
+R5_R4_qwen_L26 seed 154 vmf_conformal            max_protos=64          AUROC 0.946  found 0.910  false-unseen 0.192
+R5_R4_qwen_L26 seed 154 vmf_conformal            max_protos=256         AUROC 0.943  found 0.895  false-unseen 0.167
+R5_R4_qwen_L26 seed 154 vmf_conformal            max_protos=1024        AUROC 0.941  found 0.895  false-unseen 0.167
+R5_R4_qwen_L26 seed 154 mahalanobis              default                AUROC 0.982  found 0.990  false-unseen 0.292
+R5_R4_qwen_L26 seed 154 relative_mahalanobis     default                AUROC 0.314  found 0.024  false-unseen 0.000
+R5_R4_qwen_L26 seed 154 classifier_confidence    C=0.01                 AUROC 0.643  found 0.048  false-unseen 0.050
+R5_R4_qwen_L26 seed 154 classifier_confidence    C=0.1                  AUROC 0.654  found 0.205  false-unseen 0.125
+R5_R4_qwen_L26 seed 154 classifier_confidence    C=1.0                  AUROC 0.638  found 0.348  false-unseen 0.200
+R5_R4_qwen_L26 seed 154 classifier_confidence    C=10.0                 AUROC 0.420  found 0.248  false-unseen 0.192
+R5_R4_qwen_L26 seed 154 energy                   C=0.01                 AUROC 0.582  found 0.038  false-unseen 0.083
+R5_R4_qwen_L26 seed 154 energy                   C=0.1                  AUROC 0.610  found 0.190  false-unseen 0.125
+R5_R4_qwen_L26 seed 154 energy                   C=1.0                  AUROC 0.557  found 0.329  false-unseen 0.175
+R5_R4_qwen_L26 seed 154 energy                   C=10.0                 AUROC 0.414  found 0.267  false-unseen 0.133
+R5_R4_qwen_L26 seed 154 autoencoder_descriptor   epochs=100,hidden=8    AUROC 0.883  found 0.167  false-unseen 0.025
+R5_R4_qwen_L26 seed 154 autoencoder_descriptor   epochs=300,hidden=8    AUROC 0.887  found 0.205  false-unseen 0.033
+R5_R4_qwen_L26 seed 154 autoencoder_descriptor   epochs=100,hidden=16   AUROC 0.886  found 0.205  false-unseen 0.025
+R5_R4_qwen_L26 seed 154 autoencoder_descriptor   epochs=300,hidden=16   AUROC 0.862  found 0.138  false-unseen 0.050
+R5_R4_qwen_L26 seed 154 autoencoder_descriptor   epochs=100,hidden=32   AUROC 0.895  found 0.248  false-unseen 0.083
+R5_R4_qwen_L26 seed 154 autoencoder_descriptor   epochs=300,hidden=32   AUROC 0.905  found 0.338  false-unseen 0.092
+R5_R4_qwen_L26 seed 154 autoencoder_descriptor   epochs=100,hidden=64   AUROC 0.905  found 0.300  false-unseen 0.075
+R5_R4_qwen_L26 seed 154 autoencoder_descriptor   epochs=300,hidden=64   AUROC 0.946  found 0.776  false-unseen 0.083
+# Tuning of the standard detectors on `R5_R4_qwen_L26`, seeds 150-154 (not report seeds)
+
+Criterion: mean AUROC of parts of untaught skills against parts of taught skills (no threshold). A setting within 0.002 of the best loses to the default. 'found' and 'false unseen' are at q = 0.05 with the shared held-out calibration and are shown for information only.
+
+| detector | setting | seeds | mean AUROC | found | false unseen | chosen |
+|---|---|---|---|---|---|---|
+| knn_distance | k=1 | 5 | 0.929 | 0.910 | 0.340 | chosen |
+| knn_distance | k=5 | 5 | 0.917 | 0.871 | 0.319 |  |
+| knn_distance | k=10 (default) | 5 | 0.906 | 0.851 | 0.317 |  |
+| knn_distance | k=20 | 5 | 0.855 | 0.755 | 0.300 |  |
+| knn_distance | k=50 | 5 | 0.461 | 0.087 | 0.102 |  |
+| vmf_conformal | max_protos=64 | 5 | 0.943 | 0.915 | 0.308 | chosen |
+| vmf_conformal | max_protos=256 (default) | 5 | 0.941 | 0.910 | 0.308 |  |
+| vmf_conformal | max_protos=1024 | 5 | 0.938 | 0.911 | 0.273 |  |
+| mahalanobis | default (default) | 5 | 0.953 | 0.952 | 0.323 | chosen |
+| relative_mahalanobis | default (default) | 5 | 0.406 | 0.081 | 0.017 | chosen |
+| classifier_confidence | C=0.01 | 5 | 0.469 | 0.160 | 0.175 |  |
+| classifier_confidence | C=0.1 | 5 | 0.598 | 0.397 | 0.245 |  |
+| classifier_confidence | C=1.0 (default) | 5 | 0.652 | 0.507 | 0.287 | chosen |
+| classifier_confidence | C=10.0 | 5 | 0.599 | 0.503 | 0.288 |  |
+| energy | C=0.01 | 5 | 0.401 | 0.096 | 0.204 |  |
+| energy | C=0.1 | 5 | 0.492 | 0.290 | 0.202 |  |
+| energy | C=1.0 (default) | 5 | 0.498 | 0.296 | 0.172 |  |
+| energy | C=10.0 | 5 | 0.565 | 0.291 | 0.082 | chosen |
+| autoencoder_descriptor | epochs=100,hidden=8 | 5 | 0.863 | 0.627 | 0.285 |  |
+| autoencoder_descriptor | epochs=300,hidden=8 | 5 | 0.866 | 0.652 | 0.292 |  |
+| autoencoder_descriptor | epochs=100,hidden=16 | 5 | 0.867 | 0.653 | 0.287 |  |
+| autoencoder_descriptor | epochs=300,hidden=16 | 5 | 0.870 | 0.659 | 0.285 |  |
+| autoencoder_descriptor | epochs=100,hidden=32 | 5 | 0.870 | 0.669 | 0.307 |  |
+| autoencoder_descriptor | epochs=300,hidden=32 (default) | 5 | 0.863 | 0.668 | 0.306 |  |
+| autoencoder_descriptor | epochs=100,hidden=64 | 5 | 0.886 | 0.707 | 0.310 | chosen |
+| autoencoder_descriptor | epochs=300,hidden=64 | 5 | 0.878 | 0.751 | 0.264 |  |
+
+Chosen overrides (an empty dict keeps the default): `BASELINE_PARAMS = {"knn_distance": {"k": 1}, "vmf_conformal": {"max_protos": 64}, "mahalanobis": {}, "relative_mahalanobis": {}, "classifier_confidence": {}, "energy": {"C": 10.0}, "autoencoder_descriptor": {"hidden": 64, "epochs": 100}}`
+

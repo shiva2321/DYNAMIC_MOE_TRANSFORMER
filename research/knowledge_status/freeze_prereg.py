@@ -30,7 +30,7 @@ GROW = HERE.parents[1] / "growmoe"
 FROZEN_FILES = ("bars.json", "bars.sha256", "PREREG.md")
 HEADLINE = "R5_R4_qwen_L26"
 FS_ARMS = ("R5_FS_strict", "R5_FS_pre")                       # the from-scratch reader arms (Task 11b); reported, never gated
-REPRESENTATIONS = ["R5_R4_qwen_L26", "R4_qwen_L26", "R0_hash", *FS_ARMS]
+BASE_REPRESENTATIONS = ["R5_R4_qwen_L26", "R4_qwen_L26", "R0_hash"]      # a from-scratch arm joins the confirmatory run only if the D-40 rule keeps it on dev
 Q, Q_CURVE, GROUP_SIZES = 0.05, [0.01, 0.02, 0.05, 0.10], [1, 4, 8, 16]
 DEV_SEEDS, CONFIRM_SEEDS = list(range(100, 130)), list(range(400, 430))
 MIN_SEEDS = 10                                              # a measure needs at least this many confirmatory seeds to be judged; fewer is "not_run"
@@ -305,8 +305,6 @@ def statement_rows(bars: Mapping[str, dict], dev_means: Mapping[str, Optional[fl
     rows = {}
     for sid, spec in STATEMENTS.items():
         expected = "reported" if sid == "B3b" else v["statements"][sid]
-        if sid == "B7":
-            expected = "not_run"
         rows[sid] = {"text": spec["text"], "measures": spec["measures"], "rule": RULES[sid], "expected": expected, "note": NOTES.get(sid, "")}
     return rows
 
@@ -335,7 +333,9 @@ def fs_summary(results_dir: Path, expected_stamps: Mapping, arms: Sequence[str] 
     for arm in arms:
         try:
             vals = collect_dev_values(results_dir, expected_stamps, arm, require=("e1", "e2"))
-        except ValueError:
+        except ValueError as e:
+            if "results to read" not in str(e):                                    # stale or misplaced cells are an error, only absent cells are a status
+                raise
             out[arm] = {"status": "no dev cells"}
             continue
         gaps = {k: abs(float(np.mean(vals[k])) - float(np.mean(base[k]))) for k in keys}
@@ -365,6 +365,8 @@ def freeze(out_dir: Path = HERE, results_dir: Path = HERE / "results", pool_file
     for name, row in vd["measures"].items():
         bars[name]["expected"] = row["verdict"]
     bars["b2_gap"]["expected"] = vd["statements"]["B2"]
+    fs = fs_summary(results_dir, expected_stamps) if "fs" in expected_stamps else {}
+    representations = BASE_REPRESENTATIONS + [a for a in FS_ARMS if fs.get(a, {}).get("status") == "kept"]
     import assignments
     import run_e2
     from dataclasses import asdict
@@ -375,13 +377,13 @@ def freeze(out_dir: Path = HERE, results_dir: Path = HERE / "results", pool_file
     rec = {
         "frozen_for": "Phase 1 confirmatory run, single use", "bars": bars, "statements": statement_rows(bars, means), "thresholds": dict(assignments.THRESHOLDS),
         "e4_n_per_kind": E4_N_PER_KIND, "min_seeds": MIN_SEEDS, "q": Q, "q_curve": Q_CURVE, "group_sizes": GROUP_SIZES, "sizes": asdict(run_e2.SIZES), "baseline_params": run_e2.BASELINE_PARAMS,
-        "representations": REPRESENTATIONS, "headline_representation": HEADLINE, "b6_primary": B6_PRIMARY,
+        "representations": representations, "headline_representation": HEADLINE, "b6_primary": B6_PRIMARY,
         "seeds": {"confirm": CONFIRM_SEEDS, "dev": DEV_SEEDS}, "pool_confirm_sha256": file_sha256(pool_file),
         "realism_set_sha256": file_sha256(realism_file) if realism_file is not None and Path(realism_file).exists() else None,
         "code_stamp": runlib.code_stamp(code_files), "code_files": [_label(f) for f in code_files],
         "dev_cells": {k: len(v) for k, v in sorted(dev.items())},
         "dev_extras": {"unseen_recall": means["unseen_recall"], "r0_b1a": means["r0_b1a"], "r0_b1b": means["r0_b1b"]}, "chance": CHANCE, "surprise_rule": SURPRISE,
-        "fs_arms": fs_summary(results_dir, expected_stamps) if "fs" in expected_stamps else {},
+        "fs_arms": fs,
         "pool_overlap": _pool_overlap() if real else None, "length_leak": _length_leak() if real else None,
     }
     rec = json.loads(json.dumps(rec))                                                    # exactly what the file will hold (tuples become lists), so the returned record can be compared with a re-read one
@@ -475,8 +477,8 @@ def render_prereg(rec: Mapping) -> str:
          f"- Seeds: confirmatory {rec['seeds']['confirm'][0]} to {rec['seeds']['confirm'][-1]} ({len(rec['seeds']['confirm'])} seeds, never used before). Dev seeds {rec['seeds']['dev'][0]} to "
          f"{rec['seeds']['dev'][-1]} set the bars.",
          f"- Readers (representations): {', '.join(rec['representations'])}. Headline reader `{rec['headline_representation']}` (the frozen Qwen2.5-1.5B layer-26 state with a learned linear map trained on S1 to "
-         "S3 teaching data only); `R4_qwen_L26` (the same state without the map) and `R0_hash` (hashed word pieces, the word-matcher control) are controls; `R5_FS_strict` and `R5_FS_pre` are the "
-         "from-scratch reader arms of Task 11b (see below). Verdicts are made on the headline reader; the other arms are reported.",
+         "S3 teaching data only); `R4_qwen_L26` (the same state without the map) and `R0_hash` (hashed word pieces, the word-matcher control) are controls. The from-scratch arms of Task 11b take part only "
+         "if the rule of D-40 keeps them on dev (see below). Verdicts are made on the headline reader; the other readers are reported.",
          f"- Calibration: held-out S1 to S3 parts only; headline level q = {rec['q']}; the curve over q in {rec['q_curve']} is reported; group-test sizes {rec['group_sizes']}.",
          f"- Taught-state rule (`THRESHOLDS`): {json.dumps(rec['thresholds'], sort_keys=True)}.",
          f"- Test messages: the confirmatory template pool `pool_confirm.py`, sha256 `{rec['pool_confirm_sha256']}`.",
@@ -527,9 +529,9 @@ def render_prereg(rec: Mapping) -> str:
               "No pretrained model. `R5_FS_strict`: a hashed bag of word pieces, a small network trained contrastively on the teaching data only. `R5_FS_pre`: the same network first pre-trained without labels "
               "on everyday sentences from the local corpora, then trained the same way. Operating points were chosen on tuning seeds 150 to 154 (results/FS_TUNING.md). The rule of D-40, applied to the dev "
               "means: within 0.05 of the headline reader on B1b, B1c, macro F1 and false-new = kept; within 0.15 = parked (not deleted) until the user decides the whole system is from scratch; further = "
-              "not worth it now. In the confirmatory run these arms are measured and reported, never gated.", "",
+              "not worth it now. Only a kept arm is run in the confirmatory run (measured and reported, never gated); an arm that is not kept is not run there, and its dev result below is the finding.", "",
               "| arm | status on dev | worst gap | B1b | B1c | macro F1 | false-new |", "|---|---|---|---|---|---|---|"]
-        for arm, f in fs.items():
+        for arm, f in sorted(fs.items()):
             if "means" in f:
                 m = f["means"]
                 L.append(f"| {arm} | {f['status']} | {f['worst_gap']:.3f} | {m['b1b']:.3f} | {m['b1c']:.3f} | {m['macro_f1']:.3f} | {m['false_unseen_heldout']:.3f} |")

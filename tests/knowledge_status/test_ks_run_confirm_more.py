@@ -62,6 +62,7 @@ def test_a_measure_without_a_dev_value_prints_n_a_and_never_a_surprise(tmp_path)
 
 def test_the_from_scratch_table_prints_numbers_for_every_reader(tmp_path):
     rec = frozen(tmp_path)
+    rec = {**rec, "representations": rec["representations"] + ["R5_FS_strict"]}
     confirm = tmp_path / "confirm"
     write_cells(confirm, seeds=range(400, 410), pool="confirm")
     write_arm_cells(confirm, "R5_FS_strict", 0.03, stamp="FSX", seeds=range(400, 410), pool="confirm")

@@ -1,0 +1,45 @@
+C:\Users\Asta\AppData\Local\Programs\Python\Python312\Lib\site-packages\torch\cuda\__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+`torch_dtype` is deprecated! Use `dtype` instead!
+seed 100: template None realism None diff None
+seed 101: template 0.7208333333333333 realism 0.36444444444444446 diff -0.35638888888888887
+seed 102: template None realism None diff None
+seed 103: template 0.8125 realism 0.5 diff -0.3125
+seed 104: template None realism None diff None
+seed 105: template 0.66875 realism 0.3549107142857143 diff -0.31383928571428565
+seed 106: template 0.8583333333333334 realism None diff None
+seed 107: template 0.825 realism 0.5 diff -0.32499999999999996
+seed 108: template None realism None diff None
+seed 109: template 0.8291666666666666 realism 0.5066666666666667 diff -0.3224999999999999
+seed 110: template 0.8458333333333333 realism None diff None
+seed 111: template 0.7458333333333333 realism 0.49776785714285715 diff -0.2480654761904762
+seed 112: template None realism None diff None
+seed 113: template 0.8458333333333333 realism 0.506578947368421 diff -0.3392543859649123
+seed 114: template 0.8416666666666666 realism None diff None
+seed 115: template 0.8270833333333334 realism 0.49995555358015914 diff -0.32712777975317425
+seed 116: template 0.7729166666666667 realism 0.5 diff -0.2729166666666667
+seed 117: template None realism None diff None
+seed 118: template 0.8208333333333333 realism None diff None
+seed 119: template None realism None diff None
+seed 120: template None realism None diff None
+seed 121: template 0.875 realism 0.506578947368421 diff -0.368421052631579
+seed 122: template None realism None diff None
+seed 123: template 0.8625 realism 0.4410596026490067 diff -0.42144039735099337
+seed 124: template 0.7875 realism 0.5 diff -0.2875
+seed 125: template None realism None diff None
+seed 126: template 0.85 realism 0.5 diff -0.35
+seed 127: template 0.775 realism None diff None
+seed 128: template 0.42083333333333334 realism None diff None
+seed 129: template 0.8625 realism None diff None
+# B7, realism check (dev; 13 of 30 seeds have both a Solid and an Unseen skill among add, sub, mul, div)
+
+Balanced accuracy of the call 'Unseen or not' over Solid and Unseen parts; template = held-out wordings S4 to S8; realism = SVAMP one-step problems (never used for teaching or tuning).
+
+| set | balanced accuracy |
+|---|---|
+| templates (S4 to S8) | 0.802 |
+| realism problems | 0.475 |
+| gap (realism - templates), mean over seeds | -0.327 |
+
+On the realism problems: Solid skills called Unseen 0.981; Unseen skills found 0.932.
+

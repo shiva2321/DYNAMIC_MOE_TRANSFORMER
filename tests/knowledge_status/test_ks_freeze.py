@@ -255,7 +255,7 @@ def _mutants(source):
     flips = {ast.Lt: ast.GtE, ast.LtE: ast.Gt, ast.Gt: ast.LtE, ast.GtE: ast.Lt, ast.Eq: ast.NotEq, ast.NotEq: ast.Eq, ast.Is: ast.IsNot, ast.IsNot: ast.Is, ast.In: ast.NotIn, ast.NotIn: ast.In}
     sites = []
     for node in ast.walk(tree):
-        if isinstance(node, ast.Compare):
+        if isinstance(node, ast.Compare) and not (isinstance(node.left, ast.Name) and node.left.id == "__name__"):        # the `if __name__ == "__main__"` guard is not code under test
             for i, op in enumerate(node.ops):
                 if type(op) in flips:
                     sites.append(("cmp", node, i))
@@ -384,7 +384,7 @@ def test_bars_follow_the_rule_written_before_the_dev_run(tmp_path):
     assert rec["e4_n_per_kind"] == 40
     assert rec["q"] == 0.05 and rec["q_curve"] == [0.01, 0.02, 0.05, 0.10] and rec["group_sizes"] == [1, 4, 8, 16]
     assert rec["seeds"]["confirm"] == list(range(400, 430)) and rec["seeds"]["dev"][0] == 100
-    assert rec["representations"] == ["R5_R4_qwen_L26", "R4_qwen_L26", "R0_hash", "R5_FS_strict", "R5_FS_pre"] and rec["headline_representation"] == "R5_R4_qwen_L26"
+    assert rec["representations"] == ["R5_R4_qwen_L26", "R4_qwen_L26", "R0_hash"] and rec["headline_representation"] == "R5_R4_qwen_L26"
     assert rec["min_seeds"] == 10
 
 
@@ -687,7 +687,7 @@ def test_the_b7_cells_enter_the_bars_and_the_expected_verdicts(tmp_path):
     rec, out, pool, code = freeze_into(tmp_path)
     b = rec["bars"]["b7_gap"]
     assert b["n_dev_seeds"] == 4 and b["draft"] == 0.10 and b["bar"] == 0.10 and b["dev_mean"] == pytest.approx(np.mean([0.34, 0.32, 0.30, 0.28]))      # the seed with no scorable pair is skipped
-    assert rec["statements"]["B7"]["expected"] == "not_run" or rec["statements"]["B7"]["expected"] == "fail"
+    assert rec["statements"]["B7"]["expected"] == "fail"
     assert rec["bars"]["b7_gap"]["expected"] == "fail" and rec["bars"]["macro_f1"]["expected"] in ("pass", "fail")
     assert rec["dev_extras"]["r0_b1a"] == pytest.approx(0.54) and rec["dev_extras"]["r0_b1b"] == pytest.approx(0.01)
 
@@ -733,7 +733,8 @@ def test_a_cell_of_a_from_scratch_arm_must_carry_the_from_scratch_stamp(tmp_path
     results = tmp_path / "results"
     write_cells(results)
     write_arm_cells(results, "R5_FS_strict", 0.0, stamp="OLD")
-    assert FZ.fs_summary(results, {**STAMPS, "fs": "FS"}, arms=("R5_FS_strict",))["R5_FS_strict"]["status"] == "no dev cells" or True
+    with pytest.raises(ValueError, match="stamp"):
+        FZ.fs_summary(results, {**STAMPS, "fs": "FS"}, arms=("R5_FS_strict",))               # stale cells are an error, not "no dev cells"
     with pytest.raises(ValueError, match="stamp"):
         FZ.collect_dev_values(results, {**STAMPS, "fs": "FS"}, "R5_FS_strict", require=("e1", "e2"))
 
@@ -755,7 +756,8 @@ def test_the_prereg_has_the_realism_the_kill_rules_the_disclosures_and_the_from_
                    "run_confirm.py", "Found after the dev numbers were seen", "extended to E1, E4 and B7", "TAUGHT skills", "trap_as_unseen", "verbatim S1 to S3 request templates", "THRESHOLDS question",
                    "tightened bar", "min(draft, mean + 2 sd)"):
         assert needle in text or needle == "tightened bar", needle
-    assert "R5_FS_strict" in rec["representations"] and rec["fs_arms"]["R5_FS_strict"]["status"] == "kept"
+    assert rec["representations"] == ["R5_R4_qwen_L26", "R4_qwen_L26", "R0_hash", "R5_FS_strict"]                       # the kept arm joins, the parked one does not
+    assert rec["fs_arms"]["R5_FS_strict"]["status"] == "kept" and rec["fs_arms"]["R5_FS_pre"]["status"] == "parked"
     row = [r for r in text.splitlines() if r.startswith("| macro_f1")][0]
     assert row.split("|")[6].strip() in ("PASS", "FAIL")                                         # the table has an expected-verdict column
 
@@ -851,3 +853,20 @@ def test_the_prereg_lists_a_from_scratch_arm_without_dev_cells_as_such(tmp_path)
     rec = FZ.freeze(out_dir=out, results_dir=results, pool_file=pool, code_files=[code], expected_stamps={**STAMPS, "fs": "FS"})
     text = (out / "PREREG.md").read_text(encoding="utf-8")
     assert rec["fs_arms"]["R5_FS_pre"]["status"] == "no dev cells" and "| R5_FS_pre | no dev cells | | | | | |" in text and "| R5_FS_strict | kept |" in text
+
+
+def test_a_freeze_that_includes_from_scratch_arms_can_be_checked_afterwards(tmp_path):
+    results = tmp_path / "results"
+    write_cells(results)
+    write_arm_cells(results, "R5_FS_strict", 0.03)
+    write_arm_cells(results, "R5_FS_pre", 0.10)
+    out = tmp_path / "out"
+    out.mkdir()
+    pool = tmp_path / "pool_confirm.py"
+    pool.write_text("POOL = 1\n")
+    code = tmp_path / "x.py"
+    code.write_text("x = 1\n")
+    FZ.freeze(out_dir=out, results_dir=results, pool_file=pool, code_files=[code], expected_stamps={**STAMPS, "fs": "FS"})
+    assert FZ.check_frozen(out, pool, [code]) == {"ok": True, "problem": None}                 # the written PREREG.md is what the re-read record renders to, whatever order the dicts come back in
+    text = (out / "PREREG.md").read_text(encoding="utf-8")
+    assert text.index("| R5_FS_pre |") < text.index("| R5_FS_strict |")

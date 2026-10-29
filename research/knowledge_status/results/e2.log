@@ -1,0 +1,288 @@
+C:\Users\Asta\AppData\Local\Programs\Python\Python312\Lib\site-packages\torch\cuda\__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+`torch_dtype` is deprecated! Use `dtype` instead!
+R5_R4_qwen_L26   seed 100: macro F1 0.785  false-unseen(S4-S8) 0.212  unseen found 0.752  88.3s
+R5_R4_qwen_L26   seed 101: macro F1 0.811  false-unseen(S4-S8) 0.283  unseen found 0.819  81.9s
+R5_R4_qwen_L26   seed 102: macro F1 0.742  false-unseen(S4-S8) 0.237  unseen found 0.667  75.5s
+R5_R4_qwen_L26   seed 103: macro F1 0.858  false-unseen(S4-S8) 0.433  unseen found 1.000  81.6s
+R5_R4_qwen_L26   seed 104: macro F1 0.875  false-unseen(S4-S8) 0.325  unseen found 0.938  76.3s
+R5_R4_qwen_L26   seed 105: macro F1 0.764  false-unseen(S4-S8) 0.250  unseen found 0.695  82.1s
+R5_R4_qwen_L26   seed 106: macro F1 0.873  false-unseen(S4-S8) 0.175  unseen found 0.838  88.3s
+R5_R4_qwen_L26   seed 107: macro F1 0.901  false-unseen(S4-S8) 0.325  unseen found 1.000  86.4s
+R5_R4_qwen_L26   seed 108: macro F1 0.924  false-unseen(S4-S8) 0.263  unseen found 1.000  86.3s
+R5_R4_qwen_L26   seed 109: macro F1 0.882  false-unseen(S4-S8) 0.287  unseen found 0.952  83.7s
+R5_R4_qwen_L26   seed 110: macro F1 0.884  false-unseen(S4-S8) 0.300  unseen found 0.943  85.6s
+R5_R4_qwen_L26   seed 111: macro F1 0.846  false-unseen(S4-S8) 0.388  unseen found 0.924  86.3s
+R5_R4_qwen_L26   seed 112: macro F1 0.908  false-unseen(S4-S8) 0.287  unseen found 0.986  83.4s
+R5_R4_qwen_L26   seed 113: macro F1 0.896  false-unseen(S4-S8) 0.300  unseen found 0.986  86.3s
+R5_R4_qwen_L26   seed 114: macro F1 0.874  false-unseen(S4-S8) 0.258  unseen found 0.867  85.0s
+R5_R4_qwen_L26   seed 115: macro F1 0.903  false-unseen(S4-S8) 0.283  unseen found 0.990  88.1s
+R5_R4_qwen_L26   seed 116: macro F1 0.833  false-unseen(S4-S8) 0.400  unseen found 0.952  88.2s
+R5_R4_qwen_L26   seed 117: macro F1 0.876  false-unseen(S4-S8) 0.300  unseen found 0.933  84.8s
+R5_R4_qwen_L26   seed 118: macro F1 0.869  false-unseen(S4-S8) 0.250  unseen found 0.919  91.9s
+R5_R4_qwen_L26   seed 119: macro F1 0.866  false-unseen(S4-S8) 0.362  unseen found 0.938  86.2s
+R5_R4_qwen_L26   seed 120: macro F1 0.782  false-unseen(S4-S8) 0.263  unseen found 0.767  84.8s
+R5_R4_qwen_L26   seed 121: macro F1 0.915  false-unseen(S4-S8) 0.242  unseen found 1.000  85.0s
+R5_R4_qwen_L26   seed 122: macro F1 0.882  false-unseen(S4-S8) 0.300  unseen found 0.933  85.2s
+R5_R4_qwen_L26   seed 123: macro F1 0.919  false-unseen(S4-S8) 0.233  unseen found 0.986  82.7s
+R5_R4_qwen_L26   seed 124: macro F1 0.867  false-unseen(S4-S8) 0.417  unseen found 0.995  83.5s
+R5_R4_qwen_L26   seed 125: macro F1 0.918  false-unseen(S4-S8) 0.275  unseen found 0.981  82.2s
+R5_R4_qwen_L26   seed 126: macro F1 0.903  false-unseen(S4-S8) 0.312  unseen found 1.000  74.5s
+R5_R4_qwen_L26   seed 127: macro F1 0.866  false-unseen(S4-S8) 0.237  unseen found 0.900  71.0s
+R5_R4_qwen_L26   seed 128: macro F1 0.518  false-unseen(S4-S8) 0.225  unseen found 0.181  68.9s
+R5_R4_qwen_L26   seed 129: macro F1 0.901  false-unseen(S4-S8) 0.258  unseen found 0.976  72.5s
+R4_qwen_L26      seed 100: macro F1 0.857  false-unseen(S4-S8) 0.412  unseen found 0.962  20.9s
+R4_qwen_L26      seed 101: macro F1 0.697  false-unseen(S4-S8) 0.308  unseen found 0.595  21.1s
+R4_qwen_L26      seed 102: macro F1 0.823  false-unseen(S4-S8) 0.375  unseen found 0.876  20.4s
+R4_qwen_L26      seed 103: macro F1 0.844  false-unseen(S4-S8) 0.483  unseen found 0.976  20.5s
+R4_qwen_L26      seed 104: macro F1 0.831  false-unseen(S4-S8) 0.425  unseen found 0.919  20.1s
+R4_qwen_L26      seed 105: macro F1 0.711  false-unseen(S4-S8) 0.317  unseen found 0.652  19.9s
+R4_qwen_L26      seed 106: macro F1 0.850  false-unseen(S4-S8) 0.383  unseen found 0.914  20.2s
+R4_qwen_L26      seed 107: macro F1 0.829  false-unseen(S4-S8) 0.362  unseen found 0.924  19.9s
+R4_qwen_L26      seed 108: macro F1 0.868  false-unseen(S4-S8) 0.362  unseen found 0.948  20.1s
+R4_qwen_L26      seed 109: macro F1 0.839  false-unseen(S4-S8) 0.425  unseen found 0.952  20.7s
+R4_qwen_L26      seed 110: macro F1 0.809  false-unseen(S4-S8) 0.417  unseen found 0.910  19.8s
+R4_qwen_L26      seed 111: macro F1 0.857  false-unseen(S4-S8) 0.425  unseen found 0.976  19.9s
+R4_qwen_L26      seed 112: macro F1 0.837  false-unseen(S4-S8) 0.475  unseen found 0.933  19.6s
+R4_qwen_L26      seed 113: macro F1 0.870  false-unseen(S4-S8) 0.287  unseen found 0.933  20.0s
+R4_qwen_L26      seed 114: macro F1 0.837  false-unseen(S4-S8) 0.417  unseen found 0.919  20.1s
+R4_qwen_L26      seed 115: macro F1 0.847  false-unseen(S4-S8) 0.375  unseen found 0.933  19.9s
+R4_qwen_L26      seed 116: macro F1 0.795  false-unseen(S4-S8) 0.450  unseen found 0.890  19.4s
+R4_qwen_L26      seed 117: macro F1 0.880  false-unseen(S4-S8) 0.312  unseen found 0.962  20.6s
+R4_qwen_L26      seed 118: macro F1 0.793  false-unseen(S4-S8) 0.450  unseen found 0.910  19.9s
+R4_qwen_L26      seed 119: macro F1 0.813  false-unseen(S4-S8) 0.450  unseen found 0.881  19.7s
+R4_qwen_L26      seed 120: macro F1 0.829  false-unseen(S4-S8) 0.312  unseen found 0.876  19.0s
+R4_qwen_L26      seed 121: macro F1 0.839  false-unseen(S4-S8) 0.383  unseen found 0.933  20.0s
+R4_qwen_L26      seed 122: macro F1 0.832  false-unseen(S4-S8) 0.325  unseen found 0.862  20.3s
+R4_qwen_L26      seed 123: macro F1 0.831  false-unseen(S4-S8) 0.417  unseen found 0.895  20.3s
+R4_qwen_L26      seed 124: macro F1 0.823  false-unseen(S4-S8) 0.425  unseen found 0.933  20.0s
+R4_qwen_L26      seed 125: macro F1 0.866  false-unseen(S4-S8) 0.388  unseen found 0.938  19.1s
+R4_qwen_L26      seed 126: macro F1 0.816  false-unseen(S4-S8) 0.338  unseen found 0.905  19.6s
+R4_qwen_L26      seed 127: macro F1 0.793  false-unseen(S4-S8) 0.350  unseen found 0.824  18.8s
+R4_qwen_L26      seed 128: macro F1 0.797  false-unseen(S4-S8) 0.438  unseen found 0.871  20.3s
+R4_qwen_L26      seed 129: macro F1 0.817  false-unseen(S4-S8) 0.367  unseen found 0.881  20.3s
+R0_hash          seed 100: macro F1 0.661  false-unseen(S4-S8) 0.050  unseen found 0.405  7.3s
+R0_hash          seed 101: macro F1 0.648  false-unseen(S4-S8) 0.158  unseen found 0.471  7.0s
+R0_hash          seed 102: macro F1 0.461  false-unseen(S4-S8) 0.113  unseen found 0.186  6.8s
+R0_hash          seed 103: macro F1 0.603  false-unseen(S4-S8) 0.108  unseen found 0.276  7.4s
+R0_hash          seed 104: macro F1 0.543  false-unseen(S4-S8) 0.100  unseen found 0.286  7.0s
+R0_hash          seed 105: macro F1 0.571  false-unseen(S4-S8) 0.117  unseen found 0.305  7.1s
+R0_hash          seed 106: macro F1 0.716  false-unseen(S4-S8) 0.150  unseen found 0.443  7.3s
+R0_hash          seed 107: macro F1 0.484  false-unseen(S4-S8) 0.037  unseen found 0.133  6.4s
+R0_hash          seed 108: macro F1 0.616  false-unseen(S4-S8) 0.150  unseen found 0.410  6.9s
+R0_hash          seed 109: macro F1 0.600  false-unseen(S4-S8) 0.050  unseen found 0.348  7.0s
+R0_hash          seed 110: macro F1 0.736  false-unseen(S4-S8) 0.242  unseen found 0.576  6.6s
+R0_hash          seed 111: macro F1 0.681  false-unseen(S4-S8) 0.062  unseen found 0.486  6.6s
+R0_hash          seed 112: macro F1 0.715  false-unseen(S4-S8) 0.075  unseen found 0.500  6.6s
+R0_hash          seed 113: macro F1 0.511  false-unseen(S4-S8) 0.062  unseen found 0.205  6.7s
+R0_hash          seed 114: macro F1 0.682  false-unseen(S4-S8) 0.167  unseen found 0.395  7.0s
+R0_hash          seed 115: macro F1 0.746  false-unseen(S4-S8) 0.058  unseen found 0.476  6.8s
+R0_hash          seed 116: macro F1 0.664  false-unseen(S4-S8) 0.183  unseen found 0.486  6.6s
+R0_hash          seed 117: macro F1 0.657  false-unseen(S4-S8) 0.150  unseen found 0.414  7.0s
+R0_hash          seed 118: macro F1 0.699  false-unseen(S4-S8) 0.175  unseen found 0.495  6.6s
+R0_hash          seed 119: macro F1 0.763  false-unseen(S4-S8) 0.125  unseen found 0.605  6.9s
+R0_hash          seed 120: macro F1 0.447  false-unseen(S4-S8) 0.075  unseen found 0.152  6.7s
+R0_hash          seed 121: macro F1 0.556  false-unseen(S4-S8) 0.142  unseen found 0.262  7.2s
+R0_hash          seed 122: macro F1 0.388  false-unseen(S4-S8) 0.087  unseen found 0.110  7.3s
+R0_hash          seed 123: macro F1 0.708  false-unseen(S4-S8) 0.050  unseen found 0.443  6.9s
+R0_hash          seed 124: macro F1 0.734  false-unseen(S4-S8) 0.100  unseen found 0.467  6.8s
+R0_hash          seed 125: macro F1 0.529  false-unseen(S4-S8) 0.138  unseen found 0.314  6.4s
+R0_hash          seed 126: macro F1 0.660  false-unseen(S4-S8) 0.125  unseen found 0.443  6.9s
+R0_hash          seed 127: macro F1 0.475  false-unseen(S4-S8) 0.113  unseen found 0.095  6.4s
+R0_hash          seed 128: macro F1 0.536  false-unseen(S4-S8) 0.237  unseen found 0.305  7.5s
+R0_hash          seed 129: macro F1 0.560  false-unseen(S4-S8) 0.092  unseen found 0.181  6.7s
+# E2 and E3, status of parts and of tangled messages (pool `dev`, seeds 100-129)
+
+Mean over seeds, with [min - max]; PASS / fail is the mean against the DRAFT bar of spec section 7 (see the last table for the dev-fixed bars). A seed is one teaching assignment: two skills Solid (about 2,000 examples), one Thin (about 20), three never taught. Calibration for the STANDARD condition uses held-out S1 to S3 parts only; the ADAPTED condition (a few S4 to S8 parts in the calibration) is reported next to it and is not gated: if only the adapted condition reaches the bar the claim is 'needs adaptation to new wording'. `R5_<id>` is the learned map on top of `<id>`; `R0_hash` is the word-matcher control.
+
+## B3a, the status machine at q = 0.05 (calibration on S1 to S3 only)
+
+| reader | seeds | macro F1 over solid/thin/unseen (bar 0.85) | false unseen on S4-S8 (bar 0.05) | thin vs solid AUROC (bar 0.85) | Other content called unseen (bar 0.05) | unseen skills found |
+|---|---|---|---|---|---|---|
+| R5_R4_qwen_L26 | 30 | 0.85 [0.52 - 0.92] PASS | 0.29 [0.17 - 0.43] fail | 0.84 [0.59 - 0.98] fail | 0.25 [0.11 - 0.36] fail | 0.89 [0.18 - 1.00] |
+| R4_qwen_L26 | 30 | 0.82 [0.70 - 0.88] fail | 0.39 [0.29 - 0.48] fail | 0.89 [0.76 - 0.97] PASS | 0.21 [0.09 - 0.33] fail | 0.90 [0.60 - 0.98] |
+| R0_hash | 30 | 0.61 [0.39 - 0.76] fail | 0.12 [0.04 - 0.24] fail | 0.88 [0.73 - 0.98] PASS | 0.16 [0.00 - 0.27] fail | 0.36 [0.10 - 0.60] |
+
+### The adapted condition at q = 0.05 (reported, not gated) and the wording claim
+
+| reader | false unseen on S4-S8, standard | false unseen on S4-S8, adapted | false unseen on taught wordings S1-S3 | claim from the means (bar 0.05) |
+|---|---|---|---|---|
+| R5_R4_qwen_L26 | 0.29 [0.17 - 0.43] | 0.17 [0.09 - 0.29] | 0.05 [0.01 - 0.12] | fails |
+| R4_qwen_L26 | 0.39 [0.29 - 0.48] | 0.17 [0.07 - 0.30] | 0.05 [0.00 - 0.12] | fails |
+| R0_hash | 0.12 [0.04 - 0.24] | 0.02 [0.00 - 0.12] | 0.03 [0.00 - 0.13] | needs adaptation to new wording |
+
+### The curve over q (standard condition)
+
+| reader | q | false unseen on S4-S8 | unseen skills found | Other content called unseen | near-twins of taught skills called unseen | near-twins of untaught skills found |
+|---|---|---|---|---|---|---|
+| R5_R4_qwen_L26 | 0.01 | 0.12 [0.00 - 0.30] | 0.56 [0.07 - 1.00] | 0.11 [0.00 - 0.29] | 0.01 [0.00 - 0.09] | 0.62 [0.00 - 1.00] |
+| R5_R4_qwen_L26 | 0.02 | 0.19 [0.04 - 0.37] | 0.75 [0.10 - 1.00] | 0.19 [0.01 - 0.31] | 0.02 [0.00 - 0.13] | 0.80 [0.09 - 1.00] |
+| R5_R4_qwen_L26 | 0.05 | 0.29 [0.17 - 0.43] | 0.89 [0.18 - 1.00] | 0.25 [0.11 - 0.36] | 0.05 [0.00 - 0.16] | 0.93 [0.22 - 1.00] |
+| R5_R4_qwen_L26 | 0.1 | 0.36 [0.20 - 0.54] | 0.95 [0.35 - 1.00] | 0.29 [0.17 - 0.43] | 0.09 [0.00 - 0.25] | 0.97 [0.34 - 1.00] |
+| R4_qwen_L26 | 0.01 | 0.27 [0.11 - 0.41] | 0.72 [0.07 - 0.97] | 0.05 [0.00 - 0.16] | 0.01 [0.00 - 0.12] | 0.64 [0.00 - 0.90] |
+| R4_qwen_L26 | 0.02 | 0.31 [0.24 - 0.42] | 0.81 [0.45 - 0.97] | 0.09 [0.00 - 0.22] | 0.02 [0.00 - 0.12] | 0.75 [0.28 - 0.95] |
+| R4_qwen_L26 | 0.05 | 0.39 [0.29 - 0.48] | 0.90 [0.60 - 0.98] | 0.21 [0.09 - 0.33] | 0.04 [0.00 - 0.12] | 0.86 [0.66 - 1.00] |
+| R4_qwen_L26 | 0.1 | 0.44 [0.31 - 0.57] | 0.94 [0.81 - 1.00] | 0.33 [0.17 - 0.48] | 0.09 [0.00 - 0.21] | 0.92 [0.77 - 1.00] |
+| R0_hash | 0.01 | 0.02 [0.00 - 0.07] | 0.11 [0.00 - 0.31] | 0.01 [0.00 - 0.07] | 0.01 [0.00 - 0.09] | 0.11 [0.00 - 0.37] |
+| R0_hash | 0.02 | 0.04 [0.00 - 0.14] | 0.19 [0.01 - 0.40] | 0.04 [0.00 - 0.17] | 0.02 [0.00 - 0.19] | 0.19 [0.00 - 0.49] |
+| R0_hash | 0.05 | 0.12 [0.04 - 0.24] | 0.36 [0.10 - 0.60] | 0.16 [0.00 - 0.27] | 0.06 [0.00 - 0.21] | 0.39 [0.00 - 0.78] |
+| R0_hash | 0.1 | 0.22 [0.09 - 0.39] | 0.57 [0.20 - 0.81] | 0.32 [0.06 - 0.48] | 0.13 [0.00 - 0.38] | 0.62 [0.15 - 0.92] |
+
+## B3b, the baselines at the same calibration (q = 0.05, standard condition)
+
+Each baseline flags a part as unseen when its novelty score is above the threshold taken from the same held-out calibration parts. AUROC = parts of untaught skills against parts of taught skills, no threshold.
+
+| reader | method | false unseen on S4-S8 | unseen skills found | AUROC taught vs untaught | Other content called unseen | false unseen, adapted |
+|---|---|---|---|---|---|---|
+| R5_R4_qwen_L26 | **status machine** | 0.29 [0.17 - 0.43] | 0.89 [0.18 - 1.00] | n/a | 0.25 [0.11 - 0.36] | 0.17 [0.09 - 0.29] |
+| R5_R4_qwen_L26 | vmf_conformal | 0.31 [0.11 - 0.47] | 0.95 [0.75 - 1.00] | 0.95 [0.88 - 0.99] | 0.23 [0.10 - 0.36] | 0.19 [0.07 - 0.38] |
+| R5_R4_qwen_L26 | knn_distance | 0.33 [0.14 - 0.50] | 0.96 [0.73 - 1.00] | 0.94 [0.87 - 0.99] | 0.22 [0.10 - 0.37] | 0.20 [0.07 - 0.35] |
+| R5_R4_qwen_L26 | mahalanobis | 0.33 [0.15 - 0.50] | 0.97 [0.79 - 1.00] | 0.95 [0.89 - 0.99] | 0.27 [0.14 - 0.38] | 0.22 [0.11 - 0.39] |
+| R5_R4_qwen_L26 | relative_mahalanobis | 0.01 [0.00 - 0.09] | 0.06 [0.00 - 0.46] | 0.44 [0.10 - 0.95] | 0.37 [0.14 - 0.55] | 0.01 [0.00 - 0.09] |
+| R5_R4_qwen_L26 | classifier_confidence | 0.19 [0.08 - 0.31] | 0.51 [0.22 - 0.74] | 0.77 [0.57 - 0.88] | 0.06 [0.00 - 0.21] | 0.15 [0.06 - 0.24] |
+| R5_R4_qwen_L26 | energy | 0.13 [0.00 - 0.28] | 0.41 [0.00 - 0.85] | 0.74 [0.41 - 0.93] | 0.10 [0.00 - 0.33] | 0.11 [0.00 - 0.23] |
+| R5_R4_qwen_L26 | autoencoder_descriptor | 0.28 [0.06 - 0.47] | 0.88 [0.64 - 1.00] | 0.92 [0.79 - 0.98] | 0.17 [0.04 - 0.26] | 0.19 [0.03 - 0.38] |
+| R4_qwen_L26 | **status machine** | 0.39 [0.29 - 0.48] | 0.90 [0.60 - 0.98] | n/a | 0.21 [0.09 - 0.33] | 0.17 [0.07 - 0.30] |
+| R4_qwen_L26 | vmf_conformal | 0.31 [0.06 - 0.44] | 0.81 [0.41 - 0.95] | 0.89 [0.83 - 0.94] | 0.16 [0.00 - 0.30] | 0.21 [0.06 - 0.38] |
+| R4_qwen_L26 | knn_distance | 0.41 [0.30 - 0.49] | 0.93 [0.86 - 0.99] | 0.90 [0.85 - 0.94] | 0.16 [0.00 - 0.28] | 0.25 [0.15 - 0.38] |
+| R4_qwen_L26 | mahalanobis | 0.39 [0.29 - 0.47] | 0.92 [0.82 - 0.97] | 0.88 [0.82 - 0.93] | 0.25 [0.06 - 0.37] | 0.27 [0.16 - 0.35] |
+| R4_qwen_L26 | relative_mahalanobis | 0.00 [0.00 - 0.01] | 0.00 [0.00 - 0.00] | 0.72 [0.45 - 0.90] | 0.28 [0.13 - 0.39] | 0.00 [0.00 - 0.01] |
+| R4_qwen_L26 | classifier_confidence | 0.30 [0.17 - 0.45] | 0.91 [0.73 - 1.00] | 0.91 [0.84 - 0.97] | 0.21 [0.05 - 0.37] | 0.19 [0.10 - 0.31] |
+| R4_qwen_L26 | energy | 0.24 [0.06 - 0.41] | 0.87 [0.60 - 1.00] | 0.92 [0.85 - 0.98] | 0.22 [0.08 - 0.38] | 0.17 [0.04 - 0.28] |
+| R4_qwen_L26 | autoencoder_descriptor | 0.27 [0.15 - 0.46] | 0.85 [0.65 - 0.92] | 0.89 [0.85 - 0.93] | 0.06 [0.00 - 0.15] | 0.18 [0.09 - 0.34] |
+| R0_hash | **status machine** | 0.12 [0.04 - 0.24] | 0.36 [0.10 - 0.60] | n/a | 0.16 [0.00 - 0.27] | 0.02 [0.00 - 0.12] |
+| R0_hash | vmf_conformal | 0.12 [0.03 - 0.30] | 0.35 [0.15 - 0.56] | 0.82 [0.76 - 0.88] | 0.22 [0.05 - 0.47] | 0.09 [0.01 - 0.17] |
+| R0_hash | knn_distance | 0.20 [0.05 - 0.32] | 0.35 [0.13 - 0.45] | 0.81 [0.75 - 0.87] | 0.46 [0.25 - 0.61] | 0.13 [0.04 - 0.22] |
+| R0_hash | mahalanobis | 0.16 [0.07 - 0.30] | 0.24 [0.10 - 0.42] | 0.77 [0.69 - 0.85] | 0.38 [0.21 - 0.52] | 0.11 [0.03 - 0.17] |
+| R0_hash | relative_mahalanobis | 0.10 [0.03 - 0.19] | 0.11 [0.05 - 0.20] | 0.77 [0.69 - 0.84] | 0.36 [0.16 - 0.53] | 0.08 [0.03 - 0.15] |
+| R0_hash | classifier_confidence | 0.10 [0.03 - 0.31] | 0.25 [0.13 - 0.47] | 0.71 [0.61 - 0.81] | 0.04 [0.00 - 0.14] | 0.09 [0.03 - 0.20] |
+| R0_hash | energy | 0.08 [0.01 - 0.29] | 0.31 [0.16 - 0.51] | 0.72 [0.62 - 0.83] | 0.07 [0.01 - 0.12] | 0.07 [0.01 - 0.25] |
+| R0_hash | autoencoder_descriptor | 0.09 [0.03 - 0.15] | 0.19 [0.04 - 0.42] | 0.71 [0.60 - 0.86] | 0.00 [0.00 - 0.03] | 0.08 [0.03 - 0.15] |
+
+## E3, tangled messages (status machine, q = 0.05)
+
+B4a: a known part with an unseen part; B4b: a known part with Other content; B4c: an unseen part with Other content. B6: B4a under automatic segmentation must stay within 0.10 of the gold-span number.
+
+| reader | segmentation | B4a leftover is the unseen part (bar 0.85) | B4a known part not flagged (bar 0.95) | B4b nothing flagged (bar 0.95) | B4b Other labelled (bar 0.95) | B4c unseen found | B6 within 0.10 |
+|---|---|---|---|---|---|---|---|
+| R5_R4_qwen_L26 | gold | 0.66 [0.15 - 0.85] fail | 0.67 [0.50 - 0.85] fail | 0.64 [0.47 - 0.78] fail | 0.97 [0.90 - 1.00] PASS | 0.86 [0.12 - 1.00] | n/a |
+| R5_R4_qwen_L26 | auto_sentence | 0.49 [0.12 - 0.68] | 0.58 [0.35 - 0.88] | 0.53 [0.25 - 0.72] | 0.93 [0.85 - 1.00] | 0.84 [0.15 - 1.00] | 0.13 of seeds |
+| R5_R4_qwen_L26 | auto_window | 0.37 [0.15 - 0.55] | 0.53 [0.25 - 0.82] | 0.23 [0.10 - 0.60] | 0.57 [0.28 - 0.80] | 0.85 [0.23 - 1.00] | 0.07 of seeds |
+| R4_qwen_L26 | gold | 0.67 [0.47 - 0.80] fail | 0.51 [0.28 - 0.72] fail | 0.45 [0.20 - 0.60] fail | 0.91 [0.68 - 1.00] fail | 0.96 [0.68 - 1.00] | n/a |
+| R4_qwen_L26 | auto_sentence | 0.47 [0.33 - 0.68] | 0.45 [0.28 - 0.65] | 0.32 [0.10 - 0.55] | 0.88 [0.60 - 0.97] | 0.94 [0.78 - 1.00] | 0.03 of seeds |
+| R4_qwen_L26 | auto_window | 0.36 [0.23 - 0.50] | 0.42 [0.15 - 0.62] | 0.08 [0.00 - 0.25] | 0.51 [0.23 - 0.70] | 0.94 [0.78 - 1.00] | 0.03 of seeds |
+| R0_hash | gold | 0.35 [0.07 - 0.55] fail | 0.92 [0.80 - 1.00] fail | 0.82 [0.62 - 0.97] fail | 0.92 [0.78 - 1.00] fail | 0.37 [0.12 - 0.78] | n/a |
+| R0_hash | auto_sentence | 0.27 [0.10 - 0.50] | 0.83 [0.60 - 1.00] | 0.69 [0.38 - 0.93] | 0.92 [0.75 - 1.00] | 0.39 [0.10 - 0.70] | 0.50 of seeds |
+| R0_hash | auto_window | 0.24 [0.03 - 0.45] | 0.75 [0.55 - 0.95] | 0.36 [0.12 - 0.75] | 0.57 [0.30 - 0.88] | 0.47 [0.15 - 0.82] | 0.10 of seeds |
+
+Baselines on the tangled messages (gold parts; they cannot label Other content, so only the flagging numbers are shown):
+
+| reader | method | B4a leftover is the unseen part | B4a known part not flagged | B4b nothing flagged |
+|---|---|---|---|---|
+| R5_R4_qwen_L26 | vmf_conformal | 0.71 [0.53 - 0.88] | 0.66 [0.38 - 0.90] | 0.63 [0.40 - 0.93] |
+| R5_R4_qwen_L26 | knn_distance | 0.73 [0.55 - 0.90] | 0.66 [0.40 - 0.85] | 0.62 [0.42 - 0.88] |
+| R5_R4_qwen_L26 | mahalanobis | 0.74 [0.55 - 0.90] | 0.66 [0.40 - 0.85] | 0.61 [0.38 - 0.85] |
+| R5_R4_qwen_L26 | relative_mahalanobis | 0.07 [0.00 - 0.80] | 1.00 [1.00 - 1.00] | 0.70 [0.47 - 0.85] |
+| R5_R4_qwen_L26 | classifier_confidence | 0.47 [0.23 - 0.78] | 0.83 [0.57 - 1.00] | 0.78 [0.53 - 0.97] |
+| R5_R4_qwen_L26 | energy | 0.40 [0.00 - 0.82] | 0.88 [0.62 - 1.00] | 0.80 [0.57 - 0.97] |
+| R5_R4_qwen_L26 | autoencoder_descriptor | 0.69 [0.40 - 0.95] | 0.70 [0.45 - 1.00] | 0.68 [0.38 - 0.97] |
+| R4_qwen_L26 | vmf_conformal | 0.67 [0.47 - 0.80] | 0.62 [0.38 - 1.00] | 0.56 [0.33 - 0.80] |
+| R4_qwen_L26 | knn_distance | 0.68 [0.57 - 0.88] | 0.50 [0.30 - 0.75] | 0.45 [0.25 - 0.68] |
+| R4_qwen_L26 | mahalanobis | 0.70 [0.55 - 0.88] | 0.55 [0.38 - 0.78] | 0.42 [0.12 - 0.65] |
+| R4_qwen_L26 | relative_mahalanobis | 0.00 [0.00 - 0.00] | 1.00 [1.00 - 1.00] | 0.68 [0.45 - 0.88] |
+| R4_qwen_L26 | classifier_confidence | 0.74 [0.55 - 0.88] | 0.73 [0.53 - 0.90] | 0.70 [0.47 - 0.93] |
+| R4_qwen_L26 | energy | 0.77 [0.47 - 0.93] | 0.81 [0.53 - 0.95] | 0.77 [0.50 - 0.97] |
+| R4_qwen_L26 | autoencoder_descriptor | 0.70 [0.45 - 0.90] | 0.69 [0.53 - 0.90] | 0.69 [0.50 - 0.82] |
+| R0_hash | vmf_conformal | 0.33 [0.12 - 0.55] | 0.90 [0.65 - 1.00] | 0.81 [0.55 - 0.95] |
+| R0_hash | knn_distance | 0.39 [0.17 - 0.53] | 0.81 [0.65 - 0.95] | 0.59 [0.28 - 0.90] |
+| R0_hash | mahalanobis | 0.26 [0.07 - 0.50] | 0.86 [0.60 - 1.00] | 0.63 [0.38 - 0.85] |
+| R0_hash | relative_mahalanobis | 0.13 [0.00 - 0.28] | 0.91 [0.72 - 1.00] | 0.62 [0.30 - 0.80] |
+| R0_hash | classifier_confidence | 0.19 [0.03 - 0.38] | 0.91 [0.70 - 0.97] | 0.89 [0.75 - 0.95] |
+| R0_hash | energy | 0.20 [0.05 - 0.38] | 0.91 [0.72 - 1.00] | 0.92 [0.85 - 1.00] |
+| R0_hash | autoencoder_descriptor | 0.19 [0.05 - 0.53] | 0.92 [0.72 - 1.00] | 0.92 [0.80 - 1.00] |
+
+## Group tests (batches of parts of one skill judged together, q = 0.05)
+
+| reader | method | batch size | false unseen (taught skills) | unseen skills found |
+|---|---|---|---|---|
+| R5_R4_qwen_L26 | status machine (every group must flag) | 1 | 0.14 [0.00 - 0.50] | 0.45 [0.00 - 1.00] |
+| R5_R4_qwen_L26 | status machine (every group must flag) | 4 | 0.54 [0.30 - 0.85] | 0.98 [0.70 - 1.00] |
+| R5_R4_qwen_L26 | status machine (every group must flag) | 8 | 0.70 [0.40 - 0.95] | 0.98 [0.80 - 1.00] |
+| R5_R4_qwen_L26 | status machine (every group must flag) | 16 | 0.78 [0.40 - 1.00] | 0.99 [0.85 - 1.00] |
+| R5_R4_qwen_L26 | group test, nearest group only | 1 | 0.29 [0.05 - 0.65] | 0.85 [0.30 - 1.00] |
+| R5_R4_qwen_L26 | group test, nearest group only | 4 | 0.56 [0.30 - 0.85] | 0.97 [0.70 - 1.00] |
+| R5_R4_qwen_L26 | group test, nearest group only | 8 | 0.70 [0.50 - 0.90] | 0.99 [0.85 - 1.00] |
+| R5_R4_qwen_L26 | group test, nearest group only | 16 | 0.79 [0.40 - 1.00] | 0.99 [0.85 - 1.00] |
+| R4_qwen_L26 | status machine (every group must flag) | 1 | 0.02 [0.00 - 0.10] | 0.10 [0.00 - 0.60] |
+| R4_qwen_L26 | status machine (every group must flag) | 4 | 0.25 [0.10 - 0.50] | 0.98 [0.70 - 1.00] |
+| R4_qwen_L26 | status machine (every group must flag) | 8 | 0.38 [0.20 - 0.65] | 1.00 [1.00 - 1.00] |
+| R4_qwen_L26 | status machine (every group must flag) | 16 | 0.54 [0.20 - 0.95] | 1.00 [1.00 - 1.00] |
+| R4_qwen_L26 | group test, nearest group only | 1 | 0.09 [0.00 - 0.30] | 0.45 [0.05 - 0.70] |
+| R4_qwen_L26 | group test, nearest group only | 4 | 0.27 [0.05 - 0.45] | 0.98 [0.70 - 1.00] |
+| R4_qwen_L26 | group test, nearest group only | 8 | 0.41 [0.25 - 0.75] | 1.00 [1.00 - 1.00] |
+| R4_qwen_L26 | group test, nearest group only | 16 | 0.55 [0.20 - 0.95] | 1.00 [1.00 - 1.00] |
+| R0_hash | status machine (every group must flag) | 1 | 0.00 [0.00 - 0.05] | 0.00 [0.00 - 0.05] |
+| R0_hash | status machine (every group must flag) | 4 | 0.15 [0.00 - 0.55] | 0.52 [0.20 - 0.85] |
+| R0_hash | status machine (every group must flag) | 8 | 0.32 [0.10 - 0.70] | 0.93 [0.75 - 1.00] |
+| R0_hash | status machine (every group must flag) | 16 | 0.54 [0.10 - 1.00] | 1.00 [1.00 - 1.00] |
+| R0_hash | group test, nearest group only | 1 | 0.07 [0.00 - 0.25] | 0.16 [0.00 - 0.35] |
+| R0_hash | group test, nearest group only | 4 | 0.20 [0.05 - 0.55] | 0.69 [0.35 - 1.00] |
+| R0_hash | group test, nearest group only | 8 | 0.32 [0.05 - 0.70] | 0.97 [0.80 - 1.00] |
+| R0_hash | group test, nearest group only | 16 | 0.57 [0.10 - 1.00] | 1.00 [1.00 - 1.00] |
+
+## Misassignment between skills (which taught group a part's nearest prototype belongs to; rows = true skill, summed over seeds)
+
+`R5_R4_qwen_L26`
+
+| true skill | add | sub | mul | div | mod | max | other |
+|---|---|---|---|---|---|---|---|
+| add | 1118 | 426 | 454 | 73 | 68 | 289 | 8 |
+| sub | 388 | 1173 | 322 | 176 | 217 | 100 | 66 |
+| mul | 462 | 164 | 1198 | 290 | 263 | 62 | 24 |
+| div | 47 | 361 | 114 | 1241 | 588 | 27 | 95 |
+| mod | 90 | 210 | 173 | 733 | 1019 | 62 | 199 |
+| max | 247 | 23 | 33 | 299 | 266 | 1176 | 56 |
+
+`R4_qwen_L26`
+
+| true skill | add | sub | mul | div | mod | max | other |
+|---|---|---|---|---|---|---|---|
+| add | 1103 | 463 | 575 | 38 | 60 | 172 | 25 |
+| sub | 449 | 1084 | 357 | 256 | 57 | 114 | 125 |
+| mul | 481 | 227 | 1167 | 278 | 160 | 109 | 41 |
+| div | 32 | 277 | 144 | 1209 | 605 | 41 | 165 |
+| mod | 178 | 153 | 201 | 596 | 1014 | 81 | 263 |
+| max | 131 | 33 | 107 | 202 | 279 | 1180 | 168 |
+
+`R0_hash`
+
+| true skill | add | sub | mul | div | mod | max | other |
+|---|---|---|---|---|---|---|---|
+| add | 875 | 248 | 481 | 148 | 209 | 122 | 353 |
+| sub | 272 | 949 | 364 | 125 | 195 | 81 | 456 |
+| mul | 413 | 278 | 993 | 195 | 192 | 50 | 342 |
+| div | 255 | 238 | 186 | 1043 | 284 | 34 | 433 |
+| mod | 307 | 245 | 355 | 300 | 759 | 41 | 479 |
+| max | 159 | 92 | 191 | 103 | 111 | 973 | 471 |
+
+## Offline consequence (an ESTIMATE, not gated)
+
+- `R5_R4_qwen_L26`: per seed 28.2 false unseen and 22.3 missed unseen parts; OFFLINE ESTIMATE of the cost of the status errors: 269 pool points = 28.2 false_unseen x 4 + 22.2667 missed_unseen x 7. An estimate from recorded costs (E-034, E-030), not measured online and not gated; whether statuses drive learning well belongs to Phase 2.
+- `R4_qwen_L26`: per seed 38.0 false unseen and 21.8 missed unseen parts; OFFLINE ESTIMATE of the cost of the status errors: 305 pool points = 38 false_unseen x 4 + 21.8 missed_unseen x 7. An estimate from recorded costs (E-034, E-030), not measured online and not gated; whether statuses drive learning well belongs to Phase 2.
+- `R0_hash`: per seed 11.6 false unseen and 135.3 missed unseen parts; OFFLINE ESTIMATE of the cost of the status errors: 994 pool points = 11.6333 false_unseen x 4 + 135.3 missed_unseen x 7. An estimate from recorded costs (E-034, E-030), not measured online and not gated; whether statuses drive learning well belongs to Phase 2.
+
+## Bars: draft and dev-fixed
+
+Rule written before the dev run: a bar to stay above becomes max(draft, mean - 2 sd over the dev seeds), a bar to stay below becomes min(draft, mean + 2 sd); a dev result can tighten a draft bar and never loosen it. The dev-fixed bars are the ones the freeze records. Source of the dev values: the first reader above, status machine, q = 0.05, standard condition.
+
+| measure | draft bar | dev mean | dev-fixed bar |
+|---|---|---|---|
+| macro_f1 (at least) | 0.85 | 0.855 | 0.850 |
+| false_unseen_heldout (at most) | 0.05 | 0.289 | 0.050 |
+| thin_vs_solid_auroc (at least) | 0.85 | 0.844 | 0.850 |
+| other_as_unseen (at most) | 0.05 | 0.249 | 0.050 |
+| b4a_residual_hit (at least) | 0.85 | 0.660 | 0.850 |
+| b4a_known_not_flagged (at least) | 0.95 | 0.672 | 0.950 |
+| b4b_nothing_flagged (at least) | 0.95 | 0.643 | 0.950 |
+| b4b_other_labelled (at least) | 0.95 | 0.968 | 0.950 |
+

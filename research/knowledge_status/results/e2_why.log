@@ -1,0 +1,24 @@
+C:\Users\Asta\AppData\Local\Programs\Python\Python312\Lib\site-packages\torch\cuda\__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+D:\shm_ks\research\knowledge_status\diag_shift.py:105: RuntimeWarning: Mean of empty slice.
+  ref_mean = {s: P[rows[known & (skill == s) & np.isin(fam, TAUGHT_W)]].mean(axis=0) for s in world.taught}
+C:\Users\Asta\AppData\Local\Programs\Python\Python312\Lib\site-packages\numpy\_core\_methods.py:137: RuntimeWarning: invalid value encountered in divide
+  ret = um.true_divide(
+seed 150 done
+`torch_dtype` is deprecated! Use `dtype` instead!
+D:\shm_ks\research\knowledge_status\diag_shift.py:105: RuntimeWarning: Mean of empty slice.
+  ref_mean = {s: P[rows[known & (skill == s) & np.isin(fam, TAUGHT_W)]].mean(axis=0) for s in world.taught}
+C:\Users\Asta\AppData\Local\Programs\Python\Python312\Lib\site-packages\numpy\_core\_methods.py:137: RuntimeWarning: invalid value encountered in divide
+  ret = um.true_divide(
+seed 151 done
+D:\shm_ks\research\knowledge_status\diag_shift.py:105: RuntimeWarning: Mean of empty slice.
+  ref_mean = {s: P[rows[known & (skill == s) & np.isin(fam, TAUGHT_W)]].mean(axis=0) for s in world.taught}
+C:\Users\Asta\AppData\Local\Programs\Python\Python312\Lib\site-packages\numpy\_core\_methods.py:137: RuntimeWarning: invalid value encountered in divide
+  ret = um.true_divide(
+seed 152 done
+D:\shm_ks\research\knowledge_status\diag_shift.py:105: RuntimeWarning: Mean of empty slice.
+  ref_mean = {s: P[rows[known & (skill == s) & np.isin(fam, TAUGHT_W)]].mean(axis=0) for s in world.taught}
+C:\Users\Asta\AppData\Local\Programs\Python\Python312\Lib\site-packages\numpy\_core\_methods.py:137: RuntimeWarning: invalid value encountered in divide
+  ret = um.true_divide(
+seed 153 done
+seed 154 done

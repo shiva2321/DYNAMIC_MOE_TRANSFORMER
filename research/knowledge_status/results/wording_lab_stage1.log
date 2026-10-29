@@ -1,0 +1,48 @@
+C:\Users\Asta\AppData\Local\Programs\Python\Python312\Lib\site-packages\torch\cuda\__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+plain     seed 150: false alarm 0.350  found 0.857  macro F1 0.823
+plain     seed 151: false alarm 0.050  found 0.938  macro F1 0.932
+plain     seed 152: false alarm 0.250  found 0.952  macro F1 0.892
+plain     seed 153: false alarm 0.287  found 0.952  macro F1 0.878
+plain     seed 154: false alarm 0.342  found 0.814  macro F1 0.802
+`torch_dtype` is deprecated! Use `dtype` instead!
+clean     seed 150: false alarm 0.300  found 0.862  macro F1 0.839
+clean     seed 151: false alarm 0.050  found 0.914  macro F1 0.911
+clean     seed 152: false alarm 0.275  found 0.962  macro F1 0.892
+clean     seed 153: false alarm 0.275  found 0.933  macro F1 0.877
+clean     seed 154: false alarm 0.350  found 0.776  macro F1 0.783
+p1        seed 150: false alarm 0.338  found 0.871  macro F1 0.837
+p1        seed 151: false alarm 0.250  found 0.886  macro F1 0.837
+p1        seed 152: false alarm 0.400  found 0.933  macro F1 0.830
+p1        seed 153: false alarm 0.300  found 0.852  macro F1 0.823
+p1        seed 154: false alarm 0.375  found 0.800  macro F1 0.777
+p2        seed 150: false alarm 0.312  found 0.814  macro F1 0.809
+p2        seed 151: false alarm 0.175  found 0.862  macro F1 0.834
+p2        seed 152: false alarm 0.325  found 0.900  macro F1 0.833
+p2        seed 153: false alarm 0.350  found 0.895  macro F1 0.828
+p2        seed 154: false alarm 0.383  found 0.914  macro F1 0.837
+clean+p1  seed 150: false alarm 0.300  found 0.910  macro F1 0.857
+clean+p1  seed 151: false alarm 0.075  found 0.919  macro F1 0.910
+clean+p1  seed 152: false alarm 0.325  found 0.952  macro F1 0.861
+clean+p1  seed 153: false alarm 0.263  found 0.776  macro F1 0.799
+clean+p1  seed 154: false alarm 0.292  found 0.757  macro F1 0.788
+clean+p2  seed 150: false alarm 0.300  found 0.790  macro F1 0.801
+clean+p2  seed 151: false alarm 0.150  found 0.848  macro F1 0.828
+clean+p2  seed 152: false alarm 0.250  found 0.890  macro F1 0.844
+clean+p2  seed 153: false alarm 0.312  found 0.862  macro F1 0.822
+clean+p2  seed 154: false alarm 0.292  found 0.971  macro F1 0.895
+# Mitigations lab, stage 1 (reader variants, tuning seeds 150-154)
+
+### Reader variants, machine as it is
+
+| reader | false alarm S4-S8 | stories S4 | noisy text S7 | swapped order S5 | taught wordings | never-taught skills found | macro F1 | Other called unseen | passed by the margin gate |
+|---|---|---|---|---|---|---|---|---|---|
+| plain | 0.256 | 0.624 | 0.450 | 0.183 | 0.037 | 0.903 | 0.866 | 0.275 | 0 |
+| clean | 0.250 | 0.639 | 0.376 | 0.217 | 0.031 | 0.890 | 0.861 | 0.232 | 0 |
+| p1 | 0.333 | 0.933 | 0.476 | 0.133 | 0.062 | 0.869 | 0.821 | 0.348 | 0 |
+| p2 | 0.309 | 0.772 | 0.517 | 0.125 | 0.052 | 0.877 | 0.828 | 0.368 | 0 |
+| clean+p1 | 0.251 | 0.730 | 0.322 | 0.133 | 0.053 | 0.863 | 0.843 | 0.314 | 0 |
+| clean+p2 | 0.261 | 0.741 | 0.297 | 0.133 | 0.050 | 0.872 | 0.838 | 0.331 | 0 |
+
+**Winner by the declared rule: `plain`**
+

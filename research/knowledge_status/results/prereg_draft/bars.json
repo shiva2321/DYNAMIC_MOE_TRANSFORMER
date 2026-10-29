@@ -9,6 +9,7 @@
    "dev_sd": 0.006814683359999389,
    "direction": "min",
    "draft": 0.95,
+   "expected": "fail",
    "n_dev_seeds": 5,
    "rule": "max(draft, mean - 2 sd) over the dev seeds"
   },
@@ -20,6 +21,7 @@
    "dev_sd": 0.0029140782164951825,
    "direction": "min",
    "draft": 0.95,
+   "expected": "pass",
    "n_dev_seeds": 5,
    "rule": "max(draft, mean - 2 sd) over the dev seeds"
   },
@@ -31,6 +33,7 @@
    "dev_sd": 0.003456498076728518,
    "direction": "min",
    "draft": 0.9,
+   "expected": "fail",
    "n_dev_seeds": 5,
    "rule": "max(draft, mean - 2 sd) over the dev seeds"
   },
@@ -42,6 +45,7 @@
    "dev_sd": null,
    "direction": "min",
    "draft": 0.15,
+   "expected": "pass",
    "n_dev_seeds": 0,
    "rule": "draft stands (no dev value exists for this measure)"
   },
@@ -53,6 +57,7 @@
    "dev_sd": 0.08703282509305417,
    "direction": "min",
    "draft": 0.95,
+   "expected": "fail",
    "n_dev_seeds": 30,
    "rule": "max(draft, mean - 2 sd) over the dev seeds"
   },
@@ -64,6 +69,7 @@
    "dev_sd": 0.14362907207396275,
    "direction": "min",
    "draft": 0.85,
+   "expected": "fail",
    "n_dev_seeds": 30,
    "rule": "max(draft, mean - 2 sd) over the dev seeds"
   },
@@ -75,6 +81,7 @@
    "dev_sd": 0.07958224257542215,
    "direction": "min",
    "draft": 0.95,
+   "expected": "fail",
    "n_dev_seeds": 30,
    "rule": "max(draft, mean - 2 sd) over the dev seeds"
   },
@@ -86,6 +93,7 @@
    "dev_sd": 0.030038289741173882,
    "direction": "min",
    "draft": 0.95,
+   "expected": "pass",
    "n_dev_seeds": 30,
    "rule": "max(draft, mean - 2 sd) over the dev seeds"
   },
@@ -97,6 +105,7 @@
    "dev_sd": 0.0,
    "direction": "max",
    "draft": 0.1,
+   "expected": "pass",
    "n_dev_seeds": 10,
    "rule": "min(draft, mean + 2 sd) over the dev seeds"
   },
@@ -108,6 +117,7 @@
    "dev_sd": 0.05407042732502778,
    "direction": "min",
    "draft": 0.9,
+   "expected": "fail",
    "n_dev_seeds": 10,
    "rule": "max(draft, mean - 2 sd) over the dev seeds"
   },
@@ -119,6 +129,7 @@
    "dev_sd": 0.11633882508527503,
    "direction": "min",
    "draft": 0.9,
+   "expected": "fail",
    "n_dev_seeds": 10,
    "rule": "max(draft, mean - 2 sd) over the dev seeds"
   },
@@ -130,19 +141,21 @@
    "dev_sd": 0.07093383674525366,
    "direction": "max",
    "draft": 0.1,
+   "expected": "fail",
    "n_dev_seeds": 30,
    "rule": "min(draft, mean + 2 sd) over the dev seeds"
   },
   "b7_gap": {
    "bar": 0.1,
-   "dev_max": null,
-   "dev_mean": null,
-   "dev_min": null,
-   "dev_sd": null,
+   "dev_max": 0.42144039735099337,
+   "dev_mean": 0.32653491793545975,
+   "dev_min": 0.2480654761904762,
+   "dev_sd": 0.044062828081833386,
    "direction": "max",
    "draft": 0.1,
-   "n_dev_seeds": 0,
-   "rule": "draft stands (no dev value exists for this measure)"
+   "expected": "fail",
+   "n_dev_seeds": 13,
+   "rule": "min(draft, mean + 2 sd) over the dev seeds"
   },
   "false_unseen_heldout": {
    "bar": 0.05,
@@ -152,6 +165,7 @@
    "dev_sd": 0.06112700072074259,
    "direction": "max",
    "draft": 0.05,
+   "expected": "fail",
    "n_dev_seeds": 30,
    "rule": "min(draft, mean + 2 sd) over the dev seeds"
   },
@@ -163,6 +177,7 @@
    "dev_sd": 0.07911467843532456,
    "direction": "min",
    "draft": 0.85,
+   "expected": "pass",
    "n_dev_seeds": 30,
    "rule": "max(draft, mean - 2 sd) over the dev seeds"
   },
@@ -174,6 +189,7 @@
    "dev_sd": 0.05487555352613433,
    "direction": "max",
    "draft": 0.05,
+   "expected": "fail",
    "n_dev_seeds": 30,
    "rule": "min(draft, mean + 2 sd) over the dev seeds"
   },
@@ -185,8 +201,21 @@
    "dev_sd": 0.10028367091389578,
    "direction": "min",
    "draft": 0.85,
+   "expected": "fail",
    "n_dev_seeds": 20,
    "rule": "max(draft, mean - 2 sd) over the dev seeds"
+  },
+  "trap_as_unseen": {
+   "bar": 0.05,
+   "dev_max": 0.7333333333333333,
+   "dev_mean": 0.4722222222222222,
+   "dev_min": 0.2,
+   "dev_sd": 0.1305993649492969,
+   "direction": "max",
+   "draft": 0.05,
+   "expected": "fail",
+   "n_dev_seeds": 30,
+   "rule": "min(draft, mean + 2 sd) over the dev seeds"
   }
  },
  "baseline_params": {
@@ -236,6 +265,7 @@
   "pool_confirm.py",
   "pool_dev.py",
   "pools.py",
+  "realism.py",
   "report.py",
   "reps.py",
   "rewrites.py",
@@ -245,13 +275,17 @@
   "run_e2.py",
   "run_e2w.py",
   "run_e3.py",
+  "run_fs_dev.py",
+  "run_realism.py",
   "runlib.py",
+  "scratch_reader.py",
   "segment.py",
   "skills.py",
   "status.py",
   "traces.py",
   "tune_baselines.py",
   "tune_map.py",
+  "tune_scratch.py",
   "verdict.py",
   "wording.py",
   "growmoe/arith.py",
@@ -261,7 +295,7 @@
   "growmoe/signature.py",
   "growmoe/vmf.py"
  ],
- "code_stamp": "c5c87b008aa642af",
+ "code_stamp": "926643114694641a",
  "dev_cells": {
   "b1a": 5,
   "b1b": 5,
@@ -274,19 +308,70 @@
   "b5_div_parent": 10,
   "b5_mul_parent": 10,
   "b6_gap": 30,
+  "b7_diff": 13,
+  "b7_gap": 13,
   "false_unseen_heldout": 30,
   "macro_f1": 30,
   "other_as_unseen": 30,
   "r0_b1a": 5,
   "r0_b1b": 5,
   "thin_vs_solid_auroc": 20,
+  "trap_as_unseen": 30,
   "unseen_recall": 30
  },
  "dev_extras": {
+  "r0_b1a": 0.543047619047619,
+  "r0_b1b": 0.0025155555555555547,
   "unseen_recall": 0.893968253968254
  },
  "e4_n_per_kind": 40,
  "frozen_for": "Phase 1 confirmatory run, single use",
+ "fs_arms": {
+  "R5_FS_pre": {
+   "gaps": {
+    "b1b": 0.13722888888888884,
+    "b1c": 0.20417985185185172,
+    "false_unseen_heldout": 0.2811111111111111,
+    "macro_f1": 0.4253835688668259
+   },
+   "headline_means": {
+    "b1b": 0.9966888888888888,
+    "b1c": 0.8900813333333332,
+    "false_unseen_heldout": 0.28944444444444445,
+    "macro_f1": 0.8546840443739369
+   },
+   "means": {
+    "b1b": 0.85946,
+    "b1c": 0.6859014814814814,
+    "false_unseen_heldout": 0.008333333333333333,
+    "macro_f1": 0.429300475507111
+   },
+   "status": "not worth it now",
+   "worst_gap": 0.4253835688668259
+  },
+  "R5_FS_strict": {
+   "gaps": {
+    "b1b": 0.19873333333333332,
+    "b1c": 0.3042993086419751,
+    "false_unseen_heldout": 0.2743055555555556,
+    "macro_f1": 0.47849850258834903
+   },
+   "headline_means": {
+    "b1b": 0.9966888888888888,
+    "b1c": 0.8900813333333332,
+    "false_unseen_heldout": 0.28944444444444445,
+    "macro_f1": 0.8546840443739369
+   },
+   "means": {
+    "b1b": 0.7979555555555555,
+    "b1c": 0.5857820246913581,
+    "false_unseen_heldout": 0.01513888888888889,
+    "macro_f1": 0.37618554178558783
+   },
+   "status": "not worth it now",
+   "worst_gap": 0.47849850258834903
+  }
+ },
  "group_sizes": [
   1,
   4,
@@ -294,15 +379,102 @@
   16
  ],
  "headline_representation": "R5_R4_qwen_L26",
- "pool_confirm_sha256": "85951b2b6ade867e534afd03b590b4c138748fa9f40919bceede43aa9a0a0012",
+ "length_leak": {
+  "confirm": {
+   "S1": [
+    0.367,
+    0.283,
+    0.167
+   ],
+   "S2": [
+    0.252,
+    0.177,
+    0.167
+   ],
+   "S3": [
+    0.53,
+    0.407,
+    0.167
+   ],
+   "S4": [
+    0.548,
+    0.263,
+    0.167
+   ],
+   "S5": [
+    0.473,
+    0.399,
+    0.333
+   ],
+   "S6": [
+    0.247,
+    0.185,
+    0.167
+   ],
+   "S7": [
+    0.396,
+    0.268,
+    0.167
+   ],
+   "S8": [
+    0.403,
+    0.273,
+    0.167
+   ]
+  },
+  "dev": {
+   "S1": [
+    0.303,
+    0.21,
+    0.167
+   ],
+   "S2": [
+    0.268,
+    0.174,
+    0.167
+   ],
+   "S3": [
+    0.5,
+    0.317,
+    0.167
+   ],
+   "S4": [
+    0.487,
+    0.334,
+    0.167
+   ],
+   "S5": [
+    0.453,
+    0.412,
+    0.333
+   ],
+   "S6": [
+    0.27,
+    0.18,
+    0.167
+   ],
+   "S7": [
+    0.353,
+    0.298,
+    0.167
+   ],
+   "S8": [
+    0.28,
+    0.227,
+    0.167
+   ]
+  }
+ },
+ "min_seeds": 10,
+ "pool_confirm_sha256": "257e56f31fb04f5286f55605037fd202acb72679a293a7818a43742a9e8dc6a4",
  "pool_overlap": {
-  "five_gram_all": 0.027874564459930314,
+  "five_gram_all": 0.0282021151586369,
   "five_gram_by_family": {
    "S1": 0.04,
    "S2": 0.09803921568627451,
    "S3": 0.01282051282051282,
    "S4": 0.03067484662576687,
-   "S5": 0.046511627906976744,
+   "S5": 0.023809523809523808,
    "S6": 0.0,
    "S7": 0.0,
    "S8": 0.0
@@ -316,6 +488,7 @@
   0.05,
   0.1
  ],
+ "realism_set_sha256": "6f1582f212e12372ecd0b529e54cdd9f5758adb99f6a1cce61cdbbe21bdcf812",
  "representations": [
   "R5_R4_qwen_L26",
   "R4_qwen_L26",
@@ -469,11 +642,12 @@
     "macro_f1",
     "false_unseen_heldout",
     "thin_vs_solid_auroc",
-    "other_as_unseen"
+    "other_as_unseen",
+    "trap_as_unseen"
    ],
-   "note": "EXPECTED TO FAIL on the calibration claim: known skills in wordings that were not taught (above all short stories and noisy text) are called new far more often than the bar allows. Dev: the reader, not the detector, causes the shift (E-046; results/WORDING_LAB_STAGE1/2.md, FUNCTION_LAB.md, REWRITE_LAB.md); none of the repairs tried reached the bar. What is expected to hold is the part that finds NEW skills (see the unseen-found prediction below) and the Solid / Thin / Other reporting.",
-   "rule": "pass only when ALL FOUR measures pass (macro F1 and AUROC at or above their bars, the two false-new rates at or below theirs); gated on the STANDARD calibration; the adapted condition is reported beside it and cannot pass the claim",
-   "text": "Statuses of arithmetic parts: macro F1 over Solid / Thin / Unseen; false 'Unseen' on the held-out wordings S4 to S8 of Solid skills at q = 0.05 with calibration on S1 to S3 only (the wording claim); Thin separated from Solid by AUROC; Other content called new arithmetic."
+   "note": "EXPECTED TO FAIL on the calibration claim: known skills in wordings that were not taught (above all short stories and noisy text) are called new far more often than the bar allows. Dev: the reader, not the detector, causes the shift (E-046; results/WORDING_LAB_STAGE1/2.md, FUNCTION_LAB.md, REWRITE_LAB.md); none of the repairs tried reached the bar. Per measure on dev (table above): the false-new rate and the traps miss their bars widely, Thin against Solid and macro F1 sit on the bar with a wide spread (a coin flip), the everyday-sentences number is expected to move (see Predictions). What is expected to hold is the finding of NEW skills (see Predictions), not the reporting of Solid / Thin / Other.",
+   "rule": "pass only when ALL FIVE measures pass (macro F1 and AUROC at or above their bars, the three false-new rates at or below theirs); gated on the STANDARD calibration; the adapted condition is reported beside it and cannot pass the claim",
+   "text": "Statuses of arithmetic parts: macro F1 over Solid / Thin / Unseen; false 'Unseen' on the held-out wordings S4 to S8 of Solid skills at q = 0.05 with calibration on S1 to S3 only (the wording claim; the number measured covers the TAUGHT skills, Solid and Thin, not only Solid as the spec bar reads); Thin separated from Solid by AUROC; Other content called new arithmetic, everyday sentences and look-alike traps each against the bar."
   },
   "B3b": {
    "expected": "reported",
@@ -523,12 +697,12 @@
    "text": "With automatic segmentation (the sentence / clause cutter, chosen on dev) the two B4a numbers stay within 0.10 of the gold-span numbers (the larger of the two gaps)."
   },
   "B7": {
-   "expected": "not_run",
+   "expected": "fail",
    "measures": [
     "b7_gap"
    ],
-   "note": "NOT RUN: the realism set of Task 13 could not be built from the local data (GSM8K gives 0 to 11 one-step problems; no other labelled set is cached; nothing is downloaded, NG5). Stated here so that its absence is part of the registration.",
-   "rule": "pass when the gap is at or below the bar; NOT RUN in Phase 1 if no realism set exists (see Not run)",
+   "note": "Realism: scored on the one-step problems of the realism set (Task 13); see the Realism section of this file for the set and the rule.",
+   "rule": "pass when the gap is at or below the bar; not_run if the realism set could not be scored (see the Realism section)",
    "text": "Realism: the Solid-against-Unseen result on a real-text set agrees with the template result within 0.10."
   }
  },

@@ -1,0 +1,30 @@
+C:\Users\Asta\AppData\Local\Programs\Python\Python312\Lib\site-packages\torch\cuda\__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+`torch_dtype` is deprecated! Use `dtype` instead!
+The following generation flags are not valid and may be ignored: ['temperature', 'top_p', 'top_k']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
+map only seed 150: false alarm 0.338  found 0.852  macro F1 0.821  rewrites kept 311 of 627
+map only seed 151: false alarm 0.025  found 0.867  macro F1 0.876  rewrites kept 289 of 646
+map only seed 152: false alarm 0.350  found 0.943  macro F1 0.875  rewrites kept 408 of 619
+map only seed 153: false alarm 0.263  found 0.895  macro F1 0.855  rewrites kept 354 of 704
+map only seed 154: false alarm 0.333  found 0.252  macro F1 0.490  rewrites kept 380 of 685
+full     seed 150: false alarm 0.312  found 0.819  macro F1 0.807  rewrites kept 311 of 627
+full     seed 151: false alarm 0.025  found 0.867  macro F1 0.876  rewrites kept 289 of 646
+full     seed 152: false alarm 0.350  found 0.943  macro F1 0.875  rewrites kept 408 of 619
+full     seed 153: false alarm 0.263  found 0.895  macro F1 0.860  rewrites kept 354 of 704
+full     seed 154: false alarm 0.208  found 0.176  macro F1 0.462  rewrites kept 380 of 685
+ceiling  seed 150: false alarm 0.300  found 0.819  macro F1 0.818  rewrites kept 303 of 578
+ceiling  seed 151: false alarm 0.050  found 0.895  macro F1 0.895  rewrites kept 317 of 623
+ceiling  seed 152: false alarm 0.075  found 0.924  macro F1 0.917  rewrites kept 388 of 581
+ceiling  seed 153: false alarm 0.188  found 0.843  macro F1 0.847  rewrites kept 310 of 595
+ceiling  seed 154: false alarm 0.108  found 0.819  macro F1 0.876  rewrites kept 301 of 579
+# Rewrite lab (tuning seeds 150-154, learned-map reader on Qwen layer 26, status machine q = 0.05)
+
+| arm | known skills in new wordings called unseen (bar 0.05) | stories S4 | noisy text S7 | register S8 | never-taught skills found | macro F1 | rewrites kept (teaching) |
+|---|---|---|---|---|---|---|---|
+| nothing (the machine as it is) | 0.256 | 0.624 | 0.450 | 0.048 | 0.903 | 0.866 | 0 |
+| map only | 0.262 | 0.656 | 0.462 | 0.017 | 0.762 | 0.783 | 348 per seed |
+| full | 0.232 | 0.559 | 0.435 | 0.017 | 0.740 | 0.776 | 348 per seed |
+| ceiling (CONTAMINATED DIAGNOSTIC) | 0.144 | 0.307 | 0.310 | 0.017 | 0.860 | 0.871 | 324 per seed |
+
+The ceiling arm tells the writer to produce stories, typos and registers, so its numbers on those wordings are not a wording-invariance claim.
+

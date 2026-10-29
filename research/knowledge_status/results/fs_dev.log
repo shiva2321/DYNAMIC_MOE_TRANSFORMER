@@ -1,0 +1,72 @@
+C:\Users\Asta\AppData\Local\Programs\Python\Python312\Lib\site-packages\torch\cuda\__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+R5_FS_strict E1 seed 100: B1a 0.527 B1b 0.804 B1c 0.584
+R5_FS_strict E1 seed 101: B1a 0.513 B1b 0.836 B1c 0.596
+R5_FS_strict E1 seed 102: B1a 0.510 B1b 0.803 B1c 0.567
+R5_FS_strict E1 seed 103: B1a 0.570 B1b 0.790 B1c 0.589
+R5_FS_strict E1 seed 104: B1a 0.528 B1b 0.758 B1c 0.592
+R5_FS_strict E2 seed 100: macro F1 0.311 false-unseen 0.000
+R5_FS_strict E2 seed 101: macro F1 0.394 false-unseen 0.000
+R5_FS_strict E2 seed 102: macro F1 0.307 false-unseen 0.000
+R5_FS_strict E2 seed 103: macro F1 0.449 false-unseen 0.017
+R5_FS_strict E2 seed 104: macro F1 0.392 false-unseen 0.000
+R5_FS_strict E2 seed 105: macro F1 0.345 false-unseen 0.000
+R5_FS_strict E2 seed 106: macro F1 0.419 false-unseen 0.000
+R5_FS_strict E2 seed 107: macro F1 0.302 false-unseen 0.013
+R5_FS_strict E2 seed 108: macro F1 0.303 false-unseen 0.037
+R5_FS_strict E2 seed 109: macro F1 0.334 false-unseen 0.013
+R5_FS_strict E2 seed 110: macro F1 0.476 false-unseen 0.000
+R5_FS_strict E2 seed 111: macro F1 0.416 false-unseen 0.050
+R5_FS_strict E2 seed 112: macro F1 0.388 false-unseen 0.025
+R5_FS_strict E2 seed 113: macro F1 0.379 false-unseen 0.000
+R5_FS_strict E2 seed 114: macro F1 0.416 false-unseen 0.058
+R5_FS_strict E2 seed 115: macro F1 0.414 false-unseen 0.000
+R5_FS_strict E2 seed 116: macro F1 0.437 false-unseen 0.017
+R5_FS_strict E2 seed 117: macro F1 0.352 false-unseen 0.050
+R5_FS_strict E2 seed 118: macro F1 0.465 false-unseen 0.000
+R5_FS_strict E2 seed 119: macro F1 0.315 false-unseen 0.000
+R5_FS_strict E2 seed 120: macro F1 0.296 false-unseen 0.000
+R5_FS_strict E2 seed 121: macro F1 0.405 false-unseen 0.008
+R5_FS_strict E2 seed 122: macro F1 0.292 false-unseen 0.000
+R5_FS_strict E2 seed 123: macro F1 0.404 false-unseen 0.058
+R5_FS_strict E2 seed 124: macro F1 0.359 false-unseen 0.033
+R5_FS_strict E2 seed 125: macro F1 0.293 false-unseen 0.025
+R5_FS_strict E2 seed 126: macro F1 0.391 false-unseen 0.013
+R5_FS_strict E2 seed 127: macro F1 0.353 false-unseen 0.000
+R5_FS_strict E2 seed 128: macro F1 0.391 false-unseen 0.037
+R5_FS_strict E2 seed 129: macro F1 0.487 false-unseen 0.000
+R5_FS_pre E1 seed 100: B1a 0.672 B1b 0.838 B1c 0.668
+R5_FS_pre E1 seed 101: B1a 0.688 B1b 0.885 B1c 0.695
+R5_FS_pre E1 seed 102: B1a 0.664 B1b 0.879 B1c 0.668
+R5_FS_pre E1 seed 103: B1a 0.678 B1b 0.848 B1c 0.703
+R5_FS_pre E1 seed 104: B1a 0.691 B1b 0.848 B1c 0.696
+R5_FS_pre E2 seed 100: macro F1 0.368 false-unseen 0.000
+R5_FS_pre E2 seed 101: macro F1 0.442 false-unseen 0.033
+R5_FS_pre E2 seed 102: macro F1 0.296 false-unseen 0.000
+R5_FS_pre E2 seed 103: macro F1 0.490 false-unseen 0.008
+R5_FS_pre E2 seed 104: macro F1 0.362 false-unseen 0.000
+R5_FS_pre E2 seed 105: macro F1 0.340 false-unseen 0.000
+R5_FS_pre E2 seed 106: macro F1 0.521 false-unseen 0.000
+R5_FS_pre E2 seed 107: macro F1 0.448 false-unseen 0.000
+R5_FS_pre E2 seed 108: macro F1 0.392 false-unseen 0.062
+R5_FS_pre E2 seed 109: macro F1 0.426 false-unseen 0.013
+R5_FS_pre E2 seed 110: macro F1 0.524 false-unseen 0.000
+R5_FS_pre E2 seed 111: macro F1 0.468 false-unseen 0.013
+R5_FS_pre E2 seed 112: macro F1 0.373 false-unseen 0.000
+R5_FS_pre E2 seed 113: macro F1 0.450 false-unseen 0.000
+R5_FS_pre E2 seed 114: macro F1 0.516 false-unseen 0.000
+R5_FS_pre E2 seed 115: macro F1 0.514 false-unseen 0.008
+R5_FS_pre E2 seed 116: macro F1 0.463 false-unseen 0.000
+R5_FS_pre E2 seed 117: macro F1 0.381 false-unseen 0.000
+R5_FS_pre E2 seed 118: macro F1 0.474 false-unseen 0.000
+R5_FS_pre E2 seed 119: macro F1 0.371 false-unseen 0.000
+R5_FS_pre E2 seed 120: macro F1 0.318 false-unseen 0.000
+R5_FS_pre E2 seed 121: macro F1 0.445 false-unseen 0.000
+R5_FS_pre E2 seed 122: macro F1 0.343 false-unseen 0.000
+R5_FS_pre E2 seed 123: macro F1 0.560 false-unseen 0.000
+R5_FS_pre E2 seed 124: macro F1 0.537 false-unseen 0.033
+R5_FS_pre E2 seed 125: macro F1 0.345 false-unseen 0.037
+R5_FS_pre E2 seed 126: macro F1 0.431 false-unseen 0.025
+R5_FS_pre E2 seed 127: macro F1 0.432 false-unseen 0.000
+R5_FS_pre E2 seed 128: macro F1 0.368 false-unseen 0.000
+R5_FS_pre E2 seed 129: macro F1 0.481 false-unseen 0.017

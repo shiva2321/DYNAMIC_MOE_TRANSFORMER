@@ -108,7 +108,7 @@ def test_a_first_start_refuses_when_confirmatory_results_already_exist(tmp_path)
 
 def test_jobs_cover_every_cell_exactly_once(tmp_path):
     rec, *_ = frozen(tmp_path)
-    rec = {**rec, "seeds": {"confirm": list(range(400, 430)), "dev": rec["seeds"]["dev"]}}
+    rec = {**rec, "seeds": {"confirm": list(range(400, 430)), "dev": rec["seeds"]["dev"]}, "representations": rec["representations"] + ["R5_FS_strict", "R5_FS_pre"]}
     js = RC.jobs(rec, [400, 401, 405])
     n_rep = len(rec["representations"])
     assert len(js) == n_rep * 30 * 2 + 30 + 3 and len(set(js)) == len(js)
@@ -307,6 +307,7 @@ def test_report_says_which_way_each_bar_points(tmp_path):
 
 def test_report_shows_the_from_scratch_arms_next_to_the_headline_reader(tmp_path):
     rec, *_ = frozen(tmp_path)
+    rec = {**rec, "representations": rec["representations"] + ["R5_FS_strict"]}                # a kept arm is part of the run
     confirm = confirm_cells(tmp_path)
     write_arm_cells(confirm, "R5_FS_strict", 0.03, stamp="FSX", seeds=range(400, 410), pool="confirm")
     st = {**STAMPS, "e1": lambda rep: "FSX" if rep == "R5_FS_strict" else "E1", "e2": lambda rep: "FSX" if rep == "R5_FS_strict" else "E2"}
