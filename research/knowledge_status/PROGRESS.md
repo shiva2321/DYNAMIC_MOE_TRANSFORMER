@@ -529,3 +529,15 @@ Nothing here changes the frozen-run machinery; all new code is in `routing_lab/`
 - Perfect solvers for the Solid skills only: the Thin skill's parts keep roughly 0.09-0.10 of false alarms (the 2026-10-28 finding), so **0.12-0.20 at g = 16**.
 - Real solvers: **0.22-0.26**, no useful gain (competent skills hold about 10 % of the known parts). This is the point of the lab: the group test fixes the evidence problem, and what is left is the competence of the experts (Lab C).
 - Rule for going on: Lab B is a success if coincidences stay at most 0.03 at g >= 6 AND perfect-solver mixed windows reach false alarm 0.12 or less at g = 16 with found within 0.03 of base. Otherwise it is a recorded negative result.
+
+
+### Lab C, experts that share what matters: what is fixed and the predictions, written before the first run
+
+**Idea (your note, at the expert level).** Experts that are used together can SHARE the part that is common: here the two layers that turn the digits of two numbers into features (place value, carries and borrows), with a small own output head per skill. A skill taught few examples then borrows the encoder that skills with many examples keep in shape. `routing_lab/experts.py` (class `SharedExperts`): one trunk (2 x 128), one head per skill, every step draws the same number of examples from every skill. Nothing is said about the operations. Baseline: the solver of `assignments.py` alone (the competence table of the spec).
+
+**Design.** Targets sub, mul, div, mod, max; taught 20, 100, 500; helpers = {add, sub, max} minus the target, each 2000 examples; seeds 150-152; accuracy on held-out problems (arith's held-out split, 1-2 digits, exact answer). 6000 steps for the shared net.
+
+**Predictions.**
+- Separate (should match the competence table): sub 0.01 at 100, about 0.17 at 500; mul 0.11 / 0.16; div 0.42 / 0.53 (chance 0.46); mod 0.36 / 0.49 (chance 0.24); max 0.45 / 0.77; every skill near chance at 20.
+- Shared: **sub** 0.02-0.15 at 20, 0.15-0.50 at 100, 0.50-0.90 at 500 (it shares borrow structure with add); **max** 0.50-0.80 at 100, 0.85-0.95 at 500; **mul** 0.15-0.35 at 500; **div, mod** +0.05 to +0.15 over separate at 500. No skill reaches 0.9 at 100 or fewer examples. The helpers keep their accuracy (add and max at 0.85 or more).
+- Rule for going on: Lab C is a success if sharing beats the separate solver by at least 0.10 (absolute) at 100 or 500 examples for at least three of the five skills. A skill taught 20 examples reaching 0.5 would be a surprise (I expect not); either way the result sets what "train the experts to their fullest" can mean in the routing: how many examples a Thin skill needs before it can be trusted to confirm anything.
