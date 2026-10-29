@@ -31,6 +31,7 @@ For every part of an incoming message it returns three things: a **status** (Sol
 | 4 team | settles on the right skill, with the stated answer | one expert 0.970; adaptive team **0.986 at 1.06 experts**; fixed pair 0.997 at 2.0 | report |
 | 5 check | coincidences taken for a known skill (never-taught parts taken back) | at most 0.014 up to windows of 8 | tuning |
 | 5 check | false "new" calls rescued, perfect experts, windows of one skill / mixed windows | 0.020 / 0.178 (from 0.256) | tuning |
+| 5 check | the same, windows made from the asked operation (96 % pure): windows of 8 / 16 | 0.093 / 0.064; coincidences 0.004 / 0.050 | tuning |
 | 5 check | the same with the real experts | 0.231 (from 0.256) | tuning |
 | 0, 6 sharing | weak skill accuracy alone / shared (500 examples) | sub 0.17 / 0.41, mul 0.18 / 0.31; the strong skill add falls 0.93 / about 0.78 | tuning 150-152 |
 
@@ -47,7 +48,7 @@ For every part of an incoming message it returns three things: a **status** (Sol
 
 ## What to do next (in this order)
 
-1. Group parts by the asked operation and re-run the group check (step 5) to see how much of the remaining false "new" it removes with competent experts.
+1. Make the group check's null keep the operand structure (shuffle answers among parts with the same operand sizes): with windows made from the asked operation it already reaches 0.064, but small-operand coincidences reach 0.050 at windows of 16.
 2. Distil the two questions into one small head on the model's hidden state, so the reader costs one pass.
 3. Wire status and team into the pool's gate on a small stream and measure the pool (accuracy, experts, compute).
 4. With your go: write a new question pool, freeze a pre-registration of this design, and run it once on fresh seeds.

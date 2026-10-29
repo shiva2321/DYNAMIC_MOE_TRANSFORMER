@@ -21,6 +21,7 @@ In `research/knowledge_status/PROGRESS.md`, blocks of 2026-10-29 (plan; Lab A; t
 ## Method (how)
 - **Lab A, the asking reader** (`routing_lab/ask_reader.py`, `lab_ask.py`, `ask_rules.py`, `lab_ask_report.py`). Qwen2.5-1.5B-Instruct, chat template, options A-G = add, sub, mul, div, remainder, larger of two, none; one forward pass, the probabilities of the seven letters. The prompt is fixed before any run. Status decided in three ways: conformal (class-conditional, calibration on held-out S1-S3 parts only), the plain rule (unseen iff the top option is a skill nobody taught), tau0.5 (also unseen when the top probability is below 0.5; chosen offline on the tuning seeds by the recorded costs, 4 per false alarm and 7 per miss), and a hybrid (the calibrated none class first). Real problems (300 SVAMP, report only), the tangled messages (gold parts) and the look-based machine's own cells for the same seeds are in the same table.
 - **Lab B, group evidence** (`group_check.py`, `lab_group.py`). Parts called unseen by look, taken in windows; a competent taught skill is present in a window if it explains more stated answers than answer-shuffled copies (2000 shuffles, Holm); mixed windows and same-skill windows; real solvers and perfect-solver ceilings.
+- **Lab F, windows made from the asked operation** (`lab_group_asked.py`). The flagged parts are grouped by the operation the model named and cut into windows of g; same parts, machine, solvers and seeds as Lab B.
 - **Lab C, shared experts** (`experts.py`, `lab_experts.py`). One shared two-layer number encoder, a head per skill, balanced sampling; sub, mul, div, mod, max taught 20, 100, 500, helpers 2000 each; held-out problems.
 - **Lab D, teams** (`team.py`, `lab_team.py`). Team policies (top1, conformal set, top2, top3, all, adaptive by probability mass), with and without the stated answer, offline from the cached answers.
 - **Lab E, the boundary question** (`lab_gate.py`, `lab_gate_report.py`). A second Yes / No question ("does this ask for a calculation?"), threshold calibrated on held-out taught arithmetic at level alpha, then tau0.5.
@@ -122,6 +123,19 @@ In `research/knowledge_status/PROGRESS.md`, blocks of 2026-10-29 (plan; Lab A; t
 | perfect_taught | same_skill | 8, 0.01 | 0.073 | 0.892 | 0.700 | 0.010 | 1.000 | 0.606 |
 | perfect_taught | same_skill | 16, 0.01 | 0.020 | 0.865 | 0.698 | 0.038 | 0.993 | 0.853 |
 
+### Lab F, group evidence with windows made from the asked operation (`results/ROUTING_GROUP_ASKED_150_154.md`)
+| solvers | g, alpha | false-new | found | coincidences | right skill |
+|---|---|---|---|---|---|
+| real | 6, 0.01 | 0.241 | 0.903 | 0.000 | 1.000 |
+| real | 8, 0.01 | 0.236 | 0.900 | 0.003 | 1.000 |
+| real | 16, 0.01 | 0.228 | 0.896 | 0.007 | 1.000 |
+| perfect_solid | 6, 0.01 | 0.179 | 0.903 | 0.000 | 1.000 |
+| perfect_solid | 8, 0.01 | 0.170 | 0.895 | 0.008 | 1.000 |
+| perfect_solid | 16, 0.01 | 0.157 | 0.863 | 0.040 | 1.000 |
+| perfect_taught | 6, 0.01 | 0.153 | 0.903 | 0.000 | 1.000 |
+| perfect_taught | 8, 0.01 | 0.093 | 0.899 | 0.004 | 1.000 |
+| perfect_taught | 16, 0.01 | 0.064 | 0.853 | 0.050 | 1.000 |
+
 ### Lab C, shared experts (`results/ROUTING_EXPERTS_150_152.md`)
 | skill | taught | separate | shared | helpers (shared net) |
 |---|---|---|---|---|
@@ -171,7 +185,7 @@ In `research/knowledge_status/PROGRESS.md`, blocks of 2026-10-29 (plan; Lab A; t
 **What asking cannot do alone.** It names an operation even for sentences that are not arithmetic (everyday sentences called new 71 %, look-alike traps 60 % with the plain rule). A second question, asked on its own, "does this ask for a calculation at all?", with its threshold set on arithmetic requests only, repairs most of it (everyday 9 %, traps 6 %, alpha 0.05) at a price: no single threshold gives both a clean boundary and the best detection of the new part of a tangled message (alpha 0.05: boundary better, new part 0.825; alpha 0.01: new part 0.915, boundary worse).
 **Why the calibrated version lost.** Calibrating on the easy taught wordings makes the model look certain (probability near 0.99), so the 5 % threshold sits near 0.99 and every slightly less certain answer in a new wording is flagged. The plain rule, which uses only what the model names, does not have that problem; it has no statistical guarantee, which is a cost to remember.
 **How many experts.** One expert is right 97 % of the time. A team sized by the probability the model holds (add the next most probable expert until 99 % of the probability on the taught skills is held, at most 3) reaches 98.6 % with 1.06 experts per part; a fixed team of two reaches 99.7 % with 2.0 experts, a team of three adds nothing. Extra experts help ONLY when something checks them (the stated answer, i.e. a worked example, a teacher, a stream's feedback): without it the team answers with its most probable member and extra experts are cost. The conformal covering set is the wrong way to form a team (right 0.75: it is empty for a quarter of the known parts). This is the reasonable-and-helpful rule the user asked for: more than one expert when the part is ambiguous or there is a check, one otherwise, none when the part is new.
-**Evidence over a group.** The permutation test removes coincidences (at most 1.4 % up to windows of 8) but the gain depends on the windows being made of one skill: with perfect experts it takes the false alarm to 0.020 in same-skill windows of 16 and only to 0.178 in the mixed windows a stream gives; with the real experts it is about nothing (one competent skill in five seeds). The asked operation is the natural key to make same-skill windows; this was not run.
+**Evidence over a group.** The permutation test removes random coincidences but the gain depends on the windows being made of one skill: with perfect experts it takes the false alarm to 0.020 in same-skill windows of 16 and only to 0.178 in the mixed windows a stream gives. Windows made from the operation the model names (Lab F) are 96 % pure and give 0.093 (g = 8) and 0.064 (g = 16), most of the way to the ceiling; with the real experts it is still about nothing (0.228). Left over, and not predicted: coincidences are systematic for small operands (mul(a, 1) = max(a, 1)), up to 0.050 at g = 16, which the shuffled-answer null cannot see.
 **Sharing.** Experts that share a number encoder help the weak ones (sub 0.17 to 0.41 and mul 0.18 to 0.31 at 500 examples, max 0.44 to 0.55 at 100) and cost the strong ones (add 0.93 alone, 0.73-0.88 shared with one trunk of width 128). A skill taught 20 examples stays unusable either way. Competence comes from examples; for a Thin expert the routing's job is to send it more teaching examples, not to trust it earlier.
 **Technical statement, measured against assumed.** Measured: everything in the tables, on dev seeds. Assumed: that the dev test bed (templates S1-S8 and 300 SVAMP problems) represents what the system will read; that the model's prior knowledge of the operation vocabulary is an acceptable stand-in for reading (it is what makes a never-taught skill detectable and it cannot recognise a skill outside the vocabulary); that reading the two numbers is a separate part (the verification and team rows take the operands as given).
 
@@ -186,10 +200,10 @@ In `research/knowledge_status/PROGRESS.md`, blocks of 2026-10-29 (plan; Lab A; t
 - A mutation sweep harness started in the background was mistaken for finished once; I restored one file from git while it was still running, which cost nothing but could have, and is recorded here.
 
 ## Consequence
-The routing / novelty algorithm is specified in `research/knowledge_status/ROUTING_ALGORITHM_2026-10-29.md`. Next, in order: (1) group the parts by the asked operation and re-run the group evidence test; (2) distil the asked answers into a small head so the reader costs one pass; (3) wire the status and team into the pool's gate on a small stream and measure the pool; (4) pre-register a confirmatory run of the new design with a new pool and new seeds, if the user gives the go; (5) a wider trunk or a second trunk for the shared experts. Registers: F-40 to F-44 in FAILURES.md, C-91 to C-96 in CLAIMS.md.
+The routing / novelty algorithm is specified in `research/knowledge_status/ROUTING_ALGORITHM_2026-10-29.md`. Next, in order: (1) a null that keeps the operand structure for the group check (systematic coincidences, Lab F); (2) distil the asked answers into a small head so the reader costs one pass; (3) wire the status and team into the pool's gate on a small stream and measure the pool; (4) pre-register a confirmatory run of the new design with a new pool and new seeds, if the user gives the go; (5) a wider trunk or a second trunk for the shared experts. Registers: F-40 to F-44 in FAILURES.md, C-91 to C-97 in CLAIMS.md.
 
 ## Evidence
-- `research/knowledge_status/results/ROUTING_ASK_REPORT_100_109.md`, `ROUTING_GATE_REPORT_100_109.md`, `ROUTING_TEAM_100_109.md`, `ROUTING_GROUP_150_154.md`, `ROUTING_EXPERTS_150_152.md`, `ROUTING_ASK_150_154.md`, `ROUTING_ASK_RULES_150_154.md`, `ROUTING_GATE_150_154.md`, `ROUTING_TEAM_150_154.md`
+- `research/knowledge_status/results/ROUTING_ASK_REPORT_100_109.md`, `ROUTING_GATE_REPORT_100_109.md`, `ROUTING_TEAM_100_109.md`, `ROUTING_GROUP_150_154.md`, `ROUTING_GROUP_ASKED_150_154.md`, `ROUTING_EXPERTS_150_152.md`, `ROUTING_ASK_150_154.md`, `ROUTING_ASK_RULES_150_154.md`, `ROUTING_GATE_150_154.md`, `ROUTING_TEAM_150_154.md`
 - `research/knowledge_status/results/routing_lab/` (per-seed cells, cached model answers, logs)
 - `research/knowledge_status/PROGRESS.md` (plan, predictions, results, in order)
 
@@ -202,5 +216,6 @@ PYTHONPATH=<repo> python research/knowledge_status/routing_lab/lab_gate.py 150 1
 PYTHONPATH=<repo> python research/knowledge_status/routing_lab/lab_gate_report.py 100 109
 PYTHONPATH=<repo> python research/knowledge_status/routing_lab/lab_team.py 100 109
 PYTHONPATH=<repo> python research/knowledge_status/routing_lab/lab_group.py 150 154
+PYTHONPATH=<repo> python research/knowledge_status/routing_lab/lab_group_asked.py 150 154
 PYTHONPATH=<repo> python research/knowledge_status/routing_lab/lab_experts.py 150 152
 ```
