@@ -1,0 +1,27 @@
+C:\Users\Asta\AppData\Local\Programs\Python\Python312\Lib\site-packages\torch\cuda\__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+`torch_dtype` is deprecated! Use `dtype` instead!
+seed 150: auc trap 0.984 everyday 0.981; alpha 0.01 everyday unseen 0.097 traps unseen 0.367
+seed 151: auc trap 0.979 everyday 0.978; alpha 0.01 everyday unseen 0.099 traps unseen 0.317
+seed 152: auc trap 0.990 everyday 0.979; alpha 0.01 everyday unseen 0.071 traps unseen 0.233
+seed 153: auc trap 0.991 everyday 0.982; alpha 0.01 everyday unseen 0.403 traps unseen 0.283
+seed 154: auc trap 0.984 everyday 0.982; alpha 0.01 everyday unseen 0.366 traps unseen 0.533
+# Lab E, the boundary question (seeds 150-154)
+
+Stage one: the model is asked whether the message asks for a calculation at all; the threshold is calibrated on held-out arithmetic requests (taught skills, wordings S1-S3) so that about alpha of them are called Other. Stage two: the rule tau0.5 of lab A.
+
+Separating arithmetic requests from look-alike traps by the Yes-probability: AUROC 0.986; from everyday sentences: 0.980.
+
+| | tau0.5 alone | two-stage, alpha 0.01 | two-stage, alpha 0.05 |
+|---|---|---|---|
+| known skills in new wordings called unseen | 0.053 | 0.053 | 0.048 |
+| never-taught skills found | 0.990 | 0.984 | 0.965 |
+| look-alike traps called unseen | 0.600 | 0.347 | 0.100 |
+| everyday sentences called unseen | 0.460 | 0.207 | 0.090 |
+| everyday sentences labelled Other | 0.001 | 0.616 | 0.813 |
+| traps labelled Other | 0.000 | 0.420 | 0.807 |
+| real arithmetic in new wordings wrongly called Other | | 0.005 | 0.023 |
+| never-taught arithmetic wrongly called Other | | 0.006 | 0.026 |
+| traps called Other | | 0.420 | 0.807 |
+| everyday sentences called Other | | 0.616 | 0.813 |
+
