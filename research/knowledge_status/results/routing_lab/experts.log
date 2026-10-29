@@ -1,0 +1,69 @@
+C:\Users\Asta\AppData\Local\Programs\Python\Python312\Lib\site-packages\torch\cuda\__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+seed 150 sub n=20: separate 0.00 shared 0.00
+seed 150 sub n=100: separate 0.06 shared 0.14
+seed 150 sub n=500: separate 0.17 shared 0.45
+seed 150 mul n=20: separate 0.04 shared 0.09
+seed 150 mul n=100: separate 0.10 shared 0.15
+seed 150 mul n=500: separate 0.21 shared 0.34
+seed 150 div n=20: separate 0.48 shared 0.51
+seed 150 div n=100: separate 0.47 shared 0.49
+seed 150 div n=500: separate 0.51 shared 0.57
+seed 150 mod n=20: separate 0.20 shared 0.21
+seed 150 mod n=100: separate 0.39 shared 0.32
+seed 150 mod n=500: separate 0.49 shared 0.52
+seed 150 max n=20: separate 0.18 shared 0.15
+seed 150 max n=100: separate 0.40 shared 0.57
+seed 150 max n=500: separate 0.82 shared 0.82
+seed 151 sub n=20: separate 0.01 shared 0.04
+seed 151 sub n=100: separate 0.03 shared 0.15
+seed 151 sub n=500: separate 0.15 shared 0.43
+seed 151 mul n=20: separate 0.00 shared 0.13
+seed 151 mul n=100: separate 0.05 shared 0.17
+seed 151 mul n=500: separate 0.21 shared 0.32
+seed 151 div n=20: separate 0.30 shared 0.42
+seed 151 div n=100: separate 0.41 shared 0.53
+seed 151 div n=500: separate 0.55 shared 0.56
+seed 151 mod n=20: separate 0.18 shared 0.20
+seed 151 mod n=100: separate 0.35 shared 0.25
+seed 151 mod n=500: separate 0.55 shared 0.58
+seed 151 max n=20: separate 0.15 shared 0.15
+seed 151 max n=100: separate 0.46 shared 0.58
+seed 151 max n=500: separate 0.80 shared 0.79
+seed 152 sub n=20: separate 0.05 shared 0.02
+seed 152 sub n=100: separate 0.02 shared 0.16
+seed 152 sub n=500: separate 0.20 shared 0.34
+seed 152 mul n=20: separate 0.09 shared 0.09
+seed 152 mul n=100: separate 0.14 shared 0.14
+seed 152 mul n=500: separate 0.13 shared 0.28
+seed 152 div n=20: separate 0.45 shared 0.49
+seed 152 div n=100: separate 0.48 shared 0.54
+seed 152 div n=500: separate 0.55 shared 0.64
+seed 152 mod n=20: separate 0.17 shared 0.09
+seed 152 mod n=100: separate 0.30 shared 0.35
+seed 152 mod n=500: separate 0.52 shared 0.46
+seed 152 max n=20: separate 0.12 shared 0.16
+seed 152 max n=100: separate 0.47 shared 0.51
+seed 152 max n=500: separate 0.75 shared 0.74
+# Lab C, experts that share a number encoder (tuning seeds 150-152, 1-2 digit operands, held-out problems)
+
+Accuracy on problems never seen: the skill alone (separate) against the skill trained together with helper skills at 2000 examples each (shared encoder, own head). Chance for div is about 0.46 and for mod 0.24 (their answers are mostly 0 and small).
+
+| skill | taught | separate | shared | helpers (shared net) |
+|---|---|---|---|---|
+| sub | 20 | 0.02 | 0.02 | add 0.84, max 0.91 |
+| sub | 100 | 0.04 | 0.15 | add 0.82, max 0.92 |
+| sub | 500 | 0.17 | 0.41 | add 0.78, max 0.92 |
+| mul | 20 | 0.05 | 0.10 | add 0.78, sub 0.62, max 0.93 |
+| mul | 100 | 0.10 | 0.15 | add 0.76, sub 0.54, max 0.92 |
+| mul | 500 | 0.18 | 0.31 | add 0.73, sub 0.50, max 0.91 |
+| div | 20 | 0.41 | 0.47 | add 0.78, sub 0.65, max 0.93 |
+| div | 100 | 0.46 | 0.52 | add 0.76, sub 0.59, max 0.93 |
+| div | 500 | 0.53 | 0.59 | add 0.74, sub 0.63, max 0.94 |
+| mod | 20 | 0.18 | 0.17 | add 0.78, sub 0.61, max 0.93 |
+| mod | 100 | 0.35 | 0.31 | add 0.76, sub 0.54, max 0.92 |
+| mod | 500 | 0.52 | 0.52 | add 0.76, sub 0.54, max 0.94 |
+| max | 20 | 0.15 | 0.16 | add 0.88, sub 0.75 |
+| max | 100 | 0.44 | 0.55 | add 0.79, sub 0.61 |
+| max | 500 | 0.79 | 0.78 | add 0.80, sub 0.65 |
+
