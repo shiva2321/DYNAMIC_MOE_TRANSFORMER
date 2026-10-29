@@ -1,4 +1,4 @@
-# Lab D, teams of experts (tuning seeds 150-154, from the cached asked probabilities)
+# Lab D, teams of experts (seeds 150-154, from the cached asked probabilities)
 
 Known skills in the new wordings S4-S8. 'right' = the team settles on the true skill. 'recall' = the true skill is in the team. 'size' = experts called per part. With an answer = the stated answer is checked against each member that may verify. Operands are taken as given (reading the numbers is a separate part).
 

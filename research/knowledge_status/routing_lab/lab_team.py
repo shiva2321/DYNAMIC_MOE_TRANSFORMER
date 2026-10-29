@@ -60,7 +60,7 @@ def seed_rows(seed: int) -> dict:
 
 
 def report(per_seed: List[dict], seeds: Sequence[int]) -> str:
-    L = [f"# Lab D, teams of experts (tuning seeds {seeds[0]}-{seeds[-1]}, from the cached asked probabilities)", "",
+    L = [f"# Lab D, teams of experts (seeds {seeds[0]}-{seeds[-1]}, from the cached asked probabilities)", "",
          "Known skills in the new wordings S4-S8. 'right' = the team settles on the true skill. 'recall' = the true skill is in the team. 'size' = experts called per part. With an answer = the stated answer is "
          "checked against each member that may verify. Operands are taken as given (reading the numbers is a separate part).", "",
          "| experts allowed (team and verifiers) | policy | recall | size | right, no answer | right, with the stated answer |", "|---|---|---|---|---|---|"]

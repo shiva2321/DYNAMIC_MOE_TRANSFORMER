@@ -1,0 +1,1 @@
+{"seed": 150, "skill": "sub", "count": 20, "helpers": ["add", "max"], "separate": 0.002, "shared": 0.004, "helper_accuracy": {"add": 0.818, "max": 0.86}, "code_stamp": "8aa5038b484070a1"}
