@@ -1,0 +1,266 @@
+{
+ "tune_seed": 499,
+ "chosen": {
+  "shipped": {
+   "inner_steps": 20
+  },
+  "U-real": {
+   "inner_steps": 20
+  },
+  "U-deep": {
+   "inner_steps": 20
+  },
+  "U-recipe": {
+   "inner_steps": 50,
+   "replay_size": 1024
+  },
+  "replay_eqmem": {
+   "hidden": 1024,
+   "inner_steps": 20
+  },
+  "finetune": {
+   "inner_steps": 20
+  },
+  "joint": {
+   "hidden": 4096,
+   "inner_steps": 20
+  },
+  "oracle_experts": {
+   "inner_steps": 20
+  },
+  "knn_eqmem": {},
+  "lda": {}
+ },
+ "grid_results": {
+  "shipped": [
+   {
+    "recipe": {
+     "inner_steps": 1
+    },
+    "final_mean": 0.4723101630806923
+   },
+   {
+    "recipe": {
+     "inner_steps": 5
+    },
+    "final_mean": 0.5504315840927038
+   },
+   {
+    "recipe": {
+     "inner_steps": 20
+    },
+    "final_mean": 0.5629013817418705
+   }
+  ],
+  "U-real": [
+   {
+    "recipe": {
+     "inner_steps": 1
+    },
+    "final_mean": 0.606163585727865
+   },
+   {
+    "recipe": {
+     "inner_steps": 5
+    },
+    "final_mean": 0.621788730675524
+   },
+   {
+    "recipe": {
+     "inner_steps": 20
+    },
+    "final_mean": 0.6290642361749302
+   }
+  ],
+  "U-deep": [
+   {
+    "recipe": {
+     "inner_steps": 1
+    },
+    "final_mean": 0.606163585727865
+   },
+   {
+    "recipe": {
+     "inner_steps": 5
+    },
+    "final_mean": 0.621788730675524
+   },
+   {
+    "recipe": {
+     "inner_steps": 20
+    },
+    "final_mean": 0.6290642361749302
+   }
+  ],
+  "U-recipe": [
+   {
+    "recipe": {
+     "inner_steps": 5,
+     "replay_size": 256
+    },
+    "final_mean": 0.621788730675524
+   },
+   {
+    "recipe": {
+     "inner_steps": 5,
+     "replay_size": 1024
+    },
+    "final_mean": 0.6246848688884215
+   },
+   {
+    "recipe": {
+     "inner_steps": 20,
+     "replay_size": 256
+    },
+    "final_mean": 0.6290642361749302
+   },
+   {
+    "recipe": {
+     "inner_steps": 20,
+     "replay_size": 1024
+    },
+    "final_mean": 0.6277145526625894
+   },
+   {
+    "recipe": {
+     "inner_steps": 50,
+     "replay_size": 256
+    },
+    "final_mean": 0.6295527165586298
+   },
+   {
+    "recipe": {
+     "inner_steps": 50,
+     "replay_size": 1024
+    },
+    "final_mean": 0.6326221945610914
+   }
+  ],
+  "replay_eqmem": [
+   {
+    "recipe": {
+     "hidden": 256,
+     "inner_steps": 1
+    },
+    "final_mean": 0.5262297491796992
+   },
+   {
+    "recipe": {
+     "hidden": 256,
+     "inner_steps": 5
+    },
+    "final_mean": 0.593586874279109
+   },
+   {
+    "recipe": {
+     "hidden": 256,
+     "inner_steps": 20
+    },
+    "final_mean": 0.6216171444817022
+   },
+   {
+    "recipe": {
+     "hidden": 1024,
+     "inner_steps": 1
+    },
+    "final_mean": 0.5348389736292037
+   },
+   {
+    "recipe": {
+     "hidden": 1024,
+     "inner_steps": 5
+    },
+    "final_mean": 0.6271342025561766
+   },
+   {
+    "recipe": {
+     "hidden": 1024,
+     "inner_steps": 20
+    },
+    "final_mean": 0.647568326104771
+   },
+   {
+    "recipe": {
+     "hidden": 4096,
+     "inner_steps": 1
+    },
+    "final_mean": 0.5205752026628364
+   },
+   {
+    "recipe": {
+     "hidden": 4096,
+     "inner_steps": 5
+    },
+    "final_mean": 0.6348005086183548
+   },
+   {
+    "recipe": {
+     "hidden": 4096,
+     "inner_steps": 20
+    },
+    "final_mean": 0.6461227360096845
+   }
+  ],
+  "finetune": [
+   {
+    "recipe": {
+     "inner_steps": 5
+    },
+    "final_mean": 0.03288235417990522
+   },
+   {
+    "recipe": {
+     "inner_steps": 20
+    },
+    "final_mean": 0.04141140826554461
+   }
+  ],
+  "joint": [
+   {
+    "recipe": {
+     "inner_steps": 5
+    },
+    "final_mean": 0.6142538515004244
+   },
+   {
+    "recipe": {
+     "inner_steps": 20
+    },
+    "final_mean": 0.6205929084257646
+   },
+   {
+    "recipe": {
+     "hidden": 1024,
+     "inner_steps": 5
+    },
+    "final_mean": 0.6446419249881398
+   },
+   {
+    "recipe": {
+     "hidden": 1024,
+     "inner_steps": 20
+    },
+    "final_mean": 0.6571348119865764
+   },
+   {
+    "recipe": {
+     "hidden": 4096,
+     "inner_steps": 5
+    },
+    "final_mean": 0.6558702831918543
+   },
+   {
+    "recipe": {
+     "hidden": 4096,
+     "inner_steps": 20
+    },
+    "final_mean": 0.6637115695259788
+   }
+  ]
+ },
+ "budget_bytes_u_real": 12317684,
+ "code_stamp": "9d9b672b159c40b4",
+ "amendments": [
+  "joint widened to 1024 and 4096 after the first grid (128 units) scored below the replay network"
+ ]
+}

@@ -1,0 +1,210 @@
+{
+ "tune_seed": 499,
+ "schedule": "drift",
+ "chosen": {
+  "shipped": {
+   "inner_steps": 1
+  },
+  "U-real": {
+   "inner_steps": 1
+  },
+  "U-deep": {
+   "inner_steps": 1
+  },
+  "U-recipe": {
+   "inner_steps": 5,
+   "replay_size": 1024
+  },
+  "replay_eqmem": {
+   "hidden": 256,
+   "inner_steps": 1
+  },
+  "finetune": {
+   "inner_steps": 5
+  },
+  "joint": {
+   "hidden": 4096,
+   "inner_steps": 20
+  },
+  "oracle_experts": {
+   "inner_steps": 5
+  },
+  "knn_eqmem": {},
+  "lda": {}
+ },
+ "grid_results": {
+  "shipped": [
+   {
+    "recipe": {
+     "inner_steps": 1
+    },
+    "final_mean": 0.5290903543884103
+   },
+   {
+    "recipe": {
+     "inner_steps": 5
+    },
+    "final_mean": 0.48223843493244867
+   },
+   {
+    "recipe": {
+     "inner_steps": 20
+    },
+    "final_mean": 0.43985723500902
+   }
+  ],
+  "U-real": [
+   {
+    "recipe": {
+     "inner_steps": 1
+    },
+    "final_mean": 0.5205241661857475
+   },
+   {
+    "recipe": {
+     "inner_steps": 5
+    },
+    "final_mean": 0.49103781377727335
+   },
+   {
+    "recipe": {
+     "inner_steps": 20
+    },
+    "final_mean": 0.45755296606909146
+   }
+  ],
+  "U-deep": [
+   {
+    "recipe": {
+     "inner_steps": 1
+    },
+    "final_mean": 0.5205241661857475
+   },
+   {
+    "recipe": {
+     "inner_steps": 5
+    },
+    "final_mean": 0.49103781377727335
+   },
+   {
+    "recipe": {
+     "inner_steps": 20
+    },
+    "final_mean": 0.45755296606909146
+   }
+  ],
+  "U-recipe": [
+   {
+    "recipe": {
+     "inner_steps": 5,
+     "replay_size": 256
+    },
+    "final_mean": 0.49103781377727335
+   },
+   {
+    "recipe": {
+     "inner_steps": 5,
+     "replay_size": 1024
+    },
+    "final_mean": 0.5505602976137941
+   },
+   {
+    "recipe": {
+     "inner_steps": 20,
+     "replay_size": 256
+    },
+    "final_mean": 0.45755296606909146
+   },
+   {
+    "recipe": {
+     "inner_steps": 20,
+     "replay_size": 1024
+    },
+    "final_mean": 0.5114150582389398
+   },
+   {
+    "recipe": {
+     "inner_steps": 50,
+     "replay_size": 256
+    },
+    "final_mean": 0.44059821929443965
+   },
+   {
+    "recipe": {
+     "inner_steps": 50,
+     "replay_size": 1024
+    },
+    "final_mean": 0.5312512008981272
+   }
+  ],
+  "replay_eqmem": [
+   {
+    "recipe": {
+     "hidden": 256,
+     "inner_steps": 1
+    },
+    "final_mean": 0.5886957780881361
+   },
+   {
+    "recipe": {
+     "hidden": 256,
+     "inner_steps": 5
+    },
+    "final_mean": 0.5739026150920175
+   },
+   {
+    "recipe": {
+     "hidden": 256,
+     "inner_steps": 20
+    },
+    "final_mean": 0.5414353521032766
+   }
+  ],
+  "finetune": [
+   {
+    "recipe": {
+     "inner_steps": 5
+    },
+    "final_mean": 0.4137477002699267
+   },
+   {
+    "recipe": {
+     "inner_steps": 20
+    },
+    "final_mean": 0.33510451492938126
+   }
+  ],
+  "joint": [
+   {
+    "recipe": {
+     "hidden": 1024,
+     "inner_steps": 5
+    },
+    "final_mean": 0.6496970436789773
+   },
+   {
+    "recipe": {
+     "hidden": 1024,
+     "inner_steps": 20
+    },
+    "final_mean": 0.6446242942051454
+   },
+   {
+    "recipe": {
+     "hidden": 4096,
+     "inner_steps": 5
+    },
+    "final_mean": 0.6529685909097845
+   },
+   {
+    "recipe": {
+     "hidden": 4096,
+     "inner_steps": 20
+    },
+    "final_mean": 0.6590507274324243
+   }
+  ]
+ },
+ "budget_bytes_u_real": 1024500,
+ "code_stamp": "c9b8723316a03bd1"
+}

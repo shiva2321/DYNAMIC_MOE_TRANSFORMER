@@ -53,6 +53,13 @@ ONE_STEP: Dict[str, tuple] = {
 }
 
 
+def allow_depth_zero() -> None:
+    """PATCH (recorded; growmoe/ is not edited): the shipped ``MLPExpert.hidden`` indexes ``blocks[0]`` and so crashes for a linear expert (depth 0) when the pool inherits a child from it. Here an expert
+    without blocks reports width 0. Applied in the process of the linear-pool experiment only."""
+    from growmoe.experts import MLPExpert
+    MLPExpert.hidden = property(lambda self: self.blocks[0].w1.shape[0] if len(self.blocks) else 0)
+
+
 def run_variants(group: str, variants: Dict[str, tuple], schedules=("seq",), seeds=SEEDS) -> None:
     runs = E.OUT / group
     for seed in seeds:
@@ -95,6 +102,7 @@ def main(argv=None) -> None:
     elif a.cmd == "grow-gap":
         run_variants("p3_grow_gap", GROW_GAP, schedules=("mix",))
     elif a.cmd == "linear-pool":
+        allow_depth_zero()
         run_variants("p3_linear_pool", LINEAR_POOL, schedules=("seq", "mix", "drift"))
     elif a.cmd == "one-step":
         run_variants("p3_one_step", ONE_STEP, schedules=("seq", "mix"))
