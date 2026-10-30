@@ -604,3 +604,26 @@ Lab B found that the permutation check works when the windows hold one skill (pe
 ### Result: Lab F, windows made from the asked operation (tuning seeds 150-154, `results/ROUTING_GROUP_ASKED_150_154.md`)
 
 The model's name is the true skill for 0.959 of the flagged parts, so the windows are nearly pure. Perfect experts for every taught skill: false alarm **0.093 at g = 8 and 0.064 at g = 16** (mixed windows 0.223 / 0.178, same-skill windows 0.073 / 0.020; predicted 0.06-0.12 and 0.03-0.09); never-taught found 0.899 / 0.853; right skill 1.000. Perfect experts for the Solid skills only: 0.170 / 0.157 (predicted 0.13-0.20). Real experts: 0.236 / 0.228 (predicted 0.22-0.25). The rule declared beforehand (false alarm at most 0.09 at g = 16 AND coincidences at most 0.03) is half met: 0.064 yes, but coincidences are **0.050 at g = 16** (0.004 at g = 8, 0.000 at g = 6). I did not predict the cause: the coincidences are systematic, not random (for example mul(a, 1) = a = max(a, 1)), so a window of untaught parts that all have a small operand is "explained" again and again by one taught skill, and the shuffled-answer null, which destroys the structure, cannot see it. A window of 8 is the better compromise; a null that keeps the numbers' structure (shuffle the answers among parts with the same operand sizes) is the next fix. Meaning: the asked operation is the key for grouping, the permutation check then recovers most of what the same-skill ceiling shows, and what is left is the competence of the experts (real experts: almost nothing).
+
+
+## 2026-10-30, general routing layer (the user: "start with the pool wiring ... this seems to be just specific to arithmetic ... we need a general algorithm and working system")
+
+**What I read first.** The pool (`growmoe/pools/phylo.py`) takes only feature vectors, has its own density gate and ignores `ctx`; there is no hook to tell it who owns a sample, and the spec (NG1) forbids editing `growmoe/`. So the wiring is a thin pool of its own in front of the experts (step G2), and before that the router must stop being arithmetic-shaped. Design and rulings: `docs/superpowers/specs/2026-10-30-general-routing-layer-design.md` (R1: unclaimed is not "new skill"; R2: the question offers only the taught cards plus "none of these", which is harder than v1 because never-taught skills are no longer offered by name).
+
+**Built (tested, 27 new tests, no model run yet):** `routing_general/` with `cards.py` (domain-free question from a roster), `route.py` (claimed / unclaimed, team by probability mass), `reader.py` (language-model call + cache), `domains.py` (a world from any labelled corpus; loaders for banking77, AG News, 20 Newsgroups), `measures.py`, `lab_general.py`.
+
+### Lab G1, predictions written BEFORE the first model run (tuning seeds 150-152; 3 taught classes of the domain's choice are random per seed)
+
+Setup: banking77 (6 taught of 77), AG News (2 of 4), 20 Newsgroups (6 of 20); 60 teaching messages per class; reader arms `names` (the class name only) and `exemplars` (name plus two teaching messages); one rule, tau 0.5, no per-domain tuning; look-based detectors (Mahalanobis, kNN, vMF conformal on MiniLM) fitted on all 60 messages per class and cut at the same 5 % false-flag rate on 30 held-out messages per class.
+
+Predictions (ranges are honest widths; I expect to be wrong somewhere):
+- banking: exemplars arm known claimed 0.85-0.96, top-1 over cards 0.88-0.97, unknown unclaimed 0.55-0.80 (many never-taught intents sit next to a taught one), foreign unclaimed 0.85-0.97. Names arm 0.05-0.10 lower on top-1. Logistic regression on 60 messages: top-1 0.93-0.99. Detectors at 5 % false flag: unknown found 0.25-0.55, foreign found 0.6-0.9.
+- agnews (topics overlap heavily): known claimed 0.80-0.93, unknown unclaimed 0.35-0.70, detectors' unknown found 0.20-0.50.
+- newsgroups: right given claimed 0.75-0.90, unknown unclaimed 0.40-0.70, detectors' unknown found 0.30-0.50.
+- Position bias: I expect the language model to under-choose the last option ("none of these"), so claimed rates are higher and unknown-unclaimed lower than a fair reader would give; tau helps only partly.
+
+Rules fixed now, judged on the 3 seeds:
+- C1 (generality): with the same tau 0.5 in every domain, the exemplars arm has known claimed >= 0.80 AND foreign unclaimed >= 0.85 in all three domains.
+- C2 (value): at the matched 5 % false-flag rate the reader finds more never-taught messages than the best of the three detectors by at least 0.05, without finding foreign messages less by more than 0.05, in at least two of the three domains.
+- C3 (exemplars): the exemplars arm has top-1 at least 0.02 above the names arm in at least two domains.
+A domain where the reader loses is reported as a loss, with the number.
