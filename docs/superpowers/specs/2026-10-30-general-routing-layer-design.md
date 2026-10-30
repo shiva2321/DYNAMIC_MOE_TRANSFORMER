@@ -37,3 +37,10 @@ Ruling R2: **closed list**. The question offers only the taught cards plus "none
 ## 5. Non-goals and limits
 
 No growth work, no change to `growmoe/`, no new downloads, no confirmatory claim. Limits already known: the reader depends on the language model's understanding of the card text; a modality without text needs its own reader; two sources of error remain (the reader and the expert).
+
+## 6. What the first measurements changed (added 2026-10-30, after labs G1, G1b, G1c; notebook E-048)
+
+- **R2 held, R3 is new.** The closed-list asking reader is NOT a general novelty detector: in three text domains (customer intents, news topics, newsgroups) the look-based detectors on sentence embeddings find more never-taught messages at the same false-flag rate (C-98, refuted as a general reader). It wins where the look is the same and the wording shifts (arithmetic: known messages flagged 0.12 against 0.38-0.50, AUROC 0.92 against 0.69 or less; C-99). No fixed combination of the two (smallest or largest conformal p-value) works in every domain (C-100).
+- **Ruling R3:** the layer holds several readers and must take their trust from the roster's own data. The reader contract of section 2 is unchanged (inputs to probabilities over the cards and "none"; a density gate on vectors fits it too, with the pool's own vMF signature as the look-based reader).
+- **What is already known about the obvious repair.** Generic rewrites of teaching messages were tried on 2026-10-28 as extra calibration parts and prototypes for the look-based reader (PROGRESS.md, lab_rewrites; E-046) and did not bring its false alarm down (0.232-0.262 against 0.256) while losing 0.14-0.16 of the found never-taught skills. So rewrites are not a calibration cure. Whether they are a useful DIAGNOSTIC (the rank of a reader's false-flag rate on rewrites of held-out roster messages across domains, used to decide whom to trust) is untested and is lab G3; its prediction has to be written before it runs.
+- **Order now:** G3 (diagnostic), then G2 (`RoutedPool` against `PhyloMoE` on one text stream, with the reader mix chosen by G3), then the generic verifier and group test.
