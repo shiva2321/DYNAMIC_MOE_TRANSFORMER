@@ -36,6 +36,9 @@ SCALE: Dict[str, tuple] = {
 }
 
 
+GROW_GAP: Dict[str, tuple] = {f"U-real-gap{g}": ("U-real", {"grow_gap": g}) for g in (0.25, 0.35, 0.50)}
+
+
 def run_variants(group: str, variants: Dict[str, tuple], schedules=("seq",), seeds=SEEDS) -> None:
     tuned = E.load_tuning()
     runs = E.OUT / group
@@ -54,16 +57,19 @@ def table(group: str) -> List[str]:
     tags = sorted({k[1] for k in recs})
     rows = []
     for tag in tags:
-        v = [E.final_mean(r) for (sch, t, s), r in sorted(recs.items()) if t == tag and sch == "seq"]
-        ex = [r.per_phase[-1]["n_experts"] for (sch, t, s), r in sorted(recs.items()) if t == tag and sch == "seq"]
-        gr = [r.per_phase[-1]["events"].get("grow", 0) for (sch, t, s), r in sorted(recs.items()) if t == tag and sch == "seq"]
-        rows.append(f"{tag:<26s} final mean {np.mean(v):.3f} (seeds {', '.join(f'{x:.3f}' for x in v)}) experts {np.mean(ex):.1f} grow events {np.mean(gr):.1f}")
+        for sch in sorted({k[0] for k in recs if k[1] == tag}):
+            ks = [k for k in sorted(recs) if k[1] == tag and k[0] == sch]
+            v = [E.final_mean(recs[k]) for k in ks]
+            ex = [recs[k].per_phase[-1]["n_experts"] for k in ks]
+            gr = [recs[k].per_phase[-1]["events"].get("grow", 0) for k in ks]
+            pr = [recs[k].report["params"] for k in ks]
+            rows.append(f"{tag:<26s} {sch:<5s} final mean {np.mean(v):.3f} (seeds {', '.join(f'{x:.3f}' for x in v)}) experts {np.mean(ex):.1f} grow events {np.mean(gr):.1f} params {np.mean(pr):.0f}")
     return rows
 
 
 def main(argv=None) -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("cmd", choices=("expert-quality", "ablate", "scale", "table"))
+    ap.add_argument("cmd", choices=("expert-quality", "ablate", "scale", "grow-gap", "table"))
     ap.add_argument("name", nargs="?", default="")
     a = ap.parse_args(argv)
     if a.cmd == "expert-quality":
@@ -72,6 +78,8 @@ def main(argv=None) -> None:
         E.run(SEEDS, ("seq",), list(SY.ABLATION_SYSTEMS))
     elif a.cmd == "scale":
         run_variants("p3_scale", SCALE)
+    elif a.cmd == "grow-gap":
+        run_variants("p3_grow_gap", GROW_GAP, schedules=("mix",))
     else:
         print("\n".join(table(a.name)))
 
