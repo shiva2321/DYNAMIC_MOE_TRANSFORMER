@@ -627,3 +627,5 @@ Rules fixed now, judged on the 3 seeds:
 - C2 (value): at the matched 5 % false-flag rate the reader finds more never-taught messages than the best of the three detectors by at least 0.05, without finding foreign messages less by more than 0.05, in at least two of the three domains.
 - C3 (exemplars): the exemplars arm has top-1 at least 0.02 above the names arm in at least two domains.
 A domain where the reader loses is reported as a loss, with the number.
+
+**G1 launch note (2026-10-30).** Two launch failures before any model ran, both loud and correct: (1) banking77 classes range from 35 to 187 teaching messages, so the builder now draws taught classes only from classes that can supply them (test first, commit 3479fe8); (2) banking77's test split has 40 messages per class, so 300 known test messages from 6 classes cannot be drawn: the known test set is now 180 for every domain (30 per class in banking). The predictions above are unchanged.

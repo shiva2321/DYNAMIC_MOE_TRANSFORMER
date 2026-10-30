@@ -40,7 +40,7 @@ ARMS = ("names", "exemplars")
 TAUS = (0.3, 0.5, 0.7, 0.9)
 DETECTORS = ("mahalanobis", "knn_distance", "vmf_conformal")
 Q = 0.05
-N_TEACH, N_CAL, N_KNOWN, N_UNKNOWN, N_FOREIGN = 60, 30, 300, 300, 150
+N_TEACH, N_CAL, N_KNOWN, N_UNKNOWN, N_FOREIGN = 60, 30, 180, 300, 150
 SEEDS = list(range(150, 153))
 
 
