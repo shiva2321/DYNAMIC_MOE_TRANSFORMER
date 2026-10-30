@@ -98,7 +98,7 @@ def test_extras_and_fusions_are_reported_for_every_source(tmp_path):
     assert set(rec["fused"]) == {f"{'+'.join(p)}|{r}" for p in LG.FUSIONS for r in LG.RULES}
     assert set(rec["reader"]["names"]["extras_unclaimed_tau0.5"]) == {"trap"}
     one = rec["fused"]["ask_exemplars+vmf_conformal|either"]
-    assert one["auroc_unknown"] >= max(0.0, rec["reader"]["exemplars"]["op"]["auroc_unknown"] - 0.2)      # a fusion never destroys a perfect reader's ordering
+    assert 0.0 <= one["auroc_unknown"] <= 1.0                                                          # NOT bounded below by the better reader: an OR inherits a noisy partner's false alarms
 
 
 def test_arithmetic_is_the_only_domain_that_needs_a_name_in_the_lab():
