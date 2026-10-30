@@ -68,3 +68,28 @@ def test_operating_point_uses_the_calibration_threshold_and_reports_every_kind()
     assert r["foreign_found"] == 0.5
     inf = MS.operating_point(cal[:5], known, unknown, foreign, q=0.05)             # too few calibration scores to ever flag at 5 %
     assert inf["unknown_found"] == 0.0 and inf["known_flagged"] == 0.0
+
+
+def test_conformal_p_values_small_means_novel_and_leave_one_out_excludes_self():
+    cal = [0.1, 0.2, 0.3, 0.4]
+    assert MS.p_novel(cal, [0.5, 0.0, 0.3]) == pytest.approx([0.2, 1.0, 0.6])                     # (1 + #cal >= x) / (n + 1)
+    assert MS.p_novel(cal, cal, leave_one_out=True) == pytest.approx([1.0, 0.75, 0.5, 0.25])       # (1 + #others >= x) / n
+    with pytest.raises(ValueError):
+        MS.p_novel([], [0.1])
+
+
+def test_fusing_readers_either_or_both():
+    cal = {"a": np.linspace(0.0, 1.0, 50), "b": np.linspace(0.0, 1.0, 50)}
+    x = {"a": np.array([2.0, 2.0, 0.5, 0.5]), "b": np.array([2.0, 0.5, 2.0, 0.5])}                  # both flag, only a, only b, neither
+    either = MS.fused_scores(cal, x, ["a", "b"], rule="either")
+    both = MS.fused_scores(cal, x, ["a", "b"], rule="both")
+    cut_either, cut_both = MS.conformal_cut(MS.fused_scores(cal, cal, ["a", "b"], rule="either", leave_one_out=True), 0.1), MS.conformal_cut(
+        MS.fused_scores(cal, cal, ["a", "b"], rule="both", leave_one_out=True), 0.1)
+    assert [bool(s > cut_either) for s in either] == [True, True, True, False]                    # novel when ANY reader says novel
+    assert [bool(s > cut_both) for s in both] == [True, False, False, False]                      # novel only when ALL readers say novel
+    single = MS.fused_scores(cal, x, ["a"], rule="either")
+    assert np.argsort(single, kind="stable").tolist() == np.argsort(-MS.p_novel(cal["a"], x["a"]), kind="stable").tolist()
+    with pytest.raises(ValueError):
+        MS.fused_scores(cal, x, ["a", "b"], rule="maybe")
+    with pytest.raises(ValueError):
+        MS.fused_scores(cal, x, [], rule="either")

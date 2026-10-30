@@ -53,3 +53,24 @@ def operating_point(cal: Sequence[float], known: Sequence[float], unknown: Seque
     cut = conformal_cut(cal, q)
     return {"cut": cut, "known_flagged": flag_rate(known, cut), "unknown_found": flag_rate(unknown, cut), "foreign_found": flag_rate(foreign, cut),
             "auroc_unknown": auroc(known, unknown) if len(unknown) else float("nan"), "auroc_foreign": auroc(known, foreign) if len(foreign) else float("nan")}
+
+
+def p_novel(cal: Sequence[float], x: Sequence[float], leave_one_out: bool = False) -> np.ndarray:
+    """The conformal p-value of each score x against the held-out known scores `cal` (larger score = more novel; SMALL p = novel): (1 + #{cal >= x}) / (n + 1). With leave_one_out the
+    scores x ARE the calibration scores and each one is compared with the others only: #{cal >= x} / n."""
+    c = np.sort(np.asarray(cal, dtype=np.float64))
+    if c.size == 0:
+        raise ValueError("p_novel needs at least one calibration score")
+    count_ge = c.size - np.searchsorted(c, np.asarray(x, dtype=np.float64), side="left")
+    return (count_ge / c.size) if leave_one_out else ((1 + count_ge) / (c.size + 1))
+
+
+def fused_scores(cal: Dict[str, Sequence[float]], x: Dict[str, Sequence[float]], sources: Sequence[str], rule: str, leave_one_out: bool = False) -> np.ndarray:
+    """One novelty score from several readers, through their conformal p-values: rule "either" calls a message novel when ANY reader does (smallest p), "both" only when ALL do (largest p).
+    The score is 1 minus that p-value, so it goes through ``conformal_cut`` and ``operating_point`` like any other novelty score."""
+    if rule not in ("either", "both"):
+        raise ValueError(f"rule must be 'either' or 'both', got {rule!r}")
+    if not sources:
+        raise ValueError("need at least one reader to fuse")
+    ps = np.stack([p_novel(cal[s], x[s], leave_one_out) for s in sources])
+    return 1.0 - (ps.min(axis=0) if rule == "either" else ps.max(axis=0))

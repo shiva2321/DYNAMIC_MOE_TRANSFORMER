@@ -85,3 +85,21 @@ def test_foreign_messages_are_deterministic_and_the_right_size():
     a = LG.foreign_messages("banking77", 3, 20)
     assert a == LG.foreign_messages("banking77", 3, 20) and len(a) == 20 and len(set(a)) == 20
     assert a != LG.foreign_messages("banking77", 4, 20)
+
+
+def test_extras_and_fusions_are_reported_for_every_source(tmp_path):
+    w = make_world()
+    traps = [f"the bank of the river looks calm near the old bridge {d}" for d in ("today", "tonight", "again", "soon", "later")]
+    rec = LG.run_cell(w, FOREIGN, ask=fake_ask_for(w), encode=fake_encode, cache_dir=tmp_path, extras={"trap": traps})
+    assert rec["n"]["trap"] == 5
+    sources = {"ask_names", "ask_exemplars", *LG.DETECTORS}
+    assert set(rec["extras"]["trap"]) >= sources | {f"{'+'.join(p)}|{r}" for p in LG.FUSIONS for r in LG.RULES}
+    assert all(0.0 <= v <= 1.0 for v in rec["extras"]["trap"].values())
+    assert set(rec["fused"]) == {f"{'+'.join(p)}|{r}" for p in LG.FUSIONS for r in LG.RULES}
+    assert set(rec["reader"]["names"]["extras_unclaimed_tau0.5"]) == {"trap"}
+    one = rec["fused"]["ask_exemplars+vmf_conformal|either"]
+    assert one["auroc_unknown"] >= max(0.0, rec["reader"]["exemplars"]["op"]["auroc_unknown"] - 0.2)      # a fusion never destroys a perfect reader's ordering
+
+
+def test_arithmetic_is_the_only_domain_that_needs_a_name_in_the_lab():
+    assert set(LG.ALL_DOMAINS) == set(LG.DOMAINS) | {"arithmetic"}

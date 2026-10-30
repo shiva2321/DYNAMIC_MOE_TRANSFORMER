@@ -629,3 +629,30 @@ Rules fixed now, judged on the 3 seeds:
 A domain where the reader loses is reported as a loss, with the number.
 
 **G1 launch note (2026-10-30).** Two launch failures before any model ran, both loud and correct: (1) banking77 classes range from 35 to 187 teaching messages, so the builder now draws taught classes only from classes that can supply them (test first, commit 3479fe8); (2) banking77's test split has 40 messages per class, so 300 known test messages from 6 classes cannot be drawn: the known test set is now 180 for every domain (30 per class in banking). The predictions above are unchanged.
+
+
+### Result: Lab G1, one reader and one rule across three text domains (tuning seeds 150-152, `results/ROUTING_GENERAL_G1_150_152.md`)
+
+**All three rules declared before the run FAILED.**
+- C1 (same tau 0.5, exemplars arm: known claimed >= 0.80 AND foreign unclaimed >= 0.85 in every domain): banking 0.969 / 0.907 passes, agnews 0.915 / 0.604 fails, newsgroups 0.622 / 0.800 fails. 1 of 3.
+- C2 (finds more never-taught messages than the best look-based detector by >= 0.05 at the matched 5 % false-flag rate, in >= 2 domains): banking 0.501 against 0.860, agnews 0.470 against 0.509, newsgroups 0.113 against 0.253. 0 of 3. AUROC known against never-taught: reader 0.865 / 0.854 / 0.770, detectors 0.972-0.979 / 0.874-0.892 / 0.740-0.779.
+- C3 (exemplars top-1 at least 0.02 above names in >= 2 domains): banking +0.063, agnews -0.018, newsgroups -0.026. 1 of 3.
+Also: identification is worse than a plain classifier on 60 messages per class (banking 0.902 against 0.998, agnews 0.867 against 0.913, newsgroups 0.752 against 0.820), and the reader sees only a name plus two messages, so this is also a cheaper reader with less information, not only a worse one.
+
+**Prediction scorecard.** Banking known claimed 0.969 (predicted 0.85-0.96, just above), top-1 0.902 (0.88-0.97, inside), unknown unclaimed 0.464 (0.55-0.80, below), detectors' unknown found 0.84-0.86 (predicted 0.25-0.55, far above: I badly underestimated the embedding detectors on topical novelty), detectors' foreign found 1.000 (0.6-0.9). The position-bias prediction held: with names only, 56 % of foreign sentences in banking and 53 % in agnews are claimed by some card (the model prefers a card to "none of these"); exemplars help banking (foreign unclaimed 0.44 to 0.91) and not agnews.
+
+**What it means.** A language model that is asked is not a general novelty detector. When the new thing differs in TOPIC from what was taught (a new intent, a new news topic, a new newsgroup), the sentence embedding already separates it and the look-based detectors win; the asking reader wins only where the look is the same and the function or wording differs (arithmetic, v1). That is the double dissociation the information-ceiling work (spec section 7, E1) predicted for representations, now seen for readers. So the general layer cannot be one reader. Ruling R3: the layer holds several readers (the density gate on embeddings that the pool already has, and the asking reader) and combines their calibrated conformal p-values; whether a combination keeps the better reader in each domain is the next test (G1c, offline from cached scores). Before that, G1b puts arithmetic through the SAME closed-list reader and detectors, to check the other half of the dissociation.
+
+
+### Lab G1b and G1c, declared before the run (2026-10-30): arithmetic through the same closed-list reader, and fusing readers
+
+G1b puts arithmetic in the SAME harness (closed list: the taught skills plus "none of these", no untaught operation offered; teacher names such as "addition"; exemplars from the S1-S3 teaching; calibration on held-out S1-S3 parts; the KNOWN test is the held-out wordings S4-S8, so it is a real wording shift; seeds 150-152; 3 taught skills per seed). Extra set: the 60 look-alike traps (arithmetic words, no calculation).
+G1c fuses the conformal p-values of a reader that asks and a reader that looks (rule "either": novel when any says so; rule "both": only when all do), calibrated on the same held-out parts, cut at the same 5 % false-flag rate; pairs ask-exemplars + vMF conformal (the pool's own gate), ask-exemplars + Mahalanobis, ask-names + vMF conformal.
+
+Predictions:
+- Arithmetic, exemplars arm, tau 0.5: known (new wordings) claimed 0.85-0.97 and right given claimed 0.93-0.99; never-taught skills unclaimed 0.55-0.85 (lower than the open-list 0.97 of v1: the model can no longer name the missing operation); foreign sentences unclaimed 0.80-0.97; traps unclaimed 0.50-0.85.
+- Arithmetic at the matched 5 % calibration cut: reader known flagged (new wordings) 0.03-0.15; every look-based detector 0.20-0.50; detectors' unknown found 0.80-0.95, reader 0.50-0.85.
+- Fusion "either" inherits the look-based false alarms under a wording shift (arithmetic known flagged >= 0.20); fusion "both" keeps the reader's low false alarm (<= 0.10) but finds about what the reader finds, which in the text domains is far less than the detectors (banking unknown found <= 0.55).
+Rules fixed now:
+- C4 (the other half of the dissociation): in arithmetic, at the matched cut, the reader's known flagged is lower than EVERY look-based detector's by at least 0.10.
+- C5 (no fixed fusion works everywhere): no single rule among {either, both} for the pair ask-exemplars + vMF conformal has, in all four domains, unknown found within 0.05 of the best single reader of that domain AND known flagged within 0.03 above the lowest single reader of that domain. I predict C5 HOLDS (no fixed rule works everywhere), which would say the weights must come from the shift the data shows. If it fails, a fixed fusion is the general algorithm and I will say so.

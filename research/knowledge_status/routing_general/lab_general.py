@@ -34,12 +34,15 @@ import runlib  # noqa: E402
 OUT = _KS / "results" / "routing_general" / "g1"
 ASK_DIR = _KS / "results" / "routing_general" / "ask"
 VEC_DIR = _KS / "results" / "routing_general" / "vec"
-STAMP_FILES = [_HERE / n for n in ("cards.py", "route.py", "reader.py", "measures.py", "domains.py", "lab_general.py")] + [_KS / "baselines.py", _KS / "reps.py", _KS / "routing_lab" / "ask_reader.py"]
+STAMP_FILES = [_HERE / n for n in ("cards.py", "route.py", "reader.py", "measures.py", "domains.py", "arith_domain.py", "lab_general.py")] + [_KS / "baselines.py", _KS / "reps.py", _KS / "routing_lab" / "ask_reader.py"]
 DOMAINS = {"banking": (DM.load_banking, 6, "agnews"), "agnews": (DM.load_agnews, 2, "banking77"), "newsgroups": (DM.load_newsgroups, 6, "banking77")}   # loader, taught classes, other text source
 ARMS = ("names", "exemplars")
 TAUS = (0.3, 0.5, 0.7, 0.9)
 DETECTORS = ("mahalanobis", "knn_distance", "vmf_conformal")
 Q = 0.05
+FUSIONS = (("ask_exemplars", "vmf_conformal"), ("ask_exemplars", "mahalanobis"), ("ask_names", "vmf_conformal"))         # a reader that asks with a reader that looks
+RULES = ("either", "both")                                                                                               # novel when any reader says so, or only when all do
+ALL_DOMAINS = ("arithmetic", "banking", "agnews", "newsgroups")
 N_TEACH, N_CAL, N_KNOWN, N_UNKNOWN, N_FOREIGN = 60, 30, 180, 300, 150
 SEEDS = list(range(150, 153))
 
@@ -64,41 +67,78 @@ def default_encode(texts: Sequence[str]) -> np.ndarray:
     return reps.cached_encode(reps.get_rep("R1_minilm384"), list(texts), VEC_DIR)
 
 
+def _extras_found(S: Dict[str, np.ndarray], extras: Sequence[str], cut: float) -> Dict[str, float]:
+    return {name: MS.flag_rate(S[name], cut) for name in extras}
+
+
 def run_cell(world: DM.DomainWorld, foreign: Sequence[str], ask: Optional[Callable] = None, encode: Callable = default_encode, arms: Sequence[str] = ARMS,
-             taus: Sequence[float] = TAUS, detectors: Sequence[str] = DETECTORS, q: float = Q, cache_dir=ASK_DIR) -> dict:
-    cal_t, cal_y = [t for t, _ in world.known_cal], [i for _, i in world.known_cal]
+             taus: Sequence[float] = TAUS, detectors: Sequence[str] = DETECTORS, q: float = Q, cache_dir=ASK_DIR, extras: Optional[Dict[str, Sequence[str]]] = None,
+             fusions: Sequence[Sequence[str]] = FUSIONS) -> dict:
+    """One domain world, one seed. ``extras`` are further sets of foreign-like messages (name -> texts), reported only by how many of them each reader or fusion flags at its own cut."""
+    extras = {k: list(v) for k, v in (extras or {}).items()}
+    cal_t = [t for t, _ in world.known_cal]
     known_t, truth = [t for t, _ in world.known_test], [i for _, i in world.known_test]
-    unknown_t, foreign_t = list(world.unknown_test), list(foreign)
-    rec: dict = {"domain": world.name, "taught": world.taught, "n": {"cal": len(cal_t), "known": len(known_t), "unknown": len(unknown_t), "foreign": len(foreign_t)}, "reader": {}, "detectors": {}}
+    sets = {"cal": cal_t, "known": known_t, "unknown": list(world.unknown_test), "foreign": list(foreign), **extras}
+    rec: dict = {"domain": world.name, "taught": world.taught, "n": {k: len(v) for k, v in sets.items()}, "reader": {}, "detectors": {}, "fused": {}, "extras": {k: {} for k in extras}}
+    S: Dict[str, Dict[str, np.ndarray]] = {}                                                 # source -> set -> novelty scores
     for arm in arms:
         rd = RD.CardReader(world.cards, with_exemplars=(arm == "exemplars"), cache_dir=cache_dir, ask=ask)
-        Pc, Pk, Pu, Pf = (rd.probabilities(x) for x in (cal_t, known_t, unknown_t, foreign_t))
+        P = {k: rd.probabilities(v) for k, v in sets.items()}
+        dec = {k: RT.decide(P[k], world.states, 0.5) for k in extras}
         rec["reader"][arm] = {
-            "tau": {str(t): MS.claim_rates(RT.decide(Pk, world.states, t), truth, RT.decide(Pu, world.states, t), RT.decide(Pf, world.states, t)) for t in taus},
-            "op": MS.operating_point(RT.unclaimed_score(Pc), RT.unclaimed_score(Pk), RT.unclaimed_score(Pu), RT.unclaimed_score(Pf), q),
-            "top1_known": float(np.mean(Pk[:, :-1].argmax(axis=1) == np.asarray(truth)))}
+            "tau": {str(t): MS.claim_rates(RT.decide(P["known"], world.states, t), truth, RT.decide(P["unknown"], world.states, t), RT.decide(P["foreign"], world.states, t)) for t in taus},
+            "top1_known": float(np.mean(P["known"][:, :-1].argmax(axis=1) == np.asarray(truth))),
+            "extras_unclaimed_tau0.5": {k: float(np.mean([d.status == "unclaimed" for d in dec[k]])) for k in extras}}
+        S[f"ask_{arm}"] = {k: RT.unclaimed_score(P[k]) for k in sets}
     X, y = [], []
     for i, n in enumerate(world.taught):
         X += world.teach[n]
         y += [i] * len(world.teach[n])
-    Xv, Cv, Kv, Uv, Fv = (encode(t) for t in (X, cal_t, known_t, unknown_t, foreign_t))
-    y = np.asarray(y)
+    V = {k: encode(v) for k, v in sets.items()}
+    Xv, y = encode(X), np.asarray(y)
     for name in detectors:
         det = BL.make_baseline(name).fit(Xv, y)
-        rec["detectors"][name] = MS.operating_point(det.novelty_score(Cv), det.novelty_score(Kv), det.novelty_score(Uv), det.novelty_score(Fv), q)
+        S[name] = {k: det.novelty_score(V[k]) for k in sets}
     clf = LogisticRegression(max_iter=1000).fit(Xv, y)
-    rec["classifier_top1_known"] = float((clf.predict(Kv) == np.asarray(truth)).mean())
+    rec["classifier_top1_known"] = float((clf.predict(V["known"]) == np.asarray(truth)).mean())
+    ops = {src: MS.operating_point(s["cal"], s["known"], s["unknown"], s["foreign"], q) for src, s in S.items()}
+    for arm in arms:
+        rec["reader"][arm]["op"] = ops[f"ask_{arm}"]
+    rec["detectors"] = {name: ops[name] for name in detectors}
+    for src, s in S.items():
+        for k, v in _extras_found(s, extras, ops[src]["cut"]).items():
+            rec["extras"][k][src] = v
+    for pair in fusions:
+        if not all(p in S for p in pair):
+            continue
+        for rule in RULES:
+            cal_map = {p: S[p]["cal"] for p in pair}
+            fused = {k: MS.fused_scores(cal_map, {p: S[p][k] for p in pair}, list(pair), rule) for k in sets if k != "cal"}
+            fused["cal"] = MS.fused_scores(cal_map, cal_map, list(pair), rule, leave_one_out=True)
+            op = MS.operating_point(fused["cal"], fused["known"], fused["unknown"], fused["foreign"], q)
+            key = f"{'+'.join(pair)}|{rule}"
+            rec["fused"][key] = op
+            for k, v in _extras_found(fused, extras, op["cut"]).items():
+                rec["extras"][k][key] = v
     return rec
+
+
+def build_world(domain: str, seed: int):
+    """(world, foreign messages, extra sets) of one domain and seed. The only branch on a domain name in the lab."""
+    if domain == "arithmetic":
+        import arith_domain as AD
+        return AD.build(seed)
+    loader, n_taught, other = DOMAINS[domain]
+    teach, test, names = loader()
+    return DM.build_labelled_world(domain, teach, test, names, n_taught, N_TEACH, N_CAL, N_KNOWN, N_UNKNOWN, seed), foreign_messages(other, seed, N_FOREIGN), {}
 
 
 def run_seed(domain: str, seed: int, out_dir, stamp: str) -> dict:
     path = Path(out_dir) / f"{domain}_s{seed}.json"
     if runlib.cell_done(path, stamp):
         return json.loads(path.read_text(encoding="utf-8"))
-    loader, n_taught, other = DOMAINS[domain]
-    teach, test, names = loader()
-    world = DM.build_labelled_world(domain, teach, test, names, n_taught, N_TEACH, N_CAL, N_KNOWN, N_UNKNOWN, seed)
-    rec = run_cell(world, foreign_messages(other, seed, N_FOREIGN))
+    world, foreign, extras = build_world(domain, seed)
+    rec = run_cell(world, foreign, extras=extras)
     rec.update({"seed": seed, "code_stamp": stamp})
     Path(out_dir).mkdir(parents=True, exist_ok=True)
     runlib.atomic_write_text(path, json.dumps(_native(rec)))
@@ -130,6 +170,17 @@ def report(per_domain: Dict[str, List[dict]], seeds: Sequence[int], taus: Sequen
         for name in DETECTORS:
             g = lambda k: _mean(rows, lambda r: r["detectors"][name][k])
             L.append(f"| {name} (MiniLM) | {g('known_flagged'):.3f} | {g('unknown_found'):.3f} | {g('foreign_found'):.3f} | {g('auroc_unknown'):.3f} | {g('auroc_foreign'):.3f} |")
+        for key in rows[0]["fused"]:
+            g = lambda k: _mean(rows, lambda r: r["fused"][key][k])
+            pair, rule = key.split("|")
+            L.append(f"| FUSED {rule}: {pair.replace('+', ' + ')} | {g('known_flagged'):.3f} | {g('unknown_found'):.3f} | {g('foreign_found'):.3f} | {g('auroc_unknown'):.3f} | {g('auroc_foreign'):.3f} |")
+        if rows[0]["extras"]:
+            L += ["", "Extra sets (share flagged at each reader's own cut; for the claim rule, the share unclaimed at tau 0.5):", "", "| set | reader or detector | flagged |", "|---|---|---|"]
+            for name in rows[0]["extras"]:
+                for src in rows[0]["extras"][name]:
+                    L.append(f"| {name} | {src.replace('+', ' + ')} | {_mean(rows, lambda r: r['extras'][name][src]):.3f} |")
+                for arm in ARMS:
+                    L.append(f"| {name} | ask {arm}, claim rule tau 0.5 | {_mean(rows, lambda r: r['reader'][arm]['extras_unclaimed_tau0.5'][name]):.3f} |")
         L += ["", "Who is it? (top-1 over the taught classes, known messages)", "",
               "| reader or classifier | top-1 |", "|---|---|"]
         for arm in ARMS:
@@ -142,8 +193,8 @@ if __name__ == "__main__":
     lo, hi = (int(sys.argv[1]), int(sys.argv[2])) if len(sys.argv) == 3 else (SEEDS[0], SEEDS[-1])
     runlib.set_threads(3)
     stamp = runlib.code_stamp(STAMP_FILES)
-    per_domain: Dict[str, List[dict]] = {d: [] for d in DOMAINS}
-    for domain in DOMAINS:
+    per_domain: Dict[str, List[dict]] = {d: [] for d in ALL_DOMAINS}
+    for domain in ALL_DOMAINS:
         for seed in range(lo, hi + 1):
             r = run_seed(domain, seed, OUT, stamp)
             per_domain[domain].append(r)
