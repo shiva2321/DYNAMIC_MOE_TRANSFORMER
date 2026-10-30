@@ -195,7 +195,7 @@ Technical statement: the cut of a verified sample is an order statistic, so it m
 The default stays **plain**: it is the only calibrator that never flags more than the nominal rate under any contamination tested, and what it pays for a noisy check is unused false-flag budget (arithmetic: 0.036 of 0.05 used), not a wrong decision. Report the effective false-flag rate with every result. Trimming remains an explicit policy knob with a published price (one reader (k+1)/(n+1) while n - k <= 38, the pair about twice that); agree is not a calibration. The lever is the purity of the outcome check (15.8 % false verification in arithmetic); a second INDEPENDENT outcome does not exist in these test beds, and the reader's own opinion is circular. New open question from (4) and (5): how a fixed false-flag budget should be split between the readers (the stronger reader should get more of it; which one is stronger is not known without never-taught messages). Next, for the user's decision: the growmoe experts as container, or a budget split between readers (G4d), or self-discovery of cards. Nothing is frozen and the confirmatory seeds 400-429 are unspent.
 
 ## Evidence
-- `research/knowledge_status/results/ROUTING_GENERAL_G4c_150_152.md`, `ROUTING_GENERAL_G4c_posthoc_150_152.md` (generated), `results/routing_general/g4c/` (cells and run log)
+- `research/knowledge_status/results/ROUTING_GENERAL_G4c_150_152.md`, `ROUTING_GENERAL_G4c_posthoc_150_152.md` (generated), `research/knowledge_status/results/routing_general/g4c/` (cells and run log)
 - `research/knowledge_status/PROGRESS.md` (plan, rules, predictions, results, post-hoc, in order)
 
 ## Reproduce
