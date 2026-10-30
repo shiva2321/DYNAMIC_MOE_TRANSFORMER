@@ -27,16 +27,21 @@ EXPERT_QUALITY: Dict[str, tuple] = {
     "oracle_mlp512_s20": ("oracle_experts", {"hidden": 512}),
     "oracle_mlp512_s50": ("oracle_experts", {"hidden": 512, "inner_steps": 50}),
 }
+FAST = {"grow_min_age": 30, "grow_window": 20, "grow_cooldown": 20}          # the maturity condition scaled to streams of 150-250 batches (the defaults need 300 batches per expert)
 SCALE: Dict[str, tuple] = {
     "shipped-h16": ("shipped", {"hidden": 16}),
     "U-real-h16": ("U-real", {"hidden": 16}),
     "U-deep-h16": ("U-deep", {"hidden": 16}),
     "U-real-no-growth-h16": ("U-real-no-growth", {"hidden": 16}),
     "U-real-h512": ("U-real", {"hidden": 512}),
+    "U-real-h16-fast": ("U-real", {"hidden": 16, **FAST}),
+    "U-real-gap0.35-fast": ("U-real", {"grow_gap": 0.35, **FAST}),
+    "U-real-gap0.50-fast": ("U-real", {"grow_gap": 0.50, **FAST}),
 }
 
 
 GROW_GAP: Dict[str, tuple] = {f"U-real-gap{g}": ("U-real", {"grow_gap": g}) for g in (0.25, 0.35, 0.50)}
+GROW_GAP_FAST: Dict[str, tuple] = {f"U-real-fast-gap{g}": ("U-real", {"grow_gap": g, **FAST}) for g in (0.17, 0.35, 0.50)}
 
 
 def run_variants(group: str, variants: Dict[str, tuple], schedules=("seq",), seeds=SEEDS) -> None:
@@ -69,7 +74,7 @@ def table(group: str) -> List[str]:
 
 def main(argv=None) -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("cmd", choices=("expert-quality", "ablate", "scale", "grow-gap", "table"))
+    ap.add_argument("cmd", choices=("expert-quality", "ablate", "scale", "grow-gap", "grow-gap-fast", "table"))
     ap.add_argument("name", nargs="?", default="")
     a = ap.parse_args(argv)
     if a.cmd == "expert-quality":
@@ -80,6 +85,8 @@ def main(argv=None) -> None:
         run_variants("p3_scale", SCALE)
     elif a.cmd == "grow-gap":
         run_variants("p3_grow_gap", GROW_GAP, schedules=("mix",))
+    elif a.cmd == "grow-gap-fast":
+        run_variants("p3_grow_gap_fast", GROW_GAP_FAST, schedules=("mix",))
     else:
         print("\n".join(table(a.name)))
 
