@@ -28,6 +28,11 @@ HELD = frozenset(assignments.TEST_FAMILIES)
 
 def build(seed: int) -> Tuple[DM.DomainWorld, List[str], Dict[str, List[str]]]:
     """(the world, the foreign messages, the extra sets) of one seed."""
+    return build_full(seed)[:3]
+
+
+def build_full(seed: int):
+    """The same plus the test bed's own world as a fourth value (the pool lab needs its teaching examples and answers)."""
     w = R.build_world(seed, "dev", R.SIZES)
     taught = list(w.taught)
     names = [TEACHER_NAMES[s] for s in taught]
@@ -50,4 +55,4 @@ def build(seed: int) -> Tuple[DM.DomainWorld, List[str], Dict[str, List[str]]]:
             traps.append(text)
     cards = [CD.Card(n, tuple(teach[n][:DM.N_EXEMPLARS])) for n in names]
     states = ["solid" if w.assignment[s] == "solid" else "thin" for s in taught]
-    return DM.DomainWorld("arithmetic", names, cards, teach, known_cal, known, unknown, unknown_labels, states), foreign, {"trap": traps, "unknown_teaching_wording": early}
+    return DM.DomainWorld("arithmetic", names, cards, teach, known_cal, known, unknown, unknown_labels, states), foreign, {"trap": traps, "unknown_teaching_wording": early}, w
