@@ -4,7 +4,7 @@
 - **Date:** 2026-10-30
 - **Track:** G
 - **Type:** experiment
-- **Status:** completed for labs G1, G1b and G1c (the pool, `RoutedPool`, and shift-aware calibration, labs G2 and G3, follow in later entries)
+- **Status:** completed for labs G1, G1b and G1c, CORRECTED on 2026-10-30 (see the erratum under Results); labs G3 and G2 are in E-049
 - **Evidence grade:** B (script-generated on the tuning seeds 150-152; every rule and prediction written in PROGRESS.md before the numbers; exploratory, NOT a frozen pre-registration, NOT the single-use seeds; no independent reviewer yet)
 - **Code / commit:** branch `knowledge-status-phase1`, commits 30a30f9 to 566166d; code in `research/knowledge_status/routing_general/`, tests `tests/knowledge_status/test_rg_*.py`; worktree D:/shm_ks
 - **People:** Claude designed, built and ran it on the user's instruction of 2026-10-30 ("start with the pool wiring ... this seems to be just specific to arithmetic, whereas we need a general algorithm and working system")
@@ -28,40 +28,42 @@ In `research/knowledge_status/PROGRESS.md`, blocks of 2026-10-30: the G1 predict
 - Seeds 150-152 (tuning). Two launch failures on data sizes (loud, before any model ran) and two design flaws found after seeing numbers are in the caveats; no bar changed after a result; `growmoe/` untouched.
 
 ## Results (what came out)
+
+**ERRATUM (2026-10-30, same day, found while running E-049).** The first version of this entry used an arithmetic known test that left out every taught skill the test bed scores as `grey` (taught 2000 examples, held-out accuracy under 0.90): in two of three seeds the known messages were the 20-example Thin skill alone. That inflated the look-based detectors' false-flag rates (their Thin skill was fitted on 20 messages) and made a classifier on the embeddings look like chance. The arithmetic block below is the CORRECTED run (120 known messages per seed, every taught skill); the first-run outputs are kept in `research/knowledge_status/results/routing_general/superseded_grey_filter/`. What changed: known messages flagged at the matched cut, reader 0.094 (was 0.121), vMF 0.381 (0.383), kNN 0.358 (0.442), Mahalanobis 0.417 (0.504); AUROC known against never-taught, reader 0.921, detectors 0.628-0.698; identification, reader 0.933, logistic regression on MiniLM **0.700, not 0.329**. The claim C-99 is superseded by C-101. The verdicts C4 (holds, gap 0.26) and C5 (holds) did not change; the three text-domain blocks did not change.
 Numbers copied by script from `research/knowledge_status/results/ROUTING_GENERAL_G1_150_152.md` (3 seeds, mean). The claim rule here is tau 0.5; the reader columns are the asking reader, the detector rows are the look-based ones.
 
-### arithmetic (3 seeds; 3 taught classes; 80 known, 120 unknown, 236 foreign messages per seed)
+### arithmetic (3 seeds; 3 taught classes; 120 known, 120 unknown, 236 foreign messages per seed) (CORRECTED RUN)
 
 Claim rule at tau 0.5 (the same rule in every domain):
 
 | arm | tau | known claimed | known claimed RIGHT | right given claimed | unknown unclaimed | foreign unclaimed |
 |---|---|---|---|---|---|---|
-| names | 0.5 | 0.942 | 0.883 | 0.936 | 0.244 | 0.975 |
-| exemplars | 0.5 | 0.896 | 0.871 | 0.972 | 0.581 | 0.979 |
+| names | 0.5 | 0.978 | 0.953 | 0.974 | 0.244 | 0.975 |
+| exemplars | 0.5 | 0.917 | 0.897 | 0.979 | 0.581 | 0.979 |
 
 Same false-flag rate for everyone (5 % of held-out known messages):
 
 | reader or detector | known flagged | unknown found | foreign found | AUROC known vs unknown | AUROC known vs foreign |
 |---|---|---|---|---|---|
-| ask, names | 0.100 | 0.475 | 0.987 | 0.886 | 0.997 |
-| ask, exemplars | 0.121 | 0.669 | 0.986 | 0.921 | 0.995 |
-| mahalanobis (MiniLM) | 0.504 | 0.925 | 1.000 | 0.681 | 0.998 |
-| knn_distance (MiniLM) | 0.442 | 0.361 | 1.000 | 0.472 | 1.000 |
-| vmf_conformal (MiniLM) | 0.383 | 0.756 | 1.000 | 0.685 | 1.000 |
-| FUSED either: ask_exemplars + vmf_conformal | 0.371 | 0.800 | 1.000 | 0.719 | 0.825 |
-| FUSED both: ask_exemplars + vmf_conformal | 0.208 | 0.919 | 1.000 | 0.893 | 0.996 |
-| FUSED either: ask_exemplars + mahalanobis | 0.438 | 0.925 | 1.000 | 0.761 | 0.812 |
-| FUSED both: ask_exemplars + mahalanobis | 0.254 | 0.964 | 1.000 | 0.918 | 0.996 |
-| FUSED either: ask_names + vmf_conformal | 0.371 | 0.733 | 1.000 | 0.715 | 0.829 |
-| FUSED both: ask_names + vmf_conformal | 0.233 | 0.908 | 1.000 | 0.878 | 0.998 |
+| ask, names | 0.053 | 0.475 | 0.987 | 0.926 | 0.998 |
+| ask, exemplars | 0.094 | 0.669 | 0.986 | 0.921 | 0.992 |
+| mahalanobis (MiniLM) | 0.417 | 0.925 | 1.000 | 0.698 | 0.998 |
+| knn_distance (MiniLM) | 0.358 | 0.361 | 1.000 | 0.628 | 1.000 |
+| vmf_conformal (MiniLM) | 0.381 | 0.756 | 1.000 | 0.689 | 1.000 |
+| FUSED either: ask_exemplars + vmf_conformal | 0.364 | 0.800 | 1.000 | 0.730 | 0.839 |
+| FUSED both: ask_exemplars + vmf_conformal | 0.319 | 0.919 | 1.000 | 0.889 | 0.985 |
+| FUSED either: ask_exemplars + mahalanobis | 0.394 | 0.925 | 1.000 | 0.773 | 0.819 |
+| FUSED both: ask_exemplars + mahalanobis | 0.286 | 0.964 | 1.000 | 0.926 | 0.985 |
+| FUSED either: ask_names + vmf_conformal | 0.361 | 0.733 | 1.000 | 0.726 | 0.840 |
+| FUSED both: ask_names + vmf_conformal | 0.211 | 0.908 | 1.000 | 0.908 | 0.999 |
 
 Who is it? (top-1 over the taught classes, known messages):
 
 | reader or classifier | top-1 |
 |---|---|
-| ask, names | 0.883 |
-| ask, exemplars | 0.900 |
-| logistic regression on MiniLM, 60 messages per class | 0.329 |
+| ask, names | 0.953 |
+| ask, exemplars | 0.933 |
+| logistic regression on MiniLM, 60 messages per class | 0.700 |
 
 ### banking (3 seeds; 6 taught classes; 180 known, 300 unknown, 150 foreign messages per seed)
 
@@ -164,7 +166,7 @@ Who is it? (top-1 over the taught classes, known messages):
 
 
 ## Interpretation (what we understood, and on what basis)
-Plain words first. A language model that is asked "which of these does the message belong to, or none?" is NOT a general novelty detector. When the new thing differs in topic from what was taught (a new customer intent, a new news topic, a new newsgroup), an ordinary sentence embedding already separates it and the detectors on it do as well or better (banking: AUROC 0.979 against 0.865). When the look is the same and only the function or the wording differs (arithmetic in everyday language), the embedding follows the wording, not the operation: a plain classifier on it identifies the skill of new-wording messages at chance (0.329 for three skills), the detectors flag 38 to 50 % of known messages, and the asking reader keeps them known (flags 0.12) and ranks never-taught above known with AUROC 0.92 against 0.69 or less. Each reader sees what the other cannot, and no fixed way of combining them (novel if either says so, novel if both say so) works in every domain.
+Plain words first. A language model that is asked "which of these does the message belong to, or none?" is NOT a general novelty detector. When the new thing differs in topic from what was taught (a new customer intent, a new news topic, a new newsgroup), an ordinary sentence embedding already separates it and the detectors on it do as well or better (banking: AUROC 0.979 against 0.865). When the look is the same and only the function or the wording differs (arithmetic in everyday language), the embedding follows the wording, not the operation: a plain classifier on it identifies the skill of new-wording messages at 0.70 (against 0.93 for the asking reader and 0.998 on topics in banking), the detectors flag 36 to 42 % of known messages, and the asking reader keeps them known (flags 0.09) and ranks never-taught above known with AUROC 0.92 against 0.70 or less. (First version of this sentence said "at chance (0.329)" and "38 to 50 %": withdrawn, see the erratum.) Each reader sees what the other cannot, and no fixed way of combining them (novel if either says so, novel if both say so) works in every domain.
 
 Technical statement: a double dissociation between a semantic-topic signal (representation distance) and a function-under-wording-shift signal (the model's answer to a question). This is the reader-level counterpart of the information-ceiling result (E-044): which signal can see which difference. Measured: the four tables above (3 seeds, dev). Assumed: that the pattern generalises beyond these four domains and beyond Qwen2.5-1.5B and MiniLM.
 
@@ -174,6 +176,7 @@ Technical statement: a double dissociation between a semantic-topic signal (repr
 - **Position bias held**: with names only, 56 % of foreign sentences in banking and 53 % in agnews are claimed by some card; the model prefers a card to "none of these". Exemplars repair banking, not agnews.
 - **Design flaw 1 (F-46)**: the first arithmetic run mixed wordings in the never-taught set (43 % in the teaching wordings) while the known set was all in new wordings; this handicapped the detectors in the unknown-found and AUROC columns (kNN AUROC 0.379). Fixed; the corrected run is the one reported; the verdicts did not change.
 - **Design flaw 2 (F-47)**: the test bed's calibration repeated 4-6 % of the teaching requests; dropped.
+- **Design flaw 3 (F-49), found later the same day**: the known test left out the taught skills the status scoring calls grey; see the erratum above.
 - **Process slip (F-48)**: a commit went in with one failing test (the commit gate does not run tests); fixed in the next commit.
 - The traps are flagged by every reader (1.000): they are everyday sentences with arithmetic words, which is easy in a closed list; the v1 weakness on traps came from the open list.
 - Not done: no pool is wired yet; fusion uses calibration without a shift; the verifier and the group test are still arithmetic-specific.
