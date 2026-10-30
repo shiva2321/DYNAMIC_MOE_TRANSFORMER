@@ -1,0 +1,38 @@
+Domain arithmetic, seed 150, q = 0.15. The pool's experts (cards, state): [('multiplication', 'thin'), ('the remainder after a division', 'solid'), ('the larger of two numbers', 'solid')]
+Stream: 476 messages (120 of taught things in new wordings, 120 of untaught things, 236 everyday sentences). Outcomes arrive for 30% of the messages, independently of the router.
+
+batch         mode verified | known answered untaught refused everyday refused
+    1      initial        2 |          5/7              8/8             15/15 
+    2      initial        4 |          4/5             11/11            14/14 
+    3      initial        6 |          8/13             4/4             13/13 
+    4   calibrated        9 |          9/11             2/8             11/11 
+    5   calibrated       11 |          6/7              2/5             18/18 
+    6   calibrated       14 |          2/7              7/10            13/13 
+    7   calibrated       16 |         11/13             0/2             15/15 
+    8   calibrated       23 |          8/10             3/8             12/12 
+    9   calibrated       25 |          7/9              4/12             9/9  
+   10   calibrated       28 |          6/10             2/8             12/12 
+   11   calibrated       28 |          5/7              1/5             18/18 
+   12   calibrated       29 |          3/5              5/12            13/13 
+   13   calibrated       29 |          6/6              3/7             17/17 
+   14   calibrated       30 |          2/2              2/10            18/18 
+   15   calibrated       31 |          5/5              5/6             19/19 
+   16   calibrated       32 |          3/3              0/4             19/19 
+
+By mode (messages the router handled while in that mode):
+       initial:  90 messages; taught-thing messages refused 0.320 (false refusals), untaught refused 1.000, everyday refused 1.000; answers right 0.647 of 17 answered
+    calibrated: 386 messages; taught-thing messages refused 0.232 (false refusals), untaught refused 0.371, everyday refused 1.000; answers right 0.548 of 73 answered
+
+Your messages, routed by the router as it stands now:
+  'Maya had 37 stickers and her friend gave her 58 more. How many stickers does she have now?'
+      -> NOT MINE (said so: ask_exemplars, vmf_conformal)   [calibrated]
+  'What is 12 times 7?'
+      -> multiplication [thin expert] (p=1.00) answers 32   [calibrated]
+  'What is the remainder when 47 is divided by 6?'
+      -> the remainder after a division [solid expert] (p=1.00) answers 5   [calibrated]
+  'Which is bigger, 23 or 41?'
+      -> the larger of two numbers [solid expert] (p=1.00) answers 41   [calibrated]
+  'Sam has 90 marbles and loses 35. How many are left?'
+      -> NOT MINE (said so: ask_exemplars)   [calibrated]
+  'What is the capital of France?'
+      -> NOT MINE (said so: ask_exemplars, vmf_conformal)   [calibrated]

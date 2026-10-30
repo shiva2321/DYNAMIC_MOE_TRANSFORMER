@@ -131,6 +131,17 @@ def test_the_verified_pool_is_a_window_of_the_latest_outcomes():
     assert r._verified == (texts(w.known_cal) + texts(w.known_test))[-25:]
 
 
+def test_a_claim_carries_the_state_of_the_expert_so_a_thin_experts_answer_can_be_told_from_a_solid_ones():
+    w = stream_world()
+    r = RO.Router(w.taught, w.teach, TL.fake_encode, NameReader, states=["solid", "thin"])
+    out = r.route(texts(w.known_test) + [w.unknown_test[0]])
+    assert {x.state for x in out[:-1] if x.expert == 0} == {"solid"} and {x.state for x in out[:-1] if x.expert == 1} == {"thin"}
+    assert out[-1].status == "unclaimed" and out[-1].state is None
+    assert {x.state for x in make_router()[1].route(texts(w.known_test))} == {"solid"}                   # the default is solid
+    with pytest.raises(ValueError):
+        RO.Router(w.taught, w.teach, TL.fake_encode, NameReader, states=["solid"])                       # one state per expert
+
+
 def test_respond_gives_the_claimed_experts_answer_and_says_not_mine_otherwise():
     w = TL.make_world()
     experts = [lambda f, i=i: 100 + i + f[0] for i in range(2)]

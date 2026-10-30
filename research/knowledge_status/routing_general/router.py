@@ -7,6 +7,10 @@ For every message it says who answers, whether anyone should, and which readers 
   the router falls back to the asking reader's own claim rule and says so (``mode``); an optional initial calibration in the teaching wording serves until the stream's outcomes take over;
 * the two readers fused by "either": a message is "not mine" when either reader says so (answer-more; a stated policy, not a derived fact).
 The experts are callables on features and the pool is not edited: ``add_expert`` is how a growing pool tells the router about a new one.
+
+Two things to know before relying on it. (1) ``q`` is the false-flag aim of EACH reader's cut; the either-fusion refuses about the sum of the two (labs: 0.05-0.07 of known messages at q = 0.05
+and n = 30; the demo: 0.23 at q = 0.15, 0.31 at q = 0.25), so choose q as a price (a refusal against an answer nobody owns), not as a promise. (2) Outcomes must reach ``observe`` independently
+of the router's own decision; calibrating only on what it already claimed is circular (lab G4c). A claim by a "thin" expert says so (``Route.state``): route right does not mean answer right.
 """
 
 import math
@@ -37,6 +41,7 @@ class Route:
     status: str                       # "claimed" | "unclaimed" (unclaimed = "not mine": noise, out of scope or a new skill; the router does not say which)
     expert: Optional[int]             # the expert to send it to (the asking reader's best card) when claimed
     name: Optional[str]
+    state: Optional[str]              # the expert's measured competence, "solid" or "thin": a thin expert's answer is not to be trusted
     team: Tuple[int, ...]             # experts by probability, when the reader itself claims; the single best one otherwise
     p_card: float                     # the probability the asking reader gives its best card
     mode: str                         # "calibrated" | "initial" | "uncalibrated"
@@ -162,10 +167,10 @@ class Router:
             best = int(P[i, :k].argmax())
             p = float(P[i, best])
             if flagged[i]:
-                out.append(Route("unclaimed", None, None, (), p, mode, by[i]))
+                out.append(Route("unclaimed", None, None, None, (), p, mode, by[i]))
             else:
                 team = claim[i].team if claim[i].status != "unclaimed" else (best,)
-                out.append(Route("claimed", best, self.names[best], team, p, mode, ()))
+                out.append(Route("claimed", best, self.names[best], self.states[best], team, p, mode, ()))
         return out
 
     def respond(self, texts: Sequence[str]) -> List[Response]:
