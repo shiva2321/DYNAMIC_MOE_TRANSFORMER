@@ -93,6 +93,27 @@ def tune() -> dict:
     return out
 
 
+def amend_joint() -> dict:
+    """Amendment 2026-10-30: the joint baseline is a CEILING, and the default 128-unit network is too small for 125 classes (it scored below the equal-memory replay network). Widths 1024 and
+    4096 are tried on the tuning seed and the best recipe replaces the joint entry of tuning.json; the trials are kept in grid_results."""
+    path = OUT / "tuning.json"
+    tuning = json.loads(path.read_text(encoding="utf-8"))
+    st = streams(TUNE_SEED)["seq"]
+    trials = list(tuning["grid_results"]["joint"])
+    for w in (1024, 4096):
+        for steps in (5, 20):
+            r = {"hidden": w, "inner_steps": steps}
+            rec = cell("joint", st, TUNE_SEED, r, OUT / "tune", tag=f"joint__hidden{w}_inner_steps{steps}")
+            trials.append({"recipe": r, "final_mean": final_mean(rec)})
+            print(f"  joint {r}: final mean {final_mean(rec):.3f} ({rec.seconds:.0f}s)", flush=True)
+    best = max(trials, key=lambda t: t["final_mean"])
+    tuning["chosen"]["joint"] = best["recipe"]
+    tuning["grid_results"]["joint"] = trials
+    tuning["amendments"] = tuning.get("amendments", []) + ["joint widened to 1024 and 4096 after the first grid (128 units) scored below the replay network"]
+    runlib.atomic_write_text(path, json.dumps(tuning, indent=1))
+    return tuning["chosen"]["joint"]
+
+
 def load_tuning() -> dict:
     return json.loads((OUT / "tuning.json").read_text(encoding="utf-8"))["chosen"]
 
@@ -128,13 +149,15 @@ def run(seeds, schedules, systems) -> None:
 
 def main(argv=None) -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("cmd", choices=("tune", "run"))
+    ap.add_argument("cmd", choices=("tune", "run", "amend-joint"))
     ap.add_argument("--seeds", type=int, nargs="+", default=list(EVAL_SEEDS))
     ap.add_argument("--schedules", nargs="+", default=list(SU.SCHEDULES))
     ap.add_argument("--systems", nargs="+", default=list(SY.SYSTEMS))
     a = ap.parse_args(argv)
     if a.cmd == "tune":
         print(json.dumps(tune()["chosen"], indent=1))
+    elif a.cmd == "amend-joint":
+        print(json.dumps(amend_joint()))
     else:
         run(a.seeds, a.schedules, a.systems)
 
