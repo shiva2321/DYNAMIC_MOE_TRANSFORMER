@@ -87,7 +87,9 @@ def build_suite(schedule: str, domains: Dict[str, Domain], seed: int, ood: Optio
             rid = len(regimes)
             te = np.flatnonzero((d.r_test == local).numpy())
             te = np.sort(rng.permutation(te)[:n_test])
-            meta = {"problem_id": d.meta["problem_id_test"][torch.from_numpy(te)]} if "problem_id_test" in d.meta else {}
+            meta = {"test_index": te}                                                                  # which examples of the domain's test set this regime holds (to find their texts later)
+            if "problem_id_test" in d.meta:
+                meta["problem_id"] = d.meta["problem_id_test"][torch.from_numpy(te)]
             regimes[rid] = Regime(rid, rname, n, d.kind, local, d.x_test[te], d.y_test[te] + off, meta)
             pools[rid] = np.random.default_rng([seed, 0x504F4F4C, rid]).permutation(np.flatnonzero((d.r_train == local).numpy()))
     dom_of = {rid: regimes[rid].domain for rid in regimes}

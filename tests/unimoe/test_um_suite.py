@@ -115,3 +115,12 @@ def test_the_algorithm_sees_only_inputs_and_labels_and_the_benchmark_keeps_the_r
 def test_unknown_schedule_is_refused():
     with pytest.raises(ValueError):
         build("zigzag")
+
+
+def test_every_regime_remembers_which_test_examples_of_its_domain_it_holds():
+    doms = toy_domains()
+    s = SU.build_suite("seq", doms, 0, toy_ood(), n_visit=100, n_visit_arith=300, n_test=40, revisit_k=1)
+    for r in s.regimes.values():
+        idx = r.meta["test_index"]
+        d, (off, _) = doms[r.domain], s.label_blocks[r.domain]
+        assert len(idx) == len(r.y_te) and torch.equal(d.y_test[torch.as_tensor(idx)] + off, r.y_te) and torch.equal(d.x_test[torch.as_tensor(idx)], r.x_te)
