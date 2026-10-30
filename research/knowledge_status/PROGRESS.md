@@ -670,3 +670,24 @@ Rules fixed now:
 1. The never-taught set mixed wordings: 43 % of it (90 of 210 per seed) was in the TEACHING wordings S1-S3 while the known set was all in the new wordings S4-S8. A detector that follows wording finds a never-taught message in a teaching wording easy and a known message in a new wording hard, which is why the kNN AUROC is 0.379 (below chance). That handicaps the detectors in the unknown-found and AUROC columns and not in the known-flagged column. Fix: the never-taught set is now S4-S8 only; the teaching-wording ones are an extra set reported apart.
 2. The test bed's calibration repeated 4-6 % of the teaching requests (22, 22 and 16 of 360 per seed; no test message does), which makes a detector's calibration look slightly more familiar than it should. Fix: those calibration messages are dropped.
 Neither fix touches the C4 or C5 verdicts above (C4 is the known-flagged column; C5 fails on the known-flagged column in arithmetic for both rules), but the arithmetic unknown-found and AUROC numbers will change, so they are re-reported below.
+
+
+### Result: Lab G1 / G1b / G1c, CORRECTED run (seeds 150-152, `results/ROUTING_GENERAL_G1_150_152.md`, commit 566166d)
+
+Arithmetic after the two fixes (never-taught set matched in wording, calibration repeats dropped; 80 known, 120 never-taught, 236 foreign per seed; 3 taught skills):
+- At the matched 5 % calibration cut: known (new wordings) flagged: reader 0.100 (names) / 0.121 (exemplars); vMF conformal 0.383; kNN 0.442; Mahalanobis 0.504. **C4 still passes** (lower than every detector by 0.26 or more).
+- Never-taught found at that cut: reader 0.475 / 0.669; Mahalanobis 0.925, vMF 0.756, kNN 0.361: the detectors find more only because they flag a third to a half of everything. Cut-free, AUROC known against never-taught: reader 0.886 / 0.921; Mahalanobis 0.681, vMF 0.685, kNN 0.472.
+- Fusions: "either" known flagged 0.371-0.438; "both" 0.208-0.254 with AUROC 0.893 (vMF) / 0.918 (Mahalanobis), no better than the reader alone (0.921). **C5 still holds**: both rules fail the arithmetic known-flagged limit (0.151).
+- Never-taught skills in the TEACHING wordings (apart): reader 0.541 / 0.659 found, Mahalanobis 0.744, vMF 0.541, kNN 0.081.
+- Traps: all readers flag 1.000.
+
+**The picture over four domains (exemplars arm for the reader; AUROC known against never-taught):**
+
+| domain | reader | best look-based | who wins |
+|---|---|---|---|
+| arithmetic, known in new wordings | 0.921 | 0.685 | the reader, by 0.24 (and 0.12 against 0.38-0.50 false flags) |
+| banking intents | 0.865 | 0.979 | the detectors, by 0.11 |
+| agnews topics | 0.854 | 0.892 | the detectors, by 0.04 |
+| newsgroups | 0.770 | 0.779 | level |
+
+Meaning: a double dissociation. Where the new thing differs in topic from what was taught, the sentence embedding already separates it and asking adds nothing (and loses a little). Where the look is the same and the function or the wording changes (arithmetic in everyday language), the embedding follows the wording (a plain classifier on it identifies the skill of new-wording messages at 0.329, chance for three skills) and the asking reader is the only one that holds. No fixed combination of the two works in every domain (C5). Ruling R3 stands, with its consequence: the layer must learn from its own roster data how much each reader can be trusted under a wording shift. Next test (G3, predictions to be written first): generate rewrites of the roster's own teaching messages with the same language model (no domain knowledge), calibrate every reader on the originals plus the rewrites, and check that (a) each reader's false-flag rate on truly shifted known messages falls toward the nominal 5 % and (b) "either" fusion of the shift-calibrated readers keeps the better reader's detection in every domain.

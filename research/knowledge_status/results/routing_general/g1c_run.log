@@ -1,0 +1,206 @@
+C:\Users\Asta\AppData\Local\Programs\Python\Python312\Lib\site-packages\torch\cuda\__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+arithmetic seed 150: exemplars tau0.5 known claimed 0.963 right 0.963 unknown unclaimed 0.625 foreign unclaimed 0.983
+arithmetic seed 151: exemplars tau0.5 known claimed 0.925 right 0.875 unknown unclaimed 0.558 foreign unclaimed 0.987
+arithmetic seed 152: exemplars tau0.5 known claimed 0.800 right 0.775 unknown unclaimed 0.558 foreign unclaimed 0.967
+banking seed 150: exemplars tau0.5 known claimed 0.972 right 0.800 unknown unclaimed 0.357 foreign unclaimed 0.813
+banking seed 151: exemplars tau0.5 known claimed 0.983 right 0.967 unknown unclaimed 0.423 foreign unclaimed 0.953
+banking seed 152: exemplars tau0.5 known claimed 0.950 right 0.900 unknown unclaimed 0.613 foreign unclaimed 0.953
+agnews seed 150: exemplars tau0.5 known claimed 0.933 right 0.856 unknown unclaimed 0.430 foreign unclaimed 0.520
+agnews seed 151: exemplars tau0.5 known claimed 0.922 right 0.644 unknown unclaimed 0.480 foreign unclaimed 0.307
+agnews seed 152: exemplars tau0.5 known claimed 0.889 right 0.883 unknown unclaimed 0.883 foreign unclaimed 0.987
+newsgroups seed 150: exemplars tau0.5 known claimed 0.544 right 0.528 unknown unclaimed 0.863 foreign unclaimed 0.913
+newsgroups seed 151: exemplars tau0.5 known claimed 0.717 right 0.639 unknown unclaimed 0.700 foreign unclaimed 0.493
+newsgroups seed 152: exemplars tau0.5 known claimed 0.606 right 0.539 unknown unclaimed 0.890 foreign unclaimed 0.993
+# Lab G1, one reader and one rule across domains (seeds 150-152)
+
+Known = test messages of taught classes; unknown = test messages of never-taught classes; foreign = other text domains and science questions. 'unclaimed' = the reader gives no card.
+The reader sees class names (arm names) or names plus two teaching messages (arm exemplars); the detectors are fitted on all 60 teaching messages per class.
+
+## arithmetic (3 seeds; 3 taught classes; 80 known, 120 unknown, 236 foreign messages per seed)
+
+Rule: claimed when the best card has probability of at least tau.
+
+| arm | tau | known claimed | known claimed RIGHT | right given claimed | unknown unclaimed | foreign unclaimed |
+|---|---|---|---|---|---|---|
+| names | 0.3 | 0.983 | 0.883 | 0.897 | 0.211 | 0.975 |
+| names | 0.5 | 0.942 | 0.883 | 0.936 | 0.244 | 0.975 |
+| names | 0.7 | 0.912 | 0.879 | 0.962 | 0.358 | 0.984 |
+| names | 0.9 | 0.875 | 0.867 | 0.990 | 0.572 | 0.990 |
+| exemplars | 0.3 | 0.904 | 0.879 | 0.972 | 0.558 | 0.979 |
+| exemplars | 0.5 | 0.896 | 0.871 | 0.972 | 0.581 | 0.979 |
+| exemplars | 0.7 | 0.871 | 0.862 | 0.990 | 0.697 | 0.992 |
+| exemplars | 0.9 | 0.850 | 0.850 | 1.000 | 0.800 | 0.997 |
+
+Same false-flag rate for everyone: the cut flags 0.05 of held-out known messages.
+
+| reader or detector | known flagged | unknown found | foreign found | AUROC known vs unknown | AUROC known vs foreign |
+|---|---|---|---|---|---|
+| ask, names | 0.100 | 0.475 | 0.987 | 0.886 | 0.997 |
+| ask, exemplars | 0.121 | 0.669 | 0.986 | 0.921 | 0.995 |
+| mahalanobis (MiniLM) | 0.504 | 0.925 | 1.000 | 0.681 | 0.998 |
+| knn_distance (MiniLM) | 0.442 | 0.361 | 1.000 | 0.472 | 1.000 |
+| vmf_conformal (MiniLM) | 0.383 | 0.756 | 1.000 | 0.685 | 1.000 |
+| FUSED either: ask_exemplars + vmf_conformal | 0.371 | 0.800 | 1.000 | 0.719 | 0.825 |
+| FUSED both: ask_exemplars + vmf_conformal | 0.208 | 0.919 | 1.000 | 0.893 | 0.996 |
+| FUSED either: ask_exemplars + mahalanobis | 0.438 | 0.925 | 1.000 | 0.761 | 0.812 |
+| FUSED both: ask_exemplars + mahalanobis | 0.254 | 0.964 | 1.000 | 0.918 | 0.996 |
+| FUSED either: ask_names + vmf_conformal | 0.371 | 0.733 | 1.000 | 0.715 | 0.829 |
+| FUSED both: ask_names + vmf_conformal | 0.233 | 0.908 | 1.000 | 0.878 | 0.998 |
+
+Extra sets (share flagged at each reader's own cut; for the claim rule, the share unclaimed at tau 0.5):
+
+| set | reader or detector | flagged |
+|---|---|---|
+| trap | ask_names | 1.000 |
+| trap | ask_exemplars | 1.000 |
+| trap | mahalanobis | 1.000 |
+| trap | knn_distance | 1.000 |
+| trap | vmf_conformal | 1.000 |
+| trap | ask_exemplars + vmf_conformal|either | 1.000 |
+| trap | ask_exemplars + vmf_conformal|both | 1.000 |
+| trap | ask_exemplars + mahalanobis|either | 1.000 |
+| trap | ask_exemplars + mahalanobis|both | 1.000 |
+| trap | ask_names + vmf_conformal|either | 1.000 |
+| trap | ask_names + vmf_conformal|both | 1.000 |
+| trap | ask names, claim rule tau 0.5 | 1.000 |
+| trap | ask exemplars, claim rule tau 0.5 | 1.000 |
+| unknown_teaching_wording | ask_names | 0.541 |
+| unknown_teaching_wording | ask_exemplars | 0.659 |
+| unknown_teaching_wording | mahalanobis | 0.744 |
+| unknown_teaching_wording | knn_distance | 0.081 |
+| unknown_teaching_wording | vmf_conformal | 0.541 |
+| unknown_teaching_wording | ask_exemplars + vmf_conformal|either | 0.622 |
+| unknown_teaching_wording | ask_exemplars + vmf_conformal|both | 0.807 |
+| unknown_teaching_wording | ask_exemplars + mahalanobis|either | 0.770 |
+| unknown_teaching_wording | ask_exemplars + mahalanobis|both | 0.911 |
+| unknown_teaching_wording | ask_names + vmf_conformal|either | 0.507 |
+| unknown_teaching_wording | ask_names + vmf_conformal|both | 0.796 |
+| unknown_teaching_wording | ask names, claim rule tau 0.5 | 0.330 |
+| unknown_teaching_wording | ask exemplars, claim rule tau 0.5 | 0.496 |
+
+Who is it? (top-1 over the taught classes, known messages)
+
+| reader or classifier | top-1 |
+|---|---|
+| ask, names | 0.883 |
+| ask, exemplars | 0.900 |
+| logistic regression on MiniLM, 60 messages per class | 0.329 |
+
+## banking (3 seeds; 6 taught classes; 180 known, 300 unknown, 150 foreign messages per seed)
+
+Rule: claimed when the best card has probability of at least tau.
+
+| arm | tau | known claimed | known claimed RIGHT | right given claimed | unknown unclaimed | foreign unclaimed |
+|---|---|---|---|---|---|---|
+| names | 0.3 | 0.987 | 0.833 | 0.844 | 0.189 | 0.407 |
+| names | 0.5 | 0.978 | 0.831 | 0.849 | 0.234 | 0.440 |
+| names | 0.7 | 0.943 | 0.813 | 0.860 | 0.373 | 0.580 |
+| names | 0.9 | 0.883 | 0.787 | 0.886 | 0.546 | 0.778 |
+| exemplars | 0.3 | 0.970 | 0.889 | 0.916 | 0.422 | 0.891 |
+| exemplars | 0.5 | 0.969 | 0.889 | 0.918 | 0.464 | 0.907 |
+| exemplars | 0.7 | 0.928 | 0.867 | 0.933 | 0.560 | 0.944 |
+| exemplars | 0.9 | 0.880 | 0.843 | 0.956 | 0.669 | 0.982 |
+
+Same false-flag rate for everyone: the cut flags 0.05 of held-out known messages.
+
+| reader or detector | known flagged | unknown found | foreign found | AUROC known vs unknown | AUROC known vs foreign |
+|---|---|---|---|---|---|
+| ask, names | 0.043 | 0.348 | 0.576 | 0.838 | 0.925 |
+| ask, exemplars | 0.048 | 0.501 | 0.916 | 0.865 | 0.985 |
+| mahalanobis (MiniLM) | 0.037 | 0.838 | 1.000 | 0.972 | 1.000 |
+| knn_distance (MiniLM) | 0.037 | 0.773 | 1.000 | 0.961 | 1.000 |
+| vmf_conformal (MiniLM) | 0.035 | 0.860 | 1.000 | 0.979 | 1.000 |
+| FUSED either: ask_exemplars + vmf_conformal | 0.043 | 0.833 | 1.000 | 0.965 | 0.996 |
+| FUSED both: ask_exemplars + vmf_conformal | 0.039 | 0.713 | 0.987 | 0.937 | 0.997 |
+| FUSED either: ask_exemplars + mahalanobis | 0.039 | 0.771 | 1.000 | 0.956 | 0.993 |
+| FUSED both: ask_exemplars + mahalanobis | 0.037 | 0.703 | 0.984 | 0.937 | 0.998 |
+| FUSED either: ask_names + vmf_conformal | 0.035 | 0.799 | 1.000 | 0.962 | 0.996 |
+| FUSED both: ask_names + vmf_conformal | 0.043 | 0.686 | 0.860 | 0.940 | 0.984 |
+
+Who is it? (top-1 over the taught classes, known messages)
+
+| reader or classifier | top-1 |
+|---|---|
+| ask, names | 0.839 |
+| ask, exemplars | 0.902 |
+| logistic regression on MiniLM, 60 messages per class | 0.998 |
+
+## agnews (3 seeds; 2 taught classes; 180 known, 300 unknown, 150 foreign messages per seed)
+
+Rule: claimed when the best card has probability of at least tau.
+
+| arm | tau | known claimed | known claimed RIGHT | right given claimed | unknown unclaimed | foreign unclaimed |
+|---|---|---|---|---|---|---|
+| names | 0.3 | 0.981 | 0.876 | 0.891 | 0.287 | 0.462 |
+| names | 0.5 | 0.980 | 0.874 | 0.891 | 0.292 | 0.467 |
+| names | 0.7 | 0.961 | 0.865 | 0.898 | 0.334 | 0.493 |
+| names | 0.9 | 0.943 | 0.856 | 0.905 | 0.410 | 0.540 |
+| exemplars | 0.3 | 0.919 | 0.798 | 0.871 | 0.586 | 0.536 |
+| exemplars | 0.5 | 0.915 | 0.794 | 0.870 | 0.598 | 0.604 |
+| exemplars | 0.7 | 0.820 | 0.728 | 0.888 | 0.712 | 0.722 |
+| exemplars | 0.9 | 0.674 | 0.609 | 0.906 | 0.830 | 0.842 |
+
+Same false-flag rate for everyone: the cut flags 0.05 of held-out known messages.
+
+| reader or detector | known flagged | unknown found | foreign found | AUROC known vs unknown | AUROC known vs foreign |
+|---|---|---|---|---|---|
+| ask, names | 0.039 | 0.393 | 0.507 | 0.816 | 0.826 |
+| ask, exemplars | 0.057 | 0.470 | 0.473 | 0.854 | 0.862 |
+| mahalanobis (MiniLM) | 0.065 | 0.504 | 0.844 | 0.883 | 0.968 |
+| knn_distance (MiniLM) | 0.046 | 0.509 | 0.744 | 0.892 | 0.956 |
+| vmf_conformal (MiniLM) | 0.063 | 0.468 | 0.669 | 0.874 | 0.929 |
+| FUSED either: ask_exemplars + vmf_conformal | 0.063 | 0.478 | 0.553 | 0.875 | 0.919 |
+| FUSED both: ask_exemplars + vmf_conformal | 0.059 | 0.556 | 0.631 | 0.898 | 0.922 |
+| FUSED either: ask_exemplars + mahalanobis | 0.067 | 0.506 | 0.693 | 0.873 | 0.942 |
+| FUSED both: ask_exemplars + mahalanobis | 0.063 | 0.539 | 0.693 | 0.904 | 0.936 |
+| FUSED either: ask_names + vmf_conformal | 0.056 | 0.472 | 0.618 | 0.873 | 0.917 |
+| FUSED both: ask_names + vmf_conformal | 0.050 | 0.581 | 0.656 | 0.883 | 0.899 |
+
+Who is it? (top-1 over the taught classes, known messages)
+
+| reader or classifier | top-1 |
+|---|---|
+| ask, names | 0.885 |
+| ask, exemplars | 0.867 |
+| logistic regression on MiniLM, 60 messages per class | 0.913 |
+
+## newsgroups (3 seeds; 6 taught classes; 180 known, 300 unknown, 150 foreign messages per seed)
+
+Rule: claimed when the best card has probability of at least tau.
+
+| arm | tau | known claimed | known claimed RIGHT | right given claimed | unknown unclaimed | foreign unclaimed |
+|---|---|---|---|---|---|---|
+| names | 0.3 | 0.867 | 0.750 | 0.866 | 0.473 | 0.453 |
+| names | 0.5 | 0.857 | 0.748 | 0.873 | 0.499 | 0.524 |
+| names | 0.7 | 0.807 | 0.726 | 0.899 | 0.569 | 0.671 |
+| names | 0.9 | 0.769 | 0.698 | 0.909 | 0.643 | 0.756 |
+| exemplars | 0.3 | 0.669 | 0.594 | 0.894 | 0.736 | 0.687 |
+| exemplars | 0.5 | 0.622 | 0.569 | 0.917 | 0.818 | 0.800 |
+| exemplars | 0.7 | 0.494 | 0.457 | 0.926 | 0.890 | 0.898 |
+| exemplars | 0.9 | 0.326 | 0.319 | 0.977 | 0.954 | 0.942 |
+
+Same false-flag rate for everyone: the cut flags 0.05 of held-out known messages.
+
+| reader or detector | known flagged | unknown found | foreign found | AUROC known vs unknown | AUROC known vs foreign |
+|---|---|---|---|---|---|
+| ask, names | 0.020 | 0.119 | 0.064 | 0.773 | 0.784 |
+| ask, exemplars | 0.035 | 0.113 | 0.060 | 0.770 | 0.748 |
+| mahalanobis (MiniLM) | 0.052 | 0.226 | 0.620 | 0.779 | 0.937 |
+| knn_distance (MiniLM) | 0.046 | 0.236 | 0.591 | 0.775 | 0.930 |
+| vmf_conformal (MiniLM) | 0.056 | 0.253 | 0.538 | 0.740 | 0.882 |
+| FUSED either: ask_exemplars + vmf_conformal | 0.039 | 0.187 | 0.393 | 0.768 | 0.874 |
+| FUSED both: ask_exemplars + vmf_conformal | 0.054 | 0.259 | 0.264 | 0.801 | 0.837 |
+| FUSED either: ask_exemplars + mahalanobis | 0.035 | 0.201 | 0.504 | 0.784 | 0.914 |
+| FUSED both: ask_exemplars + mahalanobis | 0.046 | 0.227 | 0.267 | 0.821 | 0.855 |
+| FUSED either: ask_names + vmf_conformal | 0.033 | 0.226 | 0.424 | 0.777 | 0.890 |
+| FUSED both: ask_names + vmf_conformal | 0.050 | 0.357 | 0.498 | 0.794 | 0.841 |
+
+Who is it? (top-1 over the taught classes, known messages)
+
+| reader or classifier | top-1 |
+|---|---|
+| ask, names | 0.778 |
+| ask, exemplars | 0.752 |
+| logistic regression on MiniLM, 60 messages per class | 0.820 |
+
