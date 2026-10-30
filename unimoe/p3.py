@@ -44,6 +44,14 @@ GROW_GAP: Dict[str, tuple] = {f"U-real-gap{g}": ("U-real", {"grow_gap": g}) for 
 GROW_GAP_FAST: Dict[str, tuple] = {f"U-real-fast-gap{g}": ("U-real", {"grow_gap": g, **FAST}) for g in (0.17, 0.35, 0.50)}
 
 
+ONE_STEP: Dict[str, tuple] = {
+    "U-real-s1": ("U-real", {"inner_steps": 1}),
+    "U-real-s1-fast": ("U-real", {"inner_steps": 1, **FAST}),
+    "U-real-s1-h16": ("U-real", {"inner_steps": 1, "hidden": 16}),
+    "U-real-s1-h16-fast": ("U-real", {"inner_steps": 1, "hidden": 16, **FAST}),
+}
+
+
 def run_variants(group: str, variants: Dict[str, tuple], schedules=("seq",), seeds=SEEDS) -> None:
     tuned = E.load_tuning()
     runs = E.OUT / group
@@ -74,7 +82,7 @@ def table(group: str) -> List[str]:
 
 def main(argv=None) -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("cmd", choices=("expert-quality", "ablate", "scale", "grow-gap", "grow-gap-fast", "table"))
+    ap.add_argument("cmd", choices=("expert-quality", "ablate", "scale", "grow-gap", "grow-gap-fast", "one-step", "table"))
     ap.add_argument("name", nargs="?", default="")
     a = ap.parse_args(argv)
     if a.cmd == "expert-quality":
@@ -85,6 +93,8 @@ def main(argv=None) -> None:
         run_variants("p3_scale", SCALE)
     elif a.cmd == "grow-gap":
         run_variants("p3_grow_gap", GROW_GAP, schedules=("mix",))
+    elif a.cmd == "one-step":
+        run_variants("p3_one_step", ONE_STEP, schedules=("seq", "mix"))
     elif a.cmd == "grow-gap-fast":
         run_variants("p3_grow_gap_fast", GROW_GAP_FAST, schedules=("mix",))
     else:
