@@ -134,7 +134,7 @@ def exact_match(rec: RunRecord, regimes) -> Dict[str, float]:
     out = {}
     for rid in _rid_order(regimes):
         rg = regimes[rid]
-        if rg.kind != "digits":
+        if rg.kind != "digits" or "problem_id" not in rg.meta:
             continue
         m = t["test_regime"] == rid
         pid = np.asarray(rg.meta["problem_id"])
