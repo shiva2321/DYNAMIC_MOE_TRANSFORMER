@@ -1,0 +1,10 @@
+C:\Users\Asta\AppData\Local\Programs\Python\Python312\Lib\site-packages\torch\cuda\__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+seed 499 drift UDOMS beta 0.5             final mean 0.552 experts   1 grow 0 params    49661     6s
+seed 499 drift UDOMS beta 1.0             final mean 0.557 experts   1 grow 0 params    49661     3s
+seed 499 drift UDOMS beta 2.0             final mean 0.558 experts   1 grow 0 params    49661     3s
+seed 499 drift UDOM (hard)                final mean 0.558 experts   1 grow 0 params    49661     3s
+seed 499 drift ULDA lambda 0.25           final mean 0.633 experts   1 grow 0 params    49661     3s
+seed 499 drift ULDA lambda 0.5            final mean 0.651 experts   1 grow 0 params    49661     3s
+seed 499 drift ULDA lambda 0.75           final mean 0.652 experts   1 grow 0 params    49661     4s
+drift chosen {'domain_head': 'hard'} 0.75

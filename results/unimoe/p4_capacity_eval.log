@@ -1,0 +1,26 @@
+C:\Users\Asta\AppData\Local\Programs\Python\Python312\Lib\site-packages\torch\cuda\__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+seed 500 seq   shipped-gap-fast-h16       final mean 0.739 experts   5 grow 0 params    32145   199s
+seed 500 seq   UG1-h16                    final mean 0.791 experts   5 grow 8 params   756385   191s
+seed 500 seq   UG1-h16-s5                 final mean 0.786 experts   5 grow 7 params   289541   181s
+seed 500 seq   fixed-h16-s5               final mean 0.753 experts   5 grow 0 params    32145   198s
+seed 500 mix   shipped-gap-fast-h16       final mean 0.673 experts   1 grow 0 params     6300    32s
+seed 500 mix   UG1-h16                    final mean 0.746 experts   1 grow 7 params   265356    42s
+seed 500 mix   UG1-h16-s5                 final mean 0.779 experts   1 grow 4 params    67980    18s
+seed 500 mix   fixed-h16-s5               final mean 0.708 experts   1 grow 0 params     6300    15s
+seed 501 seq   shipped-gap-fast-h16       final mean 0.729 experts   4 grow 0 params    25716   198s
+seed 501 seq   UG1-h16                    final mean 0.780 experts   6 grow 9 params   510058   198s
+seed 501 seq   UG1-h16-s5                 final mean 0.786 experts   4 grow 4 params   192384   173s
+seed 501 seq   fixed-h16-s5               final mean 0.738 experts   4 grow 0 params    25716   160s
+seed 501 mix   shipped-gap-fast-h16       final mean 0.690 experts   1 grow 0 params     6300    28s
+seed 501 mix   UG1-h16                    final mean 0.721 experts   1 grow 6 params    35084    31s
+seed 501 mix   UG1-h16-s5                 final mean 0.760 experts   1 grow 5 params   133772    16s
+seed 501 mix   fixed-h16-s5               final mean 0.711 experts   1 grow 0 params     6300    13s
+seed 502 seq   shipped-gap-fast-h16       final mean 0.707 experts   5 grow 0 params    32145   120s
+seed 502 seq   UG1-h16                    final mean 0.776 experts   5 grow 6 params   157957   144s
+seed 502 seq   UG1-h16-s5                 final mean 0.767 experts   5 grow 5 params   137133   133s
+seed 502 seq   fixed-h16-s5               final mean 0.719 experts   5 grow 0 params    32145   121s
+seed 502 mix   shipped-gap-fast-h16       final mean 0.670 experts   1 grow 0 params     6300    45s
+seed 502 mix   UG1-h16                    final mean 0.686 experts   1 grow 4 params     6300    54s
+seed 502 mix   UG1-h16-s5                 final mean 0.769 experts   1 grow 5 params   133772    28s
+seed 502 mix   fixed-h16-s5               final mean 0.702 experts   1 grow 0 params     6300    19s

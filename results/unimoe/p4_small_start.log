@@ -1,0 +1,20 @@
+C:\Users\Asta\AppData\Local\Programs\Python\Python312\Lib\site-packages\torch\cuda\__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+seed 500 seq   fixed-h16                  final mean 0.583 experts  21 grow 0 params   441126   104s
+seed 500 seq   UG1-h16                    final mean 0.583 experts  21 grow 0 params   441126    94s
+seed 500 mix   fixed-h16                  final mean 0.448 experts   1 grow 0 params    20877     2s
+seed 500 mix   UG1-h16                    final mean 0.448 experts   1 grow 0 params    20877     3s
+seed 500 drift fixed-h16                  final mean 0.367 experts   2 grow 0 params    41754     6s
+seed 500 drift UG1-h16                    final mean 0.403 experts   2 grow 1 params    49978     6s
+seed 501 seq   fixed-h16                  final mean 0.612 experts  20 grow 0 params   417540   105s
+seed 501 seq   UG1-h16                    final mean 0.612 experts  20 grow 0 params   417540   115s
+seed 501 mix   fixed-h16                  final mean 0.447 experts   1 grow 0 params    20877     2s
+seed 501 mix   UG1-h16                    final mean 0.447 experts   1 grow 0 params    20877     3s
+seed 501 drift fixed-h16                  final mean 0.403 experts   1 grow 0 params    20877     3s
+seed 501 drift UG1-h16                    final mean 0.307 experts   1 grow 1 params    20877     3s
+seed 502 seq   fixed-h16                  final mean 0.548 experts  18 grow 0 params   378108    82s
+seed 502 seq   UG1-h16                    final mean 0.548 experts  18 grow 0 params   378108    76s
+seed 502 mix   fixed-h16                  final mean 0.431 experts   1 grow 0 params    20877     2s
+seed 502 mix   UG1-h16                    final mean 0.431 experts   1 grow 0 params    20877     3s
+seed 502 drift fixed-h16                  final mean 0.387 experts   1 grow 0 params    20877     3s
+seed 502 drift UG1-h16                    final mean 0.434 experts   1 grow 1 params    24989     3s

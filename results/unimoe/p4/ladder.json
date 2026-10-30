@@ -1,0 +1,29 @@
+{
+ "seq": {
+  "pool (U-real)": 0.6239,
+  "pool + LDA head + domain head (UPLUS)": 0.6458,
+  "replay, equal memory": 0.6419,
+  "kNN, equal memory": 0.6441,
+  "offline joint network (ceiling, not told the task)": 0.6671,
+  "experts told the task (MLP)": 0.6658,
+  "experts told the task + LDA head (500-502)": 0.7446
+ },
+ "mix": {
+  "pool (U-real)": 0.5938,
+  "pool + LDA head + domain head (UPLUS)": 0.6632,
+  "replay, equal memory": 0.6271,
+  "kNN, equal memory": 0.5024,
+  "offline joint network (ceiling, not told the task)": 0.6687,
+  "experts told the task (MLP)": 0.6628,
+  "experts told the task + LDA head (500-502)": 0.7522
+ },
+ "drift": {
+  "pool (U-real)": 0.516,
+  "pool + LDA head + domain head (UPLUS)": 0.6423,
+  "replay, equal memory": 0.5969,
+  "kNN, equal memory": 0.5306,
+  "offline joint network (ceiling, not told the task)": 0.6703,
+  "experts told the task (MLP)": 0.5937,
+  "experts told the task + LDA head (500-502)": 0.7514
+ }
+}

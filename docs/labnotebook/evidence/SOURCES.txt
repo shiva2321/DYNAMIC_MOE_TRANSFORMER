@@ -188,3 +188,15 @@ research/growmoe_results/rv2d/CONFIRM_CLOSED.json
 tests/growmoe/test_gm_adopt_stage4.py
 demos/demo_growmoe_continual_learning.py
 demos/growmoe_demo.png
+
+# --- UniMoE (E-053, E-054)
+results/unimoe/ANALYSIS.md
+results/unimoe/ANALYSIS_P4.md
+results/unimoe/REPORT_v2.md
+results/unimoe/p4/TABLES.md
+results/unimoe/p4/REFUSAL.md
+results/unimoe/p4/REFUSAL_503_504.md
+results/unimoe/p4/ladder.json
+results/unimoe/known_flag_rate_repaired.json
+results/unimoe/p4_tuning.json
+research/unimoe/PROGRESS.md

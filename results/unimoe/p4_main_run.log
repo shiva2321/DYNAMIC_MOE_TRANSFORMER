@@ -1,0 +1,112 @@
+C:\Users\Asta\AppData\Local\Programs\Python\Python312\Lib\site-packages\torch\cuda\__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+seed 500 seq   UG0                        final mean 0.621 experts  19 grow 0 params   943559    92s
+skipped UG1: no growth threshold tuned yet
+seed 500 seq   UDOM                       final mean 0.617 experts  19 grow 0 params   943559    90s
+seed 500 seq   UDOMS                      final mean 0.623 experts  19 grow 0 params   943559    90s
+seed 500 seq   ULDA                       final mean 0.645 experts  19 grow 0 params   943559    90s
+skipped UPLUS: no growth threshold tuned yet
+seed 500 mix   UG0                        final mean 0.584 experts   1 grow 0 params    49661     2s
+skipped UG1: no growth threshold tuned yet
+seed 500 mix   UDOM                       final mean 0.593 experts   1 grow 0 params    49661     3s
+seed 500 mix   UDOMS                      final mean 0.594 experts   1 grow 0 params    49661     3s
+seed 500 mix   ULDA                       final mean 0.654 experts   1 grow 0 params    49661     3s
+skipped UPLUS: no growth threshold tuned yet
+seed 500 drift UG0                        final mean 0.465 experts   2 grow 0 params    99322     6s
+skipped UG1: no growth threshold tuned yet
+seed 500 drift UDOM                       final mean 0.505 experts   2 grow 0 params    99322     6s
+seed 500 drift UDOMS                      final mean 0.504 experts   2 grow 0 params    99322     6s
+seed 500 drift ULDA                       final mean 0.554 experts   2 grow 0 params    99322     7s
+skipped UPLUS: no growth threshold tuned yet
+seed 501 seq   UG0                        final mean 0.632 experts  21 grow 0 params  1042881    94s
+skipped UG1: no growth threshold tuned yet
+seed 501 seq   UDOM                       final mean 0.632 experts  21 grow 0 params  1042881    94s
+seed 501 seq   UDOMS                      final mean 0.632 experts  21 grow 0 params  1042881    94s
+seed 501 seq   ULDA                       final mean 0.656 experts  21 grow 0 params  1042881    95s
+skipped UPLUS: no growth threshold tuned yet
+seed 501 mix   UG0                        final mean 0.617 experts   1 grow 0 params    49661     2s
+skipped UG1: no growth threshold tuned yet
+seed 501 mix   UDOM                       final mean 0.626 experts   1 grow 0 params    49661     3s
+seed 501 mix   UDOMS                      final mean 0.628 experts   1 grow 0 params    49661     3s
+seed 501 mix   ULDA                       final mean 0.676 experts   1 grow 0 params    49661     3s
+skipped UPLUS: no growth threshold tuned yet
+seed 501 drift UG0                        final mean 0.535 experts   1 grow 0 params    49661     3s
+skipped UG1: no growth threshold tuned yet
+seed 501 drift UDOM                       final mean 0.566 experts   1 grow 0 params    49661     3s
+seed 501 drift UDOMS                      final mean 0.569 experts   1 grow 0 params    49661     3s
+seed 501 drift ULDA                       final mean 0.674 experts   1 grow 0 params    49661     3s
+skipped UPLUS: no growth threshold tuned yet
+seed 502 seq   UG0                        final mean 0.613 experts  18 grow 0 params   893898    78s
+skipped UG1: no growth threshold tuned yet
+seed 502 seq   UDOM                       final mean 0.614 experts  18 grow 0 params   893898    79s
+seed 502 seq   UDOMS                      final mean 0.617 experts  18 grow 0 params   893898    79s
+seed 502 seq   ULDA                       final mean 0.649 experts  18 grow 0 params   893898    80s
+skipped UPLUS: no growth threshold tuned yet
+seed 502 mix   UG0                        final mean 0.586 experts   1 grow 0 params    49661     2s
+skipped UG1: no growth threshold tuned yet
+seed 502 mix   UDOM                       final mean 0.594 experts   1 grow 0 params    49661     3s
+seed 502 mix   UDOMS                      final mean 0.595 experts   1 grow 0 params    49661     3s
+seed 502 mix   ULDA                       final mean 0.667 experts   1 grow 0 params    49661     3s
+skipped UPLUS: no growth threshold tuned yet
+seed 502 drift UG0                        final mean 0.535 experts   1 grow 0 params    49661     3s
+skipped UG1: no growth threshold tuned yet
+seed 502 drift UDOM                       final mean 0.568 experts   1 grow 0 params    49661     3s
+seed 502 drift UDOMS                      final mean 0.568 experts   1 grow 0 params    49661     3s
+seed 502 drift ULDA                       final mean 0.668 experts   1 grow 0 params    49661     3s
+skipped UPLUS: no growth threshold tuned yet
+C:\Users\Asta\AppData\Local\Programs\Python\Python312\Lib\site-packages\torch\cuda\__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+seed 500 seq   UG0                        final mean 0.621 experts  19 grow 0 params   943559    92s
+seed 500 seq   UG1                        final mean 0.621 experts  19 grow 0 params   943559    90s
+seed 500 seq   UDOM                       final mean 0.617 experts  19 grow 0 params   943559    90s
+seed 500 seq   UDOMS                      final mean 0.623 experts  19 grow 0 params   943559    90s
+seed 500 seq   ULDA                       final mean 0.645 experts  19 grow 0 params   943559    90s
+seed 500 seq   UPLUS                      final mean 0.645 experts  19 grow 0 params   943559    93s
+seed 500 mix   UG0                        final mean 0.584 experts   1 grow 0 params    49661     2s
+seed 500 mix   UG1                        final mean 0.584 experts   1 grow 0 params    49661     3s
+seed 500 mix   UDOM                       final mean 0.593 experts   1 grow 0 params    49661     3s
+seed 500 mix   UDOMS                      final mean 0.594 experts   1 grow 0 params    49661     3s
+seed 500 mix   ULDA                       final mean 0.654 experts   1 grow 0 params    49661     3s
+seed 500 mix   UPLUS                      final mean 0.654 experts   1 grow 0 params    49661     4s
+seed 500 drift UG0                        final mean 0.465 experts   2 grow 0 params    99322     6s
+seed 500 drift UG1                        final mean 0.465 experts   2 grow 0 params    99322     6s
+seed 500 drift UDOM                       final mean 0.505 experts   2 grow 0 params    99322     6s
+seed 500 drift UDOMS                      final mean 0.504 experts   2 grow 0 params    99322     6s
+seed 500 drift ULDA                       final mean 0.554 experts   2 grow 0 params    99322     7s
+seed 500 drift UPLUS                      final mean 0.559 experts   2 grow 0 params    99322     7s
+seed 501 seq   UG0                        final mean 0.632 experts  21 grow 0 params  1042881    94s
+seed 501 seq   UG1                        final mean 0.632 experts  21 grow 0 params  1042881    96s
+seed 501 seq   UDOM                       final mean 0.632 experts  21 grow 0 params  1042881    94s
+seed 501 seq   UDOMS                      final mean 0.632 experts  21 grow 0 params  1042881    94s
+seed 501 seq   ULDA                       final mean 0.656 experts  21 grow 0 params  1042881    95s
+seed 501 seq   UPLUS                      final mean 0.656 experts  21 grow 0 params  1042881    98s
+seed 501 mix   UG0                        final mean 0.617 experts   1 grow 0 params    49661     2s
+seed 501 mix   UG1                        final mean 0.617 experts   1 grow 0 params    49661     3s
+seed 501 mix   UDOM                       final mean 0.626 experts   1 grow 0 params    49661     3s
+seed 501 mix   UDOMS                      final mean 0.628 experts   1 grow 0 params    49661     3s
+seed 501 mix   ULDA                       final mean 0.676 experts   1 grow 0 params    49661     3s
+seed 501 mix   UPLUS                      final mean 0.676 experts   1 grow 0 params    49661     4s
+seed 501 drift UG0                        final mean 0.535 experts   1 grow 0 params    49661     3s
+seed 501 drift UG1                        final mean 0.535 experts   1 grow 0 params    49661     3s
+seed 501 drift UDOM                       final mean 0.566 experts   1 grow 0 params    49661     3s
+seed 501 drift UDOMS                      final mean 0.569 experts   1 grow 0 params    49661     3s
+seed 501 drift ULDA                       final mean 0.674 experts   1 grow 0 params    49661     3s
+seed 501 drift UPLUS                      final mean 0.671 experts   1 grow 0 params    49661     4s
+seed 502 seq   UG0                        final mean 0.613 experts  18 grow 0 params   893898    78s
+seed 502 seq   UG1                        final mean 0.613 experts  18 grow 0 params   893898    80s
+seed 502 seq   UDOM                       final mean 0.614 experts  18 grow 0 params   893898    79s
+seed 502 seq   UDOMS                      final mean 0.617 experts  18 grow 0 params   893898    79s
+seed 502 seq   ULDA                       final mean 0.649 experts  18 grow 0 params   893898    80s
+seed 502 seq   UPLUS                      final mean 0.650 experts  18 grow 0 params   893898    81s
+seed 502 mix   UG0                        final mean 0.586 experts   1 grow 0 params    49661     2s
+seed 502 mix   UG1                        final mean 0.586 experts   1 grow 0 params    49661     3s
+seed 502 mix   UDOM                       final mean 0.594 experts   1 grow 0 params    49661     3s
+seed 502 mix   UDOMS                      final mean 0.595 experts   1 grow 0 params    49661     3s
+seed 502 mix   ULDA                       final mean 0.667 experts   1 grow 0 params    49661     3s
+seed 502 mix   UPLUS                      final mean 0.668 experts   1 grow 0 params    49661     4s
+seed 502 drift UG0                        final mean 0.535 experts   1 grow 0 params    49661     3s
+seed 502 drift UG1                        final mean 0.535 experts   1 grow 0 params    49661     3s
+seed 502 drift UDOM                       final mean 0.568 experts   1 grow 0 params    49661     3s
+seed 502 drift UDOMS                      final mean 0.568 experts   1 grow 0 params    49661     3s
+seed 502 drift ULDA                       final mean 0.668 experts   1 grow 0 params    49661     3s
+seed 502 drift UPLUS                      final mean 0.668 experts   1 grow 0 params    49661     4s

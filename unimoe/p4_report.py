@@ -93,6 +93,21 @@ def capacity_tables() -> List[str]:
     return L
 
 
+def small_start_table() -> List[str]:
+    small, main = _recs("p4_main_small"), _recs("p4_main")
+    L = ["## Growth from a too-small start (16 units) on the real suite, seeds 500-502", "", "| schedule | fixed 16 | grown, theta 0.2 (capacity stream's value) | grown, theta 0.3 (tuned, seed 499) | grow events (0.3) | params (0.3) | fixed 128 (UG0) |", "|---|---|---|---|---|---|---|"]
+    for sch in P4.SCHEDULES:
+        f, g2, g3 = (vals(small, t, sch, EVAL) for t in ("fixed-h16", "UG1-h16", "UG1-h16-tuned"))
+        u = vals(main, "UG0", sch, EVAL)
+        if not (f and g3):
+            continue
+        ev = [small[(sch, "UG1-h16-tuned", s)].per_phase[-1]["events"].get("grow", 0) for s in EVAL if (sch, "UG1-h16-tuned", s) in small]
+        pa = [small[(sch, "UG1-h16-tuned", s)].report["params"] for s in EVAL if (sch, "UG1-h16-tuned", s) in small]
+        L.append(f"| {sch} | {_ci(f)} | {_ci(g2)} | {_ci(g3)} | {', '.join(map(str, ev))} | {np.mean(pa):.0f} | {_ci(u)} |")
+    L.append("")
+    return L
+
+
 def oracle_table() -> List[str]:
     rec = _recs("p4_oracle_lda")
     L = ["## I4: the LDA blend under oracle routing (experts told the regime)", "", "| schedule | seeds | " + " | ".join(f"lambda {l}" for l in (0.0, 0.3, 0.5, 0.7, 1.0)) + " |", "|---|---|---|---|---|---|---|"]
@@ -109,6 +124,7 @@ def main() -> None:
     L = ["# P4 tables (generated from the cached cells)", ""]
     L += capacity_tables()
     L += oracle_table()
+    L += small_start_table()
     L += main_table(EVAL, "Main suite, evaluation seeds 500-502")
     if any(_recs("p4_main") and (sch, "UG0", s) in _recs("p4_main") for sch in P4.SCHEDULES for s in CONFIRM):
         L += main_table(CONFIRM, "Main suite, confirmation seeds 503-504")

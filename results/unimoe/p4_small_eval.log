@@ -1,0 +1,11 @@
+C:\Users\Asta\AppData\Local\Programs\Python\Python312\Lib\site-packages\torch\cuda\__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+seed 500 seq   UG1-h16-tuned              final mean 0.583 experts  21 grow 0 params   441126    82s
+seed 500 mix   UG1-h16-tuned              final mean 0.488 experts   1 grow 1 params    45866     2s
+seed 500 drift UG1-h16-tuned              final mean 0.403 experts   2 grow 1 params    49978     5s
+seed 501 seq   UG1-h16-tuned              final mean 0.613 experts  20 grow 1 params   442529    79s
+seed 501 mix   UG1-h16-tuned              final mean 0.477 experts   1 grow 1 params    45866     2s
+seed 501 drift UG1-h16-tuned              final mean 0.307 experts   1 grow 1 params    20877     2s
+seed 502 seq   UG1-h16-tuned              final mean 0.548 experts  18 grow 0 params   378108    61s
+seed 502 mix   UG1-h16-tuned              final mean 0.469 experts   1 grow 1 params    45866     2s
+seed 502 drift UG1-h16-tuned              final mean 0.440 experts   1 grow 2 params    58202     3s

@@ -171,12 +171,12 @@ def aurocs(z: Dict[str, np.ndarray]) -> Dict[str, Dict[str, float]]:
     return out
 
 
-def report(names=("UG0", "UPLUS")) -> str:
+def report(names=("UG0", "UPLUS"), seeds=SEEDS, out="REFUSAL.md") -> str:
     L = ["# P4 / I3: the refusal layer on the live pool (generated)", "",
-         f"Sequential schedule, seeds {', '.join(map(str, SEEDS))}. Calibration: {CAL_N} verified known messages (mean over {DRAWS} draws), level q = {Q}, evaluation: the rest of the known text messages (<= {EVAL_CAP} per regime) and "
+         f"Sequential schedule, seeds {', '.join(map(str, seeds))}. Calibration: {CAL_N} verified known messages (mean over {DRAWS} draws), level q = {Q}, evaluation: the rest of the known text messages (<= {EVAL_CAP} per regime) and "
          f"{N_OOD} messages of each foreign set. Arithmetic regimes are digit codes and are not part of this test.", ""]
     for name in names:
-        zs = [dict(np.load(OUT / f"{name}_s{s}.npz")) for s in SEEDS if (OUT / f"{name}_s{s}.npz").exists()]
+        zs = [dict(np.load(OUT / f"{name}_s{s}.npz")) for s in seeds if (OUT / f"{name}_s{s}.npz").exists()]
         if not zs:
             continue
         for cal_n, q, tag in ((CAL_N, Q, "primary"), (200, Q, "more verified messages (200)"), (CAL_N, 0.10, "looser level (q = 0.10)")):
@@ -195,7 +195,7 @@ def report(names=("UG0", "UPLUS")) -> str:
             L.append(f"| {label} | " + " | ".join(f"{float(np.mean([a[label][o] for a in au])):.3f}" for o in oods) + " |")
         L.append("")
     text = "\n".join(L)
-    runlib.atomic_write_text(E.OUT / "p4" / "REFUSAL.md", text)
+    runlib.atomic_write_text(E.OUT / "p4" / out, text)
     return text
 
 
@@ -210,7 +210,7 @@ def main(argv=None) -> None:
             for seed in a.seeds:
                 run_one(name, seed)
     else:
-        print(report(tuple(a.systems)))
+        print(report(tuple(a.systems), tuple(a.seeds), "REFUSAL.md" if tuple(a.seeds) == SEEDS else "REFUSAL_" + "_".join(map(str, a.seeds)) + ".md"))
 
 
 if __name__ == "__main__":
