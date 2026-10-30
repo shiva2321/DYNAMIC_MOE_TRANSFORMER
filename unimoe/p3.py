@@ -44,6 +44,7 @@ GROW_GAP: Dict[str, tuple] = {f"U-real-gap{g}": ("U-real", {"grow_gap": g}) for 
 GROW_GAP_FAST: Dict[str, tuple] = {f"U-real-fast-gap{g}": ("U-real", {"grow_gap": g, **FAST}) for g in (0.17, 0.35, 0.50)}
 
 
+LINEAR_POOL: Dict[str, tuple] = {"U-real-linear": ("U-real", {"depth": 0})}
 ONE_STEP: Dict[str, tuple] = {
     "U-real-s1": ("U-real", {"inner_steps": 1}),
     "U-real-s1-fast": ("U-real", {"inner_steps": 1, **FAST}),
@@ -53,10 +54,10 @@ ONE_STEP: Dict[str, tuple] = {
 
 
 def run_variants(group: str, variants: Dict[str, tuple], schedules=("seq",), seeds=SEEDS) -> None:
-    tuned = E.load_tuning()
     runs = E.OUT / group
     for seed in seeds:
         for sch in schedules:
+            tuned = E.load_tuning(sch)                                                    # each schedule's own tuned recipes
             st = E.streams(seed)[sch]
             for tag, (system, extra) in variants.items():
                 base = dict(tuned.get(system) or tuned.get("U-real" if system.startswith("U-real") else system))
@@ -82,7 +83,7 @@ def table(group: str) -> List[str]:
 
 def main(argv=None) -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("cmd", choices=("expert-quality", "ablate", "scale", "grow-gap", "grow-gap-fast", "one-step", "table"))
+    ap.add_argument("cmd", choices=("expert-quality", "ablate", "scale", "grow-gap", "grow-gap-fast", "one-step", "linear-pool", "table"))
     ap.add_argument("name", nargs="?", default="")
     a = ap.parse_args(argv)
     if a.cmd == "expert-quality":
@@ -93,6 +94,8 @@ def main(argv=None) -> None:
         run_variants("p3_scale", SCALE)
     elif a.cmd == "grow-gap":
         run_variants("p3_grow_gap", GROW_GAP, schedules=("mix",))
+    elif a.cmd == "linear-pool":
+        run_variants("p3_linear_pool", LINEAR_POOL, schedules=("seq", "mix", "drift"))
     elif a.cmd == "one-step":
         run_variants("p3_one_step", ONE_STEP, schedules=("seq", "mix"))
     elif a.cmd == "grow-gap-fast":
