@@ -32,10 +32,15 @@ def split_pool_eval(owner: Sequence[int], rng: np.random.Generator) -> Tuple[Lis
     return sorted(pool), sorted(ev)
 
 
+def verified_order(candidates: Sequence[int], verified: Sequence[bool], rng: np.random.Generator) -> List[int]:
+    """Every candidate whose ownership was verified, in a random order. A sample of n is the first n; two samples cut from the same order share their members (a paired comparison)."""
+    cand = [int(i) for i in candidates if verified[i]]
+    return [cand[int(j)] for j in rng.permutation(len(cand))]
+
+
 def verified_sample(candidates: Sequence[int], verified: Sequence[bool], n: int, rng: np.random.Generator) -> List[int]:
     """Up to n of the candidates whose ownership was verified, in a random order (fewer when fewer are verified)."""
-    cand = [int(i) for i in candidates if verified[i]]
-    return [cand[int(j)] for j in rng.permutation(len(cand))[:n]]
+    return verified_order(candidates, verified, rng)[:n]
 
 
 def system_metrics(cal: Mapping[str, Sequence[float]], ev: Mapping[str, Mapping[str, Sequence[float]]], sources: Sequence[str], rule: str, q: float) -> Dict[str, float]:

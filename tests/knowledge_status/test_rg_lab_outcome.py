@@ -97,6 +97,8 @@ def test_contamination_puts_wrongly_verified_never_taught_messages_into_the_cali
     for mode in ("contaminated", "clean"):
         assert set(bad["contaminated"][mode]) == {"verified", "union"}
         assert set(bad["contaminated"][mode]["verified"]["6"]) == set(LO.SYSTEMS)
+    assert good["contaminated"]["contaminated"] == good["contaminated"]["clean"]                        # nothing wrongly verified: the paired samples are the same samples, so the numbers are equal
+    assert bad["contaminated"]["contaminated"] != bad["contaminated"]["clean"]
     plain = LO.run_cell(w, TL.FOREIGN, Coincidence(True), **{**kw, "contaminate": 0.0})
     assert "contaminated" not in plain                                                          # the default run is the one of G4, unchanged
 

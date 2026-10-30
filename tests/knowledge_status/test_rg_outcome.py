@@ -81,3 +81,11 @@ def test_averaging_draws_ignores_nothing_and_reports_the_number_of_draws():
     rows = [{"a": 0.2, "b": float("nan")}, {"a": 0.4, "b": 0.6}]
     m = OC.mean_over_draws(rows)
     assert m["a"] == pytest.approx(0.3) and m["b"] == pytest.approx(0.6) and m["draws"] == 2
+
+
+def test_verified_order_is_the_sample_before_it_is_cut_and_keeps_the_old_sample_unchanged():
+    verified = np.array([True, False, True, True, False, True, True, False])
+    order = OC.verified_order(list(range(8)), verified, np.random.default_rng(3))
+    assert sorted(order) == [0, 2, 3, 5, 6]
+    assert OC.verified_sample(list(range(8)), verified, 3, np.random.default_rng(3)) == order[:3]
+    assert OC.verified_order([1, 4, 7], verified, np.random.default_rng(3)) == []

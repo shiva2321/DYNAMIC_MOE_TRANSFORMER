@@ -44,6 +44,7 @@ Q = LG.Q
 N_CAL_TEXT = 60
 KNOWN_LIMIT, POWER_MARGIN = 0.10, 0.05                                                   # rule C8
 CONTAMINATE = 0.25                                                                       # share of never-taught messages in the stream of lab G4b
+CONT_DRAWS = 20                                                                          # the contamination comparison is paired and uses more draws (the first G4b run, unpaired with 5, was noise-limited)
 SEEDS = list(range(150, 153))
 
 
@@ -107,8 +108,8 @@ def contamination_arms(S, owner: Sequence[int], verified: np.ndarray, v_unk: np.
         flags[n_known + stream_unk] = v_unk[stream_unk]
         ev = {"known": {r: S[r]["known"][evl] for r in READERS}, "unknown": {r: S[r]["unknown"][unk_eval] for r in READERS}, "foreign": {r: S[r]["foreign"] for r in READERS}}
         for nv in nvs:
-            drawn = {"contaminated": OC.verified_sample(pool + [n_known + int(i) for i in stream_unk], flags, nv, np.random.default_rng([seed, 0x4735, d, nv])),
-                     "clean": OC.verified_sample(pool, verified, nv, np.random.default_rng([seed, 0x4735, d, nv, 1]))}
+            order = OC.verified_order(pool + [n_known + int(i) for i in stream_unk], flags, np.random.default_rng([seed, 0x4735, d, nv]))
+            drawn = {"contaminated": order[:nv], "clean": [i for i in order if i < n_known][:nv]}                  # paired: the clean sample is the same order without the never-taught messages
             share[str(nv)].append(float(np.mean([i >= n_known for i in drawn["contaminated"]])) if drawn["contaminated"] else 0.0)
             for mode, samp in drawn.items():
                 if len(samp) < 2:
@@ -133,7 +134,7 @@ def contamination_verdict(per_domain_rows: Sequence[dict], nv: int = HEADLINE) -
 
 
 def run_cell(world, foreign: Sequence[str], verifier, ask: Optional[Callable] = None, encode: Callable = LG.default_encode, cache_dir=LG.ASK_DIR, seed: int = 0,
-             draws: int = DRAWS, nvs: Sequence[int] = NV, q: float = Q, unowned_extra: Sequence[str] = (), contaminate: float = 0.0) -> dict:
+             draws: int = DRAWS, nvs: Sequence[int] = NV, q: float = Q, unowned_extra: Sequence[str] = (), contaminate: float = 0.0, cont_draws: Optional[int] = None) -> dict:
     S = score_sets(world, foreign, ask, encode, cache_dir)
     known_t, owner = [t for t, _ in world.known_test], [i for _, i in world.known_test]
     verified = verifier.known(known_t)
@@ -163,7 +164,7 @@ def run_cell(world, foreign: Sequence[str], verifier, ask: Optional[Callable] = 
     rec["results"] = {a: {nv: {s: OC.mean_over_draws([{k: v for k, v in m.items() if k != "cut"} for m in rows]) for s, rows in per.items() if rows} for nv, per in byn.items()} for a, byn in acc.items()}
     rec["n_actual"] = {nv: float(np.mean(v)) for nv, v in n_act.items()}
     if contaminate > 0:
-        rec["contaminated"] = contamination_arms(S, owner, verified, verifier.unowned(list(world.unknown_test)), contaminate, seed, draws, nvs, q)
+        rec["contaminated"] = contamination_arms(S, owner, verified, verifier.unowned(list(world.unknown_test)), contaminate, seed, cont_draws or draws, nvs, q)
     return rec
 
 
@@ -256,7 +257,7 @@ def run_seed(domain: str, seed: int, out_dir, stamp: str) -> dict:
     if runlib.cell_done(path, stamp):
         return json.loads(path.read_text(encoding="utf-8"))
     world, foreign, verifier, extra = build(domain, seed)
-    rec = run_cell(world, foreign, verifier, seed=seed, unowned_extra=extra, contaminate=CONTAMINATE)
+    rec = run_cell(world, foreign, verifier, seed=seed, unowned_extra=extra, contaminate=CONTAMINATE, cont_draws=CONT_DRAWS)
     rec.update({"seed": seed, "code_stamp": stamp})
     Path(out_dir).mkdir(parents=True, exist_ok=True)
     runlib.atomic_write_text(path, json.dumps(LG._native(rec)))
