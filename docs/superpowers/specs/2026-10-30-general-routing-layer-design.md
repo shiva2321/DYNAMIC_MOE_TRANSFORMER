@@ -47,6 +47,8 @@ No growth work, no change to `growmoe/`, no new downloads, no confirmatory claim
 
 ## 7. The general routing layer as it stands (2026-10-30, after labs G1 to G4c; notebook E-048 to E-051)
 
+**As one object:** `routing_general/router.py` (`Router`: `observe`, `route`, `respond`, `add_expert`) assembles parts 1 to 5 below; `demo_router.py` runs it end to end on real models (E-052). Read its docstring for what `q` means (each reader's aim; the mix refuses about the sum) before relying on it.
+
 Plain words first. For every incoming message the layer says: **who answers, whether anyone should, and how sure it is**, for any domain, from the pool's own roster. It is built from parts, each measured on its own.
 
 1. **Roster.** One card per expert: the name its teacher gave and two of its own teaching messages. Nothing else about the domain is known to the layer. (`cards.py`)
