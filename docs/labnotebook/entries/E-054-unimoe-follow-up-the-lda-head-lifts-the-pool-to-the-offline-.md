@@ -26,7 +26,7 @@ The user wanted a working dynamic MoE and a full analysis of where it is short (
 - Commands: `python -m unimoe.p4 {capacity-widths,capacity-tune,capacity-eval,oracle-lda,main-tune SCH,main-run,small-start,small-tune SCH,small-eval}`, `python -m unimoe.p4_refusal run|report`, `python -m unimoe.p4_report`.
 
 ## Results (what came out)
-Generated tables: `results/unimoe/p4/TABLES.md`, `REFUSAL.md`, `REFUSAL_503_504.md`, `ladder.json`; analysis `results/unimoe/ANALYSIS_P4.md`. Final mean accuracy over the 22 regimes.
+Generated tables: `results/unimoe/p4/TABLES.md`, `results/unimoe/p4/REFUSAL.md`, `results/unimoe/p4/REFUSAL_503_504.md`, `results/unimoe/p4/ladder.json`; analysis `results/unimoe/ANALYSIS_P4.md`. Final mean accuracy over the 22 regimes.
 
 **Change 4, LDA head.** Under oracle routing (500-502) lambda 0 / 0.3 / 0.5 / 0.7 / 1.0: sequential 0.669 / 0.714 / 0.731 / 0.745 / 0.750, mixed 0.663 / 0.737 / 0.750 / 0.752 / 0.748, drifting 0.604 / 0.706 / 0.737 / 0.751 / 0.749. In the pool, paired difference to U-real over 5 seeds: ULDA sequential +0.022 [+0.010, +0.033], mixed +0.069 [+0.057, +0.082], drifting +0.126 [+0.100, +0.153]; all 15 paired differences positive; confirmation seeds +0.013 / +0.069 / +0.135.
 
@@ -54,7 +54,7 @@ D-43: the LDA head becomes the default of the next UniMoE system (recommended co
 
 ## Evidence
 - `results/unimoe/ANALYSIS_P4.md` - the analysis in plain words with the scorecard
-- `results/unimoe/p4/TABLES.md`, `p4/REFUSAL.md`, `p4/REFUSAL_503_504.md`, `p4/ladder.json`, `p4/figure_ladder.png` - generated tables and figure
+- `results/unimoe/p4/TABLES.md`, `results/unimoe/p4/REFUSAL.md`, `results/unimoe/p4/REFUSAL_503_504.md`, `results/unimoe/p4/ladder.json`, `results/unimoe/p4/figure_ladder.png` - generated tables and figure
 - `results/unimoe/known_flag_rate_repaired.json` - the recomputed known-flag rate of every Stage 1 system (F-62)
 - `results/unimoe/p4_tuning.json` - the tuned operating points
 - `research/unimoe/PROGRESS.md` - protocol and every prediction before its cells, results in order
