@@ -48,7 +48,11 @@ def build_labelled_world(name: str, teach: Labelled, test: Labelled, label_names
     rng = np.random.default_rng([seed, 0x47454E])
     tr_x, tr_y = np.asarray(teach[0], dtype=object), np.asarray(teach[1])
     te_x, te_y = np.asarray(test[0], dtype=object), np.asarray(test[1])
-    taught_ids = [int(c) for c in rng.permutation(n_cls)[:n_taught]]
+    need_test = -(-n_known // n_taught)                                                   # the largest share of the known test any taught class has to supply
+    eligible = [c for c in range(n_cls) if (tr_y == c).sum() >= n_teach + n_cal and (te_y == c).sum() >= need_test]
+    if len(eligible) < n_taught:
+        raise ValueError(f"only {len(eligible)} classes have {n_teach + n_cal} teaching and {need_test} test messages, need {n_taught} taught classes")
+    taught_ids = [int(c) for c in rng.permutation(eligible)[:n_taught]]                   # classes too small to teach stay never-taught (their test messages count as unknown)
     names = [readable(label_names[c]) for c in taught_ids]
     teach_msgs: Dict[str, List[str]] = {}
     cal: List[Tuple[str, int]] = []

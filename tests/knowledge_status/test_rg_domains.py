@@ -72,6 +72,22 @@ def test_roster_order_is_shuffled_by_seed_not_alphabetical_by_construction():
     assert len(orders) > 1
 
 
+def test_classes_too_small_to_teach_are_never_drawn_as_taught():
+    texts, labels = table(30, "train")
+    keep = [i for i, c in enumerate(labels) if c != 0 or i % 30 < 5]                          # class 0 keeps only 5 teaching messages
+    small = ([texts[i] for i in keep], [labels[i] for i in keep])
+    for seed in range(12):
+        w = world(seed=seed, teach=small, n_taught=3)
+        assert "card arrival" not in w.taught
+        assert not any("about card_arrival" in t for t, _ in w.known_test)
+    # its test messages are still legitimate never-taught messages
+    assert any("about card_arrival" in t for s in range(12) for t in world(seed=s, teach=small, n_taught=3, n_unknown=60).unknown_test)
+    assert len(world(teach=small, n_taught=len(NAMES) - 1).taught) == len(NAMES) - 1         # exactly five classes can be taught, and they are
+    keep2 = [i for i, c in enumerate(labels) if c > 1 or i % 30 < 5]                         # classes 0 and 1 are both too small
+    with pytest.raises(ValueError):
+        world(teach=([texts[i] for i in keep2], [labels[i] for i in keep2]), n_taught=len(NAMES) - 1)
+
+
 def test_loud_errors():
     with pytest.raises(ValueError):
         world(n_taught=len(NAMES))                                                           # nothing left to be never-taught
