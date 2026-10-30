@@ -86,3 +86,29 @@ def test_the_cards_are_built_from_the_teachers_names_and_two_training_messages()
     cards = DR.domain_cards(doms, {"banking": "bank customers' requests", "agnews": "news stories", "svamp": "word problems"}, TEXT)
     assert [c.name for c in cards] == ["bank customers' requests", "news stories", "word problems"]
     assert all(len(c.exemplars) == 2 for c in cards) and cards[0].exemplars[0] == "banking train 0"
+
+
+def test_the_ood_texts_are_exactly_the_messages_whose_vectors_the_suite_uses():
+    from pathlib import Path
+    from unimoe import domains as DM
+    if not (Path.home() / ".cache" / "huggingface" / "hub" / "datasets--roneneldan--TinyStories").exists():
+        pytest.skip("local Hugging Face cache not present")
+    from test_um_domains import FakeFE
+    fe = FakeFE()
+    texts = DR.ood_texts(seed=3, n=40)
+    vecs = DM.ood_sets(fe, seed=3, n=40)
+    assert set(texts) == set(vecs)
+    for name in texts:
+        assert len(texts[name]) == 40 and torch.equal(fe.text(texts[name]), vecs[name])
+
+
+def test_a_logistic_regression_domain_classifier_is_scored_on_the_text_domains_test_sets():
+    doms, s = world()
+    acc = DR.classifier_domain_routing(s, TEXT)
+    assert set(acc["per_domain"]) == set(TEXT) and 0.0 <= acc["accuracy"] <= 1.0
+    for ph in s.phases:
+        for i, r in enumerate(ph.regime.tolist()):
+            ph.x[i] = torch.nn.functional.one_hot(torch.tensor(list(doms).index(s.regimes[r].domain)), 128).float()
+    for reg in s.regimes.values():
+        reg.x_te = torch.stack([torch.nn.functional.one_hot(torch.tensor(list(doms).index(reg.domain)), 128).float()] * len(reg.y_te))
+    assert DR.classifier_domain_routing(s, TEXT)["accuracy"] == 1.0

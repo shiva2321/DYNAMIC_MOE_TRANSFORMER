@@ -29,6 +29,7 @@ STEP_GRID = (1, 5, 20)
 RECIPE_GRID = [{"inner_steps": s, "replay_size": r} for s in (5, 20, 50) for r in (256, 1024)]
 REPLAY_GRID = [{"hidden": w, "inner_steps": s} for w in (256, 1024, 4096) for s in (1, 5, 20)]
 _STREAMS: Dict[int, Dict[str, SU.UStream]] = {}
+_DOMAINS: Dict[int, dict] = {}
 
 
 STAMPED = ("frontends", "domains", "suite", "systems", "runner", "runlib")                          # the code that decides what a cell contains; analysis and report code may change freely
@@ -43,9 +44,15 @@ def streams(seed: int) -> Dict[str, SU.UStream]:
     if seed not in _STREAMS:
         fe = SphereFrontend(d=128, cache_dir=OUT / "emb")
         doms = {n: DM.load_domain(n, fe, seed) for n in DM.ALL_DOMAINS}
+        _DOMAINS[seed] = doms
         ood = DM.ood_sets(fe, seed)
         _STREAMS[seed] = {sch: SU.build_suite(sch, doms, seed, ood) for sch in SU.SCHEDULES}
     return _STREAMS[seed]
+
+
+def domains_for(seed: int) -> dict:
+    streams(seed)
+    return _DOMAINS[seed]
 
 
 def final_mean(rec: RunRecord) -> float:

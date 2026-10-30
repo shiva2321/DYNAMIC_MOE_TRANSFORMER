@@ -93,3 +93,37 @@ def asking_domain_routing(stream, domains, reader, order: Sequence[str], per_reg
     out = _summarise(hits)
     out["refused"] = float(np.mean(refused)) if refused else float("nan")
     return out
+
+
+def ood_texts(seed: int, n: int = 300) -> Dict[str, list]:
+    """The texts of ``domains.ood_sets`` (same sources, same draw), for readers that read words rather than vectors."""
+    import pandas as pd
+    from . import domains as DM
+    rng = np.random.default_rng([seed, 0x4F4F44])
+    sources = {
+        "stories": [DM._clip(t) for t in pd.read_parquet(DM._file("datasets--roneneldan--TinyStories", "*/data/validation-*.parquet"))["text"] if len(str(t).split()) >= 12],
+        "wiki": [DM._clip(t) for t in pd.read_parquet(DM._file("datasets--wikitext", "*/wikitext-2-raw-v1/test-*.parquet"))["text"]
+                 if len(str(t).split()) >= 12 and not str(t).strip().startswith("=")],
+        "science_questions": [DM._clip(t) for t in pd.read_parquet(DM._file("datasets--ai2_arc", "*/ARC-Challenge/test-*.parquet"))["question"] if len(str(t).split()) >= 5],
+    }
+    return {name: [texts[i] for i in rng.permutation(len(texts))[:n]] for name, texts in sources.items()}
+
+
+def classifier_domain_routing(stream, text_domains: Sequence[str]) -> dict:
+    """A logistic regression on the sphere, trained to name the DOMAIN of a message (the best look-only domain router these vectors allow)."""
+    from sklearn.linear_model import LogisticRegression
+    names = [d for d in text_domains if any(r.domain == d for r in stream.regimes.values())]
+    xs, ys = [], []
+    for ph in stream.phases:
+        for r in ph.regime.unique().tolist():
+            d = stream.regimes[r].domain
+            if d in names and bool(ph.first[ph.regime == r].any()):
+                m = (ph.regime == r) & ph.first
+                xs.append(ph.x[m])
+                ys += [names.index(d)] * int(m.sum())
+    clf = LogisticRegression(max_iter=2000, C=10.0).fit(torch.cat(xs).numpy(), np.asarray(ys))
+    hits = {d: [] for d in names}
+    for reg in stream.regimes.values():
+        if reg.domain in hits:
+            hits[reg.domain] += (clf.predict(reg.x_te.numpy()) == names.index(reg.domain)).tolist()
+    return _summarise(hits)
