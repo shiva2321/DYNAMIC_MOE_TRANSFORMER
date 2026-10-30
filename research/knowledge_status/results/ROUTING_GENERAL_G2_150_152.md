@@ -1,13 +1,13 @@
 # Lab G2, the same experts behind four gates (arithmetic in everyday language, seeds 150-152)
 
-Per seed about 80 known messages in new wordings (a right answer exists) and messages nobody owns (120 never-taught, 90 never-taught in teaching wordings, 236 everyday, 60 look-alike traps), where any answer is wrong. Experts: one solver per taught skill, numbers read by a fixed parser (declared simplification). Net = correct - wrong on the known messages - the mean share of unowned messages that got an answer.
+Per seed about 120 known messages in new wordings (a right answer exists) and messages nobody owns (120 never-taught, 90 never-taught in teaching wordings, 236 everyday, 60 look-alike traps), where any answer is wrong. Experts: one solver per taught skill, numbers read by a fixed parser (declared simplification). Net = correct - wrong on the known messages - the mean share of unowned messages that got an answer.
 
 | gate | answered | correct | wrong | precision (correct / answered) | routed right | correct, Solid owner | correct, Thin owner | NET |
 |---|---|---|---|---|---|---|---|---|
-| oracle | 1.000 | 0.263 | 0.737 | 0.263 | 1.000 | 0.975 | 0.100 | -0.475 |
-| ask | 0.896 | 0.229 | 0.667 | 0.251 | 0.972 | 0.925 | 0.075 | -0.668 |
-| vmf | 0.617 | 0.167 | 0.450 | 0.259 | 0.940 | 0.600 | 0.067 | -0.459 |
-| mix | 0.600 | 0.200 | 0.400 | 0.308 | 0.985 | 0.850 | 0.058 | -0.291 |
+| oracle | 1.000 | 0.497 | 0.503 | 0.497 | 1.000 | 0.696 | 0.100 | -0.006 |
+| ask | 0.917 | 0.447 | 0.469 | 0.488 | 0.979 | 0.633 | 0.075 | -0.253 |
+| vmf | 0.619 | 0.286 | 0.333 | 0.459 | 0.936 | 0.396 | 0.067 | -0.223 |
+| mix | 0.603 | 0.300 | 0.303 | 0.493 | 0.977 | 0.421 | 0.058 | -0.094 |
 
 Share of messages nobody owns that got an answer (lower is better):
 
@@ -20,4 +20,4 @@ Share of messages nobody owns that got an answer (lower is better):
 
 Expert accuracy on problems it never saw: Solid experts 0.753, Thin experts 0.127.
 
-**C7** (asking gate NET at least 0.15 above the vMF gate's): ask -0.668, vmf -0.459, difference -0.209. **FAIL**
+**C7** (asking gate NET at least 0.15 above the vMF gate's): ask -0.253, vmf -0.223, difference -0.030. **FAIL**

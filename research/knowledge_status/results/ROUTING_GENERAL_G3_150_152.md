@@ -2,24 +2,24 @@
 
 Shift flag = share of rewrites of held-out known messages that a reader flags at its own cut (5 % of the other half of the held-out messages). True known-flagged = the same reader on the real known test (arithmetic: new wordings; text domains: no shift). A reader is trusted when its shift flag is at most 0.1.
 
-## arithmetic (3 seeds; per seed 169 cut messages, 190 rewrites, 80 known, 120 never-taught, 236 foreign)
+## arithmetic (3 seeds; per seed 169 cut messages, 190 rewrites, 120 known, 120 never-taught, 236 foreign)
 
 | reader | shift flag | TRUE known flagged | never-taught found | foreign found | AUROC known vs never-taught | trusted |
 |---|---|---|---|---|---|---|
-| ask_exemplars | 0.099 | 0.121 | 0.694 | 0.988 | 0.921 | yes |
-| vmf_conformal | 0.314 | 0.375 | 0.731 | 1.000 | 0.685 | no |
-| mahalanobis | 0.511 | 0.500 | 0.933 | 1.000 | 0.681 | no |
-| knn_distance | 0.040 | 0.408 | 0.331 | 1.000 | 0.472 | yes |
+| ask_exemplars | 0.099 | 0.100 | 0.694 | 0.988 | 0.921 | yes |
+| vmf_conformal | 0.314 | 0.381 | 0.731 | 1.000 | 0.689 | no |
+| mahalanobis | 0.511 | 0.417 | 0.933 | 1.000 | 0.698 | no |
+| knn_distance | 0.040 | 0.336 | 0.331 | 1.000 | 0.628 | yes |
 
 | system | known flagged | never-taught found | foreign found | AUROC known vs never-taught |
 |---|---|---|---|---|
-| either_fixed | 0.379 | 0.825 | 1.000 | 0.728 |
-| both_fixed | 0.196 | 0.914 | 1.000 | 0.886 |
-| trusted_either | 0.121 | 0.694 | 0.988 | 0.921 |
-| trusted_either_calV | 0.067 | 0.528 | 0.973 | 0.923 |
-| trusted_all_either | 0.367 | 0.372 | 1.000 | 0.567 |
+| either_fixed | 0.364 | 0.825 | 1.000 | 0.738 |
+| both_fixed | 0.300 | 0.914 | 1.000 | 0.882 |
+| trusted_either | 0.100 | 0.694 | 0.988 | 0.919 |
+| trusted_either_calV | 0.067 | 0.528 | 0.973 | 0.921 |
+| trusted_all_either | 0.314 | 0.372 | 1.000 | 0.666 |
 
-Trusted pair readers per seed: {'ask_exemplars': 3}. Who is it? top-1 on known / on rewrites: ask 0.900 / 0.946; logistic regression on MiniLM 0.329 / 0.653.
+Trusted pair readers per seed: {'ask_exemplars': 3}. Who is it? top-1 on known / on rewrites: ask 0.933 / 0.946; logistic regression on MiniLM 0.700 / 0.653.
 
 ## banking (3 seeds; per seed 180 cut messages, 635 rewrites, 180 known, 300 never-taught, 150 foreign)
 
@@ -80,8 +80,8 @@ Trusted pair readers per seed: {'vmf_conformal': 2, 'ask_exemplars + vmf_conform
 
 ## Verdicts (rules fixed before the run)
 
-- C6a (the diagnostic): Spearman 0.003 (>= 0.6); readers with a true known-flagged rate above 0.15: 3, all untrusted: False; readers at or under 0.1: 12, share trusted 0.67 (>= 0.80). **FAIL**
-- C6b, arithmetic: trusted-either flags 0.121 of known (<= 0.15) and finds 0.694 (best usable reader 0.694, need >= that - 0.05). **PASS**
+- C6a (the diagnostic): Spearman 0.044 (>= 0.6); readers with a true known-flagged rate above 0.15: 3, all untrusted: False; readers at or under 0.1: 13, share trusted 0.69 (>= 0.80). **FAIL**
+- C6b, arithmetic: trusted-either flags 0.100 of known (<= 0.15) and finds 0.694 (best usable reader 0.694, need >= that - 0.05). **PASS**
 - C6b, banking: trusted-either flags 0.044 of known (<= 0.15) and finds 0.321 (best usable reader 0.836, need >= that - 0.05). **FAIL**
 - C6b, agnews: trusted-either flags 0.070 of known (<= 0.15) and finds 0.514 (best usable reader 0.563, need >= that - 0.05). **PASS**
 - C6b, newsgroups: trusted-either flags 0.048 of known (<= 0.15) and finds 0.212 (best usable reader 0.257, need >= that - 0.05). **PASS**

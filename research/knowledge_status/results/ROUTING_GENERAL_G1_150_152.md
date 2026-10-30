@@ -3,36 +3,36 @@
 Known = test messages of taught classes; unknown = test messages of never-taught classes; foreign = other text domains and science questions. 'unclaimed' = the reader gives no card.
 The reader sees class names (arm names) or names plus two teaching messages (arm exemplars); the detectors are fitted on all 60 teaching messages per class.
 
-## arithmetic (3 seeds; 3 taught classes; 80 known, 120 unknown, 236 foreign messages per seed)
+## arithmetic (3 seeds; 3 taught classes; 120 known, 120 unknown, 236 foreign messages per seed)
 
 Rule: claimed when the best card has probability of at least tau.
 
 | arm | tau | known claimed | known claimed RIGHT | right given claimed | unknown unclaimed | foreign unclaimed |
 |---|---|---|---|---|---|---|
-| names | 0.3 | 0.983 | 0.883 | 0.897 | 0.211 | 0.975 |
-| names | 0.5 | 0.942 | 0.883 | 0.936 | 0.244 | 0.975 |
-| names | 0.7 | 0.912 | 0.879 | 0.962 | 0.358 | 0.984 |
-| names | 0.9 | 0.875 | 0.867 | 0.990 | 0.572 | 0.990 |
-| exemplars | 0.3 | 0.904 | 0.879 | 0.972 | 0.558 | 0.979 |
-| exemplars | 0.5 | 0.896 | 0.871 | 0.972 | 0.581 | 0.979 |
-| exemplars | 0.7 | 0.871 | 0.862 | 0.990 | 0.697 | 0.992 |
-| exemplars | 0.9 | 0.850 | 0.850 | 1.000 | 0.800 | 0.997 |
+| names | 0.3 | 0.992 | 0.953 | 0.961 | 0.211 | 0.975 |
+| names | 0.5 | 0.978 | 0.953 | 0.974 | 0.244 | 0.975 |
+| names | 0.7 | 0.953 | 0.939 | 0.985 | 0.358 | 0.984 |
+| names | 0.9 | 0.933 | 0.928 | 0.994 | 0.572 | 0.990 |
+| exemplars | 0.3 | 0.919 | 0.900 | 0.979 | 0.558 | 0.979 |
+| exemplars | 0.5 | 0.917 | 0.897 | 0.979 | 0.581 | 0.979 |
+| exemplars | 0.7 | 0.897 | 0.886 | 0.988 | 0.697 | 0.992 |
+| exemplars | 0.9 | 0.875 | 0.869 | 0.994 | 0.800 | 0.997 |
 
 Same false-flag rate for everyone: the cut flags 0.05 of held-out known messages.
 
 | reader or detector | known flagged | unknown found | foreign found | AUROC known vs unknown | AUROC known vs foreign |
 |---|---|---|---|---|---|
-| ask, names | 0.100 | 0.475 | 0.987 | 0.886 | 0.997 |
-| ask, exemplars | 0.121 | 0.669 | 0.986 | 0.921 | 0.995 |
-| mahalanobis (MiniLM) | 0.504 | 0.925 | 1.000 | 0.681 | 0.998 |
-| knn_distance (MiniLM) | 0.442 | 0.361 | 1.000 | 0.472 | 1.000 |
-| vmf_conformal (MiniLM) | 0.383 | 0.756 | 1.000 | 0.685 | 1.000 |
-| FUSED either: ask_exemplars + vmf_conformal | 0.371 | 0.800 | 1.000 | 0.719 | 0.825 |
-| FUSED both: ask_exemplars + vmf_conformal | 0.208 | 0.919 | 1.000 | 0.893 | 0.996 |
-| FUSED either: ask_exemplars + mahalanobis | 0.438 | 0.925 | 1.000 | 0.761 | 0.812 |
-| FUSED both: ask_exemplars + mahalanobis | 0.254 | 0.964 | 1.000 | 0.918 | 0.996 |
-| FUSED either: ask_names + vmf_conformal | 0.371 | 0.733 | 1.000 | 0.715 | 0.829 |
-| FUSED both: ask_names + vmf_conformal | 0.233 | 0.908 | 1.000 | 0.878 | 0.998 |
+| ask, names | 0.053 | 0.475 | 0.987 | 0.926 | 0.998 |
+| ask, exemplars | 0.094 | 0.669 | 0.986 | 0.921 | 0.992 |
+| mahalanobis (MiniLM) | 0.417 | 0.925 | 1.000 | 0.698 | 0.998 |
+| knn_distance (MiniLM) | 0.358 | 0.361 | 1.000 | 0.628 | 1.000 |
+| vmf_conformal (MiniLM) | 0.381 | 0.756 | 1.000 | 0.689 | 1.000 |
+| FUSED either: ask_exemplars + vmf_conformal | 0.364 | 0.800 | 1.000 | 0.730 | 0.839 |
+| FUSED both: ask_exemplars + vmf_conformal | 0.319 | 0.919 | 1.000 | 0.889 | 0.985 |
+| FUSED either: ask_exemplars + mahalanobis | 0.394 | 0.925 | 1.000 | 0.773 | 0.819 |
+| FUSED both: ask_exemplars + mahalanobis | 0.286 | 0.964 | 1.000 | 0.926 | 0.985 |
+| FUSED either: ask_names + vmf_conformal | 0.361 | 0.733 | 1.000 | 0.726 | 0.840 |
+| FUSED both: ask_names + vmf_conformal | 0.211 | 0.908 | 1.000 | 0.908 | 0.999 |
 
 Extra sets (share flagged at each reader's own cut; for the claim rule, the share unclaimed at tau 0.5):
 
@@ -69,9 +69,9 @@ Who is it? (top-1 over the taught classes, known messages)
 
 | reader or classifier | top-1 |
 |---|---|
-| ask, names | 0.883 |
-| ask, exemplars | 0.900 |
-| logistic regression on MiniLM, 60 messages per class | 0.329 |
+| ask, names | 0.953 |
+| ask, exemplars | 0.933 |
+| logistic regression on MiniLM, 60 messages per class | 0.700 |
 
 ## banking (3 seeds; 6 taught classes; 180 known, 300 unknown, 150 foreign messages per seed)
 
