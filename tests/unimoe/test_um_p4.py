@@ -111,3 +111,43 @@ def test_the_oracle_lda_experts_are_told_the_regime_and_blend_an_lda_head_into_e
             pool.observe(x[lo:lo + 64], y2[lo:lo + 64], ctx=regime[lo:lo + 64])
     a = lambda p: float((p.predict(x[384:], ctx=regime[384:]).probs.argmax(1) == y2[384:]).float().mean())
     assert a(blended) >= a(plain) - 1e-6 and not torch.allclose(blended.predict(x[384:], ctx=regime[384:]).probs, plain.predict(x[384:], ctx=regime[384:]).probs)
+
+
+# ---------------------------------------------------------------------------------------------------------------------------------- the refusal experiment's bookkeeping
+def synthetic_scores(seed=0, n=900):
+    from unimoe import p4_refusal as PR
+    rng = np.random.default_rng(seed)
+    z = {"known_pool_nov": rng.normal(0, 1, n), "known_reader_unclaimed": rng.normal(0, 1, n), "known_pool_flag": np.zeros(n, dtype=bool), "known_reader_none": np.zeros(n, dtype=bool),
+         "known_y": rng.integers(0, 5, n), "known_regime": np.repeat([0, 1, 2], n // 3)}
+    z["known_pred"] = np.where(rng.random(n) < 0.8, z["known_y"], (z["known_y"] + 1) % 5)
+    for nm, (pool_shift, reader_shift) in {"stories": (4.0, 0.0), "wiki": (0.0, 4.0)}.items():                  # each reader sees only one of the two foreign registers
+        z[f"ood_{nm}_pool_nov"] = rng.normal(pool_shift, 1, 300)
+        z[f"ood_{nm}_reader_unclaimed"] = rng.normal(reader_shift, 1, 300)
+        z[f"ood_{nm}_pool_flag"] = np.zeros(300, dtype=bool)
+        z[f"ood_{nm}_reader_none"] = np.zeros(300, dtype=bool)
+    return PR, z
+
+
+def test_the_refusal_experiment_calibrates_on_a_sample_and_keeps_calibration_messages_out_of_the_evaluation():
+    PR, z = synthetic_scores()
+    dec, ev, names = PR.decisions(z, draw=0, cal_n=60, q=0.05)
+    assert names == ["stories", "wiki"] and ev.sum() == 3 * PR.EVAL_CAP                                  # 300 messages per regime, the cap keeps 150 of the non-calibration ones
+    small_ev = PR.decisions(synthetic_scores(2, n=240)[1], draw=0, cal_n=60, q=0.05)[1]
+    assert small_ev.sum() == 240 - 60                                                                    # under the cap, exactly the 60 calibration messages are left out
+    kn, oo = dec[PR.SYSTEMS[4]]
+    assert len(kn) == ev.sum() and kn.mean() < 0.2
+    assert oo["stories"].mean() > 0.7 and oo["wiki"].mean() > 0.7                                        # either: whichever reader sees the foreign register is enough
+    only_pool = dec[PR.SYSTEMS[1]][1]
+    assert only_pool["stories"].mean() > 0.7 and only_pool["wiki"].mean() < 0.3                          # a single reader misses what it cannot see
+    assert not dec[PR.SYSTEMS[0]][0].any() and not dec[PR.SYSTEMS[2]][1]["wiki"].any()                   # the uncalibrated rules are taken as the readers gave them
+
+
+def test_the_refusal_experiment_reports_accuracy_on_the_answered_messages_and_averages_over_draws():
+    PR, z = synthetic_scores(1)
+    z["known_pred"] = z["known_y"].copy()
+    wrong = z["known_pool_nov"] > 1.0                                                                       # the pool is wrong exactly where it is least familiar
+    z["known_pred"][wrong] = (z["known_y"][wrong] + 1) % 5
+    res = PR.evaluate(z, cal_n=60, q=0.05)
+    pool = res[PR.SYSTEMS[1]]
+    assert pool["accuracy_answered"] > pool["accuracy_all"] and abs(pool["coverage"] + pool["false_refusal"] - 1.0) < 1e-9
+    assert set(res[PR.SYSTEMS[4]]["ood_refused"]) == {"stories", "wiki"}
