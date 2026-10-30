@@ -57,3 +57,12 @@ def test_calibration_is_taught_skills_in_taught_wordings_and_no_set_shares_a_mes
             assert not sets[a] & sets[b], f"{a} and {b} share a message"
     assert world.states == [("solid" if truth.assignment[s] == "solid" else "thin") for s in truth.taught]
     assert [c.name for c in world.cards] == world.taught
+
+
+def test_known_test_covers_every_taught_skill_including_those_in_the_grey_zone_of_the_status_scoring(built):
+    world, foreign, extras, truth = built
+    owners = [i for _, i in world.known_test]
+    assert set(owners) == set(range(len(truth.taught)))                                      # status scoring drops grey skills; a pool must still answer them
+    assert len(world.known_test) == len(truth.taught) * R.SIZES.test_heldout
+    grey = [i for i, s in enumerate(truth.taught) if truth.truth[s] == "grey"]
+    assert all(i in owners for i in grey)

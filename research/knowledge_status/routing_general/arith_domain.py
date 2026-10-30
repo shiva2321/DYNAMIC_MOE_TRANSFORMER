@@ -41,7 +41,7 @@ def build_full(seed: int):
     known_cal = [(t, i) for i, s in enumerate(taught) for t in w.cal[s] if t not in seen]                 # the test bed's calibration repeats 4-6 % of the teaching requests; calibration must be new
     known, unknown, unknown_labels, foreign, traps, early = [], [], [], [], [], []
     for text, c in zip(w.test_texts, w.test_cases):
-        if c.kind == "arith" and c.skill in taught and c.status in ("solid", "thin") and c.family in HELD:
+        if c.kind == "arith" and c.skill in taught and c.family in HELD:                  # every taught skill, also those the status scoring leaves out as "grey": a pool must answer them
             known.append((text, taught.index(c.skill)))
         elif c.kind == "arith" and c.status == "unseen":
             if c.family in HELD:                                                          # matched to the known test: both are in wordings nobody taught
