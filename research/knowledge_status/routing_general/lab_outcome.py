@@ -43,6 +43,7 @@ DRAWS = 5
 Q = LG.Q
 N_CAL_TEXT = 60
 KNOWN_LIMIT, POWER_MARGIN = 0.10, 0.05                                                   # rule C8
+CONTAMINATE = 0.25                                                                       # share of never-taught messages in the stream of lab G4b
 SEEDS = list(range(150, 153))
 
 
@@ -89,8 +90,50 @@ def score_sets(world, foreign: Sequence[str], ask: Optional[Callable], encode: C
     return S
 
 
+def contamination_arms(S, owner: Sequence[int], verified: np.ndarray, v_unk: np.ndarray, u: float, seed: int, draws: int, nvs: Sequence[int], q: float) -> dict:
+    """The same calibration, but the stream the verified sample is drawn from also holds never-taught messages (a share u of it), and the answer check wrongly vouches for some of them. The
+    never-taught messages are split into a stream half and an evaluation half, so power is judged on messages that never entered a calibration; the clean arm is drawn from the same split
+    without them, so the two differ in nothing but the contamination."""
+    n_known, n_unk = len(verified), len(v_unk)
+    A = {r: np.concatenate([S[r]["known"], S[r]["unknown"]]) for r in READERS}
+    out = {mode: {arm: {str(nv): {s: [] for s in SYSTEMS} for nv in nvs} for arm in ("verified", "union")} for mode in ("contaminated", "clean")}
+    share: Dict[str, List[float]] = {str(nv): [] for nv in nvs}
+    for d in range(draws):
+        pool, evl = OC.split_pool_eval(owner, np.random.default_rng([seed, 0x4734, d]))
+        perm = np.random.default_rng([seed, 0x4735, d]).permutation(n_unk)
+        unk_pool, unk_eval = perm[:n_unk // 2], perm[n_unk // 2:]
+        stream_unk = unk_pool[:int(round(len(pool) * u / (1.0 - u)))]
+        flags = np.concatenate([verified, np.zeros(n_unk, dtype=bool)])
+        flags[n_known + stream_unk] = v_unk[stream_unk]
+        ev = {"known": {r: S[r]["known"][evl] for r in READERS}, "unknown": {r: S[r]["unknown"][unk_eval] for r in READERS}, "foreign": {r: S[r]["foreign"] for r in READERS}}
+        for nv in nvs:
+            drawn = {"contaminated": OC.verified_sample(pool + [n_known + int(i) for i in stream_unk], flags, nv, np.random.default_rng([seed, 0x4735, d, nv])),
+                     "clean": OC.verified_sample(pool, verified, nv, np.random.default_rng([seed, 0x4735, d, nv, 1]))}
+            share[str(nv)].append(float(np.mean([i >= n_known for i in drawn["contaminated"]])) if drawn["contaminated"] else 0.0)
+            for mode, samp in drawn.items():
+                if len(samp) < 2:
+                    continue
+                for arm in ("verified", "union"):
+                    for s, (src, rule) in SYSTEMS.items():
+                        cal = {r: (A[r][samp] if arm == "verified" else np.concatenate([S[r]["cal"], A[r][samp]])) for r in src}
+                        out[mode][arm][str(nv)][s].append(OC.system_metrics(cal, ev, src, rule, q))
+    res = {mode: {arm: {nv: {s: OC.mean_over_draws([{k: v for k, v in m.items() if k != "cut"} for m in rows]) for s, rows in per.items() if rows} for nv, per in byn.items()}
+                  for arm, byn in arms.items()} for mode, arms in out.items()}
+    return {"u": u, "share_unknown_in_sample": {nv: float(np.mean(v)) for nv, v in share.items()}, **res}
+
+
+def contamination_verdict(per_domain_rows: Sequence[dict], nv: int = HEADLINE) -> dict:
+    """C10 (declared before the run): with never-taught messages in the stream and an answer check that vouches for some of them, the either-fusion of the pair calibrated on the verified
+    sample still flags at most 0.10 of the held-out known messages and keeps at least two thirds of the power it has without the contamination."""
+    rows = [r for r in per_domain_rows if "contaminated" in r]
+    g = lambda mode, k: _mean(rows, lambda r: r["contaminated"][mode]["verified"][str(nv)]["either_pair"][k] if "either_pair" in r["contaminated"][mode]["verified"][str(nv)] else float("nan"))
+    clean, dirty, kf = g("clean", "unknown_found"), g("contaminated", "unknown_found"), g("contaminated", "known_flagged")
+    return {"clean_found": clean, "contaminated_found": dirty, "contaminated_known_flagged": kf, "share_unknown_in_sample": _mean(rows, lambda r: r["contaminated"]["share_unknown_in_sample"][str(nv)]),
+            "C10_pass": bool(kf <= KNOWN_LIMIT and dirty >= (2.0 / 3.0) * clean)}
+
+
 def run_cell(world, foreign: Sequence[str], verifier, ask: Optional[Callable] = None, encode: Callable = LG.default_encode, cache_dir=LG.ASK_DIR, seed: int = 0,
-             draws: int = DRAWS, nvs: Sequence[int] = NV, q: float = Q, unowned_extra: Sequence[str] = ()) -> dict:
+             draws: int = DRAWS, nvs: Sequence[int] = NV, q: float = Q, unowned_extra: Sequence[str] = (), contaminate: float = 0.0) -> dict:
     S = score_sets(world, foreign, ask, encode, cache_dir)
     known_t, owner = [t for t, _ in world.known_test], [i for _, i in world.known_test]
     verified = verifier.known(known_t)
@@ -119,6 +162,8 @@ def run_cell(world, foreign: Sequence[str], verifier, ask: Optional[Callable] = 
                     acc[arm][str(nv)][s].append(OC.system_metrics(cal, ev, src, rule, q))
     rec["results"] = {a: {nv: {s: OC.mean_over_draws([{k: v for k, v in m.items() if k != "cut"} for m in rows]) for s, rows in per.items() if rows} for nv, per in byn.items()} for a, byn in acc.items()}
     rec["n_actual"] = {nv: float(np.mean(v)) for nv, v in n_act.items()}
+    if contaminate > 0:
+        rec["contaminated"] = contamination_arms(S, owner, verified, verifier.unowned(list(world.unknown_test)), contaminate, seed, draws, nvs, q)
     return rec
 
 
@@ -165,6 +210,16 @@ def report(per_domain: Dict[str, List[dict]], seeds: Sequence[int], nv: int = HE
             g = lambda k: _mean(rows, lambda r: r["results"]["verified"][str(n_)]["either_pair"][k] if "either_pair" in r["results"]["verified"][str(n_)] else float("nan"))
             L.append(f"| {n_} | {_mean(rows, lambda r: r['n_actual'][str(n_)]):.1f} | {g('known_flagged'):.3f} | {g('unknown_found'):.3f} | {g('foreign_found'):.3f} |")
         L.append("")
+        if "contaminated" in rows[0]:
+            c = rows[0]["contaminated"]
+            L += [f"Contamination (G4b): the stream also holds never-taught messages (share {c['u']}), the answer check vouches for some of them; on average "
+                  f"{_mean(rows, lambda r: r['contaminated']['share_unknown_in_sample'][str(nv)]):.3f} of the verified sample at n={nv} is never-taught. Power is judged on never-taught messages that never "
+                  "entered a calibration; the clean arm is the same split without the contamination.", "",
+                  "| system | clean: known flagged | found | contaminated: known flagged | found |", "|---|---|---|---|---|"]
+            for s_ in ("ask_exemplars", "vmf_conformal", "either_pair", "both_pair", "either_all"):
+                g = lambda mode, k: _mean(rows, lambda r: r["contaminated"][mode]["verified"][str(nv)][s_][k] if s_ in r["contaminated"][mode]["verified"][str(nv)] else float("nan"))
+                L.append(f"| {s_} | {g('clean', 'known_flagged'):.3f} | {g('clean', 'unknown_found'):.3f} | {g('contaminated', 'known_flagged'):.3f} | {g('contaminated', 'unknown_found'):.3f} |")
+            L.append("")
     vd = verdicts(per_domain, nv)
     L += ["## Verdicts (rules fixed before the run)", ""]
     for d, x in vd["C8"].items():
@@ -173,6 +228,11 @@ def report(per_domain: Dict[str, List[dict]], seeds: Sequence[int], nv: int = HE
     L.append(f"- C8 overall (all four domains): **{'PASS' if vd['C8_pass'] else 'FAIL'}**")
     if vd["C9"]:
         L.append(f"- C9 (sanity, true by construction): arithmetic fixed {vd['C9']['fixed']:.3f} (>= 0.30), verified {vd['C9']['verified']:.3f} (<= 0.10). **{'PASS' if vd['C9']['pass'] else 'FAIL'}**")
+    if "arithmetic" in per_domain and "contaminated" in per_domain["arithmetic"][0]:
+        cv = contamination_verdict(per_domain["arithmetic"], nv)
+        L.append(f"- C10 (arithmetic, contaminated stream): the either-fusion flags {cv['contaminated_known_flagged']:.3f} of held-out known (<= {KNOWN_LIMIT}) and finds {cv['contaminated_found']:.3f} against "
+                 f"{cv['clean_found']:.3f} without the contamination (need >= two thirds of it, {2 * cv['clean_found'] / 3:.3f}); {cv['share_unknown_in_sample']:.3f} of the sample was never-taught. "
+                 f"**{'PASS' if cv['C10_pass'] else 'FAIL'}**")
     L.append("")
     return "\n".join(L)
 
@@ -196,7 +256,7 @@ def run_seed(domain: str, seed: int, out_dir, stamp: str) -> dict:
     if runlib.cell_done(path, stamp):
         return json.loads(path.read_text(encoding="utf-8"))
     world, foreign, verifier, extra = build(domain, seed)
-    rec = run_cell(world, foreign, verifier, seed=seed, unowned_extra=extra)
+    rec = run_cell(world, foreign, verifier, seed=seed, unowned_extra=extra, contaminate=CONTAMINATE)
     rec.update({"seed": seed, "code_stamp": stamp})
     Path(out_dir).mkdir(parents=True, exist_ok=True)
     runlib.atomic_write_text(path, json.dumps(LG._native(rec)))

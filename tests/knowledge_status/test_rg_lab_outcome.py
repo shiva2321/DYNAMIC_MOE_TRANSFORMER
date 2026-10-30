@@ -72,3 +72,50 @@ def test_the_report_has_every_block_and_the_verdict_lines():
     text = LO.report({"banking": [cell(0.07, 0.05, 0.8, {})], "arithmetic": [cell(0.36, 0.06, 0.5, {})]}, [150])
     assert "## banking" in text and "## arithmetic" in text and "How many verified messages are needed" in text and "C8 overall" in text and "C9 (sanity" in text
     assert "| either_pair |" in text and "| ask_exemplars |" in text
+
+
+class Coincidence:
+    """Vouches for every never-taught message (the worst case of the answer check) or for none."""
+
+    def __init__(self, vouch):
+        self.vouch = vouch
+
+    def known(self, texts):
+        return np.ones(len(texts), dtype=bool)
+
+    def unowned(self, texts):
+        return np.full(len(texts), self.vouch, dtype=bool)
+
+
+def test_contamination_puts_wrongly_verified_never_taught_messages_into_the_calibration_sample(tmp_path):
+    w = TL.make_world()
+    kw = dict(ask=TL.fake_ask_for(w), encode=TL.fake_encode, cache_dir=tmp_path, seed=1, draws=3, nvs=(6,), contaminate=0.25)
+    bad = LO.run_cell(w, TL.FOREIGN, Coincidence(True), **kw)
+    good = LO.run_cell(w, TL.FOREIGN, Coincidence(False), **kw)
+    assert bad["contaminated"]["u"] == 0.25 and bad["contaminated"]["share_unknown_in_sample"]["6"] > 0.1
+    assert good["contaminated"]["share_unknown_in_sample"]["6"] == 0.0
+    for mode in ("contaminated", "clean"):
+        assert set(bad["contaminated"][mode]) == {"verified", "union"}
+        assert set(bad["contaminated"][mode]["verified"]["6"]) == set(LO.SYSTEMS)
+    plain = LO.run_cell(w, TL.FOREIGN, Coincidence(True), **{**kw, "contaminate": 0.0})
+    assert "contaminated" not in plain                                                          # the default run is the one of G4, unchanged
+
+
+def contaminated(clean_found, dirty_found, dirty_kf=0.04):
+    m = lambda f, kf: {"known_flagged": kf, "unknown_found": f, "auroc_unknown": 0.9, "foreign_found": 1.0, "draws": 5}
+    one = lambda f, kf: {"verified": {"30": {s: m(f, kf) for s in LO.SYSTEMS}}, "union": {"30": {s: m(f, kf) for s in LO.SYSTEMS}}}
+    return {"contaminated": {"u": 0.25, "share_unknown_in_sample": {"30": 0.09}, "contaminated": one(dirty_found, dirty_kf), "clean": one(clean_found, 0.05)}}
+
+
+def test_the_contamination_verdict_needs_two_thirds_of_the_power_and_the_false_flag_limit():
+    assert LO.contamination_verdict([contaminated(0.30, 0.25)])["C10_pass"]
+    assert not LO.contamination_verdict([contaminated(0.30, 0.15)])["C10_pass"]                  # lost more than a third of the power
+    assert not LO.contamination_verdict([contaminated(0.30, 0.25, dirty_kf=0.14)])["C10_pass"]    # or flags too many known messages
+    v = LO.contamination_verdict([contaminated(0.30, 0.25), contaminated(0.40, 0.20)])
+    assert v["clean_found"] == pytest.approx(0.35) and v["contaminated_found"] == pytest.approx(0.225) and v["share_unknown_in_sample"] == pytest.approx(0.09)
+
+
+def test_the_report_shows_the_contamination_table_and_the_c10_line_when_the_cells_have_it():
+    arith = {**cell(0.36, 0.06, 0.5, {}), **contaminated(0.30, 0.25)}
+    text = LO.report({"arithmetic": [arith]}, [150])
+    assert "Contamination (G4b)" in text and "C10 (arithmetic, contaminated stream)" in text and "| either_pair | 0.050 | 0.300 | 0.040 | 0.250 |" in text

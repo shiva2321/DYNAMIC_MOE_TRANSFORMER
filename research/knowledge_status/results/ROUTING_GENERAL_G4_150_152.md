@@ -1,0 +1,104 @@
+# Lab G4, readers calibrated on verified outcomes of the stream's own wording (seeds 150-152, 5 random draws per cell)
+
+Headline: 30 verified messages calibrate each cut (arm verified); arm fixed = held-out messages of the teaching wording only (E-048); arm union = both. Judged on the held-out half of the known messages (nominal false-flag rate 0.05) and on never-taught and foreign messages.
+
+## arithmetic (3 seeds; 120 known, 120 never-taught, 236 foreign per seed)
+
+Verification: 0.558 of the known messages are verified (Solid-taught owners 0.725, Thin 0.225); never-taught messages wrongly vouched for 0.158, other unowned 0.115. Verified messages available in the pool at n=30: 29.6 on average.
+
+| system | fixed: known flagged | found | AUROC | verified: known flagged | found | AUROC | union: known flagged | found |
+|---|---|---|---|---|---|---|---|---|
+| ask_exemplars | 0.109 | 0.669 | 0.913 | 0.039 | 0.253 | 0.911 | 0.106 | 0.667 |
+| vmf_conformal | 0.366 | 0.756 | 0.705 | 0.018 | 0.047 | 0.704 | 0.337 | 0.641 |
+| mahalanobis | 0.407 | 0.925 | 0.774 | 0.029 | 0.030 | 0.710 | 0.369 | 0.882 |
+| knn_distance | 0.350 | 0.361 | 0.635 | 0.020 | 0.036 | 0.638 | 0.296 | 0.323 |
+| either_pair | 0.350 | 0.800 | 0.740 | 0.054 | 0.280 | 0.877 | 0.286 | 0.613 |
+| both_pair | 0.302 | 0.919 | 0.885 | 0.018 | 0.068 | 0.812 | 0.256 | 0.894 |
+| either_all | 0.387 | 0.917 | 0.777 | 0.074 | 0.284 | 0.853 | 0.291 | 0.591 |
+
+How many verified messages are needed (either-fusion of the pair, arm verified):
+
+| n asked | n available | known flagged | never-taught found | foreign found |
+|---|---|---|---|---|
+| 10 | 10.0 | 0.000 | 0.000 | 0.000 |
+| 20 | 20.0 | 0.079 | 0.380 | 1.000 |
+| 30 | 29.6 | 0.054 | 0.280 | 0.999 |
+| 40 | 33.4 | 0.047 | 0.212 | 0.999 |
+
+## banking (3 seeds; 180 known, 300 never-taught, 150 foreign per seed)
+
+Verification: 1.000 of the known messages are verified (Solid-taught owners 1.000, Thin nan); never-taught messages wrongly vouched for 0.000. Verified messages available in the pool at n=30: 30.0 on average.
+
+| system | fixed: known flagged | found | AUROC | verified: known flagged | found | AUROC | union: known flagged | found |
+|---|---|---|---|---|---|---|---|---|
+| ask_exemplars | 0.053 | 0.341 | 0.799 | 0.021 | 0.186 | 0.796 | 0.045 | 0.324 |
+| vmf_conformal | 0.056 | 0.830 | 0.965 | 0.041 | 0.642 | 0.953 | 0.057 | 0.824 |
+| mahalanobis | 0.045 | 0.747 | 0.958 | 0.041 | 0.634 | 0.948 | 0.046 | 0.744 |
+| knn_distance | 0.050 | 0.726 | 0.952 | 0.029 | 0.596 | 0.944 | 0.049 | 0.724 |
+| either_pair | 0.051 | 0.721 | 0.952 | 0.059 | 0.676 | 0.935 | 0.045 | 0.712 |
+| both_pair | 0.061 | 0.612 | 0.903 | 0.019 | 0.378 | 0.893 | 0.056 | 0.601 |
+| either_all | 0.036 | 0.724 | 0.953 | 0.082 | 0.792 | 0.931 | 0.036 | 0.724 |
+
+How many verified messages are needed (either-fusion of the pair, arm verified):
+
+| n asked | n available | known flagged | never-taught found | foreign found |
+|---|---|---|---|---|
+| 10 | 10.0 | 0.000 | 0.000 | 0.000 |
+| 20 | 20.0 | 0.096 | 0.810 | 1.000 |
+| 30 | 30.0 | 0.059 | 0.676 | 1.000 |
+| 40 | 40.0 | 0.067 | 0.687 | 1.000 |
+
+## agnews (3 seeds; 180 known, 300 never-taught, 150 foreign per seed)
+
+Verification: 1.000 of the known messages are verified (Solid-taught owners 1.000, Thin nan); never-taught messages wrongly vouched for 0.000. Verified messages available in the pool at n=30: 30.0 on average.
+
+| system | fixed: known flagged | found | AUROC | verified: known flagged | found | AUROC | union: known flagged | found |
+|---|---|---|---|---|---|---|---|---|
+| ask_exemplars | 0.061 | 0.489 | 0.855 | 0.037 | 0.253 | 0.849 | 0.056 | 0.488 |
+| vmf_conformal | 0.064 | 0.528 | 0.880 | 0.013 | 0.215 | 0.879 | 0.048 | 0.456 |
+| mahalanobis | 0.056 | 0.501 | 0.889 | 0.020 | 0.220 | 0.884 | 0.056 | 0.486 |
+| knn_distance | 0.047 | 0.540 | 0.895 | 0.027 | 0.313 | 0.889 | 0.045 | 0.522 |
+| either_pair | 0.060 | 0.546 | 0.886 | 0.047 | 0.390 | 0.883 | 0.056 | 0.527 |
+| both_pair | 0.061 | 0.621 | 0.904 | 0.018 | 0.270 | 0.900 | 0.052 | 0.580 |
+| either_all | 0.070 | 0.621 | 0.889 | 0.066 | 0.512 | 0.884 | 0.061 | 0.561 |
+
+How many verified messages are needed (either-fusion of the pair, arm verified):
+
+| n asked | n available | known flagged | never-taught found | foreign found |
+|---|---|---|---|---|
+| 10 | 10.0 | 0.000 | 0.000 | 0.000 |
+| 20 | 20.0 | 0.061 | 0.538 | 0.681 |
+| 30 | 30.0 | 0.047 | 0.390 | 0.571 |
+| 40 | 40.0 | 0.050 | 0.466 | 0.620 |
+
+## newsgroups (3 seeds; 180 known, 300 never-taught, 150 foreign per seed)
+
+Verification: 1.000 of the known messages are verified (Solid-taught owners 1.000, Thin nan); never-taught messages wrongly vouched for 0.000. Verified messages available in the pool at n=30: 30.0 on average.
+
+| system | fixed: known flagged | found | AUROC | verified: known flagged | found | AUROC | union: known flagged | found |
+|---|---|---|---|---|---|---|---|---|
+| ask_exemplars | 0.053 | 0.148 | 0.774 | 0.022 | 0.069 | 0.773 | 0.050 | 0.143 |
+| vmf_conformal | 0.060 | 0.254 | 0.736 | 0.026 | 0.134 | 0.732 | 0.059 | 0.250 |
+| mahalanobis | 0.049 | 0.226 | 0.773 | 0.036 | 0.149 | 0.770 | 0.047 | 0.226 |
+| knn_distance | 0.053 | 0.251 | 0.771 | 0.039 | 0.160 | 0.767 | 0.050 | 0.242 |
+| either_pair | 0.041 | 0.202 | 0.767 | 0.048 | 0.193 | 0.763 | 0.044 | 0.212 |
+| both_pair | 0.056 | 0.257 | 0.804 | 0.034 | 0.151 | 0.798 | 0.053 | 0.235 |
+| either_all | 0.036 | 0.223 | 0.780 | 0.093 | 0.311 | 0.772 | 0.033 | 0.218 |
+
+How many verified messages are needed (either-fusion of the pair, arm verified):
+
+| n asked | n available | known flagged | never-taught found | foreign found |
+|---|---|---|---|---|
+| 10 | 10.0 | 0.000 | 0.000 | 0.000 |
+| 20 | 20.0 | 0.067 | 0.260 | 0.400 |
+| 30 | 30.0 | 0.048 | 0.193 | 0.352 |
+| 40 | 40.0 | 0.040 | 0.182 | 0.336 |
+
+## Verdicts (rules fixed before the run)
+
+- C8, arithmetic: either-fusion calibrated on the verified sample flags 0.054 of held-out known (<= 0.1; the fixed calibration flags 0.350) and finds 0.280 (best reader alone 0.253, need >= that - 0.05). **PASS**
+- C8, banking: either-fusion calibrated on the verified sample flags 0.059 of held-out known (<= 0.1; the fixed calibration flags 0.051) and finds 0.676 (best reader alone 0.642, need >= that - 0.05). **PASS**
+- C8, agnews: either-fusion calibrated on the verified sample flags 0.047 of held-out known (<= 0.1; the fixed calibration flags 0.060) and finds 0.390 (best reader alone 0.313, need >= that - 0.05). **PASS**
+- C8, newsgroups: either-fusion calibrated on the verified sample flags 0.048 of held-out known (<= 0.1; the fixed calibration flags 0.041) and finds 0.193 (best reader alone 0.160, need >= that - 0.05). **PASS**
+- C8 overall (all four domains): **PASS**
+- C9 (sanity, true by construction): arithmetic fixed 0.350 (>= 0.30), verified 0.054 (<= 0.10). **PASS**
