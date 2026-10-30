@@ -123,14 +123,14 @@ def run_cell(world: DM.DomainWorld, foreign: Sequence[str], ask: Optional[Callab
     return rec
 
 
-def build_world(domain: str, seed: int):
-    """(world, foreign messages, extra sets) of one domain and seed. The only branch on a domain name in the lab."""
+def build_world(domain: str, seed: int, n_cal: int = N_CAL):
+    """(world, foreign messages, extra sets) of one domain and seed. The only branch on a domain name in the lab. ``n_cal`` is the held-out messages per class of the text domains."""
     if domain == "arithmetic":
         import arith_domain as AD
         return AD.build(seed)
     loader, n_taught, other = DOMAINS[domain]
     teach, test, names = loader()
-    return DM.build_labelled_world(domain, teach, test, names, n_taught, N_TEACH, N_CAL, N_KNOWN, N_UNKNOWN, seed), foreign_messages(other, seed, N_FOREIGN), {}
+    return DM.build_labelled_world(domain, teach, test, names, n_taught, N_TEACH, n_cal, N_KNOWN, N_UNKNOWN, seed), foreign_messages(other, seed, N_FOREIGN), {}
 
 
 def run_seed(domain: str, seed: int, out_dir, stamp: str) -> dict:
