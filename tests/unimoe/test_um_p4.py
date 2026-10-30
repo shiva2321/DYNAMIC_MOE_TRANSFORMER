@@ -117,12 +117,13 @@ def test_the_oracle_lda_experts_are_told_the_regime_and_blend_an_lda_head_into_e
 def synthetic_scores(seed=0, n=900):
     from unimoe import p4_refusal as PR
     rng = np.random.default_rng(seed)
-    z = {"known_pool_nov": rng.normal(0, 1, n), "known_reader_unclaimed": rng.normal(0, 1, n), "known_pool_flag": np.zeros(n, dtype=bool), "known_reader_none": np.zeros(n, dtype=bool),
+    z = {"known_pool_nov": rng.normal(0, 1, n), "known_reader_unclaimed": rng.normal(0, 1, n), "known_maha": rng.normal(0, 1, n), "known_pool_flag": np.zeros(n, dtype=bool), "known_reader_none": np.zeros(n, dtype=bool),
          "known_y": rng.integers(0, 5, n), "known_regime": np.repeat([0, 1, 2], n // 3)}
     z["known_pred"] = np.where(rng.random(n) < 0.8, z["known_y"], (z["known_y"] + 1) % 5)
     for nm, (pool_shift, reader_shift) in {"stories": (4.0, 0.0), "wiki": (0.0, 4.0)}.items():                  # each reader sees only one of the two foreign registers
         z[f"ood_{nm}_pool_nov"] = rng.normal(pool_shift, 1, 300)
         z[f"ood_{nm}_reader_unclaimed"] = rng.normal(reader_shift, 1, 300)
+        z[f"ood_{nm}_maha"] = rng.normal(0, 1, 300)                                                     # the density reader sees neither register in this toy
         z[f"ood_{nm}_pool_flag"] = np.zeros(300, dtype=bool)
         z[f"ood_{nm}_reader_none"] = np.zeros(300, dtype=bool)
     return PR, z
@@ -151,3 +152,16 @@ def test_the_refusal_experiment_reports_accuracy_on_the_answered_messages_and_av
     pool = res[PR.SYSTEMS[1]]
     assert pool["accuracy_answered"] > pool["accuracy_all"] and abs(pool["coverage"] + pool["false_refusal"] - 1.0) < 1e-9
     assert set(res[PR.SYSTEMS[4]]["ood_refused"]) == {"stories", "wiki"}
+
+
+def test_a_third_reader_that_sees_a_register_the_others_miss_is_added_by_either_at_the_same_total_false_refusal_level():
+    PR, z = synthetic_scores(3)
+    z["ood_wiki_pool_nov"] = np.random.default_rng(5).normal(0, 1, 300)                                   # now only the density reader sees the wiki register
+    z["ood_wiki_reader_unclaimed"] = np.random.default_rng(6).normal(0, 1, 300)
+    z["ood_wiki_maha"] = np.random.default_rng(7).normal(4, 1, 300)
+    dec, ev, _ = PR.decisions(z, draw=0, cal_n=60, q=0.05)
+    two, three = dec[PR.SYSTEMS[4]], dec[PR.SYSTEMS[6]]
+    assert three[1]["wiki"].mean() > two[1]["wiki"].mean() + 0.5                                           # the new register is caught
+    assert three[1]["stories"].mean() > two[1]["stories"].mean() - 0.15                                    # the fused cut is calibrated to the same total level q: what the others catch is kept up to a small price
+    assert three[0].mean() < 0.15                                                                           # and the false refusals stay near the level, they do not add up per source
+    assert dec[PR.SYSTEMS[5]][1]["wiki"].mean() > 0.7

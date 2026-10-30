@@ -17,6 +17,7 @@ from typing import Dict, List
 import numpy as np
 import torch
 
+from . import density as DN
 from . import domain_routing as DR
 from . import experiment as E
 from . import p4 as P4
@@ -29,7 +30,8 @@ TEXT = ("banking", "agnews", "newsgroups", "emotion", "sst2", "svamp")
 SEEDS = (500, 501, 502)
 CAL_N, Q, DRAWS, EVAL_CAP, N_OOD = 60, 0.05, 5, 150, 300
 OUT = E.OUT / "p4_refusal"
-SYSTEMS = ("pool flag (built-in, uncalibrated)", "pool calibrated", "reader claim (uncalibrated)", "reader calibrated", "either calibrated (pool + reader)")
+SYSTEMS = ("pool flag (built-in, uncalibrated)", "pool calibrated", "reader claim (uncalibrated)", "reader calibrated", "either calibrated (pool + reader)", "density calibrated (Mahalanobis)",
+           "either calibrated (pool + reader + density)")
 
 
 def recipe_for(name: str) -> dict:
@@ -90,14 +92,18 @@ def run_one(name: str, seed: int) -> None:
     pool = train_live(name, st, seed)
     reader = asking_reader(st, doms)
     xk, yk, tk, rk = known_messages(st, doms)
+    density = DN.DensityHead(st.d, st.n_classes)                                            # the third reader: distance to the nearest taught class, from the same labelled batches the pool saw
+    for ph in st.phases:
+        density.update(ph.x, ph.y)
     out = {f"known_{k}": v for k, v in read(pool, reader, xk, tk).items()}
-    out["known_y"], out["known_regime"] = yk, rk
+    out["known_y"], out["known_regime"], out["known_maha"] = yk, rk, density.distance(xk).numpy()
     ood_t = DR.ood_texts(seed, N_OOD)
     for nm, texts in ood_t.items():
         xo = st.ood[nm][:len(texts)]
         assert len(xo) == len(texts), (nm, len(xo), len(texts))
         for k, v in read(pool, reader, xo, texts).items():
             out[f"ood_{nm}_{k}"] = v
+        out[f"ood_{nm}_maha"] = density.distance(xo).numpy()
     runlib.atomic_save_npz(path, stamp=np.asarray(stamp), **out)
     print(f"{name} seed {seed}: {len(yk)} known messages, accuracy {float((out['known_pred'] == yk).mean()):.3f}, pool flag on known {out['known_pool_flag'].mean():.3f}, on OOD "
           + ", ".join(f"{nm} {out[f'ood_{nm}_pool_flag'].mean():.2f}" for nm in ood_t), flush=True)
@@ -117,16 +123,18 @@ def decisions(z: Dict[str, np.ndarray], draw: int, cal_n: int, q: float):
     names = sorted({k[4:-len("_pool_nov")] for k in z if k.startswith("ood_") and k.endswith("_pool_nov")})
 
     def run(sources):
-        cal_s = {"pool": z["known_pool_nov"][cal], "reader": z["known_reader_unclaimed"][cal]}
-        kn = RF.refusal_decision(cal_s, {"pool": z["known_pool_nov"][ev], "reader": z["known_reader_unclaimed"][ev]}, sources, q)
-        oo = {nm: RF.refusal_decision(cal_s, {"pool": z[f"ood_{nm}_pool_nov"], "reader": z[f"ood_{nm}_reader_unclaimed"]}, sources, q) for nm in names}
+        cal_s = {"pool": z["known_pool_nov"][cal], "reader": z["known_reader_unclaimed"][cal], "density": z["known_maha"][cal]}
+        kn = RF.refusal_decision(cal_s, {"pool": z["known_pool_nov"][ev], "reader": z["known_reader_unclaimed"][ev], "density": z["known_maha"][ev]}, sources, q)
+        oo = {nm: RF.refusal_decision(cal_s, {"pool": z[f"ood_{nm}_pool_nov"], "reader": z[f"ood_{nm}_reader_unclaimed"], "density": z[f"ood_{nm}_maha"]}, sources, q) for nm in names}
         return kn, oo
 
     out = {SYSTEMS[0]: (z["known_pool_flag"][ev], {nm: z[f"ood_{nm}_pool_flag"] for nm in names}),
            SYSTEMS[1]: run(["pool"]),
            SYSTEMS[2]: (z["known_reader_none"][ev], {nm: z[f"ood_{nm}_reader_none"] for nm in names}),
            SYSTEMS[3]: run(["reader"]),
-           SYSTEMS[4]: run(["pool", "reader"])}
+           SYSTEMS[4]: run(["pool", "reader"]),
+           SYSTEMS[5]: run(["density"]),
+           SYSTEMS[6]: run(["pool", "reader", "density"])}
     return out, ev, names
 
 
@@ -143,6 +151,23 @@ def evaluate(z, cal_n=CAL_N, q=Q) -> Dict[str, dict]:
         out[s] = {"false_refusal": float(np.mean([m["false_refusal"] for m in ms])), "coverage": float(np.mean([m["coverage"] for m in ms])),
                   "accuracy_all": float(np.mean([m["accuracy_all"] for m in ms])), "accuracy_answered": float(np.nanmean([m["accuracy_answered"] for m in ms])),
                   "ood_refused": {nm: float(np.mean([m["ood_refused"][nm] for m in ms])) for nm in ms[0]["ood_refused"]}}
+    return out
+
+
+SCORES = (("pool_nov", "pool"), ("reader_unclaimed", "asking reader"), ("maha", "density"))
+
+
+def aurocs(z: Dict[str, np.ndarray]) -> Dict[str, Dict[str, float]]:
+    """Threshold-free quality of each reader's novelty score: the chance a foreign message scores higher than a known one (known = all known text messages)."""
+    from growmoe.metrics import auroc
+    names = sorted({k[4:-len("_pool_nov")] for k in z if k.startswith("ood_") and k.endswith("_pool_nov")})
+    out: Dict[str, Dict[str, float]] = {}
+    for key, label in SCORES:
+        kn = torch.from_numpy(np.asarray(z[f"known_{key if key != 'maha' else 'maha'}"], dtype=np.float64))
+        out[label] = {}
+        for nm in names:
+            ood = torch.from_numpy(np.asarray(z[f"ood_{nm}_{key}"], dtype=np.float64))
+            out[label][nm] = float(auroc(torch.cat([kn, ood]), torch.cat([torch.zeros(len(kn)), torch.ones(len(ood))])))
     return out
 
 
@@ -163,6 +188,12 @@ def report(names=("UG0", "UPLUS")) -> str:
                 L.append(f"| {s} | {m('false_refusal'):.3f} | {m('coverage'):.3f} | {m('accuracy_all'):.3f} | {m('accuracy_answered'):.3f} | "
                          + " | ".join(f"{float(np.mean([r[s]['ood_refused'][o] for r in res])):.3f}" for o in oods) + " |")
             L.append("")
+        au = [aurocs(z) for z in zs]
+        oods = list(au[0]["pool"])
+        L += [f"## {name}: AUROC of each reader's novelty score (known text against each foreign set; 0.5 = chance)", "", "| reader | " + " | ".join(oods) + " |", "|" + "---|" * (1 + len(oods))]
+        for label in au[0]:
+            L.append(f"| {label} | " + " | ".join(f"{float(np.mean([a[label][o] for a in au])):.3f}" for o in oods) + " |")
+        L.append("")
     text = "\n".join(L)
     runlib.atomic_write_text(E.OUT / "p4" / "REFUSAL.md", text)
     return text

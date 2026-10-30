@@ -9,6 +9,7 @@ import torch.nn.functional as F
 from growmoe.config import PhyloCfg
 from growmoe.experts import MLPExpert
 from growmoe.pools.phylo import PhyloMoE
+from unimoe import density as DN
 from unimoe import heads as HD
 from unimoe import pools as PL
 
@@ -159,3 +160,23 @@ def test_bad_settings_are_refused():
         cfg(domain_head="hard")                                                                   # a domain head needs the label blocks
     with pytest.raises(ValueError):
         cfg(lda_blend=1.5)
+
+
+# ---------------------------------------------------------------------------------------------------------------------------------- the head as a novelty reader
+def test_the_density_head_distance_is_small_for_taught_classes_and_large_for_anything_else_and_zero_at_a_class_mean():
+    x, y = blobs(n_per=300)                                                                          # many more samples than dimensions: a Mahalanobis distance needs a covariance that is estimated
+    h = DN.DensityHead(D, 12)
+    with pytest.raises(ValueError):
+        h.distance(x)                                                                                # a head that has seen nothing has no notion of near
+    h.update(x, y)
+    xt, _ = blobs(n_per=60, seed=1)
+    unseen, _ = blobs(seed=3, classes=(5, 6, 7))
+    rand = F.normalize(torch.randn(120, D, generator=torch.Generator().manual_seed(9)), dim=1)
+    d_known, d_unseen, d_rand = h.distance(xt), h.distance(unseen), h.distance(rand)
+    assert d_known.shape == (len(xt),) and bool((d_known >= 0).all())
+    ranks = lambda far: float((far[:, None] > d_known[None, :]).float().mean())                      # chance that a foreign point is farther than a taught-class point
+    assert ranks(d_unseen) > 0.95 and ranks(d_rand) > 0.95
+    mu = (h.s[h.seen()] / h.n[h.seen(), None]).float()
+    assert float(h.distance(mu).max()) < 1e-2 * float(d_unseen.mean())                               # the nearest class mean is at distance zero (up to float rounding)
+    h.update(unseen, torch.full((len(unseen),), 5))                                                  # teaching a class moves it from far to near: the cache is not stale
+    assert float(h.distance(unseen).mean()) < float(d_unseen.mean()) - 10.0

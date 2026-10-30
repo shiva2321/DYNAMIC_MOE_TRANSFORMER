@@ -148,6 +148,43 @@ def main_run(seeds=EVAL, schedules=SCHEDULES, systems=("UG0", "UG1", "UDOM", "UD
                 say(seed, sch, name, cell2(name, st, seed, recipes[name], "main", name))
 
 
+def small_start(seeds=EVAL, schedules=SCHEDULES) -> None:
+    """Growth where it matters most: the real suite, but every expert starts at 16 units instead of the tuned 128 (control: the same size with growth off)."""
+    theta = load_tuning()["theta"]
+    for seed in seeds:
+        for sch in schedules:
+            st = E.streams(seed)[sch]
+            base = {**E.load_tuning(sch)["U-real"], "hidden": 16}
+            say(seed, sch, "fixed-h16", cell2("UG0", st, seed, {**base, "grow": False}, "main_small", "fixed-h16"))
+            say(seed, sch, "UG1-h16", cell2("UG1", st, seed, {**base, "grow_gap": theta}, "main_small", "UG1-h16"))
+
+
+GRID_THETA_SMALL = (0.005, 0.01, 0.02, 0.05, 0.10)
+
+
+def small_tune(schedule: str) -> None:
+    """Growth threshold for the real suite, per schedule, on the tuning seed (a start at 16 units); the capacity stream's 0.2 fired nothing here."""
+    st = E.streams(TUNE_SEED)[schedule]
+    base = {**E.load_tuning(schedule)["U-real"], "hidden": 16}
+    res = {}
+    for th in GRID_THETA_SMALL:
+        rec = cell2("UG1", st, TUNE_SEED, {**base, "grow_gap": th}, "main_small_tune", f"UG1-h16-{schedule}-theta{th}")
+        say(TUNE_SEED, schedule, f"UG1-h16 theta {th}", rec)
+        res[th] = E.final_mean(rec)
+    best = max(res, key=res.get)
+    save_tuning({f"small_theta_{schedule}": best, f"small_theta_grid_{schedule}": {str(k): v for k, v in res.items()}})
+    print(schedule, "chosen small-start threshold", best)
+
+
+def small_eval(seeds=EVAL, schedules=SCHEDULES) -> None:
+    tun = load_tuning()
+    for seed in seeds:
+        for sch in schedules:
+            st = E.streams(seed)[sch]
+            base = {**E.load_tuning(sch)["U-real"], "hidden": 16}
+            say(seed, sch, "UG1-h16-tuned", cell2("UG1", st, seed, {**base, "grow_gap": tun[f"small_theta_{sch}"]}, "main_small", "UG1-h16-tuned"))
+
+
 def table(group: str) -> List[str]:
     from . import p3
     return p3.table(group)
@@ -155,7 +192,7 @@ def table(group: str) -> List[str]:
 
 def main(argv=None) -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("cmd", choices=("capacity-widths", "capacity-tune", "capacity-eval", "oracle-lda", "main-tune", "main-run", "table"))
+    ap.add_argument("cmd", choices=("capacity-widths", "capacity-tune", "capacity-eval", "oracle-lda", "main-tune", "main-run", "small-start", "small-tune", "small-eval", "table"))
     ap.add_argument("name", nargs="?", default="")
     ap.add_argument("--seeds", type=int, nargs="+", default=None)
     a = ap.parse_args(argv)
@@ -172,6 +209,12 @@ def main(argv=None) -> None:
         main_tune(a.name)
     elif a.cmd == "main-run":
         main_run(**kw)
+    elif a.cmd == "small-start":
+        small_start(**kw)
+    elif a.cmd == "small-tune":
+        small_tune(a.name)
+    elif a.cmd == "small-eval":
+        small_eval(**kw)
     else:
         print("\n".join(table(a.name)))
 
