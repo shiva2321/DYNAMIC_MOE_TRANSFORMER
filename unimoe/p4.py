@@ -159,7 +159,7 @@ def small_start(seeds=EVAL, schedules=SCHEDULES) -> None:
             say(seed, sch, "UG1-h16", cell2("UG1", st, seed, {**base, "grow_gap": theta}, "main_small", "UG1-h16"))
 
 
-GRID_THETA_SMALL = (0.005, 0.01, 0.02, 0.05, 0.10)
+GRID_THETA_SMALL = (0.3, 0.5, 0.7, 0.9)                         # growth fires when the gap is BELOW theta: a larger theta fires more (the first grid, 0.005-0.1, had the sign wrong)
 
 
 def small_tune(schedule: str) -> None:
