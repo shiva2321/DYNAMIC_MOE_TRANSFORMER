@@ -34,6 +34,19 @@ VARIANT_SWITCHES: Dict[str, dict] = {
     "U-recipe": dict(set_gate=True, set_gate_confirm=2, sig_dedupe=True, infant_relax=1.0, growth_rule="gap"),
 }
 WIDTHS = (256, 512, 1024, 2048, 4096)
+# U-real with one component removed (the ablation arms of the analysis): what each part buys, one at a time
+ABLATIONS: Dict[str, dict] = {
+    "batch_vote": {"batch_vote": False},
+    "shortlist": {"gate_shortlist": 0},
+    "set_gate": {"set_gate": False},
+    "router": {"router": False},
+    "transfer": {"spawn_rule": "probe"},
+    "growth": {"grow": False},
+    "twin_fix": {"sig_dedupe": False, "infant_relax": 4.0},
+    "probation": {"no_probation": True, "set_gate_confirm": 1},
+    "competence": {"competence": False},
+}
+ABLATION_SYSTEMS = tuple(f"U-real-no-{k}" for k in ABLATIONS)
 
 
 class OracleExperts(_Base):
@@ -86,9 +99,13 @@ def _common(n_classes: int, seed: int, d: int, recipe: dict) -> CommonCfg:
 
 
 def phylo_cfg(name: str, n_classes: int, seed: int, recipe: Optional[dict] = None, d: int = 128) -> PhyloCfg:
-    if name not in VARIANT_SWITCHES:
-        raise ValueError(f"{name!r} is not a UniMoE variant; they are {list(VARIANT_SWITCHES)}")
-    kw = dict(d=d, n_classes=n_classes, route_rule="accept_then_logf", seed=seed + 7, **VARIANT_SWITCHES[name])
+    if name in ABLATION_SYSTEMS:
+        switches = {**VARIANT_SWITCHES["U-real"], **ABLATIONS[name[len("U-real-no-"):]]}
+    elif name in VARIANT_SWITCHES:
+        switches = VARIANT_SWITCHES[name]
+    else:
+        raise ValueError(f"{name!r} is not a UniMoE variant; they are {list(VARIANT_SWITCHES) + list(ABLATION_SYSTEMS)}")
+    kw = dict(d=d, n_classes=n_classes, route_rule="accept_then_logf", seed=seed + 7, **switches)
     kw.update({k: v for k, v in (recipe or {}).items() if k in PhyloCfg.__dataclass_fields__})
     return PhyloCfg(**kw)
 
@@ -96,7 +113,7 @@ def phylo_cfg(name: str, n_classes: int, seed: int, recipe: Optional[dict] = Non
 def make_system(name: str, n_classes: int, seed: int, recipe: Optional[dict] = None, mem_bytes: Optional[int] = None, total_samples: Optional[int] = None, d: int = 128):
     """A fresh pool. ``recipe`` carries the tuned training recipe of this arm; ``mem_bytes`` (the UniMoE pool's final memory) and ``total_samples`` size the equal-memory baselines."""
     recipe = dict(recipe or {})
-    if name in VARIANT_SWITCHES:
+    if name in VARIANT_SWITCHES or name in ABLATION_SYSTEMS or name.startswith("U-real-no-"):
         return PhyloMoE(phylo_cfg(name, n_classes, seed, recipe, d))
     cfg = _common(n_classes, seed, d, recipe)
     if name == "finetune":

@@ -75,3 +75,18 @@ def test_the_regime_told_experts_are_an_upper_bound_that_needs_the_regime_and_sa
 def test_an_unknown_system_name_is_refused():
     with pytest.raises(ValueError):
         SY.make_system("nonsense", C, seed=0)
+
+
+def test_each_ablation_removes_exactly_one_component_of_u_real():
+    from dataclasses import asdict
+    base = asdict(SY.make_system("U-real", C, seed=2, recipe={"inner_steps": 3}).cfg)
+    assert set(SY.ABLATIONS) == {"batch_vote", "shortlist", "set_gate", "router", "transfer", "growth", "twin_fix", "probation", "competence"}
+    for comp, overrides in SY.ABLATIONS.items():
+        name = f"U-real-no-{comp}"
+        assert name in SY.ABLATION_SYSTEMS
+        cfg = asdict(SY.make_system(name, C, seed=2, recipe={"inner_steps": 3}).cfg)
+        changed = {k for k in cfg if cfg[k] != base[k]}
+        assert changed == set(overrides), (comp, changed)
+        assert all(cfg[k] == v for k, v in overrides.items())
+    with pytest.raises(ValueError):
+        SY.make_system("U-real-no-nothing", C, seed=0)

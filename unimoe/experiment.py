@@ -31,8 +31,11 @@ REPLAY_GRID = [{"hidden": w, "inner_steps": s} for w in (256, 1024, 4096) for s 
 _STREAMS: Dict[int, Dict[str, SU.UStream]] = {}
 
 
+STAMPED = ("frontends", "domains", "suite", "systems", "runner", "runlib")                          # the code that decides what a cell contains; analysis and report code may change freely
+
+
 def stamp() -> str:
-    files = sorted((ROOT / "unimoe").glob("*.py")) + sorted((ROOT / "growmoe").glob("*.py")) + sorted((ROOT / "growmoe" / "pools").glob("*.py"))
+    files = [ROOT / "unimoe" / f"{n}.py" for n in STAMPED] + sorted((ROOT / "growmoe").glob("*.py")) + sorted((ROOT / "growmoe" / "pools").glob("*.py"))
     return runlib.code_stamp(files)
 
 
@@ -97,7 +100,7 @@ def load_tuning() -> dict:
 def run(seeds, schedules, systems) -> None:
     recipes = load_tuning()
     runs = OUT / "runs"
-    order = [s for s in SY.SYSTEMS if s in systems]                                              # UniMoE variants first: the equal-memory baselines read U-real's memory
+    order = [s for s in SY.SYSTEMS + SY.ABLATION_SYSTEMS if s in systems]                                              # UniMoE variants first: the equal-memory baselines read U-real's memory
     for seed in seeds:
         for sch in schedules:
             st = streams(seed)[sch]
@@ -107,7 +110,7 @@ def run(seeds, schedules, systems) -> None:
                 if name in ("replay_eqmem", "knn_eqmem") and mem is None:
                     ref = cell("U-real", st, seed, recipes["U-real"], runs)
                     mem = int(ref.report["memory_bytes"])
-                recipe = dict(recipes[name])
+                recipe = dict(recipes.get(name) or recipes["U-real"])                                      # an ablation arm uses U-real's tuned recipe
                 if name == "replay_eqmem":                                                           # the tuned width may not fit another seed's budget: take the next smaller that fits
                     for w in sorted({256, 1024, 4096}, reverse=True):
                         if w <= recipe["hidden"]:
