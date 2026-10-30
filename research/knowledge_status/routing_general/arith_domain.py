@@ -1,7 +1,8 @@
 """Arithmetic in everyday language as a domain world of the general routing lab.
 
 The only place where the general lab meets the arithmetic test bed: the teacher's names for the skills, and the mapping of the test bed's parts onto the generic sets (known messages in
-NEW wordings S4-S8 of the taught skills, never-taught skills, foreign sentences) plus an extra set of look-alike traps (sentences that use arithmetic words for something else).
+NEW wordings S4-S8 of the taught skills, never-taught skills in the same new wordings, foreign sentences) plus extra sets: look-alike traps, and never-taught skills in the
+TEACHING wordings (reported apart so that a reader that follows wording is not graded on a mix) (sentences that use arithmetic words for something else).
 Calibration is the test bed's own: held-out messages of the taught skills in the taught wordings S1-S3 only, so the known test is a real wording shift.
 """
 
@@ -31,18 +32,22 @@ def build(seed: int) -> Tuple[DM.DomainWorld, List[str], Dict[str, List[str]]]:
     taught = list(w.taught)
     names = [TEACHER_NAMES[s] for s in taught]
     teach = {names[i]: [e.span for e in w.teach[s]] for i, s in enumerate(taught)}
-    known_cal = [(t, i) for i, s in enumerate(taught) for t in w.cal[s]]
-    known, unknown, unknown_labels, foreign, traps = [], [], [], [], []
+    seen = {t for msgs in teach.values() for t in msgs}
+    known_cal = [(t, i) for i, s in enumerate(taught) for t in w.cal[s] if t not in seen]                 # the test bed's calibration repeats 4-6 % of the teaching requests; calibration must be new
+    known, unknown, unknown_labels, foreign, traps, early = [], [], [], [], [], []
     for text, c in zip(w.test_texts, w.test_cases):
         if c.kind == "arith" and c.skill in taught and c.status in ("solid", "thin") and c.family in HELD:
             known.append((text, taught.index(c.skill)))
         elif c.kind == "arith" and c.status == "unseen":
-            unknown.append(text)
-            unknown_labels.append(c.skill)
+            if c.family in HELD:                                                          # matched to the known test: both are in wordings nobody taught
+                unknown.append(text)
+                unknown_labels.append(c.skill)
+            else:
+                early.append(text)                                                        # never-taught skills in the TEACHING wordings: reported apart, never mixed in
         elif c.kind in ("other", "unseen_content"):
             foreign.append(text)
         elif c.kind == "trap":
             traps.append(text)
     cards = [CD.Card(n, tuple(teach[n][:DM.N_EXEMPLARS])) for n in names]
     states = ["solid" if w.assignment[s] == "solid" else "thin" for s in taught]
-    return DM.DomainWorld("arithmetic", names, cards, teach, known_cal, known, unknown, unknown_labels, states), foreign, {"trap": traps}
+    return DM.DomainWorld("arithmetic", names, cards, teach, known_cal, known, unknown, unknown_labels, states), foreign, {"trap": traps, "unknown_teaching_wording": early}
