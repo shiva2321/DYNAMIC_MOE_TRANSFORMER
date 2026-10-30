@@ -147,15 +147,26 @@ def run(seeds, schedules, systems) -> None:
                 print(f"seed {seed} {sch:<5s} {name:<15s} final mean {final_mean(rec):.3f} experts {rec.per_phase[-1]['n_experts']:>3d} {time.time() - t0:5.0f}s", flush=True)
 
 
+def report(seeds, out_name: str = "REPORT_v1.md") -> str:
+    """Tables, scoreboard and figures from the cells of ``seeds`` (every seed that has cells is shown)."""
+    from . import report as RP
+    recs = {k: r for k, r in RP.collect(OUT / "runs").items() if k[2] in seeds}
+    strm = {(sch, sd): streams(sd)[sch] for (sch, _, sd) in recs}
+    return RP.build(recs, strm, load_tuning(), OUT / out_name, OUT / "figures")
+
+
 def main(argv=None) -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("cmd", choices=("tune", "run", "amend-joint"))
+    ap.add_argument("cmd", choices=("tune", "run", "amend-joint", "report"))
     ap.add_argument("--seeds", type=int, nargs="+", default=list(EVAL_SEEDS))
     ap.add_argument("--schedules", nargs="+", default=list(SU.SCHEDULES))
     ap.add_argument("--systems", nargs="+", default=list(SY.SYSTEMS))
+    ap.add_argument("--out", default="REPORT_v1.md")
     a = ap.parse_args(argv)
     if a.cmd == "tune":
         print(json.dumps(tune()["chosen"], indent=1))
+    elif a.cmd == "report":
+        report(a.seeds, a.out)
     elif a.cmd == "amend-joint":
         print(json.dumps(amend_joint()))
     else:
