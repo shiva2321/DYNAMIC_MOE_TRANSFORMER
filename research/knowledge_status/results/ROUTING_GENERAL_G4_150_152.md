@@ -25,6 +25,16 @@ How many verified messages are needed (either-fusion of the pair, arm verified):
 | 30 | 29.6 | 0.054 | 0.280 | 0.999 |
 | 40 | 33.4 | 0.047 | 0.212 | 0.999 |
 
+Contamination (G4b): the stream also holds never-taught messages (share 0.25), the answer check vouches for some of them; on average 0.091 of the verified sample at n=30 is never-taught. Power is judged on never-taught messages that never entered a calibration; the clean arm is the same split without the contamination.
+
+| system | clean: known flagged | found | contaminated: known flagged | found |
+|---|---|---|---|---|
+| ask_exemplars | 0.030 | 0.221 | 0.015 | 0.147 |
+| vmf_conformal | 0.025 | 0.045 | 0.024 | 0.034 |
+| either_pair | 0.051 | 0.248 | 0.036 | 0.171 |
+| both_pair | 0.019 | 0.074 | 0.015 | 0.074 |
+| either_all | 0.069 | 0.253 | 0.051 | 0.178 |
+
 ## banking (3 seeds; 180 known, 300 never-taught, 150 foreign per seed)
 
 Verification: 1.000 of the known messages are verified (Solid-taught owners 1.000, Thin nan); never-taught messages wrongly vouched for 0.000. Verified messages available in the pool at n=30: 30.0 on average.
@@ -47,6 +57,16 @@ How many verified messages are needed (either-fusion of the pair, arm verified):
 | 20 | 20.0 | 0.096 | 0.810 | 1.000 |
 | 30 | 30.0 | 0.059 | 0.676 | 1.000 |
 | 40 | 40.0 | 0.067 | 0.687 | 1.000 |
+
+Contamination (G4b): the stream also holds never-taught messages (share 0.25), the answer check vouches for some of them; on average 0.000 of the verified sample at n=30 is never-taught. Power is judged on never-taught messages that never entered a calibration; the clean arm is the same split without the contamination.
+
+| system | clean: known flagged | found | contaminated: known flagged | found |
+|---|---|---|---|---|
+| ask_exemplars | 0.032 | 0.216 | 0.032 | 0.216 |
+| vmf_conformal | 0.039 | 0.654 | 0.039 | 0.654 |
+| either_pair | 0.068 | 0.700 | 0.068 | 0.700 |
+| both_pair | 0.033 | 0.432 | 0.033 | 0.432 |
+| either_all | 0.096 | 0.788 | 0.096 | 0.788 |
 
 ## agnews (3 seeds; 180 known, 300 never-taught, 150 foreign per seed)
 
@@ -71,6 +91,16 @@ How many verified messages are needed (either-fusion of the pair, arm verified):
 | 30 | 30.0 | 0.047 | 0.390 | 0.571 |
 | 40 | 40.0 | 0.050 | 0.466 | 0.620 |
 
+Contamination (G4b): the stream also holds never-taught messages (share 0.25), the answer check vouches for some of them; on average 0.000 of the verified sample at n=30 is never-taught. Power is judged on never-taught messages that never entered a calibration; the clean arm is the same split without the contamination.
+
+| system | clean: known flagged | found | contaminated: known flagged | found |
+|---|---|---|---|---|
+| ask_exemplars | 0.031 | 0.305 | 0.031 | 0.305 |
+| vmf_conformal | 0.029 | 0.288 | 0.029 | 0.288 |
+| either_pair | 0.055 | 0.458 | 0.055 | 0.458 |
+| both_pair | 0.026 | 0.341 | 0.026 | 0.341 |
+| either_all | 0.069 | 0.540 | 0.069 | 0.540 |
+
 ## newsgroups (3 seeds; 180 known, 300 never-taught, 150 foreign per seed)
 
 Verification: 1.000 of the known messages are verified (Solid-taught owners 1.000, Thin nan); never-taught messages wrongly vouched for 0.000. Verified messages available in the pool at n=30: 30.0 on average.
@@ -94,6 +124,16 @@ How many verified messages are needed (either-fusion of the pair, arm verified):
 | 30 | 30.0 | 0.048 | 0.193 | 0.352 |
 | 40 | 40.0 | 0.040 | 0.182 | 0.336 |
 
+Contamination (G4b): the stream also holds never-taught messages (share 0.25), the answer check vouches for some of them; on average 0.000 of the verified sample at n=30 is never-taught. Power is judged on never-taught messages that never entered a calibration; the clean arm is the same split without the contamination.
+
+| system | clean: known flagged | found | contaminated: known flagged | found |
+|---|---|---|---|---|
+| ask_exemplars | 0.034 | 0.101 | 0.034 | 0.101 |
+| vmf_conformal | 0.035 | 0.179 | 0.035 | 0.179 |
+| either_pair | 0.067 | 0.262 | 0.067 | 0.262 |
+| both_pair | 0.026 | 0.132 | 0.026 | 0.132 |
+| either_all | 0.097 | 0.359 | 0.097 | 0.359 |
+
 ## Verdicts (rules fixed before the run)
 
 - C8, arithmetic: either-fusion calibrated on the verified sample flags 0.054 of held-out known (<= 0.1; the fixed calibration flags 0.350) and finds 0.280 (best reader alone 0.253, need >= that - 0.05). **PASS**
@@ -102,3 +142,4 @@ How many verified messages are needed (either-fusion of the pair, arm verified):
 - C8, newsgroups: either-fusion calibrated on the verified sample flags 0.048 of held-out known (<= 0.1; the fixed calibration flags 0.041) and finds 0.193 (best reader alone 0.160, need >= that - 0.05). **PASS**
 - C8 overall (all four domains): **PASS**
 - C9 (sanity, true by construction): arithmetic fixed 0.350 (>= 0.30), verified 0.054 (<= 0.10). **PASS**
+- C10 (arithmetic, contaminated stream): the either-fusion flags 0.036 of held-out known (<= 0.1) and finds 0.171 against 0.248 without the contamination (need >= two thirds of it, 0.165); 0.091 of the sample was never-taught. **PASS**
