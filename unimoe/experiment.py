@@ -65,9 +65,13 @@ def cell(system: str, stream: SU.UStream, seed: int, recipe: dict, runs_dir: Pat
     return run_cell(runs_dir, tag or system, make, stream, seed, stamp())
 
 
-def tune() -> dict:
-    st = streams(TUNE_SEED)["seq"]
-    tdir = OUT / "tune"
+def _tuning_path(schedule: str) -> Path:
+    return OUT / ("tuning.json" if schedule == "seq" else f"tuning_{schedule}.json")
+
+
+def tune(schedule: str = "seq") -> dict:
+    st = streams(TUNE_SEED)[schedule]
+    tdir = OUT / ("tune" if schedule == "seq" else f"tune_{schedule}")
     chosen: Dict[str, dict] = {}
     log = {}
 
@@ -92,11 +96,12 @@ def tune() -> dict:
     chosen["U-recipe"], _ = best("U-recipe", RECIPE_GRID)
     chosen["replay_eqmem"], _ = best("replay_eqmem", REPLAY_GRID, mem=budget)
     chosen["finetune"], _ = best("finetune", [{"inner_steps": s} for s in (5, 20)])
-    chosen["joint"], _ = best("joint", [{"inner_steps": s} for s in (5, 20)])
+    joint_grid = [{"inner_steps": s} for s in (5, 20)] if schedule == "seq" else [{"hidden": w, "inner_steps": s} for w in (1024, 4096) for s in (5, 20)]
+    chosen["joint"], _ = best("joint", joint_grid)
     chosen["oracle_experts"] = dict(chosen["finetune"])
     chosen["knn_eqmem"], chosen["lda"] = {}, {}
-    out = {"tune_seed": TUNE_SEED, "chosen": chosen, "grid_results": log, "budget_bytes_u_real": budget, "code_stamp": stamp()}
-    runlib.atomic_write_text(OUT / "tuning.json", json.dumps(out, indent=1))
+    out = {"tune_seed": TUNE_SEED, "schedule": schedule, "chosen": chosen, "grid_results": log, "budget_bytes_u_real": budget, "code_stamp": stamp()}
+    runlib.atomic_write_text(_tuning_path(schedule), json.dumps(out, indent=1))
     return out
 
 
@@ -121,17 +126,17 @@ def amend_joint() -> dict:
     return tuning["chosen"]["joint"]
 
 
-def load_tuning() -> dict:
-    return json.loads((OUT / "tuning.json").read_text(encoding="utf-8"))["chosen"]
+def load_tuning(schedule: str = "seq") -> dict:
+    return json.loads(_tuning_path(schedule).read_text(encoding="utf-8"))["chosen"]
 
 
-def run(seeds, schedules, systems) -> None:
-    recipes = load_tuning()
-    runs = OUT / "runs"
+def run(seeds, schedules, systems, runs_name: str = "runs", per_schedule: bool = False) -> None:
+    runs = OUT / runs_name
     order = [s for s in SY.SYSTEMS + SY.ABLATION_SYSTEMS if s in systems]                                              # UniMoE variants first: the equal-memory baselines read U-real's memory
     for seed in seeds:
         for sch in schedules:
             st = streams(seed)[sch]
+            recipes = load_tuning(sch if per_schedule else "seq")
             mem = None
             for name in order:
                 t0 = time.time()
@@ -154,12 +159,12 @@ def run(seeds, schedules, systems) -> None:
                 print(f"seed {seed} {sch:<5s} {name:<15s} final mean {final_mean(rec):.3f} experts {rec.per_phase[-1]['n_experts']:>3d} {time.time() - t0:5.0f}s", flush=True)
 
 
-def report(seeds, out_name: str = "REPORT_v1.md") -> str:
+def report(seeds, out_name: str = "REPORT_v1.md", runs_name: str = "runs") -> str:
     """Tables, scoreboard and figures from the cells of ``seeds`` (every seed that has cells is shown)."""
     from . import report as RP
-    recs = {k: r for k, r in RP.collect(OUT / "runs").items() if k[2] in seeds}
+    recs = {k: r for k, r in RP.collect(OUT / runs_name).items() if k[2] in seeds}
     strm = {(sch, sd): streams(sd)[sch] for (sch, _, sd) in recs}
-    return RP.build(recs, strm, load_tuning(), OUT / out_name, OUT / "figures")
+    return RP.build(recs, strm, {sch: load_tuning(sch) for sch in ("seq", "mix", "drift") if _tuning_path(sch).exists()}, OUT / out_name, OUT / ("figures" if runs_name == "runs" else f"figures_{runs_name}"))
 
 
 def main(argv=None) -> None:
@@ -169,15 +174,18 @@ def main(argv=None) -> None:
     ap.add_argument("--schedules", nargs="+", default=list(SU.SCHEDULES))
     ap.add_argument("--systems", nargs="+", default=list(SY.SYSTEMS))
     ap.add_argument("--out", default="REPORT_v1.md")
+    ap.add_argument("--schedule", default="seq")
+    ap.add_argument("--runs", default="runs")
+    ap.add_argument("--per-schedule", action="store_true")
     a = ap.parse_args(argv)
     if a.cmd == "tune":
-        print(json.dumps(tune()["chosen"], indent=1))
+        print(json.dumps(tune(a.schedule)["chosen"], indent=1))
     elif a.cmd == "report":
-        report(a.seeds, a.out)
+        report(a.seeds, a.out, a.runs)
     elif a.cmd == "amend-joint":
         print(json.dumps(amend_joint()))
     else:
-        run(a.seeds, a.schedules, a.systems)
+        run(a.seeds, a.schedules, a.systems, a.runs, a.per_schedule)
 
 
 if __name__ == "__main__":
