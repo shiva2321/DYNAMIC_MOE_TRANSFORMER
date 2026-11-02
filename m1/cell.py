@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import hashlib
 import json
 import os
 import time
@@ -18,22 +19,52 @@ from costlab.memory import peak_memory
 from costlab.report import _CostlabJSONEncoder
 from costlab.timing import time_callable
 from growmoe.metrics import accuracy_stats
-from m1.arms import build_arm, pool_budget_bytes
+from m1.arms import build_arm, pool_budget_bytes, pool_budget_macs
 from m1.beds import Bed
 
-SCHEMA_VERSION = "1.1.0"
+SCHEMA_VERSION = "1.2.0"
 _REQUIRED_ROOT = (
-    "schema_version", "bed", "n_regimes", "arm", "seed", "split", "commit",
-    "environment", "pinning", "config", "accuracy", "per_regime_accuracy", "forgetting", "update_cost",
-    "answer_cost", "memory_bytes", "memory_bytes_by_regime",
+    "schema_version",
+    "bed",
+    "n_regimes",
+    "arm",
+    "seed",
+    "split",
+    "commit",
+    "environment",
+    "pinning",
+    "profile",
+    "bed_info",
+    "tuning_ref",
+    "reference_pool",
+    "uncounted_note",
+    "config",
+    "accuracy",
+    "per_regime_accuracy",
+    "forgetting",
+    "update_cost",
+    "memory_bytes",
+    "memory_bytes_by_regime",
 )
-_REQUIRED_UPDATE = (
-    "wall_clock_per_observe", "wall_clock_per_regime", "wall_clock_total",
-    "counted_macs", "peak_memory", "eval_wall_clock_per_regime_boundary",
+_REQUIRED_UPDATE_FULL = (
+    "wall_clock_per_observe",
+    "wall_clock_per_regime",
+    "wall_clock_total",
+    "counted_macs",
+    "peak_memory",
+    "eval_wall_clock_per_regime_boundary",
 )
 _REQUIRED_ANSWER = (
-    "batch_size", "rows_timed", "latency_median_s", "latency_mean_s", "latency_std_s",
-    "latency_cv", "latency_p95_s", "items_per_second", "counted_macs", "active_bytes",
+    "batch_size",
+    "rows_timed",
+    "latency_median_s",
+    "latency_mean_s",
+    "latency_std_s",
+    "latency_cv",
+    "latency_p95_s",
+    "items_per_second",
+    "counted_macs",
+    "active_bytes",
 )
 
 
@@ -42,25 +73,74 @@ def cell_filename(bed: str, n_regimes: int, arm: str, seed: int) -> str:
     return f"{bed}_n{n_regimes}_{arm}__seed{seed}.json"
 
 
+def compute_tuning_ref(tuning: Optional[Dict[str, Any]]) -> Optional[str]:
+    """Compute deterministic SHA256 hex digest of a tuning configuration dict."""
+    if not tuning:
+        return None
+    canonical = json.dumps(tuning, sort_keys=True, cls=_CostlabJSONEncoder)
+    return hashlib.sha256(canonical.encode("utf-8")).hexdigest()
+
+
 def is_valid_cell_record(rec: Dict[str, Any]) -> bool:
-    """Validate that a cell record dictionary contains all required fields (structure only; see record_matches_config for the content)."""
+    """Validate that a cell record dictionary contains all required fields for its profile and schema 1.2.0."""
+    if rec.get("schema_version") != SCHEMA_VERSION:
+        return False
     if not all(k in rec for k in _REQUIRED_ROOT):
         return False
-    if not all(k in rec["update_cost"] for k in _REQUIRED_UPDATE):
+
+    profile = rec.get("profile")
+    if profile not in ("full", "light"):
         return False
-    ans = rec["answer_cost"]
-    return all(b in ans and all(k in ans[b] for k in _REQUIRED_ANSWER) for b in ("1", "32"))
+
+    update_cost = rec.get("update_cost", {})
+    if profile == "full":
+        if not all(k in update_cost for k in _REQUIRED_UPDATE_FULL):
+            return False
+        ans = rec.get("answer_cost", {})
+        if not all(b in ans and all(k in ans[b] for k in _REQUIRED_ANSWER) for b in ("1", "32")):
+            return False
+    else:
+        if "wall_clock_total" not in update_cost:
+            return False
+
+    return True
 
 
-def record_matches_config(rec: Dict[str, Any], bed: Bed, arm_name: str, pool_memory_bytes: Optional[int] = None) -> bool:
-    """True when the record was produced by the arm as it is configured now.
-
-    A structurally valid record can still be stale (the arm was changed after it was written); the queue must rerun such a cell. For the equal-memory arms
-    (A3, A7) the budget is part of the configuration, so a budget that is not known here counts as a mismatch.
-    """
-    if arm_name in ("A3", "A7") and pool_memory_bytes is None:
+def record_matches_config(
+    rec: Dict[str, Any],
+    bed: Bed,
+    arm_name: str,
+    pool_memory_bytes: Optional[int] = None,
+    pool_macs_budget: Optional[int] = None,
+    tuning: Optional[Dict[str, Any]] = None,
+    profile: Optional[str] = None,
+) -> bool:
+    """True when the record is structurally valid and was produced by the arm as configured now."""
+    if not is_valid_cell_record(rec):
         return False
-    fresh = build_arm(arm_name, bed, pool_memory_bytes=pool_memory_bytes).config()
+
+    if profile is not None and rec.get("profile") != profile:
+        return False
+
+    if tuning is not None:
+        expected_ref = compute_tuning_ref(tuning)
+        if rec.get("tuning_ref") != expected_ref:
+            return False
+
+    if arm_name in ("A3", "A7", "A3-2", "A7-2") and pool_memory_bytes is None:
+        return False
+
+    if arm_name in ("A4", "A4-2") and (pool_memory_bytes is None or pool_macs_budget is None):
+        return False
+
+    fresh = build_arm(
+        arm_name,
+        bed,
+        pool_memory_bytes=pool_memory_bytes,
+        pool_macs_budget=pool_macs_budget,
+        tuning=tuning,
+    ).config()
+
     return json.loads(json.dumps(fresh, cls=_CostlabJSONEncoder)) == rec.get("config")
 
 
@@ -83,43 +163,69 @@ def load_cell_record(path: Path | str) -> Dict[str, Any]:
         return json.load(f)
 
 
-def read_pool_budget(out_dir: Path | str, bed: Bed) -> Optional[int]:
-    """Final memory of the A1 pool of the same bed and seed, read from its record in out_dir.
-
-    None when there is no usable record: missing, unreadable, structurally invalid, or stale (A1 was reconfigured since it was written).
-    """
-    path = Path(out_dir) / cell_filename(bed.name, bed.n_regimes, "A1", bed.seed)
+def read_pool_budget(out_dir: Path | str, bed: Bed, pool_arm: str = "A1", tuning: Optional[Dict[str, Any]] = None) -> Optional[int]:
+    """Final memory of the reference pool of the same bed and seed, read from its record in out_dir."""
+    path = Path(out_dir) / cell_filename(bed.name, bed.n_regimes, pool_arm, bed.seed)
     if not path.exists():
         return None
     try:
         rec = load_cell_record(path)
     except (OSError, ValueError):
         return None
-    if not (is_valid_cell_record(rec) and record_matches_config(rec, bed, "A1")):
+    if not (is_valid_cell_record(rec) and record_matches_config(rec, bed, pool_arm, tuning=tuning)):
         return None
     return int(rec["memory_bytes"])
+
+
+def read_pool_macs(out_dir: Path | str, bed: Bed, pool_arm: str = "A1", tuning: Optional[Dict[str, Any]] = None) -> Optional[int]:
+    """Counted training multiply-adds of reference pool of same bed and seed from record in out_dir."""
+    path = Path(out_dir) / cell_filename(bed.name, bed.n_regimes, pool_arm, bed.seed)
+    if not path.exists():
+        return None
+    try:
+        rec = load_cell_record(path)
+    except (OSError, ValueError):
+        return None
+    if not (is_valid_cell_record(rec) and record_matches_config(rec, bed, pool_arm, tuning=tuning)):
+        return None
+    macs = rec.get("update_cost", {}).get("counted_macs")
+    return int(macs) if macs is not None else None
 
 
 def execute_cell(
     bed: Bed,
     arm_name: str,
     pool_memory_bytes: Optional[int] = None,
+    pool_macs_budget: Optional[int] = None,
     split: str = "dev",
     pinning: Optional[Dict[str, Any]] = None,
+    profile: str = "full",
+    tuning: Optional[Dict[str, Any]] = None,
     **arm_kwargs: Any,
 ) -> Dict[str, Any]:
-    """Execute one benchmark cell (bed x arm x seed) and gather all costlab metrics.
-
-    ``pinning`` is the settings dict yielded by costlab.env.fixed_threads (threads, cpus, blas_limited); it is stored in the record (Q-29).
-    """
+    """Execute one benchmark cell (bed x arm x seed) and gather all costlab metrics."""
     if split == "report":
-        raise ValueError("Stage A refuses --split report; report seeds are reserved.")
+        raise ValueError("Stage B refuses --split report; report seeds are reserved.")
+
+    if profile not in ("full", "light"):
+        raise ValueError(f"Unknown profile {profile!r}; must be 'full' or 'light'.")
 
     env_info = environment()
     commit = env_info.get("git_commit") or "unknown"
+
+    # Budgets come from the reference pool's own record. Only A3 and A7 (reference A1) may fall back to the untuned A1 of stage A;
+    # A4, A3-2, A4-2 and A7-2 raise in build_arm when their budget is missing.
     if arm_name in ("A3", "A7") and pool_memory_bytes is None:
-        pool_memory_bytes = pool_budget_bytes(bed)         # one budget for the measured arm and for the counting pass
-    arm = build_arm(arm_name, bed, pool_memory_bytes=pool_memory_bytes, **arm_kwargs)
+        pool_memory_bytes = pool_budget_bytes(bed)
+
+    arm = build_arm(
+        arm_name,
+        bed,
+        pool_memory_bytes=pool_memory_bytes,
+        pool_macs_budget=pool_macs_budget,
+        tuning=tuning,
+        **arm_kwargs,
+    )
 
     obs_durations: List[float] = []
     eval_durations: List[float] = []
@@ -133,76 +239,145 @@ def execute_cell(
 
     def _eval_row() -> List[float]:
         t0 = time.perf_counter()
-        row = [float((arm.predict(x).probs.argmax(dim=-1).cpu() == y.cpu()).float().mean().item())
-               for x, y in (tests[r] for r in range(bed.n_regimes))]
-        eval_durations.append(time.perf_counter() - t0)      # includes any model refit that predict triggers (the router refits inside predict)
+        row = [
+            float((arm.predict(x).probs.argmax(dim=-1).cpu() == y.cpu()).float().mean().item())
+            for x, y in (tests[r] for r in range(bed.n_regimes))
+        ]
+        eval_durations.append(time.perf_counter() - t0)
         return row
 
     def _train_stream() -> None:
         nonlocal wall_clock_total
-        cur_reg = -1
-        for _, seg, idx in bed.stream._walk(64, bed.seed):
-            if seg.regime != cur_reg:
-                if cur_reg >= 0:
+        cur_phase = -1
+        last_regime = -1
+        for x_b, y_b, regime_id, first_visit, phase_idx in bed.walk(64):
+            if phase_idx != cur_phase:
+                if cur_phase >= 0:
                     R_rows.append(_eval_row())
-                    bytes_by_regime[str(cur_reg)] = arm.memory_bytes()
-                cur_reg = seg.regime
-                if seg.first_visit and seg.regime not in learned_at:
-                    learned_at[seg.regime] = len(R_rows)
+                    bytes_by_regime[str(last_regime)] = arm.memory_bytes()
+                cur_phase = phase_idx
+                last_regime = regime_id
+                if first_visit and regime_id not in learned_at:
+                    learned_at[regime_id] = len(R_rows)
 
             t0 = time.perf_counter()
-            arm.observe(seg.x[idx], seg.y[idx])
+            arm.observe(x_b, y_b)
             dt = time.perf_counter() - t0
             obs_durations.append(dt)
-            r_str = str(seg.regime)
+            r_str = str(regime_id)
             reg_durations[r_str] = reg_durations.get(r_str, 0.0) + dt
             wall_clock_total += dt
 
         R_rows.append(_eval_row())
-        if cur_reg >= 0:
-            bytes_by_regime[str(cur_reg)] = arm.memory_bytes()
+        if last_regime >= 0:
+            bytes_by_regime[str(last_regime)] = arm.memory_bytes()
 
-    peak_mem_profile = peak_memory(_train_stream, device="cpu")
+    if profile == "full":
+        peak_mem_profile = peak_memory(_train_stream, device="cpu")
+    else:
+        _train_stream()
+        peak_mem_profile = None
 
     R = np.array(R_rows, dtype=np.float64)
     la = [learned_at.get(r, r) for r in range(bed.n_regimes)]
     stats = accuracy_stats(R, learned_at=la, chance=1.0 / bed.n_classes)
-    forgetting = None if np.isnan(stats["forgetting"]) else float(stats["forgetting"])    # undefined stays undefined: no invented zero
+    forgetting = None if np.isnan(stats["forgetting"]) else float(stats["forgetting"])
 
-    if arm_name == "A7":
-        update_macs = 0
+    if profile == "full":
+        if arm_name in ("A7", "A7all", "A7-2"):
+            update_macs = 0                      # a lookup stores vectors at update time: nothing is multiplied
+        else:
+
+            def _mac_pass() -> None:
+                extra = dict(arm_kwargs)
+                if hasattr(arm, "inner_steps") and "inner_steps" not in extra:
+                    extra["inner_steps"] = arm.inner_steps
+                sh = build_arm(
+                    arm_name,
+                    bed,
+                    pool_memory_bytes=pool_memory_bytes,
+                    pool_macs_budget=pool_macs_budget,
+                    tuning=tuning,
+                    **extra,
+                )
+                for x, y, _ in bed:
+                    sh.observe(x, y)
+
+            update_macs = count_macs(_mac_pass).macs
+
+        test_x = bed.test_sets[0][0]
+        answer_cost: Dict[str, Any] = {}
+        for b in (1, 32):
+            x_b = test_x[torch.arange(b) % len(test_x)]
+            fn = lambda: arm.predict(x_b)
+            t_res = time_callable(fn, warmup=5, repeats=10, device="cpu")
+            mod = arm.get_torch_modules()
+            act_b = active_param_bytes(mod, fn).total if mod is not None else 0
+            answer_cost[str(b)] = {
+                "batch_size": b,
+                "rows_timed": int(len(x_b)),
+                "latency_median_s": t_res.median,
+                "latency_mean_s": t_res.mean,
+                "latency_std_s": t_res.std,
+                "latency_cv": t_res.cv,
+                "latency_p95_s": t_res.p95,
+                "items_per_second": float(b / t_res.median) if t_res.median > 0 else 0.0,
+                "counted_macs": count_macs(fn).macs,
+                "active_bytes": act_b,
+            }
     else:
-        def _mac_pass():
-            sh = build_arm(arm_name, bed, pool_memory_bytes=pool_memory_bytes, **arm_kwargs)
-            for x, y, _ in bed:
-                sh.observe(x, y)
-        update_macs = count_macs(_mac_pass).macs
+        update_macs = None
+        answer_cost = {}
 
-    test_x = bed.test_sets[0][0]
-    answer_cost: Dict[str, Any] = {}
-    for b in (1, 32):
-        x_b = test_x[torch.arange(b) % len(test_x)]            # exactly b rows, repeating the test set when it is shorter
-        fn = lambda: arm.predict(x_b)
-        t_res = time_callable(fn, warmup=5, repeats=10, device="cpu")
-        mod = arm.get_torch_modules()
-        act_b = active_param_bytes(mod, fn).total if mod is not None else 0
-        answer_cost[str(b)] = {
-            "batch_size": b, "rows_timed": int(len(x_b)), "latency_median_s": t_res.median, "latency_mean_s": t_res.mean,
-            "latency_std_s": t_res.std, "latency_cv": t_res.cv, "latency_p95_s": t_res.p95,
-            "items_per_second": float(b / t_res.median) if t_res.median > 0 else 0.0,
-            "counted_macs": count_macs(fn).macs, "active_bytes": act_b,
-        }
+    # Metadata & Schema 1.2.0 additions
+    bed_info = {
+        "d": bed.d,
+        "classes": bed.n_classes,
+        "regimes": bed.n_regimes,
+        "phases": bed.n_phases,
+        "total_samples": bed.total_samples,
+        "regime_names": [bed.regime_info[r]["name"] for r in range(bed.n_regimes)],
+    }
+
+    reference_pool: Optional[Dict[str, Any]] = None
+    if arm_name in ("A3", "A4", "A7"):
+        reference_pool = {"arm": "A1", "bytes": pool_memory_bytes, "macs": pool_macs_budget}
+    elif arm_name in ("A3-2", "A4-2", "A7-2"):
+        reference_pool = {"arm": "A2", "bytes": pool_memory_bytes, "macs": pool_macs_budget}
+
+    tuning_ref = compute_tuning_ref(tuning)
+    pool_time_split = getattr(arm, "time_split", None)
 
     return {
-        "schema_version": SCHEMA_VERSION, "bed": bed.name, "n_regimes": bed.n_regimes,
-        "arm": arm_name, "seed": bed.seed, "split": split, "commit": commit, "environment": env_info,
-        "pinning": pinning, "config": json.loads(json.dumps(arm.config(), cls=_CostlabJSONEncoder)),
-        "accuracy": float(R[-1].mean()), "per_regime_accuracy": [float(x) for x in R[-1]], "forgetting": forgetting,
+        "schema_version": SCHEMA_VERSION,
+        "bed": bed.name,
+        "n_regimes": bed.n_regimes,
+        "arm": arm_name,
+        "seed": bed.seed,
+        "split": split,
+        "commit": commit,
+        "environment": env_info,
+        "pinning": pinning,
+        "profile": profile,
+        "bed_info": bed_info,
+        "tuning_ref": tuning_ref,
+        "reference_pool": reference_pool,
+        "uncounted_note": getattr(arm, "uncounted_note", False),
+        "pool_time_split": pool_time_split,
+        "config": json.loads(json.dumps(arm.config(), cls=_CostlabJSONEncoder)),
+        "accuracy": float(R[-1].mean()),
+        "per_regime_accuracy": [float(x) for x in R[-1]],
+        "forgetting": forgetting,
         "update_cost": {
-            "wall_clock_per_observe": obs_durations, "wall_clock_per_regime": reg_durations,
-            "wall_clock_total": wall_clock_total, "counted_macs": update_macs, "peak_memory": peak_mem_profile,
+            "wall_clock_per_observe": obs_durations,
+            "wall_clock_per_regime": reg_durations,
+            "wall_clock_total": wall_clock_total,
+            "counted_macs": update_macs,
+            "peak_memory": peak_mem_profile,
             "eval_wall_clock_per_regime_boundary": eval_durations,
         },
-        "answer_cost": answer_cost, "memory_bytes": arm.memory_bytes(),
-        "memory_bytes_by_regime": bytes_by_regime, "describe": arm.describe(),
+        "answer_cost": answer_cost,
+        "memory_bytes": arm.memory_bytes(),
+        "memory_bytes_by_regime": bytes_by_regime,
+        "describe": arm.describe(),
     }
