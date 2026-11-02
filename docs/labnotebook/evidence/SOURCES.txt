@@ -261,3 +261,11 @@ research/knowledge_status/results/routing_general/g5/SCORECARD_G5_head.md
 research/knowledge_status/results/routing_general/g5/TABLE_cheap.md
 research/knowledge_status/results/routing_general/g5/STATS_G5_cheap.md
 docs/superpowers/specs/2026-11-01-poolfeed-topic-design.md
+results/m1/harness/harness_check_N10_seeds100_101_102_103_104.json
+results/m1/harness/harness_check_N10_seeds100.json
+results/m1/dev/B1_n10_A1__seed800.json
+results/m1/dev/B1_n10_A3__seed800.json
+results/m1/dev/B1_n10_A7__seed800.json
+results/m1/dev/B1_n10_A8__seed800.json
+results/m1/dev/diag_switches_B1_n10.json
+docs/superpowers/handoff/M1_RUNNER_A_RESULT.md

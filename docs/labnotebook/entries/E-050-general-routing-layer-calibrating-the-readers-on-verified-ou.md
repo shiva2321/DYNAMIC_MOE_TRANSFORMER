@@ -25,7 +25,7 @@ In `research/knowledge_status/PROGRESS.md`, blocks of 2026-10-30. C8 (at 30 veri
 - Seeds 150-152; the worlds of E-049, so every asked answer was cached; no download; `growmoe/` untouched; no rule changed after a result (the G4b pairing changed the measurement, not C10).
 
 ## Results (what came out)
-Numbers copied by script from `research/knowledge_status/results/ROUTING_GENERAL_G4_150_152.md` (3 seeds; the G4b rows are the paired run; the unpaired first run is kept in `results/routing_general/ROUTING_GENERAL_G4b_unpaired_150_152.md`).
+Numbers copied by script from `research/knowledge_status/results/ROUTING_GENERAL_G4_150_152.md` (3 seeds; the G4b rows are the paired run; the unpaired first run is kept in `research/knowledge_status/results/routing_general/ROUTING_GENERAL_G4b_unpaired_150_152.md`).
 
 ### arithmetic (3 seeds; 120 known, 120 never-taught, 236 foreign per seed)
 
@@ -176,7 +176,7 @@ Technical statement: a conformal cut on a small verified sample is valid in fals
 The layer now has a working general mechanism for mixing its readers: calibrate each reader's cut on verified outcomes of the stream's own wording (at least 40 verified messages; none below 19), fuse by "either" (answer-more) or "both" (refuse-more), keep the choice a stated policy. It is honest in false flags in all four domains and modest in power, and it is fragile to a noisy outcome check. Next, in this order: G4c, a robust calibration against wrongly verified messages (leave out the largest scores, or require a second independent outcome), predictions first; then the growmoe experts as the container (needs the vector design for language arithmetic); then self-discovery of cards. Nothing is frozen and the confirmatory seeds 400-429 are unspent.
 
 ## Evidence
-- `research/knowledge_status/results/ROUTING_GENERAL_G4_150_152.md` (generated; paired G4b), `results/routing_general/ROUTING_GENERAL_G4b_unpaired_150_152.md` (the first, unpaired run), `results/routing_general/g4/` (cells), run logs
+- `research/knowledge_status/results/ROUTING_GENERAL_G4_150_152.md` (generated; paired G4b), `research/knowledge_status/results/routing_general/ROUTING_GENERAL_G4b_unpaired_150_152.md` (the first, unpaired run), `research/knowledge_status/results/routing_general/g4/` (cells), run logs
 - `research/knowledge_status/PROGRESS.md` (predictions, results, the measurement refinement, in order)
 
 ## Reproduce

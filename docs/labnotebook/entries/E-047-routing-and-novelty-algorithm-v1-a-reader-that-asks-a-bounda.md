@@ -19,7 +19,7 @@ The user's goal is a routing and novelty algorithm for the expert pool: know wha
 In `research/knowledge_status/PROGRESS.md`, blocks of 2026-10-29 (plan; Lab A; the Lab A addendum with the several-experts design and one fix; Lab B; Lab C; Lab D and its mass rule; Lab E; and the report-seed predictions), each with a rule for going on. Results against the predictions are in the same file after each run. Where a prediction was wrong it says so.
 
 ## Method (how)
-- **Lab A, the asking reader** (`routing_lab/ask_reader.py`, `lab_ask.py`, `ask_rules.py`, `lab_ask_report.py`). Qwen2.5-1.5B-Instruct, chat template, options A-G = add, sub, mul, div, remainder, larger of two, none; one forward pass, the probabilities of the seven letters. The prompt is fixed before any run. Status decided in three ways: conformal (class-conditional, calibration on held-out S1-S3 parts only), the plain rule (unseen iff the top option is a skill nobody taught), tau0.5 (also unseen when the top probability is below 0.5; chosen offline on the tuning seeds by the recorded costs, 4 per false alarm and 7 per miss), and a hybrid (the calibrated none class first). Real problems (300 SVAMP, report only), the tangled messages (gold parts) and the look-based machine's own cells for the same seeds are in the same table.
+- **Lab A, the asking reader** (`research/knowledge_status/routing_lab/ask_reader.py`, `lab_ask.py`, `ask_rules.py`, `lab_ask_report.py`). Qwen2.5-1.5B-Instruct, chat template, options A-G = add, sub, mul, div, remainder, larger of two, none; one forward pass, the probabilities of the seven letters. The prompt is fixed before any run. Status decided in three ways: conformal (class-conditional, calibration on held-out S1-S3 parts only), the plain rule (unseen iff the top option is a skill nobody taught), tau0.5 (also unseen when the top probability is below 0.5; chosen offline on the tuning seeds by the recorded costs, 4 per false alarm and 7 per miss), and a hybrid (the calibrated none class first). Real problems (300 SVAMP, report only), the tangled messages (gold parts) and the look-based machine's own cells for the same seeds are in the same table.
 - **Lab B, group evidence** (`group_check.py`, `lab_group.py`). Parts called unseen by look, taken in windows; a competent taught skill is present in a window if it explains more stated answers than answer-shuffled copies (2000 shuffles, Holm); mixed windows and same-skill windows; real solvers and perfect-solver ceilings.
 - **Lab F, windows made from the asked operation** (`lab_group_asked.py`). The flagged parts are grouped by the operation the model named and cut into windows of g; same parts, machine, solvers and seeds as Lab B.
 - **Lab C, shared experts** (`experts.py`, `lab_experts.py`). One shared two-layer number encoder, a head per skill, balanced sampling; sub, mul, div, mod, max taught 20, 100, 500, helpers 2000 each; held-out problems.
@@ -29,7 +29,7 @@ In `research/knowledge_status/PROGRESS.md`, blocks of 2026-10-29 (plan; Lab A; t
 
 ## Results (what came out)
 
-### Lab A on the report seeds 100-109 (`results/ROUTING_ASK_REPORT_100_109.md`)
+### Lab A on the report seeds 100-109 (`research/knowledge_status/results/ROUTING_ASK_REPORT_100_109.md`)
 | measure | look-based machine | tau0.5 (asks) | hyb0.5 (none class first) | conf0.05 (asks, calibrated) |
 |---|---|---|---|---|
 | known skills in new wordings called unseen | 0.279 | 0.025 | 0.008 | 0.206 |
@@ -45,7 +45,7 @@ In `research/knowledge_status/PROGRESS.md`, blocks of 2026-10-29 (plan; Lab A; t
 | real problems: Solid skills called unseen (B7) | 0.997 | 0.138 | 0.069 | 0.651 |
 | real problems: never-taught skills found | 0.825 | 0.855 | 0.509 | 0.578 |
 
-### Lab E on the report seeds 100-109 (`results/ROUTING_GATE_REPORT_100_109.md`)
+### Lab E on the report seeds 100-109 (`research/knowledge_status/results/ROUTING_GATE_REPORT_100_109.md`)
 | measure | look-based machine | tau0.5 alone | two-stage, alpha 0.05 | two-stage, alpha 0.01 |
 |---|---|---|---|---|
 | known skills in new wordings called unseen | 0.279 | 0.025 | 0.023 | 0.024 |
@@ -63,7 +63,7 @@ In `research/knowledge_status/PROGRESS.md`, blocks of 2026-10-29 (plan; Lab A; t
 | real problems: Solid skills called unseen (B7) | 0.997 | 0.138 | 0.138 | 0.138 |
 | real problems: never-taught skills found | 0.825 | 0.855 | 0.851 | 0.855 |
 
-### Lab E on the tuning seeds (`results/ROUTING_GATE_150_154.md`)
+### Lab E on the tuning seeds (`research/knowledge_status/results/ROUTING_GATE_150_154.md`)
 | | tau0.5 alone | two-stage, alpha 0.01 | two-stage, alpha 0.05 |
 |---|---|---|---|
 | known skills in new wordings called unseen | 0.053 | 0.053 | 0.048 |
@@ -77,7 +77,7 @@ In `research/knowledge_status/PROGRESS.md`, blocks of 2026-10-29 (plan; Lab A; t
 | traps called Other | | 0.420 | 0.807 |
 | everyday sentences called Other | | 0.616 | 0.813 |
 
-### Lab D, teams (`results/ROUTING_TEAM_100_109.md`; tuning seeds in `ROUTING_TEAM_150_154.md`)
+### Lab D, teams (`research/knowledge_status/results/ROUTING_TEAM_100_109.md`; tuning seeds in `ROUTING_TEAM_150_154.md`)
 | experts allowed (team and verifiers) | policy | recall | size | right, no answer | right, with the stated answer |
 |---|---|---|---|---|---|
 | every taught skill | top1 | 0.970 | 1.00 | 0.970 | 0.970 |
@@ -95,7 +95,7 @@ In `research/knowledge_status/PROGRESS.md`, blocks of 2026-10-29 (plan; Lab A; t
 | only the Solid skills | mass0.9 | 0.983 | 1.00 | 0.981 | 0.983 |
 | only the Solid skills | mass0.99 | 0.990 | 1.01 | 0.981 | 0.990 |
 
-### Lab B, group evidence (`results/ROUTING_GROUP_150_154.md`)
+### Lab B, group evidence (`research/knowledge_status/results/ROUTING_GROUP_150_154.md`)
 | solvers | windows | g, alpha | false-new | found | macro F1 | coincidences (untaught taken back) | right skill | flagged known parts rescued |
 |---|---|---|---|---|---|---|---|---|
 | real | mixed | 4, 0.05 | 0.256 | 0.903 | 0.866 | 0.000 | nan | 0.000 |
@@ -123,7 +123,7 @@ In `research/knowledge_status/PROGRESS.md`, blocks of 2026-10-29 (plan; Lab A; t
 | perfect_taught | same_skill | 8, 0.01 | 0.073 | 0.892 | 0.700 | 0.010 | 1.000 | 0.606 |
 | perfect_taught | same_skill | 16, 0.01 | 0.020 | 0.865 | 0.698 | 0.038 | 0.993 | 0.853 |
 
-### Lab F, group evidence with windows made from the asked operation (`results/ROUTING_GROUP_ASKED_150_154.md`)
+### Lab F, group evidence with windows made from the asked operation (`research/knowledge_status/results/ROUTING_GROUP_ASKED_150_154.md`)
 | solvers | g, alpha | false-new | found | coincidences | right skill |
 |---|---|---|---|---|---|
 | real | 6, 0.01 | 0.241 | 0.903 | 0.000 | 1.000 |
@@ -136,7 +136,7 @@ In `research/knowledge_status/PROGRESS.md`, blocks of 2026-10-29 (plan; Lab A; t
 | perfect_taught | 8, 0.01 | 0.093 | 0.899 | 0.004 | 1.000 |
 | perfect_taught | 16, 0.01 | 0.064 | 0.853 | 0.050 | 1.000 |
 
-### Lab C, shared experts (`results/ROUTING_EXPERTS_150_152.md`)
+### Lab C, shared experts (`research/knowledge_status/results/ROUTING_EXPERTS_150_152.md`)
 | skill | taught | separate | shared | helpers (shared net) |
 |---|---|---|---|---|
 | sub | 20 | 0.02 | 0.02 | add 0.84, max 0.91 |
@@ -155,7 +155,7 @@ In `research/knowledge_status/PROGRESS.md`, blocks of 2026-10-29 (plan; Lab A; t
 | max | 100 | 0.44 | 0.55 | add 0.79, sub 0.61 |
 | max | 500 | 0.79 | 0.78 | add 0.80, sub 0.65 |
 
-### Lab A on the tuning seeds, the first design (`results/ROUTING_ASK_150_154.md`) and the rule comparison (`results/ROUTING_ASK_RULES_150_154.md`)
+### Lab A on the tuning seeds, the first design (`research/knowledge_status/results/ROUTING_ASK_150_154.md`) and the rule comparison (`research/knowledge_status/results/ROUTING_ASK_RULES_150_154.md`)
 | measure | conformal (calibrated on S1-S3) | plain naming rule |
 |---|---|---|
 | known skills in new wordings S4-S8 called unseen (bar 0.05) | 0.145 | 0.052 |
