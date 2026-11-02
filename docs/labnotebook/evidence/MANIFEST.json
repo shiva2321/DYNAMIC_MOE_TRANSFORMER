@@ -1,8 +1,8 @@
 {
- "generated": "2026-10-30 19:21:08",
- "head": "cbcc59d",
- "branch": "unimoe-stage1",
- "n_files": 1003,
+ "generated": "2026-11-02 09:24:20",
+ "head": "f1a8dd7",
+ "branch": "track-g-growmoe",
+ "n_files": 1068,
  "files": [
   {
    "path": "demos/demo_growmoe_continual_learning.py",
@@ -36,44 +36,44 @@
   },
   {
    "path": "docs/superpowers/handoff/KICKOFF_CVA1_CVA2A_2026-10-14.md",
-   "sha256": "5b086c88f1d2a898a25aa681981a2730d745fcf47759c1f241b222298b242cf5",
-   "bytes": 6635,
+   "sha256": "9167956dcd89621508f75dcbad3c76dcb01377c81f76e8d14c381b0279d9b629",
+   "bytes": 6608,
    "last_commit": "8312306"
   },
   {
    "path": "docs/superpowers/handoff/KICKOFF_CVA1B_CVA3A_2026-10-14.md",
-   "sha256": "763c7b4be2c934fc008e16de88da8a2b17be265b6b46d55db588791c7067e49c",
-   "bytes": 5261,
+   "sha256": "12ce7b3f726cfc073173b8e0bd54a12d6ef38e099bed102ead1667fecba01db2",
+   "bytes": 5231,
    "last_commit": "8312306"
   },
   {
    "path": "docs/superpowers/handoff/KICKOFF_CVA2B_CVA5A_2026-10-14.md",
-   "sha256": "18be7b5f9e225e152d8bf72e27d2b9075138f9cc8e9d3dd26874f8641c8a604a",
-   "bytes": 5666,
+   "sha256": "c48431ca8099de1ddaf59af08e262a7fb0b1f7985a2a72a2d18e278e99674d78",
+   "bytes": 5636,
    "last_commit": "8312306"
   },
   {
    "path": "docs/superpowers/handoff/KICKOFF_M5_REAL_TEXT_STREAM_2026-10-13.md",
-   "sha256": "c5a8acc737edb0186f00607673d8825a82eb77f03520aeca8152f3441e9c1e63",
-   "bytes": 4925,
+   "sha256": "758818726e4d8b992a2a57627b16c094a294923c661b800dcaacce9ee5ade56c",
+   "bytes": 4897,
    "last_commit": "117aec5"
   },
   {
    "path": "docs/superpowers/handoff/KICKOFF_M5B_REAL_STREAM_CEILINGS_2026-10-13.md",
-   "sha256": "5f5fafede7fa3507bc9d8a51ea76f61fe12b2266a7848db4ffa6bd3a09d9aaf3",
-   "bytes": 6696,
+   "sha256": "1823791d5f5bc90e13fd957c76c2b1e16fc5766a9eedf169c01b077c9c52950c",
+   "bytes": 6671,
    "last_commit": "8312306"
   },
   {
    "path": "docs/superpowers/handoff/KICKOFF_RV2_8_ADOPT_CASCADE_2026-10-13.md",
-   "sha256": "54cd36efc8739bc24c0b0b6d766edc67fac9d5a181caa285c965e6253446d5aa",
-   "bytes": 6287,
+   "sha256": "be22a8deaa1780eb39c69921ca7edb05d8fc5df8c5f1d35bad40730fa39177b8",
+   "bytes": 6244,
    "last_commit": "117aec5"
   },
   {
    "path": "docs/superpowers/handoff/KICKOFF_RV2B_AMEND_AND_RUN_2026-10-13.md",
-   "sha256": "1060180a763e6ee449e82851abcbe183622c9324ba136e615b8db26cbbc8fb30",
-   "bytes": 5553,
+   "sha256": "6aed3fa227db9861590cf105e9def5c3ccee049d0c1d8e1dc3bae8a3a4dd82d3",
+   "bytes": 5505,
    "last_commit": "117aec5"
   },
   {
@@ -84,32 +84,32 @@
   },
   {
    "path": "docs/superpowers/handoff/KICKOFF_RV3_BUILD_TRACE_DEV_2026-10-13.md",
-   "sha256": "0fb156ca918ee6ad82ea956cccb3eee89cf1759bb1b2bc6221a079f7a52486c6",
-   "bytes": 5675,
+   "sha256": "7a12576d933e68bf334c506fd53946d7f29db07599ab7a7a3098c698bdb90440",
+   "bytes": 5650,
    "last_commit": "8312306"
   },
   {
    "path": "docs/superpowers/handoff/KICKOFF_RV3_SENSITIVITY_2026-10-13.md",
-   "sha256": "f03ef8e310d45d2b37971136eb150d711da805d6c8ccda175cd1402fa0676589",
-   "bytes": 2360,
+   "sha256": "c71771f83577cad9c3236d6f05d963e088cdce94356b8e85cda5e474bd6ebbe7",
+   "bytes": 2342,
    "last_commit": "8312306"
   },
   {
    "path": "docs/superpowers/handoff/REVIEW_2026-10-05_R10_AND_Y1.md",
-   "sha256": "46a4d6294587919339cdeca093c7076e89699945b2291e12ea4edf5f2cc52b1e",
-   "bytes": 74103,
+   "sha256": "6dc63afab8bc0cf9169ce43aebef437e9a995f0ed4a9a47efe98d9ba9f321348",
+   "bytes": 73763,
    "last_commit": "08c1a7a"
   },
   {
    "path": "docs/superpowers/handoff/REVIEW_BRIEF_RV2D_CONFIRMATORY_2026-10-21.md",
-   "sha256": "dec813830ca93df8d8001dbbd800fd0dbfba8d3f14983ed3ffe78a8f3cb5c814",
-   "bytes": 4149,
+   "sha256": "e28ba7464209460850050644b56fdf84000f9b163b884c944240b4d87d9b97a5",
+   "bytes": 4123,
    "last_commit": "1821943"
   },
   {
    "path": "docs/superpowers/handoff/REVIEW_RV2D_CONFIRMATORY_2026-10-21.md",
-   "sha256": "2d39386dcbe1c716f0ef58cbd2f7cd1bbaebc17194d2f41d02e68b926e0f85c0",
-   "bytes": 38296,
+   "sha256": "e148efa45af0fbbf4761c3a45908ac72ea9e0b541d0df5d851e82e4f46e03609",
+   "bytes": 37997,
    "last_commit": "6084194"
   },
   {
@@ -126,26 +126,26 @@
   },
   {
    "path": "docs/superpowers/handoff/YGGDRASIL_ARCH_HANDOFF.md",
-   "sha256": "4a2d534777acb0770a3d613212c0f753ba714dc4a11782b014282f886bdf9501",
-   "bytes": 21787,
+   "sha256": "fc6360b4d1ae5f40afe4d2bfee809f0f16f13086ae173aae56539040172c10ac",
+   "bytes": 21609,
    "last_commit": "08c1a7a"
   },
   {
    "path": "docs/superpowers/handoff/YGGDRASIL_GROWMOE_INTEGRATION.md",
-   "sha256": "08c11565606176a7f60119f6d847140f5eff7023ade7309e5d9409a048b2a251",
-   "bytes": 9176,
+   "sha256": "f4b828efab1f065e65cd4a7a0c67fbee16ecfd06785c19e0854f10b6db3d946c",
+   "bytes": 9062,
    "last_commit": "08c1a7a"
   },
   {
    "path": "docs/superpowers/plans/2026-10-04-growmoe.md",
-   "sha256": "0445b752915c6e8b6f4fca1ddaf0a3d847c816798f34a71ed81a6953170c7ed8",
-   "bytes": 24507,
+   "sha256": "7bc4d157d0764fa62dc0d4f13bdd34e40954d8a99f0d3ecd925b9b687b8e5ee9",
+   "bytes": 24304,
    "last_commit": "08c1a7a"
   },
   {
    "path": "docs/superpowers/plans/2026-10-10-routing-v2.md",
-   "sha256": "4ca686da73c77438d901512871580ba4fd0a92f3776c69ed1487317af4a2e28e",
-   "bytes": 149636,
+   "sha256": "3f5d75e61dd24592e0b07dea903502c1087572f0697706e082a7e0a2419a6e25",
+   "bytes": 146984,
    "last_commit": "08c1a7a"
   },
   {
@@ -156,8 +156,8 @@
   },
   {
    "path": "docs/superpowers/plans/2026-10-15-routing-v2-stage4.md",
-   "sha256": "565a561aaa589ebd85ada9860fcd7e5733065d976701f4d578d75baeae9a58b2",
-   "bytes": 204447,
+   "sha256": "5d283933d18266f2339094cc190741dce555aeda562bc43c08986c01f54fd019",
+   "bytes": 201011,
    "last_commit": "6084194"
   },
   {
@@ -168,20 +168,20 @@
   },
   {
    "path": "docs/superpowers/plans/2026-10-30-unimoe-stage1.md",
-   "sha256": "15e8e0486c129f0ddffa868f5b2d8abd59810e998cc49d515e8bee374125ba9d",
-   "bytes": 6246,
+   "sha256": "e2920ebef0e99dd7a1de46594ce9620e0d5a392fd6f2574c1d4fd99f2b972ec0",
+   "bytes": 6302,
    "last_commit": "7f003a8"
   },
   {
    "path": "docs/superpowers/specs/2026-10-04-growmoe-design.md",
-   "sha256": "b3ebc1ca27fe8b6b7c30b61a4c4400a16eab5abf80c7d1262fa8cc0abe132c54",
-   "bytes": 12948,
+   "sha256": "a885cca4fa128a9121db47a15682929994a28c8170c7ec87120f033578ad5cd2",
+   "bytes": 12824,
    "last_commit": "08c1a7a"
   },
   {
    "path": "docs/superpowers/specs/2026-10-10-routing-v2-design.md",
-   "sha256": "a28c552eab4354c911a675da8ebc747a4725b95f341a8842590d47479839ab60",
-   "bytes": 18886,
+   "sha256": "2a97bcc55bba822b82d3565fcc514b908cb450265012a4870b3d67d18db968fc",
+   "bytes": 18789,
    "last_commit": "08c1a7a"
   },
   {
@@ -192,8 +192,8 @@
   },
   {
    "path": "docs/superpowers/specs/2026-10-13-routing-v2-stage3-design.md",
-   "sha256": "b6a37470c8521adca8dea4cff8ab178e02d609fa9548467cb5ad3c97df48951b",
-   "bytes": 20107,
+   "sha256": "a3f5e2c9434488f13c861f75785283699f4e1532161d9827d47198bc78252120",
+   "bytes": 19969,
    "last_commit": "8312306"
   },
   {
@@ -204,14 +204,14 @@
   },
   {
    "path": "docs/superpowers/specs/2026-10-15-routing-v2-stage4-AMENDMENTS.md",
-   "sha256": "0073e7ef606684614161ecbc47f44174fa7d4221d011206f631a86d63b9f93c3",
-   "bytes": 8698,
+   "sha256": "7ec5c2f22ce3f07db000b819a891d1ea55f0bbb973a4d109b74b3962f8e2ad2f",
+   "bytes": 8668,
    "last_commit": "882c68b"
   },
   {
    "path": "docs/superpowers/specs/2026-10-15-routing-v2-stage4-design.md",
-   "sha256": "47bb9312f26e7ca19ab5d59ad18c616e868af3110042dc751bc6bbd1e7e7ad79",
-   "bytes": 33573,
+   "sha256": "91d2a28cdc5aa98321e8b83f6dfff7207f1dd536824d0205e765030463f038c2",
+   "bytes": 33379,
    "last_commit": "6084194"
   },
   {
@@ -222,8 +222,8 @@
   },
   {
    "path": "docs/superpowers/specs/2026-10-26-knowledge-status-and-routing-design.md",
-   "sha256": "c0b2ef62fc8019a7c3907eb9505467f657f33b96264f7c68b7b8deac5f5520ba",
-   "bytes": 26895,
+   "sha256": "4de12767eb8172ea7682c213a8c2b092b948659771400855cf527b4b5184161b",
+   "bytes": 26747,
    "last_commit": "3728c37"
   },
   {
@@ -234,50 +234,176 @@
   },
   {
    "path": "docs/superpowers/specs/2026-10-30-unimoe-design.md",
-   "sha256": "8ae11ea280d2a88490cc013901b0ca04f5eda05fb3185c830234f951fe48c511",
-   "bytes": 14199,
+   "sha256": "ef0b66201bd8a5be04ca0e40f1fa8626f5f25ac8eec2044117291b9c35c93298",
+   "bytes": 14204,
    "last_commit": "88c5072"
   },
   {
+   "path": "docs/superpowers/specs/2026-10-31-fsmoe-balance-design.md",
+   "sha256": "0beda9567f740db4b4adaca4b5e5c78b29ca6daf72f0d5eff90c9e6ccc10c70d",
+   "bytes": 4789,
+   "last_commit": null
+  },
+  {
+   "path": "docs/superpowers/specs/2026-10-31-fsmoe-design.md",
+   "sha256": "406b95e1fa4bbbe438f14bf54d44a1552b22adbb5516fcfe85c049cea6256f3e",
+   "bytes": 12265,
+   "last_commit": null
+  },
+  {
+   "path": "docs/superpowers/specs/2026-10-31-fsmoe-e2e-design.md",
+   "sha256": "6772bf5749e23b0845178dbeff63223f7a6076f69b12a070f32dc321eb510462",
+   "bytes": 5317,
+   "last_commit": null
+  },
+  {
+   "path": "docs/superpowers/specs/2026-10-31-fsmoe-followup-design.md",
+   "sha256": "677c6f1f2f3fad0e9b73591b8be3d856deb4ea74568ef1e86bfec85ef80cf711",
+   "bytes": 7619,
+   "last_commit": null
+  },
+  {
+   "path": "docs/superpowers/specs/2026-10-31-fsmoe-hybrid-design.md",
+   "sha256": "6f620aad30f36b338d74dff931f4a2aa9af63e4f78029148cc93efc98b5df600",
+   "bytes": 4178,
+   "last_commit": null
+  },
+  {
+   "path": "docs/superpowers/specs/2026-11-01-fsmoe-chance-flag-design.md",
+   "sha256": "bb40883ed258ad38d77f647099b3bbb2e9339b487a9158ad86a2d7a89184b48a",
+   "bytes": 3392,
+   "last_commit": null
+  },
+  {
+   "path": "docs/superpowers/specs/2026-11-01-fsmoe-growth-design.md",
+   "sha256": "779f7558394753efc106248851cb6b56e514c79f976b3dc207d04ee0abb27be9",
+   "bytes": 9773,
+   "last_commit": null
+  },
+  {
+   "path": "docs/superpowers/specs/2026-11-01-fsmoe-nbpool-design.md",
+   "sha256": "24c40cf67005a410513a3eb75a8ba165a3d6b46a0534f071b4f37f58e122dec1",
+   "bytes": 7296,
+   "last_commit": null
+  },
+  {
+   "path": "docs/superpowers/specs/2026-11-01-fsmoe-skip-design.md",
+   "sha256": "3aa6858e512b469dfb3019f236f520de77bde77d1f4d4cf83c12d2243c0dffe9",
+   "bytes": 6776,
+   "last_commit": null
+  },
+  {
+   "path": "docs/superpowers/specs/2026-11-01-nuance-reconciliation-and-char-front-design.md",
+   "sha256": "fceecd963e1d0b44d0b99a8f710b51a74e4428b383d9596bdc60cbeb8c4be44e",
+   "bytes": 7323,
+   "last_commit": null
+  },
+  {
+   "path": "docs/superpowers/specs/2026-11-01-poolfeed-design.md",
+   "sha256": "a11f818825a47a8f3586cffc83280c53af94679a3d68f1ead75689d9a8fb9c71",
+   "bytes": 14390,
+   "last_commit": null
+  },
+  {
+   "path": "docs/superpowers/specs/2026-11-01-poolfeed-topic-design.md",
+   "sha256": "7d13d3fc28e6dc1b54be529b86e8bb02d830a86e2847cce00eb3746a8dcc3888",
+   "bytes": 8598,
+   "last_commit": null
+  },
+  {
    "path": "geomlab/phase0_algebra.py",
-   "sha256": "ba4e5b52a3f00342a8881558076633bc91cc3d8197e82bbd0254a30fccd06a08",
-   "bytes": 11255,
+   "sha256": "e48162f20b3e41281f08ae7d102a4eedc532b64e6dcbc557368c185334cdd492",
+   "bytes": 10964,
    "last_commit": "e821976"
   },
   {
    "path": "geomlab/phase1_capacity.py",
-   "sha256": "386b66a1b6f1aa6a5dce72c3046a95d6c34cc99d27d0ff0515a085d9815a13d2",
-   "bytes": 8992,
+   "sha256": "47fc553fe1660e1faac1dcfb07534803dfd387ac4c0fac5dde8c95d872e4c6c5",
+   "bytes": 8757,
    "last_commit": "e821976"
   },
   {
    "path": "geomlab/phase2_composition.py",
-   "sha256": "ce62f782734cf3527e758bc8d9382f6d77d44c6ef8e40b99f098254c79770245",
-   "bytes": 13184,
+   "sha256": "0244f3bf75f5690e80af6275798e47502b617cc7bf98ba4579f5f6ab798f3ca7",
+   "bytes": 12845,
    "last_commit": "e821976"
   },
   {
    "path": "growmoe/arith.py",
-   "sha256": "53797f7864dc7d34b6d92629450fb40285c8661d6a27fa2fed587b9194e50779",
-   "bytes": 9928,
+   "sha256": "152ef314a8862f657eaf1de014fb6d3de491e98b9d33b48c7a31dc75d4cdd776",
+   "bytes": 9740,
    "last_commit": "8312306"
   },
   {
    "path": "research/DYNAMIC_MOE_RESEARCH_AND_DESIGN.md",
-   "sha256": "d886c8e6de080a6093d95fce95dd59ac9a1011e30f483e29e0908eb14c8d36e6",
-   "bytes": 32598,
+   "sha256": "f382923d8db9aa4ce31921c0a2dc514899d5e8768e37e41ee88b4e4075ece50e",
+   "bytes": 32316,
    "last_commit": "f881cb3"
   },
   {
+   "path": "research/FSMOE_BALANCE_REPORT_2026-10-31.md",
+   "sha256": "0359a2f48feed2b7df453652fa5fd771d34ca9caf6f69926cde35027349bebd9",
+   "bytes": 6973,
+   "last_commit": null
+  },
+  {
+   "path": "research/FSMOE_CHANCE_FLAG_REPORT_2026-11-01.md",
+   "sha256": "0025382e31cd256670e8c77646a733245bcc2b533b93f241eb38d2b2119291a1",
+   "bytes": 4451,
+   "last_commit": null
+  },
+  {
+   "path": "research/FSMOE_E2E_REPORT_2026-10-31.md",
+   "sha256": "d48a70a1043ca8af573ffc4a03cd51b682f9ad36b0c212135b469f7b010fc7a7",
+   "bytes": 6744,
+   "last_commit": null
+  },
+  {
+   "path": "research/FSMOE_FOLLOWUP_REPORT_2026-10-31.md",
+   "sha256": "8b5b1afc95b7fd89cc53f530b95da81e51aa792873411a5dfb3a8f747d2c4926",
+   "bytes": 7714,
+   "last_commit": null
+  },
+  {
+   "path": "research/FSMOE_GROWTH_REPORT_2026-11-01.md",
+   "sha256": "b49fce748d0ee7c4ac4ff9e8229b2e2d5d6e8f4388a38c9b3216bb5281475bc1",
+   "bytes": 8569,
+   "last_commit": null
+  },
+  {
+   "path": "research/FSMOE_HYBRID_REPORT_2026-10-31.md",
+   "sha256": "15dcb4a7a749efa8179e6f2dc8b83454754704ebf56033a87d149e32b6488746",
+   "bytes": 7511,
+   "last_commit": null
+  },
+  {
+   "path": "research/FSMOE_NBPOOL_REPORT_2026-11-01.md",
+   "sha256": "6082aecfd273041c615078c6e7ce3ad6d1ca19d7e24614a8879348c92d0fabc8",
+   "bytes": 7887,
+   "last_commit": null
+  },
+  {
+   "path": "research/FSMOE_REPORT_2026-10-31.md",
+   "sha256": "009073aefdecab06ccd7c9886f77928149df679ae4cc2a7080b654ef1ffc90a1",
+   "bytes": 10862,
+   "last_commit": null
+  },
+  {
+   "path": "research/FSMOE_SKIP_REPORT_2026-11-01.md",
+   "sha256": "df5811835a5da49dccfa2995381791f8aa32ea073ba5b5367aa19e8f5efdf0c3",
+   "bytes": 4818,
+   "last_commit": null
+  },
+  {
    "path": "research/GATEKEEPER_RESEARCH_2026-10.md",
-   "sha256": "60e5df636197f67a507ccf767bae07b0031e9256d35cfd69f9daafec5edac6ae",
-   "bytes": 43839,
+   "sha256": "b2cc5abe08376256243f8bf813979dd28c1e5f442ca209f108a15593e35807b0",
+   "bytes": 43544,
    "last_commit": "117aec5"
   },
   {
    "path": "research/geomlab_results/phase0/PREREG.md",
-   "sha256": "c84fb8307f488b0bc9ba9ad495fb0055e0d1c766fe5fcee4489c8cea7ac522d0",
-   "bytes": 6405,
+   "sha256": "664025fa77e7a28c64512f19dcdedeeb65b0754d1c6005539bbd6ddee1514c72",
+   "bytes": 6310,
    "last_commit": "e821976"
   },
   {
@@ -288,8 +414,8 @@
   },
   {
    "path": "research/geomlab_results/phase0/run_phase0.py",
-   "sha256": "a129beebd9e20f3c6d96f129d6446409d94320de7051758e338f7fb3b3029820",
-   "bytes": 16301,
+   "sha256": "e022afe927e04a9f94ff21e556cb21c692d3083be908ac2b3c929b1c2d71e900",
+   "bytes": 15872,
    "last_commit": "e821976"
   },
   {
@@ -306,8 +432,8 @@
   },
   {
    "path": "research/geomlab_results/phase1/PREREG.md",
-   "sha256": "2a9d66c2e76435a053b43f6b9e036b29caeddf7dc860e82e30cc2738fd506f00",
-   "bytes": 7243,
+   "sha256": "e834537003734560cf8985c7a8196eca2e5c51a93a388ddb60f71ae1a23d82c2",
+   "bytes": 7144,
    "last_commit": "e821976"
   },
   {
@@ -318,8 +444,8 @@
   },
   {
    "path": "research/geomlab_results/phase1/run_phase1.py",
-   "sha256": "750d54de1e1629d5a68554d154ee952b7632fdc5f83ef08a441e780efd30a32c",
-   "bytes": 25613,
+   "sha256": "820bb3d6645c28ecbd0da4a7b9a1e3b559be1e7daa52f2dfbd6995420392f3db",
+   "bytes": 25041,
    "last_commit": "e821976"
   },
   {
@@ -336,8 +462,8 @@
   },
   {
    "path": "research/geomlab_results/phase2/PREREG.md",
-   "sha256": "a379a101c67e4faf3f55b30ff65c0517c3c20b5ddada3c20c291ff8ec59cee04",
-   "bytes": 7092,
+   "sha256": "26476c647b4455d53f00af7ba1d528c976a91f220e211f08e16760be09c3f90b",
+   "bytes": 6992,
    "last_commit": "e821976"
   },
   {
@@ -348,8 +474,8 @@
   },
   {
    "path": "research/geomlab_results/phase2/run_phase2.py",
-   "sha256": "21815aef280ab2a2f44b349b40fbb7e0c63fbfa0cfa0b6aece496393d6bcd2dc",
-   "bytes": 21603,
+   "sha256": "bd2c793d7414264d8ddd18f715f9be353487525cfe3fefb1f0015ebdc17db189",
+   "bytes": 21107,
    "last_commit": "e821976"
   },
   {
@@ -359,21 +485,45 @@
    "last_commit": "e821976"
   },
   {
+   "path": "research/geomlab_results/phase3/checkpoint.json",
+   "sha256": "15faf5ce0fc99d5c10f9bd89a88277777636ccfe2c2071f4bfef9499600340d9",
+   "bytes": 38311,
+   "last_commit": null
+  },
+  {
    "path": "research/geomlab_results/phase3/PREREG.md",
-   "sha256": "826bc444a2d143b17c291c1dd02133c96227b74324a87e5d4405cf6bcad3cb38",
-   "bytes": 6542,
+   "sha256": "151eb2908519e9e37a7d42271811caad62f1aefa1c75b6e364a4b47bfbd7738a",
+   "bytes": 6453,
    "last_commit": "e821976"
   },
   {
+   "path": "research/geomlab_results/phase3/results.json",
+   "sha256": "750ca5cdb76d4cb700e20c3f13cfce5d9a43e14402db0dcaab84b00f00713b66",
+   "bytes": 21967,
+   "last_commit": null
+  },
+  {
+   "path": "research/geomlab_results/phase3/run_phase3.py",
+   "sha256": "2d587e4794f2248724cfd4126c1dd639f52fdb0c9cb3c4c9aafbab0fffe41e08",
+   "bytes": 22216,
+   "last_commit": null
+  },
+  {
+   "path": "research/geomlab_results/phase3/tables.txt",
+   "sha256": "35be07301a215ec083470e22473e857131c357d4431100b1defa0485e5ea1377",
+   "bytes": 1693,
+   "last_commit": null
+  },
+  {
    "path": "research/geomlab_results/z0/AMENDMENT.md",
-   "sha256": "69c52c2c860051ddaa9fbbef9a77ab767e0c6957b9d178a7bdbd916c4c02a077",
-   "bytes": 4246,
+   "sha256": "53f33d7b0ec8fd81b877a833fa8fb39d509f3d9f34735234491f622a9f605af3",
+   "bytes": 4189,
    "last_commit": "8312306"
   },
   {
    "path": "research/geomlab_results/z0/PREREG.md",
-   "sha256": "56666ff18819834d7e2eb0e1b6bc2100ee127ba6b76644a73f7977ce98e1bf9d",
-   "bytes": 4705,
+   "sha256": "476b91015388fc10640f0cab691b3c94b896edfa89efdaa9d1178ce3391854fb",
+   "bytes": 4634,
    "last_commit": "8312306"
   },
   {
@@ -390,8 +540,8 @@
   },
   {
    "path": "research/geomlab_results/z1/AMENDMENT.md",
-   "sha256": "cc04623a3dcc395902faf4da9259ea042561618c61df4e62ebb2a11221875869",
-   "bytes": 2069,
+   "sha256": "319acba5f9a21792bc2146d575bb8c2473137ace21b157b333171bd596180bb6",
+   "bytes": 2040,
    "last_commit": "8312306"
   },
   {
@@ -402,8 +552,8 @@
   },
   {
    "path": "research/geomlab_results/z1/PREREG.md",
-   "sha256": "ca1092684e8c46a45aa7f5560b2bb995e63a52fd2aa4d1c4c53a49b9cd6b4f8c",
-   "bytes": 8452,
+   "sha256": "c97ba7479c60a6954eda8600fafbd2046af21e032d1719fc4b7b08ee299d1cf2",
+   "bytes": 8319,
    "last_commit": "8312306"
   },
   {
@@ -432,8 +582,8 @@
   },
   {
    "path": "research/GROWMOE_MERGE_RESEARCH.md",
-   "sha256": "2e22fac8351bd3913acd664d3284e7e197ddf56d6264bd8dcb3fb0a5e9b2144f",
-   "bytes": 55925,
+   "sha256": "49c2dfe454df4b822000d107a4da20e6594825a108afdb563d49f32fecc2744e",
+   "bytes": 55440,
    "last_commit": "c3e8ed3"
   },
   {
@@ -444,20 +594,20 @@
   },
   {
    "path": "research/growmoe_results/arith/launch_curve.sh",
-   "sha256": "5149a68d067057408524e085aa4bc00286b520ff72c8100332b6bb425dc4cd93",
-   "bytes": 608,
+   "sha256": "6809c6edd0be4f981756d57b23dfd652ea4daa4e6c7fb1c74af66f5e264a5f66",
+   "bytes": 599,
    "last_commit": "8312306"
   },
   {
    "path": "research/growmoe_results/arith/launch_main.sh",
-   "sha256": "41ba420be592f0c383cf1455bd316e5451545555c8d0bbfb464393d8a9bc8d22",
-   "bytes": 1545,
+   "sha256": "2523f4c2035e2dc174c43f37e4178c60d2317e293a11ce46c297dc3af804ad3f",
+   "bytes": 1509,
    "last_commit": "8312306"
   },
   {
    "path": "research/growmoe_results/arith/launch_main2.sh",
-   "sha256": "d5fca6da0815857f350ffb33043346cb9786e6f3bba07574251578f286ed5c76",
-   "bytes": 694,
+   "sha256": "4b00a433bc4a36d4c03c327d605da3552a8d45d23fd7a26a6215a8b10556aa56",
+   "bytes": 681,
    "last_commit": "8312306"
   },
   {
@@ -486,8 +636,8 @@
   },
   {
    "path": "research/growmoe_results/IMPLEMENTATION_LOG.md",
-   "sha256": "1bafe9080862973ceb13afb9e70aa80c1e3749da8dacf2bca6b3c906cddc9b42",
-   "bytes": 19228,
+   "sha256": "abd83cb4c1e56922bc36580d2a28b0a67aea1d38a0f5f5424c68d7b80cc676e3",
+   "bytes": 19008,
    "last_commit": "f881cb3"
   },
   {
@@ -510,8 +660,8 @@
   },
   {
    "path": "research/growmoe_results/m0/diagnose_arming.py",
-   "sha256": "dcad172d1511dc3ac617b28114154aa22b2644e8ba9ed49098413d59f12e886e",
-   "bytes": 6008,
+   "sha256": "69157f8ee5e88586069c4e9333ec0179808e78294bc197431f977f5dba19125c",
+   "bytes": 5902,
    "last_commit": "f881cb3"
   },
   {
@@ -522,26 +672,26 @@
   },
   {
    "path": "research/growmoe_results/m0/diagnose_guards.py",
-   "sha256": "ab7931ef791243c00bce8b4c8a6066cd79e1e77c3a62886e91a62dd1f57d9947",
-   "bytes": 3939,
+   "sha256": "a6bde581feadc0ffede206a89e124c38150330528d7e8e31d56361c89d4ea76e",
+   "bytes": 3868,
    "last_commit": "f881cb3"
   },
   {
    "path": "research/growmoe_results/m0/diagnose_machinery.py",
-   "sha256": "01a93cf45155e6c9fb20ada49933ceb4f1908676105d78a60c5b6a19ad29b1b2",
-   "bytes": 4169,
+   "sha256": "919a97816b5b5b7b11529ebbff1afa38a24491ea8d5a6140464fb337237ede81",
+   "bytes": 4092,
    "last_commit": "f881cb3"
   },
   {
    "path": "research/growmoe_results/m0/diagnose_machinery2.py",
-   "sha256": "06b6dfaaa18d534134a4861080ca6acf38e7cad136f931bf1f762f800889424e",
-   "bytes": 5230,
+   "sha256": "8e175c3a4f639e8c1b385b79eee18ebd021b322b1d01b6f2e93ceb5afbb48263",
+   "bytes": 5146,
    "last_commit": "f881cb3"
   },
   {
    "path": "research/growmoe_results/m0/diagnose_routing_causes.py",
-   "sha256": "bc7a140ad3612d1f1f46af78a10e60fbbab366cdb6fa1c7ac84c3fe53b2aa488",
-   "bytes": 10492,
+   "sha256": "c204e5e68137fb15c4b4ed0892abc2c780da9a539d32ba51964c51251cab5094",
+   "bytes": 10312,
    "last_commit": "f881cb3"
   },
   {
@@ -606,8 +756,8 @@
   },
   {
    "path": "research/growmoe_results/m0/PREREG.md",
-   "sha256": "5bec168d3f74843a406a6f6c1248eab27934e15f4b0b5742d4ef76148ac1c3bd",
-   "bytes": 9974,
+   "sha256": "85d2864a3e96aa3971aded527f7762c603109e17ca00bed1ed729c84dc3e761b",
+   "bytes": 9896,
    "last_commit": "f881cb3"
   },
   {
@@ -1278,8 +1428,8 @@
   },
   {
    "path": "research/growmoe_results/m2a/PREREG.md",
-   "sha256": "5f083be9f20d4954f453d8fdaa4ed3224b4a8d236f01930c5595c847750a5cc2",
-   "bytes": 6943,
+   "sha256": "07d1070cc5de3d1534ff8c7db53a6ae8391c55e5759275d90ac6d65cd0686f25",
+   "bytes": 6875,
    "last_commit": "f881cb3"
   },
   {
@@ -1752,8 +1902,8 @@
   },
   {
    "path": "research/growmoe_results/merge_study/alias_check.py",
-   "sha256": "e5acba327555cb2b377e67884605bdf3c094cdd060581146c52f1b634e5a81f2",
-   "bytes": 2105,
+   "sha256": "c90769bbbb0d2aa049ef5363bbf05c58550ba79bf1c3f91a837f71c565023fac",
+   "bytes": 2068,
    "last_commit": "6abfcc8"
   },
   {
@@ -1764,8 +1914,8 @@
   },
   {
    "path": "research/growmoe_results/merge_study/alias_check_s3.py",
-   "sha256": "178048d9245f265a87e21dd9657111f9147d8ee5a526be8a1245ec92737f0dc5",
-   "bytes": 3907,
+   "sha256": "69fa92212c4127f320087a43bef993cd4cf4ec126888875766b5b8940a776d25",
+   "bytes": 3819,
    "last_commit": "6abfcc8"
   },
   {
@@ -1806,20 +1956,20 @@
   },
   {
    "path": "research/growmoe_results/merge_study/arith_check.py",
-   "sha256": "d18c426bf836c00b2d5c7f2827e56e33ab1451f2b0507775eabd77326355932d",
-   "bytes": 8484,
+   "sha256": "2f6045630eba2b82c706f0fcb3d18466cc2901842044b2234712dcde7b007435",
+   "bytes": 8326,
    "last_commit": "6abfcc8"
   },
   {
    "path": "research/growmoe_results/merge_study/build_report.py",
-   "sha256": "3b1722d69408923507eb68b0b7834ac3ed18ff339c357e41c15cc19fa76de55c",
-   "bytes": 17199,
+   "sha256": "c40d69fda051a357ddfd7638ed1a322790549d79a6409afbdde47ba425ab5242",
+   "bytes": 16894,
    "last_commit": "6abfcc8"
   },
   {
    "path": "research/growmoe_results/merge_study/healing2_diag.py",
-   "sha256": "a07b56b7e2c7558d1abba9ca7e84a7a7c2a1b59159f4aec39bb0b94945b0741b",
-   "bytes": 6476,
+   "sha256": "649e688dc1f38b22284347bdaea2889d778daed13085ba5b4858c74e31a66030",
+   "bytes": 6357,
    "last_commit": "6abfcc8"
   },
   {
@@ -1884,8 +2034,8 @@
   },
   {
    "path": "research/growmoe_results/merge_study/healing_diag.py",
-   "sha256": "e73785bd3b9fd49ffb519b3f4fa1cef0ad99e7420b3dd1e50d1125d10bf726f3",
-   "bytes": 5596,
+   "sha256": "9660338350f4a448ebacc2b3c4772bc3515b6ba1e48cdd4c7aa71c8e0812080f",
+   "bytes": 5485,
    "last_commit": "6abfcc8"
   },
   {
@@ -1896,8 +2046,8 @@
   },
   {
    "path": "research/growmoe_results/merge_study/idshift_check.py",
-   "sha256": "008de57b38551d72667c348ff9022c2efa83daa50593288d78200183256ff3d9",
-   "bytes": 3143,
+   "sha256": "4935d8ae0f5eb4ede5dbd60c5ad3a99f1536243fd317aee2226538884857d40a",
+   "bytes": 3087,
    "last_commit": "6abfcc8"
   },
   {
@@ -1920,8 +2070,8 @@
   },
   {
    "path": "research/growmoe_results/merge_study/infant_dedupe_study.py",
-   "sha256": "75347108f01a3e280b48ddaa49bc0659de82874718e1a7223db77042da6ed25a",
-   "bytes": 4586,
+   "sha256": "e096967e7ae10e3f930143e504aed81bfa4b3dc1dcf4551db6deb049f422b8e1",
+   "bytes": 4499,
    "last_commit": "7bb7a72"
   },
   {
@@ -1932,8 +2082,8 @@
   },
   {
    "path": "research/growmoe_results/merge_study/infant_study.py",
-   "sha256": "358e0d0c4d123c92e71dff905ea98b5ad52471a1103a4ac90e26a4030f1e9319",
-   "bytes": 3543,
+   "sha256": "5f891df9887bb59e3d43f93766b5bce96eac74e0d45e4e5fac98faec93bdd04e",
+   "bytes": 3467,
    "last_commit": "6abfcc8"
   },
   {
@@ -2190,32 +2340,32 @@
   },
   {
    "path": "research/growmoe_results/merge_study/report_healing2.py",
-   "sha256": "2ddd3cccb842cabbfc4649612b670f3b1321c2a921e8510ae5e64ed3e7e5a1fd",
-   "bytes": 7704,
+   "sha256": "36d30f15905ea111993e1df17f2ffa0c4353fa1c7f258d9ef1feb1c315fcc4a1",
+   "bytes": 7578,
    "last_commit": "6abfcc8"
   },
   {
    "path": "research/growmoe_results/merge_study/report_template.md",
-   "sha256": "477ebc966e12fd299c4009663eb57ffb2f7687580e03c00bd8c13a6429f3d3bc",
-   "bytes": 44367,
+   "sha256": "299e071f6596af5b639c91b26c8ac4e72e5f7b1a3edf6d48a709a48ca435d759",
+   "bytes": 44005,
    "last_commit": "c3e8ed3"
   },
   {
    "path": "research/growmoe_results/merge_study/RESULTS_HEALING2.md",
-   "sha256": "7317107ca7d08bfc289c1810c0d2ebd4f5f74793c0563d1a9c8347175b45e6a4",
-   "bytes": 17038,
+   "sha256": "55df2ac44861ee8b0adbd74a39a4e5ffcee908280ef28e685e01e61e379a8ddc",
+   "bytes": 16915,
    "last_commit": "6abfcc8"
   },
   {
    "path": "research/growmoe_results/merge_study/RESULTS_INFANT.md",
-   "sha256": "74b8bd9f7e3276f47659be7ebeec42ed5da65df2e4dfd911bb990a6c33e901a4",
-   "bytes": 760,
+   "sha256": "52d1ab5183e9e39509d2ce57a3a80adef4303a93e46c4f4bf549a2c68fc8f1e7",
+   "bytes": 746,
    "last_commit": "6abfcc8"
   },
   {
    "path": "research/growmoe_results/merge_study/RESULTS_INFANT_DEDUPE.md",
-   "sha256": "17737857efc7a3ebbe73950cfd7f12fa0610561fd1bd4ee01af3056c0452319b",
-   "bytes": 1073,
+   "sha256": "b3b3eb097e4d6e808be20ec22c516882044b9324b56a9abe4740d2707a3d8bd0",
+   "bytes": 1053,
    "last_commit": "7bb7a72"
   },
   {
@@ -2226,20 +2376,20 @@
   },
   {
    "path": "research/growmoe_results/merge_study/run_study.py",
-   "sha256": "621235f5b22be9272063a94a72b89a82cf90a852808deeaa9f08bfb304283185",
-   "bytes": 10744,
+   "sha256": "08414b22b22f2f1063da9f44c04d34e39b238e6c290b8968eddac1b7d0cf39db",
+   "bytes": 10581,
    "last_commit": "6abfcc8"
   },
   {
    "path": "research/growmoe_results/merge_study/study_lib.py",
-   "sha256": "6ec12f96b4f9b7991c56d79e99174d727357a9926cf69f26d2ce78605a694155",
-   "bytes": 13302,
+   "sha256": "55d0c9f96aa06fa9d7f7c8f49c7f6f6dc0c01935a8e2425cf893e0efb6a446f7",
+   "bytes": 13060,
    "last_commit": "6abfcc8"
   },
   {
    "path": "research/growmoe_results/merge_study/twin_diag.py",
-   "sha256": "385cfaf1cdf7bd9227c6fbafe93ca589ac86089ee3b9e412314dafbfda5fd084",
-   "bytes": 2934,
+   "sha256": "3035ff83e6d9be6d001b8408a21b4567c6cd3a24428a859ac31623ef7fbec4a1",
+   "bytes": 2874,
    "last_commit": "6abfcc8"
   },
   {
@@ -2250,26 +2400,26 @@
   },
   {
    "path": "research/growmoe_results/merge_study/twin_signature_diag.py",
-   "sha256": "688a635de1fcc06abcd7072dd64eba74aa41b9087fe5647374b0844693ee6214",
-   "bytes": 3731,
+   "sha256": "4e779a21847b7cd149da1d37042151289302249ad0eecf13d6b6a6f401f518b1",
+   "bytes": 3653,
    "last_commit": "7bb7a72"
   },
   {
    "path": "research/growmoe_results/merge_study/twin_signature_diag_output.txt",
-   "sha256": "65cb0b9dca4f03852a9ca1609e26e0cddf3ff9d8eea24388e1d08999958af688",
-   "bytes": 2924,
+   "sha256": "826b2e1dbaaa787696682ae0081acd4b0e451ab8e7bec7516de985c36db3be3e",
+   "bytes": 2871,
    "last_commit": "7bb7a72"
   },
   {
    "path": "research/growmoe_results/merge_study/update_trace.py",
-   "sha256": "0dabd41dc86721ede17ce77c75c6350d5a08a44301ce9b232cb09b7cac4ede26",
-   "bytes": 1759,
+   "sha256": "e53e9f46329c58738ebb428cc51def8bfd19f35056bf543f5c6b8f6c5ef72f6c",
+   "bytes": 1717,
    "last_commit": "7bb7a72"
   },
   {
    "path": "research/growmoe_results/merge_study/update_trace_output.txt",
-   "sha256": "1e2badeac1f3676d31bc12d17c91b3ecd8acc997e36965babf1276152e342593",
-   "bytes": 479,
+   "sha256": "5c5e417c78cb832d76cd8f2558bc853149bfe647e8e7c5974353781043e0171b",
+   "bytes": 474,
    "last_commit": "7bb7a72"
   },
   {
@@ -2328,8 +2478,8 @@
   },
   {
    "path": "research/growmoe_results/phase2/PREDICTIONS.md",
-   "sha256": "5b46adab45f3381e418fe2c84d9d1f195f2b22b6c917edd917b037eb552b5c16",
-   "bytes": 4069,
+   "sha256": "0d848f6ffdf96916c26c44fe3e6a41f18ac927f6faca81511c5cceaf396889da",
+   "bytes": 4007,
    "last_commit": "f881cb3"
   },
   {
@@ -2352,8 +2502,8 @@
   },
   {
    "path": "research/growmoe_results/rv2/report_spikes.py",
-   "sha256": "e4c118d7746d0ccde91a37ce8ae727fad64833783288fd46fb5a93f8c42360ae",
-   "bytes": 12536,
+   "sha256": "df9a6dd46010c25fbbb58850dd723f20608d649de393b9ef02d9db91fd51eb2d",
+   "bytes": 12363,
    "last_commit": "f881cb3"
   },
   {
@@ -2370,8 +2520,8 @@
   },
   {
    "path": "research/growmoe_results/rv2/spike_batch_guard.py",
-   "sha256": "53a8512a2d61870a73003d8e022634c5c1a0d93f51ce2a4def263c3e85fe379b",
-   "bytes": 6087,
+   "sha256": "f29e6074c525e49b6f96aad589554ef26556237fb67776f89defdb7a02bb7c39",
+   "bytes": 5956,
    "last_commit": "f881cb3"
   },
   {
@@ -2388,8 +2538,8 @@
   },
   {
    "path": "research/growmoe_results/rv2/spike_batch_route.py",
-   "sha256": "b655adf857a3116c6a81f56b6646b6c0f7468abeca13485736529f831063a8df",
-   "bytes": 5727,
+   "sha256": "6b766bb635d574afc9737f7a75cff6125e12ae0d39ccc4751a4b59b3de6c399d",
+   "bytes": 5608,
    "last_commit": "f881cb3"
   },
   {
@@ -2424,8 +2574,8 @@
   },
   {
    "path": "research/growmoe_results/rv2/spike_label_assign.py",
-   "sha256": "4545a56c83249a909cab2650ce82cfb1a9d7ad3212870658f94c138dd0eb14d3",
-   "bytes": 4517,
+   "sha256": "90d80e7d799de3964bea1080c8663035c4719d3dfb447c6fc0b1094f430df58d",
+   "bytes": 4421,
    "last_commit": "f881cb3"
   },
   {
@@ -2442,8 +2592,8 @@
   },
   {
    "path": "research/growmoe_results/rv2/spike_landmarks.py",
-   "sha256": "c39da4f518596d355f876683d6ddd0164429a67e9011f7a6906243d17ad99551",
-   "bytes": 2528,
+   "sha256": "6538561048fb53b890c4b4b6fda2ac945d4fdc739cdc35b9524d022d2b8a4c77",
+   "bytes": 2474,
    "last_commit": "f881cb3"
   },
   {
@@ -2460,8 +2610,8 @@
   },
   {
    "path": "research/growmoe_results/rv2/spike_mixphase.py",
-   "sha256": "09cb6ec88e36d506b2352f41cca4ef90e91be3627e5d683bcdd9bf5121046be2",
-   "bytes": 5380,
+   "sha256": "2c940d95f1af77a2e1eb8a0bc680f07686f0c5d1e4cbbcaa410f7d456680198d",
+   "bytes": 5287,
    "last_commit": "f881cb3"
   },
   {
@@ -2478,8 +2628,8 @@
   },
   {
    "path": "research/growmoe_results/rv2/spike_onset.py",
-   "sha256": "bb4bfb489cb5bc5141d4a8a6f9cddbc912d7e9d1f733eae19e464ad1beadd021",
-   "bytes": 7580,
+   "sha256": "31c1697fe6db1cbea9e21de15e07714292eb7951b7c7861ee270a2a5d57ea934",
+   "bytes": 7442,
    "last_commit": "f881cb3"
   },
   {
@@ -2496,8 +2646,8 @@
   },
   {
    "path": "research/growmoe_results/rv2/spike_overlap.py",
-   "sha256": "82ad433d355ee664d05574976f79ef5085f845d227bd9513d3302e4442932062",
-   "bytes": 6113,
+   "sha256": "1bf2758febdf13f12d4c2bf73cfdae41df0347bbbab09d7837df17990a9260e7",
+   "bytes": 6007,
    "last_commit": "f881cb3"
   },
   {
@@ -2514,8 +2664,8 @@
   },
   {
    "path": "research/growmoe_results/rv2/spike_vote_variants.py",
-   "sha256": "7b3ac6508fb40ad3c03f425a69285bfe0dd168b7ec9321c932a3352749467071",
-   "bytes": 5695,
+   "sha256": "dcc96e6741c5e5eb5f73c9ff0277a4fce82f5c6896c9bbfc0d00d0a2af791f4c",
+   "bytes": 5570,
    "last_commit": "f881cb3"
   },
   {
@@ -2556,8 +2706,8 @@
   },
   {
    "path": "research/growmoe_results/rv2a/run_rv2a.py",
-   "sha256": "2bef8f05512d376b6e3442d8a6f0199e8b01e04a132522971313ccf59f93f19c",
-   "bytes": 21888,
+   "sha256": "14084cd50ab9d7a334c1ee012450e54182a57d83c7a1e072f510f26b34d17b56",
+   "bytes": 21527,
    "last_commit": "f881cb3"
   },
   {
@@ -5010,14 +5160,14 @@
   },
   {
    "path": "research/growmoe_results/rv2d/dev_constants.json",
-   "sha256": "ab9249aeae2594fe75c6e06e7963d3ac09eb266692c1d8fd1f75c993bdc3c57c",
-   "bytes": 7532,
+   "sha256": "df821febc07664433831cdc30feb9051e1f3e2a129797e2bcfe08f0ff6489fca",
+   "bytes": 7230,
    "last_commit": "646bd40"
   },
   {
    "path": "research/growmoe_results/rv2d/DEV_SELECTION.md",
-   "sha256": "811277d10b4b62b05a7010a0e3a15d16b00b3cc8c3130156a5a77e87edaf441f",
-   "bytes": 2410,
+   "sha256": "296c7e4dda9a6583d45921d8c26c3bb0fe8ae119a22ebb9c42628258b8f95e97",
+   "bytes": 2374,
    "last_commit": "646bd40"
   },
   {
@@ -5028,32 +5178,32 @@
   },
   {
    "path": "research/growmoe_results/rv2d/RESULTS_DEV.md",
-   "sha256": "0cb971ab46323928bb1c738c60eb105671775d0b3ed759b0f2aaf6df8296cc40",
-   "bytes": 6669,
+   "sha256": "9c51a91b8f6915729c3df28f658069508df28c0d54333575dc568d0d0a86c476",
+   "bytes": 6574,
    "last_commit": "0fd76e3"
   },
   {
    "path": "research/growmoe_results/rv2d/RESULTS_DEV_REVIEW.md",
-   "sha256": "b57a1549f49aaf03f459f0006b246f8fb40664111c178eefa4da71b1504c3403",
-   "bytes": 7719,
+   "sha256": "1c85eb4e4fb412b795ceef0003181811d7804912677cb47125d1e0bf90e01472",
+   "bytes": 7616,
    "last_commit": "646bd40"
   },
   {
    "path": "research/growmoe_results/rv2d/RESULTS_RV2D.md",
-   "sha256": "26ae51f3952ee700c286c29b0ddd4f7060859aff28735c2acc3c4a3e222cb409",
-   "bytes": 10453,
+   "sha256": "b8e5e2a40f5358a25246f5cefe93bf9dc160771363d1caab159a5daffaa56406",
+   "bytes": 10331,
    "last_commit": "d6bde2e"
   },
   {
    "path": "research/growmoe_results/rv2d/RESULTS_S3_DEDUPE.md",
-   "sha256": "015db3c3b51cec26361f191386f6cfa585faac659f5a6b1b449835b81ef0a3a9",
-   "bytes": 2648,
+   "sha256": "94d2948a155920aa1e2d1bbc8d33dabc4816e92748ff72c3c41872faf97cb67a",
+   "bytes": 2618,
    "last_commit": "0fd76e3"
   },
   {
    "path": "research/growmoe_results/rv2d/RESULTS_S3_UNALIASED.md",
-   "sha256": "e27f007061afe3d3de4ef9712689dc7dc3e437c98ce27295ca62391a9f91d1c4",
-   "bytes": 3043,
+   "sha256": "28c67370342bfa8076897344a250641f27019ac4e07d2f285422ff9287f168e4",
+   "bytes": 2981,
    "last_commit": "7bb7a72"
   },
   {
@@ -5076,8 +5226,8 @@
   },
   {
    "path": "research/growmoe_results/rv3/compare_variants.py",
-   "sha256": "d3ac7b254f80d355b87133c31b58cb7620cb9c2f8fad6dca7e51db7fd4404906",
-   "bytes": 1645,
+   "sha256": "cbe878ed8c0a189d193f0cf1d2ca0511a63381844b2d41dcc794bec1cdf1b383",
+   "bytes": 1618,
    "last_commit": "117aec5"
   },
   {
@@ -5088,8 +5238,8 @@
   },
   {
    "path": "research/growmoe_results/rv3/final_table.py",
-   "sha256": "0dfd4797d8242090fe65c115e66aaa11be182ff8fa9953eb4da2793037999a76",
-   "bytes": 2210,
+   "sha256": "6d5b41a491da5ce99789fe7af2b15c05ee4642f643485f95d57a2d27496052c3",
+   "bytes": 2209,
    "last_commit": "117aec5"
   },
   {
@@ -5106,14 +5256,14 @@
   },
   {
    "path": "research/growmoe_results/rv3/README.md",
-   "sha256": "0d2fc3b336792e491efae9376e6bef3392a49d70f487d86d010fec31596e3de3",
-   "bytes": 5246,
+   "sha256": "78ac60e24955fa480a2e3bdaa337a2ea2303a35fd45eae8ef051db2708b6ade8",
+   "bytes": 5196,
    "last_commit": "117aec5"
   },
   {
    "path": "research/growmoe_results/rv3/report_rv3.py",
-   "sha256": "5aecfbd8ec30fe4032291a2a44b094d14d58f80dbcc2bf48bebdaea6e0990e65",
-   "bytes": 7137,
+   "sha256": "e34a1026452d4ef7b11e1d8d705276050b1b1bbf984c3bb8a55c850f0dd1b9e1",
+   "bytes": 7020,
    "last_commit": "117aec5"
   },
   {
@@ -5124,8 +5274,8 @@
   },
   {
    "path": "research/growmoe_results/rv3/routing_table.py",
-   "sha256": "ded21e6e2cae94ccb625cddf9570fd1203b5f7f766aab3ee572af32b2aa87098",
-   "bytes": 1719,
+   "sha256": "b6ec2dbdae8415a25938e44da369ebfdcd431c3973ef65d96faea17e9264efb4",
+   "bytes": 1697,
    "last_commit": "117aec5"
   },
   {
@@ -5208,8 +5358,8 @@
   },
   {
    "path": "research/growmoe_results/rv3/spike_power_vs_batch.py",
-   "sha256": "3cb39d0b41e07162ce837d5efb5e1387ac3f6547ea9b54d7ea28adea6ceddb9e",
-   "bytes": 3410,
+   "sha256": "4466564dea2f069edb2cca2a2be62695950e4196ab5e1caf4ea0c1d6a143b42f",
+   "bytes": 3341,
    "last_commit": "117aec5"
   },
   {
@@ -5220,8 +5370,8 @@
   },
   {
    "path": "research/growmoe_results/rv3/spike_real_geometry.py",
-   "sha256": "a5d5a5048adcc8697209f97d42fc72618a917d5f63f0602ace4efa688ff41b01",
-   "bytes": 3243,
+   "sha256": "c512ffb4813c12ec1cd8ae19110b6b909c3ab9967cdb8caf6851c954d09ec30b",
+   "bytes": 3180,
    "last_commit": "117aec5"
   },
   {
@@ -5238,8 +5388,8 @@
   },
   {
    "path": "research/growmoe_results/rv3/spike_real_text.py",
-   "sha256": "59131a78df63c998175c1a4b4cf85537b35c06465623182b05517c4948313f33",
-   "bytes": 9838,
+   "sha256": "5afd5bb858ba2e18580de583d96efacb9d760a8af9716d48b2cfcae4cffdb7dd",
+   "bytes": 9677,
    "last_commit": "117aec5"
   },
   {
@@ -5466,8 +5616,8 @@
   },
   {
    "path": "research/growmoe_results/rv3/summ.py",
-   "sha256": "868e5f1853062bdea4c607c8bb9c32f8443e81824e6afbff30581425de8f8743",
-   "bytes": 872,
+   "sha256": "d5b2a1df12624b7c20f509eff79d2028cc598cf09c2a36cad205b60896d00dce",
+   "bytes": 860,
    "last_commit": "117aec5"
   },
   {
@@ -5478,8 +5628,8 @@
   },
   {
    "path": "research/growmoe_results/shootout/RESULTS_SHOOTOUT_UNALIASED.md",
-   "sha256": "0a6615e5f2e6537fcf5ba2d36e50a0d99224144a93c5dfded5dace8f718d5771",
-   "bytes": 2961,
+   "sha256": "7b381631d3e04dd46daadb8efc6340fd5530bb799af846b82ee8a3443f4678e7",
+   "bytes": 2906,
    "last_commit": "7bb7a72"
   },
   {
@@ -5652,9 +5802,69 @@
   },
   {
    "path": "research/growmoe_results/stage4_spikes/RESULTS_SPIKES.md",
-   "sha256": "3fa3d11b5dd0d1010ce7e041ac6b9b63cedfb7f295e1e92f2aa1fa9c4ce1feb0",
-   "bytes": 6594,
+   "sha256": "ad16c5938fdcb96fd2f4e0aff0e41eaf964780b24d903499cfa22b13af7e7640",
+   "bytes": 6503,
    "last_commit": "f631852"
+  },
+  {
+   "path": "research/knowledge_status/results/char_front/TABLE_150_154.md",
+   "sha256": "427250cb4c3e2a72870af4ef6b04dbb01f65365d9f4470a1f7955a3e545efb15",
+   "bytes": 1479,
+   "last_commit": null
+  },
+  {
+   "path": "research/knowledge_status/results/routing_general/g5/FIGURE_G5.png",
+   "sha256": "637178efef1760f837cd1a054444fb79c970e231632c2391f2c338e0c17ac7d9",
+   "bytes": 100665,
+   "last_commit": null
+  },
+  {
+   "path": "research/knowledge_status/results/routing_general/g5/SCORECARD_G5.md",
+   "sha256": "b0a67662bd864cb8883fc220772c26145c74ad2faced8677c90e3ba2fdd103df",
+   "bytes": 3556,
+   "last_commit": null
+  },
+  {
+   "path": "research/knowledge_status/results/routing_general/g5/SCORECARD_G5_head.md",
+   "sha256": "d37a6d466e105e657bf54815d7038942f50ba0c443be25715d245fb9669b9525",
+   "bytes": 2926,
+   "last_commit": null
+  },
+  {
+   "path": "research/knowledge_status/results/routing_general/g5/STATS_G5.md",
+   "sha256": "a596a4f3a33ff9653806db47a0049249160951088393ff3e98df6b264bfa0565",
+   "bytes": 3308,
+   "last_commit": null
+  },
+  {
+   "path": "research/knowledge_status/results/routing_general/g5/STATS_G5_cheap.md",
+   "sha256": "2374e0a4da31349e4b1b7ce7a86489d3c2e874ff89fdd0c7ff65047fea203e89",
+   "bytes": 3161,
+   "last_commit": null
+  },
+  {
+   "path": "research/knowledge_status/results/routing_general/g5/TABLE_cheap.md",
+   "sha256": "5dfc90be136414eabbe2d4f9211e7a719dec781ce55555cf2cd4b0cbaf01c9f6",
+   "bytes": 1940,
+   "last_commit": null
+  },
+  {
+   "path": "research/knowledge_status/results/routing_general/g5/TABLE_explore.md",
+   "sha256": "93898521d478dab743623e361cb2b246b28da78e0c3829fb061a9479bf53d2f8",
+   "bytes": 3114,
+   "last_commit": null
+  },
+  {
+   "path": "research/knowledge_status/results/routing_general/g6/FIGURE_G6.png",
+   "sha256": "063fd76b135027afadfb579c612b2d7bc894e5adf07acb58a152b03fdb09825e",
+   "bytes": 127955,
+   "last_commit": null
+  },
+  {
+   "path": "research/knowledge_status/results/routing_general/g6/SCORECARD_G6.md",
+   "sha256": "cd879e5a8340554a583e925f90d03a66e0b65615d2dcadf31ee230d94fd75fec",
+   "bytes": 7700,
+   "last_commit": null
   },
   {
    "path": "research/MOE_CONTINUAL_LEARNING_REPORT_2026-10.md",
@@ -5664,14 +5874,14 @@
   },
   {
    "path": "research/moe_diligence_2026-10/aggregate_function_stream.py",
-   "sha256": "a203fc7c13db30b2d5a0d09417b6f6649fae9a7b33dfa4bc9c73b13fdbf1dc96",
-   "bytes": 1824,
+   "sha256": "e35f7bdd4656b647378e65c1e8aa1cf6e8d46ba487e1da3a41aa102e1eb3951d",
+   "bytes": 1790,
    "last_commit": "f881cb3"
   },
   {
    "path": "research/moe_diligence_2026-10/dil_common.py",
-   "sha256": "3de87effed7dc8479ab8af3f3876c894b3e99397fc1b5c71ac648683527f806e",
-   "bytes": 5835,
+   "sha256": "1b6bf605c23d6c387acb3fe1609e648dde3daaba29a8f43cdef8a2388a7aa7f6",
+   "bytes": 5678,
    "last_commit": "f881cb3"
   },
   {
@@ -5718,8 +5928,8 @@
   },
   {
    "path": "research/moe_diligence_2026-10/spike_bigger_net.py",
-   "sha256": "05dad17f9dec09a8799e521b93ded4919496bc094f539fae504f1c8907f1b103",
-   "bytes": 3290,
+   "sha256": "240d81f183ecacdf035b2d1cc265307cf027d4f381458da7cd80bddf26d28ebb",
+   "bytes": 3219,
    "last_commit": "f881cb3"
   },
   {
@@ -5778,14 +5988,14 @@
   },
   {
    "path": "research/moe_diligence_2026-10/spike_function_stream.py",
-   "sha256": "16883dceae10b92b8fd69edd4a4b0ab3323a52fac1b52230ee399b073836ce03",
-   "bytes": 5118,
+   "sha256": "0b94ac448f474d2a0cefb84ce9b22d811e77b7eb96cd88b360e77b761251a1b3",
+   "bytes": 5021,
    "last_commit": "f881cb3"
   },
   {
    "path": "research/moe_diligence_2026-10/spike_lookup_fails.py",
-   "sha256": "05858acc5189deadb33f44430fdc3bc6988cee957c942724c72211d2b7500a77",
-   "bytes": 2561,
+   "sha256": "40a3ccaf242754651c527c4fa002668aad2226afb1e166e56396d432a788cba2",
+   "bytes": 2511,
    "last_commit": "f881cb3"
   },
   {
@@ -5819,9 +6029,27 @@
    "last_commit": "f881cb3"
   },
   {
+   "path": "research/NUANCE_RECONCILIATION_REPORT_2026-11-01.md",
+   "sha256": "531cdf738ae936057a736e9802754bc6e069a4b722436467b744a4a371f57426",
+   "bytes": 5404,
+   "last_commit": null
+  },
+  {
+   "path": "research/POOLFEED_FINAL_REPORT_2026-11-01.md",
+   "sha256": "f7052300333e44899af566c7370163b669276ccba9e701e973f6e1bc7b2c0902",
+   "bytes": 9189,
+   "last_commit": null
+  },
+  {
+   "path": "research/POOLFEED_TOPIC_AND_HEAD_REPORT_2026-11-01.md",
+   "sha256": "845f9af86020def48e13bdf5e53c3237fff61ebb4d70f738abaece42059e9308",
+   "bytes": 7799,
+   "last_commit": null
+  },
+  {
    "path": "research/results_geometry_checks.log",
-   "sha256": "0c8b75084cfab6f089a2c7366b123287b04ba8699f1d443bd62e5069cef31c9f",
-   "bytes": 1586,
+   "sha256": "4d681075b6bba90d65547a2286aee728aa939d26e86f55222fbd409395230ca6",
+   "bytes": 1560,
    "last_commit": "8312306"
   },
   {
@@ -5838,14 +6066,14 @@
   },
   {
    "path": "research/spikes/RESULTS.md",
-   "sha256": "eb1931ed8bb681e59ffb3587acd1fda8f3574013071bbb5e078d8ccc8a1d503d",
-   "bytes": 4357,
+   "sha256": "2f5b0124a6d57a50b26443591f4475192ede81673912ea9ae36132ac172e139c",
+   "bytes": 4310,
    "last_commit": "f881cb3"
   },
   {
    "path": "research/spikes/spike_growth_trigger.py",
-   "sha256": "a599ba1e24710282e06ecfd8112b71e069e07218d657b3946bd7ebbc72653d66",
-   "bytes": 5436,
+   "sha256": "8e9f8c4a12bc280f4f89496792245934cfe203e8e5b011605f03b65362825ae3",
+   "bytes": 5328,
    "last_commit": "f881cb3"
   },
   {
@@ -5862,8 +6090,8 @@
   },
   {
    "path": "research/unimoe/PROGRESS.md",
-   "sha256": "3c12d1bf1f0935df6bd57686010bf5928efb889f82ef0d681690c01eb20bae77",
-   "bytes": 32548,
+   "sha256": "9c317741ada262720ca76b7da077a1c90cdce2d246a800386362520f2e835305",
+   "bytes": 32661,
    "last_commit": "cfa08b4"
   },
   {
@@ -5886,14 +6114,14 @@
   },
   {
    "path": "research/yggdrasil_results/poc_c2_output.txt",
-   "sha256": "2bcde9840f800782b8f9c9ba1e1c64487bc52f46a534717f7320ee497d59bc53",
-   "bytes": 520,
+   "sha256": "e6a6752afefb2474dce396b2f604bdd0a4dd416c11202c30f8d798fdacdee567",
+   "bytes": 515,
    "last_commit": "8312306"
   },
   {
    "path": "research/yggdrasil_results/poc_c_output.txt",
-   "sha256": "8e7b3ee95726d4610fee09ea512316956f714d33252771047cd1ba64ae7ec846",
-   "bytes": 4773,
+   "sha256": "dffc747eacb22e409d952def2c94c1d1021dd9286aaeefacbb8dfabf77534be8",
+   "bytes": 4724,
    "last_commit": "8312306"
   },
   {
@@ -5937,6 +6165,168 @@
    "sha256": "a3601a446c70d709cf16eadcc321cab94e9eed0e32d57d5e640135b049e4bdcb",
    "bytes": 17639,
    "last_commit": "8312306"
+  },
+  {
+   "path": "results/fsmoe/B/REPORT_B.md",
+   "sha256": "1d64a41fd09c62efc950d494b821141db0e696dff5b70f634f0afd9c11583da9",
+   "bytes": 3252,
+   "last_commit": null
+  },
+  {
+   "path": "results/fsmoe/B/REPORT_H.md",
+   "sha256": "ef3cc405724cbe488593990b61e8a7430e78d4f1eacc1148d904a1e120a3ff4b",
+   "bytes": 3361,
+   "last_commit": null
+  },
+  {
+   "path": "results/fsmoe/E/REPORT_E.md",
+   "sha256": "8b525a5de4277c5c57e548ce6b6cca5a962eab5257efca3c9b4ee1f40afd849f",
+   "bytes": 4066,
+   "last_commit": null
+  },
+  {
+   "path": "results/fsmoe/FIGURE_BALANCE.png",
+   "sha256": "a2e9c7b9cf3cc292fc40eaeea40455821f51df6ada544f75e1ab345f60beed3d",
+   "bytes": 174262,
+   "last_commit": null
+  },
+  {
+   "path": "results/fsmoe/FIGURE_GROWTH.png",
+   "sha256": "d5b98c2e1ba1a68acbb6b47da479d34732ccfe6b58a3ae9ed3d3c52babc81312",
+   "bytes": 234089,
+   "last_commit": null
+  },
+  {
+   "path": "results/fsmoe/FIGURE_HYBRID.png",
+   "sha256": "b1c816b0324a1d4efac579e00f1876f9084ffda15eca560c3f97b76a1b4e20cc",
+   "bytes": 216628,
+   "last_commit": null
+  },
+  {
+   "path": "results/fsmoe/FIGURE_NBPOOL.png",
+   "sha256": "965edbf2392df7e5be3752f1bf01947826d35f554051802af05283a4fa128feb",
+   "bytes": 225282,
+   "last_commit": null
+  },
+  {
+   "path": "results/fsmoe/G/REPORT_G.md",
+   "sha256": "dd236a50e85d269f171f3c409596a573fec21b6c318f6a4b15d15356134b8b82",
+   "bytes": 6281,
+   "last_commit": null
+  },
+  {
+   "path": "results/fsmoe/K/FIGURE_SKIP.png",
+   "sha256": "22d4722ae7ca0df7befb2c0772c0de41f7162bda416b211dafcf752e393467dd",
+   "bytes": 83371,
+   "last_commit": null
+  },
+  {
+   "path": "results/fsmoe/K/SKIP_CHECK.md",
+   "sha256": "df6bc2f660037398ff2c2d5667ef482df10d9a00a996ba9ed1f92ecba2ce05e0",
+   "bytes": 3868,
+   "last_commit": null
+  },
+  {
+   "path": "results/fsmoe/L/CONFOUND.md",
+   "sha256": "7d7bbe1f9234838ddb74a229c976f627f8c457ba710ea41ba3d57d246d49fca0",
+   "bytes": 1449,
+   "last_commit": null
+  },
+  {
+   "path": "results/fsmoe/L/REPORT_L.md",
+   "sha256": "9e61c95002afb4b34188c16d39d5695faa6461c4f0f80fd927e36118e2451012",
+   "bytes": 6766,
+   "last_commit": null
+  },
+  {
+   "path": "results/fsmoe/N/CHANCE_FLAG.md",
+   "sha256": "3e4615592a26382a2dfaa580ec30c621bda2e550cb1ecef3548d1aa73d71df50",
+   "bytes": 3608,
+   "last_commit": null
+  },
+  {
+   "path": "results/fsmoe/N/REPORT_N.md",
+   "sha256": "9c284c434f36fe0545d6ba83b72e9685f6f192baa92cfa87fb47864f10bcb9d3",
+   "bytes": 10019,
+   "last_commit": null
+  },
+  {
+   "path": "results/fsmoe/pilot_700.txt",
+   "sha256": "023c7cca362890b96505a5e7dc2c4540f4fb2d40c67ead21c788513b16b84a97",
+   "bytes": 2150,
+   "last_commit": null
+  },
+  {
+   "path": "results/fsmoe/R/REPORT_R.md",
+   "sha256": "810c5fb12d79b1e07a390d0327b1e88b6802ce6858ff53a70125ad4273171ddd",
+   "bytes": 24685,
+   "last_commit": null
+  },
+  {
+   "path": "results/fsmoe/S/REPORT_S.md",
+   "sha256": "ef81d27e89ffcd3dfba4a5eb05ed9e9a4c9c8cb5e2f45c3e2c80ec0447672e64",
+   "bytes": 6199,
+   "last_commit": null
+  },
+  {
+   "path": "results/fsmoe/S/tuning.json",
+   "sha256": "cab9268d58bfec362f02f36e652d2d67628cc7ecc031396543bd5b07038106fc",
+   "bytes": 4056,
+   "last_commit": null
+  },
+  {
+   "path": "results/fsmoe/SCORECARD.md",
+   "sha256": "c25e4e498f53ef38bc5a653eb4412bca48a42736f4609315f6f461e763baa1b7",
+   "bytes": 3664,
+   "last_commit": null
+  },
+  {
+   "path": "results/fsmoe/SCORECARD_B.md",
+   "sha256": "41852bd52ff5b21ee550e3e7d85944b46e152c2daa9349241a52fa23ea0bf02c",
+   "bytes": 1559,
+   "last_commit": null
+  },
+  {
+   "path": "results/fsmoe/SCORECARD_E2E.md",
+   "sha256": "d1a67570d5adb5ba1a7000dc61bf66959817720f8e9468ec25c7c97b07fd5261",
+   "bytes": 1678,
+   "last_commit": null
+  },
+  {
+   "path": "results/fsmoe/SCORECARD_FOLLOWUP.md",
+   "sha256": "198be1fc7932155117167dc1b01d02e1afe17c025f3e4c0a8746ba8bcbf26adc",
+   "bytes": 2174,
+   "last_commit": null
+  },
+  {
+   "path": "results/fsmoe/SCORECARD_G.md",
+   "sha256": "6b074d4cb12b4b6ad97637f712a75afe80ae93132c4abcc75c5acdbf3e092e08",
+   "bytes": 2207,
+   "last_commit": null
+  },
+  {
+   "path": "results/fsmoe/SCORECARD_H.md",
+   "sha256": "d6ee5c712ff2f3b78d8336901807744094e0a4ea3d9598fcd5f0d1a6f7ece25f",
+   "bytes": 1247,
+   "last_commit": null
+  },
+  {
+   "path": "results/fsmoe/SCORECARD_N.md",
+   "sha256": "f1e5db7001dcd8372df49c42bfb876b8778bfdfd0a92295a73b71d7b6cf2e4f7",
+   "bytes": 1777,
+   "last_commit": null
+  },
+  {
+   "path": "results/fsmoe/T/REPORT_T.md",
+   "sha256": "f8bbe1732894cda46590cab54b982446159856fa882d5f523a85e59543dc7f17",
+   "bytes": 7895,
+   "last_commit": null
+  },
+  {
+   "path": "results/fsmoe/X/REPORT_X.md",
+   "sha256": "ea2ce4d0e753235059d21c9c64b4c9e6a14a7dd513f7e0405775ecf2d2aac129",
+   "bytes": 5045,
+   "last_commit": null
   },
   {
    "path": "results/unimoe/ANALYSIS.md",
@@ -5994,20 +6384,20 @@
   },
   {
    "path": "tests/geomlab/test_phase0.py",
-   "sha256": "477073ab19f123aba3bdbff26ee36a06a61e6ecf2268e8e433ba9c2c40b70ca0",
-   "bytes": 4433,
+   "sha256": "04d592483e7cf05b2a1664a83b5cf08add189c9949fccd9fb8bfa6baff04317a",
+   "bytes": 4307,
    "last_commit": "e821976"
   },
   {
    "path": "tests/geomlab/test_phase1.py",
-   "sha256": "38e421d532668859e96ed7b8c1b3b7533e767b72995dc0d9628de99b90440fdb",
-   "bytes": 2765,
+   "sha256": "dbe43ec3c550d17178fdb110892f88e2b28e66eaf82b96d99fcc2b42cfe0f96a",
+   "bytes": 2680,
    "last_commit": "e821976"
   },
   {
    "path": "tests/geomlab/test_phase2.py",
-   "sha256": "b7300f068519f5eaf3469179a8591cea5f5b002aa8557380c541ee774a1c8186",
-   "bytes": 4029,
+   "sha256": "f78348d83af295bbe529063b3ba9c039ce0f662d42585664f7cc0ce9cf139aa5",
+   "bytes": 3920,
    "last_commit": "e821976"
   },
   {
