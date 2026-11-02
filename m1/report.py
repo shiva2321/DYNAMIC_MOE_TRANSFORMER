@@ -179,8 +179,12 @@ def compute_scoreboard_rows(
             up_macs = [float(r["update_cost"]["counted_macs"]) for r in recs if "update_cost" in r and r["update_cost"].get("counted_macs") is not None]
             m_up_macs = float(np.mean(up_macs)) if up_macs else 0.0
 
-            peak_ram = [float(r["update_cost"]["peak_memory"]) / (1024 * 1024) for r in recs if "update_cost" in r and r["update_cost"].get("peak_memory") is not None]
+            # costlab.memory.peak_memory returns a dict; det cells record None. Absolute peak RSS includes the process baseline, so the growth during the stream is kept too.
+            peaks = [r["update_cost"]["peak_memory"] for r in recs if isinstance(r.get("update_cost", {}).get("peak_memory"), dict)]
+            peak_ram = [float(p["rss_peak_bytes"]) / (1024 * 1024) for p in peaks if p.get("rss_peak_bytes") is not None]
+            peak_ram_growth = [float(p["rss_diff_bytes"]) / (1024 * 1024) for p in peaks if p.get("rss_diff_bytes") is not None]
             m_peak_ram = float(np.mean(peak_ram)) if peak_ram else 0.0
+            m_peak_ram_growth = float(np.mean(peak_ram_growth)) if peak_ram_growth else 0.0
 
             # Answer metrics
             ans_lat_b1 = []
@@ -244,6 +248,7 @@ def compute_scoreboard_rows(
                 "wall_per_regime": m_per_reg_wall,
                 "update_macs": m_up_macs,
                 "peak_ram_mb": m_peak_ram,
+                "peak_ram_growth_mb": m_peak_ram_growth,
                 "lat_b1_ms": m_lat_b1,
                 "lat_b1_std_ms": std_lat_b1,
                 "p95_b1_ms": m_p95_b1,
@@ -277,6 +282,61 @@ def _pareto_frontier(points: List[Tuple[float, float, str]], lower_x_better: boo
             frontier.append((cost, acc, arm))
             max_acc = acc
     return frontier
+
+
+SUMMARY_POOL_COLORS = {"A1": "#d95f02", "A1q": "#d95f02", "A2": "#1f77b4"}                 # the pool as built (and with its steps and q tuned) and the reference pool; every baseline is gray
+SUMMARY_BASELINE_COLOR = "#6b7280"
+
+
+def _summary_figure(scoreboards: Dict[str, List[Dict[str, Any]]], split_label: str, figures_dir: Path) -> Optional[str]:
+    """Accuracy against answer latency (batch 1), one panel per bed, the Pareto front of each bed dashed.
+
+    Only arms with a timed answer are drawn (a det cell has no latency); the held-default cells H_* are a rule 6.2 matter and stay out of this figure.
+    Arms whose points coincide share one label.
+    """
+    panels = []
+    for bed in sorted(scoreboards):
+        rows = [r for r in scoreboards[bed] if r["lat_b1_ms"] > 0 and not r["arm"].startswith("H_")]
+        if rows:
+            panels.append((bed, rows))
+    if not panels:
+        return None
+    ncols = min(3, len(panels))
+    nrows = (len(panels) + ncols - 1) // ncols
+    fig, axes = plt.subplots(nrows, ncols, figsize=(5.4 * ncols, 4.3 * nrows), squeeze=False)
+    for ax in axes.flat[len(panels):]:
+        ax.axis("off")
+    for ax, (bed, rows) in zip(axes.flat, panels):
+        clusters: List[Tuple[float, float, List[str]]] = []                                # points within 6 % in latency and 0.5 points in accuracy share a label
+        for r in sorted(rows, key=lambda q: (q["lat_b1_ms"], q["acc_mean"])):
+            x, y = float(r["lat_b1_ms"]), float(r["acc_mean"]) * 100.0
+            for cx, cy, names in clusters:
+                if abs(x - cx) <= 0.06 * cx and abs(y - cy) <= 0.5:
+                    names.append(r["arm"])
+                    break
+            else:
+                clusters.append((x, y, [r["arm"]]))
+        for x, y, arms in clusters:
+            pool = [a for a in arms if a in SUMMARY_POOL_COLORS]
+            color = SUMMARY_POOL_COLORS["A2" if "A2" in pool else pool[0]] if pool else SUMMARY_BASELINE_COLOR       # the reference pool's colour wins where points coincide
+            ax.plot(x, y, marker="o", markersize=8 if pool else 6, color=color, markeredgecolor="white", markeredgewidth=1.0, linestyle="none", zorder=3)
+            ax.annotate("/".join(arms), (x, y), xytext=(5, 4), textcoords="offset points", fontsize=7, color="#1f2937", zorder=4)
+        front = _pareto_frontier([(r["lat_b1_ms"], r["acc_mean"], r["arm"]) for r in rows])
+        if len(front) >= 2:
+            ax.plot([q[0] for q in front], [q[1] * 100.0 for q in front], linestyle="--", color="#9ca3af", linewidth=1.0, zorder=2)
+        ax.set_xscale("log")
+        ax.set_title(bed, fontsize=10)
+        ax.set_xlabel("Answer latency, batch 1 (ms, log scale)", fontsize=8)
+        ax.set_ylabel("Final accuracy (%)", fontsize=8)
+        ax.tick_params(labelsize=8)
+        ax.grid(True, linestyle=":", alpha=0.6)
+        ax.margins(x=0.18, y=0.12)
+    fig.suptitle(f"M1 summary [{split_label}]: accuracy against answer latency, one panel per bed (dashed: Pareto front within the bed; orange = A1 and A1q, blue = A2, gray = baselines)", fontsize=10)
+    fig.tight_layout(rect=(0, 0, 1, 0.95))
+    fn = "summary_figure.png"
+    fig.savefig(figures_dir / fn, dpi=200)
+    plt.close(fig)
+    return fn
 
 
 def generate_plots(
@@ -320,12 +380,12 @@ def generate_plots(
         ax.set_ylabel("Final Accuracy (%)")
         ax.set_title(f"{bed} [{split_label}]: Accuracy vs Update Wall-Clock (Pareto: {pareto_arms})")
         ax.grid(True, linestyle=":", alpha=0.6)
-        ax.legend(loc="best", fontsize=8, framealpha=0.8)
+        ax.legend(loc="center left", bbox_to_anchor=(1.01, 0.5), fontsize=8, frameon=False)
 
         fn_update = f"fig_acc_vs_update_{bed}.png"
         path_update = figures_dir / fn_update
         fig.tight_layout()
-        fig.savefig(path_update, dpi=200)
+        fig.savefig(path_update, dpi=200, bbox_inches="tight")
         plt.close(fig)
         generated_figures.append(f"figures/{fn_update}")
 
@@ -358,56 +418,19 @@ def generate_plots(
         ax.set_ylabel("Final Accuracy (%)")
         ax.set_title(f"{bed} [{split_label}]: Accuracy vs Answer Latency (Pareto: {pareto_ans_arms})")
         ax.grid(True, linestyle=":", alpha=0.6)
-        ax.legend(loc="best", fontsize=8, framealpha=0.8)
+        ax.legend(loc="center left", bbox_to_anchor=(1.01, 0.5), fontsize=8, frameon=False)
 
         fn_ans = f"fig_acc_vs_answer_{bed}.png"
         path_ans = figures_dir / fn_ans
         fig.tight_layout()
-        fig.savefig(path_ans, dpi=200)
+        fig.savefig(path_ans, dpi=200, bbox_inches="tight")
         plt.close(fig)
         generated_figures.append(f"figures/{fn_ans}")
 
-    # 3. Summary Figure: Key arms across all beds
-    fig, ax = plt.subplots(figsize=(10, 6))
-    summary_pts = []
-    seen_arms = set()
-    for bed, rows in scoreboards.items():
-        for r in rows:
-            arm = r["arm"]
-            if r["lat_b1_ms"] <= 0:
-                continue
-            color = ARM_COLORS.get(arm, "#333333")
-            lbl = arm if arm not in seen_arms else None
-            seen_arms.add(arm)
-            ax.plot(
-                r["lat_b1_ms"],
-                r["acc_mean"] * 100.0,
-                marker="o",
-                markersize=5,
-                color=color,
-                label=lbl,
-            )
-            summary_pts.append((r["lat_b1_ms"], r["acc_mean"], f"{arm}@{bed}"))
-
-    frontier_sum = _pareto_frontier(summary_pts)
-    if len(frontier_sum) >= 2:
-        fx = [p[0] for p in frontier_sum]
-        fy = [p[1] * 100.0 for p in frontier_sum]
-        ax.plot(fx, fy, linestyle="--", color="#666666", linewidth=1.0, label="Global Pareto Front")
-
-    top_pareto_str = ", ".join(p[2] for p in frontier_sum[:4])
-    ax.set_xlabel("Answer Latency Batch 1 (ms)")
-    ax.set_ylabel("Final Accuracy (%)")
-    ax.set_title(f"M1 Summary [{split_label}]: Accuracy vs Answer Latency (Leading: {top_pareto_str})")
-    ax.grid(True, linestyle=":", alpha=0.6)
-    ax.legend(loc="best", fontsize=8, framealpha=0.8)
-
-    fn_summary = "summary_figure.png"
-    path_summary = figures_dir / fn_summary
-    fig.tight_layout()
-    fig.savefig(path_summary, dpi=200)
-    plt.close(fig)
-    generated_figures.append(f"figures/{fn_summary}")
+    # 3. Summary figure: one panel per bed. Accuracy on different beds is not comparable, so no front is drawn across beds.
+    fn_summary = _summary_figure(scoreboards, split_label, figures_dir)
+    if fn_summary:
+        generated_figures.append(f"figures/{fn_summary}")
 
     return generated_figures
 
@@ -494,7 +517,8 @@ def compute_reconciliation_table(records: Sequence[Dict[str, Any]]) -> List[Dict
         for arm in sorted(bed_arms, key=lambda a: ARM_ORDER.index(a) if a in ARM_ORDER else 999):
             recs = bed_arms[arm]
             with_acc = [r for r in recs if r.get("accounting")]
-            costlab = [r["answer_cost"]["1"]["counted_macs"] for r in recs if r.get("answer_cost", {}).get("1")]
+            same_cells = with_acc or recs                                                    # the ratio must compare the same cells: costlab over the cells that carry accounting
+            costlab = [r["answer_cost"]["1"]["counted_macs"] for r in same_cells if r.get("answer_cost", {}).get("1")]
             row: Dict[str, Any] = {"bed": bed, "arm": arm, "n_records": len(recs), "n_with_accounting": len(with_acc),
                                    "costlab_macs": float(np.mean(costlab)) if costlab else None, "accounting_macs": None, "macs_ratio": None,
                                    "accounting_bytes": None, "costlab_active_bytes": None}
@@ -503,7 +527,7 @@ def compute_reconciliation_table(records: Sequence[Dict[str, Any]]) -> List[Dict
                 row["accounting_macs"] = acc
                 row["macs_ratio"] = (row["costlab_macs"] / acc) if (acc > 0 and row["costlab_macs"] is not None) else None
                 row["accounting_bytes"] = float(np.mean([r["accounting"]["memory_bytes"] for r in with_acc]))
-            active = [r["answer_cost"]["1"].get("active_bytes") for r in recs if r.get("answer_cost", {}).get("1")]
+            active = [r["answer_cost"]["1"].get("active_bytes") for r in same_cells if r.get("answer_cost", {}).get("1")]
             row["costlab_active_bytes"] = float(np.mean(active)) if active else None
             rows.append(row)
     return rows
@@ -724,7 +748,9 @@ def build_markdown_report(
     # Section 5: Reconciliation Table
     lines.append(f"## 5. Costlab vs Accounting Reconciliation Table [{split_label}]\n")
     lines.append("Accounting = `growmoe.accounting.pool_report` of the trained arm (recorded in the cell); costlab = multiply-adds counted while one input is answered. "
-                 "Active bytes are the parameter bytes one answer touches (costlab), a different quantity from the stored bytes of the accounting.\n")
+                 "Active bytes are the parameter bytes one answer touches (costlab), a different quantity from the stored bytes of the accounting. "
+                 "Costlab figures are taken over the same cells as the accounting figures; a ratio above one means costlab counted more multiplies than the static model "
+                 "(for example a naive per-class covariance product), below one means a shortlist skipped part of the scan.\n")
     lines.append("| Bed | Arm | Cells (with accounting) | Costlab MACs | Accounting MACs | Ratio | Accounting stored bytes | Costlab active bytes |")
     lines.append("|:---|:---|:---:|:---:|:---:|:---:|:---:|:---:|")
 
@@ -732,9 +758,12 @@ def build_markdown_report(
         return format(v, spec) if v is not None else "not recorded"
 
     for r in reconciliation:
+        ratio = _fmt(r["macs_ratio"], ".3f")
+        if r["accounting_macs"] == 0 and r["costlab_macs"]:
+            ratio = "accounting counts 0"                                                   # growmoe.accounting has no model for this arm; costlab counts the multiplies
         lines.append(
             f"| {r['bed']} | **{r['arm']}** | {r['n_records']} ({r['n_with_accounting']}) | {_fmt(r['costlab_macs'])} | {_fmt(r['accounting_macs'])} | "
-            f"{_fmt(r['macs_ratio'], '.3f')} | {_fmt(r['accounting_bytes'])} | {_fmt(r['costlab_active_bytes'])} |"
+            f"{ratio} | {_fmt(r['accounting_bytes'])} | {_fmt(r['costlab_active_bytes'])} |"
         )
     lines.append("\n---\n")
 

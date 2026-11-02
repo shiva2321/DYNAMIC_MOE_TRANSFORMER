@@ -980,8 +980,52 @@ def test_report_reconciliation_and_answer_split_use_the_recorded_numbers(a1_reco
     assert by_arm["A2"]["accounting_macs"] == 400 and by_arm["A2"]["costlab_macs"] == 360 and by_arm["A2"]["macs_ratio"] == pytest.approx(0.9)
     assert by_arm["A2"]["accounting_bytes"] == 1234
     assert by_arm["A3"]["accounting_macs"] is None and by_arm["A3"]["macs_ratio"] is None      # not recorded, not guessed
+    # the ratio compares the same cells: a second cell of the same arm without accounting must not enter the costlab mean
+    plain = copy.deepcopy(a1_record)
+    plain["arm"] = "A2"
+    plain.pop("accounting", None)
+    plain["answer_cost"]["1"]["counted_macs"] = 4000
+    mixed = {r["arm"]: r for r in compute_reconciliation_table([rec, plain])}["A2"]
+    assert mixed["n_records"] == 2 and mixed["n_with_accounting"] == 1
+    assert mixed["costlab_macs"] == 360 and mixed["macs_ratio"] == pytest.approx(0.9)
     split = compute_cost_drivers([rec, old])["answer_drivers"]
     assert len(split) == 1 and split[0]["gate_share"] == pytest.approx(0.75) and split[0]["gate_macs_measured"] == 250.0 and split[0]["counted_macs"] == 360
+
+
+def test_scoreboard_reads_the_peak_memory_dict_of_a_full_cell(a1_record):
+    """A full cell stores costlab's peak_memory dict (a det cell stores none); the report used to call float() on the dict and crash."""
+    from m1.report import compute_scoreboard_rows
+    from m1.verdict import record_bed_key
+
+    rec = copy.deepcopy(a1_record)
+    rec["update_cost"]["peak_memory"] = {"rss_start_bytes": 1000 * 1048576, "rss_peak_bytes": 1100 * 1048576, "rss_diff_bytes": 100 * 1048576, "device": "cpu"}
+    det = copy.deepcopy(a1_record)
+    det["update_cost"]["peak_memory"] = None
+    row = [r for r in compute_scoreboard_rows([rec])[record_bed_key(rec)] if r["arm"] == "A1"][0]
+    assert row["peak_ram_mb"] == pytest.approx(1100.0) and row["peak_ram_growth_mb"] == pytest.approx(100.0)
+    row = [r for r in compute_scoreboard_rows([det])[record_bed_key(det)] if r["arm"] == "A1"][0]
+    assert row["peak_ram_mb"] == 0.0 and row["peak_ram_growth_mb"] == 0.0                      # no peak recorded: zero, not a crash
+
+
+def test_summary_figure_is_one_panel_per_bed_and_skips_untimed_and_held_default_cells(a1_record, tmp_path):
+    """The summary figure draws one panel per bed (no front across beds), only timed arms, and none of the H_* cells."""
+    from m1.report import compute_scoreboard_rows, generate_plots
+
+    def with_latency(arm, bed_regimes, latency_s, accuracy):
+        rec = copy.deepcopy(a1_record)
+        rec["arm"] = arm
+        rec["n_regimes"] = bed_regimes
+        rec["accuracy"] = accuracy
+        rec["answer_cost"]["1"]["latency_median_s"] = latency_s
+        return rec
+
+    recs = [with_latency("A1", 2, 0.002, 0.3), with_latency("A1q", 2, 0.00201, 0.301), with_latency("A5a", 2, 0.0001, 0.2), with_latency("H_shipped", 2, 0.002, 0.3)]
+    untimed = with_latency("A7", 2, 0.0, 0.25)
+    untimed["answer_cost"]["1"].pop("latency_median_s")
+    rows = compute_scoreboard_rows(recs + [untimed])
+    figures = generate_plots(rows, tmp_path, "DEV")
+    assert "figures/summary_figure.png" in figures and (tmp_path / "figures" / "summary_figure.png").stat().st_size > 0
+    assert generate_plots({}, tmp_path / "empty", "DEV") == []                                  # no beds: no figure and no crash
 
 
 def test_memory_by_regime_keeps_the_first_visit_of_each_regime():
