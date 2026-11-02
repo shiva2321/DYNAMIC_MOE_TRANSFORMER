@@ -168,3 +168,12 @@ THRESHOLD_SKIP_KNOWN_MIN_OBS_DROP: float = 0.10
 
 THRESHOLD_TRANSFER_CHANCE_MIN_GAIN_ONE_BED: float = 0.01
 THRESHOLD_TRANSFER_CHANCE_MAX_COST_B2_B3: float = 0.005
+
+# Section 7 predictions (M1_PREREG_DRAFT.md): the numbers inside the statements M1-1, M1-3, M1-4, M1-6 and M1-8
+THRESHOLD_M1_1_LATENCY_RATIO_MIN: float = 1.0       # pool latency per input at least this multiple of the best replay network (no wall-clock gain)
+THRESHOLD_M1_1_MACS_RATIO_MAX: float = 0.25         # pool counted multiply-adds per input at most this multiple of the replay network's
+THRESHOLD_M1_3_TRAIN_RATIO_MAX: float = 0.5         # pool whole-stream training wall-clock at most this multiple of the best same-memory replay arm
+THRESHOLD_M1_4_SHARE_MIN: float = 0.60              # gate, router and bookkeeping share of the pool's observe wall-clock, strictly above
+THRESHOLD_M1_6_LDA_GAP_MAX: float = 0.02            # streaming LDA within this distance (either side) of the LDA-head pool
+THRESHOLD_M1_8_R_SQUARED_MIN: float = 0.95          # linearity of pool memory against regimes seen
+THRESHOLD_M1_8_SLOPE_REL_ERR_MAX: float = 0.25      # slope within this fraction of one expert's bytes
