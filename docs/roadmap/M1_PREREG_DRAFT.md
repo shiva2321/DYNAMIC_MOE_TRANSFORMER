@@ -1,6 +1,6 @@
-# M1 pre-registration: the efficiency scoreboard (DRAFT, not frozen)
+# M1 pre-registration: the efficiency scoreboard (APPROVED by you as written on 2026-11-02, D-77; not yet frozen)
 
-Draft of 2026-11-02 for your review. Nothing here has been run. It is hash-frozen only after the cost meter (COSTLAB) is reviewed and before the first report-seed run; after that nothing in it changes, and a change needs a logged decision made before the results it would judge are seen.
+Drafted and approved on 2026-11-02. Nothing here has been run. It is hash-frozen only after the cost meter (COSTLAB) is reviewed and before the first report-seed run; after that nothing in it changes, and a change needs a logged decision made before the results it would judge are seen.
 
 **In plain words.** M1 asks one question: where does today's pool really stand, in accuracy *and* in cost, next to the methods people actually use, when one trusted meter measures everything? It claims no superiority. It tells us where the cost sits and which efficiency work comes first. It is fair because every method is tuned the same way on development seeds only, the seeds and the rules are fixed ahead of time, the predictions below are written before any number exists, and a script scores them. What needs you: the adoption rules for the held defaults (section 6.2) and the open points (section 10).
 
