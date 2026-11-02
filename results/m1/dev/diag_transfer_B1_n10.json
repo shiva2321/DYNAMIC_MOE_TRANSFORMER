@@ -1,0 +1,493 @@
+{
+  "what": "mechanism of the fragmentation of Baseline v1 on B1; development seeds only; not an M1 result",
+  "n_regimes": 10,
+  "pinning": {
+    "threads": 2,
+    "cpus": [
+      6,
+      8
+    ],
+    "blas_limited": true
+  },
+  "environment": {
+    "python": "3.12.10",
+    "torch": "2.6.0+cu124",
+    "cuda": "12.4",
+    "cuda_available": true,
+    "gpu_name": "NVIDIA GeForce RTX 3060",
+    "gpu_driver": "610.60",
+    "cpu_name": "AMD Ryzen 5 7600 6-Core Processor",
+    "logical_cores": 12,
+    "ram_bytes": 34081722368,
+    "torch_intraop_threads": 6,
+    "torch_interop_threads": 6,
+    "env_vars": {
+      "OMP_NUM_THREADS": "unset",
+      "MKL_NUM_THREADS": "unset",
+      "OPENBLAS_NUM_THREADS": "unset",
+      "NUMEXPR_NUM_THREADS": "unset"
+    },
+    "git_commit": "6a78a2d9ae61d9d0cd9aa97b7292c05e7fd4a20c",
+    "timestamp": "2026-11-02T11:46:27.680090+00:00"
+  },
+  "rows": [
+    {
+      "config": "q 0.05 as built",
+      "q": 0.05,
+      "overrides": {},
+      "seed": 800,
+      "experts": 67,
+      "events": {
+        "spawn": 67,
+        "alarm": 1
+      },
+      "verdicts": 66,
+      "verdicts_not_run": 0,
+      "conflicts": 66,
+      "no_conflict": 0,
+      "consecutive_calls": 60,
+      "mean_loss_cluster": 4.540579160054524,
+      "mean_loss_ref": 2.054011281645077,
+      "mean_ready_experts": 3.0303030303030303,
+      "mean_experts_at_call": 33.5,
+      "seconds": 12.384676218032837
+    },
+    {
+      "config": "q 0.05 as built",
+      "q": 0.05,
+      "overrides": {},
+      "seed": 801,
+      "experts": 67,
+      "events": {
+        "spawn": 67,
+        "alarm": 1
+      },
+      "verdicts": 66,
+      "verdicts_not_run": 0,
+      "conflicts": 66,
+      "no_conflict": 0,
+      "consecutive_calls": 60,
+      "mean_loss_cluster": 4.340183265281446,
+      "mean_loss_ref": 2.049541096978931,
+      "mean_ready_experts": 3.0303030303030303,
+      "mean_experts_at_call": 33.5,
+      "seconds": 12.485603332519531
+    },
+    {
+      "config": "q 0.05 as built",
+      "q": 0.05,
+      "overrides": {},
+      "seed": 802,
+      "experts": 61,
+      "events": {
+        "spawn": 61,
+        "alarm": 3,
+        "extend": 1
+      },
+      "verdicts": 61,
+      "verdicts_not_run": 0,
+      "conflicts": 60,
+      "no_conflict": 1,
+      "consecutive_calls": 53,
+      "mean_loss_cluster": 4.469199915401271,
+      "mean_loss_ref": 2.057357258414043,
+      "mean_ready_experts": 2.819672131147541,
+      "mean_experts_at_call": 30.016393442622952,
+      "seconds": 11.188151121139526
+    },
+    {
+      "config": "q 0.05 as built",
+      "q": 0.05,
+      "overrides": {},
+      "seed": 803,
+      "experts": 67,
+      "events": {
+        "spawn": 67,
+        "alarm": 1
+      },
+      "verdicts": 66,
+      "verdicts_not_run": 0,
+      "conflicts": 66,
+      "no_conflict": 0,
+      "consecutive_calls": 60,
+      "mean_loss_cluster": 4.525689684983456,
+      "mean_loss_ref": 1.9633347407732689,
+      "mean_ready_experts": 3.0303030303030303,
+      "mean_experts_at_call": 33.5,
+      "seconds": 10.497810125350952
+    },
+    {
+      "config": "q 0.05 as built",
+      "q": 0.05,
+      "overrides": {},
+      "seed": 804,
+      "experts": 67,
+      "events": {
+        "spawn": 67,
+        "alarm": 1
+      },
+      "verdicts": 66,
+      "verdicts_not_run": 0,
+      "conflicts": 66,
+      "no_conflict": 0,
+      "consecutive_calls": 60,
+      "mean_loss_cluster": 4.670266447645245,
+      "mean_loss_ref": 1.8905594233366183,
+      "mean_ready_experts": 3.0303030303030303,
+      "mean_experts_at_call": 33.5,
+      "seconds": 10.66602897644043
+    },
+    {
+      "config": "q 0.05 with the twin fix only",
+      "q": 0.05,
+      "overrides": {
+        "sig_dedupe": true,
+        "infant_relax": 1.0
+      },
+      "seed": 800,
+      "experts": 10,
+      "events": {
+        "spawn": 10
+      },
+      "verdicts": 9,
+      "verdicts_not_run": 0,
+      "conflicts": 9,
+      "no_conflict": 0,
+      "consecutive_calls": 0,
+      "mean_loss_cluster": 4.496890015072292,
+      "mean_loss_ref": 2.004054571691032,
+      "mean_ready_experts": 5.0,
+      "mean_experts_at_call": 5.0,
+      "seconds": 2.730185031890869
+    },
+    {
+      "config": "q 0.05 with the twin fix only",
+      "q": 0.05,
+      "overrides": {
+        "sig_dedupe": true,
+        "infant_relax": 1.0
+      },
+      "seed": 801,
+      "experts": 10,
+      "events": {
+        "spawn": 10
+      },
+      "verdicts": 9,
+      "verdicts_not_run": 0,
+      "conflicts": 9,
+      "no_conflict": 0,
+      "consecutive_calls": 0,
+      "mean_loss_cluster": 4.389762295616998,
+      "mean_loss_ref": 1.9975169272975042,
+      "mean_ready_experts": 5.0,
+      "mean_experts_at_call": 5.0,
+      "seconds": 2.7540969848632812
+    },
+    {
+      "config": "q 0.05 with the twin fix only",
+      "q": 0.05,
+      "overrides": {
+        "sig_dedupe": true,
+        "infant_relax": 1.0
+      },
+      "seed": 802,
+      "experts": 10,
+      "events": {
+        "spawn": 10,
+        "alarm": 1,
+        "extend": 1
+      },
+      "verdicts": 10,
+      "verdicts_not_run": 0,
+      "conflicts": 9,
+      "no_conflict": 1,
+      "consecutive_calls": 0,
+      "mean_loss_cluster": 4.254499435424805,
+      "mean_loss_ref": 2.0660942439605665,
+      "mean_ready_experts": 4.6,
+      "mean_experts_at_call": 4.6,
+      "seconds": 2.7838926315307617
+    },
+    {
+      "config": "q 0.05 with the twin fix only",
+      "q": 0.05,
+      "overrides": {
+        "sig_dedupe": true,
+        "infant_relax": 1.0
+      },
+      "seed": 803,
+      "experts": 10,
+      "events": {
+        "spawn": 10
+      },
+      "verdicts": 9,
+      "verdicts_not_run": 0,
+      "conflicts": 9,
+      "no_conflict": 0,
+      "consecutive_calls": 0,
+      "mean_loss_cluster": 4.529155042436388,
+      "mean_loss_ref": 1.9989337085232062,
+      "mean_ready_experts": 5.0,
+      "mean_experts_at_call": 5.0,
+      "seconds": 2.722489595413208
+    },
+    {
+      "config": "q 0.05 with the twin fix only",
+      "q": 0.05,
+      "overrides": {
+        "sig_dedupe": true,
+        "infant_relax": 1.0
+      },
+      "seed": 804,
+      "experts": 10,
+      "events": {
+        "spawn": 10
+      },
+      "verdicts": 9,
+      "verdicts_not_run": 0,
+      "conflicts": 9,
+      "no_conflict": 0,
+      "consecutive_calls": 0,
+      "mean_loss_cluster": 4.5256910059187145,
+      "mean_loss_ref": 1.9123167019350487,
+      "mean_ready_experts": 5.0,
+      "mean_experts_at_call": 5.0,
+      "seconds": 2.729055881500244
+    },
+    {
+      "config": "q 0.05 with U-real",
+      "q": 0.05,
+      "overrides": {
+        "set_gate": true,
+        "set_gate_confirm": 2,
+        "sig_dedupe": true,
+        "infant_relax": 1.0,
+        "growth_rule": "gap"
+      },
+      "seed": 800,
+      "experts": 10,
+      "events": {
+        "spawn": 10,
+        "set_held": 1
+      },
+      "verdicts": 9,
+      "verdicts_not_run": 0,
+      "conflicts": 9,
+      "no_conflict": 0,
+      "consecutive_calls": 0,
+      "mean_loss_cluster": 4.496890015072292,
+      "mean_loss_ref": 2.004054571691032,
+      "mean_ready_experts": 5.0,
+      "mean_experts_at_call": 5.0,
+      "seconds": 10.489398717880249
+    },
+    {
+      "config": "q 0.05 with U-real",
+      "q": 0.05,
+      "overrides": {
+        "set_gate": true,
+        "set_gate_confirm": 2,
+        "sig_dedupe": true,
+        "infant_relax": 1.0,
+        "growth_rule": "gap"
+      },
+      "seed": 801,
+      "experts": 10,
+      "events": {
+        "spawn": 10
+      },
+      "verdicts": 9,
+      "verdicts_not_run": 0,
+      "conflicts": 9,
+      "no_conflict": 0,
+      "consecutive_calls": 0,
+      "mean_loss_cluster": 4.389762295616998,
+      "mean_loss_ref": 1.9975169272975042,
+      "mean_ready_experts": 5.0,
+      "mean_experts_at_call": 5.0,
+      "seconds": 11.197840452194214
+    },
+    {
+      "config": "q 0.05 with U-real",
+      "q": 0.05,
+      "overrides": {
+        "set_gate": true,
+        "set_gate_confirm": 2,
+        "sig_dedupe": true,
+        "infant_relax": 1.0,
+        "growth_rule": "gap"
+      },
+      "seed": 802,
+      "experts": 10,
+      "events": {
+        "spawn": 10,
+        "alarm": 1,
+        "extend": 1
+      },
+      "verdicts": 10,
+      "verdicts_not_run": 0,
+      "conflicts": 9,
+      "no_conflict": 1,
+      "consecutive_calls": 0,
+      "mean_loss_cluster": 4.254499435424805,
+      "mean_loss_ref": 2.0660942439605665,
+      "mean_ready_experts": 4.6,
+      "mean_experts_at_call": 4.6,
+      "seconds": 11.64633297920227
+    },
+    {
+      "config": "q 0.05 with U-real",
+      "q": 0.05,
+      "overrides": {
+        "set_gate": true,
+        "set_gate_confirm": 2,
+        "sig_dedupe": true,
+        "infant_relax": 1.0,
+        "growth_rule": "gap"
+      },
+      "seed": 803,
+      "experts": 10,
+      "events": {
+        "spawn": 10
+      },
+      "verdicts": 9,
+      "verdicts_not_run": 0,
+      "conflicts": 9,
+      "no_conflict": 0,
+      "consecutive_calls": 0,
+      "mean_loss_cluster": 4.529155042436388,
+      "mean_loss_ref": 1.9989337085232062,
+      "mean_ready_experts": 5.0,
+      "mean_experts_at_call": 5.0,
+      "seconds": 10.168403387069702
+    },
+    {
+      "config": "q 0.05 with U-real",
+      "q": 0.05,
+      "overrides": {
+        "set_gate": true,
+        "set_gate_confirm": 2,
+        "sig_dedupe": true,
+        "infant_relax": 1.0,
+        "growth_rule": "gap"
+      },
+      "seed": 804,
+      "experts": 10,
+      "events": {
+        "spawn": 10
+      },
+      "verdicts": 9,
+      "verdicts_not_run": 0,
+      "conflicts": 9,
+      "no_conflict": 0,
+      "consecutive_calls": 0,
+      "mean_loss_cluster": 4.5256910059187145,
+      "mean_loss_ref": 1.9123167019350487,
+      "mean_ready_experts": 5.0,
+      "mean_experts_at_call": 5.0,
+      "seconds": 10.145846843719482
+    },
+    {
+      "config": "q 0.02 as built",
+      "q": 0.02,
+      "overrides": {},
+      "seed": 800,
+      "experts": 10,
+      "events": {
+        "spawn": 10
+      },
+      "verdicts": 9,
+      "verdicts_not_run": 0,
+      "conflicts": 9,
+      "no_conflict": 0,
+      "consecutive_calls": 0,
+      "mean_loss_cluster": 4.500080241097344,
+      "mean_loss_ref": 2.0056624606916795,
+      "mean_ready_experts": 5.0,
+      "mean_experts_at_call": 5.0,
+      "seconds": 2.768624782562256
+    },
+    {
+      "config": "q 0.02 as built",
+      "q": 0.02,
+      "overrides": {},
+      "seed": 801,
+      "experts": 10,
+      "events": {
+        "spawn": 10
+      },
+      "verdicts": 9,
+      "verdicts_not_run": 0,
+      "conflicts": 9,
+      "no_conflict": 0,
+      "consecutive_calls": 0,
+      "mean_loss_cluster": 4.394050598144531,
+      "mean_loss_ref": 1.9976158647944868,
+      "mean_ready_experts": 5.0,
+      "mean_experts_at_call": 5.0,
+      "seconds": 2.766200065612793
+    },
+    {
+      "config": "q 0.02 as built",
+      "q": 0.02,
+      "overrides": {},
+      "seed": 802,
+      "experts": 10,
+      "events": {
+        "spawn": 10,
+        "alarm": 1,
+        "extend": 1
+      },
+      "verdicts": 10,
+      "verdicts_not_run": 0,
+      "conflicts": 9,
+      "no_conflict": 1,
+      "consecutive_calls": 0,
+      "mean_loss_cluster": 4.259683513641358,
+      "mean_loss_ref": 2.076158110953984,
+      "mean_ready_experts": 4.6,
+      "mean_experts_at_call": 4.6,
+      "seconds": 2.8618052005767822
+    },
+    {
+      "config": "q 0.02 as built",
+      "q": 0.02,
+      "overrides": {},
+      "seed": 803,
+      "experts": 10,
+      "events": {
+        "spawn": 10
+      },
+      "verdicts": 9,
+      "verdicts_not_run": 0,
+      "conflicts": 9,
+      "no_conflict": 0,
+      "consecutive_calls": 0,
+      "mean_loss_cluster": 4.526417679256863,
+      "mean_loss_ref": 1.9980494558913588,
+      "mean_ready_experts": 5.0,
+      "mean_experts_at_call": 5.0,
+      "seconds": 2.7811713218688965
+    },
+    {
+      "config": "q 0.02 as built",
+      "q": 0.02,
+      "overrides": {},
+      "seed": 804,
+      "experts": 10,
+      "events": {
+        "spawn": 10
+      },
+      "verdicts": 9,
+      "verdicts_not_run": 0,
+      "conflicts": 9,
+      "no_conflict": 0,
+      "consecutive_calls": 0,
+      "mean_loss_cluster": 4.5256910059187145,
+      "mean_loss_ref": 1.9123167019350487,
+      "mean_ready_experts": 5.0,
+      "mean_experts_at_call": 5.0,
+      "seconds": 2.8286211490631104
+    }
+  ]
+}
