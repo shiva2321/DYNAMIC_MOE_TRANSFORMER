@@ -236,9 +236,12 @@ class BaselineTransformer(nn.Module):
         positions = torch.arange(total_L, device=device).unsqueeze(0).expand(B, total_L)
         h = seq + self.pos_emb(positions)
 
-        # Attention mask
+        # Attention mask and key padding mask
         causal_mask = nn.Transformer.generate_square_subsequent_mask(total_L, device=device)
-        h_out = self.transformer(h, mask=causal_mask, is_causal=True)
+        col_indices = torch.arange(total_L, device=device).unsqueeze(0).expand(B, total_L)
+        is_trans = (col_indices >= 4) & (col_indices < 4 + L_trans)
+        padding_mask = is_trans & ((col_indices - 4) >= lengths.unsqueeze(1))
+        h_out = self.transformer(h, mask=causal_mask, src_key_padding_mask=padding_mask, is_causal=True)
         h_out = self.ln_f(h_out)
 
         # Final token represents the probed query
@@ -413,7 +416,7 @@ class FullGeoCore(UncleanedGeoCore):
         num_trans: int = 4,
         d_model: int = 256,
         block_size: int = 4,
-        hopfield_beta: float = 15.0,
+        hopfield_beta: float = 30.0,
     ):
         super().__init__(entity_features, num_roles, num_trans, d_model, block_size)
         self.hopfield_beta = hopfield_beta
