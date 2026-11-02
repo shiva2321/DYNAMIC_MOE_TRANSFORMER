@@ -709,3 +709,246 @@ def test_queue_shards_split_the_groups_without_overlap(tmp_path, monkeypatch, sm
     assert seen == {0: 2, 1: 2}                                                  # four groups, two per shard
     with pytest.raises(ValueError, match="shard"):
         run_queue(split="dev", beds=["B1"], ns=[2], arms=["A1"], seeds=[100], out=tmp_path / "bad", cpus=[0], threads=1, shard="2/2")
+
+
+# ---------------------------------------------------------------------------------------------------------------------------------
+# Stage B-2: Beds B2 and B3, UniPool candidates, and held-default pairs on B3
+# ---------------------------------------------------------------------------------------------------------------------------------
+def test_b2_bed_interface_real():
+    """Verify Bed B2 builds offline and obeys the standard Bed interface with exact specs."""
+    bed = build_bed("B2", 6, seed=800)
+    assert bed.name == "B2"
+    assert bed.n_regimes == 6
+    assert bed.d == 128
+    assert bed.n_classes == 77
+    assert bed.n_phases == 9
+    assert bed.total_samples == 3000
+    assert len(bed.test_sets) == 6
+    for r in range(6):
+        xt, yt = bed.test_sets[r]
+        assert xt.shape[1] == 128 and yt.dim() == 1
+
+    walk_batches = list(bed.walk(batch_size=64))
+    assert len(walk_batches) > 0
+    xb, yb, reg, fv, ph = walk_batches[0]
+    assert xb.shape[1] == 128 and yb.shape[0] == xb.shape[0]
+    assert isinstance(reg, int) and isinstance(fv, bool) and isinstance(ph, int)
+
+    with pytest.raises(ValueError, match="Bed B2 requires n_regimes=6"):
+        build_bed("B2", 10, seed=800)
+
+
+def test_b3_bed_interface_synthetic_stream():
+    """Verify B3 beds wrap UStream interface, phases, first_visit flags, and label_blocks in bed_info."""
+    from unimoe.suite import Phase, Regime, UStream
+
+    d, n_classes = 128, 20
+    regimes = {
+        r: Regime(
+            id=r,
+            name=f"domain_regime_{r}",
+            domain="synth_dom",
+            kind="text",
+            local=r,
+            x_te=torch.randn(10, d),
+            y_te=torch.full((10,), r, dtype=torch.long),
+        )
+        for r in range(3)
+    }
+    phases = [
+        Phase(
+            name="p0",
+            x=torch.randn(30, d),
+            y=torch.zeros(30, dtype=torch.long),
+            regime=torch.zeros(30, dtype=torch.long),
+            first=torch.ones(30, dtype=torch.bool),
+        ),
+        Phase(
+            name="p1",
+            x=torch.randn(20, d),
+            y=torch.ones(20, dtype=torch.long),
+            regime=torch.ones(20, dtype=torch.long),
+            first=torch.ones(20, dtype=torch.bool),
+        ),
+        Phase(
+            name="p2",
+            x=torch.randn(25, d),
+            y=torch.full((25,), 2, dtype=torch.long),
+            regime=torch.full((25,), 2, dtype=torch.long),
+            first=torch.zeros(25, dtype=torch.bool),
+        ),
+    ]
+    label_blocks = {"synth_dom": (0, 20)}
+    synth_stream = UStream(
+        name="synth_b3",
+        d=d,
+        n_classes=n_classes,
+        regimes=regimes,
+        phases=phases,
+        ood={},
+        label_blocks=label_blocks,
+    )
+
+    bed = Bed(name="B3seq", n_regimes=3, seed=800, pool_seed=807, d=d, n_classes=n_classes, stream=synth_stream, label_blocks=label_blocks)
+    assert bed.n_phases == 3
+    assert bed.total_samples == 75
+    assert len(bed.test_sets) == 3
+    assert bed.label_blocks == label_blocks
+
+    walk_batches = list(bed.walk(batch_size=16))
+    assert len(walk_batches) > 0
+    xb, yb, reg, fv, ph = walk_batches[0]
+    assert xb.shape[1] == 128
+    assert isinstance(reg, int) and isinstance(fv, bool) and isinstance(ph, int)
+
+    # Check cell execution incorporates label_blocks in bed_info
+    rec = execute_cell(bed, "A1", split="dev", profile="light")
+    assert "label_blocks" in rec["bed_info"]
+    assert rec["bed_info"]["label_blocks"] == label_blocks
+    assert rec["bed_info"]["phases"] == 3
+    assert rec["bed_info"]["total_samples"] == 75
+
+
+def test_b3_streams_and_sample_counts():
+    """Verify B3 schedules (seq, mix, drift) match Section 4.2 specs for phases and samples."""
+    from unimoe.experiment import streams
+
+    st = streams(800)
+    assert "seq" in st and "mix" in st and "drift" in st
+    # seq: 28 phases, 12,704 samples
+    assert len(st["seq"].phases) == 28
+    assert sum(len(p.y) for p in st["seq"].phases) == 12704
+    # mix: 5 phases, 10,204 samples
+    assert len(st["mix"].phases) == 5
+    assert sum(len(p.y) for p in st["mix"].phases) == 10204
+    # drift: 10 phases, 10,200 samples
+    assert len(st["drift"].phases) == 10
+    assert sum(len(p.y) for p in st["drift"].phases) == 10200
+    # All between 10,000 and 12,700 samples across 22 regimes and 125 classes
+    for sch in ("seq", "mix", "drift"):
+        bed = build_bed(f"B3{sch}", 22, seed=800)
+        assert bed.n_regimes == 22
+        assert bed.n_classes == 125
+        assert 10000 <= bed.total_samples <= 12704
+
+
+def test_unipool_candidates_on_b3():
+    """Verify UniPool candidates (UG1, ULDA, UPLUS) build on B3 with label blocks and store full config."""
+    bed_b3 = build_bed("B3seq", 22, seed=800)
+
+    for cand in ("UG1", "ULDA", "UPLUS"):
+        arm = build_arm("A2", bed_b3, tuning={"candidate": cand, "inner_steps": 2, "q": 0.05})
+        cfg = arm.config()
+        assert cfg["arm"] == "A2"
+        assert cfg["candidate"] == cand
+        assert cfg["inner_steps"] == 2
+        assert cfg["q"] == 0.05
+        assert "gap_mode" in cfg
+        assert "domain_blocks" in cfg
+        assert "lda_blend" in cfg
+        assert "lda_shrink" in cfg
+
+        if cand == "ULDA":
+            assert cfg["lda_blend"] == 0.5
+        elif cand == "UG1":
+            assert cfg["gap_mode"] == "one_step"
+            assert cfg["growth_rule"] == "gap"
+        elif cand == "UPLUS":
+            assert cfg["lda_blend"] == 0.5
+            assert cfg["gap_mode"] == "one_step"
+            assert cfg["domain_head"] == "hard"
+            assert len(cfg["domain_blocks"]) > 0
+
+    # Verify UniPool candidate rejected on B1 and B2
+    bed_b1 = build_bed("B1", 10, seed=800)
+    with pytest.raises(ValueError, match="UniPool"):
+        build_arm("A2", bed_b1, tuning={"candidate": "ULDA", "inner_steps": 2, "q": 0.05})
+
+    bed_b2 = build_bed("B2", 6, seed=800)
+    with pytest.raises(ValueError, match="UniPool"):
+        build_arm("A2", bed_b2, tuning={"candidate": "ULDA", "inner_steps": 2, "q": 0.05})
+
+
+def test_held_default_pairs_on_b3():
+    """Verify held-default pairs on B3: H_U-real and H_ULDA at base operating point."""
+    bed_b3 = build_bed("B3seq", 22, seed=800)
+    base = {"inner_steps": 3, "q": 0.02}
+
+    arm_ureal = build_arm("H_U-real", bed_b3, tuning=base)
+    cfg_ureal = arm_ureal.config()
+    assert cfg_ureal["arm"] == "H_U-real"
+    assert cfg_ureal["candidate"] == "U-real"
+    assert cfg_ureal["inner_steps"] == 3
+    assert cfg_ureal["q"] == 0.02
+
+    arm_ulda = build_arm("H_ULDA", bed_b3, tuning=base)
+    cfg_ulda = arm_ulda.config()
+    assert cfg_ulda["arm"] == "H_ULDA"
+    assert cfg_ulda["candidate"] == "ULDA"
+    assert cfg_ulda["inner_steps"] == 3
+    assert cfg_ulda["q"] == 0.02
+    assert cfg_ulda["lda_blend"] == 0.5
+
+    # On B1, H_ULDA must be rejected
+    bed_b1 = build_bed("B1", 10, seed=800)
+    with pytest.raises(ValueError, match="UniPool"):
+        build_arm("H_ULDA", bed_b1, tuning=base)
+
+
+def test_tuning_driver_and_queue_bed_names(tmp_path):
+    """Verify tuning driver and queue accept B2 and B3 beds and enforce regime counts."""
+    drv_b2 = TuningDriver("B2", 30, tmp_path, smoke=True, seeds=[800])
+    assert drv_b2.n_regimes == 6
+    assert drv_b2.tune_bed_name == "B2"
+
+    drv_b3 = TuningDriver("B3seq", 30, tmp_path, smoke=True, seeds=[800])
+    assert drv_b3.n_regimes == 22
+    assert drv_b3.tune_bed_name == "B3seq"
+
+    drv_b3m = TuningDriver("B3mix", 30, tmp_path, smoke=True, seeds=[800])
+    assert drv_b3m.n_regimes == 22
+    assert drv_b3m.tune_bed_name == "B3seq"  # B3 tunes on seq
+
+    drv_b3d = TuningDriver("B3drift", 30, tmp_path, smoke=True, seeds=[800])
+    assert drv_b3d.n_regimes == 22
+    assert drv_b3d.tune_bed_name == "B3seq"
+
+    # Queue shorthand expansion for H on B3
+    h_b3 = queue_mod.h_arms_for("B3seq")
+    assert "H_U-real" in h_b3 and "H_ULDA" in h_b3
+    h_b1 = queue_mod.h_arms_for("B1")
+    assert "H_ULDA" not in h_b1
+
+
+def _mixed_phase_bed():
+    """A tiny B3-like bed whose phases mix regimes: phase 0 holds regimes 0 and 1 (both new), phase 1 holds regime 1 (old) and regime 2 (new)."""
+    from unimoe.suite import Phase, Regime, UStream
+
+    d, n = 16, 24
+    regimes = {r: Regime(id=r, name=f"r{r}", domain="s", kind="text", local=r, x_te=torch.randn(8, d) + r, y_te=torch.full((8,), r, dtype=torch.long)) for r in range(3)}
+
+    def phase(name, regs, new):
+        reg = torch.tensor([r for r in regs for _ in range(n // len(regs))])
+        return Phase(name, torch.randn(len(reg), d) + reg.float().unsqueeze(1), reg.clone(), reg, torch.tensor([r in new for r in reg.tolist()]))
+
+    stream = UStream("tiny_mix", d, 3, regimes, [phase("p0", [0, 1], {0, 1}), phase("p1", [1, 2], {2})], {}, {"s": (0, 3)})
+    return Bed(name="B3mix", n_regimes=3, seed=800, pool_seed=807, d=d, n_classes=3, stream=stream, label_blocks={"s": (0, 3)})
+
+
+def test_mixed_phases_report_every_regime_and_every_first_visit():
+    bed = _mixed_phase_bed()
+    seen_regimes, first_by_phase = {0: set(), 1: set()}, {0: set(), 1: set()}
+    for x, y, regimes, first, ph in bed.walk_full(8):
+        assert set(regimes) == set(y.tolist())                  # all regimes of the batch, not only the first sample's
+        seen_regimes[ph] |= set(regimes)
+        first_by_phase[ph] |= set(first)
+    assert seen_regimes == {0: {0, 1}, 1: {1, 2}} and first_by_phase == {0: {0, 1}, 1: {2}}
+
+
+def test_cells_on_mixed_phases_compute_forgetting_from_the_phase_a_regime_was_learned():
+    rec = execute_cell(_mixed_phase_bed(), "A5a", split="dev", profile="det")
+    assert is_valid_cell_record(rec) and rec["forgetting"] is not None            # regimes 0 and 1 were learned in phase 0 and evaluated again after phase 1
+    bed = _mixed_phase_bed()
+    bed.stream.phases[0].first[:] = False                                       # nothing is ever first seen in phase 0: regimes 0 and 1 have no learning row
+    with pytest.raises(ValueError, match="no first-visit sample"):
+        execute_cell(bed, "A5a", split="dev", profile="det")

@@ -20,7 +20,7 @@ from growmoe.memory_baselines import KnnMemory, StreamingLDA
 from growmoe.pools.phylo import PhyloMoE
 from m1.baselines_extra import MahalanobisProto, RandomFeatureRidge
 from m1.beds import Bed
-from m1.config_m1 import A2_CANDIDATES, ALL_ARMS
+from m1.config_m1 import A2_CANDIDATES, ALL_ARMS, B3_UNIPOOL_CANDIDATES
 
 ALL_ARM_ORDER = list(ALL_ARMS)
 
@@ -130,29 +130,35 @@ class A1PoolArm(Arm):
         arm_id: Optional[str] = None,
         instrument: bool = True,
         candidate: Optional[str] = None,
+        model: Optional[Any] = None,
+        cfg: Optional[Any] = None,
         **cfg_overrides: Any,
     ) -> None:
         self.candidate = candidate
         if variant not in ("baseline_v1", "pre_stage4"):
             raise ValueError(f"variant must be 'baseline_v1' or 'pre_stage4', got {variant!r}")
         self.variant = variant
-        base = BASELINE_V1_CFG if variant == "baseline_v1" else LEGACY_SHOOTOUT_CFG
-        cfg_dict: Dict[str, Any] = dict(d=bed.d, n_classes=bed.n_classes, seed=bed.pool_seed, **base)
-        cfg_dict.update(cfg_overrides)
-        self.cfg = PhyloCfg(**cfg_dict)
         assigned_id = arm_id if arm_id is not None else ("A1" if variant == "baseline_v1" else "A1L")
-        model = PhyloMoE(self.cfg)
+        if model is not None and cfg is not None:
+            self.cfg = cfg
+            self.model = model
+        else:
+            base = BASELINE_V1_CFG if variant == "baseline_v1" else LEGACY_SHOOTOUT_CFG
+            cfg_dict: Dict[str, Any] = dict(d=bed.d, n_classes=bed.n_classes, seed=bed.pool_seed, **base)
+            cfg_dict.update(cfg_overrides)
+            self.cfg = PhyloCfg(**cfg_dict)
+            self.model = PhyloMoE(self.cfg)
         self.time_split: Optional[Dict[str, float]] = None
         if instrument:
-            self.time_split = instrument_pool(model)
-        super().__init__(assigned_id, model, bed)
+            self.time_split = instrument_pool(self.model)
+        super().__init__(assigned_id, self.model, bed)
 
     def config(self) -> Dict[str, Any]:
         c = self.cfg
         d: Dict[str, Any] = {
             "arm": self.arm_id,
             "variant": self.variant,
-            "name": "PhyloMoE pool",
+            "name": "UniPool" if hasattr(c, "lda_blend") else "PhyloMoE pool",
             "seed": self.bed.pool_seed,
             "inner_steps": c.inner_steps,
             "route_rule": c.route_rule,
@@ -175,6 +181,17 @@ class A1PoolArm(Arm):
                 "infant_relax": c.infant_relax,
             }
         )
+        if hasattr(c, "lda_blend"):
+            d.update(
+                {
+                    "gap_mode": getattr(c, "gap_mode", "recipe"),
+                    "domain_blocks": [list(b) for b in getattr(c, "domain_blocks", ())],
+                    "domain_head": getattr(c, "domain_head", "off"),
+                    "domain_beta": getattr(c, "domain_beta", 1.0),
+                    "lda_blend": getattr(c, "lda_blend", 0.0),
+                    "lda_shrink": getattr(c, "lda_shrink", 0.1),
+                }
+            )
         if self.candidate is not None:
             d["candidate"] = self.candidate
         return d
@@ -465,6 +482,41 @@ def compute_a4_steps(bed: Bed, pool_macs_budget: int, pool_memory_bytes: int, hi
     return 0
 
 
+def build_pool_candidate(
+    cand_name: str,
+    bed: Bed,
+    inner_steps: int = 5,
+    q: float = 0.05,
+    arm_id: str = "A2",
+    instrument: bool = True,
+    **kwargs: Any,
+) -> Arm:
+    """Build a pool candidate arm (PhyloCfg override or UniPool system)."""
+    if cand_name in B3_UNIPOOL_CANDIDATES:
+        if not bed.name.startswith("B3"):
+            raise ValueError(f"{arm_id}: candidate {cand_name!r} is a UniPool candidate supported on B3 only.")
+        from unimoe.pools import UniPool
+        from unimoe.systems2 import uni_cfg
+
+        lb = getattr(bed, "label_blocks", None)
+        blocks = tuple(lb.values()) if isinstance(lb, dict) else tuple(lb or ())
+        recipe = {"inner_steps": inner_steps, "q": q}
+        recipe.update(kwargs)
+        cfg = uni_cfg(cand_name, n_classes=bed.n_classes, seed=bed.seed, recipe=recipe, blocks=blocks, d=bed.d)
+        model = UniPool(cfg)
+        return A1PoolArm(bed, variant="baseline_v1", arm_id=arm_id, instrument=instrument, candidate=cand_name, model=model, cfg=cfg)
+
+    if cand_name not in A2_CANDIDATES:
+        if arm_id == "A2":
+            raise ValueError(f"Unknown A2 candidate {cand_name!r}; the candidates are {sorted(A2_CANDIDATES)}.")
+        raise ValueError(f"{arm_id}: candidate {cand_name!r} is not a PhyloCfg candidate ({sorted(A2_CANDIDATES)}) nor a UniPool candidate ({sorted(B3_UNIPOOL_CANDIDATES)}).")
+
+    cand_cfg = dict(A2_CANDIDATES[cand_name])
+    cand_cfg.update(inner_steps=inner_steps, q=q)
+    merged = {**cand_cfg, **kwargs}
+    return A1PoolArm(bed, variant="baseline_v1", arm_id=arm_id, instrument=instrument, candidate=cand_name, **merged)
+
+
 def build_arm(
     arm_id: str,
     bed: Bed,
@@ -484,17 +536,10 @@ def build_arm(
         return A1PoolArm(bed, variant="baseline_v1", arm_id="A1q", inner_steps=steps, q=q, **kwargs)
 
     if arm_id == "A2":
-        if tuning:
-            cand_name = tuning.get("candidate", "shipped")
-            if cand_name not in A2_CANDIDATES:
-                raise ValueError(f"Unknown A2 candidate {cand_name!r}; the candidates are {sorted(A2_CANDIDATES)}.")
-            cand_cfg = dict(A2_CANDIDATES[cand_name])
-            steps = kwargs.pop("inner_steps", tuning.get("inner_steps", 5))
-            q = kwargs.pop("q", tuning.get("q", 0.05))
-            cand_cfg.update(inner_steps=steps, q=q)
-            merged = {**cand_cfg, **kwargs}
-            return A1PoolArm(bed, variant="baseline_v1", arm_id="A2", candidate=cand_name, **merged)
-        return A1PoolArm(bed, variant="baseline_v1", arm_id="A2", **kwargs)
+        steps = kwargs.pop("inner_steps", tuning.get("inner_steps", 5) if tuning else 5)
+        q = kwargs.pop("q", tuning.get("q", 0.05) if tuning else 0.05)
+        cand_name = tuning.get("candidate", "shipped") if tuning else "shipped"
+        return build_pool_candidate(cand_name, bed, inner_steps=steps, q=q, arm_id="A2", **kwargs)
 
     if arm_id == "A1L":
         return A1PoolArm(bed, variant="pre_stage4", arm_id="A1L", **kwargs)
@@ -502,11 +547,9 @@ def build_arm(
     if arm_id.startswith("H_"):
         # held-default pair cell: candidate from the arm id, base operating point (steps and q of A1q) from the tuning dictionary
         cand_name = arm_id[2:]
-        if cand_name not in A2_CANDIDATES:
-            raise ValueError(f"{arm_id}: candidate {cand_name!r} is not a PhyloCfg candidate ({sorted(A2_CANDIDATES)}); UniPool systems such as ULDA are built by job B-2.")
-        cand_cfg = dict(A2_CANDIDATES[cand_name])
-        cand_cfg.update(inner_steps=kwargs.pop("inner_steps", tuning.get("inner_steps", 5) if tuning else 5), q=kwargs.pop("q", tuning.get("q", 0.05) if tuning else 0.05))
-        return A1PoolArm(bed, variant="baseline_v1", arm_id=arm_id, candidate=cand_name, **{**cand_cfg, **kwargs})
+        steps = kwargs.pop("inner_steps", tuning.get("inner_steps", 5) if tuning else 5)
+        q = kwargs.pop("q", tuning.get("q", 0.05) if tuning else 0.05)
+        return build_pool_candidate(cand_name, bed, inner_steps=steps, q=q, arm_id=arm_id, **kwargs)
 
     if arm_id in ("A3-2", "A4", "A4-2", "A7-2") and pool_memory_bytes is None:
         raise ValueError(f"{arm_id} needs the final memory of its reference pool (pool_memory_bytes); it is not computed from an untuned pool.")

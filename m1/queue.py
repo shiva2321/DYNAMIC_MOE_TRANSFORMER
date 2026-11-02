@@ -71,6 +71,8 @@ def load_tuning_map(tuning_arg: Optional[str], bed_name: str) -> Dict[str, Any]:
         return {}
     p = Path(tuning_arg)
     file_path = p / f"{bed_name}.json" if p.is_dir() else p
+    if not file_path.exists() and bed_name in ("B3mix", "B3drift") and p.is_dir():
+        file_path = p / "B3seq.json"
     if not file_path.exists():
         raise FileNotFoundError(f"--tuning was given but {file_path} does not exist: run m1.tune first (cells made without it would be untuned).")
     try:
@@ -125,7 +127,10 @@ def run_queue(
     arm_rank = {a: i for i, a in enumerate(ALL_ARM_ORDER)}
     sorted_arms = sorted(arms, key=lambda a: arm_rank.get(a, 99))
 
-    cells_total = len(beds) * len(ns) * len(seeds) * len(sorted_arms)
+    cells_total = 0
+    for b in beds:
+        b_ns = [6] if b == "B2" else ([22] if b.startswith("B3") else ns)
+        cells_total += len(b_ns) * len(seeds) * len(sorted_arms)
     cells_run = 0
     cells_skipped = 0
 
@@ -135,7 +140,8 @@ def run_queue(
     with fixed_threads(n=threads, cpus=cpus_list) as pinning:
         for bed_name in beds:
             tuning_map = load_tuning_map(tuning_dir, bed_name)
-            for n in ns:
+            bed_ns = [6] if bed_name == "B2" else ([22] if bed_name.startswith("B3") else ns)
+            for n in bed_ns:
                 for seed in seeds:
                     group_no += 1
                     if (group_no - 1) % shard_m != shard_k:

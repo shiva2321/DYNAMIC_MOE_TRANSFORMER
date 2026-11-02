@@ -34,6 +34,7 @@ from m1.cell import (
 )
 from m1.config_m1 import (
     A2_CANDIDATES,
+    B3_UNIPOOL_CANDIDATES,
     DEV_SEEDS,
     EDGE_EXTEND_CAP_D,
     EDGE_EXTEND_CAP_STEPS,
@@ -141,7 +142,13 @@ class TuningDriver:
         seeds: Optional[List[int]] = None,
     ) -> None:
         self.bed_name = bed_name
-        self.n_regimes = n_regimes
+        self.tune_bed_name = "B3seq" if bed_name in ("B3mix", "B3drift") else bed_name
+        if self.bed_name == "B2":
+            self.n_regimes = 6
+        elif self.bed_name.startswith("B3"):
+            self.n_regimes = 22
+        else:
+            self.n_regimes = n_regimes
         self.out_dir = Path(out_dir)
         self.smoke = smoke
         self.seeds = seeds if seeds is not None else list(DEV_SEEDS)
@@ -173,6 +180,11 @@ class TuningDriver:
 
     def save_tuning_state(self) -> None:
         save_cell_record(self.tuning_file, self.state)
+        if self.bed_name == "B3seq":
+            for other_bed in ("B3mix", "B3drift"):
+                other_file = self.out_dir / f"{other_bed}.json"
+                other_state = dict(self.state, bed=other_bed)
+                save_cell_record(other_file, other_state)
 
     def pool_reference(self, pool_arm: str, seed: int, need_macs: bool = True) -> Dict[str, int]:
         """Final memory and (if ``need_macs``) whole-stream counted training multiply-adds of the tuned reference pool (A1 or A2) on this bed and seed.
@@ -198,7 +210,7 @@ class TuningDriver:
         if cached and (not need_macs or cached.get("macs") is not None):
             return {"bytes": int(cached["bytes"]), "macs": None if cached.get("macs") is None else int(cached["macs"])}
 
-        bed = build_bed(self.bed_name, self.n_regimes, seed)
+        bed = build_bed(self.tune_bed_name, self.n_regimes, seed)
         held: Dict[str, int] = {}
 
         def _run() -> None:
@@ -247,7 +259,7 @@ class TuningDriver:
             except (OSError, ValueError, KeyError):
                 print(f"  [CORRUPT] {trial_file.name} is unreadable or incomplete: rerunning the trial", flush=True)
 
-        bed = build_bed(self.bed_name, self.n_regimes, seed)
+        bed = build_bed(self.tune_bed_name, self.n_regimes, seed)
         rec = execute_cell(
             bed=bed,
             arm_name=arm_id,
@@ -284,7 +296,7 @@ class TuningDriver:
             # For A4, compute steps per seed
             cfg_to_run = dict(config)
             if arm_id in ("A4", "A4-2"):
-                bed = build_bed(self.bed_name, self.n_regimes, seed)
+                bed = build_bed(self.tune_bed_name, self.n_regimes, seed)
                 s_w = compute_a4_steps(bed, pool_macs, pool_mem, int(config["hidden"]))
                 if s_w < 1:
                     return None  # Width exceeds budget on this seed
@@ -350,7 +362,11 @@ class TuningDriver:
         grids = {
             "A1": [SMOKE_GRID_A1_STEPS if s else GRID_A1_STEPS],
             "A1q": [SMOKE_GRID_A1Q_STEPS if s else GRID_A1Q_STEPS, SMOKE_GRID_A1Q_Q if s else GRID_A1Q_Q],
-            "A2": [SMOKE_A2_CANDIDATES if s else A2_CANDIDATES, SMOKE_GRID_A2_Q if s else GRID_A2_Q, self.state["arms"].get("A1q", {}).get("tuning_ref")],
+            "A2": [
+                SMOKE_A2_CANDIDATES if s else (A2_CANDIDATES, list(B3_UNIPOOL_CANDIDATES) if self.bed_name.startswith("B3") else []),
+                SMOKE_GRID_A2_Q if s else GRID_A2_Q,
+                self.state["arms"].get("A1q", {}).get("tuning_ref"),
+            ],
             "A3": [SMOKE_GRID_A3_WIDTH if s else GRID_A3_WIDTH, SMOKE_GRID_A3_STEPS if s else GRID_A3_STEPS],
             "A4": [SMOKE_GRID_A4_WIDTH if s else GRID_A4_WIDTH],
             "A5a": [SMOKE_GRID_A5A_SHRINKAGE if s else GRID_A5A_SHRINKAGE],
@@ -414,7 +430,12 @@ class TuningDriver:
 
         elif arm_id == "A2":
             a1q_steps = self.state["arms"]["A1q"]["chosen"]["inner_steps"]
-            cands = SMOKE_A2_CANDIDATES if self.smoke else A2_CANDIDATES
+            if self.smoke:
+                cands = list(SMOKE_A2_CANDIDATES.keys())
+            else:
+                cands = list(A2_CANDIDATES.keys())
+                if self.bed_name.startswith("B3"):
+                    cands.extend(B3_UNIPOOL_CANDIDATES)
             grid_q = SMOKE_GRID_A2_Q if self.smoke else GRID_A2_Q
             for cand_name in cands:
                 for q in grid_q:
@@ -546,6 +567,10 @@ def run_tuning(
     smoke: bool = False,
 ) -> None:
     """Execute tuning driver for specified bed, arms, and seeds."""
+    if bed == "B2":
+        tune_n = 6
+    elif bed.startswith("B3"):
+        tune_n = 22
     target_arms = arms if arms is not None else list(ALL_ARM_ORDER)
     # Filter and preserve dependency order
     ordered_arms = [a for a in ALL_ARM_ORDER if a in target_arms]

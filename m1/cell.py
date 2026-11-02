@@ -254,7 +254,8 @@ def execute_cell(
         nonlocal wall_clock_total
         cur_phase = -1
         last_regime = -1
-        for x_b, y_b, regime_id, first_visit, phase_idx in bed.walk(64):
+        for x_b, y_b, regimes, first_regimes, phase_idx in bed.walk_full(64):
+            regime_id = regimes[0]                                  # the time of a batch of a mixed phase is booked on its first regime
             if phase_idx != cur_phase:
                 if cur_phase >= 0:
                     if profile in ("full", "det"):              # the light profile (tuning) needs only the final accuracy: no evaluation, and so no router refit, at the phase boundaries
@@ -262,8 +263,9 @@ def execute_cell(
                     bytes_by_regime[str(last_regime)] = arm.memory_bytes()
                 cur_phase = phase_idx
                 last_regime = regime_id
-                if first_visit and regime_id not in learned_at:
-                    learned_at[regime_id] = len(R_rows)
+            for r_first in first_regimes:                           # every regime first seen in this batch is learned at the row that follows this phase
+                if r_first not in learned_at:
+                    learned_at[r_first] = len(R_rows)
 
             t0 = time.perf_counter()
             arm.observe(x_b, y_b)
@@ -285,7 +287,10 @@ def execute_cell(
 
     R = np.array(R_rows, dtype=np.float64)
     if len(R_rows) > 1:
-        la = [learned_at.get(r, r) for r in range(bed.n_regimes)]
+        never = [r for r in range(bed.n_regimes) if r not in learned_at]
+        if never:
+            raise ValueError(f"regimes {never} have no first-visit sample in the stream of {bed.name}: the row at which they were learned is unknown")
+        la = [learned_at[r] for r in range(bed.n_regimes)]
         stats = accuracy_stats(R, learned_at=la, chance=1.0 / bed.n_classes)
         forgetting = None if np.isnan(stats["forgetting"]) else float(stats["forgetting"])
     else:
@@ -345,6 +350,8 @@ def execute_cell(
         "total_samples": bed.total_samples,
         "regime_names": [bed.regime_info[r]["name"] for r in range(bed.n_regimes)],
     }
+    if getattr(bed, "label_blocks", None) is not None:
+        bed_info["label_blocks"] = bed.label_blocks
 
     reference_pool: Optional[Dict[str, Any]] = None
     if arm_name in ("A3", "A4", "A7"):
