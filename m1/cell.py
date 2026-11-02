@@ -253,7 +253,8 @@ def execute_cell(
         for x_b, y_b, regime_id, first_visit, phase_idx in bed.walk(64):
             if phase_idx != cur_phase:
                 if cur_phase >= 0:
-                    R_rows.append(_eval_row())
+                    if profile == "full":                       # the light profile (tuning) needs only the final accuracy: no evaluation, and so no router refit, at the phase boundaries
+                        R_rows.append(_eval_row())
                     bytes_by_regime[str(last_regime)] = arm.memory_bytes()
                 cur_phase = phase_idx
                 last_regime = regime_id
@@ -279,9 +280,12 @@ def execute_cell(
         peak_mem_profile = None
 
     R = np.array(R_rows, dtype=np.float64)
-    la = [learned_at.get(r, r) for r in range(bed.n_regimes)]
-    stats = accuracy_stats(R, learned_at=la, chance=1.0 / bed.n_classes)
-    forgetting = None if np.isnan(stats["forgetting"]) else float(stats["forgetting"])
+    if len(R_rows) > 1:
+        la = [learned_at.get(r, r) for r in range(bed.n_regimes)]
+        stats = accuracy_stats(R, learned_at=la, chance=1.0 / bed.n_classes)
+        forgetting = None if np.isnan(stats["forgetting"]) else float(stats["forgetting"])
+    else:
+        forgetting = None                                       # one row only (light profile): forgetting is not defined
 
     if profile == "full":
         if arm_name in ("A7", "A7all", "A7-2"):

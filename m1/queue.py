@@ -20,7 +20,7 @@ from m1.cell import (
     record_matches_config,
     save_cell_record,
 )
-from m1.config_m1 import PINNING_CPUS, PINNING_THREADS
+from m1.config_m1 import H_CANDIDATES_ALL_BEDS, H_CANDIDATES_B3, PINNING_CPUS, PINNING_THREADS
 
 ALL_ARM_ORDER = [
     "A1",
@@ -42,6 +42,12 @@ EQUAL_MEMORY_ARMS_R1 = ("A3", "A7")
 EQUAL_MEMORY_ARMS_R2 = ("A3-2", "A7-2")
 COMPUTE_MATCHED_ARMS_R1 = ("A4",)
 COMPUTE_MATCHED_ARMS_R2 = ("A4-2",)
+
+
+def h_arms_for(bed_name: str) -> List[str]:
+    """Arm ids of the held-default pair cells for a bed (shorthand ``H`` on the command line)."""
+    cands = list(H_CANDIDATES_ALL_BEDS) + (list(H_CANDIDATES_B3) if bed_name.startswith("B3") else [])
+    return [f"H_{c}" for c in cands]
 
 
 def parse_seeds(text: str) -> List[int]:
@@ -125,14 +131,15 @@ def run_queue(
             for n in ns:
                 for seed in seeds:
                     bed = build_bed(bed_name, n, seed)
+                    arms_here = [a for a in sorted_arms if a != "H"] + (h_arms_for(bed_name) if "H" in sorted_arms else [])
                     pool_bytes_r1 = read_pool_budget(out_dir, bed, pool_arm="A1", tuning=tuning_map.get("A1"))
                     pool_macs_r1 = read_pool_macs(out_dir, bed, pool_arm="A1", tuning=tuning_map.get("A1"))
                     pool_bytes_r2 = read_pool_budget(out_dir, bed, pool_arm="A2", tuning=tuning_map.get("A2"))
                     pool_macs_r2 = read_pool_macs(out_dir, bed, pool_arm="A2", tuning=tuning_map.get("A2"))
 
-                    for arm in sorted_arms:
+                    for arm in arms_here:
                         target_file = out_dir / cell_filename(bed_name, n, arm, seed)
-                        arm_tuning = tuning_map.get(arm)
+                        arm_tuning = tuning_map.get("A1q" if arm.startswith("H_") else arm)       # pair cells run at the base operating point of A1q
                         if tuning_dir and arm_tuning is None:
                             raise RuntimeError(f"{arm} is not in the tuning file of {bed_name}: tune it first (m1.tune) or run without --tuning.")
 

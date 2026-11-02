@@ -499,6 +499,15 @@ def build_arm(
     if arm_id == "A1L":
         return A1PoolArm(bed, variant="pre_stage4", arm_id="A1L", **kwargs)
 
+    if arm_id.startswith("H_"):
+        # held-default pair cell: candidate from the arm id, base operating point (steps and q of A1q) from the tuning dictionary
+        cand_name = arm_id[2:]
+        if cand_name not in A2_CANDIDATES:
+            raise ValueError(f"{arm_id}: candidate {cand_name!r} is not a PhyloCfg candidate ({sorted(A2_CANDIDATES)}); UniPool systems such as ULDA are built by job B-2.")
+        cand_cfg = dict(A2_CANDIDATES[cand_name])
+        cand_cfg.update(inner_steps=kwargs.pop("inner_steps", tuning.get("inner_steps", 5) if tuning else 5), q=kwargs.pop("q", tuning.get("q", 0.05) if tuning else 0.05))
+        return A1PoolArm(bed, variant="baseline_v1", arm_id=arm_id, candidate=cand_name, **{**cand_cfg, **kwargs})
+
     if arm_id in ("A3-2", "A4", "A4-2", "A7-2") and pool_memory_bytes is None:
         raise ValueError(f"{arm_id} needs the final memory of its reference pool (pool_memory_bytes); it is not computed from an untuned pool.")
     if arm_id in ("A4", "A4-2") and pool_macs_budget is None and not (tuning and "inner_steps" in tuning):

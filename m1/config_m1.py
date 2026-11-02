@@ -150,6 +150,10 @@ HELD_DEFAULT_PAIRS: Dict[str, Tuple[str, str]] = {
     "lda_head": ("U-real", "ULDA"),  # B3 only
 }
 
+# Held-default pair cells have the arm ids H_<candidate>: pool cells at the base operating point (q and steps of A1q), one per candidate, bed and seed (rules 6.2).
+H_CANDIDATES_ALL_BEDS: Tuple[str, ...] = ("shipped", "shipped+gap", "shipped+skip", "shipped+chance")
+H_CANDIDATES_B3: Tuple[str, ...] = ("U-real", "ULDA")                          # LDA-head pair, B3 only (ULDA is a UniPool system built by job B-2)
+
 # -----------------------------------------------------------------------------
 # Preregistration Thresholds (M1_PREREG_DRAFT.md Sections 6.1 and 6.2)
 # -----------------------------------------------------------------------------

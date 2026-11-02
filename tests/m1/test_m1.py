@@ -616,3 +616,46 @@ def test_a_tuned_arm_is_tuned_again_when_its_grid_or_seeds_change(tmp_path, monk
     drv.seeds = [100, 101]
     drv.tune_arm("A5a")
     assert calls                                                                # another seed list: tuned again
+
+
+# ---------------------------------------------------------------------------------------------------------------------------------
+# Held-default pair cells (H_<candidate>) and the light profile (final evaluation only)
+# ---------------------------------------------------------------------------------------------------------------------------------
+def test_h_arms_build_the_candidate_at_the_base_operating_point(small_bed):
+    base = {"inner_steps": 2, "q": 0.02}                                        # the A1q choice
+    gap = build_arm("H_shipped+gap", small_bed, tuning=base)
+    ref = build_arm("H_shipped", small_bed, tuning=base)
+    cfg_gap, cfg_ref = gap.config(), ref.config()
+    assert (cfg_gap["arm"], cfg_gap["candidate"], cfg_gap["q"], cfg_gap["inner_steps"], cfg_gap["growth_rule"]) == ("H_shipped+gap", "shipped+gap", 0.02, 2, "gap")
+    assert (cfg_ref["q"], cfg_ref["inner_steps"], cfg_ref["growth_rule"]) == (0.02, 2, "probe")        # the reference differs from the candidate only in the switch
+    assert {k: v for k, v in cfg_gap.items() if k not in ("arm", "candidate", "growth_rule")} == {k: v for k, v in cfg_ref.items() if k not in ("arm", "candidate", "growth_rule")}
+    with pytest.raises(ValueError, match="UniPool"):
+        build_arm("H_ULDA", small_bed, tuning=base)
+    with pytest.raises(ValueError, match="candidate"):
+        build_arm("H_nonsense", small_bed, tuning=base)
+
+
+def test_light_profile_gives_the_same_final_accuracy_without_boundary_evaluations(small_bed, a1_record):
+    light = execute_cell(small_bed, "A1", split="dev", profile="light")
+    assert light["accuracy"] == a1_record["accuracy"] and light["per_regime_accuracy"] == a1_record["per_regime_accuracy"]
+    assert light["memory_bytes"] == a1_record["memory_bytes"]
+    assert light["forgetting"] is None and is_valid_cell_record(light)
+    assert len(light["update_cost"]["eval_wall_clock_per_regime_boundary"]) == 1 < len(a1_record["update_cost"]["eval_wall_clock_per_regime_boundary"])
+
+
+def test_queue_expands_the_h_shorthand_and_uses_the_a1q_tuning(tmp_path, monkeypatch, small_bed, a1_record):
+    seen = []
+
+    def fake_execute(bed, arm_name, pool_memory_bytes=None, pool_macs_budget=None, split="dev", pinning=None, profile="full", tuning=None, **kwargs):
+        seen.append((arm_name, dict(tuning)))
+        return copy.deepcopy(a1_record)
+
+    monkeypatch.setattr(queue_mod, "execute_cell", fake_execute)
+    monkeypatch.setattr(queue_mod, "build_bed", lambda name, n, seed: small_bed)
+    tdir = tmp_path / "tuning"
+    tdir.mkdir()
+    (tdir / "B1.json").write_text(json.dumps({"arms": {"A1q": {"chosen": {"inner_steps": 2, "q": 0.02}}}}), encoding="utf-8")
+    run_queue(split="dev", beds=["B1"], ns=[2], arms=["H"], seeds=[100], out=tmp_path / "cells", tuning_dir=str(tdir), cpus=[0], threads=1)
+    assert [a for a, _ in seen] == ["H_shipped", "H_shipped+gap", "H_shipped+skip", "H_shipped+chance"]
+    assert all(t == {"inner_steps": 2, "q": 0.02} for _, t in seen)
+    assert (tmp_path / "cells" / cell_filename("B1", 2, "H_shipped+gap", 100)).exists()
