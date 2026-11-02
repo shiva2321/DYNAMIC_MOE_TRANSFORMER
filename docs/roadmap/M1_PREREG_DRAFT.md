@@ -71,10 +71,11 @@ A scoreboard table per bed with accuracy, forgetting and every cost; Pareto figu
 
 ## 9. Work and cost
 
-Build first: COSTLAB (in progress), then the M1 runner with the three new arms (A4, A5 Mahalanobis, A6), written by Gemini to a spec and reviewed by Claude. Runs are small, checkpointed and relaunchable by one idempotent command (D-30), one GPU job at a time. Estimate: M (3-5 sessions) as in MILESTONES.
+Build first: COSTLAB (done, D-80), then the M1 runner: stage A (bed B1 and the four existing arms) is done and reviewed (D-83, E-068); stage B (the three new arms A4, A5 Mahalanobis, A6, beds B2 and B3, the tuning step, the report and verdict scripts) is written by Gemini to a spec and reviewed by Claude. Runs are small, checkpointed and relaunchable by one idempotent command (D-30), one GPU job at a time. Estimate: M (3-5 sessions) as in MILESTONES.
 
 ## 10. Open points for you
 
 1. The adoption thresholds in 6.2 are my proposals; say if any should be stricter or looser before the freeze.
 2. A6 and the Mahalanobis arm cost extra build work; I recommend keeping them because frozen features with a closed-form head are the strongest simple baseline in the literature (RESEARCH_DIGEST section 3).
 3. GPU energy is reported only for arms that actually run on the GPU; for the tiny networks here the CPU path may be faster and cheaper, which is itself a result.
+4. **Added 2026-11-02 after E-068; proposals for the freeze, for your decision (Q-80).** (a) Baseline v1 as built (class-default q 0.05) fragments bed B1: 61 to 67 experts for 10 regimes and 31.0 % against 42.6 % for the pre-stage-4 pool on the five development seeds, while q 0.02 gives 10 experts and 43.0 % (C-195). Section 3 already counts thresholds and steps as part of each arm's operating point, so A1's q and steps are tuned on development seeds like every other arm and the report shows A1 as built next to A1 tuned. (b) A2's candidate list gains the configuration in which the router and the transfer rule were confirmed (stage 4: q 0.02, 20 steps, set gate on). (c) Whether the shipped defaults themselves should change is decided at BP1 on the tuned results, not here.
