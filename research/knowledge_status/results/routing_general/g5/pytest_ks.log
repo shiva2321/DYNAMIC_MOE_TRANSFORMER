@@ -1,0 +1,24 @@
+........................................................................ [ 10%]
+........................................................................ [ 21%]
+........................................................................ [ 32%]
+........................................................................ [ 43%]
+........................................................................ [ 54%]
+........................................................................ [ 65%]
+........................................................................ [ 76%]
+........................................................................ [ 87%]
+........................................................................ [ 98%]
+...........                                                              [100%]
+============================== warnings summary ===============================
+tests/knowledge_status/test_ks_ceiling.py: 219 warnings
+tests/knowledge_status/test_ks_learned_map.py: 20 warnings
+tests/knowledge_status/test_ks_run_e2.py: 20 warnings
+tests/knowledge_status/test_ks_run_e2w.py: 10 warnings
+tests/knowledge_status/test_ks_status.py: 16 warnings
+tests/knowledge_status/test_ks_tune_baselines.py: 12 warnings
+tests/knowledge_status/test_rg_lab.py: 3 warnings
+tests/knowledge_status/test_rg_lab_shift.py: 2 warnings
+  C:\Users\Asta\AppData\Local\Programs\Python\Python312\Lib\site-packages\sklearn\linear_model\_logistic.py:455: DeprecationWarning: scipy.optimize: The `disp` and `iprint` options of the L-BFGS-B solver are deprecated and will be removed in SciPy 1.18.0.
+    opt_res = optimize.minimize(
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+659 passed, 302 warnings in 109.01s (0:01:49)

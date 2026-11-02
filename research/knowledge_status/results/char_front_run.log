@@ -1,0 +1,23 @@
+seed 150 done
+seed 151 done
+seed 152 done
+seed 153 done
+seed 154 done
+# Character-aware front end: known skills in new wordings called unseen, at q = 0.05 (seeds 150-154; bar 0.05)
+
+| reader | detector | false unseen S4-S8 | S4 stories | S5 | S6 | S7 noisy text | S8 | unseen skills found | AUROC taught/untaught | Other content called unseen |
+|---|---|---|---|---|---|---|---|---|---|---|
+| R1 | vmf_conformal | 0.342 | 0.978 | 0.025 | 0.042 | 0.515 | 0.044 | 0.555 | 0.765 | 0.316 |
+| R1 | knn_distance | 0.329 | 0.993 | 0.000 | 0.017 | 0.562 | 0.000 | 0.260 | 0.701 | 0.564 |
+| R1 | mahalanobis | 0.223 | 0.801 | 0.000 | 0.000 | 0.240 | 0.000 | 0.127 | 0.777 | 0.591 |
+| R0 | vmf_conformal | 0.121 | 0.099 | 0.157 | 0.019 | 0.263 | 0.081 | 0.359 | 0.835 | 0.186 |
+| R0 | knn_distance | 0.221 | 0.585 | 0.000 | 0.000 | 0.453 | 0.035 | 0.313 | 0.762 | 0.412 |
+| R0 | mahalanobis | 0.221 | 0.599 | 0.000 | 0.000 | 0.398 | 0.043 | 0.257 | 0.698 | 0.418 |
+| R1+0.5R0 | vmf_conformal | 0.297 | 0.830 | 0.108 | 0.025 | 0.441 | 0.020 | 0.563 | 0.791 | 0.324 |
+| R1+0.5R0 | knn_distance | 0.327 | 0.993 | 0.000 | 0.000 | 0.548 | 0.009 | 0.282 | 0.723 | 0.600 |
+| R1+0.5R0 | mahalanobis | 0.269 | 0.890 | 0.000 | 0.000 | 0.347 | 0.000 | 0.150 | 0.778 | 0.602 |
+| R1+1R0 | vmf_conformal | 0.332 | 0.906 | 0.183 | 0.000 | 0.485 | 0.009 | 0.682 | 0.821 | 0.309 |
+| R1+1R0 | knn_distance | 0.317 | 0.983 | 0.050 | 0.000 | 0.477 | 0.022 | 0.332 | 0.740 | 0.586 |
+| R1+1R0 | mahalanobis | 0.274 | 0.890 | 0.000 | 0.000 | 0.367 | 0.000 | 0.153 | 0.777 | 0.591 |
+
+finished
