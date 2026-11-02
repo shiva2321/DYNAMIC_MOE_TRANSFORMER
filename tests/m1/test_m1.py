@@ -952,3 +952,43 @@ def test_cells_on_mixed_phases_compute_forgetting_from_the_phase_a_regime_was_le
     bed.stream.phases[0].first[:] = False                                       # nothing is ever first seen in phase 0: regimes 0 and 1 have no learning row
     with pytest.raises(ValueError, match="no first-visit sample"):
         execute_cell(bed, "A5a", split="dev", profile="det")
+
+
+def test_cell_records_carry_the_accounting_block(small_bed, a1_record):
+    """The record keeps what growmoe.accounting says about the trained arm, so the report can reconcile it with the counted multiply-adds without guessing formulas."""
+    acc = a1_record["accounting"]
+    for key in ("n_experts", "params", "stored_vectors", "memory_bytes", "gate_macs", "expert_macs", "predict_macs"):
+        assert isinstance(acc[key], int) and acc[key] >= 0
+    assert acc["predict_macs"] == acc["gate_macs"] + acc["expert_macs"]
+    assert acc["memory_bytes"] == a1_record["memory_bytes"]                           # the stored bytes of the record are the accounting's
+    assert acc["gate_macs_measured_predict"] >= 0                                    # a pool has gate counters
+    rec_lda = execute_cell(small_bed, "A5a", split="dev", profile="det")
+    assert "gate_macs_measured_predict" not in rec_lda["accounting"] and rec_lda["accounting"]["expert_macs"] == 0
+
+
+def test_report_reconciliation_and_answer_split_use_the_recorded_numbers(a1_record):
+    from m1.report import compute_cost_drivers, compute_reconciliation_table
+
+    rec = copy.deepcopy(a1_record)
+    rec["arm"] = "A2"
+    rec["accounting"] = dict(rec["accounting"], gate_macs=300, expert_macs=100, predict_macs=400, memory_bytes=1234, gate_macs_measured_predict=250.0)
+    rec["answer_cost"]["1"]["counted_macs"] = 360
+    old = copy.deepcopy(a1_record)                                # a cell made before the block existed
+    old["arm"] = "A3"
+    old.pop("accounting", None)
+    by_arm = {r["arm"]: r for r in compute_reconciliation_table([rec, old])}
+    assert by_arm["A2"]["accounting_macs"] == 400 and by_arm["A2"]["costlab_macs"] == 360 and by_arm["A2"]["macs_ratio"] == pytest.approx(0.9)
+    assert by_arm["A2"]["accounting_bytes"] == 1234
+    assert by_arm["A3"]["accounting_macs"] is None and by_arm["A3"]["macs_ratio"] is None      # not recorded, not guessed
+    split = compute_cost_drivers([rec, old])["answer_drivers"]
+    assert len(split) == 1 and split[0]["gate_share"] == pytest.approx(0.75) and split[0]["gate_macs_measured"] == 250.0 and split[0]["counted_macs"] == 360
+
+
+def test_memory_by_regime_keeps_the_first_visit_of_each_regime():
+    """B1 revisits two regimes at the end; their entries must stay the memory after the first visit (M1-8 fits a line through these), not be overwritten by the later visit."""
+    bed = build_bed("B1", n_regimes=4, seed=100, n_train=16, n_test=16)
+    assert bed.n_phases > bed.n_regimes                                              # there are revisit phases
+    rec = execute_cell(bed, "A7all", split="dev", profile="det")                     # a kNN memory grows with every sample it stores
+    by_regime = [rec["memory_bytes_by_regime"][str(r)] for r in range(bed.n_regimes)]
+    assert by_regime == sorted(by_regime) and len(set(by_regime)) == len(by_regime)
+    assert by_regime[-1] < rec["memory_bytes"]                                       # the revisit phases added samples after the last first visit

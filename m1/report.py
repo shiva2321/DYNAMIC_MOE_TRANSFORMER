@@ -442,12 +442,26 @@ def compute_cost_drivers(records: Sequence[Dict[str, Any]]) -> Dict[str, Any]:
             share = (dur / tot_update * 100.0) if tot_update > 0 else 0.0
             update_drivers.append((name, dur, share))
 
-    # Answer cost drivers from pool_report logic
-    answer_drivers = [
-        ("Expert MLP Forward Pass", "Weight matrix-vector products of the active expert module", "~65-90%"),
-        ("Gate Signature Scanning", "Inner products against stored expert signatures", "~10-30%"),
-        ("Router Feature Extraction", "Log-frequency and routing feature computations", "~1-5%"),
-    ]
+    # Answer cost drivers: how one answer's multiply-adds split between the gate scan and the expert, from the accounting blocks of the reference pool records (A2)
+    answer_drivers: List[Dict[str, Any]] = []
+    grouped = group_records(records)
+    for bed in sorted(grouped):
+        recs = [r for r in grouped[bed].get("A2", []) if r.get("accounting")]
+        if not recs:
+            continue
+        gate = float(np.mean([r["accounting"]["gate_macs"] for r in recs]))
+        expert = float(np.mean([r["accounting"]["expert_macs"] for r in recs]))
+        measured = [r["accounting"]["gate_macs_measured_predict"] for r in recs if "gate_macs_measured_predict" in r["accounting"]]
+        counted = [r["answer_cost"]["1"]["counted_macs"] for r in recs if r.get("answer_cost", {}).get("1")]
+        answer_drivers.append({
+            "bed": bed,
+            "n_records": len(recs),
+            "gate_macs": gate,
+            "expert_macs": expert,
+            "gate_share": (gate / (gate + expert)) if (gate + expert) > 0 else 0.0,
+            "gate_macs_measured": float(np.mean(measured)) if measured else None,
+            "counted_macs": float(np.mean(counted)) if counted else None,
+        })
 
     return {
         "update_drivers": update_drivers,
@@ -455,15 +469,44 @@ def compute_cost_drivers(records: Sequence[Dict[str, Any]]) -> Dict[str, Any]:
     }
 
 
-def compute_reconciliation_table(records: Sequence[Dict[str, Any]]) -> List[Dict[str, Any]]:
-    """Generate resource reconciliation table comparing growmoe.accounting against costlab counts."""
-    grouped = group_records(records)
-    reconcil_rows: List[Dict[str, Any]] = []
+def _reconciliation_beds(grouped: Dict[str, Dict[str, List[Dict[str, Any]]]]) -> List[str]:
+    """One bed per family: the largest B1 (most regimes), B2, and B3seq, when present."""
+    beds: List[str] = []
+    b1 = [b for b in grouped if b.startswith("B1")]
+    if b1:
+        beds.append(max(b1, key=lambda b: (int(b.split("_n")[-1]) if "_n" in b and b.split("_n")[-1].isdigit() else 0, b)))
+    for fam in ("B2", "B3seq"):
+        if fam in grouped:
+            beds.append(fam)
+    return beds
 
-    # Pick the first bed to display reconciliation
-    first_bed = sorted(grouped.keys())[0] if grouped else ""
-    if not first_bed:
-        return reconcil_rows
+
+def compute_reconciliation_table(records: Sequence[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    """Set the counts of growmoe.accounting (recorded in each cell as ``accounting``) against the counts of costlab, for one bed per family.
+
+    Nothing is re-derived here: a record without an ``accounting`` block gets a row that says so. The accounting count is static (the whole gate scan plus one expert);
+    costlab counts what one answer really multiplied, so a ratio below one is expected when the pool's gate shortlist is on.
+    """
+    grouped = group_records(records)
+    rows: List[Dict[str, Any]] = []
+    for bed in _reconciliation_beds(grouped):
+        bed_arms = grouped[bed]
+        for arm in sorted(bed_arms, key=lambda a: ARM_ORDER.index(a) if a in ARM_ORDER else 999):
+            recs = bed_arms[arm]
+            with_acc = [r for r in recs if r.get("accounting")]
+            costlab = [r["answer_cost"]["1"]["counted_macs"] for r in recs if r.get("answer_cost", {}).get("1")]
+            row: Dict[str, Any] = {"bed": bed, "arm": arm, "n_records": len(recs), "n_with_accounting": len(with_acc),
+                                   "costlab_macs": float(np.mean(costlab)) if costlab else None, "accounting_macs": None, "macs_ratio": None,
+                                   "accounting_bytes": None, "costlab_active_bytes": None}
+            if with_acc:
+                acc = float(np.mean([r["accounting"]["predict_macs"] for r in with_acc]))
+                row["accounting_macs"] = acc
+                row["macs_ratio"] = (row["costlab_macs"] / acc) if (acc > 0 and row["costlab_macs"] is not None) else None
+                row["accounting_bytes"] = float(np.mean([r["accounting"]["memory_bytes"] for r in with_acc]))
+            active = [r["answer_cost"]["1"].get("active_bytes") for r in recs if r.get("answer_cost", {}).get("1")]
+            row["costlab_active_bytes"] = float(np.mean(active)) if active else None
+            rows.append(row)
+    return rows
 
     bed_arms = grouped[first_bed]
     sorted_arms = sorted(bed_arms.keys(), key=lambda a: ARM_ORDER.index(a) if a in ARM_ORDER else 999)
@@ -666,21 +709,32 @@ def build_markdown_report(
     for i, (name, dur, share) in enumerate(cost_drivers.get("update_drivers", []), 1):
         lines.append(f"| {i} | {name} | {dur:.4f} s | {share:.1f}% |")
 
-    lines.append("\n### Answer Multiply-Add Drivers (from `pool_report`)\n")
-    lines.append("| Rank | Operation | Mechanism | Estimated Share |")
-    lines.append("|:---:|:---|:---|:---:|")
-    for i, (op, mech, share) in enumerate(cost_drivers.get("answer_drivers", []), 1):
-        lines.append(f"| {i} | {op} | {mech} | {share} |")
+    lines.append("\n### Answer Multiply-Add Split of the Reference Pool A2 (from the `accounting` block of each cell)\n")
+    lines.append("| Bed | Cells | Gate scan MACs (static) | Expert MACs | Gate share (static) | Gate MACs measured per input | Counted MACs per answer (costlab) |")
+    lines.append("|:---|:---:|:---:|:---:|:---:|:---:|:---:|")
+    answer_rows = cost_drivers.get("answer_drivers", [])
+    for r in answer_rows:
+        meas = f"{r['gate_macs_measured']:,.0f}" if r["gate_macs_measured"] is not None else "n/a"
+        cnt = f"{r['counted_macs']:,.0f}" if r["counted_macs"] is not None else "n/a"
+        lines.append(f"| {r['bed']} | {r['n_records']} | {r['gate_macs']:,.0f} | {r['expert_macs']:,.0f} | {r['gate_share'] * 100:.1f}% | {meas} | {cnt} |")
+    if not answer_rows:
+        lines.append("| not recorded | 0 | - | - | - | - | - |")
     lines.append("\n---\n")
 
     # Section 5: Reconciliation Table
     lines.append(f"## 5. Costlab vs Accounting Reconciliation Table [{split_label}]\n")
-    lines.append("| Arm | Costlab MACs | Accounting MACs | MACs Ratio | Costlab Memory (B) | Accounting Memory (B) | Bytes Ratio | Notes |")
-    lines.append("|:---|:---:|:---:|:---:|:---:|:---:|:---:|:---|")
+    lines.append("Accounting = `growmoe.accounting.pool_report` of the trained arm (recorded in the cell); costlab = multiply-adds counted while one input is answered. "
+                 "Active bytes are the parameter bytes one answer touches (costlab), a different quantity from the stored bytes of the accounting.\n")
+    lines.append("| Bed | Arm | Cells (with accounting) | Costlab MACs | Accounting MACs | Ratio | Accounting stored bytes | Costlab active bytes |")
+    lines.append("|:---|:---|:---:|:---:|:---:|:---:|:---:|:---:|")
+
+    def _fmt(v: Optional[float], spec: str = ",.0f") -> str:
+        return format(v, spec) if v is not None else "not recorded"
+
     for r in reconciliation:
         lines.append(
-            f"| **{r['arm']}** | {r['costlab_macs']:,} | {r['accounting_macs']:,} | {r['macs_ratio']:.3f} | "
-            f"{r['costlab_bytes']:,} | {r['accounting_bytes']:,} | {r['bytes_ratio']:.3f} | {r['note']} |"
+            f"| {r['bed']} | **{r['arm']}** | {r['n_records']} ({r['n_with_accounting']}) | {_fmt(r['costlab_macs'])} | {_fmt(r['accounting_macs'])} | "
+            f"{_fmt(r['macs_ratio'], '.3f')} | {_fmt(r['accounting_bytes'])} | {_fmt(r['costlab_active_bytes'])} |"
         )
     lines.append("\n---\n")
 

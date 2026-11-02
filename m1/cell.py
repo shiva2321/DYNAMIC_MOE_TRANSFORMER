@@ -18,6 +18,7 @@ from costlab.env import environment
 from costlab.memory import peak_memory
 from costlab.report import _CostlabJSONEncoder
 from costlab.timing import time_callable
+from growmoe.accounting import measured_gate_macs_per_input, pool_report
 from growmoe.metrics import accuracy_stats
 from m1.arms import build_arm, pool_budget_bytes, pool_budget_macs
 from m1.beds import Bed
@@ -196,6 +197,28 @@ def read_pool_macs(out_dir: Path | str, bed: Bed, pool_arm: str = "A1", tuning: 
     return int(macs) if macs is not None else None
 
 
+def accounting_block(arm: Any, d: int) -> Dict[str, Any]:
+    """What growmoe.accounting says about the trained arm, kept in the record so that the report can set it against the counted multiply-adds.
+
+    ``predict_macs`` is the static count (every stored signature scanned once plus the weight matrices of one expert); ``gate_macs_measured_predict`` is what the pool's own
+    gate counters spent per input when it answers (smaller when the shortlist is on); it is absent for arms without gate counters.
+    """
+    rep = pool_report(arm.model, d)
+    block: Dict[str, Any] = {
+        "n_experts": int(rep.n_experts),
+        "params": int(rep.params),
+        "stored_vectors": int(rep.stored_vectors),
+        "memory_bytes": int(rep.memory_bytes),
+        "gate_macs": int(rep.gate_macs),
+        "expert_macs": int(rep.expert_macs),
+        "predict_macs": int(rep.predict_macs),
+    }
+    stats = getattr(arm.model, "gate_stats", None)
+    if isinstance(stats, dict) and stats.get("predict", {}).get("samples"):
+        block["gate_macs_measured_predict"] = float(measured_gate_macs_per_input(arm.model, "predict"))
+    return block
+
+
 def execute_cell(
     bed: Bed,
     arm_name: str,
@@ -260,7 +283,7 @@ def execute_cell(
                 if cur_phase >= 0:
                     if profile in ("full", "det"):              # the light profile (tuning) needs only the final accuracy: no evaluation, and so no router refit, at the phase boundaries
                         R_rows.append(_eval_row())
-                    bytes_by_regime[str(last_regime)] = arm.memory_bytes()
+                    bytes_by_regime.setdefault(str(last_regime), arm.memory_bytes())      # the first visit only: a later visit of the same regime must not overwrite it (M1-8 reads this)
                 cur_phase = phase_idx
                 last_regime = regime_id
             for r_first in first_regimes:                           # every regime first seen in this batch is learned at the row that follows this phase
@@ -277,7 +300,7 @@ def execute_cell(
 
         R_rows.append(_eval_row())
         if last_regime >= 0:
-            bytes_by_regime[str(last_regime)] = arm.memory_bytes()
+            bytes_by_regime.setdefault(str(last_regime), arm.memory_bytes())
 
     if profile == "full":
         peak_mem_profile = peak_memory(_train_stream, device="cpu")
@@ -393,6 +416,7 @@ def execute_cell(
         "update_cost": update_cost,
         "answer_cost": answer_cost,
         "memory_bytes": arm.memory_bytes(),
+        "accounting": accounting_block(arm, bed.d),
         "memory_bytes_by_regime": bytes_by_regime,
         "describe": arm.describe(),
     }
