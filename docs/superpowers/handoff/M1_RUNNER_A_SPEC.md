@@ -8,7 +8,7 @@ M1 (road plan `docs/roadmap/MILESTONES.md`, protocol `docs/roadmap/M1_PREREG_DRA
 
 ## 2. Environment and traps
 
-Same as `COSTLAB_SPEC.md` section 2 (Windows, Python 3.12, torch 2.6.0+cu124, ASCII console, no network, no `pip install`, memory-lean, one GPU process at a time, pin timing to logical processors 0-3 with 2 torch threads). Run the Rust-engine tests only if you need them; they need `cargo build --release` in `rust_yggdrasil`, which you must not do.
+Same as `COSTLAB_SPEC.md` section 2 (Windows, Python 3.12, torch 2.6.0+cu124, ASCII console, no network, no `pip install`, memory-lean, one GPU process at a time, pin timing to logical processors 0-3 with 2 torch threads). Run the Rust-engine tests only if you need them; they need `cargo build --release` in `rust_yggdrasil`, which you must not do. Run only the tests your change can affect (`tests/m1`, plus the tests of a module you import if you suspect an interaction), never the whole suite.
 
 ## 3. Files you may touch
 

@@ -297,6 +297,7 @@ Heavy coding and routine experiments go to Gemini so that Claude's budget goes t
 - **Lean.** Nobody (Claude, Gemini, you) spends tokens, compute or time on anything the current milestone's bar does not need. Every task carries one line: why now, which bar, expected cost. A side idea with a small but real chance of an important insight goes to the **marginal-insight queue** (section 10) with its cost, and you decide whether it is worth it.
 - **No idle time.** While a job runs we work on something that does not depend on it. Long runs go in the background and report when done (no polling, no sleeping). Gemini codes while Claude writes the next pre-registration or reviews. The backlog always holds at least two queued tasks (this extends the no-stall rule in section 6).
 - **Cheapest competent worker.** Mechanical edits and bulk runs go to the cheaper model; design and review stay with the strongest.
+- **Run only the tests that matter** (your instruction of 2026-11-02, D-79). A change is checked with the tests it can affect and its own new tests, not with the whole suite every time. The whole suite runs only where a record claims something about everything: a baseline tag, a milestone close, before a preprint.
 
 ---
 
