@@ -1,0 +1,118 @@
+{
+  "schema_version": "1.2.0",
+  "bed": "B1",
+  "n_regimes": 10,
+  "arm": "A5a",
+  "seed": 801,
+  "split": "dev",
+  "commit": "df2c68773157f7752853f74515475d0fa9a9fa33",
+  "environment": {
+    "python": "3.12.10",
+    "torch": "2.6.0+cu124",
+    "cuda": "12.4",
+    "cuda_available": true,
+    "gpu_name": "NVIDIA GeForce RTX 3060",
+    "gpu_driver": "610.60",
+    "cpu_name": "AMD Ryzen 5 7600 6-Core Processor",
+    "logical_cores": 12,
+    "ram_bytes": 34081722368,
+    "torch_intraop_threads": 2,
+    "torch_interop_threads": 6,
+    "env_vars": {
+      "OMP_NUM_THREADS": "unset",
+      "MKL_NUM_THREADS": "unset",
+      "OPENBLAS_NUM_THREADS": "unset",
+      "NUMEXPR_NUM_THREADS": "unset"
+    },
+    "git_commit": "df2c68773157f7752853f74515475d0fa9a9fa33",
+    "timestamp": "2026-11-02T19:22:58.298443+00:00"
+  },
+  "pinning": {
+    "threads": 2,
+    "cpus": [
+      4,
+      6
+    ],
+    "blas_limited": true
+  },
+  "profile": "det",
+  "bed_info": {
+    "d": 128,
+    "classes": 8,
+    "regimes": 10,
+    "phases": 12,
+    "total_samples": 9600,
+    "regime_names": [
+      "fn0",
+      "fn1",
+      "fn2",
+      "fn3",
+      "fn4",
+      "fn5",
+      "fn6",
+      "fn7",
+      "fn8",
+      "fn9"
+    ]
+  },
+  "tuning_ref": "a0fe17d731af71f0c46217356113fdf7ce5bf3e43f8770aca02145a65ffd13fc",
+  "reference_pool": null,
+  "uncounted_note": true,
+  "pool_time_split": null,
+  "config": {
+    "arm": "A5a",
+    "name": "StreamingLDA",
+    "seed": 801,
+    "shrinkage": 0.001
+  },
+  "accuracy": 0.19400000274181367,
+  "per_regime_accuracy": [
+    0.26750001311302185,
+    0.1550000011920929,
+    0.23000000417232513,
+    0.17000000178813934,
+    0.16249999403953552,
+    0.24250000715255737,
+    0.1875,
+    0.16249999403953552,
+    0.16500000655651093,
+    0.19750000536441803
+  ],
+  "forgetting": 0.06849999576807023,
+  "update_cost": {
+    "counted_macs": 0
+  },
+  "answer_cost": {
+    "1": {
+      "batch_size": 1,
+      "rows_timed": 1,
+      "counted_macs": 1024,
+      "active_bytes": 0
+    },
+    "32": {
+      "batch_size": 32,
+      "rows_timed": 32,
+      "counted_macs": 32768,
+      "active_bytes": 0
+    }
+  },
+  "memory_bytes": 69632,
+  "memory_bytes_by_regime": {
+    "0": 69632,
+    "1": 69632,
+    "2": 69632,
+    "3": 69632,
+    "4": 69632,
+    "5": 69632,
+    "6": 69632,
+    "7": 69632,
+    "8": 69632,
+    "9": 69632
+  },
+  "describe": {
+    "arm": "A5a",
+    "name": "StreamingLDA",
+    "seed": 801,
+    "shrinkage": 0.001
+  }
+}

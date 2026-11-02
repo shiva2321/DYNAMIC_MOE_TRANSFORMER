@@ -1,0 +1,130 @@
+{
+  "schema_version": "1.2.0",
+  "bed": "B1",
+  "n_regimes": 10,
+  "arm": "A4",
+  "seed": 800,
+  "split": "dev",
+  "commit": "df2c68773157f7752853f74515475d0fa9a9fa33",
+  "environment": {
+    "python": "3.12.10",
+    "torch": "2.6.0+cu124",
+    "cuda": "12.4",
+    "cuda_available": true,
+    "gpu_name": "NVIDIA GeForce RTX 3060",
+    "gpu_driver": "610.60",
+    "cpu_name": "AMD Ryzen 5 7600 6-Core Processor",
+    "logical_cores": 12,
+    "ram_bytes": 34081722368,
+    "torch_intraop_threads": 2,
+    "torch_interop_threads": 6,
+    "env_vars": {
+      "OMP_NUM_THREADS": "unset",
+      "MKL_NUM_THREADS": "unset",
+      "OPENBLAS_NUM_THREADS": "unset",
+      "NUMEXPR_NUM_THREADS": "unset"
+    },
+    "git_commit": "df2c68773157f7752853f74515475d0fa9a9fa33",
+    "timestamp": "2026-11-02T19:22:44.410450+00:00"
+  },
+  "pinning": {
+    "threads": 2,
+    "cpus": [
+      0,
+      2
+    ],
+    "blas_limited": true
+  },
+  "profile": "det",
+  "bed_info": {
+    "d": 128,
+    "classes": 8,
+    "regimes": 10,
+    "phases": 12,
+    "total_samples": 9600,
+    "regime_names": [
+      "fn0",
+      "fn1",
+      "fn2",
+      "fn3",
+      "fn4",
+      "fn5",
+      "fn6",
+      "fn7",
+      "fn8",
+      "fn9"
+    ]
+  },
+  "tuning_ref": "36d3cb3e5bfe0937f92270e52037a5dc182e4928dd1f2b156fbe6f29d1b2df55",
+  "reference_pool": {
+    "arm": "A1",
+    "bytes": 18779104,
+    "macs": 90604183552
+  },
+  "uncounted_note": false,
+  "pool_time_split": null,
+  "config": {
+    "arm": "A4",
+    "name": "Compute-matched ReplayNet",
+    "seed": 800,
+    "hidden": 2048,
+    "inner_steps": 3,
+    "replay_size": 9600,
+    "target_pool_macs": 90604183552,
+    "target_pool_bytes": 18779104
+  },
+  "accuracy": 0.3107499986886978,
+  "per_regime_accuracy": [
+    0.4350000023841858,
+    0.3449999988079071,
+    0.3174999952316284,
+    0.32749998569488525,
+    0.2775000035762787,
+    0.3774999976158142,
+    0.21250000596046448,
+    0.2874999940395355,
+    0.27250000834465027,
+    0.2549999952316284
+  ],
+  "forgetting": 0.014750000834465028,
+  "update_cost": {
+    "counted_macs": 90471333888
+  },
+  "answer_cost": {
+    "1": {
+      "batch_size": 1,
+      "rows_timed": 1,
+      "counted_macs": 525312,
+      "active_bytes": 2112040
+    },
+    "32": {
+      "batch_size": 32,
+      "rows_timed": 32,
+      "counted_macs": 16809984,
+      "active_bytes": 2112040
+    }
+  },
+  "memory_bytes": 7027232,
+  "memory_bytes_by_regime": {
+    "0": 6617632,
+    "1": 2931232,
+    "2": 3340832,
+    "3": 3750432,
+    "4": 4160032,
+    "5": 7027232,
+    "6": 4979232,
+    "7": 5388832,
+    "8": 5798432,
+    "9": 6208032
+  },
+  "describe": {
+    "arm": "A4",
+    "name": "Compute-matched ReplayNet",
+    "seed": 800,
+    "hidden": 2048,
+    "inner_steps": 3,
+    "replay_size": 9600,
+    "target_pool_macs": 90604183552,
+    "target_pool_bytes": 18779104
+  }
+}

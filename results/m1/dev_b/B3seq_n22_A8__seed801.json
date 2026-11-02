@@ -1,0 +1,186 @@
+{
+  "schema_version": "1.2.0",
+  "bed": "B3seq",
+  "n_regimes": 22,
+  "arm": "A8",
+  "seed": 801,
+  "split": "dev",
+  "commit": "5377beb81fa27fdc95613d7ab3479c367a66c3aa",
+  "environment": {
+    "python": "3.12.10",
+    "torch": "2.6.0+cu124",
+    "cuda": "12.4",
+    "cuda_available": true,
+    "gpu_name": "NVIDIA GeForce RTX 3060",
+    "gpu_driver": "610.60",
+    "cpu_name": "AMD Ryzen 5 7600 6-Core Processor",
+    "logical_cores": 12,
+    "ram_bytes": 34081722368,
+    "torch_intraop_threads": 2,
+    "torch_interop_threads": 6,
+    "env_vars": {
+      "OMP_NUM_THREADS": "unset",
+      "MKL_NUM_THREADS": "unset",
+      "OPENBLAS_NUM_THREADS": "unset",
+      "NUMEXPR_NUM_THREADS": "unset"
+    },
+    "git_commit": "5377beb81fa27fdc95613d7ab3479c367a66c3aa",
+    "timestamp": "2026-11-02T20:53:16.580840+00:00"
+  },
+  "pinning": {
+    "threads": 2,
+    "cpus": [
+      8,
+      10
+    ],
+    "blas_limited": true
+  },
+  "profile": "det",
+  "bed_info": {
+    "d": 128,
+    "classes": 125,
+    "regimes": 22,
+    "phases": 28,
+    "total_samples": 12756,
+    "regime_names": [
+      "banking_g0",
+      "banking_g1",
+      "banking_g2",
+      "banking_g3",
+      "banking_g4",
+      "banking_g5",
+      "agnews_g0",
+      "agnews_g1",
+      "newsgroups_g0",
+      "newsgroups_g1",
+      "newsgroups_g2",
+      "newsgroups_g3",
+      "emotion_g0",
+      "emotion_g1",
+      "sst2_g0",
+      "svamp_g0",
+      "add",
+      "sub",
+      "mul",
+      "mod",
+      "div",
+      "max"
+    ],
+    "label_blocks": {
+      "banking": [
+        0,
+        77
+      ],
+      "agnews": [
+        77,
+        4
+      ],
+      "newsgroups": [
+        81,
+        20
+      ],
+      "emotion": [
+        101,
+        6
+      ],
+      "sst2": [
+        107,
+        2
+      ],
+      "svamp": [
+        109,
+        4
+      ],
+      "arith": [
+        113,
+        12
+      ]
+    }
+  },
+  "tuning_ref": "34380446bbf2de987d6b8a60bad98aa11159a924c71631f65ddc5c672eed25ce",
+  "reference_pool": null,
+  "uncounted_note": false,
+  "pool_time_split": null,
+  "config": {
+    "arm": "A8",
+    "name": "JointOracle reference ceiling",
+    "seed": 801,
+    "hidden": 8192,
+    "inner_steps": 20
+  },
+  "accuracy": 0.6756126921285283,
+  "per_regime_accuracy": [
+    0.8233333230018616,
+    0.875,
+    0.8385826945304871,
+    0.8166666626930237,
+    0.8011363744735718,
+    0.9263157844543457,
+    0.5533333420753479,
+    0.8399999737739563,
+    0.3233333230018616,
+    0.38999998569488525,
+    0.5099999904632568,
+    0.6600000262260437,
+    0.4233333468437195,
+    0.40666666626930237,
+    0.5099999904632568,
+    0.6866666674613953,
+    0.6944444179534912,
+    0.6766666769981384,
+    0.6679999828338623,
+    0.800000011920929,
+    0.8519999980926514,
+    0.7879999876022339
+  ],
+  "forgetting": 0.0611909113147042,
+  "update_cost": {
+    "counted_macs": 7140763238400
+  },
+  "answer_cost": {
+    "1": {
+      "batch_size": 1,
+      "rows_timed": 1,
+      "counted_macs": 2113152,
+      "active_bytes": 8488561
+    },
+    "32": {
+      "batch_size": 32,
+      "rows_timed": 32,
+      "counted_macs": 67620864,
+      "active_bytes": 8488561
+    }
+  },
+  "memory_bytes": 15019508,
+  "memory_bytes_by_regime": {
+    "14": 8693236,
+    "16": 14814708,
+    "17": 9375220,
+    "18": 9716212,
+    "19": 10057204,
+    "20": 10398196,
+    "21": 10739188,
+    "15": 13841908,
+    "6": 11148788,
+    "7": 11353588,
+    "8": 11558388,
+    "9": 11763188,
+    "10": 11967988,
+    "11": 12172788,
+    "0": 12377588,
+    "1": 14917108,
+    "2": 12787188,
+    "3": 15019508,
+    "4": 13196788,
+    "5": 13329908,
+    "12": 13944308,
+    "13": 14046708
+  },
+  "describe": {
+    "arm": "A8",
+    "name": "JointOracle reference ceiling",
+    "seed": 801,
+    "hidden": 8192,
+    "inner_steps": 20
+  }
+}

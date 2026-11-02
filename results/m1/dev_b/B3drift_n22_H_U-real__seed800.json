@@ -1,0 +1,200 @@
+{
+  "schema_version": "1.2.0",
+  "bed": "B3drift",
+  "n_regimes": 22,
+  "arm": "H_U-real",
+  "seed": 800,
+  "split": "dev",
+  "commit": "5377beb81fa27fdc95613d7ab3479c367a66c3aa",
+  "environment": {
+    "python": "3.12.10",
+    "torch": "2.6.0+cu124",
+    "cuda": "12.4",
+    "cuda_available": true,
+    "gpu_name": "NVIDIA GeForce RTX 3060",
+    "gpu_driver": "610.60",
+    "cpu_name": "AMD Ryzen 5 7600 6-Core Processor",
+    "logical_cores": 12,
+    "ram_bytes": 34081722368,
+    "torch_intraop_threads": 2,
+    "torch_interop_threads": 6,
+    "env_vars": {
+      "OMP_NUM_THREADS": "unset",
+      "MKL_NUM_THREADS": "unset",
+      "OPENBLAS_NUM_THREADS": "unset",
+      "NUMEXPR_NUM_THREADS": "unset"
+    },
+    "git_commit": "5377beb81fa27fdc95613d7ab3479c367a66c3aa",
+    "timestamp": "2026-11-02T20:49:55.931285+00:00"
+  },
+  "pinning": {
+    "threads": 2,
+    "cpus": [
+      0,
+      2
+    ],
+    "blas_limited": true
+  },
+  "profile": "det",
+  "bed_info": {
+    "d": 128,
+    "classes": 125,
+    "regimes": 22,
+    "phases": 10,
+    "total_samples": 10200,
+    "regime_names": [
+      "banking_g0",
+      "banking_g1",
+      "banking_g2",
+      "banking_g3",
+      "banking_g4",
+      "banking_g5",
+      "agnews_g0",
+      "agnews_g1",
+      "newsgroups_g0",
+      "newsgroups_g1",
+      "newsgroups_g2",
+      "newsgroups_g3",
+      "emotion_g0",
+      "emotion_g1",
+      "sst2_g0",
+      "svamp_g0",
+      "add",
+      "sub",
+      "mul",
+      "mod",
+      "div",
+      "max"
+    ],
+    "label_blocks": {
+      "banking": [
+        0,
+        77
+      ],
+      "agnews": [
+        77,
+        4
+      ],
+      "newsgroups": [
+        81,
+        20
+      ],
+      "emotion": [
+        101,
+        6
+      ],
+      "sst2": [
+        107,
+        2
+      ],
+      "svamp": [
+        109,
+        4
+      ],
+      "arith": [
+        113,
+        12
+      ]
+    }
+  },
+  "tuning_ref": "4924454de04f722571cc94825562ca5dbba5cd7301e31174c7e163653c8ee8ea",
+  "reference_pool": null,
+  "uncounted_note": true,
+  "pool_time_split": null,
+  "config": {
+    "arm": "H_U-real",
+    "variant": "baseline_v1",
+    "name": "PhyloMoE pool",
+    "seed": 807,
+    "inner_steps": 50,
+    "route_rule": "accept_then_logf",
+    "router": true,
+    "spawn_rule": "transfer",
+    "growth_rule": "gap",
+    "q": 0.05,
+    "alpha_spawn": 0.01,
+    "m_min": 32,
+    "gate_shortlist_min_experts": 64,
+    "skip_known": null,
+    "transfer_chance": null,
+    "transfer_chance_weak_only": false,
+    "set_gate": true,
+    "set_gate_confirm": 2,
+    "sig_dedupe": true,
+    "infant_relax": 1.0,
+    "candidate": "U-real"
+  },
+  "accuracy": 0.4732551688159054,
+  "per_regime_accuracy": [
+    0.2800000011920929,
+    0.8070175647735596,
+    0.4654088020324707,
+    0.6933333277702332,
+    0.39814814925193787,
+    0.6315789222717285,
+    0.550000011920929,
+    0.1966666728258133,
+    0.2633333206176758,
+    0.38999998569488525,
+    0.02666666731238365,
+    0.5199999809265137,
+    0.3166666626930237,
+    0.15333333611488342,
+    0.550000011920929,
+    0.44999998807907104,
+    0.567460298538208,
+    0.5799999833106995,
+    0.6039999723434448,
+    0.628000020980835,
+    0.7760000228881836,
+    0.5640000104904175
+  ],
+  "forgetting": 0.14915606057779354,
+  "update_cost": {
+    "counted_macs": 150696429568
+  },
+  "answer_cost": {
+    "1": {
+      "batch_size": 1,
+      "rows_timed": 1,
+      "counted_macs": 81536,
+      "active_bytes": 198769
+    },
+    "32": {
+      "batch_size": 32,
+      "rows_timed": 32,
+      "counted_macs": 2609152,
+      "active_bytes": 198769
+    }
+  },
+  "memory_bytes": 1110004,
+  "memory_bytes_by_regime": {
+    "0": 948212,
+    "2": 1110004,
+    "1": 1110004
+  },
+  "describe": {
+    "arm": "H_U-real",
+    "variant": "baseline_v1",
+    "name": "PhyloMoE pool",
+    "seed": 807,
+    "inner_steps": 50,
+    "route_rule": "accept_then_logf",
+    "router": true,
+    "spawn_rule": "transfer",
+    "growth_rule": "gap",
+    "q": 0.05,
+    "alpha_spawn": 0.01,
+    "m_min": 32,
+    "gate_shortlist_min_experts": 64,
+    "skip_known": null,
+    "transfer_chance": null,
+    "transfer_chance_weak_only": false,
+    "set_gate": true,
+    "set_gate_confirm": 2,
+    "sig_dedupe": true,
+    "infant_relax": 1.0,
+    "candidate": "U-real",
+    "experts": 1
+  }
+}

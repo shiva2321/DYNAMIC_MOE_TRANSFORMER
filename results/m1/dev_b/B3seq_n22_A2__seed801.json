@@ -1,0 +1,231 @@
+{
+  "schema_version": "1.2.0",
+  "bed": "B3seq",
+  "n_regimes": 22,
+  "arm": "A2",
+  "seed": 801,
+  "split": "dev",
+  "commit": "5377beb81fa27fdc95613d7ab3479c367a66c3aa",
+  "environment": {
+    "python": "3.12.10",
+    "torch": "2.6.0+cu124",
+    "cuda": "12.4",
+    "cuda_available": true,
+    "gpu_name": "NVIDIA GeForce RTX 3060",
+    "gpu_driver": "610.60",
+    "cpu_name": "AMD Ryzen 5 7600 6-Core Processor",
+    "logical_cores": 12,
+    "ram_bytes": 34081722368,
+    "torch_intraop_threads": 2,
+    "torch_interop_threads": 6,
+    "env_vars": {
+      "OMP_NUM_THREADS": "unset",
+      "MKL_NUM_THREADS": "unset",
+      "OPENBLAS_NUM_THREADS": "unset",
+      "NUMEXPR_NUM_THREADS": "unset"
+    },
+    "git_commit": "5377beb81fa27fdc95613d7ab3479c367a66c3aa",
+    "timestamp": "2026-11-02T20:46:29.239206+00:00"
+  },
+  "pinning": {
+    "threads": 2,
+    "cpus": [
+      8,
+      10
+    ],
+    "blas_limited": true
+  },
+  "profile": "det",
+  "bed_info": {
+    "d": 128,
+    "classes": 125,
+    "regimes": 22,
+    "phases": 28,
+    "total_samples": 12756,
+    "regime_names": [
+      "banking_g0",
+      "banking_g1",
+      "banking_g2",
+      "banking_g3",
+      "banking_g4",
+      "banking_g5",
+      "agnews_g0",
+      "agnews_g1",
+      "newsgroups_g0",
+      "newsgroups_g1",
+      "newsgroups_g2",
+      "newsgroups_g3",
+      "emotion_g0",
+      "emotion_g1",
+      "sst2_g0",
+      "svamp_g0",
+      "add",
+      "sub",
+      "mul",
+      "mod",
+      "div",
+      "max"
+    ],
+    "label_blocks": {
+      "banking": [
+        0,
+        77
+      ],
+      "agnews": [
+        77,
+        4
+      ],
+      "newsgroups": [
+        81,
+        20
+      ],
+      "emotion": [
+        101,
+        6
+      ],
+      "sst2": [
+        107,
+        2
+      ],
+      "svamp": [
+        109,
+        4
+      ],
+      "arith": [
+        113,
+        12
+      ]
+    }
+  },
+  "tuning_ref": "ada07009170c37746e3777892f5480ebe8e764749aa3bc37e817b5bc2ccec711",
+  "reference_pool": null,
+  "uncounted_note": true,
+  "pool_time_split": null,
+  "config": {
+    "arm": "A2",
+    "variant": "baseline_v1",
+    "name": "UniPool",
+    "seed": 808,
+    "inner_steps": 50,
+    "route_rule": "accept_then_logf",
+    "router": true,
+    "spawn_rule": "transfer",
+    "growth_rule": "gap",
+    "q": 0.02,
+    "alpha_spawn": 0.01,
+    "m_min": 32,
+    "gate_shortlist_min_experts": 64,
+    "skip_known": null,
+    "transfer_chance": null,
+    "transfer_chance_weak_only": false,
+    "set_gate": true,
+    "set_gate_confirm": 2,
+    "sig_dedupe": true,
+    "infant_relax": 1.0,
+    "gap_mode": "recipe",
+    "domain_blocks": [],
+    "domain_head": "off",
+    "domain_beta": 1.0,
+    "lda_blend": 0.5,
+    "lda_shrink": 0.1,
+    "candidate": "ULDA"
+  },
+  "accuracy": 0.6576060923663053,
+  "per_regime_accuracy": [
+    0.846666693687439,
+    0.73046875,
+    0.787401556968689,
+    0.753333330154419,
+    0.75,
+    0.9473684430122375,
+    0.5433333516120911,
+    0.746666669845581,
+    0.36000001430511475,
+    0.4266666769981384,
+    0.5233333110809326,
+    0.7133333086967468,
+    0.3866666555404663,
+    0.3799999952316284,
+    0.6399999856948853,
+    0.6633333563804626,
+    0.6547619104385376,
+    0.6100000143051147,
+    0.6600000262260437,
+    0.8119999766349792,
+    0.8600000143051147,
+    0.671999990940094
+  ],
+  "forgetting": 0.051930552179163154,
+  "update_cost": {
+    "counted_macs": 192242974208
+  },
+  "answer_cost": {
+    "1": {
+      "batch_size": 1,
+      "rows_timed": 1,
+      "counted_macs": 689792,
+      "active_bytes": 198769
+    },
+    "32": {
+      "batch_size": 32,
+      "rows_timed": 32,
+      "counted_macs": 22073344,
+      "active_bytes": 198769
+    }
+  },
+  "memory_bytes": 14429252,
+  "memory_bytes_by_regime": {
+    "14": 731436,
+    "16": 14484996,
+    "17": 2204372,
+    "18": 2940712,
+    "19": 3088080,
+    "20": 3824936,
+    "21": 3969984,
+    "15": 14273668,
+    "6": 5431328,
+    "7": 6162000,
+    "8": 6892672,
+    "9": 7623344,
+    "10": 8354016,
+    "11": 9084688,
+    "0": 9815360,
+    "1": 14457124,
+    "2": 11276704,
+    "3": 14429252,
+    "4": 12738048,
+    "5": 13396980,
+    "12": 14376452,
+    "13": 14339588
+  },
+  "describe": {
+    "arm": "A2",
+    "variant": "baseline_v1",
+    "name": "UniPool",
+    "seed": 808,
+    "inner_steps": 50,
+    "route_rule": "accept_then_logf",
+    "router": true,
+    "spawn_rule": "transfer",
+    "growth_rule": "gap",
+    "q": 0.02,
+    "alpha_spawn": 0.01,
+    "m_min": 32,
+    "gate_shortlist_min_experts": 64,
+    "skip_known": null,
+    "transfer_chance": null,
+    "transfer_chance_weak_only": false,
+    "set_gate": true,
+    "set_gate_confirm": 2,
+    "sig_dedupe": true,
+    "infant_relax": 1.0,
+    "gap_mode": "recipe",
+    "domain_blocks": [],
+    "domain_head": "off",
+    "domain_beta": 1.0,
+    "lda_blend": 0.5,
+    "lda_shrink": 0.1,
+    "candidate": "ULDA",
+    "experts": 19
+  }
+}

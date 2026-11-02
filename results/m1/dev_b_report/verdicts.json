@@ -1,0 +1,3376 @@
+{
+  "split": "DEV",
+  "rule_6_1": {
+    "B1_n10": {
+      "R1_primary": {
+        "bed": "B1_n10",
+        "reference_pool": "A1",
+        "reading": "primary",
+        "fired": false,
+        "status": "FAIL",
+        "triggering_baselines": [],
+        "pool_metrics": {
+          "n_records": 2,
+          "mean_accuracy": 0.30225000083446507,
+          "mean_update_wall_clock": 0.0,
+          "mean_update_macs": 90609295360.0,
+          "mean_answer_latency_b1": 0.0,
+          "mean_answer_latency_b32": 0.0,
+          "mean_answer_macs_b1": 91520.0,
+          "mean_memory_bytes": 18779104.0
+        },
+        "baseline_metrics": {
+          "A3": {
+            "n_records": 2,
+            "mean_accuracy": 0.3952500015497208,
+            "mean_update_wall_clock": 0.0,
+            "mean_update_macs": 2409041756160.0,
+            "mean_answer_latency_b1": 0.0,
+            "mean_answer_latency_b32": 0.0,
+            "mean_answer_macs_b1": 2098176.0,
+            "mean_memory_bytes": 13343264.0
+          },
+          "A4": {
+            "n_records": 2,
+            "mean_accuracy": 0.31387499868869784,
+            "mean_update_wall_clock": 0.0,
+            "mean_update_macs": 90471333888.0,
+            "mean_answer_latency_b1": 0.0,
+            "mean_answer_latency_b32": 0.0,
+            "mean_answer_macs_b1": 525312.0,
+            "mean_memory_bytes": 7027232.0
+          },
+          "A5a": {
+            "n_records": 2,
+            "mean_accuracy": 0.19687500074505807,
+            "mean_update_wall_clock": 0.0,
+            "mean_update_macs": 0.0,
+            "mean_answer_latency_b1": 0.0,
+            "mean_answer_latency_b32": 0.0,
+            "mean_answer_macs_b1": 1024.0,
+            "mean_memory_bytes": 69632.0
+          },
+          "A5b": {
+            "n_records": 2,
+            "mean_accuracy": 0.2633749984204769,
+            "mean_update_wall_clock": 0.0,
+            "mean_update_macs": 0.0,
+            "mean_answer_latency_b1": 0.0,
+            "mean_answer_latency_b32": 0.0,
+            "mean_answer_macs_b1": 131072.0,
+            "mean_memory_bytes": 528384.0
+          },
+          "A6": {
+            "n_records": 2,
+            "mean_accuracy": 0.2948749989271164,
+            "mean_update_wall_clock": 0.0,
+            "mean_update_macs": 654940569600.0,
+            "mean_answer_latency_b1": 0.0,
+            "mean_answer_latency_b32": 0.0,
+            "mean_answer_macs_b1": 1114112.0,
+            "mean_memory_bytes": 268697600.0
+          },
+          "A7": {
+            "n_records": 2,
+            "mean_accuracy": 0.2627499997615814,
+            "mean_update_wall_clock": 0.0,
+            "mean_update_macs": 0.0,
+            "mean_answer_latency_b1": 0.0,
+            "mean_answer_latency_b32": 0.0,
+            "mean_answer_macs_b1": 1228800.0,
+            "mean_memory_bytes": 4915200.0
+          },
+          "A7all": {
+            "n_records": 2,
+            "mean_accuracy": 0.2627499997615814,
+            "mean_update_wall_clock": 0.0,
+            "mean_update_macs": 0.0,
+            "mean_answer_latency_b1": 0.0,
+            "mean_answer_latency_b32": 0.0,
+            "mean_answer_macs_b1": 1228800.0,
+            "mean_memory_bytes": 4915200.0
+          }
+        }
+      },
+      "R1_secondary": {
+        "bed": "B1_n10",
+        "reference_pool": "A1",
+        "reading": "secondary",
+        "fired": false,
+        "status": "FAIL",
+        "triggering_baselines": [],
+        "pool_metrics": {
+          "n_records": 2,
+          "mean_accuracy": 0.30225000083446507,
+          "mean_update_wall_clock": 0.0,
+          "mean_update_macs": 90609295360.0,
+          "mean_answer_latency_b1": 0.0,
+          "mean_answer_latency_b32": 0.0,
+          "mean_answer_macs_b1": 91520.0,
+          "mean_memory_bytes": 18779104.0
+        },
+        "baseline_metrics": {
+          "A3": {
+            "n_records": 2,
+            "mean_accuracy": 0.3952500015497208,
+            "mean_update_wall_clock": 0.0,
+            "mean_update_macs": 2409041756160.0,
+            "mean_answer_latency_b1": 0.0,
+            "mean_answer_latency_b32": 0.0,
+            "mean_answer_macs_b1": 2098176.0,
+            "mean_memory_bytes": 13343264.0
+          },
+          "A4": {
+            "n_records": 2,
+            "mean_accuracy": 0.31387499868869784,
+            "mean_update_wall_clock": 0.0,
+            "mean_update_macs": 90471333888.0,
+            "mean_answer_latency_b1": 0.0,
+            "mean_answer_latency_b32": 0.0,
+            "mean_answer_macs_b1": 525312.0,
+            "mean_memory_bytes": 7027232.0
+          },
+          "A5a": {
+            "n_records": 2,
+            "mean_accuracy": 0.19687500074505807,
+            "mean_update_wall_clock": 0.0,
+            "mean_update_macs": 0.0,
+            "mean_answer_latency_b1": 0.0,
+            "mean_answer_latency_b32": 0.0,
+            "mean_answer_macs_b1": 1024.0,
+            "mean_memory_bytes": 69632.0
+          },
+          "A5b": {
+            "n_records": 2,
+            "mean_accuracy": 0.2633749984204769,
+            "mean_update_wall_clock": 0.0,
+            "mean_update_macs": 0.0,
+            "mean_answer_latency_b1": 0.0,
+            "mean_answer_latency_b32": 0.0,
+            "mean_answer_macs_b1": 131072.0,
+            "mean_memory_bytes": 528384.0
+          },
+          "A6": {
+            "n_records": 2,
+            "mean_accuracy": 0.2948749989271164,
+            "mean_update_wall_clock": 0.0,
+            "mean_update_macs": 654940569600.0,
+            "mean_answer_latency_b1": 0.0,
+            "mean_answer_latency_b32": 0.0,
+            "mean_answer_macs_b1": 1114112.0,
+            "mean_memory_bytes": 268697600.0
+          },
+          "A7": {
+            "n_records": 2,
+            "mean_accuracy": 0.2627499997615814,
+            "mean_update_wall_clock": 0.0,
+            "mean_update_macs": 0.0,
+            "mean_answer_latency_b1": 0.0,
+            "mean_answer_latency_b32": 0.0,
+            "mean_answer_macs_b1": 1228800.0,
+            "mean_memory_bytes": 4915200.0
+          },
+          "A7all": {
+            "n_records": 2,
+            "mean_accuracy": 0.2627499997615814,
+            "mean_update_wall_clock": 0.0,
+            "mean_update_macs": 0.0,
+            "mean_answer_latency_b1": 0.0,
+            "mean_answer_latency_b32": 0.0,
+            "mean_answer_macs_b1": 1228800.0,
+            "mean_memory_bytes": 4915200.0
+          }
+        }
+      },
+      "R2_primary": {
+        "bed": "B1_n10",
+        "reference_pool": "A2",
+        "reading": "primary",
+        "fired": false,
+        "status": "FAIL",
+        "triggering_baselines": [],
+        "pool_metrics": {
+          "n_records": 2,
+          "mean_accuracy": 0.44212500005960464,
+          "mean_update_wall_clock": 0.0,
+          "mean_update_macs": 18485673984.0,
+          "mean_answer_latency_b1": 0.0,
+          "mean_answer_latency_b32": 0.0,
+          "mean_answer_macs_b1": 361472.0,
+          "mean_memory_bytes": 4023616.0
+        },
+        "baseline_metrics": {
+          "A3-2": {
+            "n_records": 2,
+            "mean_accuracy": 0.1974999986588955,
+            "mean_update_wall_clock": 0.0,
+            "mean_update_macs": 1205108736000.0,
+            "mean_answer_latency_b1": 0.0,
+            "mean_answer_latency_b32": 0.0,
+            "mean_answer_macs_b1": 1049600.0,
+            "mean_memory_bytes": 4225568.0
+          },
+          "A4-2": {
+            "n_records": 2,
+            "mean_accuracy": 0.24350000023841856,
+            "mean_update_wall_clock": 0.0,
+            "mean_update_macs": 15166734336.0,
+            "mean_answer_latency_b1": 0.0,
+            "mean_answer_latency_b32": 0.0,
+            "mean_answer_macs_b1": 132096.0,
+            "mean_memory_bytes": 4023328.0
+          },
+          "A5a": {
+            "n_records": 2,
+            "mean_accuracy": 0.19687500074505807,
+            "mean_update_wall_clock": 0.0,
+            "mean_update_macs": 0.0,
+            "mean_answer_latency_b1": 0.0,
+            "mean_answer_latency_b32": 0.0,
+            "mean_answer_macs_b1": 1024.0,
+            "mean_memory_bytes": 69632.0
+          },
+          "A5b": {
+            "n_records": 2,
+            "mean_accuracy": 0.2633749984204769,
+            "mean_update_wall_clock": 0.0,
+            "mean_update_macs": 0.0,
+            "mean_answer_latency_b1": 0.0,
+            "mean_answer_latency_b32": 0.0,
+            "mean_answer_macs_b1": 131072.0,
+            "mean_memory_bytes": 528384.0
+          },
+          "A6": {
+            "n_records": 2,
+            "mean_accuracy": 0.2948749989271164,
+            "mean_update_wall_clock": 0.0,
+            "mean_update_macs": 654940569600.0,
+            "mean_answer_latency_b1": 0.0,
+            "mean_answer_latency_b32": 0.0,
+            "mean_answer_macs_b1": 1114112.0,
+            "mean_memory_bytes": 268697600.0
+          },
+          "A7-2": {
+            "n_records": 2,
+            "mean_accuracy": 0.2609999991953373,
+            "mean_update_wall_clock": 0.0,
+            "mean_update_macs": 0.0,
+            "mean_answer_latency_b1": 0.0,
+            "mean_answer_latency_b32": 0.0,
+            "mean_answer_macs_b1": 1005824.0,
+            "mean_memory_bytes": 4023296.0
+          },
+          "A7all": {
+            "n_records": 2,
+            "mean_accuracy": 0.2627499997615814,
+            "mean_update_wall_clock": 0.0,
+            "mean_update_macs": 0.0,
+            "mean_answer_latency_b1": 0.0,
+            "mean_answer_latency_b32": 0.0,
+            "mean_answer_macs_b1": 1228800.0,
+            "mean_memory_bytes": 4915200.0
+          }
+        }
+      },
+      "R2_secondary": {
+        "bed": "B1_n10",
+        "reference_pool": "A2",
+        "reading": "secondary",
+        "fired": false,
+        "status": "FAIL",
+        "triggering_baselines": [],
+        "pool_metrics": {
+          "n_records": 2,
+          "mean_accuracy": 0.44212500005960464,
+          "mean_update_wall_clock": 0.0,
+          "mean_update_macs": 18485673984.0,
+          "mean_answer_latency_b1": 0.0,
+          "mean_answer_latency_b32": 0.0,
+          "mean_answer_macs_b1": 361472.0,
+          "mean_memory_bytes": 4023616.0
+        },
+        "baseline_metrics": {
+          "A3-2": {
+            "n_records": 2,
+            "mean_accuracy": 0.1974999986588955,
+            "mean_update_wall_clock": 0.0,
+            "mean_update_macs": 1205108736000.0,
+            "mean_answer_latency_b1": 0.0,
+            "mean_answer_latency_b32": 0.0,
+            "mean_answer_macs_b1": 1049600.0,
+            "mean_memory_bytes": 4225568.0
+          },
+          "A4-2": {
+            "n_records": 2,
+            "mean_accuracy": 0.24350000023841856,
+            "mean_update_wall_clock": 0.0,
+            "mean_update_macs": 15166734336.0,
+            "mean_answer_latency_b1": 0.0,
+            "mean_answer_latency_b32": 0.0,
+            "mean_answer_macs_b1": 132096.0,
+            "mean_memory_bytes": 4023328.0
+          },
+          "A5a": {
+            "n_records": 2,
+            "mean_accuracy": 0.19687500074505807,
+            "mean_update_wall_clock": 0.0,
+            "mean_update_macs": 0.0,
+            "mean_answer_latency_b1": 0.0,
+            "mean_answer_latency_b32": 0.0,
+            "mean_answer_macs_b1": 1024.0,
+            "mean_memory_bytes": 69632.0
+          },
+          "A5b": {
+            "n_records": 2,
+            "mean_accuracy": 0.2633749984204769,
+            "mean_update_wall_clock": 0.0,
+            "mean_update_macs": 0.0,
+            "mean_answer_latency_b1": 0.0,
+            "mean_answer_latency_b32": 0.0,
+            "mean_answer_macs_b1": 131072.0,
+            "mean_memory_bytes": 528384.0
+          },
+          "A6": {
+            "n_records": 2,
+            "mean_accuracy": 0.2948749989271164,
+            "mean_update_wall_clock": 0.0,
+            "mean_update_macs": 654940569600.0,
+            "mean_answer_latency_b1": 0.0,
+            "mean_answer_latency_b32": 0.0,
+            "mean_answer_macs_b1": 1114112.0,
+            "mean_memory_bytes": 268697600.0
+          },
+          "A7-2": {
+            "n_records": 2,
+            "mean_accuracy": 0.2609999991953373,
+            "mean_update_wall_clock": 0.0,
+            "mean_update_macs": 0.0,
+            "mean_answer_latency_b1": 0.0,
+            "mean_answer_latency_b32": 0.0,
+            "mean_answer_macs_b1": 1005824.0,
+            "mean_memory_bytes": 4023296.0
+          },
+          "A7all": {
+            "n_records": 2,
+            "mean_accuracy": 0.2627499997615814,
+            "mean_update_wall_clock": 0.0,
+            "mean_update_macs": 0.0,
+            "mean_answer_latency_b1": 0.0,
+            "mean_answer_latency_b32": 0.0,
+            "mean_answer_macs_b1": 1228800.0,
+            "mean_memory_bytes": 4915200.0
+          }
+        }
+      }
+    },
+    "B1_n100": {
+      "R1_primary": {
+        "bed": "B1_n100",
+        "reference_pool": "A1",
+        "reading": "primary",
+        "fired": false,
+        "status": "FAIL",
+        "triggering_baselines": [],
+        "pool_metrics": {
+          "n_records": 1,
+          "mean_accuracy": 0.23905000023543835,
+          "mean_update_wall_clock": 0.0,
+          "mean_update_macs": 3041473129984.0,
+          "mean_answer_latency_b1": 0.0,
+          "mean_answer_latency_b32": 0.0,
+          "mean_answer_macs_b1": 4621312.0,
+          "mean_memory_bytes": 55492608.0
+        },
+        "baseline_metrics": {
+          "A5a": {
+            "n_records": 1,
+            "mean_accuracy": 0.14352500051259995,
+            "mean_update_wall_clock": 0.0,
+            "mean_update_macs": 0.0,
+            "mean_answer_latency_b1": 0.0,
+            "mean_answer_latency_b32": 0.0,
+            "mean_answer_macs_b1": 1024.0,
+            "mean_memory_bytes": 69632.0
+          },
+          "A5b": {
+            "n_records": 1,
+            "mean_accuracy": 0.21589999958872796,
+            "mean_update_wall_clock": 0.0,
+            "mean_update_macs": 0.0,
+            "mean_answer_latency_b1": 0.0,
+            "mean_answer_latency_b32": 0.0,
+            "mean_answer_macs_b1": 131072.0,
+            "mean_memory_bytes": 528384.0
+          }
+        }
+      },
+      "R1_secondary": {
+        "bed": "B1_n100",
+        "reference_pool": "A1",
+        "reading": "secondary",
+        "fired": false,
+        "status": "FAIL",
+        "triggering_baselines": [],
+        "pool_metrics": {
+          "n_records": 1,
+          "mean_accuracy": 0.23905000023543835,
+          "mean_update_wall_clock": 0.0,
+          "mean_update_macs": 3041473129984.0,
+          "mean_answer_latency_b1": 0.0,
+          "mean_answer_latency_b32": 0.0,
+          "mean_answer_macs_b1": 4621312.0,
+          "mean_memory_bytes": 55492608.0
+        },
+        "baseline_metrics": {
+          "A5a": {
+            "n_records": 1,
+            "mean_accuracy": 0.14352500051259995,
+            "mean_update_wall_clock": 0.0,
+            "mean_update_macs": 0.0,
+            "mean_answer_latency_b1": 0.0,
+            "mean_answer_latency_b32": 0.0,
+            "mean_answer_macs_b1": 1024.0,
+            "mean_memory_bytes": 69632.0
+          },
+          "A5b": {
+            "n_records": 1,
+            "mean_accuracy": 0.21589999958872796,
+            "mean_update_wall_clock": 0.0,
+            "mean_update_macs": 0.0,
+            "mean_answer_latency_b1": 0.0,
+            "mean_answer_latency_b32": 0.0,
+            "mean_answer_macs_b1": 131072.0,
+            "mean_memory_bytes": 528384.0
+          }
+        }
+      },
+      "R2_primary": {
+        "bed": "B1_n100",
+        "reference_pool": "A2",
+        "reading": "primary",
+        "fired": false,
+        "status": "FAIL",
+        "triggering_baselines": [],
+        "pool_metrics": {
+          "n_records": 1,
+          "mean_accuracy": 0.4134999999403954,
+          "mean_update_wall_clock": 62.43969159995322,
+          "mean_update_macs": 721990272000.0,
+          "mean_answer_latency_b1": 0.001732049997372087,
+          "mean_answer_latency_b32": 0.01853674999802024,
+          "mean_answer_macs_b1": 112128.0,
+          "mean_memory_bytes": 35384720.0
+        },
+        "baseline_metrics": {
+          "A3-2": {
+            "n_records": 1,
+            "mean_accuracy": 0.2719500002264976,
+            "mean_update_wall_clock": 149.48495729994465,
+            "mean_update_macs": 10273652736000.0,
+            "mean_answer_latency_b1": 0.00017094999930122867,
+            "mean_answer_latency_b32": 0.0005040500036557205,
+            "mean_answer_macs_b1": 1049600.0,
+            "mean_memory_bytes": 35384352.0
+          },
+          "A5a": {
+            "n_records": 1,
+            "mean_accuracy": 0.14352500051259995,
+            "mean_update_wall_clock": 0.0,
+            "mean_update_macs": 0.0,
+            "mean_answer_latency_b1": 0.0,
+            "mean_answer_latency_b32": 0.0,
+            "mean_answer_macs_b1": 1024.0,
+            "mean_memory_bytes": 69632.0
+          },
+          "A5b": {
+            "n_records": 1,
+            "mean_accuracy": 0.21589999958872796,
+            "mean_update_wall_clock": 0.0,
+            "mean_update_macs": 0.0,
+            "mean_answer_latency_b1": 0.0,
+            "mean_answer_latency_b32": 0.0,
+            "mean_answer_macs_b1": 131072.0,
+            "mean_memory_bytes": 528384.0
+          }
+        }
+      },
+      "R2_secondary": {
+        "bed": "B1_n100",
+        "reference_pool": "A2",
+        "reading": "secondary",
+        "fired": false,
+        "status": "FAIL",
+        "triggering_baselines": [],
+        "pool_metrics": {
+          "n_records": 1,
+          "mean_accuracy": 0.4134999999403954,
+          "mean_update_wall_clock": 62.43969159995322,
+          "mean_update_macs": 721990272000.0,
+          "mean_answer_latency_b1": 0.001732049997372087,
+          "mean_answer_latency_b32": 0.01853674999802024,
+          "mean_answer_macs_b1": 112128.0,
+          "mean_memory_bytes": 35384720.0
+        },
+        "baseline_metrics": {
+          "A3-2": {
+            "n_records": 1,
+            "mean_accuracy": 0.2719500002264976,
+            "mean_update_wall_clock": 149.48495729994465,
+            "mean_update_macs": 10273652736000.0,
+            "mean_answer_latency_b1": 0.00017094999930122867,
+            "mean_answer_latency_b32": 0.0005040500036557205,
+            "mean_answer_macs_b1": 1049600.0,
+            "mean_memory_bytes": 35384352.0
+          },
+          "A5a": {
+            "n_records": 1,
+            "mean_accuracy": 0.14352500051259995,
+            "mean_update_wall_clock": 0.0,
+            "mean_update_macs": 0.0,
+            "mean_answer_latency_b1": 0.0,
+            "mean_answer_latency_b32": 0.0,
+            "mean_answer_macs_b1": 1024.0,
+            "mean_memory_bytes": 69632.0
+          },
+          "A5b": {
+            "n_records": 1,
+            "mean_accuracy": 0.21589999958872796,
+            "mean_update_wall_clock": 0.0,
+            "mean_update_macs": 0.0,
+            "mean_answer_latency_b1": 0.0,
+            "mean_answer_latency_b32": 0.0,
+            "mean_answer_macs_b1": 131072.0,
+            "mean_memory_bytes": 528384.0
+          }
+        }
+      }
+    },
+    "B1_n30": {
+      "R1_primary": {
+        "bed": "B1_n30",
+        "reference_pool": "A1",
+        "reading": "primary",
+        "fired": true,
+        "status": "PASS",
+        "triggering_baselines": [
+          "A4"
+        ],
+        "pool_metrics": {
+          "n_records": 2,
+          "mean_accuracy": 0.28920833344260855,
+          "mean_update_wall_clock": 67.73794029997225,
+          "mean_update_macs": 522142847232.0,
+          "mean_answer_latency_b1": 0.002776699999230914,
+          "mean_answer_latency_b32": 0.03048010000202339,
+          "mean_answer_macs_b1": 124672.0,
+          "mean_memory_bytes": 55329856.0
+        },
+        "baseline_metrics": {
+          "A3": {
+            "n_records": 2,
+            "mean_accuracy": 0.34641666611035665,
+            "mean_update_wall_clock": 102.71509930003958,
+            "mean_update_macs": 6437539676160.0,
+            "mean_answer_latency_b1": 0.00022884999998495914,
+            "mean_answer_latency_b32": 0.0009038999996846542,
+            "mean_answer_macs_b1": 2098176.0,
+            "mean_memory_bytes": 21535264.0
+          },
+          "A4": {
+            "n_records": 2,
+            "mean_accuracy": 0.30491666719317434,
+            "mean_update_wall_clock": 8.43769720003911,
+            "mean_update_macs": 483522379776.0,
+            "mean_answer_latency_b1": 0.00013145000048098154,
+            "mean_answer_latency_b32": 0.0003052499996556435,
+            "mean_answer_macs_b1": 525312.0,
+            "mean_memory_bytes": 15219232.0
+          },
+          "A5a": {
+            "n_records": 2,
+            "mean_accuracy": 0.15987500026822088,
+            "mean_update_wall_clock": 1.1273285999777727,
+            "mean_update_macs": 0.0,
+            "mean_answer_latency_b1": 5.089999831398018e-05,
+            "mean_answer_latency_b32": 6.54500036034733e-05,
+            "mean_answer_macs_b1": 1024.0,
+            "mean_memory_bytes": 69632.0
+          },
+          "A5b": {
+            "n_records": 2,
+            "mean_accuracy": 0.25529166633884115,
+            "mean_update_wall_clock": 0.5561476000366383,
+            "mean_update_macs": 0.0,
+            "mean_answer_latency_b1": 0.000234800001635449,
+            "mean_answer_latency_b32": 0.0003897499991580844,
+            "mean_answer_macs_b1": 131072.0,
+            "mean_memory_bytes": 528384.0
+          },
+          "A6": {
+            "n_records": 2,
+            "mean_accuracy": 0.25304166600108147,
+            "mean_update_wall_clock": 64.18153449995589,
+            "mean_update_macs": 1746508185600.0,
+            "mean_answer_latency_b1": 0.00013365000268095173,
+            "mean_answer_latency_b32": 0.0006691499984299298,
+            "mean_answer_macs_b1": 1114112.0,
+            "mean_memory_bytes": 268697600.0
+          },
+          "A7": {
+            "n_records": 2,
+            "mean_accuracy": 0.258416664848725,
+            "mean_update_wall_clock": 0.19077269995614188,
+            "mean_update_macs": 0.0,
+            "mean_answer_latency_b1": 0.00039789999937056564,
+            "mean_answer_latency_b32": 0.0020934999993187375,
+            "mean_answer_macs_b1": 3276800.0,
+            "mean_memory_bytes": 13107200.0
+          },
+          "A7all": {
+            "n_records": 2,
+            "mean_accuracy": 0.258416664848725,
+            "mean_update_wall_clock": 0.01866350003547268,
+            "mean_update_macs": 0.0,
+            "mean_answer_latency_b1": 0.0003956000000471249,
+            "mean_answer_latency_b32": 0.002097599997796351,
+            "mean_answer_macs_b1": 3276800.0,
+            "mean_memory_bytes": 13107200.0
+          }
+        }
+      },
+      "R1_secondary": {
+        "bed": "B1_n30",
+        "reference_pool": "A1",
+        "reading": "secondary",
+        "fired": false,
+        "status": "FAIL",
+        "triggering_baselines": [],
+        "pool_metrics": {
+          "n_records": 2,
+          "mean_accuracy": 0.28920833344260855,
+          "mean_update_wall_clock": 67.73794029997225,
+          "mean_update_macs": 522142847232.0,
+          "mean_answer_latency_b1": 0.002776699999230914,
+          "mean_answer_latency_b32": 0.03048010000202339,
+          "mean_answer_macs_b1": 124672.0,
+          "mean_memory_bytes": 55329856.0
+        },
+        "baseline_metrics": {
+          "A3": {
+            "n_records": 2,
+            "mean_accuracy": 0.34641666611035665,
+            "mean_update_wall_clock": 102.71509930003958,
+            "mean_update_macs": 6437539676160.0,
+            "mean_answer_latency_b1": 0.00022884999998495914,
+            "mean_answer_latency_b32": 0.0009038999996846542,
+            "mean_answer_macs_b1": 2098176.0,
+            "mean_memory_bytes": 21535264.0
+          },
+          "A4": {
+            "n_records": 2,
+            "mean_accuracy": 0.30491666719317434,
+            "mean_update_wall_clock": 8.43769720003911,
+            "mean_update_macs": 483522379776.0,
+            "mean_answer_latency_b1": 0.00013145000048098154,
+            "mean_answer_latency_b32": 0.0003052499996556435,
+            "mean_answer_macs_b1": 525312.0,
+            "mean_memory_bytes": 15219232.0
+          },
+          "A5a": {
+            "n_records": 2,
+            "mean_accuracy": 0.15987500026822088,
+            "mean_update_wall_clock": 1.1273285999777727,
+            "mean_update_macs": 0.0,
+            "mean_answer_latency_b1": 5.089999831398018e-05,
+            "mean_answer_latency_b32": 6.54500036034733e-05,
+            "mean_answer_macs_b1": 1024.0,
+            "mean_memory_bytes": 69632.0
+          },
+          "A5b": {
+            "n_records": 2,
+            "mean_accuracy": 0.25529166633884115,
+            "mean_update_wall_clock": 0.5561476000366383,
+            "mean_update_macs": 0.0,
+            "mean_answer_latency_b1": 0.000234800001635449,
+            "mean_answer_latency_b32": 0.0003897499991580844,
+            "mean_answer_macs_b1": 131072.0,
+            "mean_memory_bytes": 528384.0
+          },
+          "A6": {
+            "n_records": 2,
+            "mean_accuracy": 0.25304166600108147,
+            "mean_update_wall_clock": 64.18153449995589,
+            "mean_update_macs": 1746508185600.0,
+            "mean_answer_latency_b1": 0.00013365000268095173,
+            "mean_answer_latency_b32": 0.0006691499984299298,
+            "mean_answer_macs_b1": 1114112.0,
+            "mean_memory_bytes": 268697600.0
+          },
+          "A7": {
+            "n_records": 2,
+            "mean_accuracy": 0.258416664848725,
+            "mean_update_wall_clock": 0.19077269995614188,
+            "mean_update_macs": 0.0,
+            "mean_answer_latency_b1": 0.00039789999937056564,
+            "mean_answer_latency_b32": 0.0020934999993187375,
+            "mean_answer_macs_b1": 3276800.0,
+            "mean_memory_bytes": 13107200.0
+          },
+          "A7all": {
+            "n_records": 2,
+            "mean_accuracy": 0.258416664848725,
+            "mean_update_wall_clock": 0.01866350003547268,
+            "mean_update_macs": 0.0,
+            "mean_answer_latency_b1": 0.0003956000000471249,
+            "mean_answer_latency_b32": 0.002097599997796351,
+            "mean_answer_macs_b1": 3276800.0,
+            "mean_memory_bytes": 13107200.0
+          }
+        }
+      },
+      "R2_primary": {
+        "bed": "B1_n30",
+        "reference_pool": "A2",
+        "reading": "primary",
+        "fired": false,
+        "status": "FAIL",
+        "triggering_baselines": [],
+        "pool_metrics": {
+          "n_records": 2,
+          "mean_accuracy": 0.42133333335320156,
+          "mean_update_wall_clock": 9.415577199986728,
+          "mean_update_macs": 81528422400.0,
+          "mean_answer_latency_b1": 0.004286599996703444,
+          "mean_answer_latency_b32": 0.0056266499996127095,
+          "mean_answer_macs_b1": 1016832.0,
+          "mean_memory_bytes": 12070336.0
+        },
+        "baseline_metrics": {
+          "A3-2": {
+            "n_records": 2,
+            "mean_accuracy": 0.3296666676799456,
+            "mean_update_wall_clock": 45.91111910007021,
+            "mean_update_macs": 3220340736000.0,
+            "mean_answer_latency_b1": 0.00016399999731220305,
+            "mean_answer_latency_b32": 0.0005063499993411824,
+            "mean_answer_macs_b1": 1049600.0,
+            "mean_memory_bytes": 12069920.0
+          },
+          "A4-2": {
+            "n_records": 2,
+            "mean_accuracy": 0.2461666651070118,
+            "mean_update_wall_clock": 2.378840599943942,
+            "mean_update_macs": 81058332672.0,
+            "mean_answer_latency_b1": 0.000103449998277938,
+            "mean_answer_latency_b32": 0.0001568000006955117,
+            "mean_answer_macs_b1": 132096.0,
+            "mean_memory_bytes": 12069920.0
+          },
+          "A5a": {
+            "n_records": 2,
+            "mean_accuracy": 0.15987500026822088,
+            "mean_update_wall_clock": 1.1273285999777727,
+            "mean_update_macs": 0.0,
+            "mean_answer_latency_b1": 5.089999831398018e-05,
+            "mean_answer_latency_b32": 6.54500036034733e-05,
+            "mean_answer_macs_b1": 1024.0,
+            "mean_memory_bytes": 69632.0
+          },
+          "A5b": {
+            "n_records": 2,
+            "mean_accuracy": 0.25529166633884115,
+            "mean_update_wall_clock": 0.5561476000366383,
+            "mean_update_macs": 0.0,
+            "mean_answer_latency_b1": 0.000234800001635449,
+            "mean_answer_latency_b32": 0.0003897499991580844,
+            "mean_answer_macs_b1": 131072.0,
+            "mean_memory_bytes": 528384.0
+          },
+          "A6": {
+            "n_records": 2,
+            "mean_accuracy": 0.25304166600108147,
+            "mean_update_wall_clock": 64.18153449995589,
+            "mean_update_macs": 1746508185600.0,
+            "mean_answer_latency_b1": 0.00013365000268095173,
+            "mean_answer_latency_b32": 0.0006691499984299298,
+            "mean_answer_macs_b1": 1114112.0,
+            "mean_memory_bytes": 268697600.0
+          },
+          "A7-2": {
+            "n_records": 2,
+            "mean_accuracy": 0.25504166608055434,
+            "mean_update_wall_clock": 0.17066359999444103,
+            "mean_update_macs": 0.0,
+            "mean_answer_latency_b1": 0.000372499995137332,
+            "mean_answer_latency_b32": 0.0019190999992133584,
+            "mean_answer_macs_b1": 3017472.0,
+            "mean_memory_bytes": 12069888.0
+          },
+          "A7all": {
+            "n_records": 2,
+            "mean_accuracy": 0.258416664848725,
+            "mean_update_wall_clock": 0.01866350003547268,
+            "mean_update_macs": 0.0,
+            "mean_answer_latency_b1": 0.0003956000000471249,
+            "mean_answer_latency_b32": 0.002097599997796351,
+            "mean_answer_macs_b1": 3276800.0,
+            "mean_memory_bytes": 13107200.0
+          }
+        }
+      },
+      "R2_secondary": {
+        "bed": "B1_n30",
+        "reference_pool": "A2",
+        "reading": "secondary",
+        "fired": false,
+        "status": "FAIL",
+        "triggering_baselines": [],
+        "pool_metrics": {
+          "n_records": 2,
+          "mean_accuracy": 0.42133333335320156,
+          "mean_update_wall_clock": 9.415577199986728,
+          "mean_update_macs": 81528422400.0,
+          "mean_answer_latency_b1": 0.004286599996703444,
+          "mean_answer_latency_b32": 0.0056266499996127095,
+          "mean_answer_macs_b1": 1016832.0,
+          "mean_memory_bytes": 12070336.0
+        },
+        "baseline_metrics": {
+          "A3-2": {
+            "n_records": 2,
+            "mean_accuracy": 0.3296666676799456,
+            "mean_update_wall_clock": 45.91111910007021,
+            "mean_update_macs": 3220340736000.0,
+            "mean_answer_latency_b1": 0.00016399999731220305,
+            "mean_answer_latency_b32": 0.0005063499993411824,
+            "mean_answer_macs_b1": 1049600.0,
+            "mean_memory_bytes": 12069920.0
+          },
+          "A4-2": {
+            "n_records": 2,
+            "mean_accuracy": 0.2461666651070118,
+            "mean_update_wall_clock": 2.378840599943942,
+            "mean_update_macs": 81058332672.0,
+            "mean_answer_latency_b1": 0.000103449998277938,
+            "mean_answer_latency_b32": 0.0001568000006955117,
+            "mean_answer_macs_b1": 132096.0,
+            "mean_memory_bytes": 12069920.0
+          },
+          "A5a": {
+            "n_records": 2,
+            "mean_accuracy": 0.15987500026822088,
+            "mean_update_wall_clock": 1.1273285999777727,
+            "mean_update_macs": 0.0,
+            "mean_answer_latency_b1": 5.089999831398018e-05,
+            "mean_answer_latency_b32": 6.54500036034733e-05,
+            "mean_answer_macs_b1": 1024.0,
+            "mean_memory_bytes": 69632.0
+          },
+          "A5b": {
+            "n_records": 2,
+            "mean_accuracy": 0.25529166633884115,
+            "mean_update_wall_clock": 0.5561476000366383,
+            "mean_update_macs": 0.0,
+            "mean_answer_latency_b1": 0.000234800001635449,
+            "mean_answer_latency_b32": 0.0003897499991580844,
+            "mean_answer_macs_b1": 131072.0,
+            "mean_memory_bytes": 528384.0
+          },
+          "A6": {
+            "n_records": 2,
+            "mean_accuracy": 0.25304166600108147,
+            "mean_update_wall_clock": 64.18153449995589,
+            "mean_update_macs": 1746508185600.0,
+            "mean_answer_latency_b1": 0.00013365000268095173,
+            "mean_answer_latency_b32": 0.0006691499984299298,
+            "mean_answer_macs_b1": 1114112.0,
+            "mean_memory_bytes": 268697600.0
+          },
+          "A7-2": {
+            "n_records": 2,
+            "mean_accuracy": 0.25504166608055434,
+            "mean_update_wall_clock": 0.17066359999444103,
+            "mean_update_macs": 0.0,
+            "mean_answer_latency_b1": 0.000372499995137332,
+            "mean_answer_latency_b32": 0.0019190999992133584,
+            "mean_answer_macs_b1": 3017472.0,
+            "mean_memory_bytes": 12069888.0
+          },
+          "A7all": {
+            "n_records": 2,
+            "mean_accuracy": 0.258416664848725,
+            "mean_update_wall_clock": 0.01866350003547268,
+            "mean_update_macs": 0.0,
+            "mean_answer_latency_b1": 0.0003956000000471249,
+            "mean_answer_latency_b32": 0.002097599997796351,
+            "mean_answer_macs_b1": 3276800.0,
+            "mean_memory_bytes": 13107200.0
+          }
+        }
+      }
+    },
+    "B2": {
+      "R1_primary": {
+        "bed": "B2",
+        "reference_pool": "A1",
+        "reading": "primary",
+        "fired": true,
+        "status": "PASS",
+        "triggering_baselines": [
+          "A3",
+          "A4",
+          "A5a",
+          "A6",
+          "A7",
+          "A7all"
+        ],
+        "pool_metrics": {
+          "n_records": 2,
+          "mean_accuracy": 0.7972222119569778,
+          "mean_update_wall_clock": 4.438579199995729,
+          "mean_update_macs": 40133626688.0,
+          "mean_answer_latency_b1": 0.0007939500028442126,
+          "mean_answer_latency_b32": 0.0012449499990907498,
+          "mean_answer_macs_b1": 299136.0,
+          "mean_memory_bytes": 2632262.0
+        },
+        "baseline_metrics": {
+          "A3": {
+            "n_records": 2,
+            "mean_accuracy": 0.8400000035762787,
+            "mean_update_wall_clock": 2.0098950999672525,
+            "mean_update_macs": 96875520000.0,
+            "mean_answer_latency_b1": 0.00012104999768780544,
+            "mean_answer_latency_b32": 0.00022015000286046416,
+            "mean_answer_macs_b1": 272000.0,
+            "mean_memory_bytes": 2110772.0
+          },
+          "A4": {
+            "n_records": 2,
+            "mean_accuracy": 0.8477777789036434,
+            "mean_update_wall_clock": 1.7468891000316944,
+            "mean_update_macs": 39606131712.0,
+            "mean_answer_latency_b1": 0.00010275000022375025,
+            "mean_answer_latency_b32": 0.0001413000027241651,
+            "mean_answer_macs_b1": 75392.0,
+            "mean_memory_bytes": 1716020.0
+          },
+          "A5a": {
+            "n_records": 2,
+            "mean_accuracy": 0.8711111098527908,
+            "mean_update_wall_clock": 0.1311287999851629,
+            "mean_update_macs": 0.0,
+            "mean_answer_latency_b1": 5.289999535307288e-05,
+            "mean_answer_latency_b32": 8.014999912120402e-05,
+            "mean_answer_macs_b1": 9856.0,
+            "mean_memory_bytes": 104960.0
+          },
+          "A5b": {
+            "n_records": 2,
+            "mean_accuracy": 0.9094444463650386,
+            "mean_update_wall_clock": 0.06666799997765338,
+            "mean_update_macs": 0.0,
+            "mean_answer_latency_b1": 0.0016605999990133569,
+            "mean_answer_latency_b32": 0.0030314999967231415,
+            "mean_answer_macs_b1": 1261568.0,
+            "mean_memory_bytes": 5085696.0
+          },
+          "A6": {
+            "n_records": 2,
+            "mean_accuracy": 0.9177777816851933,
+            "mean_update_wall_clock": 1.6736764000015683,
+            "mean_update_macs": 52850688000.0,
+            "mean_answer_latency_b1": 0.00012630000128410757,
+            "mean_answer_latency_b32": 0.0005581999976129737,
+            "mean_answer_macs_b1": 839680.0,
+            "mean_memory_bytes": 68370432.0
+          },
+          "A7": {
+            "n_records": 2,
+            "mean_accuracy": 0.8877777804931005,
+            "mean_update_wall_clock": 0.01948190003167838,
+            "mean_update_macs": 0.0,
+            "mean_answer_latency_b1": 0.0001064000025507994,
+            "mean_answer_latency_b32": 0.00030840000181342475,
+            "mean_answer_macs_b1": 384000.0,
+            "mean_memory_bytes": 1536000.0
+          },
+          "A7all": {
+            "n_records": 2,
+            "mean_accuracy": 0.8877777804931005,
+            "mean_update_wall_clock": 0.0021584999849437736,
+            "mean_update_macs": 0.0,
+            "mean_answer_latency_b1": 0.00010814999768626876,
+            "mean_answer_latency_b32": 0.00030635000075562857,
+            "mean_answer_macs_b1": 384000.0,
+            "mean_memory_bytes": 1536000.0
+          }
+        }
+      },
+      "R1_secondary": {
+        "bed": "B2",
+        "reference_pool": "A1",
+        "reading": "secondary",
+        "fired": true,
+        "status": "PASS",
+        "triggering_baselines": [
+          "A4",
+          "A5a"
+        ],
+        "pool_metrics": {
+          "n_records": 2,
+          "mean_accuracy": 0.7972222119569778,
+          "mean_update_wall_clock": 4.438579199995729,
+          "mean_update_macs": 40133626688.0,
+          "mean_answer_latency_b1": 0.0007939500028442126,
+          "mean_answer_latency_b32": 0.0012449499990907498,
+          "mean_answer_macs_b1": 299136.0,
+          "mean_memory_bytes": 2632262.0
+        },
+        "baseline_metrics": {
+          "A3": {
+            "n_records": 2,
+            "mean_accuracy": 0.8400000035762787,
+            "mean_update_wall_clock": 2.0098950999672525,
+            "mean_update_macs": 96875520000.0,
+            "mean_answer_latency_b1": 0.00012104999768780544,
+            "mean_answer_latency_b32": 0.00022015000286046416,
+            "mean_answer_macs_b1": 272000.0,
+            "mean_memory_bytes": 2110772.0
+          },
+          "A4": {
+            "n_records": 2,
+            "mean_accuracy": 0.8477777789036434,
+            "mean_update_wall_clock": 1.7468891000316944,
+            "mean_update_macs": 39606131712.0,
+            "mean_answer_latency_b1": 0.00010275000022375025,
+            "mean_answer_latency_b32": 0.0001413000027241651,
+            "mean_answer_macs_b1": 75392.0,
+            "mean_memory_bytes": 1716020.0
+          },
+          "A5a": {
+            "n_records": 2,
+            "mean_accuracy": 0.8711111098527908,
+            "mean_update_wall_clock": 0.1311287999851629,
+            "mean_update_macs": 0.0,
+            "mean_answer_latency_b1": 5.289999535307288e-05,
+            "mean_answer_latency_b32": 8.014999912120402e-05,
+            "mean_answer_macs_b1": 9856.0,
+            "mean_memory_bytes": 104960.0
+          },
+          "A5b": {
+            "n_records": 2,
+            "mean_accuracy": 0.9094444463650386,
+            "mean_update_wall_clock": 0.06666799997765338,
+            "mean_update_macs": 0.0,
+            "mean_answer_latency_b1": 0.0016605999990133569,
+            "mean_answer_latency_b32": 0.0030314999967231415,
+            "mean_answer_macs_b1": 1261568.0,
+            "mean_memory_bytes": 5085696.0
+          },
+          "A6": {
+            "n_records": 2,
+            "mean_accuracy": 0.9177777816851933,
+            "mean_update_wall_clock": 1.6736764000015683,
+            "mean_update_macs": 52850688000.0,
+            "mean_answer_latency_b1": 0.00012630000128410757,
+            "mean_answer_latency_b32": 0.0005581999976129737,
+            "mean_answer_macs_b1": 839680.0,
+            "mean_memory_bytes": 68370432.0
+          },
+          "A7": {
+            "n_records": 2,
+            "mean_accuracy": 0.8877777804931005,
+            "mean_update_wall_clock": 0.01948190003167838,
+            "mean_update_macs": 0.0,
+            "mean_answer_latency_b1": 0.0001064000025507994,
+            "mean_answer_latency_b32": 0.00030840000181342475,
+            "mean_answer_macs_b1": 384000.0,
+            "mean_memory_bytes": 1536000.0
+          },
+          "A7all": {
+            "n_records": 2,
+            "mean_accuracy": 0.8877777804931005,
+            "mean_update_wall_clock": 0.0021584999849437736,
+            "mean_update_macs": 0.0,
+            "mean_answer_latency_b1": 0.00010814999768626876,
+            "mean_answer_latency_b32": 0.00030635000075562857,
+            "mean_answer_macs_b1": 384000.0,
+            "mean_memory_bytes": 1536000.0
+          }
+        }
+      },
+      "R2_primary": {
+        "bed": "B2",
+        "reference_pool": "A2",
+        "reading": "primary",
+        "fired": true,
+        "status": "PASS",
+        "triggering_baselines": [
+          "A3-2",
+          "A5a",
+          "A6",
+          "A7-2",
+          "A7all"
+        ],
+        "pool_metrics": {
+          "n_records": 2,
+          "mean_accuracy": 0.861111119389534,
+          "mean_update_wall_clock": 5.429023799995775,
+          "mean_update_macs": 37354436288.0,
+          "mean_answer_latency_b1": 0.0010753500027931295,
+          "mean_answer_latency_b32": 0.001799500001652632,
+          "mean_answer_macs_b1": 239232.0,
+          "mean_memory_bytes": 3365866.0
+        },
+        "baseline_metrics": {
+          "A3-2": {
+            "n_records": 2,
+            "mean_accuracy": 0.8650000045696894,
+            "mean_update_wall_clock": 3.2372766999687883,
+            "mean_update_macs": 190240727040.0,
+            "mean_answer_latency_b1": 0.0001359999987471383,
+            "mean_answer_latency_b32": 0.00031769999986863695,
+            "mean_answer_macs_b1": 534144.0,
+            "mean_memory_bytes": 3365428.0
+          },
+          "A4-2": {
+            "n_records": 2,
+            "mean_accuracy": 0.8394444485505422,
+            "mean_update_wall_clock": 1.625561899963941,
+            "mean_update_macs": 36920970240.0,
+            "mean_answer_latency_b1": 0.00010105000183102675,
+            "mean_answer_latency_b32": 0.00014179999925545417,
+            "mean_answer_macs_b1": 75392.0,
+            "mean_memory_bytes": 1841460.0
+          },
+          "A5a": {
+            "n_records": 2,
+            "mean_accuracy": 0.8711111098527908,
+            "mean_update_wall_clock": 0.1311287999851629,
+            "mean_update_macs": 0.0,
+            "mean_answer_latency_b1": 5.289999535307288e-05,
+            "mean_answer_latency_b32": 8.014999912120402e-05,
+            "mean_answer_macs_b1": 9856.0,
+            "mean_memory_bytes": 104960.0
+          },
+          "A5b": {
+            "n_records": 2,
+            "mean_accuracy": 0.9094444463650386,
+            "mean_update_wall_clock": 0.06666799997765338,
+            "mean_update_macs": 0.0,
+            "mean_answer_latency_b1": 0.0016605999990133569,
+            "mean_answer_latency_b32": 0.0030314999967231415,
+            "mean_answer_macs_b1": 1261568.0,
+            "mean_memory_bytes": 5085696.0
+          },
+          "A6": {
+            "n_records": 2,
+            "mean_accuracy": 0.9177777816851933,
+            "mean_update_wall_clock": 1.6736764000015683,
+            "mean_update_macs": 52850688000.0,
+            "mean_answer_latency_b1": 0.00012630000128410757,
+            "mean_answer_latency_b32": 0.0005581999976129737,
+            "mean_answer_macs_b1": 839680.0,
+            "mean_memory_bytes": 68370432.0
+          },
+          "A7-2": {
+            "n_records": 2,
+            "mean_accuracy": 0.8877777804931005,
+            "mean_update_wall_clock": 0.019287499970232602,
+            "mean_update_macs": 0.0,
+            "mean_answer_latency_b1": 0.00012744999912683852,
+            "mean_answer_latency_b32": 0.0003049500046472531,
+            "mean_answer_macs_b1": 384000.0,
+            "mean_memory_bytes": 1536000.0
+          },
+          "A7all": {
+            "n_records": 2,
+            "mean_accuracy": 0.8877777804931005,
+            "mean_update_wall_clock": 0.0021584999849437736,
+            "mean_update_macs": 0.0,
+            "mean_answer_latency_b1": 0.00010814999768626876,
+            "mean_answer_latency_b32": 0.00030635000075562857,
+            "mean_answer_macs_b1": 384000.0,
+            "mean_memory_bytes": 1536000.0
+          }
+        }
+      },
+      "R2_secondary": {
+        "bed": "B2",
+        "reference_pool": "A2",
+        "reading": "secondary",
+        "fired": true,
+        "status": "PASS",
+        "triggering_baselines": [
+          "A5a"
+        ],
+        "pool_metrics": {
+          "n_records": 2,
+          "mean_accuracy": 0.861111119389534,
+          "mean_update_wall_clock": 5.429023799995775,
+          "mean_update_macs": 37354436288.0,
+          "mean_answer_latency_b1": 0.0010753500027931295,
+          "mean_answer_latency_b32": 0.001799500001652632,
+          "mean_answer_macs_b1": 239232.0,
+          "mean_memory_bytes": 3365866.0
+        },
+        "baseline_metrics": {
+          "A3-2": {
+            "n_records": 2,
+            "mean_accuracy": 0.8650000045696894,
+            "mean_update_wall_clock": 3.2372766999687883,
+            "mean_update_macs": 190240727040.0,
+            "mean_answer_latency_b1": 0.0001359999987471383,
+            "mean_answer_latency_b32": 0.00031769999986863695,
+            "mean_answer_macs_b1": 534144.0,
+            "mean_memory_bytes": 3365428.0
+          },
+          "A4-2": {
+            "n_records": 2,
+            "mean_accuracy": 0.8394444485505422,
+            "mean_update_wall_clock": 1.625561899963941,
+            "mean_update_macs": 36920970240.0,
+            "mean_answer_latency_b1": 0.00010105000183102675,
+            "mean_answer_latency_b32": 0.00014179999925545417,
+            "mean_answer_macs_b1": 75392.0,
+            "mean_memory_bytes": 1841460.0
+          },
+          "A5a": {
+            "n_records": 2,
+            "mean_accuracy": 0.8711111098527908,
+            "mean_update_wall_clock": 0.1311287999851629,
+            "mean_update_macs": 0.0,
+            "mean_answer_latency_b1": 5.289999535307288e-05,
+            "mean_answer_latency_b32": 8.014999912120402e-05,
+            "mean_answer_macs_b1": 9856.0,
+            "mean_memory_bytes": 104960.0
+          },
+          "A5b": {
+            "n_records": 2,
+            "mean_accuracy": 0.9094444463650386,
+            "mean_update_wall_clock": 0.06666799997765338,
+            "mean_update_macs": 0.0,
+            "mean_answer_latency_b1": 0.0016605999990133569,
+            "mean_answer_latency_b32": 0.0030314999967231415,
+            "mean_answer_macs_b1": 1261568.0,
+            "mean_memory_bytes": 5085696.0
+          },
+          "A6": {
+            "n_records": 2,
+            "mean_accuracy": 0.9177777816851933,
+            "mean_update_wall_clock": 1.6736764000015683,
+            "mean_update_macs": 52850688000.0,
+            "mean_answer_latency_b1": 0.00012630000128410757,
+            "mean_answer_latency_b32": 0.0005581999976129737,
+            "mean_answer_macs_b1": 839680.0,
+            "mean_memory_bytes": 68370432.0
+          },
+          "A7-2": {
+            "n_records": 2,
+            "mean_accuracy": 0.8877777804931005,
+            "mean_update_wall_clock": 0.019287499970232602,
+            "mean_update_macs": 0.0,
+            "mean_answer_latency_b1": 0.00012744999912683852,
+            "mean_answer_latency_b32": 0.0003049500046472531,
+            "mean_answer_macs_b1": 384000.0,
+            "mean_memory_bytes": 1536000.0
+          },
+          "A7all": {
+            "n_records": 2,
+            "mean_accuracy": 0.8877777804931005,
+            "mean_update_wall_clock": 0.0021584999849437736,
+            "mean_update_macs": 0.0,
+            "mean_answer_latency_b1": 0.00010814999768626876,
+            "mean_answer_latency_b32": 0.00030635000075562857,
+            "mean_answer_macs_b1": 384000.0,
+            "mean_memory_bytes": 1536000.0
+          }
+        }
+      }
+    },
+    "B3drift": {
+      "R1_primary": {
+        "bed": "B3drift",
+        "reference_pool": "A1",
+        "reading": "primary",
+        "fired": false,
+        "status": "FAIL",
+        "triggering_baselines": [],
+        "pool_metrics": {
+          "n_records": 2,
+          "mean_accuracy": 0.477513181976974,
+          "mean_update_wall_clock": 0.0,
+          "mean_update_macs": 208360068096.0,
+          "mean_answer_latency_b1": 0.0,
+          "mean_answer_latency_b32": 0.0,
+          "mean_answer_macs_b1": 81536.0,
+          "mean_memory_bytes": 462836.0
+        },
+        "baseline_metrics": {
+          "A3": {
+            "n_records": 2,
+            "mean_accuracy": 0.4360438056755811,
+            "mean_update_wall_clock": 0.0,
+            "mean_update_macs": 179892587520.0,
+            "mean_answer_latency_b1": 0.0,
+            "mean_answer_latency_b32": 0.0,
+            "mean_answer_macs_b1": 147072.0,
+            "mean_memory_bytes": 601588.0
+          },
+          "A4": {
+            "n_records": 2,
+            "mean_accuracy": 0.43179120937235316,
+            "mean_update_wall_clock": 0.0,
+            "mean_update_macs": 204128769024.0,
+            "mean_answer_latency_b1": 0.0,
+            "mean_answer_latency_b32": 0.0,
+            "mean_answer_macs_b1": 278144.0,
+            "mean_memory_bytes": 1127924.0
+          },
+          "A5a": {
+            "n_records": 2,
+            "mean_accuracy": 0.6162991354411298,
+            "mean_update_wall_clock": 0.0,
+            "mean_update_macs": 0.0,
+            "mean_answer_latency_b1": 0.0,
+            "mean_answer_latency_b32": 0.0,
+            "mean_answer_macs_b1": 16000.0,
+            "mean_memory_bytes": 129536.0
+          },
+          "A5b": {
+            "n_records": 2,
+            "mean_accuracy": 0.664749719879844,
+            "mean_update_wall_clock": 0.0,
+            "mean_update_macs": 0.0,
+            "mean_answer_latency_b1": 0.0,
+            "mean_answer_latency_b32": 0.0,
+            "mean_answer_macs_b1": 2048000.0,
+            "mean_memory_bytes": 8256000.0
+          },
+          "A6": {
+            "n_records": 2,
+            "mean_accuracy": 0.700786713172089,
+            "mean_update_wall_clock": 0.0,
+            "mean_update_macs": 707380224000.0,
+            "mean_answer_latency_b1": 0.0,
+            "mean_answer_latency_b32": 0.0,
+            "mean_answer_macs_b1": 2072576.0,
+            "mean_memory_bytes": 272531456.0
+          },
+          "A7": {
+            "n_records": 2,
+            "mean_accuracy": 0.4561663972721859,
+            "mean_update_wall_clock": 0.0,
+            "mean_update_macs": 0.0,
+            "mean_answer_latency_b1": 0.0,
+            "mean_answer_latency_b32": 0.0,
+            "mean_answer_macs_b1": 115584.0,
+            "mean_memory_bytes": 462336.0
+          },
+          "A7all": {
+            "n_records": 2,
+            "mean_accuracy": 0.6478149403225292,
+            "mean_update_wall_clock": 0.0,
+            "mean_update_macs": 0.0,
+            "mean_answer_latency_b1": 0.0,
+            "mean_answer_latency_b32": 0.0,
+            "mean_answer_macs_b1": 1308800.0,
+            "mean_memory_bytes": 5235200.0
+          }
+        }
+      },
+      "R1_secondary": {
+        "bed": "B3drift",
+        "reference_pool": "A1",
+        "reading": "secondary",
+        "fired": true,
+        "status": "PASS",
+        "triggering_baselines": [
+          "A5a"
+        ],
+        "pool_metrics": {
+          "n_records": 2,
+          "mean_accuracy": 0.477513181976974,
+          "mean_update_wall_clock": 0.0,
+          "mean_update_macs": 208360068096.0,
+          "mean_answer_latency_b1": 0.0,
+          "mean_answer_latency_b32": 0.0,
+          "mean_answer_macs_b1": 81536.0,
+          "mean_memory_bytes": 462836.0
+        },
+        "baseline_metrics": {
+          "A3": {
+            "n_records": 2,
+            "mean_accuracy": 0.4360438056755811,
+            "mean_update_wall_clock": 0.0,
+            "mean_update_macs": 179892587520.0,
+            "mean_answer_latency_b1": 0.0,
+            "mean_answer_latency_b32": 0.0,
+            "mean_answer_macs_b1": 147072.0,
+            "mean_memory_bytes": 601588.0
+          },
+          "A4": {
+            "n_records": 2,
+            "mean_accuracy": 0.43179120937235316,
+            "mean_update_wall_clock": 0.0,
+            "mean_update_macs": 204128769024.0,
+            "mean_answer_latency_b1": 0.0,
+            "mean_answer_latency_b32": 0.0,
+            "mean_answer_macs_b1": 278144.0,
+            "mean_memory_bytes": 1127924.0
+          },
+          "A5a": {
+            "n_records": 2,
+            "mean_accuracy": 0.6162991354411298,
+            "mean_update_wall_clock": 0.0,
+            "mean_update_macs": 0.0,
+            "mean_answer_latency_b1": 0.0,
+            "mean_answer_latency_b32": 0.0,
+            "mean_answer_macs_b1": 16000.0,
+            "mean_memory_bytes": 129536.0
+          },
+          "A5b": {
+            "n_records": 2,
+            "mean_accuracy": 0.664749719879844,
+            "mean_update_wall_clock": 0.0,
+            "mean_update_macs": 0.0,
+            "mean_answer_latency_b1": 0.0,
+            "mean_answer_latency_b32": 0.0,
+            "mean_answer_macs_b1": 2048000.0,
+            "mean_memory_bytes": 8256000.0
+          },
+          "A6": {
+            "n_records": 2,
+            "mean_accuracy": 0.700786713172089,
+            "mean_update_wall_clock": 0.0,
+            "mean_update_macs": 707380224000.0,
+            "mean_answer_latency_b1": 0.0,
+            "mean_answer_latency_b32": 0.0,
+            "mean_answer_macs_b1": 2072576.0,
+            "mean_memory_bytes": 272531456.0
+          },
+          "A7": {
+            "n_records": 2,
+            "mean_accuracy": 0.4561663972721859,
+            "mean_update_wall_clock": 0.0,
+            "mean_update_macs": 0.0,
+            "mean_answer_latency_b1": 0.0,
+            "mean_answer_latency_b32": 0.0,
+            "mean_answer_macs_b1": 115584.0,
+            "mean_memory_bytes": 462336.0
+          },
+          "A7all": {
+            "n_records": 2,
+            "mean_accuracy": 0.6478149403225292,
+            "mean_update_wall_clock": 0.0,
+            "mean_update_macs": 0.0,
+            "mean_answer_latency_b1": 0.0,
+            "mean_answer_latency_b32": 0.0,
+            "mean_answer_macs_b1": 1308800.0,
+            "mean_memory_bytes": 5235200.0
+          }
+        }
+      },
+      "R2_primary": {
+        "bed": "B3drift",
+        "reference_pool": "A2",
+        "reading": "primary",
+        "fired": false,
+        "status": "FAIL",
+        "triggering_baselines": [],
+        "pool_metrics": {
+          "n_records": 2,
+          "mean_accuracy": 0.6384436996145681,
+          "mean_update_wall_clock": 0.0,
+          "mean_update_macs": 151220161280.0,
+          "mean_answer_latency_b1": 0.0,
+          "mean_answer_latency_b32": 0.0,
+          "mean_answer_macs_b1": 97536.0,
+          "mean_memory_bytes": 1179628.0
+        },
+        "baseline_metrics": {
+          "A3-2": {
+            "n_records": 2,
+            "mean_accuracy": 0.41715031587095425,
+            "mean_update_wall_clock": 0.0,
+            "mean_update_macs": 1302146780160.0,
+            "mean_answer_latency_b1": 0.0,
+            "mean_answer_latency_b32": 0.0,
+            "mean_answer_macs_b1": 1064576.0,
+            "mean_memory_bytes": 4285940.0
+          },
+          "A4-2": {
+            "n_records": 2,
+            "mean_accuracy": 0.46387506767430087,
+            "mean_update_wall_clock": 0.0,
+            "mean_update_macs": 136085846016.0,
+            "mean_answer_latency_b1": 0.0,
+            "mean_answer_latency_b32": 0.0,
+            "mean_answer_macs_b1": 278144.0,
+            "mean_memory_bytes": 1183732.0
+          },
+          "A5a": {
+            "n_records": 2,
+            "mean_accuracy": 0.6162991354411298,
+            "mean_update_wall_clock": 0.0,
+            "mean_update_macs": 0.0,
+            "mean_answer_latency_b1": 0.0,
+            "mean_answer_latency_b32": 0.0,
+            "mean_answer_macs_b1": 16000.0,
+            "mean_memory_bytes": 129536.0
+          },
+          "A5b": {
+            "n_records": 2,
+            "mean_accuracy": 0.664749719879844,
+            "mean_update_wall_clock": 0.0,
+            "mean_update_macs": 0.0,
+            "mean_answer_latency_b1": 0.0,
+            "mean_answer_latency_b32": 0.0,
+            "mean_answer_macs_b1": 2048000.0,
+            "mean_memory_bytes": 8256000.0
+          },
+          "A6": {
+            "n_records": 2,
+            "mean_accuracy": 0.700786713172089,
+            "mean_update_wall_clock": 0.0,
+            "mean_update_macs": 707380224000.0,
+            "mean_answer_latency_b1": 0.0,
+            "mean_answer_latency_b32": 0.0,
+            "mean_answer_macs_b1": 2072576.0,
+            "mean_memory_bytes": 272531456.0
+          },
+          "A7-2": {
+            "n_records": 2,
+            "mean_accuracy": 0.5458481514995748,
+            "mean_update_wall_clock": 0.0,
+            "mean_update_macs": 0.0,
+            "mean_answer_latency_b1": 0.0,
+            "mean_answer_latency_b32": 0.0,
+            "mean_answer_macs_b1": 294784.0,
+            "mean_memory_bytes": 1179136.0
+          },
+          "A7all": {
+            "n_records": 2,
+            "mean_accuracy": 0.6478149403225292,
+            "mean_update_wall_clock": 0.0,
+            "mean_update_macs": 0.0,
+            "mean_answer_latency_b1": 0.0,
+            "mean_answer_latency_b32": 0.0,
+            "mean_answer_macs_b1": 1308800.0,
+            "mean_memory_bytes": 5235200.0
+          }
+        }
+      },
+      "R2_secondary": {
+        "bed": "B3drift",
+        "reference_pool": "A2",
+        "reading": "secondary",
+        "fired": false,
+        "status": "FAIL",
+        "triggering_baselines": [],
+        "pool_metrics": {
+          "n_records": 2,
+          "mean_accuracy": 0.6384436996145681,
+          "mean_update_wall_clock": 0.0,
+          "mean_update_macs": 151220161280.0,
+          "mean_answer_latency_b1": 0.0,
+          "mean_answer_latency_b32": 0.0,
+          "mean_answer_macs_b1": 97536.0,
+          "mean_memory_bytes": 1179628.0
+        },
+        "baseline_metrics": {
+          "A3-2": {
+            "n_records": 2,
+            "mean_accuracy": 0.41715031587095425,
+            "mean_update_wall_clock": 0.0,
+            "mean_update_macs": 1302146780160.0,
+            "mean_answer_latency_b1": 0.0,
+            "mean_answer_latency_b32": 0.0,
+            "mean_answer_macs_b1": 1064576.0,
+            "mean_memory_bytes": 4285940.0
+          },
+          "A4-2": {
+            "n_records": 2,
+            "mean_accuracy": 0.46387506767430087,
+            "mean_update_wall_clock": 0.0,
+            "mean_update_macs": 136085846016.0,
+            "mean_answer_latency_b1": 0.0,
+            "mean_answer_latency_b32": 0.0,
+            "mean_answer_macs_b1": 278144.0,
+            "mean_memory_bytes": 1183732.0
+          },
+          "A5a": {
+            "n_records": 2,
+            "mean_accuracy": 0.6162991354411298,
+            "mean_update_wall_clock": 0.0,
+            "mean_update_macs": 0.0,
+            "mean_answer_latency_b1": 0.0,
+            "mean_answer_latency_b32": 0.0,
+            "mean_answer_macs_b1": 16000.0,
+            "mean_memory_bytes": 129536.0
+          },
+          "A5b": {
+            "n_records": 2,
+            "mean_accuracy": 0.664749719879844,
+            "mean_update_wall_clock": 0.0,
+            "mean_update_macs": 0.0,
+            "mean_answer_latency_b1": 0.0,
+            "mean_answer_latency_b32": 0.0,
+            "mean_answer_macs_b1": 2048000.0,
+            "mean_memory_bytes": 8256000.0
+          },
+          "A6": {
+            "n_records": 2,
+            "mean_accuracy": 0.700786713172089,
+            "mean_update_wall_clock": 0.0,
+            "mean_update_macs": 707380224000.0,
+            "mean_answer_latency_b1": 0.0,
+            "mean_answer_latency_b32": 0.0,
+            "mean_answer_macs_b1": 2072576.0,
+            "mean_memory_bytes": 272531456.0
+          },
+          "A7-2": {
+            "n_records": 2,
+            "mean_accuracy": 0.5458481514995748,
+            "mean_update_wall_clock": 0.0,
+            "mean_update_macs": 0.0,
+            "mean_answer_latency_b1": 0.0,
+            "mean_answer_latency_b32": 0.0,
+            "mean_answer_macs_b1": 294784.0,
+            "mean_memory_bytes": 1179136.0
+          },
+          "A7all": {
+            "n_records": 2,
+            "mean_accuracy": 0.6478149403225292,
+            "mean_update_wall_clock": 0.0,
+            "mean_update_macs": 0.0,
+            "mean_answer_latency_b1": 0.0,
+            "mean_answer_latency_b32": 0.0,
+            "mean_answer_macs_b1": 1308800.0,
+            "mean_memory_bytes": 5235200.0
+          }
+        }
+      }
+    },
+    "B3mix": {
+      "R1_primary": {
+        "bed": "B3mix",
+        "reference_pool": "A1",
+        "reading": "primary",
+        "fired": false,
+        "status": "FAIL",
+        "triggering_baselines": [],
+        "pool_metrics": {
+          "n_records": 2,
+          "mean_accuracy": 0.5217487043277784,
+          "mean_update_wall_clock": 0.0,
+          "mean_update_macs": 208486053888.0,
+          "mean_answer_latency_b1": 0.0,
+          "mean_answer_latency_b32": 0.0,
+          "mean_answer_macs_b1": 81536.0,
+          "mean_memory_bytes": 462836.0
+        },
+        "baseline_metrics": {
+          "A3": {
+            "n_records": 2,
+            "mean_accuracy": 0.5280126111412591,
+            "mean_update_wall_clock": 0.0,
+            "mean_update_macs": 179980830720.0,
+            "mean_answer_latency_b1": 0.0,
+            "mean_answer_latency_b32": 0.0,
+            "mean_answer_macs_b1": 147072.0,
+            "mean_memory_bytes": 601588.0
+          },
+          "A4": {
+            "n_records": 2,
+            "mean_accuracy": 0.5550803688608787,
+            "mean_update_wall_clock": 0.0,
+            "mean_update_macs": 204228900864.0,
+            "mean_answer_latency_b1": 0.0,
+            "mean_answer_latency_b32": 0.0,
+            "mean_answer_macs_b1": 278144.0,
+            "mean_memory_bytes": 1127924.0
+          },
+          "A5a": {
+            "n_records": 2,
+            "mean_accuracy": 0.6197437745603649,
+            "mean_update_wall_clock": 0.0,
+            "mean_update_macs": 0.0,
+            "mean_answer_latency_b1": 0.0,
+            "mean_answer_latency_b32": 0.0,
+            "mean_answer_macs_b1": 16000.0,
+            "mean_memory_bytes": 129536.0
+          },
+          "A5b": {
+            "n_records": 2,
+            "mean_accuracy": 0.6473670635711063,
+            "mean_update_wall_clock": 0.0,
+            "mean_update_macs": 0.0,
+            "mean_answer_latency_b1": 0.0,
+            "mean_answer_latency_b32": 0.0,
+            "mean_answer_macs_b1": 2048000.0,
+            "mean_memory_bytes": 8256000.0
+          },
+          "A6": {
+            "n_records": 2,
+            "mean_accuracy": 0.7028065438974987,
+            "mean_update_wall_clock": 0.0,
+            "mean_update_macs": 707726131200.0,
+            "mean_answer_latency_b1": 0.0,
+            "mean_answer_latency_b32": 0.0,
+            "mean_answer_macs_b1": 2072576.0,
+            "mean_memory_bytes": 272531456.0
+          },
+          "A7": {
+            "n_records": 2,
+            "mean_accuracy": 0.43898639760234137,
+            "mean_update_wall_clock": 0.0,
+            "mean_update_macs": 0.0,
+            "mean_answer_latency_b1": 0.0,
+            "mean_answer_latency_b32": 0.0,
+            "mean_answer_macs_b1": 115584.0,
+            "mean_memory_bytes": 462336.0
+          },
+          "A7all": {
+            "n_records": 2,
+            "mean_accuracy": 0.643861909481612,
+            "mean_update_wall_clock": 0.0,
+            "mean_update_macs": 0.0,
+            "mean_answer_latency_b1": 0.0,
+            "mean_answer_latency_b32": 0.0,
+            "mean_answer_macs_b1": 1309440.0,
+            "mean_memory_bytes": 5237760.0
+          }
+        }
+      },
+      "R1_secondary": {
+        "bed": "B3mix",
+        "reference_pool": "A1",
+        "reading": "secondary",
+        "fired": true,
+        "status": "PASS",
+        "triggering_baselines": [
+          "A5a"
+        ],
+        "pool_metrics": {
+          "n_records": 2,
+          "mean_accuracy": 0.5217487043277784,
+          "mean_update_wall_clock": 0.0,
+          "mean_update_macs": 208486053888.0,
+          "mean_answer_latency_b1": 0.0,
+          "mean_answer_latency_b32": 0.0,
+          "mean_answer_macs_b1": 81536.0,
+          "mean_memory_bytes": 462836.0
+        },
+        "baseline_metrics": {
+          "A3": {
+            "n_records": 2,
+            "mean_accuracy": 0.5280126111412591,
+            "mean_update_wall_clock": 0.0,
+            "mean_update_macs": 179980830720.0,
+            "mean_answer_latency_b1": 0.0,
+            "mean_answer_latency_b32": 0.0,
+            "mean_answer_macs_b1": 147072.0,
+            "mean_memory_bytes": 601588.0
+          },
+          "A4": {
+            "n_records": 2,
+            "mean_accuracy": 0.5550803688608787,
+            "mean_update_wall_clock": 0.0,
+            "mean_update_macs": 204228900864.0,
+            "mean_answer_latency_b1": 0.0,
+            "mean_answer_latency_b32": 0.0,
+            "mean_answer_macs_b1": 278144.0,
+            "mean_memory_bytes": 1127924.0
+          },
+          "A5a": {
+            "n_records": 2,
+            "mean_accuracy": 0.6197437745603649,
+            "mean_update_wall_clock": 0.0,
+            "mean_update_macs": 0.0,
+            "mean_answer_latency_b1": 0.0,
+            "mean_answer_latency_b32": 0.0,
+            "mean_answer_macs_b1": 16000.0,
+            "mean_memory_bytes": 129536.0
+          },
+          "A5b": {
+            "n_records": 2,
+            "mean_accuracy": 0.6473670635711063,
+            "mean_update_wall_clock": 0.0,
+            "mean_update_macs": 0.0,
+            "mean_answer_latency_b1": 0.0,
+            "mean_answer_latency_b32": 0.0,
+            "mean_answer_macs_b1": 2048000.0,
+            "mean_memory_bytes": 8256000.0
+          },
+          "A6": {
+            "n_records": 2,
+            "mean_accuracy": 0.7028065438974987,
+            "mean_update_wall_clock": 0.0,
+            "mean_update_macs": 707726131200.0,
+            "mean_answer_latency_b1": 0.0,
+            "mean_answer_latency_b32": 0.0,
+            "mean_answer_macs_b1": 2072576.0,
+            "mean_memory_bytes": 272531456.0
+          },
+          "A7": {
+            "n_records": 2,
+            "mean_accuracy": 0.43898639760234137,
+            "mean_update_wall_clock": 0.0,
+            "mean_update_macs": 0.0,
+            "mean_answer_latency_b1": 0.0,
+            "mean_answer_latency_b32": 0.0,
+            "mean_answer_macs_b1": 115584.0,
+            "mean_memory_bytes": 462336.0
+          },
+          "A7all": {
+            "n_records": 2,
+            "mean_accuracy": 0.643861909481612,
+            "mean_update_wall_clock": 0.0,
+            "mean_update_macs": 0.0,
+            "mean_answer_latency_b1": 0.0,
+            "mean_answer_latency_b32": 0.0,
+            "mean_answer_macs_b1": 1309440.0,
+            "mean_memory_bytes": 5237760.0
+          }
+        }
+      },
+      "R2_primary": {
+        "bed": "B3mix",
+        "reference_pool": "A2",
+        "reading": "primary",
+        "fired": false,
+        "status": "FAIL",
+        "triggering_baselines": [],
+        "pool_metrics": {
+          "n_records": 2,
+          "mean_accuracy": 0.6547430293126539,
+          "mean_update_wall_clock": 0.0,
+          "mean_update_macs": 152248332800.0,
+          "mean_answer_latency_b1": 0.0,
+          "mean_answer_latency_b32": 0.0,
+          "mean_answer_macs_b1": 97536.0,
+          "mean_memory_bytes": 917484.0
+        },
+        "baseline_metrics": {
+          "A3-2": {
+            "n_records": 2,
+            "mean_accuracy": 0.5340577239509333,
+            "mean_update_wall_clock": 0.0,
+            "mean_update_macs": 1302785525760.0,
+            "mean_answer_latency_b1": 0.0,
+            "mean_answer_latency_b32": 0.0,
+            "mean_answer_macs_b1": 1064576.0,
+            "mean_memory_bytes": 4285940.0
+          },
+          "A4-2": {
+            "n_records": 2,
+            "mean_accuracy": 0.564389537088573,
+            "mean_update_wall_clock": 0.0,
+            "mean_update_macs": 136152600576.0,
+            "mean_answer_latency_b1": 0.0,
+            "mean_answer_latency_b32": 0.0,
+            "mean_answer_macs_b1": 278144.0,
+            "mean_memory_bytes": 1127924.0
+          },
+          "A5a": {
+            "n_records": 2,
+            "mean_accuracy": 0.6197437745603649,
+            "mean_update_wall_clock": 0.0,
+            "mean_update_macs": 0.0,
+            "mean_answer_latency_b1": 0.0,
+            "mean_answer_latency_b32": 0.0,
+            "mean_answer_macs_b1": 16000.0,
+            "mean_memory_bytes": 129536.0
+          },
+          "A5b": {
+            "n_records": 2,
+            "mean_accuracy": 0.6473670635711063,
+            "mean_update_wall_clock": 0.0,
+            "mean_update_macs": 0.0,
+            "mean_answer_latency_b1": 0.0,
+            "mean_answer_latency_b32": 0.0,
+            "mean_answer_macs_b1": 2048000.0,
+            "mean_memory_bytes": 8256000.0
+          },
+          "A6": {
+            "n_records": 2,
+            "mean_accuracy": 0.7028065438974987,
+            "mean_update_wall_clock": 0.0,
+            "mean_update_macs": 707726131200.0,
+            "mean_answer_latency_b1": 0.0,
+            "mean_answer_latency_b32": 0.0,
+            "mean_answer_macs_b1": 2072576.0,
+            "mean_memory_bytes": 272531456.0
+          },
+          "A7-2": {
+            "n_records": 2,
+            "mean_accuracy": 0.5148599960587241,
+            "mean_update_wall_clock": 0.0,
+            "mean_update_macs": 0.0,
+            "mean_answer_latency_b1": 0.0,
+            "mean_answer_latency_b32": 0.0,
+            "mean_answer_macs_b1": 229248.0,
+            "mean_memory_bytes": 916992.0
+          },
+          "A7all": {
+            "n_records": 2,
+            "mean_accuracy": 0.643861909481612,
+            "mean_update_wall_clock": 0.0,
+            "mean_update_macs": 0.0,
+            "mean_answer_latency_b1": 0.0,
+            "mean_answer_latency_b32": 0.0,
+            "mean_answer_macs_b1": 1309440.0,
+            "mean_memory_bytes": 5237760.0
+          }
+        }
+      },
+      "R2_secondary": {
+        "bed": "B3mix",
+        "reference_pool": "A2",
+        "reading": "secondary",
+        "fired": false,
+        "status": "FAIL",
+        "triggering_baselines": [],
+        "pool_metrics": {
+          "n_records": 2,
+          "mean_accuracy": 0.6547430293126539,
+          "mean_update_wall_clock": 0.0,
+          "mean_update_macs": 152248332800.0,
+          "mean_answer_latency_b1": 0.0,
+          "mean_answer_latency_b32": 0.0,
+          "mean_answer_macs_b1": 97536.0,
+          "mean_memory_bytes": 917484.0
+        },
+        "baseline_metrics": {
+          "A3-2": {
+            "n_records": 2,
+            "mean_accuracy": 0.5340577239509333,
+            "mean_update_wall_clock": 0.0,
+            "mean_update_macs": 1302785525760.0,
+            "mean_answer_latency_b1": 0.0,
+            "mean_answer_latency_b32": 0.0,
+            "mean_answer_macs_b1": 1064576.0,
+            "mean_memory_bytes": 4285940.0
+          },
+          "A4-2": {
+            "n_records": 2,
+            "mean_accuracy": 0.564389537088573,
+            "mean_update_wall_clock": 0.0,
+            "mean_update_macs": 136152600576.0,
+            "mean_answer_latency_b1": 0.0,
+            "mean_answer_latency_b32": 0.0,
+            "mean_answer_macs_b1": 278144.0,
+            "mean_memory_bytes": 1127924.0
+          },
+          "A5a": {
+            "n_records": 2,
+            "mean_accuracy": 0.6197437745603649,
+            "mean_update_wall_clock": 0.0,
+            "mean_update_macs": 0.0,
+            "mean_answer_latency_b1": 0.0,
+            "mean_answer_latency_b32": 0.0,
+            "mean_answer_macs_b1": 16000.0,
+            "mean_memory_bytes": 129536.0
+          },
+          "A5b": {
+            "n_records": 2,
+            "mean_accuracy": 0.6473670635711063,
+            "mean_update_wall_clock": 0.0,
+            "mean_update_macs": 0.0,
+            "mean_answer_latency_b1": 0.0,
+            "mean_answer_latency_b32": 0.0,
+            "mean_answer_macs_b1": 2048000.0,
+            "mean_memory_bytes": 8256000.0
+          },
+          "A6": {
+            "n_records": 2,
+            "mean_accuracy": 0.7028065438974987,
+            "mean_update_wall_clock": 0.0,
+            "mean_update_macs": 707726131200.0,
+            "mean_answer_latency_b1": 0.0,
+            "mean_answer_latency_b32": 0.0,
+            "mean_answer_macs_b1": 2072576.0,
+            "mean_memory_bytes": 272531456.0
+          },
+          "A7-2": {
+            "n_records": 2,
+            "mean_accuracy": 0.5148599960587241,
+            "mean_update_wall_clock": 0.0,
+            "mean_update_macs": 0.0,
+            "mean_answer_latency_b1": 0.0,
+            "mean_answer_latency_b32": 0.0,
+            "mean_answer_macs_b1": 229248.0,
+            "mean_memory_bytes": 916992.0
+          },
+          "A7all": {
+            "n_records": 2,
+            "mean_accuracy": 0.643861909481612,
+            "mean_update_wall_clock": 0.0,
+            "mean_update_macs": 0.0,
+            "mean_answer_latency_b1": 0.0,
+            "mean_answer_latency_b32": 0.0,
+            "mean_answer_macs_b1": 1309440.0,
+            "mean_memory_bytes": 5237760.0
+          }
+        }
+      }
+    },
+    "B3seq": {
+      "R1_primary": {
+        "bed": "B3seq",
+        "reference_pool": "A1",
+        "reading": "primary",
+        "fired": true,
+        "status": "PASS",
+        "triggering_baselines": [
+          "A3",
+          "A4",
+          "A5a",
+          "A7",
+          "A7all"
+        ],
+        "pool_metrics": {
+          "n_records": 2,
+          "mean_accuracy": 0.5607076712291349,
+          "mean_update_wall_clock": 16.458237600003486,
+          "mean_update_macs": 195103768256.0,
+          "mean_answer_latency_b1": 0.0019189500017091632,
+          "mean_answer_latency_b32": 0.0028840000013587996,
+          "mean_answer_macs_b1": 372032.0,
+          "mean_memory_bytes": 5078768.0
+        },
+        "baseline_metrics": {
+          "A3": {
+            "n_records": 2,
+            "mean_accuracy": 0.609899726780978,
+            "mean_update_wall_clock": 6.213148299961176,
+            "mean_update_macs": 224102430720.0,
+            "mean_answer_latency_b1": 0.00010284999734722078,
+            "mean_answer_latency_b32": 0.0001663999973970931,
+            "mean_answer_macs_b1": 147072.0,
+            "mean_memory_bytes": 5078516.0
+          },
+          "A4": {
+            "n_records": 2,
+            "mean_accuracy": 0.6188666600395333,
+            "mean_update_wall_clock": 3.9208489999946323,
+            "mean_update_macs": 190721115648.0,
+            "mean_answer_latency_b1": 0.00011280000035185367,
+            "mean_answer_latency_b32": 0.0002214499982073903,
+            "mean_answer_macs_b1": 278144.0,
+            "mean_memory_bytes": 5078516.0
+          },
+          "A5a": {
+            "n_records": 2,
+            "mean_accuracy": 0.6213506277311932,
+            "mean_update_wall_clock": 0.5567168000125093,
+            "mean_update_macs": 0.0,
+            "mean_answer_latency_b1": 5.48999996681232e-05,
+            "mean_answer_latency_b32": 8.735000301385298e-05,
+            "mean_answer_macs_b1": 16000.0,
+            "mean_memory_bytes": 129536.0
+          },
+          "A5b": {
+            "n_records": 2,
+            "mean_accuracy": 0.6427308114414865,
+            "mean_update_wall_clock": 0.30043279990786687,
+            "mean_update_macs": 0.0,
+            "mean_answer_latency_b1": 0.0026093999986187555,
+            "mean_answer_latency_b32": 0.004915150002489099,
+            "mean_answer_macs_b1": 2048000.0,
+            "mean_memory_bytes": 8256000.0
+          },
+          "A6": {
+            "n_records": 2,
+            "mean_accuracy": 0.7057815959507769,
+            "mean_update_wall_clock": 33.718246800039196,
+            "mean_update_macs": 880679731200.0,
+            "mean_answer_latency_b1": 0.0002148000021406915,
+            "mean_answer_latency_b32": 0.0012940000015078112,
+            "mean_answer_macs_b1": 2072576.0,
+            "mean_memory_bytes": 272531456.0
+          },
+          "A7": {
+            "n_records": 2,
+            "mean_accuracy": 0.6342663737860593,
+            "mean_update_wall_clock": 0.08514450000075158,
+            "mean_update_macs": 0.0,
+            "mean_answer_latency_b1": 0.00019750000501517206,
+            "mean_answer_latency_b32": 0.0008521499985363334,
+            "mean_answer_macs_b1": 1269632.0,
+            "mean_memory_bytes": 5078528.0
+          },
+          "A7all": {
+            "n_records": 2,
+            "mean_accuracy": 0.6487840034744956,
+            "mean_update_wall_clock": 0.00975299999845447,
+            "mean_update_macs": 0.0,
+            "mean_answer_latency_b1": 0.00023164999947766773,
+            "mean_answer_latency_b32": 0.0010448499997437466,
+            "mean_answer_macs_b1": 1629440.0,
+            "mean_memory_bytes": 6517760.0
+          }
+        }
+      },
+      "R1_secondary": {
+        "bed": "B3seq",
+        "reference_pool": "A1",
+        "reading": "secondary",
+        "fired": true,
+        "status": "PASS",
+        "triggering_baselines": [
+          "A4",
+          "A5a"
+        ],
+        "pool_metrics": {
+          "n_records": 2,
+          "mean_accuracy": 0.5607076712291349,
+          "mean_update_wall_clock": 16.458237600003486,
+          "mean_update_macs": 195103768256.0,
+          "mean_answer_latency_b1": 0.0019189500017091632,
+          "mean_answer_latency_b32": 0.0028840000013587996,
+          "mean_answer_macs_b1": 372032.0,
+          "mean_memory_bytes": 5078768.0
+        },
+        "baseline_metrics": {
+          "A3": {
+            "n_records": 2,
+            "mean_accuracy": 0.609899726780978,
+            "mean_update_wall_clock": 6.213148299961176,
+            "mean_update_macs": 224102430720.0,
+            "mean_answer_latency_b1": 0.00010284999734722078,
+            "mean_answer_latency_b32": 0.0001663999973970931,
+            "mean_answer_macs_b1": 147072.0,
+            "mean_memory_bytes": 5078516.0
+          },
+          "A4": {
+            "n_records": 2,
+            "mean_accuracy": 0.6188666600395333,
+            "mean_update_wall_clock": 3.9208489999946323,
+            "mean_update_macs": 190721115648.0,
+            "mean_answer_latency_b1": 0.00011280000035185367,
+            "mean_answer_latency_b32": 0.0002214499982073903,
+            "mean_answer_macs_b1": 278144.0,
+            "mean_memory_bytes": 5078516.0
+          },
+          "A5a": {
+            "n_records": 2,
+            "mean_accuracy": 0.6213506277311932,
+            "mean_update_wall_clock": 0.5567168000125093,
+            "mean_update_macs": 0.0,
+            "mean_answer_latency_b1": 5.48999996681232e-05,
+            "mean_answer_latency_b32": 8.735000301385298e-05,
+            "mean_answer_macs_b1": 16000.0,
+            "mean_memory_bytes": 129536.0
+          },
+          "A5b": {
+            "n_records": 2,
+            "mean_accuracy": 0.6427308114414865,
+            "mean_update_wall_clock": 0.30043279990786687,
+            "mean_update_macs": 0.0,
+            "mean_answer_latency_b1": 0.0026093999986187555,
+            "mean_answer_latency_b32": 0.004915150002489099,
+            "mean_answer_macs_b1": 2048000.0,
+            "mean_memory_bytes": 8256000.0
+          },
+          "A6": {
+            "n_records": 2,
+            "mean_accuracy": 0.7057815959507769,
+            "mean_update_wall_clock": 33.718246800039196,
+            "mean_update_macs": 880679731200.0,
+            "mean_answer_latency_b1": 0.0002148000021406915,
+            "mean_answer_latency_b32": 0.0012940000015078112,
+            "mean_answer_macs_b1": 2072576.0,
+            "mean_memory_bytes": 272531456.0
+          },
+          "A7": {
+            "n_records": 2,
+            "mean_accuracy": 0.6342663737860593,
+            "mean_update_wall_clock": 0.08514450000075158,
+            "mean_update_macs": 0.0,
+            "mean_answer_latency_b1": 0.00019750000501517206,
+            "mean_answer_latency_b32": 0.0008521499985363334,
+            "mean_answer_macs_b1": 1269632.0,
+            "mean_memory_bytes": 5078528.0
+          },
+          "A7all": {
+            "n_records": 2,
+            "mean_accuracy": 0.6487840034744956,
+            "mean_update_wall_clock": 0.00975299999845447,
+            "mean_update_macs": 0.0,
+            "mean_answer_latency_b1": 0.00023164999947766773,
+            "mean_answer_latency_b32": 0.0010448499997437466,
+            "mean_answer_macs_b1": 1629440.0,
+            "mean_memory_bytes": 6517760.0
+          }
+        }
+      },
+      "R2_primary": {
+        "bed": "B3seq",
+        "reference_pool": "A2",
+        "reading": "primary",
+        "fired": true,
+        "status": "PASS",
+        "triggering_baselines": [
+          "A5b",
+          "A7-2",
+          "A7all"
+        ],
+        "pool_metrics": {
+          "n_records": 2,
+          "mean_accuracy": 0.6495103531263091,
+          "mean_update_wall_clock": 25.03804309998668,
+          "mean_update_macs": 192574316352.0,
+          "mean_answer_latency_b1": 0.0029543999989982694,
+          "mean_answer_latency_b32": 0.00414575000104378,
+          "mean_answer_macs_b1": 686720.0,
+          "mean_memory_bytes": 14185078.0
+        },
+        "baseline_metrics": {
+          "A3-2": {
+            "n_records": 2,
+            "mean_accuracy": 0.6311084079471501,
+            "mean_update_wall_clock": 24.988606099999743,
+            "mean_update_macs": 1622158325760.0,
+            "mean_answer_latency_b1": 0.00016535000031581149,
+            "mean_answer_latency_b32": 0.0005177999992156401,
+            "mean_answer_macs_b1": 1064576.0,
+            "mean_memory_bytes": 10795508.0
+          },
+          "A4-2": {
+            "n_records": 2,
+            "mean_accuracy": 0.6112482788210565,
+            "mean_update_wall_clock": 3.9588325999793597,
+            "mean_update_macs": 190721115648.0,
+            "mean_answer_latency_b1": 0.00011395000183256343,
+            "mean_answer_latency_b32": 0.00022220000028028153,
+            "mean_answer_macs_b1": 278144.0,
+            "mean_memory_bytes": 7637492.0
+          },
+          "A5a": {
+            "n_records": 2,
+            "mean_accuracy": 0.6213506277311932,
+            "mean_update_wall_clock": 0.5567168000125093,
+            "mean_update_macs": 0.0,
+            "mean_answer_latency_b1": 5.48999996681232e-05,
+            "mean_answer_latency_b32": 8.735000301385298e-05,
+            "mean_answer_macs_b1": 16000.0,
+            "mean_memory_bytes": 129536.0
+          },
+          "A5b": {
+            "n_records": 2,
+            "mean_accuracy": 0.6427308114414865,
+            "mean_update_wall_clock": 0.30043279990786687,
+            "mean_update_macs": 0.0,
+            "mean_answer_latency_b1": 0.0026093999986187555,
+            "mean_answer_latency_b32": 0.004915150002489099,
+            "mean_answer_macs_b1": 2048000.0,
+            "mean_memory_bytes": 8256000.0
+          },
+          "A6": {
+            "n_records": 2,
+            "mean_accuracy": 0.7057815959507769,
+            "mean_update_wall_clock": 33.718246800039196,
+            "mean_update_macs": 880679731200.0,
+            "mean_answer_latency_b1": 0.0002148000021406915,
+            "mean_answer_latency_b32": 0.0012940000015078112,
+            "mean_answer_macs_b1": 2072576.0,
+            "mean_memory_bytes": 272531456.0
+          },
+          "A7-2": {
+            "n_records": 2,
+            "mean_accuracy": 0.6487840034744956,
+            "mean_update_wall_clock": 0.08199919996695826,
+            "mean_update_macs": 0.0,
+            "mean_answer_latency_b1": 0.00023934999626362696,
+            "mean_answer_latency_b32": 0.0010606499999994412,
+            "mean_answer_macs_b1": 1629440.0,
+            "mean_memory_bytes": 6517760.0
+          },
+          "A7all": {
+            "n_records": 2,
+            "mean_accuracy": 0.6487840034744956,
+            "mean_update_wall_clock": 0.00975299999845447,
+            "mean_update_macs": 0.0,
+            "mean_answer_latency_b1": 0.00023164999947766773,
+            "mean_answer_latency_b32": 0.0010448499997437466,
+            "mean_answer_macs_b1": 1629440.0,
+            "mean_memory_bytes": 6517760.0
+          }
+        }
+      },
+      "R2_secondary": {
+        "bed": "B3seq",
+        "reference_pool": "A2",
+        "reading": "secondary",
+        "fired": false,
+        "status": "FAIL",
+        "triggering_baselines": [],
+        "pool_metrics": {
+          "n_records": 2,
+          "mean_accuracy": 0.6495103531263091,
+          "mean_update_wall_clock": 25.03804309998668,
+          "mean_update_macs": 192574316352.0,
+          "mean_answer_latency_b1": 0.0029543999989982694,
+          "mean_answer_latency_b32": 0.00414575000104378,
+          "mean_answer_macs_b1": 686720.0,
+          "mean_memory_bytes": 14185078.0
+        },
+        "baseline_metrics": {
+          "A3-2": {
+            "n_records": 2,
+            "mean_accuracy": 0.6311084079471501,
+            "mean_update_wall_clock": 24.988606099999743,
+            "mean_update_macs": 1622158325760.0,
+            "mean_answer_latency_b1": 0.00016535000031581149,
+            "mean_answer_latency_b32": 0.0005177999992156401,
+            "mean_answer_macs_b1": 1064576.0,
+            "mean_memory_bytes": 10795508.0
+          },
+          "A4-2": {
+            "n_records": 2,
+            "mean_accuracy": 0.6112482788210565,
+            "mean_update_wall_clock": 3.9588325999793597,
+            "mean_update_macs": 190721115648.0,
+            "mean_answer_latency_b1": 0.00011395000183256343,
+            "mean_answer_latency_b32": 0.00022220000028028153,
+            "mean_answer_macs_b1": 278144.0,
+            "mean_memory_bytes": 7637492.0
+          },
+          "A5a": {
+            "n_records": 2,
+            "mean_accuracy": 0.6213506277311932,
+            "mean_update_wall_clock": 0.5567168000125093,
+            "mean_update_macs": 0.0,
+            "mean_answer_latency_b1": 5.48999996681232e-05,
+            "mean_answer_latency_b32": 8.735000301385298e-05,
+            "mean_answer_macs_b1": 16000.0,
+            "mean_memory_bytes": 129536.0
+          },
+          "A5b": {
+            "n_records": 2,
+            "mean_accuracy": 0.6427308114414865,
+            "mean_update_wall_clock": 0.30043279990786687,
+            "mean_update_macs": 0.0,
+            "mean_answer_latency_b1": 0.0026093999986187555,
+            "mean_answer_latency_b32": 0.004915150002489099,
+            "mean_answer_macs_b1": 2048000.0,
+            "mean_memory_bytes": 8256000.0
+          },
+          "A6": {
+            "n_records": 2,
+            "mean_accuracy": 0.7057815959507769,
+            "mean_update_wall_clock": 33.718246800039196,
+            "mean_update_macs": 880679731200.0,
+            "mean_answer_latency_b1": 0.0002148000021406915,
+            "mean_answer_latency_b32": 0.0012940000015078112,
+            "mean_answer_macs_b1": 2072576.0,
+            "mean_memory_bytes": 272531456.0
+          },
+          "A7-2": {
+            "n_records": 2,
+            "mean_accuracy": 0.6487840034744956,
+            "mean_update_wall_clock": 0.08199919996695826,
+            "mean_update_macs": 0.0,
+            "mean_answer_latency_b1": 0.00023934999626362696,
+            "mean_answer_latency_b32": 0.0010606499999994412,
+            "mean_answer_macs_b1": 1629440.0,
+            "mean_memory_bytes": 6517760.0
+          },
+          "A7all": {
+            "n_records": 2,
+            "mean_accuracy": 0.6487840034744956,
+            "mean_update_wall_clock": 0.00975299999845447,
+            "mean_update_macs": 0.0,
+            "mean_answer_latency_b1": 0.00023164999947766773,
+            "mean_answer_latency_b32": 0.0010448499997437466,
+            "mean_answer_macs_b1": 1629440.0,
+            "mean_memory_bytes": 6517760.0
+          }
+        }
+      }
+    }
+  },
+  "rule_6_2": {
+    "lda_head": {
+      "adopted": true,
+      "status": "PASS",
+      "cond_gain_all": true,
+      "cond_ci_two": true,
+      "cond_lat_rise": true,
+      "mean_lat_rise": 0.01279861021814123,
+      "max_lat_rise": 0.03839583065442369,
+      "schedules": {
+        "B3seq": {
+          "paired_diff": {
+            "n": 2,
+            "mean_diff": 0.016239391131834535,
+            "ci_lo": -0.08627205752621203,
+            "ci_hi": 0.1187508397898811,
+            "p_t": 0.29353843652611555,
+            "p_wilcoxon": 0.5,
+            "dz": 1.4233058103049747
+          },
+          "lat_ratio_change": 0.03839583065442369
+        },
+        "B3mix": {
+          "paired_diff": {
+            "n": 2,
+            "mean_diff": 0.13299432498487562,
+            "ci_lo": 0.09740426202051669,
+            "ci_hi": 0.16858438794923455,
+            "p_t": 0.01340589212196549,
+            "p_wilcoxon": 0.5,
+            "dz": 33.57416374837988
+          },
+          "lat_ratio_change": 0.0
+        },
+        "B3drift": {
+          "paired_diff": {
+            "n": 2,
+            "mean_diff": 0.16552112573249775,
+            "ci_lo": 0.07760748520951534,
+            "ci_hi": 0.25343476625548017,
+            "p_t": 0.026595878933357794,
+            "p_wilcoxon": 0.5,
+            "dz": 16.916013293165715
+          },
+          "lat_ratio_change": 0.0
+        }
+      }
+    },
+    "growth": {
+      "adopted": false,
+      "status": "FAIL",
+      "cond_acc_not_drop": true,
+      "cond_wall_drop": false,
+      "wall_relative_change": 0.0016147156869246789,
+      "beds": {
+        "B1_n10": {
+          "paired_diff": {
+            "n": 2,
+            "mean_diff": 0.0,
+            "ci_lo": 0.0,
+            "ci_hi": 0.0,
+            "p_t": 1.0,
+            "p_wilcoxon": 1.0,
+            "dz": NaN
+          },
+          "mean_wall_cand": null,
+          "mean_wall_ref": null,
+          "timed_seeds": 0
+        },
+        "B1_n30": {
+          "paired_diff": {
+            "n": 2,
+            "mean_diff": 0.0,
+            "ci_lo": 0.0,
+            "ci_hi": 0.0,
+            "p_t": 1.0,
+            "p_wilcoxon": 1.0,
+            "dz": NaN
+          },
+          "mean_wall_cand": 9.496292399977392,
+          "mean_wall_ref": 9.446035799992387,
+          "timed_seeds": 1
+        },
+        "B2": {
+          "paired_diff": {
+            "n": 2,
+            "mean_diff": 0.0,
+            "ci_lo": 0.0,
+            "ci_hi": 0.0,
+            "p_t": 1.0,
+            "p_wilcoxon": 1.0,
+            "dz": NaN
+          },
+          "mean_wall_cand": 3.4099322999973083,
+          "mean_wall_ref": 3.4154735999763943,
+          "timed_seeds": 1
+        },
+        "B3drift": {
+          "paired_diff": {
+            "n": 2,
+            "mean_diff": 0.0,
+            "ci_lo": 0.0,
+            "ci_hi": 0.0,
+            "p_t": 1.0,
+            "p_wilcoxon": 1.0,
+            "dz": NaN
+          },
+          "mean_wall_cand": null,
+          "mean_wall_ref": null,
+          "timed_seeds": 0
+        },
+        "B3mix": {
+          "paired_diff": {
+            "n": 2,
+            "mean_diff": 0.0,
+            "ci_lo": 0.0,
+            "ci_hi": 0.0,
+            "p_t": 1.0,
+            "p_wilcoxon": 1.0,
+            "dz": NaN
+          },
+          "mean_wall_cand": null,
+          "mean_wall_ref": null,
+          "timed_seeds": 0
+        },
+        "B3seq": {
+          "paired_diff": {
+            "n": 2,
+            "mean_diff": 0.0,
+            "ci_lo": 0.0,
+            "ci_hi": 0.0,
+            "p_t": 1.0,
+            "p_wilcoxon": 1.0,
+            "dz": NaN
+          },
+          "mean_wall_cand": 13.954554399984772,
+          "mean_wall_ref": 13.955967100002454,
+          "timed_seeds": 1
+        }
+      }
+    },
+    "skip": {
+      "adopted": false,
+      "status": "FAIL",
+      "cond_acc_ok": false,
+      "obs_drop_b2_or_b3": true,
+      "beds": {
+        "B1_n10": {
+          "paired_diff": {
+            "n": 2,
+            "mean_diff": 0.0,
+            "ci_lo": 0.0,
+            "ci_hi": 0.0,
+            "p_t": 1.0,
+            "p_wilcoxon": 1.0,
+            "dz": NaN
+          },
+          "obs_change": 0.0,
+          "timed_seeds": 0
+        },
+        "B1_n30": {
+          "paired_diff": {
+            "n": 2,
+            "mean_diff": 0.0,
+            "ci_lo": 0.0,
+            "ci_hi": 0.0,
+            "p_t": 1.0,
+            "p_wilcoxon": 1.0,
+            "dz": NaN
+          },
+          "obs_change": -0.002686206214662065,
+          "timed_seeds": 1
+        },
+        "B2": {
+          "paired_diff": {
+            "n": 2,
+            "mean_diff": -0.014999985694885254,
+            "ci_lo": -0.21971111922183234,
+            "ci_hi": 0.18971114783206183,
+            "p_t": 0.5227271525272564,
+            "p_wilcoxon": 1.0,
+            "dz": -0.6583399844117871
+          },
+          "obs_change": -0.11070154368413868,
+          "timed_seeds": 1
+        },
+        "B3drift": {
+          "paired_diff": {
+            "n": 2,
+            "mean_diff": 0.0058169546113772674,
+            "ci_lo": -0.0680944616218178,
+            "ci_hi": 0.07972837084457234,
+            "p_t": 0.5000000000000001,
+            "p_wilcoxon": 1.0,
+            "dz": 0.7071067811865476
+          },
+          "obs_change": 0.0,
+          "timed_seeds": 0
+        },
+        "B3mix": {
+          "paired_diff": {
+            "n": 2,
+            "mean_diff": 0.0,
+            "ci_lo": 0.0,
+            "ci_hi": 0.0,
+            "p_t": 1.0,
+            "p_wilcoxon": 1.0,
+            "dz": NaN
+          },
+          "obs_change": 0.0,
+          "timed_seeds": 0
+        },
+        "B3seq": {
+          "paired_diff": {
+            "n": 2,
+            "mean_diff": -0.008823160082101822,
+            "ci_lo": -0.06707147315445804,
+            "ci_hi": 0.04942515299025439,
+            "p_t": 0.305055510787536,
+            "p_wilcoxon": 0.5,
+            "dz": -1.360948394605194
+          },
+          "obs_change": -0.033740091005094626,
+          "timed_seeds": 1
+        }
+      }
+    },
+    "chance": {
+      "adopted": false,
+      "status": "FAIL",
+      "gain_one_bed": false,
+      "cost_ok_b2_b3": true,
+      "beds": {
+        "B1_n10": {
+          "paired_diff": {
+            "n": 2,
+            "mean_diff": 0.0,
+            "ci_lo": 0.0,
+            "ci_hi": 0.0,
+            "p_t": 1.0,
+            "p_wilcoxon": 1.0,
+            "dz": NaN
+          }
+        },
+        "B1_n30": {
+          "paired_diff": {
+            "n": 2,
+            "mean_diff": 0.0,
+            "ci_lo": 0.0,
+            "ci_hi": 0.0,
+            "p_t": 1.0,
+            "p_wilcoxon": 1.0,
+            "dz": NaN
+          }
+        },
+        "B2": {
+          "paired_diff": {
+            "n": 2,
+            "mean_diff": 0.0,
+            "ci_lo": 0.0,
+            "ci_hi": 0.0,
+            "p_t": 1.0,
+            "p_wilcoxon": 1.0,
+            "dz": NaN
+          }
+        },
+        "B3drift": {
+          "paired_diff": {
+            "n": 2,
+            "mean_diff": 0.0,
+            "ci_lo": 0.0,
+            "ci_hi": 0.0,
+            "p_t": 1.0,
+            "p_wilcoxon": 1.0,
+            "dz": NaN
+          }
+        },
+        "B3mix": {
+          "paired_diff": {
+            "n": 2,
+            "mean_diff": 0.0,
+            "ci_lo": 0.0,
+            "ci_hi": 0.0,
+            "p_t": 1.0,
+            "p_wilcoxon": 1.0,
+            "dz": NaN
+          }
+        },
+        "B3seq": {
+          "paired_diff": {
+            "n": 2,
+            "mean_diff": 0.0038506244732575134,
+            "ci_lo": -0.09531302612232978,
+            "ci_hi": 0.10301427506884481,
+            "p_t": 0.7082056796293239,
+            "p_wilcoxon": 1.0,
+            "dz": 0.348882761580326
+          }
+        }
+      }
+    }
+  },
+  "predictions": {
+    "M1-1": {
+      "prediction": "M1-1",
+      "status": "PASS",
+      "cond_lat": true,
+      "cond_macs": true,
+      "numbers": {
+        "pool_latency_s": 0.001732049997372087,
+        "replay_latency_s": 0.00017094999930122867,
+        "latency_ratio": 10.131909941222435,
+        "pool_macs": 112128.0,
+        "replay_macs": 1049600.0,
+        "macs_ratio": 0.10682926829268292,
+        "a1_latency_s": 0.0,
+        "a1_macs": 4621312.0
+      }
+    },
+    "M1-2": {
+      "prediction": "M1-2",
+      "status": "FAIL",
+      "numbers": {
+        "ratio_batch_1": 10.131909941222435,
+        "ratio_batch_32": 36.77561722761405,
+        "a1_latency_b1": 0.0,
+        "a1_latency_b32": 0.0
+      }
+    },
+    "M1-3": {
+      "prediction": "M1-3",
+      "status": "PASS",
+      "cond_n30": true,
+      "cond_n100": true,
+      "numbers": {
+        "ratio_n30": 0.20508272036375452,
+        "ratio_n100": 0.4176988288839438,
+        "pool_wall_n30": 9.415577199986728,
+        "replay_wall_n30": 45.91111910007021,
+        "pool_wall_n100": 62.43969159995322,
+        "replay_wall_n100": 149.48495729994465
+      }
+    },
+    "M1-4": {
+      "prediction": "M1-4",
+      "status": "PASS",
+      "cond_b2": true,
+      "cond_b3": true,
+      "numbers": {
+        "share_b2": 0.8203330577836764,
+        "share_b3": 0.8329772686478577,
+        "a1_share_b2": 0.5742828721777281,
+        "a1_share_b3": 0.6598197700028103
+      }
+    },
+    "M1-5": {
+      "prediction": "M1-5",
+      "status": "PASS",
+      "numbers": {
+        "pool_arm": "A2",
+        "pool_acc": 0.861111119389534,
+        "baseline_acc": {
+          "A7-2": 0.8877777804931005,
+          "A7": 0.8877777804931005,
+          "A7all": 0.8877777804931005,
+          "A5a": 0.8711111098527908
+        },
+        "best_baseline_arm": "A7-2",
+        "best_baseline": 0.8877777804931005
+      }
+    },
+    "M1-6": {
+      "prediction": "M1-6",
+      "status": "FAIL",
+      "matches": 0,
+      "numbers": {
+        "B3seq": {
+          "acc_lda": 0.6213506277311932,
+          "acc_pool": 0.6531661362810568,
+          "diff": 0.03181550854986359,
+          "within_02": false
+        },
+        "B3mix": {
+          "acc_lda": 0.6197437745603649,
+          "acc_pool": 0.6547430293126539,
+          "diff": 0.034999254752289044,
+          "within_02": false
+        },
+        "B3drift": {
+          "acc_lda": 0.6162991354411298,
+          "acc_pool": 0.6384436996145681,
+          "diff": 0.022144564173438352,
+          "within_02": false
+        }
+      }
+    },
+    "M1-7": {
+      "prediction": "M1-7",
+      "status": "PASS",
+      "cond_b1_not_fired": true,
+      "cond_b2_fired": true,
+      "cond_b3_fired": true,
+      "numbers": {
+        "b1_fired": false,
+        "b2_fired": true,
+        "b3_fired": true
+      }
+    },
+    "M1-8": {
+      "prediction": "M1-8",
+      "status": "PASS",
+      "cond_r2": true,
+      "cond_slope": true,
+      "numbers": {
+        "r_squared": 0.9929710911194535,
+        "slope": 359015.23866786674,
+        "bytes_per_expert": 352535.2,
+        "slope_rel_error": 0.018381252901459845
+      }
+    },
+    "M1-9": {
+      "prediction": "M1-9",
+      "status": "FAIL",
+      "numbers": {
+        "lda_adopted": true,
+        "growth_adopted": false,
+        "skip_adopted": false,
+        "chance_adopted": false
+      }
+    }
+  },
+  "cost_drivers": {
+    "update_drivers": [
+      [
+        "Router refit & prediction routing",
+        66.78964381427899,
+        71.00122177499806
+      ],
+      [
+        "Gate scan & candidate clustering",
+        21.047421185709286,
+        22.37461579453506
+      ],
+      [
+        "Expert weight updates (train_expert)",
+        6.231237128578608,
+        6.6241624304668845
+      ]
+    ],
+    "answer_drivers": [
+      {
+        "bed": "B1_n100",
+        "n_records": 1,
+        "gate_macs": 3276800.0,
+        "expert_macs": 33792.0,
+        "gate_share": 0.9897927621404269,
+        "gate_macs_measured": 854529.7812139066,
+        "counted_macs": 112128.0
+      },
+      {
+        "bed": "B1_n30",
+        "n_records": 1,
+        "gate_macs": 983040.0,
+        "expert_macs": 33792.0,
+        "gate_share": 0.9667673716012085,
+        "gate_macs_measured": 538249.8106672283,
+        "counted_macs": 1016832.0
+      },
+      {
+        "bed": "B2",
+        "n_records": 1,
+        "gate_macs": 196608.0,
+        "expert_macs": 42624.0,
+        "gate_share": 0.8218298555377207,
+        "gate_macs_measured": 145532.14270869415,
+        "counted_macs": 239232.0
+      },
+      {
+        "bed": "B3seq",
+        "n_records": 1,
+        "gate_macs": 696704.0,
+        "expert_macs": 48768.0,
+        "gate_share": 0.9345810439560439,
+        "gate_macs_measured": 364846.20473723445,
+        "counted_macs": 683648.0
+      }
+    ]
+  },
+  "reconciliation": [
+    {
+      "bed": "B1_n100",
+      "arm": "A1",
+      "n_records": 1,
+      "n_with_accounting": 0,
+      "costlab_macs": 4621312.0,
+      "accounting_macs": null,
+      "macs_ratio": null,
+      "accounting_bytes": null,
+      "costlab_active_bytes": 138280.0
+    },
+    {
+      "bed": "B1_n100",
+      "arm": "A2",
+      "n_records": 1,
+      "n_with_accounting": 1,
+      "costlab_macs": 112128.0,
+      "accounting_macs": 3310592.0,
+      "macs_ratio": 0.03386947107949273,
+      "accounting_bytes": 35384720.0,
+      "costlab_active_bytes": 138280.0
+    },
+    {
+      "bed": "B1_n100",
+      "arm": "A5a",
+      "n_records": 1,
+      "n_with_accounting": 0,
+      "costlab_macs": 1024.0,
+      "accounting_macs": null,
+      "macs_ratio": null,
+      "accounting_bytes": null,
+      "costlab_active_bytes": 0.0
+    },
+    {
+      "bed": "B1_n100",
+      "arm": "A5b",
+      "n_records": 1,
+      "n_with_accounting": 0,
+      "costlab_macs": 131072.0,
+      "accounting_macs": null,
+      "macs_ratio": null,
+      "accounting_bytes": null,
+      "costlab_active_bytes": 0.0
+    },
+    {
+      "bed": "B1_n100",
+      "arm": "A3-2",
+      "n_records": 1,
+      "n_with_accounting": 1,
+      "costlab_macs": 1049600.0,
+      "accounting_macs": 1049600.0,
+      "macs_ratio": 1.0,
+      "accounting_bytes": 35384352.0,
+      "costlab_active_bytes": 4217384.0
+    },
+    {
+      "bed": "B2",
+      "arm": "A1",
+      "n_records": 2,
+      "n_with_accounting": 1,
+      "costlab_macs": 153984.0,
+      "accounting_macs": 153984.0,
+      "macs_ratio": 1.0,
+      "accounting_bytes": 1590840.0,
+      "costlab_active_bytes": 173953.0
+    },
+    {
+      "bed": "B2",
+      "arm": "A1q",
+      "n_records": 2,
+      "n_with_accounting": 1,
+      "costlab_macs": 153984.0,
+      "accounting_macs": 153984.0,
+      "macs_ratio": 1.0,
+      "accounting_bytes": 1590840.0,
+      "costlab_active_bytes": 173953.0
+    },
+    {
+      "bed": "B2",
+      "arm": "A2",
+      "n_records": 2,
+      "n_with_accounting": 1,
+      "costlab_macs": 239232.0,
+      "accounting_macs": 239232.0,
+      "macs_ratio": 1.0,
+      "accounting_bytes": 3362076.0,
+      "costlab_active_bytes": 173953.0
+    },
+    {
+      "bed": "B2",
+      "arm": "A3",
+      "n_records": 2,
+      "n_with_accounting": 1,
+      "costlab_macs": 272000.0,
+      "accounting_macs": 272000.0,
+      "macs_ratio": 1.0,
+      "accounting_bytes": 1590580.0,
+      "costlab_active_bytes": 1095041.0
+    },
+    {
+      "bed": "B2",
+      "arm": "A4",
+      "n_records": 2,
+      "n_with_accounting": 1,
+      "costlab_macs": 75392.0,
+      "accounting_macs": 75392.0,
+      "macs_ratio": 1.0,
+      "accounting_bytes": 1590580.0,
+      "costlab_active_bytes": 305537.0
+    },
+    {
+      "bed": "B2",
+      "arm": "A5a",
+      "n_records": 2,
+      "n_with_accounting": 1,
+      "costlab_macs": 9856.0,
+      "accounting_macs": 9856.0,
+      "macs_ratio": 1.0,
+      "accounting_bytes": 104960.0,
+      "costlab_active_bytes": 0.0
+    },
+    {
+      "bed": "B2",
+      "arm": "A5b",
+      "n_records": 2,
+      "n_with_accounting": 1,
+      "costlab_macs": 1261568.0,
+      "accounting_macs": 9856.0,
+      "macs_ratio": 128.0,
+      "accounting_bytes": 5085696.0,
+      "costlab_active_bytes": 0.0
+    },
+    {
+      "bed": "B2",
+      "arm": "A6",
+      "n_records": 2,
+      "n_with_accounting": 1,
+      "costlab_macs": 839680.0,
+      "accounting_macs": 0.0,
+      "macs_ratio": null,
+      "accounting_bytes": 68370432.0,
+      "costlab_active_bytes": 0.0
+    },
+    {
+      "bed": "B2",
+      "arm": "A7",
+      "n_records": 2,
+      "n_with_accounting": 1,
+      "costlab_macs": 384000.0,
+      "accounting_macs": 384000.0,
+      "macs_ratio": 1.0,
+      "accounting_bytes": 1536000.0,
+      "costlab_active_bytes": 0.0
+    },
+    {
+      "bed": "B2",
+      "arm": "A7all",
+      "n_records": 2,
+      "n_with_accounting": 1,
+      "costlab_macs": 384000.0,
+      "accounting_macs": 384000.0,
+      "macs_ratio": 1.0,
+      "accounting_bytes": 1536000.0,
+      "costlab_active_bytes": 0.0
+    },
+    {
+      "bed": "B2",
+      "arm": "A8",
+      "n_records": 2,
+      "n_with_accounting": 1,
+      "costlab_macs": 272000.0,
+      "accounting_macs": 272000.0,
+      "macs_ratio": 1.0,
+      "accounting_bytes": 2630964.0,
+      "costlab_active_bytes": 1095041.0
+    },
+    {
+      "bed": "B2",
+      "arm": "A3-2",
+      "n_records": 2,
+      "n_with_accounting": 1,
+      "costlab_macs": 534144.0,
+      "accounting_macs": 534144.0,
+      "macs_ratio": 1.0,
+      "accounting_bytes": 3361588.0,
+      "costlab_active_bytes": 2147713.0
+    },
+    {
+      "bed": "B2",
+      "arm": "A4-2",
+      "n_records": 2,
+      "n_with_accounting": 1,
+      "costlab_macs": 75392.0,
+      "accounting_macs": 75392.0,
+      "macs_ratio": 1.0,
+      "accounting_bytes": 1841460.0,
+      "costlab_active_bytes": 305537.0
+    },
+    {
+      "bed": "B2",
+      "arm": "A7-2",
+      "n_records": 2,
+      "n_with_accounting": 1,
+      "costlab_macs": 384000.0,
+      "accounting_macs": 384000.0,
+      "macs_ratio": 1.0,
+      "accounting_bytes": 1536000.0,
+      "costlab_active_bytes": 0.0
+    },
+    {
+      "bed": "B2",
+      "arm": "H_shipped+chance",
+      "n_records": 2,
+      "n_with_accounting": 1,
+      "costlab_macs": 153984.0,
+      "accounting_macs": 153984.0,
+      "macs_ratio": 1.0,
+      "accounting_bytes": 1590840.0,
+      "costlab_active_bytes": 173953.0
+    },
+    {
+      "bed": "B2",
+      "arm": "H_shipped+gap",
+      "n_records": 2,
+      "n_with_accounting": 1,
+      "costlab_macs": 153984.0,
+      "accounting_macs": 153984.0,
+      "macs_ratio": 1.0,
+      "accounting_bytes": 1590840.0,
+      "costlab_active_bytes": 173953.0
+    },
+    {
+      "bed": "B2",
+      "arm": "H_shipped+skip",
+      "n_records": 2,
+      "n_with_accounting": 1,
+      "costlab_macs": 153984.0,
+      "accounting_macs": 153984.0,
+      "macs_ratio": 1.0,
+      "accounting_bytes": 1590844.0,
+      "costlab_active_bytes": 173953.0
+    },
+    {
+      "bed": "B2",
+      "arm": "H_shipped",
+      "n_records": 2,
+      "n_with_accounting": 1,
+      "costlab_macs": 153984.0,
+      "accounting_macs": 153984.0,
+      "macs_ratio": 1.0,
+      "accounting_bytes": 1590840.0,
+      "costlab_active_bytes": 173953.0
+    },
+    {
+      "bed": "B3seq",
+      "arm": "A1",
+      "n_records": 2,
+      "n_with_accounting": 1,
+      "costlab_macs": 372224.0,
+      "accounting_macs": 372224.0,
+      "macs_ratio": 1.0,
+      "accounting_bytes": 5178504.0,
+      "costlab_active_bytes": 198769.0
+    },
+    {
+      "bed": "B3seq",
+      "arm": "A1q",
+      "n_records": 2,
+      "n_with_accounting": 1,
+      "costlab_macs": 372224.0,
+      "accounting_macs": 372224.0,
+      "macs_ratio": 1.0,
+      "accounting_bytes": 5178504.0,
+      "costlab_active_bytes": 198769.0
+    },
+    {
+      "bed": "B3seq",
+      "arm": "A2",
+      "n_records": 2,
+      "n_with_accounting": 1,
+      "costlab_macs": 683648.0,
+      "accounting_macs": 745472.0,
+      "macs_ratio": 0.9170673076923077,
+      "accounting_bytes": 13940904.0,
+      "costlab_active_bytes": 198769.0
+    },
+    {
+      "bed": "B3seq",
+      "arm": "A3",
+      "n_records": 2,
+      "n_with_accounting": 1,
+      "costlab_macs": 147072.0,
+      "accounting_macs": 147072.0,
+      "macs_ratio": 1.0,
+      "accounting_bytes": 5178356.0,
+      "costlab_active_bytes": 593521.0
+    },
+    {
+      "bed": "B3seq",
+      "arm": "A4",
+      "n_records": 2,
+      "n_with_accounting": 1,
+      "costlab_macs": 278144.0,
+      "accounting_macs": 278144.0,
+      "macs_ratio": 1.0,
+      "accounting_bytes": 5178356.0,
+      "costlab_active_bytes": 1119857.0
+    },
+    {
+      "bed": "B3seq",
+      "arm": "A5a",
+      "n_records": 2,
+      "n_with_accounting": 1,
+      "costlab_macs": 16000.0,
+      "accounting_macs": 16000.0,
+      "macs_ratio": 1.0,
+      "accounting_bytes": 129536.0,
+      "costlab_active_bytes": 0.0
+    },
+    {
+      "bed": "B3seq",
+      "arm": "A5b",
+      "n_records": 2,
+      "n_with_accounting": 1,
+      "costlab_macs": 2048000.0,
+      "accounting_macs": 16000.0,
+      "macs_ratio": 128.0,
+      "accounting_bytes": 8256000.0,
+      "costlab_active_bytes": 0.0
+    },
+    {
+      "bed": "B3seq",
+      "arm": "A6",
+      "n_records": 2,
+      "n_with_accounting": 1,
+      "costlab_macs": 2072576.0,
+      "accounting_macs": 0.0,
+      "macs_ratio": null,
+      "accounting_bytes": 272531456.0,
+      "costlab_active_bytes": 0.0
+    },
+    {
+      "bed": "B3seq",
+      "arm": "A7",
+      "n_records": 2,
+      "n_with_accounting": 1,
+      "costlab_macs": 1294592.0,
+      "accounting_macs": 1294592.0,
+      "macs_ratio": 1.0,
+      "accounting_bytes": 5178368.0,
+      "costlab_active_bytes": 0.0
+    },
+    {
+      "bed": "B3seq",
+      "arm": "A7all",
+      "n_records": 2,
+      "n_with_accounting": 1,
+      "costlab_macs": 1626112.0,
+      "accounting_macs": 1626112.0,
+      "macs_ratio": 1.0,
+      "accounting_bytes": 6504448.0,
+      "costlab_active_bytes": 0.0
+    },
+    {
+      "bed": "B3seq",
+      "arm": "A8",
+      "n_records": 2,
+      "n_with_accounting": 1,
+      "costlab_macs": 2113152.0,
+      "accounting_macs": 2113152.0,
+      "macs_ratio": 1.0,
+      "accounting_bytes": 14992884.0,
+      "costlab_active_bytes": 8488561.0
+    },
+    {
+      "bed": "B3seq",
+      "arm": "A3-2",
+      "n_records": 2,
+      "n_with_accounting": 1,
+      "costlab_macs": 1064576.0,
+      "accounting_macs": 1064576.0,
+      "macs_ratio": 1.0,
+      "accounting_bytes": 10782196.0,
+      "costlab_active_bytes": 4277873.0
+    },
+    {
+      "bed": "B3seq",
+      "arm": "A4-2",
+      "n_records": 2,
+      "n_with_accounting": 1,
+      "costlab_macs": 278144.0,
+      "accounting_macs": 278144.0,
+      "macs_ratio": 1.0,
+      "accounting_bytes": 7624180.0,
+      "costlab_active_bytes": 1119857.0
+    },
+    {
+      "bed": "B3seq",
+      "arm": "A7-2",
+      "n_records": 2,
+      "n_with_accounting": 1,
+      "costlab_macs": 1626112.0,
+      "accounting_macs": 1626112.0,
+      "macs_ratio": 1.0,
+      "accounting_bytes": 6504448.0,
+      "costlab_active_bytes": 0.0
+    },
+    {
+      "bed": "B3seq",
+      "arm": "H_shipped+chance",
+      "n_records": 2,
+      "n_with_accounting": 1,
+      "costlab_macs": 572416.0,
+      "accounting_macs": 572416.0,
+      "macs_ratio": 1.0,
+      "accounting_bytes": 7981780.0,
+      "costlab_active_bytes": 198769.0
+    },
+    {
+      "bed": "B3seq",
+      "arm": "H_shipped+gap",
+      "n_records": 2,
+      "n_with_accounting": 1,
+      "costlab_macs": 372224.0,
+      "accounting_macs": 372224.0,
+      "macs_ratio": 1.0,
+      "accounting_bytes": 5178504.0,
+      "costlab_active_bytes": 198769.0
+    },
+    {
+      "bed": "B3seq",
+      "arm": "H_shipped+skip",
+      "n_records": 2,
+      "n_with_accounting": 1,
+      "costlab_macs": 372224.0,
+      "accounting_macs": 372224.0,
+      "macs_ratio": 1.0,
+      "accounting_bytes": 5178504.0,
+      "costlab_active_bytes": 198769.0
+    },
+    {
+      "bed": "B3seq",
+      "arm": "H_shipped",
+      "n_records": 2,
+      "n_with_accounting": 1,
+      "costlab_macs": 372224.0,
+      "accounting_macs": 372224.0,
+      "macs_ratio": 1.0,
+      "accounting_bytes": 5178504.0,
+      "costlab_active_bytes": 198769.0
+    },
+    {
+      "bed": "B3seq",
+      "arm": "H_U-real",
+      "n_records": 2,
+      "n_with_accounting": 1,
+      "costlab_macs": 697984.0,
+      "accounting_macs": 697984.0,
+      "macs_ratio": 1.0,
+      "accounting_bytes": 12086620.0,
+      "costlab_active_bytes": 198769.0
+    },
+    {
+      "bed": "B3seq",
+      "arm": "H_ULDA",
+      "n_records": 2,
+      "n_with_accounting": 1,
+      "costlab_macs": 713984.0,
+      "accounting_macs": 779904.0,
+      "macs_ratio": 0.9154767766289185,
+      "accounting_bytes": 14687420.0,
+      "costlab_active_bytes": 198769.0
+    }
+  ],
+  "figures": [
+    "figures/fig_acc_vs_update_B1_n100.png",
+    "figures/fig_acc_vs_answer_B1_n100.png",
+    "figures/fig_acc_vs_update_B1_n10.png",
+    "figures/fig_acc_vs_answer_B1_n10.png",
+    "figures/fig_acc_vs_update_B1_n30.png",
+    "figures/fig_acc_vs_answer_B1_n30.png",
+    "figures/fig_acc_vs_update_B2.png",
+    "figures/fig_acc_vs_answer_B2.png",
+    "figures/fig_acc_vs_update_B3drift.png",
+    "figures/fig_acc_vs_answer_B3drift.png",
+    "figures/fig_acc_vs_update_B3mix.png",
+    "figures/fig_acc_vs_answer_B3mix.png",
+    "figures/fig_acc_vs_update_B3seq.png",
+    "figures/fig_acc_vs_answer_B3seq.png",
+    "figures/summary_figure.png"
+  ]
+}

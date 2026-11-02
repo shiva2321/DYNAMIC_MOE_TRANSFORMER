@@ -1,0 +1,217 @@
+{
+  "schema_version": "1.2.0",
+  "bed": "B3seq",
+  "n_regimes": 22,
+  "arm": "A1q",
+  "seed": 801,
+  "split": "dev",
+  "commit": "5377beb81fa27fdc95613d7ab3479c367a66c3aa",
+  "environment": {
+    "python": "3.12.10",
+    "torch": "2.6.0+cu124",
+    "cuda": "12.4",
+    "cuda_available": true,
+    "gpu_name": "NVIDIA GeForce RTX 3060",
+    "gpu_driver": "610.60",
+    "cpu_name": "AMD Ryzen 5 7600 6-Core Processor",
+    "logical_cores": 12,
+    "ram_bytes": 34081722368,
+    "torch_intraop_threads": 2,
+    "torch_interop_threads": 6,
+    "env_vars": {
+      "OMP_NUM_THREADS": "unset",
+      "MKL_NUM_THREADS": "unset",
+      "OPENBLAS_NUM_THREADS": "unset",
+      "NUMEXPR_NUM_THREADS": "unset"
+    },
+    "git_commit": "5377beb81fa27fdc95613d7ab3479c367a66c3aa",
+    "timestamp": "2026-11-02T20:44:44.041191+00:00"
+  },
+  "pinning": {
+    "threads": 2,
+    "cpus": [
+      8,
+      10
+    ],
+    "blas_limited": true
+  },
+  "profile": "det",
+  "bed_info": {
+    "d": 128,
+    "classes": 125,
+    "regimes": 22,
+    "phases": 28,
+    "total_samples": 12756,
+    "regime_names": [
+      "banking_g0",
+      "banking_g1",
+      "banking_g2",
+      "banking_g3",
+      "banking_g4",
+      "banking_g5",
+      "agnews_g0",
+      "agnews_g1",
+      "newsgroups_g0",
+      "newsgroups_g1",
+      "newsgroups_g2",
+      "newsgroups_g3",
+      "emotion_g0",
+      "emotion_g1",
+      "sst2_g0",
+      "svamp_g0",
+      "add",
+      "sub",
+      "mul",
+      "mod",
+      "div",
+      "max"
+    ],
+    "label_blocks": {
+      "banking": [
+        0,
+        77
+      ],
+      "agnews": [
+        77,
+        4
+      ],
+      "newsgroups": [
+        81,
+        20
+      ],
+      "emotion": [
+        101,
+        6
+      ],
+      "sst2": [
+        107,
+        2
+      ],
+      "svamp": [
+        109,
+        4
+      ],
+      "arith": [
+        113,
+        12
+      ]
+    }
+  },
+  "tuning_ref": "4924454de04f722571cc94825562ca5dbba5cd7301e31174c7e163653c8ee8ea",
+  "reference_pool": null,
+  "uncounted_note": true,
+  "pool_time_split": null,
+  "config": {
+    "arm": "A1q",
+    "variant": "baseline_v1",
+    "name": "PhyloMoE pool",
+    "seed": 808,
+    "inner_steps": 50,
+    "route_rule": "accept_then_logf",
+    "router": true,
+    "spawn_rule": "transfer",
+    "growth_rule": "probe",
+    "q": 0.05,
+    "alpha_spawn": 0.01,
+    "m_min": 32,
+    "gate_shortlist_min_experts": 64,
+    "skip_known": null,
+    "transfer_chance": null,
+    "transfer_chance_weak_only": false,
+    "set_gate": false,
+    "set_gate_confirm": 2,
+    "sig_dedupe": false,
+    "infant_relax": 4.0
+  },
+  "accuracy": 0.5546734993430701,
+  "per_regime_accuracy": [
+    0.44999998807907104,
+    0.73046875,
+    0.5314960479736328,
+    0.7633333206176758,
+    0.6704545617103577,
+    0.9368420839309692,
+    0.33666667342185974,
+    0.79666668176651,
+    0.10333333164453506,
+    0.23666666448116302,
+    0.12333333492279053,
+    0.7066666483879089,
+    0.2933333218097687,
+    0.46666666865348816,
+    0.46666666865348816,
+    0.6800000071525574,
+    0.6388888955116272,
+    0.6033333539962769,
+    0.628000020980835,
+    0.6359999775886536,
+    0.7919999957084656,
+    0.6119999885559082
+  ],
+  "forgetting": 0.11662390726533803,
+  "update_cost": {
+    "counted_macs": 195507346048
+  },
+  "answer_cost": {
+    "1": {
+      "batch_size": 1,
+      "rows_timed": 1,
+      "counted_macs": 371840,
+      "active_bytes": 198769
+    },
+    "32": {
+      "batch_size": 32,
+      "rows_timed": 32,
+      "counted_macs": 11898880,
+      "active_bytes": 198769
+    }
+  },
+  "memory_bytes": 4979032,
+  "memory_bytes_by_regime": {
+    "14": 462132,
+    "16": 4985224,
+    "17": 2044936,
+    "18": 2818216,
+    "19": 2819772,
+    "20": 2819772,
+    "21": 2819772,
+    "15": 4985224,
+    "6": 4051320,
+    "7": 4518360,
+    "8": 4519832,
+    "9": 4519832,
+    "10": 4519832,
+    "11": 4981712,
+    "0": 4981712,
+    "1": 4985224,
+    "2": 4981712,
+    "3": 4979032,
+    "4": 4981712,
+    "5": 4981712,
+    "12": 4985224,
+    "13": 4985224
+  },
+  "describe": {
+    "arm": "A1q",
+    "variant": "baseline_v1",
+    "name": "PhyloMoE pool",
+    "seed": 808,
+    "inner_steps": 50,
+    "route_rule": "accept_then_logf",
+    "router": true,
+    "spawn_rule": "transfer",
+    "growth_rule": "probe",
+    "q": 0.05,
+    "alpha_spawn": 0.01,
+    "m_min": 32,
+    "gate_shortlist_min_experts": 64,
+    "skip_known": null,
+    "transfer_chance": null,
+    "transfer_chance_weak_only": false,
+    "set_gate": false,
+    "set_gate_confirm": 2,
+    "sig_dedupe": false,
+    "infant_relax": 4.0,
+    "experts": 12
+  }
+}

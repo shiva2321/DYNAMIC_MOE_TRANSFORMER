@@ -1,0 +1,186 @@
+{
+  "schema_version": "1.2.0",
+  "bed": "B3seq",
+  "n_regimes": 22,
+  "arm": "A7all",
+  "seed": 801,
+  "split": "dev",
+  "commit": "5377beb81fa27fdc95613d7ab3479c367a66c3aa",
+  "environment": {
+    "python": "3.12.10",
+    "torch": "2.6.0+cu124",
+    "cuda": "12.4",
+    "cuda_available": true,
+    "gpu_name": "NVIDIA GeForce RTX 3060",
+    "gpu_driver": "610.60",
+    "cpu_name": "AMD Ryzen 5 7600 6-Core Processor",
+    "logical_cores": 12,
+    "ram_bytes": 34081722368,
+    "torch_intraop_threads": 2,
+    "torch_interop_threads": 6,
+    "env_vars": {
+      "OMP_NUM_THREADS": "unset",
+      "MKL_NUM_THREADS": "unset",
+      "OPENBLAS_NUM_THREADS": "unset",
+      "NUMEXPR_NUM_THREADS": "unset"
+    },
+    "git_commit": "5377beb81fa27fdc95613d7ab3479c367a66c3aa",
+    "timestamp": "2026-11-02T20:53:12.988932+00:00"
+  },
+  "pinning": {
+    "threads": 2,
+    "cpus": [
+      8,
+      10
+    ],
+    "blas_limited": true
+  },
+  "profile": "det",
+  "bed_info": {
+    "d": 128,
+    "classes": 125,
+    "regimes": 22,
+    "phases": 28,
+    "total_samples": 12756,
+    "regime_names": [
+      "banking_g0",
+      "banking_g1",
+      "banking_g2",
+      "banking_g3",
+      "banking_g4",
+      "banking_g5",
+      "agnews_g0",
+      "agnews_g1",
+      "newsgroups_g0",
+      "newsgroups_g1",
+      "newsgroups_g2",
+      "newsgroups_g3",
+      "emotion_g0",
+      "emotion_g1",
+      "sst2_g0",
+      "svamp_g0",
+      "add",
+      "sub",
+      "mul",
+      "mod",
+      "div",
+      "max"
+    ],
+    "label_blocks": {
+      "banking": [
+        0,
+        77
+      ],
+      "agnews": [
+        77,
+        4
+      ],
+      "newsgroups": [
+        81,
+        20
+      ],
+      "emotion": [
+        101,
+        6
+      ],
+      "sst2": [
+        107,
+        2
+      ],
+      "svamp": [
+        109,
+        4
+      ],
+      "arith": [
+        113,
+        12
+      ]
+    }
+  },
+  "tuning_ref": "7b88004a9ffe7eb784e63f55c9db0db866dd06fe5417df9e86a2e4fa64befd63",
+  "reference_pool": null,
+  "uncounted_note": false,
+  "pool_time_split": null,
+  "config": {
+    "arm": "A7all",
+    "name": "KnnMemory all stored",
+    "seed": 801,
+    "k": 5,
+    "capacity": "all"
+  },
+  "accuracy": 0.6521713164719668,
+  "per_regime_accuracy": [
+    0.8633333444595337,
+    0.88671875,
+    0.834645688533783,
+    0.8100000023841858,
+    0.8409090638160706,
+    0.9473684430122375,
+    0.49666666984558105,
+    0.8166666626930237,
+    0.33000001311302185,
+    0.3333333432674408,
+    0.46000000834465027,
+    0.753333330154419,
+    0.4533333480358124,
+    0.3766666650772095,
+    0.44333332777023315,
+    0.5933333039283752,
+    0.6507936716079712,
+    0.6133333444595337,
+    0.7120000123977661,
+    0.7279999852180481,
+    0.7639999985694885,
+    0.6399999856948853
+  ],
+  "forgetting": 0.04511847279288552,
+  "update_cost": {
+    "counted_macs": 0
+  },
+  "answer_cost": {
+    "1": {
+      "batch_size": 1,
+      "rows_timed": 1,
+      "counted_macs": 1632768,
+      "active_bytes": 0
+    },
+    "32": {
+      "batch_size": 32,
+      "rows_timed": 32,
+      "counted_macs": 52248576,
+      "active_bytes": 0
+    }
+  },
+  "memory_bytes": 6531072,
+  "memory_bytes_by_regime": {
+    "14": 204800,
+    "16": 6326272,
+    "17": 886784,
+    "18": 1227776,
+    "19": 1568768,
+    "20": 1909760,
+    "21": 2250752,
+    "15": 5353472,
+    "6": 2660352,
+    "7": 2865152,
+    "8": 3069952,
+    "9": 3274752,
+    "10": 3479552,
+    "11": 3684352,
+    "0": 3889152,
+    "1": 6428672,
+    "2": 4298752,
+    "3": 6531072,
+    "4": 4708352,
+    "5": 4841472,
+    "12": 5455872,
+    "13": 5558272
+  },
+  "describe": {
+    "arm": "A7all",
+    "name": "KnnMemory all stored",
+    "seed": 801,
+    "k": 5,
+    "capacity": "all"
+  }
+}

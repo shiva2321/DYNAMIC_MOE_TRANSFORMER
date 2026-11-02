@@ -1,0 +1,122 @@
+{
+  "schema_version": "1.2.0",
+  "bed": "B1",
+  "n_regimes": 10,
+  "arm": "A6",
+  "seed": 801,
+  "split": "dev",
+  "commit": "df2c68773157f7752853f74515475d0fa9a9fa33",
+  "environment": {
+    "python": "3.12.10",
+    "torch": "2.6.0+cu124",
+    "cuda": "12.4",
+    "cuda_available": true,
+    "gpu_name": "NVIDIA GeForce RTX 3060",
+    "gpu_driver": "610.60",
+    "cpu_name": "AMD Ryzen 5 7600 6-Core Processor",
+    "logical_cores": 12,
+    "ram_bytes": 34081722368,
+    "torch_intraop_threads": 2,
+    "torch_interop_threads": 6,
+    "env_vars": {
+      "OMP_NUM_THREADS": "unset",
+      "MKL_NUM_THREADS": "unset",
+      "OPENBLAS_NUM_THREADS": "unset",
+      "NUMEXPR_NUM_THREADS": "unset"
+    },
+    "git_commit": "df2c68773157f7752853f74515475d0fa9a9fa33",
+    "timestamp": "2026-11-02T19:23:05.072397+00:00"
+  },
+  "pinning": {
+    "threads": 2,
+    "cpus": [
+      4,
+      6
+    ],
+    "blas_limited": true
+  },
+  "profile": "det",
+  "bed_info": {
+    "d": 128,
+    "classes": 8,
+    "regimes": 10,
+    "phases": 12,
+    "total_samples": 9600,
+    "regime_names": [
+      "fn0",
+      "fn1",
+      "fn2",
+      "fn3",
+      "fn4",
+      "fn5",
+      "fn6",
+      "fn7",
+      "fn8",
+      "fn9"
+    ]
+  },
+  "tuning_ref": "e86c9fcea5afef15570a52207c27aadea28702d06d25c251ad8211e170d4e921",
+  "reference_pool": null,
+  "uncounted_note": true,
+  "pool_time_split": null,
+  "config": {
+    "arm": "A6",
+    "name": "RandomFeatureRidge",
+    "seed": 801,
+    "D": 8192,
+    "ridge": 1.0,
+    "scale": 1.0
+  },
+  "accuracy": 0.2967499941587448,
+  "per_regime_accuracy": [
+    0.35749998688697815,
+    0.28999999165534973,
+    0.29499998688697815,
+    0.26249998807907104,
+    0.29249998927116394,
+    0.3499999940395355,
+    0.30250000953674316,
+    0.2775000035762787,
+    0.24500000476837158,
+    0.29499998688697815
+  ],
+  "forgetting": 0.04725000560283661,
+  "update_cost": {
+    "counted_macs": 654940569600
+  },
+  "answer_cost": {
+    "1": {
+      "batch_size": 1,
+      "rows_timed": 1,
+      "counted_macs": 1114112,
+      "active_bytes": 0
+    },
+    "32": {
+      "batch_size": 32,
+      "rows_timed": 32,
+      "counted_macs": 35651584,
+      "active_bytes": 0
+    }
+  },
+  "memory_bytes": 268697600,
+  "memory_bytes_by_regime": {
+    "0": 268697600,
+    "1": 268697600,
+    "2": 268697600,
+    "3": 268697600,
+    "4": 268697600,
+    "5": 268697600,
+    "6": 268697600,
+    "7": 268697600,
+    "8": 268697600,
+    "9": 268697600
+  },
+  "describe": {
+    "arm": "A6",
+    "name": "RandomFeatureRidge",
+    "seed": 801,
+    "D": 8192,
+    "ridge": 1.0,
+    "scale": 1.0
+  }
+}

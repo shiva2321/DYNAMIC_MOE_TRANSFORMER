@@ -1,0 +1,141 @@
+{
+  "schema_version": "1.2.0",
+  "bed": "B2",
+  "n_regimes": 6,
+  "arm": "H_shipped+skip",
+  "seed": 801,
+  "split": "dev",
+  "commit": "5377beb81fa27fdc95613d7ab3479c367a66c3aa",
+  "environment": {
+    "python": "3.12.10",
+    "torch": "2.6.0+cu124",
+    "cuda": "12.4",
+    "cuda_available": true,
+    "gpu_name": "NVIDIA GeForce RTX 3060",
+    "gpu_driver": "610.60",
+    "cpu_name": "AMD Ryzen 5 7600 6-Core Processor",
+    "logical_cores": 12,
+    "ram_bytes": 34081722368,
+    "torch_intraop_threads": 2,
+    "torch_interop_threads": 6,
+    "env_vars": {
+      "OMP_NUM_THREADS": "3",
+      "MKL_NUM_THREADS": "3",
+      "OPENBLAS_NUM_THREADS": "3",
+      "NUMEXPR_NUM_THREADS": "unset"
+    },
+    "git_commit": "5377beb81fa27fdc95613d7ab3479c367a66c3aa",
+    "timestamp": "2026-11-02T20:33:19.831743+00:00"
+  },
+  "pinning": {
+    "threads": 2,
+    "cpus": [
+      4,
+      6
+    ],
+    "blas_limited": true
+  },
+  "profile": "det",
+  "bed_info": {
+    "d": 128,
+    "classes": 77,
+    "regimes": 6,
+    "phases": 9,
+    "total_samples": 3000,
+    "regime_names": [
+      "banking_r0",
+      "banking_r1",
+      "banking_r2",
+      "banking_r3",
+      "banking_r4",
+      "banking_r5"
+    ]
+  },
+  "tuning_ref": "4924454de04f722571cc94825562ca5dbba5cd7301e31174c7e163653c8ee8ea",
+  "reference_pool": null,
+  "uncounted_note": true,
+  "pool_time_split": null,
+  "config": {
+    "arm": "H_shipped+skip",
+    "variant": "baseline_v1",
+    "name": "PhyloMoE pool",
+    "seed": 808,
+    "inner_steps": 50,
+    "route_rule": "accept_then_logf",
+    "router": true,
+    "spawn_rule": "transfer",
+    "growth_rule": "probe",
+    "q": 0.05,
+    "alpha_spawn": 0.01,
+    "m_min": 32,
+    "gate_shortlist_min_experts": 64,
+    "skip_known": 0.1,
+    "transfer_chance": null,
+    "transfer_chance_weak_only": false,
+    "set_gate": false,
+    "set_gate_confirm": 2,
+    "sig_dedupe": false,
+    "infant_relax": 4.0,
+    "candidate": "shipped+skip"
+  },
+  "accuracy": 0.7733333309491476,
+  "per_regime_accuracy": [
+    0.7733333110809326,
+    0.8999999761581421,
+    0.800000011920929,
+    0.846666693687439,
+    0.6466666460037231,
+    0.6733333468437195
+  ],
+  "forgetting": 0.08666666348775227,
+  "update_cost": {
+    "counted_macs": 38832520832
+  },
+  "answer_cost": {
+    "1": {
+      "batch_size": 1,
+      "rows_timed": 1,
+      "counted_macs": 444288,
+      "active_bytes": 173953
+    },
+    "32": {
+      "batch_size": 32,
+      "rows_timed": 32,
+      "counted_macs": 14217216,
+      "active_bytes": 521859
+    }
+  },
+  "memory_bytes": 3673684,
+  "memory_bytes_by_regime": {
+    "0": 3624756,
+    "1": 1158208,
+    "2": 3510340,
+    "3": 1595216,
+    "4": 3673684,
+    "5": 3403592
+  },
+  "describe": {
+    "arm": "H_shipped+skip",
+    "variant": "baseline_v1",
+    "name": "PhyloMoE pool",
+    "seed": 808,
+    "inner_steps": 50,
+    "route_rule": "accept_then_logf",
+    "router": true,
+    "spawn_rule": "transfer",
+    "growth_rule": "probe",
+    "q": 0.05,
+    "alpha_spawn": 0.01,
+    "m_min": 32,
+    "gate_shortlist_min_experts": 64,
+    "skip_known": 0.1,
+    "transfer_chance": null,
+    "transfer_chance_weak_only": false,
+    "set_gate": false,
+    "set_gate_confirm": 2,
+    "sig_dedupe": false,
+    "infant_relax": 4.0,
+    "candidate": "shipped+skip",
+    "experts": 7
+  }
+}
