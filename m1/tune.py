@@ -123,6 +123,12 @@ def is_candidate_better(new_cand: Dict[str, Any], old_cand: Dict[str, Any]) -> b
     return diff > 0.0
 
 
+def _run_plain(fn) -> None:
+    """Run ``fn`` without counting (the memory-only reference pass); returns None so that the record stores no multiply-adds."""
+    fn()
+    return None
+
+
 class TuningDriver:
     """Manages tuning runs, caching, and trial execution."""
 
@@ -168,24 +174,29 @@ class TuningDriver:
     def save_tuning_state(self) -> None:
         save_cell_record(self.tuning_file, self.state)
 
-    def pool_reference(self, pool_arm: str, seed: int) -> Dict[str, int]:
-        """Final memory and whole-stream counted training multiply-adds of the tuned reference pool (A1 or A2) on this bed and seed.
+    def pool_reference(self, pool_arm: str, seed: int, need_macs: bool = True) -> Dict[str, int]:
+        """Final memory and (if ``need_macs``) whole-stream counted training multiply-adds of the tuned reference pool (A1 or A2) on this bed and seed.
 
-        One counted pass gives both; the result is cached in ``macs/`` and is valid only for the tuning entry it was made with.
+        The memory comes from a plain pass; the multiply-adds need a counted pass, about five times as slow (and a pool that fragments is slow), so they are counted only for A4.
+        The result is cached in ``macs/`` and is valid only for the tuning entry it was made with.
         """
         chosen = self.state["arms"].get(pool_arm, {}).get("chosen")
         if chosen is None:
             raise RuntimeError(f"{pool_arm} must be tuned before the arms sized from it: tune {pool_arm} first.")
         ref = compute_tuning_ref(chosen)
         macs_file = self.macs_dir / f"{self.bed_name}_n{self.n_regimes}_{pool_arm}__seed{seed}.json"
+        cached: Dict[str, Any] = {}
         if macs_file.exists():
             try:
                 rec = load_cell_record(macs_file)
-                if rec.get("tuning_ref") == ref and "macs" in rec and "bytes" in rec:
-                    return {"bytes": int(rec["bytes"]), "macs": int(rec["macs"])}
-                print(f"  [STALE] {macs_file.name} was made for another tuning entry: recounting", flush=True)
+                if rec.get("tuning_ref") == ref and "bytes" in rec:
+                    cached = rec
+                else:
+                    print(f"  [STALE] {macs_file.name} was made for another tuning entry: recomputing", flush=True)
             except (OSError, ValueError):
-                print(f"  [CORRUPT] {macs_file.name} cannot be read: recounting", flush=True)
+                print(f"  [CORRUPT] {macs_file.name} cannot be read: recomputing", flush=True)
+        if cached and (not need_macs or cached.get("macs") is not None):
+            return {"bytes": int(cached["bytes"]), "macs": None if cached.get("macs") is None else int(cached["macs"])}
 
         bed = build_bed(self.bed_name, self.n_regimes, seed)
         held: Dict[str, int] = {}
@@ -196,17 +207,18 @@ class TuningDriver:
                 pool.observe(x, y)
             held["bytes"] = pool.memory_bytes()
 
-        total_macs = count_macs(_run).macs
-        save_cell_record(macs_file, {"bed": self.bed_name, "n": self.n_regimes, "arm": pool_arm, "seed": seed, "macs": total_macs, "bytes": held["bytes"], "tuning_ref": ref})
+        total_macs = count_macs(_run).macs if need_macs else _run_plain(_run)
+        record = {"bed": self.bed_name, "n": self.n_regimes, "arm": pool_arm, "seed": seed, "macs": total_macs, "bytes": held["bytes"], "tuning_ref": ref}
+        save_cell_record(macs_file, record)
         return {"bytes": held["bytes"], "macs": total_macs}
 
     def get_pool_budget_bytes(self, pool_arm: str, seed: int) -> int:
-        """Final memory of the tuned reference pool (cached)."""
-        return self.pool_reference(pool_arm, seed)["bytes"]
+        """Final memory of the tuned reference pool (cached; a plain pass)."""
+        return self.pool_reference(pool_arm, seed, need_macs=False)["bytes"]
 
     def get_pool_budget_macs(self, pool_arm: str, seed: int) -> int:
-        """Whole-stream counted training multiply-adds of the tuned reference pool (cached)."""
-        return self.pool_reference(pool_arm, seed)["macs"]
+        """Whole-stream counted training multiply-adds of the tuned reference pool (cached; a counted pass)."""
+        return self.pool_reference(pool_arm, seed, need_macs=True)["macs"]
 
     def run_single_trial(
         self,

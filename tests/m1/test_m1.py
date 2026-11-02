@@ -659,3 +659,22 @@ def test_queue_expands_the_h_shorthand_and_uses_the_a1q_tuning(tmp_path, monkeyp
     assert [a for a, _ in seen] == ["H_shipped", "H_shipped+gap", "H_shipped+skip", "H_shipped+chance"]
     assert all(t == {"inner_steps": 2, "q": 0.02} for _, t in seen)
     assert (tmp_path / "cells" / cell_filename("B1", 2, "H_shipped+gap", 100)).exists()
+
+
+def test_reference_pool_memory_needs_no_counted_pass(tmp_path, monkeypatch, small_bed):
+    """A3 and A7 need only the memory of the reference pool (a plain pass); only A4 needs the counted multiply-adds (a counted pass, several times slower)."""
+    import m1.tune as tune_mod
+
+    runs = []
+    real_count = tune_mod.count_macs
+    monkeypatch.setattr(tune_mod, "count_macs", lambda fn: (runs.append(1), real_count(fn))[1])
+    monkeypatch.setattr(tune_mod, "build_bed", lambda name, n, seed: small_bed)
+    drv = TuningDriver("B1", 2, tmp_path, smoke=True, seeds=[100])
+    drv.state["arms"]["A1"] = {"chosen": {"inner_steps": 2}}
+    mem = drv.get_pool_budget_bytes("A1", 100)
+    assert mem > 0 and runs == []                                               # plain pass: nothing counted
+    assert drv.get_pool_budget_bytes("A1", 100) == mem and runs == []           # and cached
+    macs = drv.get_pool_budget_macs("A1", 100)
+    assert macs > 0 and len(runs) == 1                                          # the counted pass is made once, when A4 asks
+    assert drv.get_pool_budget_macs("A1", 100) == macs and len(runs) == 1
+    assert drv.get_pool_budget_bytes("A1", 100) == mem                          # same memory from both kinds of pass
