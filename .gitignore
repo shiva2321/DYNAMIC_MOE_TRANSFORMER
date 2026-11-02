@@ -66,3 +66,15 @@ research/growmoe_results/rv2d/cells_s3u/*.tmp
 research/growmoe_results/rv2d/cells_s3d_*/*.ckpt
 research/growmoe_results/rv2d/cells_s3d_*/*.tmp
 research/knowledge_status/_cache/
+
+# UniMoE Stage 1: cached sentence embeddings of the 7 domains (235 MB, re-creatable by the front end; cells and tables are the evidence)
+results/unimoe/emb/
+
+# FS-MoE: cached reader states (re-creatable by python -m fsmoe.embed_bed)
+results/fsmoe/_cache/
+
+# Antigravity CLI conversation state (written by agy in the working directory)
+.antigravitycli/
+
+# GrowMoE real-text embedding caches (re-creatable, not evidence)
+research/growmoe_results/rv3/_cache_real/
