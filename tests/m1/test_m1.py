@@ -678,3 +678,34 @@ def test_reference_pool_memory_needs_no_counted_pass(tmp_path, monkeypatch, smal
     assert macs > 0 and len(runs) == 1                                          # the counted pass is made once, when A4 asks
     assert drv.get_pool_budget_macs("A1", 100) == macs and len(runs) == 1
     assert drv.get_pool_budget_bytes("A1", 100) == mem                          # same memory from both kinds of pass
+
+
+def test_det_profile_has_the_deterministic_metrics_and_no_timing(small_bed, a1_record):
+    det = execute_cell(small_bed, "A1", split="dev", profile="det")
+    assert is_valid_cell_record(det) and det["profile"] == "det"
+    assert det["accuracy"] == a1_record["accuracy"] and det["forgetting"] == a1_record["forgetting"] and det["memory_bytes"] == a1_record["memory_bytes"]
+    assert det["update_cost"] == {"counted_macs": a1_record["update_cost"]["counted_macs"]}                # no wall-clock, no peak memory
+    assert det["pool_time_split"] is None
+    for b in ("1", "32"):
+        assert set(det["answer_cost"][b]) == {"batch_size", "rows_timed", "counted_macs", "active_bytes"}
+        assert det["answer_cost"][b]["counted_macs"] == a1_record["answer_cost"][b]["counted_macs"]
+    assert not record_matches_config(det, small_bed, "A1", profile="full")                                # a det cell does not stand in for a timed one
+
+
+def test_queue_shards_split_the_groups_without_overlap(tmp_path, monkeypatch, small_bed, a1_record):
+    calls = []
+
+    def fake_execute(bed, arm_name, **kwargs):
+        calls.append(bed.seed)
+        return copy.deepcopy(a1_record)
+
+    monkeypatch.setattr(queue_mod, "execute_cell", fake_execute)
+    monkeypatch.setattr(queue_mod, "build_bed", lambda name, n, seed: copy.replace(small_bed, seed=seed) if hasattr(copy, "replace") else small_bed)
+    seen = {}
+    for k in (0, 1):
+        calls.clear()
+        run_queue(split="dev", beds=["B1"], ns=[2], arms=["A1"], seeds=[100, 101, 102, 103], out=tmp_path / f"shard{k}", cpus=[0], threads=1, shard=f"{k}/2")
+        seen[k] = len(calls)
+    assert seen == {0: 2, 1: 2}                                                  # four groups, two per shard
+    with pytest.raises(ValueError, match="shard"):
+        run_queue(split="dev", beds=["B1"], ns=[2], arms=["A1"], seeds=[100], out=tmp_path / "bad", cpus=[0], threads=1, shard="2/2")

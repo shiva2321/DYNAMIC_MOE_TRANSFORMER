@@ -54,6 +54,7 @@ _REQUIRED_UPDATE_FULL = (
     "peak_memory",
     "eval_wall_clock_per_regime_boundary",
 )
+_REQUIRED_ANSWER_DET = ("batch_size", "rows_timed", "counted_macs", "active_bytes")      # profile det: no timing fields at all
 _REQUIRED_ANSWER = (
     "batch_size",
     "rows_timed",
@@ -89,10 +90,13 @@ def is_valid_cell_record(rec: Dict[str, Any]) -> bool:
         return False
 
     profile = rec.get("profile")
-    if profile not in ("full", "light"):
+    if profile not in ("full", "det", "light"):
         return False
 
     update_cost = rec.get("update_cost", {})
+    if profile == "det":
+        ans = rec.get("answer_cost", {})
+        return "counted_macs" in update_cost and all(b in ans and all(k in ans[b] for k in _REQUIRED_ANSWER_DET) for b in ("1", "32"))
     if profile == "full":
         if not all(k in update_cost for k in _REQUIRED_UPDATE_FULL):
             return False
@@ -207,8 +211,8 @@ def execute_cell(
     if split == "report":
         raise ValueError("Stage B refuses --split report; report seeds are reserved.")
 
-    if profile not in ("full", "light"):
-        raise ValueError(f"Unknown profile {profile!r}; must be 'full' or 'light'.")
+    if profile not in ("full", "det", "light"):
+        raise ValueError(f"Unknown profile {profile!r}; must be 'full' (everything), 'det' (deterministic metrics only, no timing) or 'light' (tuning).")
 
     env_info = environment()
     commit = env_info.get("git_commit") or "unknown"
@@ -253,7 +257,7 @@ def execute_cell(
         for x_b, y_b, regime_id, first_visit, phase_idx in bed.walk(64):
             if phase_idx != cur_phase:
                 if cur_phase >= 0:
-                    if profile == "full":                       # the light profile (tuning) needs only the final accuracy: no evaluation, and so no router refit, at the phase boundaries
+                    if profile in ("full", "det"):              # the light profile (tuning) needs only the final accuracy: no evaluation, and so no router refit, at the phase boundaries
                         R_rows.append(_eval_row())
                     bytes_by_regime[str(last_regime)] = arm.memory_bytes()
                 cur_phase = phase_idx
@@ -287,7 +291,7 @@ def execute_cell(
     else:
         forgetting = None                                       # one row only (light profile): forgetting is not defined
 
-    if profile == "full":
+    if profile in ("full", "det"):
         if arm_name in ("A7", "A7all", "A7-2"):
             update_macs = 0                      # a lookup stores vectors at update time: nothing is multiplied
         else:
@@ -314,21 +318,20 @@ def execute_cell(
         for b in (1, 32):
             x_b = test_x[torch.arange(b) % len(test_x)]
             fn = lambda: arm.predict(x_b)
-            t_res = time_callable(fn, warmup=5, repeats=10, device="cpu")
             mod = arm.get_torch_modules()
             act_b = active_param_bytes(mod, fn).total if mod is not None else 0
-            answer_cost[str(b)] = {
-                "batch_size": b,
-                "rows_timed": int(len(x_b)),
-                "latency_median_s": t_res.median,
-                "latency_mean_s": t_res.mean,
-                "latency_std_s": t_res.std,
-                "latency_cv": t_res.cv,
-                "latency_p95_s": t_res.p95,
-                "items_per_second": float(b / t_res.median) if t_res.median > 0 else 0.0,
-                "counted_macs": count_macs(fn).macs,
-                "active_bytes": act_b,
-            }
+            entry: Dict[str, Any] = {"batch_size": b, "rows_timed": int(len(x_b)), "counted_macs": count_macs(fn).macs, "active_bytes": act_b}
+            if profile == "full":                    # timing only in the isolated pass: other work on the machine would contaminate it
+                t_res = time_callable(fn, warmup=5, repeats=10, device="cpu")
+                entry.update(
+                    latency_median_s=t_res.median,
+                    latency_mean_s=t_res.mean,
+                    latency_std_s=t_res.std,
+                    latency_cv=t_res.cv,
+                    latency_p95_s=t_res.p95,
+                    items_per_second=float(b / t_res.median) if t_res.median > 0 else 0.0,
+                )
+            answer_cost[str(b)] = entry
     else:
         update_macs = None
         answer_cost = {}
@@ -350,7 +353,15 @@ def execute_cell(
         reference_pool = {"arm": "A2", "bytes": pool_memory_bytes, "macs": pool_macs_budget}
 
     tuning_ref = compute_tuning_ref(tuning)
-    pool_time_split = getattr(arm, "time_split", None)
+    pool_time_split = getattr(arm, "time_split", None) if profile != "det" else None
+    update_cost = {"counted_macs": update_macs} if profile == "det" else {
+        "wall_clock_per_observe": obs_durations,
+        "wall_clock_per_regime": reg_durations,
+        "wall_clock_total": wall_clock_total,
+        "counted_macs": update_macs,
+        "peak_memory": peak_mem_profile,
+        "eval_wall_clock_per_regime_boundary": eval_durations,
+    }
 
     return {
         "schema_version": SCHEMA_VERSION,
@@ -372,14 +383,7 @@ def execute_cell(
         "accuracy": float(R[-1].mean()),
         "per_regime_accuracy": [float(x) for x in R[-1]],
         "forgetting": forgetting,
-        "update_cost": {
-            "wall_clock_per_observe": obs_durations,
-            "wall_clock_per_regime": reg_durations,
-            "wall_clock_total": wall_clock_total,
-            "counted_macs": update_macs,
-            "peak_memory": peak_mem_profile,
-            "eval_wall_clock_per_regime_boundary": eval_durations,
-        },
+        "update_cost": update_cost,
         "answer_cost": answer_cost,
         "memory_bytes": arm.memory_bytes(),
         "memory_bytes_by_regime": bytes_by_regime,

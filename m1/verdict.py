@@ -250,6 +250,18 @@ def evaluate_rule_6_1_all(records: Sequence[Dict[str, Any]]) -> Dict[str, Dict[s
 # -----------------------------------------------------------------------------
 
 
+def _lat_b1(rec: Dict[str, Any]) -> Optional[float]:
+    """Median answer latency at batch 1 of a cell, or None when the cell has no timing (profile det)."""
+    v = rec.get("answer_cost", {}).get("1", {}).get("latency_median_s")
+    return None if v is None else float(v)
+
+
+def _wall(rec: Dict[str, Any]) -> Optional[float]:
+    """Whole-run update wall-clock of a cell, or None when the cell has no timing (profile det)."""
+    v = rec.get("update_cost", {}).get("wall_clock_total")
+    return None if v is None else float(v)
+
+
 def _find_candidate_records(
     records: Sequence[Dict[str, Any]], bed: str, candidate_name: str
 ) -> List[Dict[str, Any]]:
@@ -300,16 +312,9 @@ def evaluate_rule_6_2_lda_head(records: Sequence[Dict[str, Any]]) -> Dict[str, A
         acc_ref = [float(ref_by_seed[seed]["accuracy"]) for seed in common]
         diff = paired_diff(acc_cand, acc_ref)
 
-        lat_cand = [
-            float(cand_by_seed[seed]["answer_cost"]["1"]["latency_median_s"])
-            for seed in common
-            if "answer_cost" in cand_by_seed[seed] and "1" in cand_by_seed[seed]["answer_cost"]
-        ]
-        lat_ref = [
-            float(ref_by_seed[seed]["answer_cost"]["1"]["latency_median_s"])
-            for seed in common
-            if "answer_cost" in ref_by_seed[seed] and "1" in ref_by_seed[seed]["answer_cost"]
-        ]
+        timed = [s_ for s_ in common if _lat_b1(cand_by_seed[s_]) is not None and _lat_b1(ref_by_seed[s_]) is not None]       # cells of profile det carry no timing
+        lat_cand = [_lat_b1(cand_by_seed[s_]) for s_ in timed]
+        lat_ref = [_lat_b1(ref_by_seed[s_]) for s_ in timed]
         mean_lat_cand = float(np.mean(lat_cand)) if lat_cand else 0.0
         mean_lat_ref = float(np.mean(lat_ref)) if lat_ref else 0.0
         lat_ratio = (mean_lat_cand - mean_lat_ref) / mean_lat_ref if mean_lat_ref > 0 else 0.0
@@ -374,19 +379,24 @@ def evaluate_rule_6_2_growth(records: Sequence[Dict[str, Any]]) -> Dict[str, Any
         acc_ref = [float(ref_by_seed[seed]["accuracy"]) for seed in common]
         diff = paired_diff(acc_cand, acc_ref)
 
-        w_cand = [float(cand_by_seed[seed]["update_cost"]["wall_clock_total"]) for seed in common]
-        w_ref = [float(ref_by_seed[seed]["update_cost"]["wall_clock_total"]) for seed in common]
+        timed = [s_ for s_ in common if _wall(cand_by_seed[s_]) is not None and _wall(ref_by_seed[s_]) is not None]
+        w_cand = [_wall(cand_by_seed[s_]) for s_ in timed]
+        w_ref = [_wall(ref_by_seed[s_]) for s_ in timed]
         wall_cand_all.extend(w_cand)
         wall_ref_all.extend(w_ref)
 
         bed_evals[b] = {
             "paired_diff": diff,
-            "mean_wall_cand": float(np.mean(w_cand)),
-            "mean_wall_ref": float(np.mean(w_ref)),
+            "mean_wall_cand": float(np.mean(w_cand)) if w_cand else None,
+            "mean_wall_ref": float(np.mean(w_ref)) if w_ref else None,
+            "timed_seeds": len(timed),
         }
 
     if not bed_evals:
         return {"adopted": False, "status": "NOT APPLICABLE", "reason": f"No common runs for {ref_name} vs {cand_name}"}
+
+    if not wall_ref_all:
+        return {"adopted": False, "status": "NOT APPLICABLE", "reason": "No seed with update timing on both sides (cells of profile det carry none)", "beds": bed_evals}
 
     # Accuracy not below probe by more than 0.5 points on any bed: mean_diff >= -0.005
     cond_acc_not_drop = all(
@@ -441,8 +451,9 @@ def evaluate_rule_6_2_skip(records: Sequence[Dict[str, Any]]) -> Dict[str, Any]:
         acc_ref = [float(ref_by_seed[seed]["accuracy"]) for seed in common]
         diff = paired_diff(acc_cand, acc_ref)
 
-        obs_cand = [float(cand_by_seed[seed]["update_cost"]["wall_clock_total"]) for seed in common]
-        obs_ref = [float(ref_by_seed[seed]["update_cost"]["wall_clock_total"]) for seed in common]
+        timed = [s_ for s_ in common if _wall(cand_by_seed[s_]) is not None and _wall(ref_by_seed[s_]) is not None]
+        obs_cand = [_wall(cand_by_seed[s_]) for s_ in timed]
+        obs_ref = [_wall(ref_by_seed[s_]) for s_ in timed]
         mean_obs_cand = float(np.mean(obs_cand)) if obs_cand else 0.0
         mean_obs_ref = float(np.mean(obs_ref)) if obs_ref else 0.0
         obs_change = (mean_obs_cand - mean_obs_ref) / mean_obs_ref if mean_obs_ref > 0 else 0.0
@@ -454,6 +465,7 @@ def evaluate_rule_6_2_skip(records: Sequence[Dict[str, Any]]) -> Dict[str, Any]:
         bed_evals[b] = {
             "paired_diff": diff,
             "obs_change": obs_change,
+            "timed_seeds": len(timed),
         }
 
     if not bed_evals:

@@ -63,12 +63,13 @@ def make_cell(
     pool_time_split: Dict[str, float] | None = None,
     memory_bytes_by_regime: Dict[str, int] | None = None,
     experts: int = 1,
+    profile: str = "full",
 ) -> Dict[str, Any]:
-    """Helper to create a structurally valid cell record for unit testing."""
+    """Helper to create a structurally valid cell record for unit testing (profile det: no timing fields)."""
     if memory_bytes_by_regime is None:
         memory_bytes_by_regime = {str(r): (r + 1) * (mem_bytes // n_regimes) for r in range(n_regimes)}
 
-    return {
+    rec = {
         "schema_version": SCHEMA_VERSION,
         "bed": bed,
         "n_regimes": n_regimes,
@@ -138,6 +139,13 @@ def make_cell(
         "pool_time_split": pool_time_split,
         "describe": {"experts": experts},
     }
+    if profile == "det":
+        rec["profile"] = "det"
+        rec["update_cost"] = {"counted_macs": int(up_macs)}
+        rec["pool_time_split"] = None
+        for b in ("1", "32"):
+            rec["answer_cost"][b] = {k: v for k, v in rec["answer_cost"][b].items() if k in ("batch_size", "rows_timed", "counted_macs", "active_bytes")}
+    return rec
 
 
 # -----------------------------------------------------------------------------
@@ -638,3 +646,26 @@ def test_m1_4_uses_the_a2_pool_and_prints_a1_beside_it() -> None:
     res = evaluate_prediction_m1_4(recs)
     assert res["status"] == "PASS" and res["numbers"]["a1_share_b2"] < 0.60 < res["numbers"]["share_b2"]
     assert evaluate_prediction_m1_4([r for r in recs if r["arm"] == "A1"])["status"] == "NOT APPLICABLE"
+
+
+def test_det_cells_carry_no_timing_and_timing_comparisons_use_the_timed_seeds_only() -> None:
+    """Accuracy is paired over all seeds; wall-clock only over the seeds that have timing on both sides; no timed seed at all means NOT APPLICABLE."""
+    from m1.cell import is_valid_cell_record
+
+    assert is_valid_cell_record(make_cell(profile="det")) and "wall_clock_total" not in make_cell(profile="det")["update_cost"]
+    records = []
+    for s in (800, 801, 802, 803):
+        prof = "full" if s in (800, 801) else "det"                      # timing on two seeds only
+        records.append(make_cell(bed="B2", n_regimes=6, arm="H_shipped", candidate="shipped", seed=s, acc=0.40, up_wall=100.0, profile=prof))
+        records.append(make_cell(bed="B2", n_regimes=6, arm="H_shipped+gap", candidate="shipped+gap", seed=s, acc=0.40, up_wall=70.0, profile=prof))
+    res = evaluate_rule_6_2_growth(records)
+    assert res["adopted"] is True and res["beds"]["B2"]["timed_seeds"] == 2 and res["beds"]["B2"]["paired_diff"]["mean_diff"] == 0.0
+    no_timing = [make_cell(bed="B2", n_regimes=6, arm=f"H_{c}", candidate=c, seed=s, profile="det") for c in ("shipped", "shipped+gap") for s in (800, 801)]
+    assert evaluate_rule_6_2_growth(no_timing)["status"] == "NOT APPLICABLE"
+    lda = []
+    for bed in ("B3seq", "B3mix", "B3drift"):
+        for s in (800, 801):
+            lda.append(make_cell(bed=bed, n_regimes=22, arm="H_U-real", candidate="U-real", seed=s, acc=0.50, profile="det"))
+            lda.append(make_cell(bed=bed, n_regimes=22, arm="H_ULDA", candidate="ULDA", seed=s, acc=0.52, profile="det"))
+    res_lda = evaluate_rule_6_2_lda_head(lda)                           # no latency anywhere: the accuracy conditions still evaluate, the latency rise counts as 0.0
+    assert res_lda["max_lat_rise"] == 0.0 and res_lda["cond_gain_all"] is True

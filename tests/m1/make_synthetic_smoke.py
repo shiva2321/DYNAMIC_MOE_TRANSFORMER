@@ -36,12 +36,13 @@ def main(out: str = "results/m1/smoke/synthetic_cells") -> int:
                     up_wall=10.0 if pool else 5.0, lat_b1=0.005 if pool else 0.003,
                     pool_time_split={"observe": 10.0, "train_expert": 2.5, "router_refit": 1.2} if pool else None,
                     memory_bytes_by_regime={str(r): (r + 1) * 100_000 for r in range(n)}, experts=max(1, n // 2),
+                    profile="full" if seed == SEEDS[0] else "det",              # timing only on the first seed, as in the real report phase
                 )
                 save_cell_record(out_dir / f"{bed}_n{n}_{arm}__seed{seed}.json", rec)
                 count += 1
         for cand in PAIR_CANDIDATES:
             for seed in SEEDS:
-                rec = make_cell(bed=bed, n_regimes=n, arm=f"H_{cand}", seed=seed, candidate=cand, acc=0.36, up_wall=8.0, lat_b1=0.004, split="synthetic")
+                rec = make_cell(bed=bed, n_regimes=n, arm=f"H_{cand}", seed=seed, candidate=cand, acc=0.36, up_wall=8.0, lat_b1=0.004, split="synthetic", profile="full" if seed == SEEDS[0] else "det")
                 save_cell_record(out_dir / f"{bed}_n{n}_H_{cand}__seed{seed}.json", rec)
                 count += 1
     print(f"Wrote {count} SYNTHETIC cell records under {out_dir}")

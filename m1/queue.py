@@ -89,7 +89,9 @@ def parse_args(argv: Optional[List[str]] = None) -> argparse.Namespace:
     parser.add_argument("--seeds", default="800", help="Comma-separated seeds or ranges (default: 800).")
     parser.add_argument("--out", default="results/m1/dev", help="Output directory.")
     parser.add_argument("--tuning", default=None, help="Directory or file containing tuning results.")
-    parser.add_argument("--profile", default="full", choices=["full", "light"], help="Profiling mode.")
+    parser.add_argument("--profile", default="full", choices=["full", "det", "light"],
+                        help="full = everything incl. timing (run it alone on quiet cores); det = deterministic metrics only, safe to run in parallel; light = tuning.")
+    parser.add_argument("--shard", default="0/1", help="K/M: this process handles the (bed, N, seed) groups whose running number modulo M is K; the groups are independent.")
     parser.add_argument("--cpus", default="0,2", help="Logical processors to pin, one per physical core.")
     parser.add_argument("--threads", type=int, default=2, help="Thread count (default: 2).")
     return parser.parse_args(argv)
@@ -106,11 +108,15 @@ def run_queue(
     profile: str = "full",
     cpus: Optional[List[int]] = None,
     threads: int = 2,
+    shard: str = "0/1",
 ) -> None:
     """Execute queue of cells, skipping records that are complete, valid, and match current config."""
     if split == "report":
         raise ValueError("Stage B refuses --split report; report seeds are reserved.")
 
+    shard_k, shard_m = (int(v) for v in shard.split("/"))
+    if not (0 <= shard_k < shard_m):
+        raise ValueError(f"--shard must be K/M with 0 <= K < M, got {shard!r}")
     cpus_list = cpus if cpus is not None else list(PINNING_CPUS)
     out_dir = Path(out)
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -125,11 +131,15 @@ def run_queue(
 
     print(f"Queue starting: {cells_total} total cells across seeds {seeds}")
 
+    group_no = 0
     with fixed_threads(n=threads, cpus=cpus_list) as pinning:
         for bed_name in beds:
             tuning_map = load_tuning_map(tuning_dir, bed_name)
             for n in ns:
                 for seed in seeds:
+                    group_no += 1
+                    if (group_no - 1) % shard_m != shard_k:
+                        continue                               # another shard handles this (bed, N, seed) group
                     bed = build_bed(bed_name, n, seed)
                     arms_here = [a for a in sorted_arms if a != "H"] + (h_arms_for(bed_name) if "H" in sorted_arms else [])
                     pool_bytes_r1 = read_pool_budget(out_dir, bed, pool_arm="A1", tuning=tuning_map.get("A1"))
@@ -251,6 +261,7 @@ def main(argv: Optional[List[str]] = None) -> None:
         profile=args.profile,
         cpus=cpus,
         threads=args.threads,
+        shard=args.shard,
     )
 
 
