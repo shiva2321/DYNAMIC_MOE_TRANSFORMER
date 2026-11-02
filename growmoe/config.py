@@ -137,6 +137,14 @@ class PhyloCfg(CommonCfg):
     transfer_perms: int = 999
     transfer_ref: int = 512          # honest per-sample losses kept per expert as its reference
     transfer_min_ref: int = 64       # an expert with fewer reference losses cannot be the parent of a transfer test
+    transfer_chance: Optional[float] = None   # worse-than-chance rule (E-061/E-062, OFF = None): a parent whose zero-shot loss on a cluster is at least this multiple of the chance loss ln(classes it has seen) cannot vouch for
+    #                              the cluster: the verdict becomes a conflict and the cluster founds a child. The shipped test compares the cluster loss with the parent's OWN reference losses, which are high for a weak parent
+    #                              (a closed-form notebook, a small network), so such a parent absorbs almost any cluster and regimes are lost (8-unit pool: 0.45 experts per regime on 30 regimes). 1.0 repairs it.
+    transfer_chance_weak_only: bool = False   # with transfer_chance set: veto only when the PARENT is weak, i.e. its own mean reference loss is also at least transfer_chance x chance (E-062: on the real 7-domain suite the
+    #                              unconditional rule split drifting data that one strong expert handled and cost 1-2 points; a strong parent (reference loss well under chance) keeps the shipped verdict)
+    skip_known: Optional[float] = None   # skip rule (E-063, OFF = None): a batch routed to a settled expert whose mean prequential loss (taken before any step) is at most this fraction of the chance loss
+    #                              ln(classes the expert has seen) is already known: its optimiser steps are skipped (the batch still enters the expert's reservoir, signature and closed-form head). 0.1 = under a tenth of chance.
+    skip_min_assigned: int = 256     # an expert must have trained on this many samples before it may skip
     spawn_pretrain_steps: int = 60   # training steps of a child born from a transfer conflict (the probe's child gets the same number)
     growth_rule: str = "probe"   # 4c: "probe" = the shadow-trial policy of Phase 1 to stage 4.1 (can widen AND deepen; about half of its wall time is trials that commit nothing);
     #                              "gap" = widen x2 when the within-batch fit gap is small and progress has stalled; it REPLACES the shadow trial, so it never deepens. "gap" passed its
@@ -202,6 +210,12 @@ class PhyloCfg(CommonCfg):
             raise ValueError(f"transfer_perms={self.transfer_perms} is too small for transfer_alpha={self.transfer_alpha}: the smallest attainable p-value exceeds the level")
         if self.transfer_margin < 0.0 or self.spawn_pretrain_steps < 0:
             raise ValueError("transfer_margin and spawn_pretrain_steps must not be negative")
+        if self.transfer_chance is not None and self.transfer_chance <= 0.0:
+            raise ValueError(f"transfer_chance must be positive or None, got {self.transfer_chance}")
+        if self.skip_known is not None and not 0.0 < self.skip_known <= 1.0:
+            raise ValueError(f"skip_known must lie in (0, 1] or be None, got {self.skip_known}")
+        if self.skip_min_assigned < 0:
+            raise ValueError("skip_min_assigned must not be negative")
         if self.transfer_min_ref < 8 or self.transfer_ref < self.transfer_min_ref:
             raise ValueError("transfer_min_ref must be at least 8 and transfer_ref at least transfer_min_ref")
         if self.growth_rule not in ("probe", "gap"):

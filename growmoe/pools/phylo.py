@@ -63,6 +63,7 @@ class PhyloMoE(BasePool):
         self._set = SetGate(self.cfg)                                  # routing v2 stage 3a; idle unless cfg.set_gate
         self._held: list = []                                          # persistence (A-15): samples of a doubtful batch that wait for the next decision
         self._held_step = -10
+        self.skip_stats = {"trained": 0, "skipped": 0, "trained_rows": 0, "skipped_rows": 0}   # E-063: batches (and rows) that took optimiser steps / were skipped as already known; counters only
         self._route_state()                                            # routing v2 stage 4a; idle unless cfg.router
         self._grow_stats()                                             # routing v2 stage 4c; idle unless cfg.growth_rule == "gap"
         self._cap_state()                                              # stage 4.1: what the cap did; counters only
@@ -823,7 +824,13 @@ class PhyloMoE(BasePool):
                             monitor.reset()
                             recent_deque.clear()
 
-                    if not alarm_fired:
+                    if not alarm_fired and self._known_batch(rec, preq_losses):      # E-063 skip rule: the expert already predicts this batch, so no optimiser steps
+                        self._absorb_only(eid, xk_v, yk_v)
+                        self.skip_stats["skipped"] += 1
+                        self.skip_stats["skipped_rows"] += int(xk_v.shape[0])
+                    elif not alarm_fired:
+                        self.skip_stats["trained"] += 1
+                        self.skip_stats["trained_rows"] += int(xk_v.shape[0])
                         l_k = self.train_expert(
                             eid,
                             xk_v,
@@ -1004,8 +1011,13 @@ class PhyloMoE(BasePool):
             _, eid, losses, ref = best
         margin = cfg.transfer_margin * math.log(max(int(self.experts[eid].module.seen.sum()), 2))
         conflict, p, diff = cluster_conflict(losses, torch.tensor(ref), cfg.transfer_alpha, cfg.transfer_perms, margin, generator(cfg.seed, 0x545246, self.step, eid))
+        veto = False
+        if not conflict and cfg.transfer_chance is not None:                       # a parent that does worse than chance on the cluster cannot vouch for it
+            bar = cfg.transfer_chance * math.log(max(int(self.experts[eid].module.seen.sum()), 2))
+            veto = float(losses.mean()) >= bar and (not cfg.transfer_chance_weak_only or float(np.mean(ref)) >= bar)
+            conflict = veto
         return TransferVerdict(parent=eid, conflict=conflict, p=p, diff=diff, loss_cluster=float(losses.mean()), loss_ref=float(np.mean(ref)), margin=margin,
-                               n_cluster=int(losses.numel()), n_ref=len(ref))
+                               n_cluster=int(losses.numel()), n_ref=len(ref), chance_veto=veto)
 
     def _extend_unchanged(self, parent_eid: int, aff: float, x_taken: Tensor, y_taken: Tensor, verdict: TransferVerdict, novel_indices, x_all, assigned) -> None:
         """No conflict: the parent already predicts these labels, so the cluster joins its signature and replay and NO weight changes (it keeps training on the stream as usual)."""
@@ -1258,8 +1270,24 @@ class PhyloMoE(BasePool):
         """Counters of the batch-level gate (tests, early stops, permutations, verdicts, overrides, pauses, breaker openings, window splits). No wall-clock."""
         return self._set.stats
 
+    def _known_batch(self, rec, preq_losses: Tensor) -> bool:
+        """E-063 skip rule: True when the expert is settled (active, trained on at least ``skip_min_assigned`` samples) and the mean loss it had on this batch BEFORE any step is at most ``skip_known`` x the chance
+        loss ln(classes it has seen). Always False with ``skip_known`` None (the default)."""
+        k = self.cfg.skip_known
+        if k is None or rec.state != "active" or rec.n_assigned < self.cfg.skip_min_assigned:
+            return False
+        return float(preq_losses.mean()) <= k * math.log(max(int(rec.module.seen.sum()), 2))
+
+    def _absorb_only(self, eid: int, x: Tensor, y: Tensor) -> None:
+        """What ``train_expert`` does besides the optimiser steps: the batch enters the expert's reservoir and its counters."""
+        rec = self.experts[eid]
+        rec.replay.add(x, y)
+        rec.n_assigned += x.shape[0]
+        rec.last_active = self.step
+
     def summary(self) -> dict:
         out = super().summary()
+        out["skip"] = dict(self.skip_stats)
         if self.cfg.set_gate:
             out["set_stats"] = dict(self._set.stats)
         cap = self._cap_state()                                        # stage 4.1: what a full pool did, and what the infants' relaxed gate hid

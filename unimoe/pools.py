@@ -109,12 +109,21 @@ class UniPool(PhyloMoE):
         if c.growth_rule == "gap" and c.gap_mode == "one_step" and c.grow and rec.state == "active":
             rec.meta["probe"] = self._one_step_probe(rec, x, y)                       # taken from the weights BEFORE the inner steps
         loss = super().train_expert(eid, x, y, replay, project)
+        self._lda_absorb(rec, x, y)
+        return loss
+
+    def _lda_absorb(self, rec, x: Tensor, y: Tensor) -> None:
+        c = self.cfg
         if c.lda_blend > 0.0:
             head = rec.meta.get("lda")
             if head is None:
                 head = rec.meta["lda"] = HD.LdaHead(c.d, c.n_classes, c.lda_shrink)
             head.update(F.normalize(x.float(), dim=1), y)
-        return loss
+
+    def _absorb_only(self, eid: int, x: Tensor, y: Tensor) -> None:
+        """A skipped batch (E-063) still enters the expert's closed-form head: it is one cheap pass and the head never forgets."""
+        super()._absorb_only(eid, x, y)
+        self._lda_absorb(self.experts[eid], x, y)
 
     def _gap_growth_step(self, rec, x: Tensor, y: Tensor, pre: Tensor) -> None:
         """The shipped decision (mature, gap below the threshold, cooled down, room under the cap and the budget: widen) with the gap read from the one-step probe."""

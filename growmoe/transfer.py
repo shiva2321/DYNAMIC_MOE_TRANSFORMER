@@ -63,7 +63,11 @@ class TransferVerdict:
     margin: float
     n_cluster: int
     n_ref: int
+    chance_veto: bool = False    # the worse-than-chance rule (cfg.transfer_chance) turned a no-conflict verdict into a conflict
 
     def fields(self) -> dict:
         """What the ``spawn`` and ``extend`` events carry."""
-        return {"p_conflict": self.p, "loss_cluster": self.loss_cluster, "loss_ref": self.loss_ref, "margin": self.margin, "n_ref": self.n_ref}
+        out = {"p_conflict": self.p, "loss_cluster": self.loss_cluster, "loss_ref": self.loss_ref, "margin": self.margin, "n_ref": self.n_ref}
+        if self.chance_veto:
+            out["chance_veto"] = True
+        return out
