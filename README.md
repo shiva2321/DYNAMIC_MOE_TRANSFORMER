@@ -1,3 +1,7 @@
+> **Status note (2026-11-02).** This README describes the earlier ISHMN / Universal Cognitive Engine design. Later audits recorded in the lab notebook found that its headline benchmark gain does not survive paired numeric grading ([E-001](docs/labnotebook/entries/E-001-ishmn-benchmark-claims-audit.md)) and that the live checkpoint had six structural defects, some since fixed ([E-002](docs/labnotebook/entries/E-002-ishmn-structural-defects-probed-on-the-live-checkpoint.md)).
+> The other numbers, the badges and the "Empirical Benchmark Proof" section below have not been through the notebook's pre-registered, fresh-seed process: read them as historical and unverified, not as results.
+> The work now maintained is the expert-pool research (GrowMoE, UniMoE, FS-MoE); see [research/README.md](research/README.md), the lab notebook in [docs/labnotebook](docs/labnotebook) and the plan in [docs/roadmap](docs/roadmap).
+
 # Infinite Spherical Hyperspace Memory Network (ISHMN)
 ## Universal Cognitive Engine: Continuous Autonomous General Intelligence, Abductive Sense-Making, Riemannian Analogies & Tri-Tier Memory
 
