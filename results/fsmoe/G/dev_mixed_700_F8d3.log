@@ -1,0 +1,1 @@
+mixed s700 F8d3: mean acc 0.681 min 0.536 experts 16/16 params 53840 (net 33760) macs/answer 2814 events {'spawn': 16, 'absorb': 12} 62s

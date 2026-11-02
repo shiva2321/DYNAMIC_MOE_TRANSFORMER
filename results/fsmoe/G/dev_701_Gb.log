@@ -1,0 +1,1 @@
+mixed s701 Gb: mean acc 0.719 min 0.562 experts 16/16 params 56416 (net 36336) macs/answer 2963 events {'spawn': 16, 'keep_notebook': 32, 'absorb': 11, 'promote': 8, 'trial': 9, 'grow': 3, 'keep': 3} 102s

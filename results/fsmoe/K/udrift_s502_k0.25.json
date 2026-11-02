@@ -1,0 +1,1 @@
+{"bed": "udrift", "seed": 502, "arm": "k0.25", "acc": 0.6670549877665259, "experts": 1, "events": {"spawn": 1, "router_refit": 5, "set_held": 1, "set_novel": 1, "extend": 1}, "skip": {"trained": 155, "skipped": 13, "trained_rows": 9571, "skipped_rows": 685}, "train_seconds": 0.35612979996949434, "observe_seconds": 1.71484179993422, "seconds": 2.6264131999996607}

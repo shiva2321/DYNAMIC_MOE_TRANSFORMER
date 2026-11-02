@@ -1,0 +1,1 @@
+big s700 G: mean acc 0.800 min 0.580 experts 48/48 params 99692 (net 39452) macs/answer 2553 events {'spawn': 48, 'keep_notebook': 116, 'absorb': 16, 'promote': 18, 'trial': 25, 'tier_refused': 280} 243s

@@ -1,0 +1,1 @@
+{"bed": "umix", "seed": 521, "arm": "k0.25", "acc": 0.6603086482394825, "experts": 1, "events": {"spawn": 1, "router_refit": 4}, "skip": {"trained": 155, "skipped": 9, "trained_rows": 9718, "skipped_rows": 526}, "train_seconds": 0.4746368000342045, "observe_seconds": 1.7383035000311793, "seconds": 2.541014800000994}

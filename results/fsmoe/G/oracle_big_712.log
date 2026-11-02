@@ -1,0 +1,48 @@
+oracle big s712 regime 0 lin: none {}
+oracle big s712 regime 1 lin: none {}
+oracle big s712 regime 2 lin: none {}
+oracle big s712 regime 3 lin: none {}
+oracle big s712 regime 4 lin: none {}
+oracle big s712 regime 5 lin: none {}
+oracle big s712 regime 6 lin: none {}
+oracle big s712 regime 7 lin: none {}
+oracle big s712 regime 8 lin: none {}
+oracle big s712 regime 9 lin: none {}
+oracle big s712 regime 10 lin: none {}
+oracle big s712 regime 11 lin: none {}
+oracle big s712 regime 12 lin: none {}
+oracle big s712 regime 13 lin: none {}
+oracle big s712 regime 14 lin: none {}
+oracle big s712 regime 15 lin: none {}
+oracle big s712 regime 16 lin: none {}
+oracle big s712 regime 17 lin: none {}
+oracle big s712 regime 18 lin: none {}
+oracle big s712 regime 19 lin: none {}
+oracle big s712 regime 20 lin: none {}
+oracle big s712 regime 21 lin: none {}
+oracle big s712 regime 22 lin: none {}
+oracle big s712 regime 23 lin: none {}
+oracle big s712 regime 24 lin: none {}
+oracle big s712 regime 25 lin: none {}
+oracle big s712 regime 26 lin: none {}
+oracle big s712 regime 27 lin: none {}
+oracle big s712 regime 28 lin: none {}
+oracle big s712 regime 29 lin: none {}
+oracle big s712 regime 30 lin: none {}
+oracle big s712 regime 31 lin: none {}
+oracle big s712 regime 32 lin: none {}
+oracle big s712 regime 33 lin: none {}
+oracle big s712 regime 34 lin: none {}
+oracle big s712 regime 35 lin: none {}
+oracle big s712 regime 36 wide: width {'small': 0.6806666851043701, 'wide': 0.7946666479110718, 'deep': 0.70333331823349}
+oracle big s712 regime 37 wide: width {'small': 0.7419999837875366, 'wide': 0.8220000267028809, 'deep': 0.7713333368301392}
+oracle big s712 regime 38 wide: width {'small': 0.6113333106040955, 'wide': 0.737333357334137, 'deep': 0.6380000114440918}
+oracle big s712 regime 39 wide: width {'small': 0.653333306312561, 'wide': 0.7519999742507935, 'deep': 0.6653333306312561}
+oracle big s712 regime 40 wide: width {'small': 0.6293333172798157, 'wide': 0.7406666874885559, 'deep': 0.640666663646698}
+oracle big s712 regime 41 wide: width {'small': 0.70333331823349, 'wide': 0.8026666641235352, 'deep': 0.7366666793823242}
+oracle big s712 regime 42 deep: none {'small': 0.6806666851043701, 'wide': 0.6993333101272583, 'deep': 0.7300000190734863}
+oracle big s712 regime 43 deep: none {'small': 0.8113333582878113, 'wide': 0.8059999942779541, 'deep': 0.8299999833106995}
+oracle big s712 regime 44 deep: none {'small': 0.7540000081062317, 'wide': 0.7453333139419556, 'deep': 0.762666642665863}
+oracle big s712 regime 45 deep: depth {'small': 0.7620000243186951, 'wide': 0.7826666831970215, 'deep': 0.8166666626930237}
+oracle big s712 regime 46 deep: none {'small': 0.7193333506584167, 'wide': 0.7333333492279053, 'deep': 0.7606666684150696}
+oracle big s712 regime 47 deep: depth {'small': 0.7726666927337646, 'wide': 0.7720000147819519, 'deep': 0.8240000009536743}

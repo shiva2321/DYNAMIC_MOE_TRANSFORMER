@@ -1,0 +1,1 @@
+easy s700 F8: mean acc 0.865 min 0.842 experts 8/8 params 17064 (net 7024) macs/answer 1326 events {'spawn': 8, 'absorb': 8} 16s

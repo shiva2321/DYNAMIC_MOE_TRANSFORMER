@@ -1,0 +1,21 @@
+f30 s700 NBc: acc 0.4771 experts 30 params 30 bytes 14.76 MB nb {'notebook_experts': 30, 'net_experts': 0, 'net_sizes': {}, 'judging_macs': 31389696000.0} 72s
+f30 s701 NBc: acc 0.4898 experts 30 params 30 bytes 14.86 MB nb {'notebook_experts': 30, 'net_experts': 0, 'net_sizes': {}, 'judging_macs': 31389696000.0} 74s
+f30 s700 NB: acc 0.4747 experts 30 params 18149 bytes 14.84 MB nb {'notebook_experts': 29, 'net_experts': 1, 'net_sizes': {'23': [64, 1]}, 'judging_macs': 92971008000.0} 100s
+f30 s700 NBd: acc 0.4747 experts 30 params 18149 bytes 14.84 MB nb {'notebook_experts': 29, 'net_experts': 1, 'net_sizes': {'23': [64, 1]}, 'judging_macs': 92971008000.0} 100s
+f30 s701 NB: acc 0.4787 experts 29 params 9924 bytes 14.34 MB nb {'notebook_experts': 28, 'net_experts': 1, 'net_sizes': {'1': [32, 1]}, 'judging_macs': 89871974400.0} 103s
+f30 s701 NBd: acc 0.4787 experts 29 params 9924 bytes 14.34 MB nb {'notebook_experts': 28, 'net_experts': 1, 'net_sizes': {'1': [32, 1]}, 'judging_macs': 89871974400.0} 103s
+f10 s700 NBc: acc 0.4990 experts 10 params 10 bytes 5.17 MB nb {'notebook_experts': 10, 'net_experts': 0, 'net_sizes': {}, 'judging_macs': 10463232000.0} 32s
+f10 s700 NB: acc 0.4830 experts 10 params 18129 bytes 5.25 MB nb {'notebook_experts': 9, 'net_experts': 1, 'net_sizes': {'1': [64, 1]}, 'judging_macs': 30990336000.0} 41s
+f10 s700 NBd: acc 0.4830 experts 10 params 18129 bytes 5.25 MB nb {'notebook_experts': 9, 'net_experts': 1, 'net_sizes': {'1': [64, 1]}, 'judging_macs': 30990336000.0} 40s
+f30 s702 NBc: acc 0.4944 experts 30 params 30 bytes 14.67 MB nb {'notebook_experts': 30, 'net_experts': 0, 'net_sizes': {}, 'judging_macs': 31389696000.0} 77s
+f10 s701 NBc: acc 0.5000 experts 10 params 10 bytes 4.88 MB nb {'notebook_experts': 10, 'net_experts': 0, 'net_sizes': {}, 'judging_macs': 10463232000.0} 29s
+f10 s701 NB: acc 0.5000 experts 10 params 10 bytes 4.88 MB nb {'notebook_experts': 10, 'net_experts': 0, 'net_sizes': {}, 'judging_macs': 30990336000.0} 38s
+f30 s702 NB: acc 0.4569 experts 27 params 68006 bytes 13.94 MB nb {'notebook_experts': 22, 'net_experts': 5, 'net_sizes': {'8': [64, 1], '14': [32, 1], '16': [64, 1], '19': [64, 1], '20': [8, 1]}, 'judging_macs': 83673907200.0} 101s
+f10 s701 NBd: acc 0.5000 experts 10 params 10 bytes 4.88 MB nb {'notebook_experts': 10, 'net_experts': 0, 'net_sizes': {}, 'judging_macs': 30990336000.0} 37s
+f30 s702 NBd: acc 0.4569 experts 27 params 68006 bytes 13.94 MB nb {'notebook_experts': 22, 'net_experts': 5, 'net_sizes': {'8': [64, 1], '14': [32, 1], '16': [64, 1], '19': [64, 1], '20': [8, 1]}, 'judging_macs': 83673907200.0} 99s
+f10 s702 NB: acc 0.4255 experts 8 params 37917 bytes 4.43 MB nb {'notebook_experts': 5, 'net_experts': 3, 'net_sizes': {'1': [32, 1], '3': [32, 1], '4': [64, 1]}, 'judging_macs': 24792268800.0} 39s
+f10 s702 NBc: acc 0.4985 experts 10 params 10 bytes 4.94 MB nb {'notebook_experts': 10, 'net_experts': 0, 'net_sizes': {}, 'judging_macs': 10463232000.0} 30s
+t s700 NB: tw 0.958 ho 0.892 experts 3 params 3 bytes 10.83 MB nb {'notebook_experts': 3, 'net_experts': 0, 'net_sizes': {}, 'judging_macs': 81168998400.0} 27s
+t s700 NBc: tw 0.958 ho 0.892 experts 3 params 3 bytes 10.83 MB nb {'notebook_experts': 3, 'net_experts': 0, 'net_sizes': {}, 'judging_macs': 34557235200.0} 20s
+f10 s702 NBd: acc 0.4255 experts 8 params 37917 bytes 4.43 MB nb {'notebook_experts': 5, 'net_experts': 3, 'net_sizes': {'1': [32, 1], '3': [32, 1], '4': [64, 1]}, 'judging_macs': 24792268800.0} 36s
+t s700 NBd: tw 0.958 ho 0.892 experts 3 params 3 bytes 10.83 MB nb {'notebook_experts': 3, 'net_experts': 0, 'net_sizes': {}, 'judging_macs': 81168998400.0} 19s

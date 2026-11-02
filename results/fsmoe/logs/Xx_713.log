@@ -1,0 +1,4 @@
+seed 713 A1r: learned all 0.32 (arith 1.00 code 1.00 lang 0.05) known_ho 0.859 (code 0.923) human by domain {'arith': 123, 'code': 107, 'lang': 154} known trained 0
+seed 713 A3r: learned all 0.29 (arith 0.33 code 1.00 lang 0.10) known_ho 0.880 (code 0.964) human by domain {'arith': 99, 'code': 0, 'lang': 132} known trained 1980
+seed 713 A5: learned all 0.32 (arith 0.67 code 1.00 lang 0.10) known_ho 0.857 (code 0.938) human by domain {'arith': 99, 'code': 0, 'lang': 132} known trained 196
+exit 0

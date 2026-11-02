@@ -1,0 +1,7 @@
+seed 700 oracle 0.1 interleaved: learned 0.11 known_ho 0.885->0.844 flipped 133 (to new 132, twin 1, other 0)
+seed 700 oracle 0.1 focused: learned 0.71 known_ho 0.885->0.581 flipped 985 (to new 974, twin 6, other 5)
+seed 700 oracle 0.1 focused_replay: learned 0.71 known_ho 0.885->0.707 flipped 609 (to new 441, twin 33, other 135)
+seed 700 diverse 0.1 interleaved: learned 0.07 known_ho 0.885->0.848 flipped 156 (to new 33, twin 13, other 110)
+seed 700 diverse 0.1 focused: learned 0.11 known_ho 0.885->0.670 flipped 800 (to new 284, twin 113, other 403)
+seed 700 diverse 0.1 focused_replay: learned 0.18 known_ho 0.885->0.815 flipped 336 (to new 77, twin 48, other 211)
+exit 0

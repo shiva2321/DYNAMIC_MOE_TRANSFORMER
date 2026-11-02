@@ -1,0 +1,1 @@
+{"bed": "bank", "seed": 710, "arm": "k0.1", "acc": 0.8497222165266672, "experts": 6, "events": {"spawn": 6, "set_held": 5, "set_novel": 5, "router_refit": 1}, "skip": {"trained": 43, "skipped": 5, "trained_rows": 2552, "skipped_rows": 64}, "train_seconds": 0.929404600043199, "observe_seconds": 4.206684800024959, "seconds": 5.818169099999068}

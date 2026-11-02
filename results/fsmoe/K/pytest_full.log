@@ -1,0 +1,40 @@
+........................................................................ [  6%]
+........................................................................ [ 13%]
+........................................................................ [ 19%]
+........................................................................ [ 26%]
+........................................................................ [ 32%]
+........................................................................ [ 39%]
+........................................................................ [ 45%]
+........................................................................ [ 52%]
+........................................................................ [ 58%]
+........................................................................ [ 65%]
+......xx................................................................ [ 71%]
+........................................................................ [ 78%]
+........................................................................ [ 84%]
+........................................................................ [ 91%]
+........................................................................ [ 97%]
+........................                                                 [100%]
+============================== warnings summary ===============================
+tests/growmoe/test_gm_rv3_confirm.py::test_the_breaker_is_fed_the_raw_verdict_and_not_the_held_one
+  D:\spherical_hyperspace_memory\growmoe\pools\phylo.py:703: RuntimeWarning: PhyloMoE: the pool is at max_experts=1 (step 7), so a region the pool has never seen is NOT learned (cap_policy='drop'): its samples are lost. Raise max_experts if the stream can hold more distinct regions than that.
+    self._note_cap_blocked(int(len(novel_indices)))
+
+tests/growmoe/test_gm_rv3_pool.py::test_the_breaker_opens_in_a_live_pool_pauses_and_resumes
+  D:\spherical_hyperspace_memory\growmoe\pools\phylo.py:703: RuntimeWarning: PhyloMoE: the pool is at max_experts=1 (step 6), so a region the pool has never seen is NOT learned (cap_policy='drop'): its samples are lost. Raise max_experts if the stream can hold more distinct regions than that.
+    self._note_cap_blocked(int(len(novel_indices)))
+
+tests/growmoe/test_gm_s41_cap.py::test_a_full_pool_that_shares_adds_the_cluster_to_the_nearest_expert_and_says_so
+tests/growmoe/test_gm_s41_cap.py::test_pools_pickled_before_stage_4_1_still_work
+  D:\spherical_hyperspace_memory\growmoe\pools\phylo.py:259: RuntimeWarning: PhyloMoE: the pool is at max_experts=1 (step 14), so a region the pool has never seen is added to the nearest expert (cap_policy='share'): nothing is deleted, but that expert now serves more than one thing. Raise max_experts if the stream can hold more distinct regions than that.
+    return self._cap_cluster(parent_eid, aff, x_taken, y_taken, novel_indices, x_all, assigned)
+
+tests/unimoe/test_um_domain_routing.py::test_a_logistic_regression_domain_classifier_is_scored_on_the_text_domains_test_sets
+tests/unimoe/test_um_domain_routing.py::test_a_logistic_regression_domain_classifier_is_scored_on_the_text_domains_test_sets
+  C:\Users\Asta\AppData\Local\Programs\Python\Python312\Lib\site-packages\sklearn\linear_model\_logistic.py:455: DeprecationWarning: scipy.optimize: The `disp` and `iprint` options of the L-BFGS-B solver are deprecated and will be removed in SciPy 1.18.0.
+    opt_res = optimize.minimize(
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+XFAIL tests/growmoe/test_gm_rv4_transfer_pool.py::test_merge_cleans_up_a_forced_duplicate[0] - AUDIT RESULT 2026-10-15: merge cannot clean a forced duplicate (0 of 4 seeds merged, seeds 0-3). The overlap test passes (mutual coverage 0.44-0.52 against 0.2), but the acceptance test compares experts that MEMORISED their replay with a clone that never trained on the held-out half: the clone loses 6-9 points on the validation halves against a tolerance of 2 (delta_merge). Same flaw as the spawn probe of E-030, mirrored. A false spawn is therefore never repaired; see FAILURES and the open questions.
+XFAIL tests/growmoe/test_gm_rv4_transfer_pool.py::test_merge_cleans_up_a_forced_duplicate[1] - AUDIT RESULT 2026-10-15: merge cannot clean a forced duplicate (0 of 4 seeds merged, seeds 0-3). The overlap test passes (mutual coverage 0.44-0.52 against 0.2), but the acceptance test compares experts that MEMORISED their replay with a clone that never trained on the held-out half: the clone loses 6-9 points on the validation halves against a tolerance of 2 (delta_merge). Same flaw as the spawn probe of E-030, mirrored. A false spawn is therefore never repaired; see FAILURES and the open questions.
+1102 passed, 2 xfailed, 6 warnings in 434.13s (0:07:14)

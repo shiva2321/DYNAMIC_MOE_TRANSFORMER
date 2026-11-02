@@ -1,0 +1,7 @@
+seed 713 oracle 0.1 interleaved: learned 0.79 known_ho 0.881->0.415 flipped 1488 (to new 1449, twin 4, other 35)
+seed 713 oracle 0.1 focused: learned 0.82 known_ho 0.881->0.705 flipped 591 (to new 552, twin 10, other 29)
+seed 713 oracle 0.1 focused_replay: learned 0.75 known_ho 0.881->0.652 flipped 766 (to new 542, twin 41, other 183)
+seed 713 diverse 0.1 interleaved: learned 0.29 known_ho 0.881->0.645 flipped 852 (to new 339, twin 106, other 407)
+seed 713 diverse 0.1 focused: learned 0.32 known_ho 0.881->0.674 flipped 757 (to new 298, twin 111, other 348)
+seed 713 diverse 0.1 focused_replay: learned 0.18 known_ho 0.881->0.809 flipped 331 (to new 71, twin 49, other 211)
+exit 0

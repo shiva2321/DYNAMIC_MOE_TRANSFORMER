@@ -1,0 +1,22 @@
+FS {'inner_steps': 1, 'replay_size': 256, 'lda_blend': 0.5} tw 0.960 ho 0.893 experts 3
+FS {'inner_steps': 1, 'replay_size': 256, 'lda_blend': 0.75} tw 0.956 ho 0.893 experts 3
+FS {'inner_steps': 1, 'replay_size': 4000, 'lda_blend': 0.5} tw 0.960 ho 0.894 experts 3
+FS {'inner_steps': 1, 'replay_size': 4000, 'lda_blend': 0.75} tw 0.957 ho 0.893 experts 3
+FS {'inner_steps': 5, 'replay_size': 256, 'lda_blend': 0.5} tw 0.965 ho 0.897 experts 3
+FS {'inner_steps': 5, 'replay_size': 256, 'lda_blend': 0.75} tw 0.961 ho 0.895 experts 3
+FS {'inner_steps': 5, 'replay_size': 4000, 'lda_blend': 0.5} tw 0.966 ho 0.897 experts 3
+FS {'inner_steps': 5, 'replay_size': 4000, 'lda_blend': 0.75} tw 0.961 ho 0.895 experts 3
+replay_eqmem {'inner_steps': 1, 'lr': 0.001} tw 0.940 ho 0.845
+replay_eqmem {'inner_steps': 1, 'lr': 0.003} tw 0.951 ho 0.846
+replay_eqmem {'inner_steps': 5, 'lr': 0.001} tw 0.957 ho 0.795
+replay_eqmem {'inner_steps': 5, 'lr': 0.003} tw 0.949 ho 0.722
+knn_eqmem {} tw 0.938 ho 0.819
+lda {} tw 0.935 ho 0.867
+joint {'inner_steps': 1, 'lr': 0.001} tw 0.944 ho 0.851
+joint {'inner_steps': 1, 'lr': 0.003} tw 0.935 ho 0.763
+joint {'inner_steps': 5, 'lr': 0.001} tw 0.963 ho 0.839
+joint {'inner_steps': 5, 'lr': 0.003} tw 0.947 ho 0.797
+team tau 0.1 {'acc': 0.8851944804191589, 'mean_size': 1.0125470161437988}
+team tau 0.3 {'acc': 0.8851944804191589, 'mean_size': 1.1304893493652344}
+team tau 1.0 {'acc': 0.8861355185508728, 'mean_size': 1.567440390586853}
+exit 0

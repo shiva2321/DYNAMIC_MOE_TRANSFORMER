@@ -1,0 +1,20 @@
+........................................................................ [  6%]
+........................................................................ [ 13%]
+........................................................................ [ 19%]
+........................................................................ [ 26%]
+........................................................................ [ 32%]
+........................................................................ [ 39%]
+........................................................................ [ 46%]
+........................................................................ [ 52%]
+........................................................................ [ 59%]
+........................................................................ [ 65%]
+......xx................................................................ [ 72%]
+........................................................................ [ 79%]
+........................................................................ [ 85%]
+........................................................................ [ 92%]
+........................................................................ [ 98%]
+...........                                                              [100%]
+=========================== short test summary info ===========================
+XFAIL tests/growmoe/test_gm_rv4_transfer_pool.py::test_merge_cleans_up_a_forced_duplicate[0] - AUDIT RESULT 2026-10-15: merge cannot clean a forced duplicate (0 of 4 seeds merged, seeds 0-3). The overlap test passes (mutual coverage 0.44-0.52 against 0.2), but the acceptance test compares experts that MEMORISED their replay with a clone that never trained on the held-out half: the clone loses 6-9 points on the validation halves against a tolerance of 2 (delta_merge). Same flaw as the spawn probe of E-030, mirrored. A false spawn is therefore never repaired; see FAILURES and the open questions.
+XFAIL tests/growmoe/test_gm_rv4_transfer_pool.py::test_merge_cleans_up_a_forced_duplicate[1] - AUDIT RESULT 2026-10-15: merge cannot clean a forced duplicate (0 of 4 seeds merged, seeds 0-3). The overlap test passes (mutual coverage 0.44-0.52 against 0.2), but the acceptance test compares experts that MEMORISED their replay with a clone that never trained on the held-out half: the clone loses 6-9 points on the validation halves against a tolerance of 2 (delta_merge). Same flaw as the spawn probe of E-030, mirrored. A false spawn is therefore never repaired; see FAILURES and the open questions.
+1089 passed, 2 xfailed in 444.77s (0:07:24)

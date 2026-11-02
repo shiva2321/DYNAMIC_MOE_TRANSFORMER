@@ -1,0 +1,1 @@
+mixed s700 F64: mean acc 0.723 min 0.626 experts 16/16 params 92368 (net 72288) macs/answer 5222 events {'spawn': 16, 'absorb': 12} 47s

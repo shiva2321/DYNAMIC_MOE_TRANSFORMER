@@ -1,0 +1,56 @@
+seed 710 replay_eqmem done
+seed 710 knn_eqmem done
+seed 710 lda done
+seed 710 joint done
+seed 710 deploy none 0.0: learned 0.00 precision nan
+seed 710 deploy random 0.05: learned 0.00 precision 0.13
+seed 710 deploy novelty 0.05: learned 0.11 precision 0.25
+seed 710 deploy uncertainty 0.05: learned 0.04 precision 0.08
+seed 710 deploy oracle 0.05: learned 0.11 precision 1.00
+seed 710 deploy random 0.1: learned 0.00 precision 0.12
+seed 710 deploy novelty 0.1: learned 0.11 precision 0.21
+seed 711 replay_eqmem done
+seed 711 knn_eqmem done
+seed 711 lda done
+seed 711 joint done
+seed 711 deploy none 0.0: learned 0.00 precision nan
+seed 711 deploy random 0.05: learned 0.00 precision 0.16
+seed 711 deploy novelty 0.05: learned 0.07 precision 0.27
+seed 711 deploy uncertainty 0.05: learned 0.04 precision 0.10
+seed 711 deploy oracle 0.05: learned 0.00 precision 1.00
+seed 711 deploy random 0.1: learned 0.00 precision 0.12
+seed 711 deploy novelty 0.1: learned 0.14 precision 0.23
+seed 712 replay_eqmem done
+seed 712 knn_eqmem done
+seed 712 lda done
+seed 712 joint done
+seed 712 deploy none 0.0: learned 0.00 precision nan
+seed 712 deploy random 0.05: learned 0.00 precision 0.11
+seed 712 deploy novelty 0.05: learned 0.11 precision 0.28
+seed 712 deploy uncertainty 0.05: learned 0.11 precision 0.11
+seed 712 deploy oracle 0.05: learned 0.57 precision 1.00
+seed 712 deploy random 0.1: learned 0.00 precision 0.13
+seed 712 deploy novelty 0.1: learned 0.14 precision 0.22
+seed 713 replay_eqmem done
+seed 713 knn_eqmem done
+seed 713 lda done
+seed 713 joint done
+seed 713 deploy none 0.0: learned 0.00 precision nan
+seed 713 deploy random 0.05: learned 0.21 precision 0.14
+seed 713 deploy novelty 0.05: learned 0.11 precision 0.27
+seed 713 deploy uncertainty 0.05: learned 0.04 precision 0.10
+seed 713 deploy oracle 0.05: learned 0.11 precision 1.00
+seed 713 deploy random 0.1: learned 0.00 precision 0.12
+seed 713 deploy novelty 0.1: learned 0.14 precision 0.21
+seed 714 replay_eqmem done
+seed 714 knn_eqmem done
+seed 714 lda done
+seed 714 joint done
+seed 714 deploy none 0.0: learned 0.00 precision nan
+seed 714 deploy random 0.05: learned 0.18 precision 0.12
+seed 714 deploy novelty 0.05: learned 0.11 precision 0.25
+seed 714 deploy uncertainty 0.05: learned 0.11 precision 0.10
+seed 714 deploy oracle 0.05: learned 0.07 precision 1.00
+seed 714 deploy random 0.1: learned 0.25 precision 0.13
+seed 714 deploy novelty 0.1: learned 0.14 precision 0.21
+exit 0

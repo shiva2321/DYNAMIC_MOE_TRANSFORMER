@@ -1,0 +1,6 @@
+seed 710 A0: learned all 0.14 (arith 0.00 code 0.40 lang 0.10) known_ho 0.641 human 391 tool 0 clusters 0
+seed 710 A1: learned all 0.36 (arith 0.33 code 0.60 lang 0.30) known_ho 0.863 human 391 tool 0 clusters 0
+seed 710 A2: learned all 0.21 (arith 0.33 code 0.60 lang 0.10) known_ho 0.891 human 228 tool 240 clusters 5
+seed 710 A3: learned all 0.29 (arith 0.33 code 1.00 lang 0.10) known_ho 0.885 human 228 tool 2395 clusters 6
+seed 710 A4: learned all 0.32 (arith 0.33 code 1.00 lang 0.15) known_ho 0.895 human 515 tool 2395 clusters 6
+exit 0

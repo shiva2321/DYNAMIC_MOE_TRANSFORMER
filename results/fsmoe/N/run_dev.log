@@ -1,0 +1,28 @@
+f30 s700 U32: acc 0.4673 experts 30 params 296880 bytes 15.95 MB nb None 72s
+f30 s700 U128: acc 0.4775 experts 30 params 1037040 bytes 18.91 MB nb None 73s
+f30 s701 U128: acc 0.4918 experts 30 params 1037040 bytes 19.01 MB nb None 75s
+f30 s700 U8: acc 0.3105 experts 16 params 59648 bytes 10.07 MB nb None 93s
+f30 s700 NB: acc 0.4750 experts 30 params 18149 bytes 16.76 MB nb {'notebook_experts': 29, 'net_experts': 1, 'net_sizes': {'23': [64, 1]}, 'judging_macs': 92971008000.0} 141s
+f30 s701 NB: acc 0.4778 experts 29 params 9924 bytes 16.16 MB nb {'notebook_experts': 28, 'net_experts': 1, 'net_sizes': {'1': [32, 1]}, 'judging_macs': 89871974400.0} 145s
+f30 s701 U32: acc 0.4856 experts 30 params 296880 bytes 16.05 MB nb None 82s
+f30 s702 U128: acc 0.4938 experts 30 params 1037040 bytes 18.81 MB nb None 84s
+f30 s701 U8: acc 0.2822 experts 13 params 48464 bytes 9.52 MB nb None 119s
+f30 s702 NB: acc 0.4527 experts 27 params 68006 bytes 15.42 MB nb {'notebook_experts': 22, 'net_experts': 5, 'net_sizes': {'8': [64, 1], '14': [32, 1], '16': [64, 1], '19': [64, 1], '20': [8, 1]}, 'judging_macs': 83673907200.0} 130s
+f30 s702 U32: acc 0.4819 experts 30 params 296880 bytes 15.85 MB nb None 69s
+f10 s700 U128: acc 0.4940 experts 10 params 345680 bytes 6.56 MB nb None 27s
+f10 s700 NB: acc 0.4828 experts 10 params 18129 bytes 5.92 MB nb {'notebook_experts': 9, 'net_experts': 1, 'net_sizes': {'1': [64, 1]}, 'judging_macs': 30990336000.0} 40s
+f10 s700 U8: acc 0.3825 experts 7 params 26096 bytes 3.92 MB nb None 28s
+f10 s700 U32: acc 0.4865 experts 10 params 98960 bytes 5.57 MB nb None 28s
+f10 s701 U128: acc 0.4987 experts 10 params 345680 bytes 6.26 MB nb None 25s
+f30 s702 U8: acc 0.2721 experts 12 params 44736 bytes 8.41 MB nb None 119s
+f10 s701 NB: acc 0.4963 experts 10 params 10 bytes 5.60 MB nb {'notebook_experts': 10, 'net_experts': 0, 'net_sizes': {}, 'judging_macs': 30990336000.0} 38s
+f10 s701 U8: acc 0.2768 experts 4 params 14912 bytes 2.93 MB nb None 33s
+f10 s701 U32: acc 0.4855 experts 10 params 98960 bytes 5.27 MB nb None 26s
+f10 s702 U128: acc 0.4932 experts 10 params 345680 bytes 6.33 MB nb None 27s
+f10 s702 U8: acc 0.4520 experts 9 params 33552 bytes 4.74 MB nb None 27s
+f10 s702 NB: acc 0.4220 experts 8 params 37917 bytes 4.82 MB nb {'notebook_experts': 5, 'net_experts': 3, 'net_sizes': {'1': [32, 1], '3': [32, 1], '4': [64, 1]}, 'judging_macs': 24792268800.0} 40s
+f10 s702 U32: acc 0.4960 experts 10 params 98960 bytes 5.34 MB nb None 26s
+t s700 U128: tw 0.966 ho 0.897 experts 3 params 278703 bytes 12.76 MB nb None 18s
+t s700 NB: tw 0.958 ho 0.892 experts 3 params 3 bytes 11.46 MB nb {'notebook_experts': 3, 'net_experts': 0, 'net_sizes': {}, 'judging_macs': 81168998400.0} 26s
+t s700 U8: tw 0.959 ho 0.899 experts 3 params 94023 bytes 11.99 MB nb None 13s
+t s700 U32: tw 0.966 ho 0.894 experts 3 params 130959 bytes 12.17 MB nb None 13s

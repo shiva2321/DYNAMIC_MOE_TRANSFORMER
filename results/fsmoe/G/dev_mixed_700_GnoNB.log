@@ -1,0 +1,1 @@
+mixed s700 GnoNB: mean acc 0.722 min 0.610 experts 16/16 params 78576 (net 58496) macs/answer 4353 events {'spawn': 16, 'trial': 153, 'absorb': 12, 'grow': 29, 'keep': 29} 245s

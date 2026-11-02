@@ -1,0 +1,1 @@
+{"bed": "useq", "seed": 501, "arm": "off", "acc": 0.6548093259334564, "experts": 21, "events": {"spawn": 21, "router_refit": 23, "set_held": 18, "set_novel": 17, "set_override": 1, "extend": 1}, "skip": {"trained": 225, "skipped": 0, "trained_rows": 12924, "skipped_rows": 0}, "train_seconds": 5.344250500085764, "observe_seconds": 23.604302900013863, "seconds": 80.44421140000486}

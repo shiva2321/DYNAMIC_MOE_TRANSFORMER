@@ -1,0 +1,1 @@
+{"bed": "f10", "seed": 713, "arm": "U32", "acc": 0.4807499974966049, "min_regime_acc": 0.4449999928474426, "experts": 10, "params": 98960, "stored_vectors": 8128, "bytes": 5273512, "predict_macs": 377856, "expert_macs": 9216, "seconds": 26.403030199999193, "events": {"spawn": 10, "router_refit": 1}, "nb": null, "judging_macs": 0.0}

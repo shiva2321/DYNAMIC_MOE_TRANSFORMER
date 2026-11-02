@@ -1,0 +1,12 @@
+C:\Users\Asta\AppData\Local\Programs\Python\Python312\Lib\site-packages\torch\cuda\__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+t s700 off: acc 0.9316 experts 3 skipped 0/129 batches (0.0% of rows) train 1.2s of observe 10.6s
+t s700 k0.1: acc 0.9311 experts 3 skipped 72/129 batches (55.7% of rows) train 0.7s of observe 8.1s
+t s700 k0.25: acc 0.9284 experts 3 skipped 103/129 batches (80.0% of rows) train 0.3s of observe 7.9s
+t s700 k0.5: acc 0.9242 experts 3 skipped 114/129 batches (88.2% of rows) train 0.2s of observe 8.2s
+C:\Users\Asta\AppData\Local\Programs\Python\Python312\Lib\site-packages\torch\cuda\__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+bank s700 off: acc 0.8522 experts 6 skipped 0/48 batches (0.0% of rows) train 1.3s of observe 6.5s
+bank s700 k0.1: acc 0.8533 experts 6 skipped 2/48 batches (2.8% of rows) train 1.0s of observe 4.5s
+bank s700 k0.25: acc 0.8589 experts 6 skipped 11/48 batches (17.1% of rows) train 0.8s of observe 4.3s
+bank s700 k0.5: acc 0.8578 experts 6 skipped 18/48 batches (30.6% of rows) train 0.7s of observe 4.3s

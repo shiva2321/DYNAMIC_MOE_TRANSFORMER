@@ -1,0 +1,7 @@
+done E_s700.json {'known_tw': 60, 'known_ho': 180, 'near': 87, 'far': 36}
+done E_s710.json {'known_tw': 60, 'known_ho': 180, 'near': 87, 'far': 36}
+done E_s711.json {'known_tw': 60, 'known_ho': 180, 'near': 87, 'far': 36}
+done E_s712.json {'known_tw': 60, 'known_ho': 180, 'near': 87, 'far': 36}
+done E_s713.json {'known_tw': 60, 'known_ho': 180, 'near': 87, 'far': 36}
+done E_s714.json {'known_tw': 60, 'known_ho': 180, 'near': 87, 'far': 36}
+exit 0

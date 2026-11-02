@@ -1,0 +1,4 @@
+seed 711 A3b: learned all 0.36 (arith 0.33 code 1.00 lang 0.20) known_ho 0.895 (arith 0.938 code 0.966 lang 0.811) trained None chunks None
+seed 711 D1: learned all 0.46 (arith 1.00 code 1.00 lang 0.25) known_ho 0.830 (arith 0.894 code 0.877 lang 0.762) trained {'arith': 98, 'code': 85, 'lang': 85} chunks 17
+seed 711 D2: learned all 0.36 (arith 0.33 code 0.80 lang 0.25) known_ho 0.879 (arith 0.922 code 0.959 lang 0.787) trained {'arith': 98, 'code': 2331, 'lang': 132} chunks 467
+exit 0

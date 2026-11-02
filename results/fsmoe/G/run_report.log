@@ -1,0 +1,80 @@
+big s711 F8: mean acc 0.741 min 0.506 experts 48/48 params 102384 (net 42144) macs/answer 2606 events {'spawn': 48, 'absorb': 26} 180s
+big s710 F8: mean acc 0.743 min 0.536 experts 48/48 params 102384 (net 42144) macs/answer 2606 events {'spawn': 48, 'absorb': 22} 183s
+big s711 Gnt: mean acc 0.777 min 0.590 experts 48/48 params 105028 (net 44788) macs/answer 2651 events {'spawn': 48, 'keep_notebook': 112, 'absorb': 26, 'promote': 18, 'trial': 33} 348s
+big s711 G: mean acc 0.758 min 0.466 experts 48/48 params 108244 (net 48004) macs/answer 2381 events {'spawn': 48, 'keep_notebook': 113, 'absorb': 27, 'promote': 18, 'trial': 31, 'tier': 3, 'grow': 1, 'keep': 1} 353s
+big s710 Gnt: mean acc 0.776 min 0.546 experts 48/48 params 110060 (net 49820) macs/answer 2779 events {'spawn': 48, 'keep_notebook': 98, 'promote': 22, 'trial': 36, 'absorb': 22, 'grow': 2, 'keep': 1, 'revert': 1} 363s
+big s710 G: mean acc 0.763 min 0.526 experts 48/48 params 116270 (net 56030) macs/answer 2460 events {'spawn': 48, 'keep_notebook': 104, 'promote': 21, 'trial': 39, 'absorb': 21, 'grow': 2, 'keep': 1, 'tier': 4} 414s
+big s712 F8: mean acc 0.747 min 0.476 experts 48/48 params 102384 (net 42144) macs/answer 2606 events {'spawn': 48, 'absorb': 26} 179s
+big s712 G: mean acc 0.754 min 0.488 experts 48/48 params 101196 (net 40956) macs/answer 2190 events {'spawn': 48, 'keep_notebook': 110, 'promote': 18, 'trial': 34, 'absorb': 23, 'tier': 3, 'grow': 3, 'keep': 1, 'revert': 2} 372s
+big s712 Gnt: mean acc 0.779 min 0.578 experts 48/48 params 101034 (net 40794) macs/answer 2569 events {'spawn': 48, 'keep_notebook': 111, 'promote': 19, 'trial': 36, 'absorb': 26, 'grow': 1, 'revert': 1} 372s
+big s713 F8: mean acc 0.745 min 0.520 experts 48/48 params 102384 (net 42144) macs/answer 2606 events {'spawn': 48, 'absorb': 31} 183s
+mixed s710 G: mean acc 0.733 min 0.596 experts 16/16 params 58660 (net 38580) macs/answer 3109 events {'spawn': 16, 'promote': 14, 'trial': 16, 'keep_notebook': 13, 'absorb': 11, 'grow': 1, 'keep': 1} 98s
+big s713 G: mean acc 0.753 min 0.470 experts 48/48 params 105774 (net 45534) macs/answer 2208 events {'spawn': 48, 'keep_notebook': 102, 'promote': 21, 'trial': 44, 'absorb': 31, 'tier': 4, 'grow': 1, 'revert': 1} 364s
+big s713 Gnt: mean acc 0.769 min 0.554 experts 48/48 params 98630 (net 38390) macs/answer 2534 events {'spawn': 48, 'keep_notebook': 103, 'promote': 21, 'trial': 37, 'absorb': 31} 356s
+big s714 F8: mean acc 0.735 min 0.472 experts 48/48 params 102384 (net 42144) macs/answer 2606 events {'spawn': 48, 'absorb': 28} 188s
+mixed s710 GnoNB: mean acc 0.665 min 0.498 experts 16/16 params 37864 (net 17784) macs/answer 1812 events {'spawn': 16, 'trial': 18, 'absorb': 11, 'grow': 4, 'keep': 4} 78s
+mixed s710 BF: mean acc 0.737 min 0.632 experts 16/16 params 562896 (net 542816) macs/answer 34630 events {'spawn': 16, 'grow': 112, 'absorb': 11} 67s
+mixed s710 F8: mean acc 0.664 min 0.498 experts 16/16 params 34128 (net 14048) macs/answer 1582 events {'spawn': 16, 'absorb': 11} 35s
+mixed s710 Gng: mean acc 0.733 min 0.596 experts 16/16 params 58044 (net 37964) macs/answer 3071 events {'spawn': 16, 'promote': 14, 'keep_notebook': 13, 'absorb': 11} 71s
+mixed s710 F16: mean acc 0.688 min 0.528 experts 16/16 params 42448 (net 22368) macs/answer 2102 events {'spawn': 16, 'absorb': 11} 35s
+mixed s710 F32: mean acc 0.713 min 0.574 experts 16/16 params 59088 (net 39008) macs/answer 3142 events {'spawn': 16, 'absorb': 11} 36s
+mixed s710 F64: mean acc 0.726 min 0.608 experts 16/16 params 92368 (net 72288) macs/answer 5222 events {'spawn': 16, 'absorb': 11} 36s
+mixed s710 F8d3: mean acc 0.669 min 0.564 experts 16/16 params 53840 (net 33760) macs/answer 2814 events {'spawn': 16, 'absorb': 11} 57s
+mixed s711 GnoNB: mean acc 0.686 min 0.554 experts 16/16 params 37768 (net 17688) macs/answer 1814 events {'spawn': 16, 'trial': 17, 'absorb': 14, 'grow': 4, 'revert': 2, 'keep': 2} 73s
+mixed s711 Gng: mean acc 0.742 min 0.574 experts 16/16 params 57166 (net 37086) macs/answer 3026 events {'spawn': 16, 'promote': 13, 'keep_notebook': 18, 'absorb': 14} 76s
+mixed s711 BF: mean acc 0.740 min 0.638 experts 16/16 params 562896 (net 542816) macs/answer 34630 events {'spawn': 16, 'grow': 112, 'absorb': 14} 64s
+mixed s711 G: mean acc 0.742 min 0.574 experts 16/16 params 57166 (net 37086) macs/answer 3026 events {'spawn': 16, 'promote': 13, 'keep_notebook': 18, 'trial': 13, 'absorb': 14} 97s
+big s714 G: mean acc 0.751 min 0.404 experts 48/48 params 112468 (net 52228) macs/answer 2389 events {'spawn': 48, 'keep_notebook': 100, 'promote': 22, 'trial': 47, 'absorb': 26, 'grow': 1, 'keep': 1, 'tier': 4} 405s
+big s714 Gnt: mean acc 0.770 min 0.550 experts 48/48 params 103992 (net 43752) macs/answer 2663 events {'spawn': 48, 'keep_notebook': 109, 'promote': 20, 'trial': 37, 'absorb': 28, 'grow': 2, 'keep': 2} 383s
+mixed s711 F8: mean acc 0.685 min 0.554 experts 16/16 params 34128 (net 14048) macs/answer 1582 events {'spawn': 16, 'absorb': 14} 33s
+mixed s711 F16: mean acc 0.702 min 0.544 experts 16/16 params 42448 (net 22368) macs/answer 2102 events {'spawn': 16, 'absorb': 14} 36s
+mixed s711 F32: mean acc 0.721 min 0.576 experts 16/16 params 59088 (net 39008) macs/answer 3142 events {'spawn': 16, 'absorb': 14} 34s
+mixed s711 F64: mean acc 0.732 min 0.606 experts 16/16 params 92368 (net 72288) macs/answer 5222 events {'spawn': 16, 'absorb': 14} 34s
+mixed s711 F8d3: mean acc 0.685 min 0.536 experts 16/16 params 53840 (net 33760) macs/answer 2814 events {'spawn': 16, 'absorb': 14} 55s
+mixed s712 F8: mean acc 0.652 min 0.472 experts 16/16 params 34128 (net 14048) macs/answer 1582 events {'spawn': 16, 'absorb': 13} 38s
+mixed s712 GnoNB: mean acc 0.657 min 0.472 experts 16/16 params 37248 (net 17168) macs/answer 1778 events {'spawn': 16, 'trial': 19, 'absorb': 13, 'grow': 4, 'keep': 4} 75s
+mixed s712 Gng: mean acc 0.712 min 0.568 experts 16/16 params 55606 (net 35526) macs/answer 2930 events {'spawn': 16, 'keep_notebook': 15, 'promote': 13, 'absorb': 13} 70s
+mixed s712 G: mean acc 0.712 min 0.568 experts 16/16 params 55606 (net 35526) macs/answer 2930 events {'spawn': 16, 'keep_notebook': 15, 'promote': 13, 'absorb': 13, 'trial': 13, 'grow': 1, 'revert': 1} 93s
+mixed s712 F16: mean acc 0.677 min 0.488 experts 16/16 params 42448 (net 22368) macs/answer 2102 events {'spawn': 16, 'absorb': 13} 35s
+mixed s712 BF: mean acc 0.715 min 0.606 experts 16/16 params 562896 (net 542816) macs/answer 34630 events {'spawn': 16, 'grow': 112, 'absorb': 13} 73s
+mixed s712 F32: mean acc 0.700 min 0.552 experts 16/16 params 59088 (net 39008) macs/answer 3142 events {'spawn': 16, 'absorb': 13} 35s
+mixed s712 F64: mean acc 0.712 min 0.560 experts 16/16 params 92368 (net 72288) macs/answer 5222 events {'spawn': 16, 'absorb': 13} 35s
+mixed s712 F8d3: mean acc 0.659 min 0.480 experts 16/16 params 53840 (net 33760) macs/answer 2814 events {'spawn': 16, 'absorb': 13} 60s
+mixed s713 F8: mean acc 0.674 min 0.486 experts 16/16 params 34128 (net 14048) macs/answer 1582 events {'spawn': 16, 'absorb': 15} 40s
+mixed s713 GnoNB: mean acc 0.681 min 0.486 experts 16/16 params 39328 (net 19248) macs/answer 1904 events {'spawn': 16, 'trial': 18, 'absorb': 15, 'grow': 5, 'keep': 3, 'revert': 1} 81s
+mixed s713 Gng: mean acc 0.734 min 0.584 experts 16/16 params 52128 (net 32048) macs/answer 2710 events {'spawn': 16, 'keep_notebook': 21, 'absorb': 15, 'promote': 12} 81s
+mixed s713 BF: mean acc 0.738 min 0.624 experts 16/16 params 562896 (net 542816) macs/answer 34630 events {'spawn': 16, 'grow': 112, 'absorb': 15} 74s
+mixed s713 F16: mean acc 0.701 min 0.568 experts 16/16 params 42448 (net 22368) macs/answer 2102 events {'spawn': 16, 'absorb': 15} 38s
+mixed s713 G: mean acc 0.735 min 0.584 experts 16/16 params 53688 (net 33608) macs/answer 2808 events {'spawn': 16, 'keep_notebook': 21, 'absorb': 15, 'promote': 12, 'trial': 13, 'grow': 1, 'keep': 1} 106s
+mixed s713 F32: mean acc 0.715 min 0.574 experts 16/16 params 59088 (net 39008) macs/answer 3142 events {'spawn': 16, 'absorb': 15} 38s
+mixed s713 F64: mean acc 0.735 min 0.596 experts 16/16 params 92368 (net 72288) macs/answer 5222 events {'spawn': 16, 'absorb': 15} 42s
+mixed s713 F8d3: mean acc 0.682 min 0.514 experts 16/16 params 53840 (net 33760) macs/answer 2814 events {'spawn': 16, 'absorb': 15} 71s
+mixed s714 F8: mean acc 0.669 min 0.518 experts 16/16 params 34128 (net 14048) macs/answer 1582 events {'spawn': 16, 'absorb': 11} 37s
+mixed s714 GnoNB: mean acc 0.673 min 0.518 experts 16/16 params 38288 (net 18208) macs/answer 1841 events {'spawn': 16, 'trial': 18, 'absorb': 11, 'grow': 5, 'keep': 4, 'revert': 1} 85s
+mixed s714 BF: mean acc 0.732 min 0.616 experts 16/16 params 562896 (net 542816) macs/answer 34630 events {'spawn': 16, 'grow': 112, 'absorb': 11} 66s
+mixed s714 Gng: mean acc 0.731 min 0.580 experts 16/16 params 57004 (net 36924) macs/answer 3014 events {'spawn': 16, 'keep_notebook': 13, 'promote': 14, 'absorb': 11} 79s
+mixed s714 F16: mean acc 0.683 min 0.558 experts 16/16 params 42448 (net 22368) macs/answer 2102 events {'spawn': 16, 'absorb': 11} 34s
+mixed s714 G: mean acc 0.731 min 0.580 experts 16/16 params 57004 (net 36924) macs/answer 3014 events {'spawn': 16, 'keep_notebook': 13, 'promote': 14, 'trial': 16, 'absorb': 11} 110s
+mixed s714 F32: mean acc 0.708 min 0.584 experts 16/16 params 59088 (net 39008) macs/answer 3142 events {'spawn': 16, 'absorb': 11} 36s
+easy s710 F8: mean acc 0.873 min 0.836 experts 8/8 params 17064 (net 7024) macs/answer 1326 events {'spawn': 8, 'absorb': 7} 18s
+easy s710 F32: mean acc 0.874 min 0.846 experts 8/8 params 29544 (net 19504) macs/answer 2886 events {'spawn': 8, 'absorb': 7} 19s
+mixed s714 F64: mean acc 0.725 min 0.604 experts 16/16 params 92368 (net 72288) macs/answer 5222 events {'spawn': 16, 'absorb': 11} 39s
+mixed s714 F8d3: mean acc 0.668 min 0.522 experts 16/16 params 53840 (net 33760) macs/answer 2814 events {'spawn': 16, 'absorb': 11} 52s
+easy s710 G: mean acc 0.891 min 0.844 experts 8/8 params 16672 (net 6632) macs/answer 1272 events {'spawn': 8, 'keep_notebook': 12, 'promote': 4, 'trial': 6, 'absorb': 7} 52s
+easy s711 F8: mean acc 0.861 min 0.806 experts 8/8 params 17064 (net 7024) macs/answer 1326 events {'spawn': 8, 'absorb': 8} 16s
+easy s710 BF: mean acc 0.847 min 0.808 experts 8/8 params 281448 (net 271408) macs/answer 34374 events {'spawn': 8, 'grow': 56, 'absorb': 7} 31s
+easy s711 F32: mean acc 0.848 min 0.796 experts 8/8 params 29544 (net 19504) macs/answer 2886 events {'spawn': 8, 'absorb': 8} 17s
+easy s711 G: mean acc 0.902 min 0.802 experts 8/8 params 15436 (net 5396) macs/answer 1114 events {'spawn': 8, 'keep_notebook': 19, 'absorb': 8, 'promote': 2, 'trial': 2} 43s
+easy s712 F8: mean acc 0.852 min 0.810 experts 8/8 params 17064 (net 7024) macs/answer 1326 events {'spawn': 8, 'absorb': 10} 17s
+easy s712 F32: mean acc 0.857 min 0.808 experts 8/8 params 29544 (net 19504) macs/answer 2886 events {'spawn': 8, 'absorb': 10} 17s
+easy s711 BF: mean acc 0.840 min 0.792 experts 8/8 params 281448 (net 271408) macs/answer 34374 events {'spawn': 8, 'grow': 56, 'absorb': 8} 29s
+easy s712 BF: mean acc 0.837 min 0.800 experts 8/8 params 281448 (net 271408) macs/answer 34374 events {'spawn': 8, 'grow': 56, 'absorb': 10} 29s
+easy s713 F8: mean acc 0.864 min 0.838 experts 8/8 params 17064 (net 7024) macs/answer 1326 events {'spawn': 8, 'absorb': 9} 17s
+easy s713 F32: mean acc 0.868 min 0.836 experts 8/8 params 29544 (net 19504) macs/answer 2886 events {'spawn': 8, 'absorb': 9} 17s
+easy s712 G: mean acc 0.901 min 0.836 experts 8/8 params 12478 (net 2438) macs/answer 750 events {'spawn': 8, 'promote': 1, 'keep_notebook': 23, 'trial': 2, 'absorb': 10} 51s
+easy s713 BF: mean acc 0.846 min 0.816 experts 8/8 params 281448 (net 271408) macs/answer 34374 events {'spawn': 8, 'grow': 56, 'absorb': 9} 30s
+easy s714 F8: mean acc 0.854 min 0.818 experts 8/8 params 17064 (net 7024) macs/answer 1326 events {'spawn': 8, 'absorb': 8} 16s
+easy s714 F32: mean acc 0.850 min 0.816 experts 8/8 params 29544 (net 19504) macs/answer 2886 events {'spawn': 8, 'absorb': 8} 16s
+easy s713 G: mean acc 0.914 min 0.862 experts 8/8 params 12478 (net 2438) macs/answer 750 events {'spawn': 8, 'keep_notebook': 23, 'absorb': 9, 'promote': 1, 'trial': 1} 46s
+easy s714 BF: mean acc 0.838 min 0.802 experts 8/8 params 281448 (net 271408) macs/answer 34374 events {'spawn': 8, 'grow': 56, 'absorb': 8} 23s
+easy s714 G: mean acc 0.901 min 0.884 experts 8/8 params 10918 (net 878) macs/answer 560 events {'spawn': 8, 'keep_notebook': 22, 'promote': 1, 'trial': 2, 'absorb': 8} 43s

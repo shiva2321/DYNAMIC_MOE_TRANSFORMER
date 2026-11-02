@@ -1,0 +1,13 @@
+pilot seed 700: LDA accuracy on taught skills, by wording (eval rows); frontend fitted on the teaching rows of all three domains
+rp  d=128 arith all=0.914 teaching-wording=1.000 held-out=0.863  chatter=0.95  register=1.00  reorder=1.00  stories=0.60  symbols=1.00  typos=0.77  verbal=1.00  words=1.00
+rp  d=128 code  all=0.961 teaching-wording=1.000 held-out=0.942  altstyle=1.00  boilerplate=1.00  builtin=1.00  commented=1.00  formatted=1.00  loop=1.00  recursion=1.00  renamed=0.79  short=0.86
+rp  d=128 lang  all=0.800 teaching-wording=0.868 held-out=0.783  chatter=0.84  framing=0.77  original=0.87  register=0.83  typos=0.69
+rp  d=256 arith all=0.958 teaching-wording=1.000 held-out=0.932  chatter=0.95  register=1.00  reorder=1.00  stories=0.86  symbols=1.00  typos=0.84  verbal=1.00  words=1.00
+rp  d=256 code  all=0.952 teaching-wording=1.000 held-out=0.928  altstyle=1.00  boilerplate=1.00  builtin=1.00  commented=1.00  formatted=1.00  loop=1.00  recursion=1.00  renamed=0.78  short=0.80
+rp  d=256 lang  all=0.821 teaching-wording=0.885 held-out=0.805  chatter=0.86  framing=0.79  original=0.88  register=0.87  typos=0.70
+pca d=128 arith all=0.962 teaching-wording=1.000 held-out=0.939  chatter=0.99  register=1.00  reorder=1.00  stories=0.82  symbols=1.00  typos=0.88  verbal=1.00  words=1.00
+pca d=128 code  all=0.958 teaching-wording=1.000 held-out=0.936  altstyle=1.00  boilerplate=1.00  builtin=1.00  commented=1.00  formatted=1.00  loop=1.00  recursion=1.00  renamed=0.77  short=0.85
+pca d=128 lang  all=0.815 teaching-wording=0.876 held-out=0.800  chatter=0.85  framing=0.78  original=0.88  register=0.86  typos=0.70
+pca d=256 arith all=0.968 teaching-wording=1.000 held-out=0.948  chatter=0.99  register=1.00  reorder=1.00  stories=0.86  symbols=1.00  typos=0.89  verbal=1.00  words=1.00
+pca d=256 code  all=0.962 teaching-wording=1.000 held-out=0.943  altstyle=1.00  boilerplate=1.00  builtin=1.00  commented=1.00  formatted=1.00  loop=1.00  recursion=1.00  renamed=0.80  short=0.86
+pca d=256 lang  all=0.829 teaching-wording=0.892 held-out=0.813  chatter=0.87  framing=0.80  original=0.89  register=0.87  typos=0.71

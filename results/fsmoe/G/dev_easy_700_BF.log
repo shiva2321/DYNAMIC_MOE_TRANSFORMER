@@ -1,0 +1,1 @@
+easy s700 BF: mean acc 0.853 min 0.816 experts 8/8 params 281448 (net 271408) macs/answer 34374 events {'spawn': 8, 'grow': 56, 'absorb': 8} 27s

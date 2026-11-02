@@ -1,0 +1,18 @@
+........................................................................ [  7%]
+........................................................................ [ 15%]
+........................................................................ [ 22%]
+........................................................................ [ 30%]
+........................................................................ [ 38%]
+........................................................................ [ 45%]
+........................................................................ [ 53%]
+........................................................................ [ 60%]
+........................................................................ [ 68%]
+........................................................................ [ 76%]
+......xx................................................................ [ 83%]
+........................................................................ [ 91%]
+........................................................................ [ 98%]
+...........                                                              [100%]
+=========================== short test summary info ===========================
+XFAIL tests/growmoe/test_gm_rv4_transfer_pool.py::test_merge_cleans_up_a_forced_duplicate[0] - AUDIT RESULT 2026-10-15: merge cannot clean a forced duplicate (0 of 4 seeds merged, seeds 0-3). The overlap test passes (mutual coverage 0.44-0.52 against 0.2), but the acceptance test compares experts that MEMORISED their replay with a clone that never trained on the held-out half: the clone loses 6-9 points on the validation halves against a tolerance of 2 (delta_merge). Same flaw as the spawn probe of E-030, mirrored. A false spawn is therefore never repaired; see FAILURES and the open questions.
+XFAIL tests/growmoe/test_gm_rv4_transfer_pool.py::test_merge_cleans_up_a_forced_duplicate[1] - AUDIT RESULT 2026-10-15: merge cannot clean a forced duplicate (0 of 4 seeds merged, seeds 0-3). The overlap test passes (mutual coverage 0.44-0.52 against 0.2), but the acceptance test compares experts that MEMORISED their replay with a clone that never trained on the held-out half: the clone loses 6-9 points on the validation halves against a tolerance of 2 (delta_merge). Same flaw as the spawn probe of E-030, mirrored. A false spawn is therefore never repaired; see FAILURES and the open questions.
+945 passed, 2 xfailed in 413.04s (0:06:53)

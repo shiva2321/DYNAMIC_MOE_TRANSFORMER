@@ -1,0 +1,1 @@
+mixed s700 Gd: mean acc 0.742 min 0.638 experts 16/16 params 56450 (net 36370) macs/answer 2964 events {'spawn': 16, 'keep_notebook': 26, 'promote': 11, 'trial': 13, 'absorb': 12} 112s

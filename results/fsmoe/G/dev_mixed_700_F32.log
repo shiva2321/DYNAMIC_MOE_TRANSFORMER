@@ -1,0 +1,1 @@
+mixed s700 F32: mean acc 0.719 min 0.628 experts 16/16 params 59088 (net 39008) macs/answer 3142 events {'spawn': 16, 'absorb': 12} 47s

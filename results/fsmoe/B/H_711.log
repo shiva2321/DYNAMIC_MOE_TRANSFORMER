@@ -1,0 +1,4 @@
+seed 711 D1r: learned all 0.46 (arith 1.00 code 1.00 lang 0.25) known_ho 0.830 (arith 0.894 code 0.877 lang 0.762) trained {'arith': 98, 'code': 85, 'lang': 85} new {'arith': 37, 'code': 85, 'lang': 32} chunks 17
+seed 711 H4: learned all 0.36 (arith 0.33 code 1.00 lang 0.20) known_ho 0.871 (arith 0.908 code 0.938 lang 0.793) trained {'code': 771, 'lang': 132, 'arith': 98} new {'code': 351, 'lang': 32, 'arith': 37} chunks 105
+seed 711 H8: learned all 0.36 (arith 0.33 code 1.00 lang 0.20) known_ho 0.876 (arith 0.942 code 0.928 lang 0.803) trained {'code': 513, 'lang': 125, 'arith': 98} new {'code': 351, 'lang': 32, 'arith': 37} chunks 54
+seed 711 H12: learned all 0.21 (arith 0.33 code 0.20 lang 0.20) known_ho 0.877 (arith 0.942 code 0.927 lang 0.805) trained {'code': 397, 'lang': 78, 'arith': 98} new {'code': 351, 'lang': 32, 'arith': 37} chunks 46

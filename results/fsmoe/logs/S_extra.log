@@ -1,0 +1,26 @@
+seed 710 extra oracle 0.1: learned 0.14 skills met 28
+seed 710 extra oracle 0.2: learned 0.00 skills met 28
+seed 710 extra oracle 0.4: learned 0.00 skills met 28
+seed 710 extra diverse 0.05: learned 0.11 skills met 12
+seed 710 extra diverse 0.1: learned 0.14 skills met 25
+seed 711 extra oracle 0.1: learned 0.00 skills met 28
+seed 711 extra oracle 0.2: learned 0.00 skills met 28
+seed 711 extra oracle 0.4: learned 0.00 skills met 28
+seed 711 extra diverse 0.05: learned 0.18 skills met 10
+seed 711 extra diverse 0.1: learned 0.07 skills met 24
+seed 712 extra oracle 0.1: learned 0.54 skills met 28
+seed 712 extra oracle 0.2: learned 0.86 skills met 28
+seed 712 extra oracle 0.4: learned 0.89 skills met 28
+seed 712 extra diverse 0.05: learned 0.11 skills met 13
+seed 712 extra diverse 0.1: learned 0.54 skills met 23
+seed 713 extra oracle 0.1: learned 0.79 skills met 28
+seed 713 extra oracle 0.2: learned 0.14 skills met 28
+seed 713 extra oracle 0.4: learned 0.14 skills met 28
+seed 713 extra diverse 0.05: learned 0.18 skills met 11
+seed 713 extra diverse 0.1: learned 0.07 skills met 21
+seed 714 extra oracle 0.1: learned 0.07 skills met 28
+seed 714 extra oracle 0.2: learned 0.07 skills met 28
+seed 714 extra oracle 0.4: learned 0.11 skills met 28
+seed 714 extra diverse 0.05: learned 0.21 skills met 10
+seed 714 extra diverse 0.1: learned 0.57 skills met 25
+exit 0

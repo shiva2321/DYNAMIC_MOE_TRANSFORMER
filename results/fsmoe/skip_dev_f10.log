@@ -1,0 +1,6 @@
+C:\Users\Asta\AppData\Local\Programs\Python\Python312\Lib\site-packages\torch\cuda\__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+f10 s700 off: acc 0.4940 experts 10 skipped 0/155 batches (0.0% of rows) train 1.0s of observe 16.6s
+f10 s700 k0.1: acc 0.4940 experts 10 skipped 0/155 batches (0.0% of rows) train 1.3s of observe 15.6s
+f10 s700 k0.25: acc 0.4940 experts 10 skipped 0/155 batches (0.0% of rows) train 1.2s of observe 15.2s
+f10 s700 k0.5: acc 0.4940 experts 10 skipped 0/155 batches (0.0% of rows) train 1.1s of observe 15.3s

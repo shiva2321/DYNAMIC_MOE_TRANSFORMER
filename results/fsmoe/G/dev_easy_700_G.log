@@ -1,0 +1,1 @@
+easy s700 G: mean acc 0.896 min 0.878 experts 8/8 params 14588 (net 4548) macs/answer 1014 events {'spawn': 8, 'keep_notebook': 19, 'promote': 2, 'trial': 4, 'absorb': 8} 43s

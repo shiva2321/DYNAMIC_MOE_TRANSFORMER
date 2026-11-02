@@ -1,0 +1,1 @@
+{"bed": "f10", "seed": 711, "arm": "off", "acc": 0.49300000071525574, "min_regime_acc": 0.41499999165534973, "experts": 10, "events": {"spawn": 10, "router_refit": 1}, "skip": {"trained": 155, "skipped": 0, "trained_rows": 9536, "skipped_rows": 0}, "train_seconds": 0.9149682000497705, "observe_seconds": 10.506877300023916, "seconds": 13.288630199996987}

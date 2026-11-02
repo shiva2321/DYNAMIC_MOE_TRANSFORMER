@@ -1,0 +1,4 @@
+seed 711 global_fast oracle 0.1 interleaved: learned 0.75 known_ho 0.888->0.853 flipped 128 (to new 116)
+seed 711 global_fast diverse 0.1 interleaved: learned 0.25 known_ho 0.888->0.874 flipped 93 (to new 75)
+seed 711 global_fast balanced 0.1 interleaved: learned 0.11 known_ho 0.888->0.888 flipped 52 (to new 25)
+exit 0

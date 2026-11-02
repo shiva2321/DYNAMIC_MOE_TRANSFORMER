@@ -1,0 +1,7 @@
+done R_s700_arith_raw.json
+done R_s700_arith_map.json
+done R_s700_code_raw.json
+done R_s700_code_map.json
+done R_s700_lang_raw.json
+done R_s700_lang_map.json
+exit 0

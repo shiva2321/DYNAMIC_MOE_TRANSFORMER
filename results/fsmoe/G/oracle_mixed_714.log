@@ -1,0 +1,16 @@
+oracle mixed s714 regime 0 lin: none {'small': 0.8980000019073486, 'wide': 0.8820000290870667, 'deep': 0.8759999871253967}
+oracle mixed s714 regime 1 lin: none {'small': 0.8646666407585144, 'wide': 0.8553333282470703, 'deep': 0.8513333201408386}
+oracle mixed s714 regime 2 lin: none {'small': 0.8606666922569275, 'wide': 0.8413333296775818, 'deep': 0.8519999980926514}
+oracle mixed s714 regime 3 lin: none {'small': 0.8980000019073486, 'wide': 0.8866666555404663, 'deep': 0.8999999761581421}
+oracle mixed s714 regime 4 wide: width {'small': 0.7126666903495789, 'wide': 0.7699999809265137, 'deep': 0.737333357334137}
+oracle mixed s714 regime 5 wide: width {'small': 0.6493333578109741, 'wide': 0.7606666684150696, 'deep': 0.6919999718666077}
+oracle mixed s714 regime 6 wide: width {'small': 0.6940000057220459, 'wide': 0.8133333325386047, 'deep': 0.7553333044052124}
+oracle mixed s714 regime 7 wide: width {'small': 0.6053333282470703, 'wide': 0.7940000295639038, 'deep': 0.6526666879653931}
+oracle mixed s714 regime 8 wide: width {'small': 0.6313333511352539, 'wide': 0.7853333353996277, 'deep': 0.6486666798591614}
+oracle mixed s714 regime 9 wide: width {'small': 0.6039999723434448, 'wide': 0.8046666383743286, 'deep': 0.6499999761581421}
+oracle mixed s714 regime 10 wide: width {'small': 0.7333333492279053, 'wide': 0.8226666450500488, 'deep': 0.7599999904632568}
+oracle mixed s714 regime 11 wide: width {'small': 0.6499999761581421, 'wide': 0.8033333420753479, 'deep': 0.7386666536331177}
+oracle mixed s714 regime 12 deep: depth {'small': 0.6660000085830688, 'wide': 0.7200000286102295, 'deep': 0.7513333559036255}
+oracle mixed s714 regime 13 deep: depth {'small': 0.7419999837875366, 'wide': 0.75, 'deep': 0.7946666479110718}
+oracle mixed s714 regime 14 deep: none {'small': 0.6973333358764648, 'wide': 0.6899999976158142, 'deep': 0.718666672706604}
+oracle mixed s714 regime 15 deep: depth {'small': 0.7413333058357239, 'wide': 0.7666666507720947, 'deep': 0.8393333554267883}

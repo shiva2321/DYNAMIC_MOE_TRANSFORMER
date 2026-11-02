@@ -1,0 +1,19 @@
+udrift s520 off: acc 0.6610 experts 1 skipped 0/168 batches (0.0% of rows) train 0.4s of observe 4.1s
+udrift s520 k0.1: acc 0.6610 experts 1 skipped 0/168 batches (0.0% of rows) train 0.4s of observe 1.5s
+udrift s520 k0.25: acc 0.6617 experts 1 skipped 3/168 batches (1.4% of rows) train 0.5s of observe 1.7s
+udrift s521 off: acc 0.6621 experts 1 skipped 0/166 batches (0.0% of rows) train 0.5s of observe 1.9s
+udrift s521 k0.1: acc 0.6621 experts 1 skipped 0/166 batches (0.0% of rows) train 0.4s of observe 1.9s
+udrift s521 k0.25: acc 0.6627 experts 1 skipped 12/166 batches (5.9% of rows) train 0.4s of observe 1.9s
+umix s520 off: acc 0.6632 experts 1 skipped 0/164 batches (0.0% of rows) train 0.5s of observe 4.5s
+umix s520 k0.1: acc 0.6632 experts 1 skipped 0/164 batches (0.0% of rows) train 0.5s of observe 1.5s
+umix s520 k0.25: acc 0.6655 experts 1 skipped 10/164 batches (5.6% of rows) train 0.4s of observe 1.5s
+umix s521 off: acc 0.6594 experts 1 skipped 0/164 batches (0.0% of rows) train 0.5s of observe 1.7s
+umix s521 k0.1: acc 0.6594 experts 1 skipped 0/164 batches (0.0% of rows) train 0.5s of observe 1.7s
+umix s521 k0.25: acc 0.6603 experts 1 skipped 9/164 batches (5.1% of rows) train 0.5s of observe 1.7s
+useq s520 off: acc 0.6443 experts 12 skipped 0/277 batches (0.0% of rows) train 6.5s of observe 27.1s
+useq s520 k0.1: acc 0.6432 experts 12 skipped 28/277 batches (9.9% of rows) train 5.6s of observe 23.0s
+useq s520 k0.25: acc 0.6425 experts 12 skipped 66/277 batches (26.6% of rows) train 4.7s of observe 22.0s
+useq s521 off: acc 0.6255 experts 14 skipped 0/228 batches (0.0% of rows) train 5.2s of observe 17.1s
+useq s521 k0.1: acc 0.6264 experts 14 skipped 22/228 batches (9.0% of rows) train 4.5s of observe 16.2s
+useq s521 k0.25: acc 0.6221 experts 16 skipped 42/219 batches (18.6% of rows) train 3.9s of observe 15.0s
+finished
