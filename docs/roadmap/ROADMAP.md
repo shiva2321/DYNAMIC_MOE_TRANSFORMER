@@ -1,6 +1,6 @@
 # Road plan: a continually learning, efficient mixture-of-experts model
 
-**Version 0.3 (DRAFT, awaiting your review), 2026-11-02.** The living guidepost for the whole project. v0.2 adds your answers on the backup, who builds and publishing, an honest "is it publishable and worth doing" assessment (section 1.4), and the working rules in section 8. v0.3 restates section 1.4 for the question as you meant it (the prototype as built, posted as a ResearchGate preprint) and records the push (decision 9).
+**Version 0.5 (APPROVED by you on 2026-11-02, refined as we go), 2026-11-02.** The living guidepost for the whole project. v0.2 adds your answers on the backup, who builds and publishing, an honest "is it publishable and worth doing" assessment (section 1.4), and the working rules in section 8. v0.3 restates section 1.4 for the question as you meant it (the prototype as built, posted as a ResearchGate preprint) and records the push (decision 9). v0.4 records your choice to wait for M1 and M2 before the first preprint (D-74). v0.5 records your approval of the plan and of my recommendations on the open decisions (D-75).
 Figure: [ROADMAP_FIGURE.png](ROADMAP_FIGURE.png). Companion files: [MILESTONES.md](MILESTONES.md) (each step in detail), [STATE_BOARD.md](STATE_BOARD.md) (what exists and what must exist),
 [IDEA_BOARD.md](IDEA_BOARD.md) (the brainstorm, including outside-the-box options), [RESEARCH_DIGEST.md](RESEARCH_DIGEST.md) (what the field has), [CHANGELOG.md](CHANGELOG.md) (every change to this plan).
 
@@ -90,7 +90,7 @@ Your question, as you clarified it on 2026-11-02: is the prototype we have built
 
 **Verdict.** Publishable as a modest technical report: "a task-free expert pool with a calibrated novelty gate: what held up under pre-registration, what tied, what failed, and the evaluation traps we fell into". Not publishable as a method paper claiming a win; a reviewer would ask for a standard benchmark, strong baselines and measured cost, which is M1 and M2.
 
-**Should we post it now? My advice: not yet.** (1) The notebook's own rule asks for a clean `verify` (today it shows 13 path problems in E-047 and E-050 and no changed evidence), every claim used at grade A or labelled with its real grade, and the generating scripts re-run from a recorded commit; 832 files (FS-MoE code, knowledge-status lab) are still uncommitted because of the commit gate. (2) The prior-art check (M0 step 6) is needed before we say what is new. (3) What a reader wants, a standard benchmark and honest cost against strong baselines, arrives with M1 and M2, about 11 to 16 sessions; a report written now would mostly be rewritten then. If you want an early timestamp anyway, a short technical note on the grade-A claims and the evaluation traps is honest and cheap (about 2 to 3 sessions). Your call.
+**Should we post it now? My advice: not yet.** (1) The notebook's own rule asks for a clean `verify` (today it shows 13 path problems in E-047 and E-050 and no changed evidence), every claim used at grade A or labelled with its real grade, and the generating scripts re-run from a recorded commit; 832 files (FS-MoE code, knowledge-status lab) are still uncommitted because of the commit gate. (2) The prior-art check (M0 step 6) is needed before we say what is new. (3) What a reader wants, a standard benchmark and honest cost against strong baselines, arrives with M1 and M2, about 11 to 16 sessions; a report written now would mostly be rewritten then. If you want an early timestamp anyway, a short technical note on the grade-A claims and the evaluation traps is honest and cheap (about 2 to 3 sessions). You chose to wait for M1 and M2 (2026-11-02, D-74).
 
 **The same question for the plan's end product (v0.2):**
 
@@ -202,7 +202,7 @@ M2, M3 and M4 can run side by side (different parts of the code); M5 and M6 star
 | ID | When | Decision | Evidence that decides it |
 |---|---|---|---|
 | BP1 | End of M1 | Which efficiency levers first; adopt the held defaults (LDA head D-43, growth rule D-38, skip and chance flags)? | The scoreboard |
-| BP2 | End of M2 | Differentiate on open-world and lifecycle, or simplify to a closed-form core? | Pool against best simple baseline |
+| BP2 | End of M2 | Differentiate on open-world and lifecycle, or simplify to a closed-form core? Also: do the results justify the first ResearchGate preprint (section 8.1, D-74)? | Pool against best simple baseline |
 | BP3 | After P1, M1 and M2 | Go / no-go on M5 with you, then the M5 design: pool of small models, shared base plus adapters plus closed-form heads, or MoE blocks in one transformer | P1 measurements, the M1 scoreboard, the M2 comparison |
 | BP4 | End of M3 | Retire the big reader from the default path? | M3 bars |
 | BP5 | End of M4 | Expert granularity; cap or merge policy | Scaling and lifecycle results |
@@ -320,7 +320,7 @@ Heavy coding and routine experiments go to Gemini so that Claude's budget goes t
 
 ## 10. Decisions that are yours, now
 
-Status on 2026-11-02: decision 6 is answered, decision 2 is partly answered (and a new decision 9 follows from it); the others are open. Nothing below has been done beyond what is stated. Each has my recommendation.
+Status on 2026-11-02, after your reply "all approved from my side": decisions 1, 3, 4 and 5 are approved as I recommended (D-75); decisions 2, 6 and 9 are answered; 7 (pace) was left open and 8 is for later. The recommendations below are kept as the record.
 
 1. **Approve this plan as the guidepost, or tell me what to change.** Recommended: approve v0.1, then adjust through the changelog as we learn.
 2. **Backup and commit (M0 step 1). PARTLY ANSWERED (2026-11-02):** you named github.com/shiva2321/DYNAMIC_MOE_TRANSFORMER as the backup and tracking repository, one branch only. On checking, that repository is public and holds a different, earlier project (27 commits, 2026-08-16 to 2026-10-08, no history in common with ours), so the push went to a new branch, `growmoe-lab`, with `master` untouched (decision 9). The uncommitted work was committed locally in logical groups on one branch, except 832 files that the commit gate holds until you approve four findings (D-72). Still open: where the second copy of non-git data goes (see the queue below).
@@ -337,7 +337,7 @@ Status on 2026-11-02: decision 6 is answered, decision 2 is partly answered (and
 | Item | Cost | What it buys | My recommendation |
 |---|---|---|---|
 | Second copy of the non-git data (10.4 GB caches, about 9 GB ISHMN checkpoints) | Your drive or cloud space; no Claude cost | Avoids recomputing if the disk fails | Copy only what cannot be cheaply recreated (checkpoints, not caches) |
-| A short early technical note on the validity traps | About 2 sessions | A timestamp and early feedback | Wait: it is stronger with M1 and M2 numbers in it |
+| A short early technical note on the validity traps | About 2 sessions | A timestamp and early feedback | **DECIDED 2026-11-02: wait for M1 and M2** (D-74) |
 
 ---
 
