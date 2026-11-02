@@ -269,3 +269,10 @@ results/m1/dev/B1_n10_A7__seed800.json
 results/m1/dev/B1_n10_A8__seed800.json
 results/m1/dev/diag_switches_B1_n10.json
 docs/superpowers/handoff/M1_RUNNER_A_RESULT.md
+docs/superpowers/handoff/costlab_validation/final_run1.json
+docs/superpowers/handoff/costlab_validation/final_run2.json
+docs/superpowers/handoff/costlab_validation/patched_run_pin0123_V2_fail.json
+docs/superpowers/handoff/COSTLAB_RESULT.md
+docs/roadmap/BASELINE_V1.md
+docs/roadmap/PRIOR_ART.md
+results/m1/dev/diag_transfer_B1_n10.json

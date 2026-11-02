@@ -1,8 +1,8 @@
 {
- "generated": "2026-11-02 15:37:52",
- "head": "11ea50b",
+ "generated": "2026-11-02 17:17:18",
+ "head": "e087222",
  "branch": "main",
- "n_files": 1079,
+ "n_files": 1087,
  "files": [
   {
    "path": "demos/demo_growmoe_continual_learning.py",
@@ -23,6 +23,18 @@
    "last_commit": "6084194"
   },
   {
+   "path": "docs/roadmap/BASELINE_V1.md",
+   "sha256": "3ea954ca9d51919537fe0bd84ee3a500fb9e0b401fe5ae7111a2370bc9ae3af9",
+   "bytes": 8519,
+   "last_commit": "84862b0"
+  },
+  {
+   "path": "docs/roadmap/PRIOR_ART.md",
+   "sha256": "1fd6e3a1a900670e4102285e6abc015e0f132518cd12a5e94b4ee549553ef490",
+   "bytes": 7647,
+   "last_commit": "bc8c5de"
+  },
+  {
    "path": "docs/superpowers/handoff/COSTLAB_RESULT.md",
    "sha256": "357e20b24adc60e50bd9c81fa9977feec25cc0b6b08e5a26c9a19eca7d75d3d7",
    "bytes": 10604,
@@ -33,6 +45,24 @@
    "sha256": "90347f0645910a4492fe7961ea0489cf085ed5b7011848bce76bc1776a3051b0",
    "bytes": 8095,
    "last_commit": "bc8c5de"
+  },
+  {
+   "path": "docs/superpowers/handoff/costlab_validation/final_run1.json",
+   "sha256": "4bfec3009c9840dd96a45586b74a21b1b28edd99ca1e2d8d2e7ca2428acbfa6f",
+   "bytes": 3948,
+   "last_commit": "74fe792"
+  },
+  {
+   "path": "docs/superpowers/handoff/costlab_validation/final_run2.json",
+   "sha256": "6bcf25c9e305d099d49ba3c11bd466408c0f5a5cd5891904a7f062bda5255d8f",
+   "bytes": 3945,
+   "last_commit": "74fe792"
+  },
+  {
+   "path": "docs/superpowers/handoff/costlab_validation/patched_run_pin0123_V2_fail.json",
+   "sha256": "70ab7dd557971aca8e9016e185c7f554c34e938ff4e33188dbed3460f0c6fa1b",
+   "bytes": 4443,
+   "last_commit": "74fe792"
   },
   {
    "path": "docs/superpowers/handoff/GEOMETRY_ATLAS_HANDOFF.md",
@@ -117,6 +147,18 @@
    "sha256": "7c6d52d400fb520fdc988e0349ebf6305e170c9e4acd0afa9e6548a439e08a2b",
    "bytes": 5713,
    "last_commit": "74fe792"
+  },
+  {
+   "path": "docs/superpowers/handoff/M1_STAGE_B1_RESULT.md",
+   "sha256": "de635ebe78971481208bb1707f60b1a4c0859cd97c915655f8cab62a33c6664b",
+   "bytes": 25052,
+   "last_commit": "6a78a2d"
+  },
+  {
+   "path": "docs/superpowers/handoff/M1_STAGE_B_SPEC.md",
+   "sha256": "9b447db37460b75eebe3b3b07e8342997c5a90b70396370d218f2610ec814b7c",
+   "bytes": 22994,
+   "last_commit": "6a78a2d"
   },
   {
    "path": "docs/superpowers/handoff/REVIEW_2026-10-05_R10_AND_Y1.md",
@@ -6381,6 +6423,12 @@
    "sha256": "124c17a7905be3c68b09e31b9a978d916e6721ba3bcbb40a7a074542f9ed212c",
    "bytes": 10950,
    "last_commit": "11ea50b"
+  },
+  {
+   "path": "results/m1/dev/diag_transfer_B1_n10.json",
+   "sha256": "351428c698d882bfbd07443ab77ee3d83f3f5dda540d10d9b185bb53dc0452b3",
+   "bytes": 12786,
+   "last_commit": "e087222"
   },
   {
    "path": "results/m1/harness/harness_check_N10_seeds100.json",
