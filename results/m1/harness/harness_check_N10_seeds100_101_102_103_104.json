@@ -1,0 +1,203 @@
+{
+  "what": "harness check against the old unaliased shootout; not an M1 result",
+  "n_regimes": 10,
+  "tolerance_accuracy": 0.02,
+  "pinning": {
+    "threads": 3,
+    "cpus": [
+      0,
+      2,
+      4
+    ],
+    "blas_limited": true
+  },
+  "environment": {
+    "python": "3.12.10",
+    "torch": "2.6.0+cu124",
+    "cuda": "12.4",
+    "cuda_available": true,
+    "gpu_name": "NVIDIA GeForce RTX 3060",
+    "gpu_driver": "610.60",
+    "cpu_name": "AMD Ryzen 5 7600 6-Core Processor",
+    "logical_cores": 12,
+    "ram_bytes": 34081722368,
+    "torch_intraop_threads": 6,
+    "torch_interop_threads": 6,
+    "env_vars": {
+      "OMP_NUM_THREADS": "unset",
+      "MKL_NUM_THREADS": "unset",
+      "OPENBLAS_NUM_THREADS": "unset",
+      "NUMEXPR_NUM_THREADS": "unset"
+    },
+    "git_commit": "e8e76d3b0f9006f09d8002ae8971be07cd22b196",
+    "timestamp": "2026-11-02T09:51:29.622383+00:00"
+  },
+  "rows": [
+    {
+      "seed": 100,
+      "pool": {
+        "old_acc": 0.4332500010728836,
+        "new_acc": 0.4332500010728836,
+        "old_bytes": 4004160,
+        "new_bytes": 4004160,
+        "acc_ok": true,
+        "bytes_ok": true
+      },
+      "replay": {
+        "old_acc": 0.3655000001192093,
+        "new_acc": 0.3655000001192093,
+        "old_bytes": 4003872,
+        "new_bytes": 4003872,
+        "old_buffer": 3695,
+        "new_buffer": 3695,
+        "budget_bytes": 4004160,
+        "unaliased_pool_bytes": 4004160,
+        "acc_ok": true,
+        "bytes_ok": true
+      }
+    },
+    {
+      "seed": 101,
+      "pool": {
+        "old_acc": 0.4260000020265579,
+        "new_acc": 0.4260000020265579,
+        "old_bytes": 4004160,
+        "new_bytes": 4004160,
+        "acc_ok": true,
+        "bytes_ok": true
+      },
+      "replay": {
+        "old_acc": 0.36600000560283663,
+        "new_acc": 0.36600000560283663,
+        "old_bytes": 4003872,
+        "new_bytes": 4003872,
+        "old_buffer": 3695,
+        "new_buffer": 3695,
+        "budget_bytes": 4004160,
+        "unaliased_pool_bytes": 4004160,
+        "acc_ok": true,
+        "bytes_ok": true
+      }
+    },
+    {
+      "seed": 102,
+      "pool": {
+        "old_acc": 0.41449999809265137,
+        "new_acc": 0.41449999809265137,
+        "old_bytes": 4371808,
+        "new_bytes": 4371808,
+        "acc_ok": true,
+        "bytes_ok": true
+      },
+      "replay": {
+        "old_acc": 0.37424999475479126,
+        "new_acc": 0.37424999475479126,
+        "old_bytes": 4003872,
+        "new_bytes": 4003872,
+        "old_buffer": 3695,
+        "new_buffer": 3695,
+        "budget_bytes": 4004160,
+        "unaliased_pool_bytes": 4371808,
+        "acc_ok": true,
+        "bytes_ok": true
+      }
+    },
+    {
+      "seed": 103,
+      "pool": {
+        "old_acc": 0.4437499940395355,
+        "new_acc": 0.4437499940395355,
+        "old_bytes": 4004160,
+        "new_bytes": 4004160,
+        "acc_ok": true,
+        "bytes_ok": true
+      },
+      "replay": {
+        "old_acc": 0.366499999165535,
+        "new_acc": 0.366499999165535,
+        "old_bytes": 4003872,
+        "new_bytes": 4003872,
+        "old_buffer": 3695,
+        "new_buffer": 3695,
+        "budget_bytes": 4004160,
+        "unaliased_pool_bytes": 4004160,
+        "acc_ok": true,
+        "bytes_ok": true
+      }
+    },
+    {
+      "seed": 104,
+      "pool": {
+        "old_acc": 0.43224999904632566,
+        "new_acc": 0.43224999904632566,
+        "old_bytes": 4004160,
+        "new_bytes": 4004160,
+        "acc_ok": true,
+        "bytes_ok": true
+      },
+      "replay": {
+        "old_acc": 0.3677500009536743,
+        "new_acc": 0.3677500009536743,
+        "old_bytes": 4003872,
+        "new_bytes": 4003872,
+        "old_buffer": 3695,
+        "new_buffer": 3695,
+        "budget_bytes": 4004160,
+        "unaliased_pool_bytes": 4004160,
+        "acc_ok": true,
+        "bytes_ok": true
+      }
+    }
+  ],
+  "replay_thread_probe": [
+    {
+      "seed": 100,
+      "threads": 3,
+      "cpus": [
+        0,
+        2,
+        4
+      ],
+      "blas_limited": true,
+      "acc": 0.3655000001192093,
+      "old_acc": 0.3655000001192093,
+      "same_as_old": true
+    },
+    {
+      "seed": 100,
+      "threads": 2,
+      "cpus": [
+        0,
+        2
+      ],
+      "blas_limited": true,
+      "acc": 0.37224999666213987,
+      "old_acc": 0.3655000001192093,
+      "same_as_old": false
+    },
+    {
+      "seed": 100,
+      "threads": 2,
+      "cpus": [
+        0,
+        2
+      ],
+      "blas_limited": true,
+      "acc": 0.37224999666213987,
+      "old_acc": 0.3655000001192093,
+      "same_as_old": false
+    },
+    {
+      "seed": 100,
+      "threads": 1,
+      "cpus": [
+        0
+      ],
+      "blas_limited": true,
+      "acc": 0.36175000071525576,
+      "old_acc": 0.3655000001192093,
+      "same_as_old": false
+    }
+  ],
+  "all_ok": true
+}

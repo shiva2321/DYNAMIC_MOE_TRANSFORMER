@@ -1,0 +1,443 @@
+{
+  "what": "which switch makes the shipped pool spawn too many experts on B1; development seeds only; not an M1 result",
+  "n_regimes": 10,
+  "pinning": {
+    "threads": 2,
+    "cpus": [
+      0,
+      2
+    ],
+    "blas_limited": true
+  },
+  "environment": {
+    "python": "3.12.10",
+    "torch": "2.6.0+cu124",
+    "cuda": "12.4",
+    "cuda_available": true,
+    "gpu_name": "NVIDIA GeForce RTX 3060",
+    "gpu_driver": "610.60",
+    "cpu_name": "AMD Ryzen 5 7600 6-Core Processor",
+    "logical_cores": 12,
+    "ram_bytes": 34081722368,
+    "torch_intraop_threads": 6,
+    "torch_interop_threads": 6,
+    "env_vars": {
+      "OMP_NUM_THREADS": "unset",
+      "MKL_NUM_THREADS": "unset",
+      "OPENBLAS_NUM_THREADS": "unset",
+      "NUMEXPR_NUM_THREADS": "unset"
+    },
+    "git_commit": "e8e76d3b0f9006f09d8002ae8971be07cd22b196",
+    "timestamp": "2026-11-02T10:04:05.209535+00:00"
+  },
+  "rows": [
+    {
+      "config": "A1L pre-stage-4 pool (probe spawn, q 0.02, router off)",
+      "variant": "pre_stage4",
+      "overrides": {},
+      "seed": 800,
+      "acc": 0.4375,
+      "experts": 10,
+      "memory_bytes": 4004160,
+      "event_counts": {
+        "spawn": 10
+      },
+      "seconds": 9.45394778251648
+    },
+    {
+      "config": "A1 Baseline v1 (transfer spawn, q 0.05, router on), 5 steps",
+      "variant": "baseline_v1",
+      "overrides": {},
+      "seed": 800,
+      "acc": 0.306750001013279,
+      "experts": 67,
+      "memory_bytes": 18779104,
+      "event_counts": {
+        "spawn": 67,
+        "alarm": 1,
+        "router_refit": 1
+      },
+      "seconds": 14.969321727752686
+    },
+    {
+      "config": "A1 with q 0.02",
+      "variant": "baseline_v1",
+      "overrides": {
+        "q": 0.02
+      },
+      "seed": 800,
+      "acc": 0.44000000059604644,
+      "experts": 10,
+      "memory_bytes": 4023616,
+      "event_counts": {
+        "spawn": 10,
+        "router_refit": 1
+      },
+      "seconds": 9.388676404953003
+    },
+    {
+      "config": "A1 with the probe spawn rule",
+      "variant": "baseline_v1",
+      "overrides": {
+        "spawn_rule": "probe"
+      },
+      "seed": 800,
+      "acc": 0.4242499977350235,
+      "experts": 15,
+      "memory_bytes": 5481952,
+      "event_counts": {
+        "spawn": 15,
+        "extend": 19,
+        "router_refit": 1
+      },
+      "seconds": 12.6689453125
+    },
+    {
+      "config": "A1L pre-stage-4 pool (probe spawn, q 0.02, router off)",
+      "variant": "pre_stage4",
+      "overrides": {},
+      "seed": 801,
+      "acc": 0.43875000178813933,
+      "experts": 10,
+      "memory_bytes": 4004160,
+      "event_counts": {
+        "spawn": 10
+      },
+      "seconds": 7.011948347091675
+    },
+    {
+      "config": "A1 Baseline v1 (transfer spawn, q 0.05, router on), 5 steps",
+      "variant": "baseline_v1",
+      "overrides": {},
+      "seed": 801,
+      "acc": 0.3115000009536743,
+      "experts": 67,
+      "memory_bytes": 18779104,
+      "event_counts": {
+        "spawn": 67,
+        "alarm": 1,
+        "router_refit": 1
+      },
+      "seconds": 15.176849842071533
+    },
+    {
+      "config": "A1 with q 0.02",
+      "variant": "baseline_v1",
+      "overrides": {
+        "q": 0.02
+      },
+      "seed": 801,
+      "acc": 0.44424999952316285,
+      "experts": 10,
+      "memory_bytes": 4023616,
+      "event_counts": {
+        "spawn": 10,
+        "router_refit": 1
+      },
+      "seconds": 9.242420673370361
+    },
+    {
+      "config": "A1 with the probe spawn rule",
+      "variant": "baseline_v1",
+      "overrides": {
+        "spawn_rule": "probe"
+      },
+      "seed": 801,
+      "acc": 0.4025000035762787,
+      "experts": 29,
+      "memory_bytes": 9252768,
+      "event_counts": {
+        "spawn": 29,
+        "extend": 19,
+        "alarm": 3,
+        "router_refit": 1
+      },
+      "seconds": 15.98888087272644
+    },
+    {
+      "config": "A1L pre-stage-4 pool (probe spawn, q 0.02, router off)",
+      "variant": "pre_stage4",
+      "overrides": {},
+      "seed": 802,
+      "acc": 0.4082500010728836,
+      "experts": 11,
+      "memory_bytes": 4404576,
+      "event_counts": {
+        "spawn": 11,
+        "alarm": 1
+      },
+      "seconds": 7.209819793701172
+    },
+    {
+      "config": "A1 Baseline v1 (transfer spawn, q 0.05, router on), 5 steps",
+      "variant": "baseline_v1",
+      "overrides": {},
+      "seed": 802,
+      "acc": 0.3042499966919422,
+      "experts": 61,
+      "memory_bytes": 17323424,
+      "event_counts": {
+        "spawn": 61,
+        "alarm": 3,
+        "extend": 1,
+        "router_refit": 1
+      },
+      "seconds": 17.43630361557007
+    },
+    {
+      "config": "A1 with q 0.02",
+      "variant": "baseline_v1",
+      "overrides": {
+        "q": 0.02
+      },
+      "seed": 802,
+      "acc": 0.4267500013113022,
+      "experts": 10,
+      "memory_bytes": 4023616,
+      "event_counts": {
+        "spawn": 10,
+        "alarm": 1,
+        "extend": 1,
+        "router_refit": 1
+      },
+      "seconds": 9.597174882888794
+    },
+    {
+      "config": "A1 with the probe spawn rule",
+      "variant": "baseline_v1",
+      "overrides": {
+        "spawn_rule": "probe"
+      },
+      "seed": 802,
+      "acc": 0.380500003695488,
+      "experts": 25,
+      "memory_bytes": 8437536,
+      "event_counts": {
+        "spawn": 25,
+        "alarm": 2,
+        "extend": 18,
+        "router_refit": 1
+      },
+      "seconds": 14.498534202575684
+    },
+    {
+      "config": "A1L pre-stage-4 pool (probe spawn, q 0.02, router off)",
+      "variant": "pre_stage4",
+      "overrides": {},
+      "seed": 803,
+      "acc": 0.43174999952316284,
+      "experts": 10,
+      "memory_bytes": 4004160,
+      "event_counts": {
+        "spawn": 10
+      },
+      "seconds": 7.099455833435059
+    },
+    {
+      "config": "A1 Baseline v1 (transfer spawn, q 0.05, router on), 5 steps",
+      "variant": "baseline_v1",
+      "overrides": {},
+      "seed": 803,
+      "acc": 0.3167499989271164,
+      "experts": 67,
+      "memory_bytes": 18779104,
+      "event_counts": {
+        "spawn": 67,
+        "alarm": 1,
+        "router_refit": 1
+      },
+      "seconds": 15.402629852294922
+    },
+    {
+      "config": "A1 with q 0.02",
+      "variant": "baseline_v1",
+      "overrides": {
+        "q": 0.02
+      },
+      "seed": 803,
+      "acc": 0.4297499984502792,
+      "experts": 10,
+      "memory_bytes": 4023616,
+      "event_counts": {
+        "spawn": 10,
+        "router_refit": 1
+      },
+      "seconds": 9.315544128417969
+    },
+    {
+      "config": "A1 with the probe spawn rule",
+      "variant": "baseline_v1",
+      "overrides": {
+        "spawn_rule": "probe"
+      },
+      "seed": 803,
+      "acc": 0.40349999666213987,
+      "experts": 23,
+      "memory_bytes": 8160992,
+      "event_counts": {
+        "spawn": 23,
+        "extend": 22,
+        "alarm": 1,
+        "router_refit": 1
+      },
+      "seconds": 15.133468627929688
+    },
+    {
+      "config": "A1L pre-stage-4 pool (probe spawn, q 0.02, router off)",
+      "variant": "pre_stage4",
+      "overrides": {},
+      "seed": 804,
+      "acc": 0.4147499978542328,
+      "experts": 10,
+      "memory_bytes": 4004160,
+      "event_counts": {
+        "spawn": 10
+      },
+      "seconds": 7.355972766876221
+    },
+    {
+      "config": "A1 Baseline v1 (transfer spawn, q 0.05, router on), 5 steps",
+      "variant": "baseline_v1",
+      "overrides": {},
+      "seed": 804,
+      "acc": 0.3107499971985817,
+      "experts": 67,
+      "memory_bytes": 18779104,
+      "event_counts": {
+        "spawn": 67,
+        "alarm": 1,
+        "router_refit": 1
+      },
+      "seconds": 15.238208770751953
+    },
+    {
+      "config": "A1 with q 0.02",
+      "variant": "baseline_v1",
+      "overrides": {
+        "q": 0.02
+      },
+      "seed": 804,
+      "acc": 0.410999995470047,
+      "experts": 10,
+      "memory_bytes": 4023616,
+      "event_counts": {
+        "spawn": 10,
+        "router_refit": 1
+      },
+      "seconds": 9.25067400932312
+    },
+    {
+      "config": "A1 with the probe spawn rule",
+      "variant": "baseline_v1",
+      "overrides": {
+        "spawn_rule": "probe"
+      },
+      "seed": 804,
+      "acc": 0.4157500058412552,
+      "experts": 26,
+      "memory_bytes": 8706880,
+      "event_counts": {
+        "spawn": 26,
+        "extend": 21,
+        "alarm": 2,
+        "router_refit": 1
+      },
+      "seconds": 15.702306985855103
+    },
+    {
+      "config": "A1L with the router",
+      "variant": "pre_stage4",
+      "overrides": {
+        "router": true
+      },
+      "seed": 800,
+      "acc": 0.4375,
+      "experts": 10,
+      "memory_bytes": 4004160,
+      "event_counts": {
+        "spawn": 10,
+        "router_refit": 1
+      },
+      "seconds": 9.55733871459961
+    },
+    {
+      "config": "A1L with the transfer spawn rule",
+      "variant": "pre_stage4",
+      "overrides": {
+        "spawn_rule": "transfer"
+      },
+      "seed": 800,
+      "acc": 0.44000000059604644,
+      "experts": 10,
+      "memory_bytes": 4023616,
+      "event_counts": {
+        "spawn": 10
+      },
+      "seconds": 6.919978141784668
+    },
+    {
+      "config": "A1L with q 0.05",
+      "variant": "pre_stage4",
+      "overrides": {
+        "q": 0.05
+      },
+      "seed": 800,
+      "acc": 0.4242499977350235,
+      "experts": 15,
+      "memory_bytes": 5481952,
+      "event_counts": {
+        "spawn": 15,
+        "extend": 19
+      },
+      "seconds": 10.347073078155518
+    },
+    {
+      "config": "A1L with the shortlist from 64 experts",
+      "variant": "pre_stage4",
+      "overrides": {
+        "gate_shortlist_min_experts": 64
+      },
+      "seed": 800,
+      "acc": 0.4375,
+      "experts": 10,
+      "memory_bytes": 4004160,
+      "event_counts": {
+        "spawn": 10
+      },
+      "seconds": 6.877307653427124
+    },
+    {
+      "config": "A1 with 1 step per batch (the class default)",
+      "variant": "baseline_v1",
+      "overrides": {
+        "inner_steps": 1
+      },
+      "seed": 800,
+      "acc": 0.1832499995827675,
+      "experts": 7,
+      "memory_bytes": 2018528,
+      "event_counts": {
+        "spawn": 7,
+        "extend": 12,
+        "router_refit": 1
+      },
+      "seconds": 9.815176486968994
+    },
+    {
+      "config": "A1 with the router off",
+      "variant": "baseline_v1",
+      "overrides": {
+        "router": false
+      },
+      "seed": 800,
+      "acc": 0.306750001013279,
+      "experts": 67,
+      "memory_bytes": 18779104,
+      "event_counts": {
+        "spawn": 67,
+        "alarm": 1
+      },
+      "seconds": 15.004796504974365
+    }
+  ]
+}
