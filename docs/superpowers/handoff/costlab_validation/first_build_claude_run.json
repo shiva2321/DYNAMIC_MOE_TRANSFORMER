@@ -1,0 +1,161 @@
+{
+  "timestamp": "2026-11-02T07:23:16Z",
+  "overall_pass": true,
+  "bars": {
+    "V1_macs": {
+      "subchecks": {
+        "mlp": {
+          "measured_macs": 2703360,
+          "analytic_macs": 2703360,
+          "error_pct": 0.0,
+          "tolerance_pct": 5.0,
+          "pass": true
+        },
+        "moe": {
+          "measured_macs": 147456,
+          "analytic_macs": 147456,
+          "error_pct": 0.0,
+          "tolerance_pct": 5.0,
+          "pass": true
+        },
+        "attention": {
+          "measured_macs": 163840,
+          "analytic_macs": 163840,
+          "error_pct": 0.0,
+          "tolerance_pct": 5.0,
+          "pass": true
+        },
+        "counter": {
+          "total": 6500,
+          "expected_total": 6500,
+          "by_name": {
+            "matmul": 6000,
+            "conv": 500
+          },
+          "pass": true
+        }
+      },
+      "pass": true
+    },
+    "V2_timing": {
+      "settings": {
+        "threads": 2,
+        "cpus": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "attempts_cpu": [
+        {
+          "attempt": 1,
+          "mean_ms": 23.17349000077229,
+          "std_ms": 0.28452175567713656,
+          "cv_pct": 1.2277898394573044,
+          "is_gte_20ms": true,
+          "cv_lte_5pct": true
+        }
+      ],
+      "attempts_gpu": [
+        {
+          "attempt": 1,
+          "mean_ms": 38.31933999899775,
+          "std_ms": 2.4508317113646534,
+          "cv_pct": 6.395808778096793,
+          "is_gte_20ms": true,
+          "cv_lte_5pct": false
+        },
+        {
+          "attempt": 2,
+          "mean_ms": 40.47865000175079,
+          "std_ms": 1.5150529301687412,
+          "cv_pct": 3.742844512114934,
+          "is_gte_20ms": true,
+          "cv_lte_5pct": true
+        }
+      ],
+      "cpu_passed": true,
+      "gpu_passed": true,
+      "best_cpu_cv_pct": 1.2277898394573044,
+      "best_gpu_cv_pct": 3.742844512114934,
+      "pass": true
+    },
+    "V3_energy": {
+      "initial_gpu_utilization_pct": 13,
+      "idle_mean_watts": 57.6228,
+      "first_run": {
+        "counter_joules": 2269.403,
+        "integrated_joules": 2200.7674358390987,
+        "mean_watts": 169.8529965945612,
+        "calls": 660,
+        "duration_s": 13.360983000005945
+      },
+      "subchecks": {
+        "loaded_gt_idle": {
+          "loaded_power_w": 169.8529965945612,
+          "idle_power_w": 57.6228,
+          "pass": true
+        },
+        "counter_vs_integrated": {
+          "counter_joules": 2269.403,
+          "integrated_joules": 2200.7674358390987,
+          "diff_pct": 3.0243885357030527,
+          "tolerance_pct": 15.0,
+          "pass": true
+        },
+        "two_x_calls_linearity": {
+          "first_calls": 660,
+          "first_joules": 2269.403,
+          "two_x_calls": 1320,
+          "two_x_joules": 4356.564,
+          "expected_joules": 4538.806,
+          "diff_pct": 4.015196948272283,
+          "tolerance_pct": 25.0,
+          "pass": true
+        }
+      },
+      "pass": true
+    },
+    "V4_bytes": {
+      "subchecks": {
+        "dense_mlp_exact_match": {
+          "total_bytes": 340008,
+          "active_bytes": 340008,
+          "pass": true
+        },
+        "moe_batch1_one_expert": {
+          "expected_bytes": 18720,
+          "active_bytes": 18720,
+          "pass": true
+        },
+        "moe_forced_expert_3": {
+          "expected_bytes": 18720,
+          "active_bytes": 18720,
+          "has_expert_3": true,
+          "pass": true
+        }
+      },
+      "pass": true
+    },
+    "V5_memory": {
+      "subchecks": {
+        "gpu_256mb": {
+          "expected_bytes": 268435456,
+          "measured_peak_bytes": 276955136,
+          "min_bound": 268435456,
+          "max_bound": 303798681.6,
+          "pass": true
+        },
+        "cpu_200mb_numpy_rss": {
+          "expected_bytes": 209715200,
+          "measured_rss_diff_bytes": 209723392,
+          "error_pct": 0.00390625,
+          "tolerance_pct": 20.0,
+          "pass": true
+        }
+      },
+      "pass": true
+    }
+  }
+}
