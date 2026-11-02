@@ -1,0 +1,12 @@
+seed 502 seq   ULDA-off  final mean 0.6489 experts  18 spawn 18 extend 3 params   893898   126s
+seed 502 seq   ULDA-on   final mean 0.6186 experts  20 spawn 20 extend 2 params   995800   124s
+seed 502 seq   h16-off   final mean 0.5465 experts  18 spawn 18 extend 2 params   378108   120s
+seed 502 seq   h16-on    final mean 0.5567 experts  20 spawn 20 extend 2 params   420120   122s
+seed 502 mix   ULDA-off  final mean 0.6672 experts   1 spawn 1 extend 0 params    49661     5s
+seed 502 mix   ULDA-on   final mean 0.6672 experts   1 spawn 1 extend 0 params    49661     5s
+seed 502 mix   h16-off   final mean 0.4306 experts   1 spawn 1 extend 0 params    20877     4s
+seed 502 mix   h16-on    final mean 0.4306 experts   1 spawn 1 extend 0 params    20877     3s
+seed 502 drift ULDA-off  final mean 0.6682 experts   1 spawn 1 extend 1 params    49661     5s
+seed 502 drift ULDA-on   final mean 0.6682 experts   1 spawn 1 extend 1 params    49661     5s
+seed 502 drift h16-off   final mean 0.3874 experts   1 spawn 1 extend 1 params    20877     4s
+seed 502 drift h16-on    final mean 0.3874 experts   1 spawn 1 extend 1 params    20877     5s

@@ -1,0 +1,63 @@
+C:\Users\Asta\AppData\Local\Programs\Python\Python312\Lib\site-packages\torch\cuda\__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+  shipped        {'inner_steps': 1}: final mean 0.529 (8s)
+  shipped        {'inner_steps': 5}: final mean 0.482 (7s)
+  shipped        {'inner_steps': 20}: final mean 0.440 (10s)
+  U-real         {'inner_steps': 1}: final mean 0.521 (3s)
+  U-real         {'inner_steps': 5}: final mean 0.491 (4s)
+  U-real         {'inner_steps': 20}: final mean 0.458 (7s)
+  U-deep         {'inner_steps': 1}: final mean 0.521 (6s)
+  U-deep         {'inner_steps': 5}: final mean 0.491 (7s)
+  U-deep         {'inner_steps': 20}: final mean 0.458 (11s)
+  U-recipe       {'inner_steps': 5, 'replay_size': 256}: final mean 0.491 (4s)
+  U-recipe       {'inner_steps': 5, 'replay_size': 1024}: final mean 0.551 (4s)
+  U-recipe       {'inner_steps': 20, 'replay_size': 256}: final mean 0.458 (7s)
+  U-recipe       {'inner_steps': 20, 'replay_size': 1024}: final mean 0.511 (7s)
+  U-recipe       {'inner_steps': 50, 'replay_size': 256}: final mean 0.441 (14s)
+  U-recipe       {'inner_steps': 50, 'replay_size': 1024}: final mean 0.531 (14s)
+  replay_eqmem   {'hidden': 256, 'inner_steps': 1}: final mean 0.589 (1s)
+  replay_eqmem   {'hidden': 256, 'inner_steps': 5}: final mean 0.574 (2s)
+  replay_eqmem   {'hidden': 256, 'inner_steps': 20}: final mean 0.541 (5s)
+  replay_eqmem {'hidden': 1024, 'inner_steps': 1}: skipped (no room for a replay buffer: width 1024 leaves -186 vectors in 1024500 bytes)
+  replay_eqmem {'hidden': 1024, 'inner_steps': 5}: skipped (no room for a replay buffer: width 1024 leaves -186 vectors in 1024500 bytes)
+  replay_eqmem {'hidden': 1024, 'inner_steps': 20}: skipped (no room for a replay buffer: width 1024 leaves -186 vectors in 1024500 bytes)
+  replay_eqmem {'hidden': 4096, 'inner_steps': 1}: skipped (no room for a replay buffer: width 4096 leaves -6354 vectors in 1024500 bytes)
+  replay_eqmem {'hidden': 4096, 'inner_steps': 5}: skipped (no room for a replay buffer: width 4096 leaves -6354 vectors in 1024500 bytes)
+  replay_eqmem {'hidden': 4096, 'inner_steps': 20}: skipped (no room for a replay buffer: width 4096 leaves -6354 vectors in 1024500 bytes)
+  finetune       {'inner_steps': 5}: final mean 0.414 (1s)
+  finetune       {'inner_steps': 20}: final mean 0.335 (4s)
+  joint          {'hidden': 1024, 'inner_steps': 5}: final mean 0.650 (6s)
+  joint          {'hidden': 1024, 'inner_steps': 20}: final mean 0.645 (26s)
+  joint          {'hidden': 4096, 'inner_steps': 5}: final mean 0.653 (15s)
+  joint          {'hidden': 4096, 'inner_steps': 20}: final mean 0.659 (56s)
+{
+ "shipped": {
+  "inner_steps": 1
+ },
+ "U-real": {
+  "inner_steps": 1
+ },
+ "U-deep": {
+  "inner_steps": 1
+ },
+ "U-recipe": {
+  "inner_steps": 5,
+  "replay_size": 1024
+ },
+ "replay_eqmem": {
+  "hidden": 256,
+  "inner_steps": 1
+ },
+ "finetune": {
+  "inner_steps": 5
+ },
+ "joint": {
+  "hidden": 4096,
+  "inner_steps": 20
+ },
+ "oracle_experts": {
+  "inner_steps": 5
+ },
+ "knn_eqmem": {},
+ "lda": {}
+}

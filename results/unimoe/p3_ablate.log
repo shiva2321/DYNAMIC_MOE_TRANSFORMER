@@ -1,0 +1,29 @@
+C:\Users\Asta\AppData\Local\Programs\Python\Python312\Lib\site-packages\torch\cuda\__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+seed 500 seq   U-real-no-batch_vote final mean 0.587 experts  20   106s
+seed 500 seq   U-real-no-shortlist final mean 0.621 experts  19    99s
+seed 500 seq   U-real-no-set_gate final mean 0.542 experts   7    31s
+seed 500 seq   U-real-no-router final mean 0.621 experts  19    37s
+seed 500 seq   U-real-no-transfer final mean 0.572 experts  18    95s
+seed 500 seq   U-real-no-growth final mean 0.621 experts  19    83s
+seed 500 seq   U-real-no-twin_fix final mean 0.599 experts  21    93s
+seed 500 seq   U-real-no-probation final mean 0.611 experts  20    98s
+seed 500 seq   U-real-no-competence final mean 0.620 experts  19    82s
+seed 501 seq   U-real-no-batch_vote final mean 0.632 experts  21    88s
+seed 501 seq   U-real-no-shortlist final mean 0.632 experts  21    88s
+seed 501 seq   U-real-no-set_gate final mean 0.589 experts  14    57s
+seed 501 seq   U-real-no-router final mean 0.632 experts  21    37s
+seed 501 seq   U-real-no-transfer final mean 0.596 experts  17    93s
+seed 501 seq   U-real-no-growth final mean 0.632 experts  21    93s
+seed 501 seq   U-real-no-twin_fix final mean 0.618 experts  23   108s
+seed 501 seq   U-real-no-probation final mean 0.608 experts  21   102s
+seed 501 seq   U-real-no-competence final mean 0.632 experts  21   110s
+seed 502 seq   U-real-no-batch_vote final mean 0.561 experts  16    83s
+seed 502 seq   U-real-no-shortlist final mean 0.613 experts  18    80s
+seed 502 seq   U-real-no-set_gate final mean 0.497 experts  10    41s
+seed 502 seq   U-real-no-router final mean 0.607 experts  18    29s
+seed 502 seq   U-real-no-transfer final mean 0.584 experts  18    82s
+seed 502 seq   U-real-no-growth final mean 0.613 experts  18    80s
+seed 502 seq   U-real-no-twin_fix final mean 0.615 experts  20    94s
+seed 502 seq   U-real-no-probation final mean 0.632 experts  19    98s
+seed 502 seq   U-real-no-competence final mean 0.597 experts  14    66s

@@ -1,0 +1,1 @@
+{"seed": 711, "arm": "off16", "acc": 0.825555553038915, "experts": 6, "params": 88110, "bytes": 2631224, "events": {"spawn": 6, "set_held": 5, "set_novel": 5, "router_refit": 1}, "seconds": 11.261991739273071}

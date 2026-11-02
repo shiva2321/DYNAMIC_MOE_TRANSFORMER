@@ -1,0 +1,26 @@
+C:\Users\Asta\AppData\Local\Programs\Python\Python312\Lib\site-packages\torch\cuda\__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+seed 500 seq   shipped-h16              final mean 0.469 experts  14 grow events 0    52s
+seed 500 seq   U-real-h16               final mean 0.583 experts  21 grow events 0    90s
+seed 500 seq   U-deep-h16               final mean 0.583 experts  21 grow events 0    89s
+seed 500 seq   U-real-no-growth-h16     final mean 0.583 experts  21 grow events 0    94s
+seed 500 seq   U-real-h512              final mean 0.631 experts  20 grow events 0   100s
+seed 500 seq   U-real-h16-fast          final mean 0.583 experts  21 grow events 0    92s
+seed 500 seq   U-real-gap0.35-fast      final mean 0.621 experts  19 grow events 0   102s
+seed 500 seq   U-real-gap0.50-fast      final mean 0.621 experts  19 grow events 0    98s
+seed 501 seq   shipped-h16              final mean 0.541 experts  21 grow events 0    83s
+seed 501 seq   U-real-h16               final mean 0.612 experts  20 grow events 0   103s
+seed 501 seq   U-deep-h16               final mean 0.612 experts  20 grow events 0   103s
+seed 501 seq   U-real-no-growth-h16     final mean 0.612 experts  20 grow events 0   103s
+seed 501 seq   U-real-h512              final mean 0.632 experts  21 grow events 0   102s
+seed 501 seq   U-real-h16-fast          final mean 0.612 experts  20 grow events 0    91s
+seed 501 seq   U-real-gap0.35-fast      final mean 0.632 experts  21 grow events 0    95s
+seed 501 seq   U-real-gap0.50-fast      final mean 0.632 experts  21 grow events 0    95s
+seed 502 seq   shipped-h16              final mean 0.494 experts  18 grow events 0    59s
+seed 502 seq   U-real-h16               final mean 0.548 experts  18 grow events 0    70s
+seed 502 seq   U-deep-h16               final mean 0.548 experts  18 grow events 0    70s
+seed 502 seq   U-real-no-growth-h16     final mean 0.548 experts  18 grow events 0    68s
+seed 502 seq   U-real-h512              final mean 0.630 experts  18 grow events 0    74s
+seed 502 seq   U-real-h16-fast          final mean 0.548 experts  18 grow events 0    68s
+seed 502 seq   U-real-gap0.35-fast      final mean 0.613 experts  18 grow events 0    72s
+seed 502 seq   U-real-gap0.50-fast      final mean 0.613 experts  18 grow events 0    72s
