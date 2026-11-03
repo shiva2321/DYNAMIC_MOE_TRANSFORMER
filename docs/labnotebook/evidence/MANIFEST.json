@@ -1,6 +1,6 @@
 {
- "generated": "2026-11-03 09:46:06",
- "head": "f5ea5c7",
+ "generated": "2026-11-03 13:41:49",
+ "head": "f3b0afb",
  "branch": "main",
  "n_files": 1351,
  "files": [
@@ -110,7 +110,7 @@
    "path": "docs/superpowers/handoff/KICKOFF_M2_READING_2026-11-03.md",
    "sha256": "708274464efb5d3e62d0980e3c09d1342e4d4fbf0280352541b9e9d644f90774",
    "bytes": 1556,
-   "last_commit": null
+   "last_commit": "f3b0afb"
   },
   {
    "path": "docs/superpowers/handoff/KICKOFF_M5_REAL_TEXT_STREAM_2026-10-13.md",
@@ -206,7 +206,7 @@
    "path": "docs/superpowers/handoff/M2_READING_SPEC.md",
    "sha256": "1bbcab2b7e1dcfaa3e8e9e05b7c2f9e3cae7ba1917e984d167d6ea59b2531302",
    "bytes": 6531,
-   "last_commit": null
+   "last_commit": "f3b0afb"
   },
   {
    "path": "docs/superpowers/handoff/REVIEW_2026-10-05_R10_AND_Y1.md",
