@@ -84,3 +84,55 @@ def test_trainable_parameters_returns_only_predictor_params():
     trainable_ids = {id(p) for p in jepa.trainable_parameters()}
     predictor_ids = {id(p) for p in jepa.predictor.parameters()}
     assert trainable_ids == predictor_ids
+
+
+def test_jepa_loss_decreases_with_training():
+    torch.manual_seed(0)
+    encoder = UniversalMultimodalEncoder(d_model=16)
+    jepa = JEPAModule(encoder, predictor_hidden_dim=32, mask_ratio=0.3, ema_decay=0.9)
+    optimizer = torch.optim.AdamW(
+        list(encoder.parameters()) + list(jepa.trainable_parameters()), lr=5e-3
+    )
+
+    losses = []
+    for _ in range(60):
+        token_ids = torch.randint(0, 50, (8, 10), dtype=torch.long)
+        optimizer.zero_grad()
+        loss = jepa.compute_loss(token_ids)
+        loss.backward()
+        optimizer.step()
+        jepa.update_target_encoder()
+        losses.append(loss.item())
+
+    early_avg = sum(losses[:10]) / 10
+    late_avg = sum(losses[-10:]) / 10
+    print(f"\nJEPA training loss: early_avg={early_avg:.4f}, late_avg={late_avg:.4f}")
+    assert late_avg < early_avg
+
+
+def test_target_encoder_representations_do_not_collapse_after_training():
+    torch.manual_seed(0)
+    encoder = UniversalMultimodalEncoder(d_model=16)
+    jepa = JEPAModule(encoder, predictor_hidden_dim=32, mask_ratio=0.3, ema_decay=0.9)
+    optimizer = torch.optim.AdamW(
+        list(encoder.parameters()) + list(jepa.trainable_parameters()), lr=5e-3
+    )
+
+    for _ in range(60):
+        token_ids = torch.randint(0, 50, (8, 10), dtype=torch.long)
+        optimizer.zero_grad()
+        loss = jepa.compute_loss(token_ids)
+        loss.backward()
+        optimizer.step()
+        jepa.update_target_encoder()
+
+    with torch.no_grad():
+        inputs = torch.randint(0, 50, (5, 10), dtype=torch.long)
+        target_r, _ = jepa.target_encoder(inputs)
+        pooled = target_r.mean(dim=1)  # [5, d_model]
+
+    pairwise_dists = torch.cdist(pooled, pooled)
+    off_diagonal = pairwise_dists[~torch.eye(5, dtype=torch.bool)]
+    print(f"\nTarget encoder pairwise off-diagonal mean distance: {off_diagonal.mean().item():.4f}")
+    assert off_diagonal.mean().item() > 1e-3
+
