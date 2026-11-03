@@ -1,0 +1,116 @@
+{
+  "schema": 1,
+  "created": "2026-11-03T07:14:29+0530",
+  "git_commit": "334e41ee0167ca7f792318688e0809e558e539f8",
+  "frozen": {
+    "docs/roadmap/M1_PREREG_DRAFT.md": "9fa6b71a5ad4505eb14f64587d082ff454eb118bcdd2212724cbabdb398e57d6",
+    "m1/config_m1.py": "21d9f21433470f27acff8afd3deebd153b9f2fb960f830364200ea1783b5decb",
+    "results/m1/tuning/B1.json": "048c3eb234e60371465f7423dd64e00742e96b057c10ef9009a56333aabcbde4",
+    "results/m1/tuning/B2.json": "0f53afcd20d708123ef994fc5bb0ea20914a731c846782792f52010157ed08f4",
+    "results/m1/tuning/B3seq.json": "c72401372ceb2bcff4cae086ec97260fa153cad8120593e1cb0ae677c06cb680",
+    "results/m1/tuning/B3mix.json": "dc2a068c97a50e633a92c1a9ff1fdb934359aaa834797467d4193dcc56738e33",
+    "results/m1/tuning/B3drift.json": "079305c6e164b81dac208862c289a4d30de73bab8babe2007601d4bd2bff09cc"
+  },
+  "recorded": {
+    "m1/arms.py": "4bd8c235e563c8bdfac7b859252f0220b8f50399af80eea5fa2a51dfc133c7d7",
+    "m1/beds.py": "dc32deeec87e9be7bc6a91d6633655274d44624bae4a85ddf1ca7456ba8f9ea4",
+    "m1/cell.py": "ffc5848c66f029e75d8aa5820de32091bf535360cf56f7b9129b4c44e6068ab6",
+    "m1/queue.py": "36d18489d031a8dc31bdfebe21f96280b83339182a29f25e3137b305a775ef41",
+    "m1/report.py": "35d7c56c1607dd45b4f2130ccb0c36ec8e10aed48942d1bdcd1fff82935f7d51",
+    "m1/verdict.py": "550feb5e0a1326c7338f4b1f26f8c848ca87d3b7fbe06fa15be8ba20314a9416",
+    "m1/freeze.py": "775e5a87ab6e0041faecaffc8c3ca97d4767533e944263add404f1c1b584eee6",
+    "m1/scored_run.sh": "da9d0c4aa1c88848f32a633eb50f701035393c36c3ee33386ea577a03b0f4a28"
+  },
+  "dev_seeds": [
+    800,
+    801,
+    802,
+    803,
+    804
+  ],
+  "report_seeds": [
+    810,
+    811,
+    812,
+    813,
+    814,
+    815,
+    816,
+    817,
+    818,
+    819
+  ],
+  "reserve_seeds": [
+    820,
+    821,
+    822,
+    823,
+    824,
+    825,
+    826,
+    827,
+    828,
+    829
+  ],
+  "readings": {
+    "decision_rule_6_1": "Read first on update wall-clock and batch-1 latency, with counted multiply-adds as the secondary reading (D-88). A cell without a timing key (profile det) is skipped in a wall-clock mean, never averaged as zero; the report says how many seeds each column rests on.",
+    "pool_of_the_predictions": "A2 is the pool of the predictions, A1 is printed beside it (D-88). The equal-memory and compute-matched baselines are sized to both reference pools (D-88).",
+    "rule_6_2_growth": "The whole-run wall-clock of the gap-growth pair cell against its probe pair cell is pooled over the timed seeds; accuracy is read on all ten seeds.",
+    "M1-7": "Read with A2 as the pool and the primary reading of rule 6.1, per bed, on report-seed means.",
+    "M1-8": "Fitted on the A2 record with the most regimes on bed B1, memory taken after the first visit of each regime; the slope is compared with one expert's bytes.",
+    "acceptance": "Adoption thresholds of 6.2 stay as drafted (D-88). No single-use confirmatory run in M1; a gain seen on development seeds is re-checked on report seeds (F-101)."
+  },
+  "run_plan": {
+    "launcher": "m1/scored_run.sh",
+    "report_command": "python -m m1.report --cells results/m1/scored --out results/m1/scored_report --split report",
+    "beds": [
+      "B2",
+      "B3seq",
+      "B3mix",
+      "B3drift",
+      "B1 (N = 10, 30, 100)"
+    ],
+    "arms": "A1,A1q,A2,A3,A4,A5a,A5b,A6,A7,A7all,A8,A3-2,A4-2,A7-2 and the held-default pair cells H",
+    "timed": {
+      "seeds": [
+        810,
+        811,
+        812,
+        813,
+        814
+      ],
+      "profile": "full",
+      "how": "one process at a time on logical processors 0 and 2, two threads, the machine otherwise idle"
+    },
+    "deterministic": {
+      "seeds": [
+        815,
+        816,
+        817,
+        818,
+        819
+      ],
+      "profile": "det",
+      "how": "four workers of two threads on logical processors 0,2 / 4,6 / 8,10 / 1,3, never at the same time as the timed pass"
+    },
+    "reserve_seeds_untouched": [
+      820,
+      821,
+      822,
+      823,
+      824,
+      825,
+      826,
+      827,
+      828,
+      829
+    ],
+    "extension_rule": "none: five timed seeds from the start (option A of Q-82)",
+    "known_limits": [
+      "wall-clock verdicts rest on the five timed seeds, accuracy and counted multiply-adds on all ten",
+      "the GPU repeat of the wide networks (D-89) is not built; every cell runs on the CPU",
+      "A6 and A8 sit at the edge of their tuning grids on B1 and the B3 schedules; A3 sits at its raised edge (16384) on B1; the report prints the at_edge notes",
+      "tuning used development seeds 800-804 only; B1 operating points were tuned at N = 30 and reused at N = 10 and N = 100"
+    ]
+  }
+}
