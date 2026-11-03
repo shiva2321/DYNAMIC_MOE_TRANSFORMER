@@ -1,6 +1,6 @@
 {
- "generated": "2026-11-03 08:35:35",
- "head": "fc6b228",
+ "generated": "2026-11-03 08:36:54",
+ "head": "fc6cda2",
  "branch": "main",
  "n_files": 1336,
  "files": [
@@ -104,7 +104,7 @@
    "path": "docs/superpowers/handoff/KICKOFF_M1_GPU_REPEAT_2026-11-03.md",
    "sha256": "bf97646dd7d49b69882b6427a9a76ef571da974e17ace4b46edff44445bdffcf",
    "bytes": 1787,
-   "last_commit": null
+   "last_commit": "fc6cda2"
   },
   {
    "path": "docs/superpowers/handoff/KICKOFF_M5_REAL_TEXT_STREAM_2026-10-13.md",
@@ -152,7 +152,7 @@
    "path": "docs/superpowers/handoff/M1_GPU_REPEAT_SPEC.md",
    "sha256": "b9465d87d356b05d343f7deffcbe38c17527a7cffa3ee796c5efab34e233a29b",
    "bytes": 13146,
-   "last_commit": null
+   "last_commit": "fc6cda2"
   },
   {
    "path": "docs/superpowers/handoff/M1_RUNNER_A_RESULT.md",
@@ -440,7 +440,7 @@
    "path": "m1/diag_gpu_probe.py",
    "sha256": "65d92d6313769623bf40ed37e50a8cb787997f82d931f6c082b9aa7318aed262",
    "bytes": 4907,
-   "last_commit": null
+   "last_commit": "fc6cda2"
   },
   {
    "path": "research/DYNAMIC_MOE_RESEARCH_AND_DESIGN.md",
@@ -7892,7 +7892,7 @@
    "path": "results/m1/diag/gpu_probe_2026-11-03.json",
    "sha256": "89926c268c318c3893c7b69f531e4faf89b1fc93f66ab8c5093b91e1984c5c58",
    "bytes": 1479,
-   "last_commit": null
+   "last_commit": "fc6cda2"
   },
   {
    "path": "results/m1/harness/harness_check_N10_seeds100.json",
