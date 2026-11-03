@@ -11,7 +11,7 @@ ALL="A1,A1q,A2,A3,A4,A5a,A5b,A6,A7,A7all,A8,A3-2,A4-2,A7-2,H"
 BEDS="B2,B3seq,B3mix,B3drift,B1"
 OUT=results/m1/scored
 LOGS=results/m1/scored_logs
-TIMED_SEEDS="810 811 812 813 814"
+TIMED_SEEDS=${TIMED_SEEDS:-"810 811 812 813 814"}   # default = the frozen plan; D-97 runs "810 811 812" first and decides on 813 814 by the precision rule
 DET_SEEDS="815-819"
 mkdir -p "$LOGS"
 
