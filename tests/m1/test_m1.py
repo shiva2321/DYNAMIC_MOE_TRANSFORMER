@@ -1099,3 +1099,14 @@ def test_a_raised_width_cap_makes_only_that_arms_tuning_entry_stale(tmp_path, mo
     without_cap = {a: driver.grid_ref(a) for a in arms}
     assert with_cap["A3"] != without_cap["A3"] and with_cap["A3-2"] != without_cap["A3-2"]
     assert with_cap["A4"] == without_cap["A4"] and with_cap["A8"] == without_cap["A8"]
+
+
+def test_freeze_digest_ignores_the_line_ending_of_the_checkout(tmp_path):
+    import m1.freeze as freeze
+
+    lf, crlf = tmp_path / "lf.txt", tmp_path / "crlf.txt"
+    lf.write_bytes(b"one\ntwo\n")
+    crlf.write_bytes(b"one\r\ntwo\r\n")
+    assert freeze.file_digest(lf) == freeze.file_digest(crlf)
+    crlf.write_bytes(b"one\r\ntwo changed\r\n")
+    assert freeze.file_digest(lf) != freeze.file_digest(crlf)

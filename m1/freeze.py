@@ -50,7 +50,8 @@ class FreezeError(ValueError):
 
 
 def file_digest(path: Path) -> str:
-    return hashlib.sha256(path.read_bytes()).hexdigest()
+    """SHA-256 of the file with CRLF read as LF, so a git checkout on Windows cannot change it."""
+    return hashlib.sha256(path.read_bytes().replace(b"\r\n", b"\n")).hexdigest()
 
 
 def _digests(root: Path, names: Iterable[str]) -> Dict[str, str]:
