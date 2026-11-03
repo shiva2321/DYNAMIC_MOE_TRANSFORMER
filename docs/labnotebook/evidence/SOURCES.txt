@@ -520,3 +520,7 @@ results/m1/dev_b/B3seq_n22_H_shipped__seed801.json
 docs/roadmap/M1_FREEZE.json
 results/m1/diag/a3_edge_probe_B1.json
 m1/diag_a3_edge.py
+results/m1/diag/gpu_probe_2026-11-03.json
+m1/diag_gpu_probe.py
+docs/superpowers/handoff/M1_GPU_REPEAT_SPEC.md
+docs/superpowers/handoff/KICKOFF_M1_GPU_REPEAT_2026-11-03.md

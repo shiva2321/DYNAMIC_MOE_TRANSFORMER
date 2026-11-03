@@ -1,8 +1,8 @@
 {
- "generated": "2026-11-03 07:17:09",
- "head": "f751956",
+ "generated": "2026-11-03 08:35:35",
+ "head": "fc6b228",
  "branch": "main",
- "n_files": 1332,
+ "n_files": 1336,
  "files": [
   {
    "path": "demos/demo_growmoe_continual_learning.py",
@@ -101,6 +101,12 @@
    "last_commit": "8312306"
   },
   {
+   "path": "docs/superpowers/handoff/KICKOFF_M1_GPU_REPEAT_2026-11-03.md",
+   "sha256": "bf97646dd7d49b69882b6427a9a76ef571da974e17ace4b46edff44445bdffcf",
+   "bytes": 1787,
+   "last_commit": null
+  },
+  {
    "path": "docs/superpowers/handoff/KICKOFF_M5_REAL_TEXT_STREAM_2026-10-13.md",
    "sha256": "758818726e4d8b992a2a57627b16c094a294923c661b800dcaacce9ee5ade56c",
    "bytes": 4897,
@@ -141,6 +147,12 @@
    "sha256": "c71771f83577cad9c3236d6f05d963e088cdce94356b8e85cda5e474bd6ebbe7",
    "bytes": 2342,
    "last_commit": "8312306"
+  },
+  {
+   "path": "docs/superpowers/handoff/M1_GPU_REPEAT_SPEC.md",
+   "sha256": "b9465d87d356b05d343f7deffcbe38c17527a7cffa3ee796c5efab34e233a29b",
+   "bytes": 13146,
+   "last_commit": null
   },
   {
    "path": "docs/superpowers/handoff/M1_RUNNER_A_RESULT.md",
@@ -423,6 +435,12 @@
    "sha256": "109e97cb3e63018c22a538845948e15b5b03bd065f58b9ce2fccdf13aba8d0eb",
    "bytes": 1576,
    "last_commit": "f751956"
+  },
+  {
+   "path": "m1/diag_gpu_probe.py",
+   "sha256": "65d92d6313769623bf40ed37e50a8cb787997f82d931f6c082b9aa7318aed262",
+   "bytes": 4907,
+   "last_commit": null
   },
   {
    "path": "research/DYNAMIC_MOE_RESEARCH_AND_DESIGN.md",
@@ -7869,6 +7887,12 @@
    "sha256": "e057f8b231e5c7576c042118586e3fa2cb71a6974d493c3296d153f521119861",
    "bytes": 974,
    "last_commit": "f751956"
+  },
+  {
+   "path": "results/m1/diag/gpu_probe_2026-11-03.json",
+   "sha256": "89926c268c318c3893c7b69f531e4faf89b1fc93f66ab8c5093b91e1984c5c58",
+   "bytes": 1479,
+   "last_commit": null
   },
   {
    "path": "results/m1/harness/harness_check_N10_seeds100.json",
