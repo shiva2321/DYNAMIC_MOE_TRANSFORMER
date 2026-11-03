@@ -15,7 +15,7 @@ TIMED_SEEDS="810 811 812 813 814"
 DET_SEEDS="815-819"
 mkdir -p "$LOGS"
 
-$PY -I -m m1.freeze check || exit 2          # the report seeds open only while the frozen files match the freeze
+$PY -m m1.freeze check || exit 2          # the report seeds open only while the frozen files match the freeze
 
 queue() {   # queue PROFILE SEEDS SHARD CPUS LOGNAME
     $PY -u -m m1.queue --split report --beds "$BEDS" --ns 10,30,100 --arms "$ALL" --seeds "$2" --out "$OUT" --profile "$1" \
