@@ -1,8 +1,8 @@
 {
- "generated": "2026-11-04 03:05:38",
- "head": "11ce5c8",
+ "generated": "2026-11-04 03:09:15",
+ "head": "977f2b4",
  "branch": "main",
- "n_files": 1377,
+ "n_files": 1379,
  "files": [
   {
    "path": "demos/demo_growmoe_continual_learning.py",
@@ -167,6 +167,12 @@
    "last_commit": "ba24d8a"
   },
   {
+   "path": "docs/superpowers/handoff/KICKOFF_V1_REMOVAL_2026-11-04.md",
+   "sha256": "93850a6f35d6d47d7dccdfa1ace446d7f84e1d49ef74765e5299f71b3339d67e",
+   "bytes": 2371,
+   "last_commit": null
+  },
+  {
    "path": "docs/superpowers/handoff/M1_GPU_REPEAT_RESULT.md",
    "sha256": "f9360dbc5eb2184a779bee446190d17ce2829d8036acb8b2994826f3b40e9b2a",
    "bytes": 17108,
@@ -303,6 +309,12 @@
    "sha256": "b41368dee64cbb1f7113b31d972ac34259f275e5790509bb840915b8ed9082c4",
    "bytes": 2198,
    "last_commit": "11ce5c8"
+  },
+  {
+   "path": "docs/superpowers/handoff/V1_REMOVAL_SPEC.md",
+   "sha256": "4b8539d4cb78640e958d7db66daaa196d7f3ad704f2a09f32943d02af9ab83ff",
+   "bytes": 9135,
+   "last_commit": null
   },
   {
    "path": "docs/superpowers/handoff/YGGDRASIL_ARCH_HANDOFF.md",
