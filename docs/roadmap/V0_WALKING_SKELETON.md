@@ -1,4 +1,4 @@
-# V0: the walking skeleton (draft for the user's approval, 2026-11-04)
+# V0: the walking skeleton (APPROVED by the user on 2026-11-04: "approve and continue on both"; build job V-1, `docs/superpowers/handoff/V0_BUILD_SPEC.md`)
 
 **In plain words.** Until now the plan measured parts one at a time. The user asked to assemble a working model first, make it work, refine it, show it, and only then do the full experiments and proofs. This note fixes what the first assembled model (V0) is, what it shows, what it is allowed to claim (nothing beyond a demonstration), and how every later version is checked with the same cheap meter so that "it works" is measured, not asserted. It reorders the road (ROADMAP, MILESTONES); it does not drop the preregistration rules for any claim.
 
@@ -19,7 +19,7 @@ Building first has bitten this project four times: a string-grading artifact (IS
 A stream of real text topics arrives one after another. After each topic the script prints, per topic seen so far, the accuracy (to show that old topics are kept), the number of experts and the memory in bytes, the unknown-flag rate on held-out topics never shown, and the time and counted operations spent. It writes one figure and one JSON record. Next to V0 it runs three honest comparators on the same data in the same order: same-memory replay network, plain kNN, streaming LDA. If a comparator wins on a topic set (as kNN and LDA do on topical text, E-066, M1 look), the demo prints that, not a flattering subset.
 
 ## 4. The meter every version passes through (no new machinery)
-V0 gets arm id `V0` in the M1 harness (`m1/arms.py`, deterministic profile first: accuracy, forgetting, memory, counted multiply-adds; the timed profile only when a version is a candidate for a claim). Cells use development seeds 800-804 while building; report seeds stay frozen and untouched. V1, V2 get ids `V1`, `V2`.
+On the real-text beds V0 IS the M1 cell `H_ULDA` (same pool, same LDA head, same tuned operating point), so no new arm id is added while the scored run is in progress (editing `m1/arms.py` would change that run); the demo checks its own result against `execute_cell(bed, "H_ULDA")` exactly. Originally planned: V0 gets arm id `V0` in the M1 harness (`m1/arms.py`, deterministic profile first: accuracy, forgetting, memory, counted multiply-adds; the timed profile only when a version is a candidate for a claim). Cells use development seeds 800-804 while building; report seeds stay frozen and untouched. V1, V2 get ids `V1`, `V2`.
 
 ## 5. Versions
 - **V0** assembly above. Acceptance: runs end to end on this PC under 10 minutes on one seed; reproducible (same seed, same record); the meter record exists; the demo prints its comparators. No accuracy bar (nothing is claimed).
