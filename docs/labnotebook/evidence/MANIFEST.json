@@ -1,6 +1,6 @@
 {
- "generated": "2026-11-04 03:09:15",
- "head": "977f2b4",
+ "generated": "2026-11-04 03:09:19",
+ "head": "97b0c17",
  "branch": "main",
  "n_files": 1379,
  "files": [
@@ -170,7 +170,7 @@
    "path": "docs/superpowers/handoff/KICKOFF_V1_REMOVAL_2026-11-04.md",
    "sha256": "93850a6f35d6d47d7dccdfa1ace446d7f84e1d49ef74765e5299f71b3339d67e",
    "bytes": 2371,
-   "last_commit": null
+   "last_commit": "97b0c17"
   },
   {
    "path": "docs/superpowers/handoff/M1_GPU_REPEAT_RESULT.md",
@@ -314,7 +314,7 @@
    "path": "docs/superpowers/handoff/V1_REMOVAL_SPEC.md",
    "sha256": "4b8539d4cb78640e958d7db66daaa196d7f3ad704f2a09f32943d02af9ab83ff",
    "bytes": 9135,
-   "last_commit": null
+   "last_commit": "97b0c17"
   },
   {
    "path": "docs/superpowers/handoff/YGGDRASIL_ARCH_HANDOFF.md",
