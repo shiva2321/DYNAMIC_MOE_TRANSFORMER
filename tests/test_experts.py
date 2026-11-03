@@ -210,7 +210,7 @@ def test_mutate_topology_spawns_on_high_novelty_even_with_moderate_entropy():
 def test_mutate_topology_high_novelty_but_entropy_below_floor_does_not_spawn():
     moe = DynamicMorphicMoE(
         d_model=8, d_ff=16, initial_experts=3,
-        tau_split=10.0, tau_death=10.0, min_experts=2,
+        tau_split=10.0, tau_death=0.01, min_experts=2,
         tau_novelty=2.0, entropy_floor=0.5,
     )
     moe._last_entropy = torch.tensor(0.1)  # below entropy_floor
