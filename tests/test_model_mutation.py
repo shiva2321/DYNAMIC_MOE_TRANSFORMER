@@ -157,3 +157,4 @@ def test_model_runs_on_cuda_after_mutation():
     x = torch.randint(0, 100, (1, 4), dtype=torch.long, device="cuda")
     out = model(x)["output"]
     assert out.device.type == "cuda"
+

@@ -72,3 +72,4 @@ class ComplexLayerNorm(nn.Module):
         out_r = norm_r * self.gamma_real - norm_i * self.gamma_imag + self.beta_real
         out_i = norm_r * self.gamma_imag + norm_i * self.gamma_real + self.beta_imag
         return out_r, out_i
+

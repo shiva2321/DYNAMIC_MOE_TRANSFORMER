@@ -118,3 +118,4 @@ def test_repeated_mutation_keeps_buffer_shape_consistent():
         assert moe.expert_usage.dtype == torch.float32
         assert moe.expert_usage.device == moe.router_linear.weight.device
         assert moe.router_linear.out_features == moe.num_experts
+

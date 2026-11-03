@@ -97,3 +97,4 @@ def test_complex_layer_norm_output_shape_zero_mean_unit_variance_and_gradients()
     assert not torch.isnan(norm.gamma_real.grad).any()
     assert z_r.grad is not None
     assert z_i.grad is not None
+

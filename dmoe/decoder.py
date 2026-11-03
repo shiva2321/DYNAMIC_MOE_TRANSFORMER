@@ -24,3 +24,4 @@ class UniversalProjectiveDecoder(nn.Module):
             return unified_hidden
         else:
             raise ValueError(f"Unknown output head specification: {head}")
+

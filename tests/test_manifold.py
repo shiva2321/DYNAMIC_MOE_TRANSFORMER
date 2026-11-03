@@ -54,3 +54,4 @@ def test_predictor_stages_are_named_clearly():
     m = GeometricCorrectiveManifold(d_model=8)
     assert hasattr(m, "predictor_stage1")
     assert hasattr(m, "predictor_stage2")
+

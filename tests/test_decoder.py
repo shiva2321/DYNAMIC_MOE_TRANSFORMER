@@ -34,3 +34,4 @@ def test_unknown_head_raises():
     z_i = torch.randn(2, 3, 8)
     with pytest.raises(ValueError):
         dec(z_r, z_i, head="nonsense")
+

@@ -82,3 +82,4 @@ def test_full_mutation_cycle_then_optimization_step_does_not_error():
     optimizer.step()
 
     assert torch.isfinite(loss).all()
+

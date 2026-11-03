@@ -40,3 +40,4 @@ class DynamicMorphicTransformerLayer(nn.Module):
                 self.layer_salience.mul_(0.95).add_(salience * 0.05)
 
         return out_r, out_i, entropy
+

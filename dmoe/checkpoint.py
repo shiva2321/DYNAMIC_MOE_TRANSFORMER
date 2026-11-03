@@ -62,3 +62,4 @@ def load_checkpoint(path: str, model_cls, device: Optional[torch.device] = None)
         model = model.to(device)
 
     return model
+

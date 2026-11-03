@@ -173,3 +173,4 @@ class DynamicMorphicMoE(nn.Module):
 
         log_str = "; ".join(action_log) if action_log else "Stable"
         return spawned, pruned, log_str
+

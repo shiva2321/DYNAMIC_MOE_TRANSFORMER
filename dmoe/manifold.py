@@ -45,3 +45,4 @@ class GeometricCorrectiveManifold(nn.Module):
         corrected_i = z_i + corr_i
 
         return corrected_r, corrected_i, batch_mean_error
+

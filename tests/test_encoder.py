@@ -73,3 +73,4 @@ def test_rejects_unsupported_shape():
     x = torch.randn(2, 2, 2, 2, 2)
     with pytest.raises(ValueError):
         enc(x)
+

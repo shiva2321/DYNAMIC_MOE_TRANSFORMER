@@ -132,3 +132,4 @@ def rebuild_optimizer_preserving_state(
                 new_optimizer.state[p] = saved_state
 
     return new_optimizer
+

@@ -61,3 +61,4 @@ class UniversalMultimodalEncoder(nn.Module):
             raise ValueError(f"Unsupported multimodal tensor shape: {tuple(x.shape)}")
 
         return real_comp, imag_comp
+
