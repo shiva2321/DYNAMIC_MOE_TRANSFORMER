@@ -1,0 +1,4958 @@
+{
+  "label": "DEMONSTRATION, NOT A RESULT",
+  "status": "complete",
+  "bed": "B3seq",
+  "schedule": "seq",
+  "seed": 800,
+  "max_phases": null,
+  "commit": "7601fb20f0864e5dd589c0be57d9211284e81fda",
+  "environment": {
+    "python": "3.12.10",
+    "torch": "2.6.0+cu124",
+    "cuda": "12.4",
+    "cuda_available": true,
+    "gpu_name": "NVIDIA GeForce RTX 3060",
+    "gpu_driver": "610.60",
+    "cpu_name": "AMD Ryzen 5 7600 6-Core Processor",
+    "logical_cores": 12,
+    "ram_bytes": 34081722368,
+    "torch_intraop_threads": 2,
+    "torch_interop_threads": 6,
+    "env_vars": {
+      "OMP_NUM_THREADS": "unset",
+      "MKL_NUM_THREADS": "unset",
+      "OPENBLAS_NUM_THREADS": "unset",
+      "NUMEXPR_NUM_THREADS": "unset"
+    },
+    "git_commit": "7601fb20f0864e5dd589c0be57d9211284e81fda",
+    "timestamp": "2026-11-03T20:57:45.008821+00:00"
+  },
+  "pinning": {
+    "threads": 2,
+    "cpus": [
+      8,
+      10
+    ]
+  },
+  "parts_description": [
+    {
+      "part": "encoder",
+      "name": "Frozen encoder",
+      "source": "MiniLM through unimoe/frontends.py",
+      "state": "cached on disk under results/unimoe/emb, offline (d=128 projected)"
+    },
+    {
+      "part": "pool",
+      "name": "Pool with spawn, extend and merge",
+      "source": "growmoe/pools/phylo.py inside unimoe/pools.py UniPool",
+      "state": "tuned operating point of M1 (A1q: inner_steps=50, q=0.05)"
+    },
+    {
+      "part": "head",
+      "name": "Closed-form head in every expert",
+      "source": "ULDA of unimoe/systems2.py",
+      "state": "running LDA head inside every expert"
+    },
+    {
+      "part": "flag",
+      "name": "Unknown flag",
+      "source": "density and conformal flag of the pool, fingerprint shortlist",
+      "state": "weak on topical text, reported with measured AUROC"
+    },
+    {
+      "part": "what_is_off",
+      "name": "What is off",
+      "source": "asking reader, growth after birth, notebook newborns, skip and chance flags",
+      "state": "switched off in V0"
+    }
+  ],
+  "raw_stream_bytes": 6504448,
+  "arms": {
+    "V0": {
+      "config": {
+        "arm": "V0",
+        "variant": "baseline_v1",
+        "name": "UniPool",
+        "seed": 807,
+        "inner_steps": 50,
+        "route_rule": "accept_then_logf",
+        "router": true,
+        "spawn_rule": "transfer",
+        "growth_rule": "gap",
+        "q": 0.05,
+        "alpha_spawn": 0.01,
+        "m_min": 32,
+        "gate_shortlist_min_experts": 64,
+        "skip_known": null,
+        "transfer_chance": null,
+        "transfer_chance_weak_only": false,
+        "set_gate": true,
+        "set_gate_confirm": 2,
+        "sig_dedupe": true,
+        "infant_relax": 1.0,
+        "gap_mode": "recipe",
+        "domain_blocks": [],
+        "domain_head": "off",
+        "domain_beta": 1.0,
+        "lda_blend": 0.5,
+        "lda_shrink": 0.1,
+        "candidate": "ULDA"
+      },
+      "final_accuracy": 0.6501575735482302,
+      "per_regime_accuracy": [
+        0.8799999952316284,
+        0.8552631735801697,
+        0.8238993883132935,
+        0.8299999833106995,
+        0.8888888955116272,
+        0.9605262875556946,
+        0.6666666865348816,
+        0.5333333611488342,
+        0.41999998688697815,
+        0.44333332777023315,
+        0.4033333361148834,
+        0.6466666460037231,
+        0.3333333432674408,
+        0.4000000059604645,
+        0.5866666436195374,
+        0.5533333420753479,
+        0.5555555820465088,
+        0.5866666436195374,
+        0.6679999828338623,
+        0.7720000147819519,
+        0.7239999771118164,
+        0.7720000147819519
+      ],
+      "final_memory_bytes": 14687420,
+      "final_experts": 20,
+      "forgetting": 0.05078529634258964,
+      "update_seconds_total": 40.38272359999246,
+      "answer_latency": {
+        "1": {
+          "batch_size": 1,
+          "rows_timed": 1,
+          "latency_median_s": 0.0040442999998049345,
+          "latency_mean_s": 0.004061289999663131,
+          "latency_std_s": 0.00023174310288280592,
+          "latency_cv": 0.057061451632862505,
+          "latency_p95_s": 0.00434064999990369,
+          "items_per_second": 247.26157803531692
+        },
+        "32": {
+          "batch_size": 32,
+          "rows_timed": 32,
+          "latency_median_s": 0.005576499999733642,
+          "latency_mean_s": 0.005590279999523773,
+          "latency_std_s": 0.0002654775185490315,
+          "latency_cv": 0.04748912730161049,
+          "latency_p95_s": 0.005959774998882494,
+          "items_per_second": 5738.366359101311
+        }
+      },
+      "auroc": {
+        "by_dataset": {
+          "stories": 0.633554831895793,
+          "wiki": 0.6854611864108432,
+          "science_questions": 0.721764067359033
+        },
+        "mean": 0.680260028555223
+      }
+    },
+    "A3": {
+      "config": {
+        "arm": "A3",
+        "name": "ReplayNet at equal memory",
+        "seed": 800,
+        "hidden": 512,
+        "inner_steps": 20,
+        "replay_size": 12704,
+        "target_pool_bytes": 14687420
+      },
+      "final_accuracy": 0.6006814336234872,
+      "per_regime_accuracy": [
+        0.7666666507720947,
+        0.7719298005104065,
+        0.6918238997459412,
+        0.753333330154419,
+        0.7268518805503845,
+        0.9210526347160339,
+        0.503333330154419,
+        0.6033333539962769,
+        0.4000000059604645,
+        0.3166666626930237,
+        0.25,
+        0.6733333468437195,
+        0.3566666543483734,
+        0.35333332419395447,
+        0.6033333539962769,
+        0.503333330154419,
+        0.5833333134651184,
+        0.5766666531562805,
+        0.6679999828338623,
+        0.7440000176429749,
+        0.7919999957084656,
+        0.656000018119812
+      ],
+      "forgetting": 0.10414193570613861,
+      "final_memory_bytes": 7097844,
+      "update_seconds_total": 9.274154999995517,
+      "answer_latency": {
+        "1": {
+          "batch_size": 1,
+          "rows_timed": 1,
+          "latency_median_s": 0.00013844999921275303,
+          "latency_mean_s": 0.00015239999956975225,
+          "latency_std_s": 5.852938528728095e-05,
+          "latency_cv": 0.384051085646444,
+          "latency_p95_s": 0.0002444750001814098,
+          "items_per_second": 7222.824165302611
+        },
+        "32": {
+          "batch_size": 32,
+          "rows_timed": 32,
+          "latency_median_s": 0.00018060000002151355,
+          "latency_mean_s": 0.00019750000028579963,
+          "latency_std_s": 5.016694348831821e-05,
+          "latency_cv": 0.25400984007960653,
+          "latency_p95_s": 0.000274625000929518,
+          "items_per_second": 177187.15391023297
+        }
+      },
+      "memory_budget_bytes": 14687420,
+      "capped_by_stream_size": true
+    },
+    "A7": {
+      "config": {
+        "arm": "A7",
+        "name": "KnnMemory at equal memory",
+        "seed": 800,
+        "k": 5,
+        "capacity": 28686,
+        "target_pool_bytes": 14687420
+      },
+      "final_accuracy": 0.6453966904770244,
+      "per_regime_accuracy": [
+        0.8833333253860474,
+        0.8552631735801697,
+        0.7798742055892944,
+        0.846666693687439,
+        0.875,
+        0.9605262875556946,
+        0.7133333086967468,
+        0.5366666913032532,
+        0.3933333456516266,
+        0.3866666555404663,
+        0.3033333420753479,
+        0.746666669845581,
+        0.4300000071525574,
+        0.3499999940395355,
+        0.5666666626930237,
+        0.5600000023841858,
+        0.5753968358039856,
+        0.6000000238418579,
+        0.6759999990463257,
+        0.7639999985694885,
+        0.7279999852180481,
+        0.6679999828338623
+      ],
+      "forgetting": 0.027746896852146496,
+      "final_memory_bytes": 6504448,
+      "update_seconds_total": 0.09878830001980532,
+      "answer_latency": {
+        "1": {
+          "batch_size": 1,
+          "rows_timed": 1,
+          "latency_median_s": 0.0003441500011831522,
+          "latency_mean_s": 0.0003464099998382153,
+          "latency_std_s": 5.456790867473809e-06,
+          "latency_cv": 0.015752405733155242,
+          "latency_p95_s": 0.000354515000617539,
+          "items_per_second": 2905.7097096094817
+        },
+        "32": {
+          "batch_size": 32,
+          "rows_timed": 32,
+          "latency_median_s": 0.0016095499995572027,
+          "latency_mean_s": 0.0015294199998606927,
+          "latency_std_s": 0.0001815480391603343,
+          "latency_cv": 0.11870384797954167,
+          "latency_p95_s": 0.0016871750000063911,
+          "items_per_second": 19881.333297383368
+        }
+      },
+      "memory_budget_bytes": 14687420,
+      "capped_by_stream_size": true
+    },
+    "A5a": {
+      "config": {
+        "arm": "A5a",
+        "name": "StreamingLDA",
+        "seed": 800,
+        "shrinkage": 0.001
+      },
+      "final_accuracy": 0.6134372028437528,
+      "per_regime_accuracy": [
+        0.8700000047683716,
+        0.8508771657943726,
+        0.6477987170219421,
+        0.8333333134651184,
+        0.8287037014961243,
+        0.9868420958518982,
+        0.6800000071525574,
+        0.5733333230018616,
+        0.5066666603088379,
+        0.49000000953674316,
+        0.5533333420753479,
+        0.7799999713897705,
+        0.4033333361148834,
+        0.3700000047683716,
+        0.6299999952316284,
+        0.38999998569488525,
+        0.4920634925365448,
+        0.3733333349227905,
+        0.5960000157356262,
+        0.5519999861717224,
+        0.6159999966621399,
+        0.47200000286102295
+      ],
+      "forgetting": 0.06643099270083687,
+      "final_memory_bytes": 129536,
+      "update_seconds_total": 0.6986749000170676,
+      "answer_latency": {
+        "1": {
+          "batch_size": 1,
+          "rows_timed": 1,
+          "latency_median_s": 5.7499999456922524e-05,
+          "latency_mean_s": 5.94599998294143e-05,
+          "latency_std_s": 4.5399947108316985e-06,
+          "latency_cv": 0.07635376259429126,
+          "latency_p95_s": 6.807499903516145e-05,
+          "items_per_second": 17391.304512083927
+        },
+        "32": {
+          "batch_size": 32,
+          "rows_timed": 32,
+          "latency_median_s": 0.00011759999870264437,
+          "latency_mean_s": 0.00015713999928266276,
+          "latency_std_s": 0.00014032467284557856,
+          "latency_cv": 0.8929914311197312,
+          "latency_p95_s": 0.00036774999898625494,
+          "items_per_second": 272108.84653930226
+        }
+      }
+    },
+    "A5b": {
+      "config": {
+        "arm": "A5b",
+        "name": "MahalanobisProto",
+        "seed": 800,
+        "shrinkage": 0.5,
+        "scale": 1.0
+      },
+      "final_accuracy": 0.6300675957040354,
+      "per_regime_accuracy": [
+        0.8999999761581421,
+        0.8815789222717285,
+        0.8364779949188232,
+        0.8566666841506958,
+        0.9166666865348816,
+        0.9736841917037964,
+        0.8333333134651184,
+        0.7166666388511658,
+        0.3166666626930237,
+        0.4099999964237213,
+        0.17666666209697723,
+        0.5799999833106995,
+        0.44999998807907104,
+        0.36666667461395264,
+        0.653333306312561,
+        0.5600000023841858,
+        0.5317460298538208,
+        0.4333333373069763,
+        0.6880000233650208,
+        0.5640000104904175,
+        0.6520000100135803,
+        0.5640000104904175
+      ],
+      "forgetting": 0.03546766056255861,
+      "final_memory_bytes": 8256000,
+      "update_seconds_total": 0.3390342000457167,
+      "answer_latency": {
+        "1": {
+          "batch_size": 1,
+          "rows_timed": 1,
+          "latency_median_s": 0.004585050000969204,
+          "latency_mean_s": 0.004605850000734791,
+          "latency_std_s": 0.00018294265168123253,
+          "latency_cv": 0.039719628657478405,
+          "latency_p95_s": 0.0049185900001248225,
+          "items_per_second": 218.10012972347442
+        },
+        "32": {
+          "batch_size": 32,
+          "rows_timed": 32,
+          "latency_median_s": 0.0064054499998746905,
+          "latency_mean_s": 0.006459460000041872,
+          "latency_std_s": 0.00019416532506025757,
+          "latency_cv": 0.03005906454394004,
+          "latency_p95_s": 0.006749319999107684,
+          "items_per_second": 4995.745810306225
+        }
+      }
+    },
+    "A6": {
+      "config": {
+        "arm": "A6",
+        "name": "RandomFeatureRidge",
+        "seed": 800,
+        "D": 8192,
+        "ridge": 1.0,
+        "scale": 1.0
+      },
+      "final_accuracy": 0.7013857622038234,
+      "per_regime_accuracy": [
+        0.9266666769981384,
+        0.9122806787490845,
+        0.805031418800354,
+        0.8733333349227905,
+        0.9166666865348816,
+        1.0,
+        0.753333330154419,
+        0.6766666769981384,
+        0.4533333480358124,
+        0.49666666984558105,
+        0.3866666555404663,
+        0.7799999713897705,
+        0.4566666781902313,
+        0.41999998688697815,
+        0.6600000262260437,
+        0.6600000262260437,
+        0.60317462682724,
+        0.6100000143051147,
+        0.7080000042915344,
+        0.7799999713897705,
+        0.800000011920929,
+        0.7519999742507935
+      ],
+      "forgetting": 0.03553662110458721,
+      "final_memory_bytes": 272531456,
+      "update_seconds_total": 38.91154179998193,
+      "answer_latency": {
+        "1": {
+          "batch_size": 1,
+          "rows_timed": 1,
+          "latency_median_s": 0.0002676999993127538,
+          "latency_mean_s": 0.0002861599998141173,
+          "latency_std_s": 4.8322255868439706e-05,
+          "latency_cv": 0.16886446708075442,
+          "latency_p95_s": 0.0003578149993700208,
+          "items_per_second": 3735.5248508301283
+        },
+        "32": {
+          "batch_size": 32,
+          "rows_timed": 32,
+          "latency_median_s": 0.0017643500013946323,
+          "latency_mean_s": 0.0017477900000812951,
+          "latency_std_s": 0.0001453311805988358,
+          "latency_cv": 0.08315139724570801,
+          "latency_p95_s": 0.0019069849986408371,
+          "items_per_second": 18136.990945507165
+        }
+      }
+    },
+    "A7all": {
+      "config": {
+        "arm": "A7all",
+        "name": "KnnMemory all stored",
+        "seed": 800,
+        "k": 5,
+        "capacity": "all"
+      },
+      "final_accuracy": 0.6453966904770244,
+      "per_regime_accuracy": [
+        0.8833333253860474,
+        0.8552631735801697,
+        0.7798742055892944,
+        0.846666693687439,
+        0.875,
+        0.9605262875556946,
+        0.7133333086967468,
+        0.5366666913032532,
+        0.3933333456516266,
+        0.3866666555404663,
+        0.3033333420753479,
+        0.746666669845581,
+        0.4300000071525574,
+        0.3499999940395355,
+        0.5666666626930237,
+        0.5600000023841858,
+        0.5753968358039856,
+        0.6000000238418579,
+        0.6759999990463257,
+        0.7639999985694885,
+        0.7279999852180481,
+        0.6679999828338623
+      ],
+      "forgetting": 0.027746896852146496,
+      "final_memory_bytes": 6504448,
+      "update_seconds_total": 0.012748299963277532,
+      "answer_latency": {
+        "1": {
+          "batch_size": 1,
+          "rows_timed": 1,
+          "latency_median_s": 0.00031695000143372454,
+          "latency_mean_s": 0.00032393000037700403,
+          "latency_std_s": 5.367070485949316e-05,
+          "latency_cv": 0.16568611983153406,
+          "latency_p95_s": 0.0004009100000985199,
+          "items_per_second": 3155.0717636109675
+        },
+        "32": {
+          "batch_size": 32,
+          "rows_timed": 32,
+          "latency_median_s": 0.002098249999107793,
+          "latency_mean_s": 0.002074720000382513,
+          "latency_std_s": 0.00012394572102959457,
+          "latency_cv": 0.05974093902152719,
+          "latency_p95_s": 0.002220660000057251,
+          "items_per_second": 15250.804248114799
+        }
+      }
+    }
+  },
+  "phases": [
+    {
+      "phase": 0,
+      "V0": {
+        "regimes_seen": [
+          15
+        ],
+        "mean_accuracy": 0.6000000238418579,
+        "per_regime_accuracy": {
+          "15": 0.6000000238418579
+        },
+        "forgetting": 0.0,
+        "n_experts": 1,
+        "memory_bytes": 731436,
+        "update_seconds_so_far": 2.9235974000039278,
+        "unknown_flag": {
+          "false_new_rate": 0.0,
+          "ood_detection_rate": 1.0,
+          "ood_by_domain": {
+            "stories": 1.0,
+            "wiki": 1.0,
+            "science_questions": 1.0
+          }
+        }
+      },
+      "v0": {
+        "regimes_seen": [
+          15
+        ],
+        "mean_accuracy": 0.6000000238418579,
+        "per_regime_accuracy": {
+          "15": 0.6000000238418579
+        },
+        "forgetting": 0.0,
+        "n_experts": 1,
+        "memory_bytes": 731436,
+        "update_seconds_so_far": 2.9235974000039278,
+        "unknown_flag": {
+          "false_new_rate": 0.0,
+          "ood_detection_rate": 1.0,
+          "ood_by_domain": {
+            "stories": 1.0,
+            "wiki": 1.0,
+            "science_questions": 1.0
+          }
+        }
+      },
+      "A3": {
+        "mean_accuracy": 0.6066666841506958,
+        "memory_bytes": 798196,
+        "update_seconds_so_far": 0.320407700000942
+      },
+      "a3": {
+        "mean_accuracy": 0.6066666841506958,
+        "memory_bytes": 798196,
+        "update_seconds_so_far": 0.320407700000942
+      },
+      "A7": {
+        "mean_accuracy": 0.5600000023841858,
+        "memory_bytes": 204800,
+        "update_seconds_so_far": 0.0028120999995735474
+      },
+      "a7": {
+        "mean_accuracy": 0.5600000023841858,
+        "memory_bytes": 204800,
+        "update_seconds_so_far": 0.0028120999995735474
+      },
+      "A5a": {
+        "mean_accuracy": 0.5600000023841858,
+        "memory_bytes": 129536,
+        "update_seconds_so_far": 0.02266329999474692
+      },
+      "a5a": {
+        "mean_accuracy": 0.5600000023841858,
+        "memory_bytes": 129536,
+        "update_seconds_so_far": 0.02266329999474692
+      },
+      "A5b": {
+        "mean_accuracy": 0.6166666746139526,
+        "memory_bytes": 264192,
+        "update_seconds_so_far": 0.010941200001980178
+      },
+      "a5b": {
+        "mean_accuracy": 0.6166666746139526,
+        "memory_bytes": 264192,
+        "update_seconds_so_far": 0.010941200001980178
+      },
+      "A6": {
+        "mean_accuracy": 0.6800000071525574,
+        "memory_bytes": 272531456,
+        "update_seconds_so_far": 1.4297418999994989
+      },
+      "a6": {
+        "mean_accuracy": 0.6800000071525574,
+        "memory_bytes": 272531456,
+        "update_seconds_so_far": 1.4297418999994989
+      },
+      "A7all": {
+        "mean_accuracy": 0.5600000023841858,
+        "memory_bytes": 204800,
+        "update_seconds_so_far": 0.00035000000571017154
+      },
+      "a7all": {
+        "mean_accuracy": 0.5600000023841858,
+        "memory_bytes": 204800,
+        "update_seconds_so_far": 0.00035000000571017154
+      }
+    },
+    {
+      "phase": 1,
+      "V0": {
+        "regimes_seen": [
+          15,
+          16
+        ],
+        "mean_accuracy": 0.6095238327980042,
+        "per_regime_accuracy": {
+          "15": 0.6000000238418579,
+          "16": 0.6190476417541504
+        },
+        "forgetting": 0.0,
+        "n_experts": 2,
+        "memory_bytes": 1468032,
+        "update_seconds_so_far": 4.249820800003363,
+        "unknown_flag": {
+          "false_new_rate": 0.0,
+          "ood_detection_rate": 1.0,
+          "ood_by_domain": {
+            "stories": 1.0,
+            "wiki": 1.0,
+            "science_questions": 1.0
+          }
+        }
+      },
+      "v0": {
+        "regimes_seen": [
+          15,
+          16
+        ],
+        "mean_accuracy": 0.6095238327980042,
+        "per_regime_accuracy": {
+          "15": 0.6000000238418579,
+          "16": 0.6190476417541504
+        },
+        "forgetting": 0.0,
+        "n_experts": 2,
+        "memory_bytes": 1468032,
+        "update_seconds_so_far": 4.249820800003363,
+        "unknown_flag": {
+          "false_new_rate": 0.0,
+          "ood_detection_rate": 1.0,
+          "ood_by_domain": {
+            "stories": 1.0,
+            "wiki": 1.0,
+            "science_questions": 1.0
+          }
+        }
+      },
+      "A3": {
+        "mean_accuracy": 0.6055555641651154,
+        "memory_bytes": 1139188,
+        "update_seconds_so_far": 0.7057320000058098
+      },
+      "a3": {
+        "mean_accuracy": 0.6055555641651154,
+        "memory_bytes": 1139188,
+        "update_seconds_so_far": 0.7057320000058098
+      },
+      "A7": {
+        "mean_accuracy": 0.5657142996788025,
+        "memory_bytes": 545792,
+        "update_seconds_so_far": 0.0074134999958914705
+      },
+      "a7": {
+        "mean_accuracy": 0.5657142996788025,
+        "memory_bytes": 545792,
+        "update_seconds_so_far": 0.0074134999958914705
+      },
+      "A5a": {
+        "mean_accuracy": 0.5191269814968109,
+        "memory_bytes": 129536,
+        "update_seconds_so_far": 0.06628179999097483
+      },
+      "a5a": {
+        "mean_accuracy": 0.5191269814968109,
+        "memory_bytes": 129536,
+        "update_seconds_so_far": 0.06628179999097483
+      },
+      "A5b": {
+        "mean_accuracy": 0.6188888847827911,
+        "memory_bytes": 990720,
+        "update_seconds_so_far": 0.027215700003580423
+      },
+      "a5b": {
+        "mean_accuracy": 0.6188888847827911,
+        "memory_bytes": 990720,
+        "update_seconds_so_far": 0.027215700003580423
+      },
+      "A6": {
+        "mean_accuracy": 0.6445238292217255,
+        "memory_bytes": 272531456,
+        "update_seconds_so_far": 3.552268399995228
+      },
+      "a6": {
+        "mean_accuracy": 0.6445238292217255,
+        "memory_bytes": 272531456,
+        "update_seconds_so_far": 3.552268399995228
+      },
+      "A7all": {
+        "mean_accuracy": 0.5657142996788025,
+        "memory_bytes": 545792,
+        "update_seconds_so_far": 0.0010800999953062274
+      },
+      "a7all": {
+        "mean_accuracy": 0.5657142996788025,
+        "memory_bytes": 545792,
+        "update_seconds_so_far": 0.0010800999953062274
+      }
+    },
+    {
+      "phase": 2,
+      "V0": {
+        "regimes_seen": [
+          15,
+          16,
+          17
+        ],
+        "mean_accuracy": 0.5963492194811503,
+        "per_regime_accuracy": {
+          "15": 0.6000000238418579,
+          "16": 0.6190476417541504,
+          "17": 0.5699999928474426
+        },
+        "forgetting": 0.0,
+        "n_experts": 3,
+        "memory_bytes": 2204372,
+        "update_seconds_so_far": 7.173592899998766,
+        "unknown_flag": {
+          "false_new_rate": 0.0,
+          "ood_detection_rate": 1.0,
+          "ood_by_domain": {
+            "stories": 1.0,
+            "wiki": 1.0,
+            "science_questions": 1.0
+          }
+        }
+      },
+      "v0": {
+        "regimes_seen": [
+          15,
+          16,
+          17
+        ],
+        "mean_accuracy": 0.5963492194811503,
+        "per_regime_accuracy": {
+          "15": 0.6000000238418579,
+          "16": 0.6190476417541504,
+          "17": 0.5699999928474426
+        },
+        "forgetting": 0.0,
+        "n_experts": 3,
+        "memory_bytes": 2204372,
+        "update_seconds_so_far": 7.173592899998766,
+        "unknown_flag": {
+          "false_new_rate": 0.0,
+          "ood_detection_rate": 1.0,
+          "ood_by_domain": {
+            "stories": 1.0,
+            "wiki": 1.0,
+            "science_questions": 1.0
+          }
+        }
+      },
+      "A3": {
+        "mean_accuracy": 0.6214285691579183,
+        "memory_bytes": 1480180,
+        "update_seconds_so_far": 1.1340756000063266
+      },
+      "a3": {
+        "mean_accuracy": 0.6214285691579183,
+        "memory_bytes": 1480180,
+        "update_seconds_so_far": 1.1340756000063266
+      },
+      "A7": {
+        "mean_accuracy": 0.578253984451294,
+        "memory_bytes": 886784,
+        "update_seconds_so_far": 0.012331799996900372
+      },
+      "a7": {
+        "mean_accuracy": 0.578253984451294,
+        "memory_bytes": 886784,
+        "update_seconds_so_far": 0.012331799996900372
+      },
+      "A5a": {
+        "mean_accuracy": 0.4982539812723796,
+        "memory_bytes": 129536,
+        "update_seconds_so_far": 0.11179699998683645
+      },
+      "a5a": {
+        "mean_accuracy": 0.4982539812723796,
+        "memory_bytes": 129536,
+        "update_seconds_so_far": 0.11179699998683645
+      },
+      "A5b": {
+        "mean_accuracy": 0.6184656023979187,
+        "memory_bytes": 1056768,
+        "update_seconds_so_far": 0.042983100003766594
+      },
+      "a5b": {
+        "mean_accuracy": 0.6184656023979187,
+        "memory_bytes": 1056768,
+        "update_seconds_so_far": 0.042983100003766594
+      },
+      "A6": {
+        "mean_accuracy": 0.6483068863550822,
+        "memory_bytes": 272531456,
+        "update_seconds_so_far": 5.553540399996564
+      },
+      "a6": {
+        "mean_accuracy": 0.6483068863550822,
+        "memory_bytes": 272531456,
+        "update_seconds_so_far": 5.553540399996564
+      },
+      "A7all": {
+        "mean_accuracy": 0.578253984451294,
+        "memory_bytes": 886784,
+        "update_seconds_so_far": 0.0016217999946093187
+      },
+      "a7all": {
+        "mean_accuracy": 0.578253984451294,
+        "memory_bytes": 886784,
+        "update_seconds_so_far": 0.0016217999946093187
+      }
+    },
+    {
+      "phase": 3,
+      "V0": {
+        "regimes_seen": [
+          15,
+          16,
+          17,
+          18
+        ],
+        "mean_accuracy": 0.6046984195709229,
+        "per_regime_accuracy": {
+          "15": 0.6000000238418579,
+          "16": 0.567460298538208,
+          "17": 0.5633333325386047,
+          "18": 0.6880000233650208
+        },
+        "forgetting": 0.019418001174926758,
+        "n_experts": 3,
+        "memory_bytes": 2349420,
+        "update_seconds_so_far": 8.876041299990902,
+        "unknown_flag": {
+          "false_new_rate": 0.0,
+          "ood_detection_rate": 1.0,
+          "ood_by_domain": {
+            "stories": 1.0,
+            "wiki": 1.0,
+            "science_questions": 1.0
+          }
+        }
+      },
+      "v0": {
+        "regimes_seen": [
+          15,
+          16,
+          17,
+          18
+        ],
+        "mean_accuracy": 0.6046984195709229,
+        "per_regime_accuracy": {
+          "15": 0.6000000238418579,
+          "16": 0.567460298538208,
+          "17": 0.5633333325386047,
+          "18": 0.6880000233650208
+        },
+        "forgetting": 0.019418001174926758,
+        "n_experts": 3,
+        "memory_bytes": 2349420,
+        "update_seconds_so_far": 8.876041299990902,
+        "unknown_flag": {
+          "false_new_rate": 0.0,
+          "ood_detection_rate": 1.0,
+          "ood_by_domain": {
+            "stories": 1.0,
+            "wiki": 1.0,
+            "science_questions": 1.0
+          }
+        }
+      },
+      "A3": {
+        "mean_accuracy": 0.6249285936355591,
+        "memory_bytes": 1821172,
+        "update_seconds_so_far": 1.554519800003618
+      },
+      "a3": {
+        "mean_accuracy": 0.6249285936355591,
+        "memory_bytes": 1821172,
+        "update_seconds_so_far": 1.554519800003618
+      },
+      "A7": {
+        "mean_accuracy": 0.6030238270759583,
+        "memory_bytes": 1227776,
+        "update_seconds_so_far": 0.01864279999426799
+      },
+      "a7": {
+        "mean_accuracy": 0.6030238270759583,
+        "memory_bytes": 1227776,
+        "update_seconds_so_far": 0.01864279999426799
+      },
+      "A5a": {
+        "mean_accuracy": 0.5234603136777878,
+        "memory_bytes": 129536,
+        "update_seconds_so_far": 0.14784289998715394
+      },
+      "a5a": {
+        "mean_accuracy": 0.5234603136777878,
+        "memory_bytes": 129536,
+        "update_seconds_so_far": 0.14784289998715394
+      },
+      "A5b": {
+        "mean_accuracy": 0.5809206292033195,
+        "memory_bytes": 1056768,
+        "update_seconds_so_far": 0.058653800009778934
+      },
+      "a5b": {
+        "mean_accuracy": 0.5809206292033195,
+        "memory_bytes": 1056768,
+        "update_seconds_so_far": 0.058653800009778934
+      },
+      "A6": {
+        "mean_accuracy": 0.6574206352233887,
+        "memory_bytes": 272531456,
+        "update_seconds_so_far": 7.568171499995515
+      },
+      "a6": {
+        "mean_accuracy": 0.6574206352233887,
+        "memory_bytes": 272531456,
+        "update_seconds_so_far": 7.568171499995515
+      },
+      "A7all": {
+        "mean_accuracy": 0.6030238270759583,
+        "memory_bytes": 1227776,
+        "update_seconds_so_far": 0.002426399998512352
+      },
+      "a7all": {
+        "mean_accuracy": 0.6030238270759583,
+        "memory_bytes": 1227776,
+        "update_seconds_so_far": 0.002426399998512352
+      }
+    },
+    {
+      "phase": 4,
+      "V0": {
+        "regimes_seen": [
+          15,
+          16,
+          17,
+          18,
+          19
+        ],
+        "mean_accuracy": 0.650431752204895,
+        "per_regime_accuracy": {
+          "15": 0.6000000238418579,
+          "16": 0.5634920597076416,
+          "17": 0.6166666746139526,
+          "18": 0.6880000233650208,
+          "19": 0.7839999794960022
+        },
+        "forgetting": 0.002222225069999695,
+        "n_experts": 3,
+        "memory_bytes": 2496272,
+        "update_seconds_so_far": 10.961837999999261,
+        "unknown_flag": {
+          "false_new_rate": 0.0,
+          "ood_detection_rate": 1.0,
+          "ood_by_domain": {
+            "stories": 1.0,
+            "wiki": 1.0,
+            "science_questions": 1.0
+          }
+        }
+      },
+      "v0": {
+        "regimes_seen": [
+          15,
+          16,
+          17,
+          18,
+          19
+        ],
+        "mean_accuracy": 0.650431752204895,
+        "per_regime_accuracy": {
+          "15": 0.6000000238418579,
+          "16": 0.5634920597076416,
+          "17": 0.6166666746139526,
+          "18": 0.6880000233650208,
+          "19": 0.7839999794960022
+        },
+        "forgetting": 0.002222225069999695,
+        "n_experts": 3,
+        "memory_bytes": 2496272,
+        "update_seconds_so_far": 10.961837999999261,
+        "unknown_flag": {
+          "false_new_rate": 0.0,
+          "ood_detection_rate": 1.0,
+          "ood_by_domain": {
+            "stories": 1.0,
+            "wiki": 1.0,
+            "science_questions": 1.0
+          }
+        }
+      },
+      "A3": {
+        "mean_accuracy": 0.6518349170684814,
+        "memory_bytes": 2162164,
+        "update_seconds_so_far": 1.934506900008273
+      },
+      "a3": {
+        "mean_accuracy": 0.6518349170684814,
+        "memory_bytes": 2162164,
+        "update_seconds_so_far": 1.934506900008273
+      },
+      "A7": {
+        "mean_accuracy": 0.6352127075195313,
+        "memory_bytes": 1568768,
+        "update_seconds_so_far": 0.023354799996013753
+      },
+      "a7": {
+        "mean_accuracy": 0.6352127075195313,
+        "memory_bytes": 1568768,
+        "update_seconds_so_far": 0.023354799996013753
+      },
+      "A5a": {
+        "mean_accuracy": 0.5229142844676972,
+        "memory_bytes": 129536,
+        "update_seconds_so_far": 0.1805866999893624
+      },
+      "a5a": {
+        "mean_accuracy": 0.5229142844676972,
+        "memory_bytes": 129536,
+        "update_seconds_so_far": 0.1805866999893624
+      },
+      "A5b": {
+        "mean_accuracy": 0.573117458820343,
+        "memory_bytes": 1056768,
+        "update_seconds_so_far": 0.07438960000945372
+      },
+      "a5b": {
+        "mean_accuracy": 0.573117458820343,
+        "memory_bytes": 1056768,
+        "update_seconds_so_far": 0.07438960000945372
+      },
+      "A6": {
+        "mean_accuracy": 0.6815682649612427,
+        "memory_bytes": 272531456,
+        "update_seconds_so_far": 9.577385999993567
+      },
+      "a6": {
+        "mean_accuracy": 0.6815682649612427,
+        "memory_bytes": 272531456,
+        "update_seconds_so_far": 9.577385999993567
+      },
+      "A7all": {
+        "mean_accuracy": 0.6352127075195313,
+        "memory_bytes": 1568768,
+        "update_seconds_so_far": 0.0029791999950248282
+      },
+      "a7all": {
+        "mean_accuracy": 0.6352127075195313,
+        "memory_bytes": 1568768,
+        "update_seconds_so_far": 0.0029791999950248282
+      }
+    },
+    {
+      "phase": 5,
+      "V0": {
+        "regimes_seen": [
+          15,
+          16,
+          17,
+          18,
+          19,
+          20
+        ],
+        "mean_accuracy": 0.6740264594554901,
+        "per_regime_accuracy": {
+          "15": 0.6000000238418579,
+          "16": 0.5634920597076416,
+          "17": 0.6166666746139526,
+          "18": 0.6880000233650208,
+          "19": 0.7839999794960022,
+          "20": 0.7919999957084656
+        },
+        "forgetting": 0.011111116409301758,
+        "n_experts": 4,
+        "memory_bytes": 3233128,
+        "update_seconds_so_far": 13.925586099998327,
+        "unknown_flag": {
+          "false_new_rate": 0.0,
+          "ood_detection_rate": 1.0,
+          "ood_by_domain": {
+            "stories": 1.0,
+            "wiki": 1.0,
+            "science_questions": 1.0
+          }
+        }
+      },
+      "v0": {
+        "regimes_seen": [
+          15,
+          16,
+          17,
+          18,
+          19,
+          20
+        ],
+        "mean_accuracy": 0.6740264594554901,
+        "per_regime_accuracy": {
+          "15": 0.6000000238418579,
+          "16": 0.5634920597076416,
+          "17": 0.6166666746139526,
+          "18": 0.6880000233650208,
+          "19": 0.7839999794960022,
+          "20": 0.7919999957084656
+        },
+        "forgetting": 0.011111116409301758,
+        "n_experts": 4,
+        "memory_bytes": 3233128,
+        "update_seconds_so_far": 13.925586099998327,
+        "unknown_flag": {
+          "false_new_rate": 0.0,
+          "ood_detection_rate": 1.0,
+          "ood_by_domain": {
+            "stories": 1.0,
+            "wiki": 1.0,
+            "science_questions": 1.0
+          }
+        }
+      },
+      "A3": {
+        "mean_accuracy": 0.6890581945578257,
+        "memory_bytes": 2503156,
+        "update_seconds_so_far": 2.3519143000157783
+      },
+      "a3": {
+        "mean_accuracy": 0.6890581945578257,
+        "memory_bytes": 2503156,
+        "update_seconds_so_far": 2.3519143000157783
+      },
+      "A7": {
+        "mean_accuracy": 0.6530105868975321,
+        "memory_bytes": 1909760,
+        "update_seconds_so_far": 0.02838549999432871
+      },
+      "a7": {
+        "mean_accuracy": 0.6530105868975321,
+        "memory_bytes": 1909760,
+        "update_seconds_so_far": 0.02838549999432871
+      },
+      "A5a": {
+        "mean_accuracy": 0.5458571463823318,
+        "memory_bytes": 129536,
+        "update_seconds_so_far": 0.214054899985058
+      },
+      "a5a": {
+        "mean_accuracy": 0.5458571463823318,
+        "memory_bytes": 129536,
+        "update_seconds_so_far": 0.214054899985058
+      },
+      "A5b": {
+        "mean_accuracy": 0.5669470975796381,
+        "memory_bytes": 1056768,
+        "update_seconds_so_far": 0.08986180001011235
+      },
+      "a5b": {
+        "mean_accuracy": 0.5669470975796381,
+        "memory_bytes": 1056768,
+        "update_seconds_so_far": 0.08986180001011235
+      },
+      "A6": {
+        "mean_accuracy": 0.6940793693065643,
+        "memory_bytes": 272531456,
+        "update_seconds_so_far": 11.592338299989933
+      },
+      "a6": {
+        "mean_accuracy": 0.6940793693065643,
+        "memory_bytes": 272531456,
+        "update_seconds_so_far": 11.592338299989933
+      },
+      "A7all": {
+        "mean_accuracy": 0.6530105868975321,
+        "memory_bytes": 1909760,
+        "update_seconds_so_far": 0.003566799990949221
+      },
+      "a7all": {
+        "mean_accuracy": 0.6530105868975321,
+        "memory_bytes": 1909760,
+        "update_seconds_so_far": 0.003566799990949221
+      }
+    },
+    {
+      "phase": 6,
+      "V0": {
+        "regimes_seen": [
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21
+        ],
+        "mean_accuracy": 0.6937369619097028,
+        "per_regime_accuracy": {
+          "15": 0.6000000238418579,
+          "16": 0.5634920597076416,
+          "17": 0.6166666746139526,
+          "18": 0.6880000233650208,
+          "19": 0.7839999794960022,
+          "20": 0.7919999957084656,
+          "21": 0.8119999766349792
+        },
+        "forgetting": 0.009259263674418131,
+        "n_experts": 5,
+        "memory_bytes": 3969984,
+        "update_seconds_so_far": 16.08265989999927,
+        "unknown_flag": {
+          "false_new_rate": 0.0,
+          "ood_detection_rate": 1.0,
+          "ood_by_domain": {
+            "stories": 1.0,
+            "wiki": 1.0,
+            "science_questions": 1.0
+          }
+        }
+      },
+      "v0": {
+        "regimes_seen": [
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21
+        ],
+        "mean_accuracy": 0.6937369619097028,
+        "per_regime_accuracy": {
+          "15": 0.6000000238418579,
+          "16": 0.5634920597076416,
+          "17": 0.6166666746139526,
+          "18": 0.6880000233650208,
+          "19": 0.7839999794960022,
+          "20": 0.7919999957084656,
+          "21": 0.8119999766349792
+        },
+        "forgetting": 0.009259263674418131,
+        "n_experts": 5,
+        "memory_bytes": 3969984,
+        "update_seconds_so_far": 16.08265989999927,
+        "unknown_flag": {
+          "false_new_rate": 0.0,
+          "ood_detection_rate": 1.0,
+          "ood_by_domain": {
+            "stories": 1.0,
+            "wiki": 1.0,
+            "science_questions": 1.0
+          }
+        }
+      },
+      "A3": {
+        "mean_accuracy": 0.6953605328287397,
+        "memory_bytes": 2844148,
+        "update_seconds_so_far": 3.056771400013531
+      },
+      "a3": {
+        "mean_accuracy": 0.6953605328287397,
+        "memory_bytes": 2844148,
+        "update_seconds_so_far": 3.056771400013531
+      },
+      "A7": {
+        "mean_accuracy": 0.6545804994446891,
+        "memory_bytes": 2250752,
+        "update_seconds_so_far": 0.03354349999426631
+      },
+      "a7": {
+        "mean_accuracy": 0.6545804994446891,
+        "memory_bytes": 2250752,
+        "update_seconds_so_far": 0.03354349999426631
+      },
+      "A5a": {
+        "mean_accuracy": 0.5485260827200753,
+        "memory_bytes": 129536,
+        "update_seconds_so_far": 0.2463505999876361
+      },
+      "a5a": {
+        "mean_accuracy": 0.5485260827200753,
+        "memory_bytes": 129536,
+        "update_seconds_so_far": 0.2463505999876361
+      },
+      "A5b": {
+        "mean_accuracy": 0.5758594146796635,
+        "memory_bytes": 1056768,
+        "update_seconds_so_far": 0.10578170001099352
+      },
+      "a5b": {
+        "mean_accuracy": 0.5758594146796635,
+        "memory_bytes": 1056768,
+        "update_seconds_so_far": 0.10578170001099352
+      },
+      "A6": {
+        "mean_accuracy": 0.711092974458422,
+        "memory_bytes": 272531456,
+        "update_seconds_so_far": 13.614391499988415
+      },
+      "a6": {
+        "mean_accuracy": 0.711092974458422,
+        "memory_bytes": 272531456,
+        "update_seconds_so_far": 13.614391499988415
+      },
+      "A7all": {
+        "mean_accuracy": 0.6545804994446891,
+        "memory_bytes": 2250752,
+        "update_seconds_so_far": 0.004378099987661699
+      },
+      "a7all": {
+        "mean_accuracy": 0.6545804994446891,
+        "memory_bytes": 2250752,
+        "update_seconds_so_far": 0.004378099987661699
+      }
+    },
+    {
+      "phase": 7,
+      "V0": {
+        "regimes_seen": [
+          0,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21
+        ],
+        "mean_accuracy": 0.7216031774878502,
+        "per_regime_accuracy": {
+          "0": 0.9166666865348816,
+          "15": 0.6000000238418579,
+          "16": 0.5634920597076416,
+          "17": 0.6166666746139526,
+          "18": 0.6880000233650208,
+          "19": 0.7839999794960022,
+          "20": 0.7919999957084656,
+          "21": 0.8119999766349792
+        },
+        "forgetting": 0.007936511720929827,
+        "n_experts": 6,
+        "memory_bytes": 4700912,
+        "update_seconds_so_far": 17.391412299995864,
+        "unknown_flag": {
+          "false_new_rate": 0.0,
+          "ood_detection_rate": 1.0,
+          "ood_by_domain": {
+            "stories": 1.0,
+            "wiki": 1.0,
+            "science_questions": 1.0
+          }
+        }
+      },
+      "v0": {
+        "regimes_seen": [
+          0,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21
+        ],
+        "mean_accuracy": 0.7216031774878502,
+        "per_regime_accuracy": {
+          "0": 0.9166666865348816,
+          "15": 0.6000000238418579,
+          "16": 0.5634920597076416,
+          "17": 0.6166666746139526,
+          "18": 0.6880000233650208,
+          "19": 0.7839999794960022,
+          "20": 0.7919999957084656,
+          "21": 0.8119999766349792
+        },
+        "forgetting": 0.007936511720929827,
+        "n_experts": 6,
+        "memory_bytes": 4700912,
+        "update_seconds_so_far": 17.391412299995864,
+        "unknown_flag": {
+          "false_new_rate": 0.0,
+          "ood_detection_rate": 1.0,
+          "ood_by_domain": {
+            "stories": 1.0,
+            "wiki": 1.0,
+            "science_questions": 1.0
+          }
+        }
+      },
+      "A3": {
+        "mean_accuracy": 0.7015238031744957,
+        "memory_bytes": 3048948,
+        "update_seconds_so_far": 3.334760900019319
+      },
+      "a3": {
+        "mean_accuracy": 0.7015238031744957,
+        "memory_bytes": 3048948,
+        "update_seconds_so_far": 3.334760900019319
+      },
+      "A7": {
+        "mean_accuracy": 0.6840079352259636,
+        "memory_bytes": 2455552,
+        "update_seconds_so_far": 0.03797409999970114
+      },
+      "a7": {
+        "mean_accuracy": 0.6840079352259636,
+        "memory_bytes": 2455552,
+        "update_seconds_so_far": 0.03797409999970114
+      },
+      "A5a": {
+        "mean_accuracy": 0.5879603214561939,
+        "memory_bytes": 129536,
+        "update_seconds_so_far": 0.2694122999891988
+      },
+      "a5a": {
+        "mean_accuracy": 0.5879603214561939,
+        "memory_bytes": 129536,
+        "update_seconds_so_far": 0.2694122999891988
+      },
+      "A5b": {
+        "mean_accuracy": 0.6226230151951313,
+        "memory_bytes": 2311680,
+        "update_seconds_so_far": 0.11519010001575225
+      },
+      "a5b": {
+        "mean_accuracy": 0.6226230151951313,
+        "memory_bytes": 2311680,
+        "update_seconds_so_far": 0.11519010001575225
+      },
+      "A6": {
+        "mean_accuracy": 0.7404603213071823,
+        "memory_bytes": 272531456,
+        "update_seconds_so_far": 14.902046799987147
+      },
+      "a6": {
+        "mean_accuracy": 0.7404603213071823,
+        "memory_bytes": 272531456,
+        "update_seconds_so_far": 14.902046799987147
+      },
+      "A7all": {
+        "mean_accuracy": 0.6840079352259636,
+        "memory_bytes": 2455552,
+        "update_seconds_so_far": 0.004712799986009486
+      },
+      "a7all": {
+        "mean_accuracy": 0.6840079352259636,
+        "memory_bytes": 2455552,
+        "update_seconds_so_far": 0.004712799986009486
+      }
+    },
+    {
+      "phase": 8,
+      "V0": {
+        "regimes_seen": [
+          0,
+          1,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21
+        ],
+        "mean_accuracy": 0.7363178332646688,
+        "per_regime_accuracy": {
+          "0": 0.9066666960716248,
+          "1": 0.8640350699424744,
+          "15": 0.6000000238418579,
+          "16": 0.5634920597076416,
+          "17": 0.6166666746139526,
+          "18": 0.6880000233650208,
+          "19": 0.7839999794960022,
+          "20": 0.7919999957084656,
+          "21": 0.8119999766349792
+        },
+        "forgetting": 0.008194446563720703,
+        "n_experts": 7,
+        "memory_bytes": 5402684,
+        "update_seconds_so_far": 19.032570999999734,
+        "unknown_flag": {
+          "false_new_rate": 0.0,
+          "ood_detection_rate": 1.0,
+          "ood_by_domain": {
+            "stories": 1.0,
+            "wiki": 1.0,
+            "science_questions": 1.0
+          }
+        }
+      },
+      "v0": {
+        "regimes_seen": [
+          0,
+          1,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21
+        ],
+        "mean_accuracy": 0.7363178332646688,
+        "per_regime_accuracy": {
+          "0": 0.9066666960716248,
+          "1": 0.8640350699424744,
+          "15": 0.6000000238418579,
+          "16": 0.5634920597076416,
+          "17": 0.6166666746139526,
+          "18": 0.6880000233650208,
+          "19": 0.7839999794960022,
+          "20": 0.7919999957084656,
+          "21": 0.8119999766349792
+        },
+        "forgetting": 0.008194446563720703,
+        "n_experts": 7,
+        "memory_bytes": 5402684,
+        "update_seconds_so_far": 19.032570999999734,
+        "unknown_flag": {
+          "false_new_rate": 0.0,
+          "ood_detection_rate": 1.0,
+          "ood_by_domain": {
+            "stories": 1.0,
+            "wiki": 1.0,
+            "science_questions": 1.0
+          }
+        }
+      },
+      "A3": {
+        "mean_accuracy": 0.7250713772243924,
+        "memory_bytes": 3253748,
+        "update_seconds_so_far": 3.6066310000205704
+      },
+      "a3": {
+        "mean_accuracy": 0.7250713772243924,
+        "memory_bytes": 3253748,
+        "update_seconds_so_far": 3.6066310000205704
+      },
+      "A7": {
+        "mean_accuracy": 0.7037380470169915,
+        "memory_bytes": 2660352,
+        "update_seconds_so_far": 0.040810699996654876
+      },
+      "a7": {
+        "mean_accuracy": 0.7037380470169915,
+        "memory_bytes": 2660352,
+        "update_seconds_so_far": 0.040810699996654876
+      },
+      "A5a": {
+        "mean_accuracy": 0.6182259420553843,
+        "memory_bytes": 129536,
+        "update_seconds_so_far": 0.29025189998719725
+      },
+      "a5a": {
+        "mean_accuracy": 0.6182259420553843,
+        "memory_bytes": 129536,
+        "update_seconds_so_far": 0.29025189998719725
+      },
+      "A5b": {
+        "mean_accuracy": 0.661517878373464,
+        "memory_bytes": 3104256,
+        "update_seconds_so_far": 0.12436450001769117
+      },
+      "a5b": {
+        "mean_accuracy": 0.661517878373464,
+        "memory_bytes": 3104256,
+        "update_seconds_so_far": 0.12436450001769117
+      },
+      "A6": {
+        "mean_accuracy": 0.759648945596483,
+        "memory_bytes": 272531456,
+        "update_seconds_so_far": 16.181225599993923
+      },
+      "a6": {
+        "mean_accuracy": 0.759648945596483,
+        "memory_bytes": 272531456,
+        "update_seconds_so_far": 16.181225599993923
+      },
+      "A7all": {
+        "mean_accuracy": 0.7037380470169915,
+        "memory_bytes": 2660352,
+        "update_seconds_so_far": 0.005059299983258825
+      },
+      "a7all": {
+        "mean_accuracy": 0.7037380470169915,
+        "memory_bytes": 2660352,
+        "update_seconds_so_far": 0.005059299983258825
+      }
+    },
+    {
+      "phase": 9,
+      "V0": {
+        "regimes_seen": [
+          0,
+          1,
+          2,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21
+        ],
+        "mean_accuracy": 0.7427979290485383,
+        "per_regime_accuracy": {
+          "0": 0.903333306312561,
+          "1": 0.8508771657943726,
+          "2": 0.8176100850105286,
+          "15": 0.6000000238418579,
+          "16": 0.5634920597076416,
+          "17": 0.6166666746139526,
+          "18": 0.6880000233650208,
+          "19": 0.7839999794960022,
+          "20": 0.7919999957084656,
+          "21": 0.8119999766349792
+        },
+        "forgetting": 0.009116318490770128,
+        "n_experts": 8,
+        "memory_bytes": 6133356,
+        "update_seconds_so_far": 20.101612799997383,
+        "unknown_flag": {
+          "false_new_rate": 0.0,
+          "ood_detection_rate": 1.0,
+          "ood_by_domain": {
+            "stories": 1.0,
+            "wiki": 1.0,
+            "science_questions": 1.0
+          }
+        }
+      },
+      "v0": {
+        "regimes_seen": [
+          0,
+          1,
+          2,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21
+        ],
+        "mean_accuracy": 0.7427979290485383,
+        "per_regime_accuracy": {
+          "0": 0.903333306312561,
+          "1": 0.8508771657943726,
+          "2": 0.8176100850105286,
+          "15": 0.6000000238418579,
+          "16": 0.5634920597076416,
+          "17": 0.6166666746139526,
+          "18": 0.6880000233650208,
+          "19": 0.7839999794960022,
+          "20": 0.7919999957084656,
+          "21": 0.8119999766349792
+        },
+        "forgetting": 0.009116318490770128,
+        "n_experts": 8,
+        "memory_bytes": 6133356,
+        "update_seconds_so_far": 20.101612799997383,
+        "unknown_flag": {
+          "false_new_rate": 0.0,
+          "ood_detection_rate": 1.0,
+          "ood_by_domain": {
+            "stories": 1.0,
+            "wiki": 1.0,
+            "science_questions": 1.0
+          }
+        }
+      },
+      "A3": {
+        "mean_accuracy": 0.7039357483386993,
+        "memory_bytes": 3458548,
+        "update_seconds_so_far": 3.911687300023914
+      },
+      "a3": {
+        "mean_accuracy": 0.7039357483386993,
+        "memory_bytes": 3458548,
+        "update_seconds_so_far": 3.911687300023914
+      },
+      "A7": {
+        "mean_accuracy": 0.7143533229827881,
+        "memory_bytes": 2865152,
+        "update_seconds_so_far": 0.04359469998962595
+      },
+      "a7": {
+        "mean_accuracy": 0.7143533229827881,
+        "memory_bytes": 2865152,
+        "update_seconds_so_far": 0.04359469998962595
+      },
+      "A5a": {
+        "mean_accuracy": 0.6285914301872253,
+        "memory_bytes": 129536,
+        "update_seconds_so_far": 0.3099778999821865
+      },
+      "a5a": {
+        "mean_accuracy": 0.6285914301872253,
+        "memory_bytes": 129536,
+        "update_seconds_so_far": 0.3099778999821865
+      },
+      "A5b": {
+        "mean_accuracy": 0.6816669762134552,
+        "memory_bytes": 3632640,
+        "update_seconds_so_far": 0.13365240001439815
+      },
+      "a5b": {
+        "mean_accuracy": 0.6816669762134552,
+        "memory_bytes": 3632640,
+        "update_seconds_so_far": 0.13365240001439815
+      },
+      "A6": {
+        "mean_accuracy": 0.7702668249607086,
+        "memory_bytes": 272531456,
+        "update_seconds_so_far": 17.44249859998672
+      },
+      "a6": {
+        "mean_accuracy": 0.7702668249607086,
+        "memory_bytes": 272531456,
+        "update_seconds_so_far": 17.44249859998672
+      },
+      "A7all": {
+        "mean_accuracy": 0.7143533229827881,
+        "memory_bytes": 2865152,
+        "update_seconds_so_far": 0.005398599983891472
+      },
+      "a7all": {
+        "mean_accuracy": 0.7143533229827881,
+        "memory_bytes": 2865152,
+        "update_seconds_so_far": 0.005398599983891472
+      }
+    },
+    {
+      "phase": 10,
+      "V0": {
+        "regimes_seen": [
+          0,
+          1,
+          2,
+          3,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21
+        ],
+        "mean_accuracy": 0.7388873533769087,
+        "per_regime_accuracy": {
+          "0": 0.8566666841506958,
+          "1": 0.8421052694320679,
+          "2": 0.7861635088920593,
+          "3": 0.7866666913032532,
+          "15": 0.6000000238418579,
+          "16": 0.5634920597076416,
+          "17": 0.6166666746139526,
+          "18": 0.6880000233650208,
+          "19": 0.7839999794960022,
+          "20": 0.7919999957084656,
+          "21": 0.8119999766349792
+        },
+        "forgetting": 0.01689319610595703,
+        "n_experts": 9,
+        "memory_bytes": 6864028,
+        "update_seconds_so_far": 21.194574199998897,
+        "unknown_flag": {
+          "false_new_rate": 0.0,
+          "ood_detection_rate": 1.0,
+          "ood_by_domain": {
+            "stories": 1.0,
+            "wiki": 1.0,
+            "science_questions": 1.0
+          }
+        }
+      },
+      "v0": {
+        "regimes_seen": [
+          0,
+          1,
+          2,
+          3,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21
+        ],
+        "mean_accuracy": 0.7388873533769087,
+        "per_regime_accuracy": {
+          "0": 0.8566666841506958,
+          "1": 0.8421052694320679,
+          "2": 0.7861635088920593,
+          "3": 0.7866666913032532,
+          "15": 0.6000000238418579,
+          "16": 0.5634920597076416,
+          "17": 0.6166666746139526,
+          "18": 0.6880000233650208,
+          "19": 0.7839999794960022,
+          "20": 0.7919999957084656,
+          "21": 0.8119999766349792
+        },
+        "forgetting": 0.01689319610595703,
+        "n_experts": 9,
+        "memory_bytes": 6864028,
+        "update_seconds_so_far": 21.194574199998897,
+        "unknown_flag": {
+          "false_new_rate": 0.0,
+          "ood_detection_rate": 1.0,
+          "ood_by_domain": {
+            "stories": 1.0,
+            "wiki": 1.0,
+            "science_questions": 1.0
+          }
+        }
+      },
+      "A3": {
+        "mean_accuracy": 0.7137769460678101,
+        "memory_bytes": 3663348,
+        "update_seconds_so_far": 4.180244800023502
+      },
+      "a3": {
+        "mean_accuracy": 0.7137769460678101,
+        "memory_bytes": 3663348,
+        "update_seconds_so_far": 4.180244800023502
+      },
+      "A7": {
+        "mean_accuracy": 0.7184145504778082,
+        "memory_bytes": 3069952,
+        "update_seconds_so_far": 0.047077399995032465
+      },
+      "a7": {
+        "mean_accuracy": 0.7184145504778082,
+        "memory_bytes": 3069952,
+        "update_seconds_so_far": 0.047077399995032465
+      },
+      "A5a": {
+        "mean_accuracy": 0.639249408786947,
+        "memory_bytes": 129536,
+        "update_seconds_so_far": 0.33097969998561894
+      },
+      "a5a": {
+        "mean_accuracy": 0.639249408786947,
+        "memory_bytes": 129536,
+        "update_seconds_so_far": 0.33097969998561894
+      },
+      "A5b": {
+        "mean_accuracy": 0.6987795016982339,
+        "memory_bytes": 5151744,
+        "update_seconds_so_far": 0.1445512000209419
+      },
+      "a5b": {
+        "mean_accuracy": 0.6987795016982339,
+        "memory_bytes": 5151744,
+        "update_seconds_so_far": 0.1445512000209419
+      },
+      "A6": {
+        "mean_accuracy": 0.7722578048706055,
+        "memory_bytes": 272531456,
+        "update_seconds_so_far": 18.648663199983275
+      },
+      "a6": {
+        "mean_accuracy": 0.7722578048706055,
+        "memory_bytes": 272531456,
+        "update_seconds_so_far": 18.648663199983275
+      },
+      "A7all": {
+        "mean_accuracy": 0.7184145504778082,
+        "memory_bytes": 3069952,
+        "update_seconds_so_far": 0.0057337999787705485
+      },
+      "a7all": {
+        "mean_accuracy": 0.7184145504778082,
+        "memory_bytes": 3069952,
+        "update_seconds_so_far": 0.0057337999787705485
+      }
+    },
+    {
+      "phase": 11,
+      "V0": {
+        "regimes_seen": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21
+        ],
+        "mean_accuracy": 0.7509732296069463,
+        "per_regime_accuracy": {
+          "0": 0.8933333158493042,
+          "1": 0.8640350699424744,
+          "2": 0.8301886916160583,
+          "3": 0.8299999833106995,
+          "4": 0.9212962985038757,
+          "15": 0.6000000238418579,
+          "16": 0.5634920597076416,
+          "17": 0.5933333039283752,
+          "18": 0.6639999747276306,
+          "19": 0.7680000066757202,
+          "20": 0.7160000205039978,
+          "21": 0.7680000066757202
+        },
+        "forgetting": 0.018755490129644222,
+        "n_experts": 10,
+        "memory_bytes": 7589540,
+        "update_seconds_so_far": 22.2006032000063,
+        "unknown_flag": {
+          "false_new_rate": 0.0,
+          "ood_detection_rate": 1.0,
+          "ood_by_domain": {
+            "stories": 1.0,
+            "wiki": 1.0,
+            "science_questions": 1.0
+          }
+        }
+      },
+      "v0": {
+        "regimes_seen": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21
+        ],
+        "mean_accuracy": 0.7509732296069463,
+        "per_regime_accuracy": {
+          "0": 0.8933333158493042,
+          "1": 0.8640350699424744,
+          "2": 0.8301886916160583,
+          "3": 0.8299999833106995,
+          "4": 0.9212962985038757,
+          "15": 0.6000000238418579,
+          "16": 0.5634920597076416,
+          "17": 0.5933333039283752,
+          "18": 0.6639999747276306,
+          "19": 0.7680000066757202,
+          "20": 0.7160000205039978,
+          "21": 0.7680000066757202
+        },
+        "forgetting": 0.018755490129644222,
+        "n_experts": 10,
+        "memory_bytes": 7589540,
+        "update_seconds_so_far": 22.2006032000063,
+        "unknown_flag": {
+          "false_new_rate": 0.0,
+          "ood_detection_rate": 1.0,
+          "ood_by_domain": {
+            "stories": 1.0,
+            "wiki": 1.0,
+            "science_questions": 1.0
+          }
+        }
+      },
+      "A3": {
+        "mean_accuracy": 0.7262370387713114,
+        "memory_bytes": 3868148,
+        "update_seconds_so_far": 4.410976300016046
+      },
+      "a3": {
+        "mean_accuracy": 0.7262370387713114,
+        "memory_bytes": 3868148,
+        "update_seconds_so_far": 4.410976300016046
+      },
+      "A7": {
+        "mean_accuracy": 0.7312947511672974,
+        "memory_bytes": 3274752,
+        "update_seconds_so_far": 0.049871200004417915
+      },
+      "a7": {
+        "mean_accuracy": 0.7312947511672974,
+        "memory_bytes": 3274752,
+        "update_seconds_so_far": 0.049871200004417915
+      },
+      "A5a": {
+        "mean_accuracy": 0.6503933270772299,
+        "memory_bytes": 129536,
+        "update_seconds_so_far": 0.3517731999854732
+      },
+      "a5a": {
+        "mean_accuracy": 0.6503933270772299,
+        "memory_bytes": 129536,
+        "update_seconds_so_far": 0.3517731999854732
+      },
+      "A5b": {
+        "mean_accuracy": 0.7183494716882706,
+        "memory_bytes": 5878272,
+        "update_seconds_so_far": 0.15569920002599247
+      },
+      "a5b": {
+        "mean_accuracy": 0.7183494716882706,
+        "memory_bytes": 5878272,
+        "update_seconds_so_far": 0.15569920002599247
+      },
+      "A6": {
+        "mean_accuracy": 0.7810793618361155,
+        "memory_bytes": 272531456,
+        "update_seconds_so_far": 19.848993999985396
+      },
+      "a6": {
+        "mean_accuracy": 0.7810793618361155,
+        "memory_bytes": 272531456,
+        "update_seconds_so_far": 19.848993999985396
+      },
+      "A7all": {
+        "mean_accuracy": 0.7312947511672974,
+        "memory_bytes": 3274752,
+        "update_seconds_so_far": 0.006243699976039352
+      },
+      "a7all": {
+        "mean_accuracy": 0.7312947511672974,
+        "memory_bytes": 3274752,
+        "update_seconds_so_far": 0.006243699976039352
+      }
+    },
+    {
+      "phase": 12,
+      "V0": {
+        "regimes_seen": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21
+        ],
+        "mean_accuracy": 0.7686041685251089,
+        "per_regime_accuracy": {
+          "0": 0.8933333158493042,
+          "1": 0.8640350699424744,
+          "2": 0.8301886916160583,
+          "3": 0.8233333230018616,
+          "4": 0.9212962985038757,
+          "5": 0.9868420958518982,
+          "15": 0.6000000238418579,
+          "16": 0.5634920597076416,
+          "17": 0.5933333039283752,
+          "18": 0.6639999747276306,
+          "19": 0.7680000066757202,
+          "20": 0.7160000205039978,
+          "21": 0.7680000066757202
+        },
+        "forgetting": 0.0224074125289917,
+        "n_experts": 11,
+        "memory_bytes": 8229520,
+        "update_seconds_so_far": 22.868549200004054,
+        "unknown_flag": {
+          "false_new_rate": 0.0,
+          "ood_detection_rate": 1.0,
+          "ood_by_domain": {
+            "stories": 1.0,
+            "wiki": 1.0,
+            "science_questions": 1.0
+          }
+        }
+      },
+      "v0": {
+        "regimes_seen": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21
+        ],
+        "mean_accuracy": 0.7686041685251089,
+        "per_regime_accuracy": {
+          "0": 0.8933333158493042,
+          "1": 0.8640350699424744,
+          "2": 0.8301886916160583,
+          "3": 0.8233333230018616,
+          "4": 0.9212962985038757,
+          "5": 0.9868420958518982,
+          "15": 0.6000000238418579,
+          "16": 0.5634920597076416,
+          "17": 0.5933333039283752,
+          "18": 0.6639999747276306,
+          "19": 0.7680000066757202,
+          "20": 0.7160000205039978,
+          "21": 0.7680000066757202
+        },
+        "forgetting": 0.0224074125289917,
+        "n_experts": 11,
+        "memory_bytes": 8229520,
+        "update_seconds_so_far": 22.868549200004054,
+        "unknown_flag": {
+          "false_new_rate": 0.0,
+          "ood_detection_rate": 1.0,
+          "ood_by_domain": {
+            "stories": 1.0,
+            "wiki": 1.0,
+            "science_questions": 1.0
+          }
+        }
+      },
+      "A3": {
+        "mean_accuracy": 0.7661646421139057,
+        "memory_bytes": 3974644,
+        "update_seconds_so_far": 4.538384800016502
+      },
+      "a3": {
+        "mean_accuracy": 0.7661646421139057,
+        "memory_bytes": 3974644,
+        "update_seconds_so_far": 4.538384800016502
+      },
+      "A7": {
+        "mean_accuracy": 0.7491708627113929,
+        "memory_bytes": 3381248,
+        "update_seconds_so_far": 0.05131890000848216
+      },
+      "a7": {
+        "mean_accuracy": 0.7491708627113929,
+        "memory_bytes": 3381248,
+        "update_seconds_so_far": 0.05131890000848216
+      },
+      "A5a": {
+        "mean_accuracy": 0.6761522889137268,
+        "memory_bytes": 129536,
+        "update_seconds_so_far": 0.3623072999835131
+      },
+      "a5a": {
+        "mean_accuracy": 0.6761522889137268,
+        "memory_bytes": 129536,
+        "update_seconds_so_far": 0.3623072999835131
+      },
+      "A5b": {
+        "mean_accuracy": 0.739701298566965,
+        "memory_bytes": 6142464,
+        "update_seconds_so_far": 0.16211600002861815
+      },
+      "a5b": {
+        "mean_accuracy": 0.739701298566965,
+        "memory_bytes": 6142464,
+        "update_seconds_so_far": 0.16211600002861815
+      },
+      "A6": {
+        "mean_accuracy": 0.7979706938450153,
+        "memory_bytes": 272531456,
+        "update_seconds_so_far": 20.522185099987837
+      },
+      "a6": {
+        "mean_accuracy": 0.7979706938450153,
+        "memory_bytes": 272531456,
+        "update_seconds_so_far": 20.522185099987837
+      },
+      "A7all": {
+        "mean_accuracy": 0.7491708627113929,
+        "memory_bytes": 3381248,
+        "update_seconds_so_far": 0.006496599973615957
+      },
+      "a7all": {
+        "mean_accuracy": 0.7491708627113929,
+        "memory_bytes": 3381248,
+        "update_seconds_so_far": 0.006496599973615957
+      }
+    },
+    {
+      "phase": 13,
+      "V0": {
+        "regimes_seen": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21
+        ],
+        "mean_accuracy": 0.7627765493733543,
+        "per_regime_accuracy": {
+          "0": 0.8899999856948853,
+          "1": 0.8508771657943726,
+          "2": 0.8301886916160583,
+          "3": 0.8166666626930237,
+          "4": 0.9212962985038757,
+          "5": 0.9736841917037964,
+          "14": 0.746666669845581,
+          "15": 0.5766666531562805,
+          "16": 0.5634920597076416,
+          "17": 0.5933333039283752,
+          "18": 0.6639999747276306,
+          "19": 0.7680000066757202,
+          "20": 0.7160000205039978,
+          "21": 0.7680000066757202
+        },
+        "forgetting": 0.025272163060995247,
+        "n_experts": 12,
+        "memory_bytes": 8959932,
+        "update_seconds_so_far": 23.878357399997185,
+        "unknown_flag": {
+          "false_new_rate": 0.0,
+          "ood_detection_rate": 0.2777777810891469,
+          "ood_by_domain": {
+            "stories": 0.0,
+            "wiki": 0.49000000953674316,
+            "science_questions": 0.34333333373069763
+          }
+        }
+      },
+      "v0": {
+        "regimes_seen": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21
+        ],
+        "mean_accuracy": 0.7627765493733543,
+        "per_regime_accuracy": {
+          "0": 0.8899999856948853,
+          "1": 0.8508771657943726,
+          "2": 0.8301886916160583,
+          "3": 0.8166666626930237,
+          "4": 0.9212962985038757,
+          "5": 0.9736841917037964,
+          "14": 0.746666669845581,
+          "15": 0.5766666531562805,
+          "16": 0.5634920597076416,
+          "17": 0.5933333039283752,
+          "18": 0.6639999747276306,
+          "19": 0.7680000066757202,
+          "20": 0.7160000205039978,
+          "21": 0.7680000066757202
+        },
+        "forgetting": 0.025272163060995247,
+        "n_experts": 12,
+        "memory_bytes": 8959932,
+        "update_seconds_so_far": 23.878357399997185,
+        "unknown_flag": {
+          "false_new_rate": 0.0,
+          "ood_detection_rate": 0.2777777810891469,
+          "ood_by_domain": {
+            "stories": 0.0,
+            "wiki": 0.49000000953674316,
+            "science_questions": 0.34333333373069763
+          }
+        }
+      },
+      "A3": {
+        "mean_accuracy": 0.7500172214848655,
+        "memory_bytes": 4179444,
+        "update_seconds_so_far": 4.801047100016149
+      },
+      "a3": {
+        "mean_accuracy": 0.7500172214848655,
+        "memory_bytes": 4179444,
+        "update_seconds_so_far": 4.801047100016149
+      },
+      "A7": {
+        "mean_accuracy": 0.7411348479134696,
+        "memory_bytes": 3586048,
+        "update_seconds_so_far": 0.05408470000475063
+      },
+      "a7": {
+        "mean_accuracy": 0.7411348479134696,
+        "memory_bytes": 3586048,
+        "update_seconds_so_far": 0.05408470000475063
+      },
+      "A5a": {
+        "mean_accuracy": 0.6767627277544567,
+        "memory_bytes": 129536,
+        "update_seconds_so_far": 0.3818985999787401
+      },
+      "a5a": {
+        "mean_accuracy": 0.6767627277544567,
+        "memory_bytes": 129536,
+        "update_seconds_so_far": 0.3818985999787401
+      },
+      "A5b": {
+        "mean_accuracy": 0.7224894165992737,
+        "memory_bytes": 6274560,
+        "update_seconds_so_far": 0.17281060002278537
+      },
+      "a5b": {
+        "mean_accuracy": 0.7224894165992737,
+        "memory_bytes": 6274560,
+        "update_seconds_so_far": 0.17281060002278537
+      },
+      "A6": {
+        "mean_accuracy": 0.7937530875205994,
+        "memory_bytes": 272531456,
+        "update_seconds_so_far": 21.719279599987203
+      },
+      "a6": {
+        "mean_accuracy": 0.7937530875205994,
+        "memory_bytes": 272531456,
+        "update_seconds_so_far": 21.719279599987203
+      },
+      "A7all": {
+        "mean_accuracy": 0.7411348479134696,
+        "memory_bytes": 3586048,
+        "update_seconds_so_far": 0.006830199974501738
+      },
+      "a7all": {
+        "mean_accuracy": 0.7411348479134696,
+        "memory_bytes": 3586048,
+        "update_seconds_so_far": 0.006830199974501738
+      }
+    },
+    {
+      "phase": 14,
+      "V0": {
+        "regimes_seen": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21
+        ],
+        "mean_accuracy": 0.7703692237536113,
+        "per_regime_accuracy": {
+          "0": 0.8899999856948853,
+          "1": 0.8508771657943726,
+          "2": 0.8301886916160583,
+          "3": 0.8166666626930237,
+          "4": 0.9212962985038757,
+          "5": 0.9736841917037964,
+          "6": 0.9266666769981384,
+          "14": 0.7099999785423279,
+          "15": 0.5633333325386047,
+          "16": 0.5634920597076416,
+          "17": 0.5933333039283752,
+          "18": 0.6639999747276306,
+          "19": 0.7680000066757202,
+          "20": 0.7160000205039978,
+          "21": 0.7680000066757202
+        },
+        "forgetting": 0.02703843797956194,
+        "n_experts": 13,
+        "memory_bytes": 9690088,
+        "update_seconds_so_far": 24.74604729999919,
+        "unknown_flag": {
+          "false_new_rate": 0.0,
+          "ood_detection_rate": 0.0,
+          "ood_by_domain": {
+            "stories": 0.0,
+            "wiki": 0.0,
+            "science_questions": 0.0
+          }
+        }
+      },
+      "v0": {
+        "regimes_seen": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21
+        ],
+        "mean_accuracy": 0.7703692237536113,
+        "per_regime_accuracy": {
+          "0": 0.8899999856948853,
+          "1": 0.8508771657943726,
+          "2": 0.8301886916160583,
+          "3": 0.8166666626930237,
+          "4": 0.9212962985038757,
+          "5": 0.9736841917037964,
+          "6": 0.9266666769981384,
+          "14": 0.7099999785423279,
+          "15": 0.5633333325386047,
+          "16": 0.5634920597076416,
+          "17": 0.5933333039283752,
+          "18": 0.6639999747276306,
+          "19": 0.7680000066757202,
+          "20": 0.7160000205039978,
+          "21": 0.7680000066757202
+        },
+        "forgetting": 0.02703843797956194,
+        "n_experts": 13,
+        "memory_bytes": 9690088,
+        "update_seconds_so_far": 24.74604729999919,
+        "unknown_flag": {
+          "false_new_rate": 0.0,
+          "ood_detection_rate": 0.0,
+          "ood_by_domain": {
+            "stories": 0.0,
+            "wiki": 0.0,
+            "science_questions": 0.0
+          }
+        }
+      },
+      "A3": {
+        "mean_accuracy": 0.7708321332931518,
+        "memory_bytes": 4384244,
+        "update_seconds_so_far": 5.086900200018135
+      },
+      "a3": {
+        "mean_accuracy": 0.7708321332931518,
+        "memory_bytes": 4384244,
+        "update_seconds_so_far": 5.086900200018135
+      },
+      "A7": {
+        "mean_accuracy": 0.7495036363601685,
+        "memory_bytes": 3790848,
+        "update_seconds_so_far": 0.05691340000339551
+      },
+      "a7": {
+        "mean_accuracy": 0.7495036363601685,
+        "memory_bytes": 3790848,
+        "update_seconds_so_far": 0.05691340000339551
+      },
+      "A5a": {
+        "mean_accuracy": 0.6877126932144165,
+        "memory_bytes": 129536,
+        "update_seconds_so_far": 0.4016420999796537
+      },
+      "a5a": {
+        "mean_accuracy": 0.6877126932144165,
+        "memory_bytes": 129536,
+        "update_seconds_so_far": 0.4016420999796537
+      },
+      "A5b": {
+        "mean_accuracy": 0.7362676739692688,
+        "memory_bytes": 6406656,
+        "update_seconds_so_far": 0.18328680002741748
+      },
+      "a5b": {
+        "mean_accuracy": 0.7362676739692688,
+        "memory_bytes": 6406656,
+        "update_seconds_so_far": 0.18328680002741748
+      },
+      "A6": {
+        "mean_accuracy": 0.8012827793757121,
+        "memory_bytes": 272531456,
+        "update_seconds_so_far": 22.914112099984777
+      },
+      "a6": {
+        "mean_accuracy": 0.8012827793757121,
+        "memory_bytes": 272531456,
+        "update_seconds_so_far": 22.914112099984777
+      },
+      "A7all": {
+        "mean_accuracy": 0.7495036363601685,
+        "memory_bytes": 3790848,
+        "update_seconds_so_far": 0.007399499969324097
+      },
+      "a7all": {
+        "mean_accuracy": 0.7495036363601685,
+        "memory_bytes": 3790848,
+        "update_seconds_so_far": 0.007399499969324097
+      }
+    },
+    {
+      "phase": 15,
+      "V0": {
+        "regimes_seen": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21
+        ],
+        "mean_accuracy": 0.7568507790565491,
+        "per_regime_accuracy": {
+          "0": 0.8899999856948853,
+          "1": 0.8508771657943726,
+          "2": 0.8301886916160583,
+          "3": 0.8100000023841858,
+          "4": 0.9120370149612427,
+          "5": 0.9736841917037964,
+          "6": 0.846666693687439,
+          "7": 0.6833333373069763,
+          "14": 0.6800000071525574,
+          "15": 0.5600000023841858,
+          "16": 0.5634920597076416,
+          "17": 0.5933333039283752,
+          "18": 0.6639999747276306,
+          "19": 0.7680000066757202,
+          "20": 0.7160000205039978,
+          "21": 0.7680000066757202
+        },
+        "forgetting": 0.03385315736134847,
+        "n_experts": 14,
+        "memory_bytes": 10420244,
+        "update_seconds_so_far": 25.69614530000399,
+        "unknown_flag": {
+          "false_new_rate": 0.0,
+          "ood_detection_rate": 0.0,
+          "ood_by_domain": {
+            "stories": 0.0,
+            "wiki": 0.0,
+            "science_questions": 0.0
+          }
+        }
+      },
+      "v0": {
+        "regimes_seen": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21
+        ],
+        "mean_accuracy": 0.7568507790565491,
+        "per_regime_accuracy": {
+          "0": 0.8899999856948853,
+          "1": 0.8508771657943726,
+          "2": 0.8301886916160583,
+          "3": 0.8100000023841858,
+          "4": 0.9120370149612427,
+          "5": 0.9736841917037964,
+          "6": 0.846666693687439,
+          "7": 0.6833333373069763,
+          "14": 0.6800000071525574,
+          "15": 0.5600000023841858,
+          "16": 0.5634920597076416,
+          "17": 0.5933333039283752,
+          "18": 0.6639999747276306,
+          "19": 0.7680000066757202,
+          "20": 0.7160000205039978,
+          "21": 0.7680000066757202
+        },
+        "forgetting": 0.03385315736134847,
+        "n_experts": 14,
+        "memory_bytes": 10420244,
+        "update_seconds_so_far": 25.69614530000399,
+        "unknown_flag": {
+          "false_new_rate": 0.0,
+          "ood_detection_rate": 0.0,
+          "ood_by_domain": {
+            "stories": 0.0,
+            "wiki": 0.0,
+            "science_questions": 0.0
+          }
+        }
+      },
+      "A3": {
+        "mean_accuracy": 0.7439101934432983,
+        "memory_bytes": 4589044,
+        "update_seconds_so_far": 5.364340100022673
+      },
+      "a3": {
+        "mean_accuracy": 0.7439101934432983,
+        "memory_bytes": 4589044,
+        "update_seconds_so_far": 5.364340100022673
+      },
+      "A7": {
+        "mean_accuracy": 0.7374513261020184,
+        "memory_bytes": 3995648,
+        "update_seconds_so_far": 0.060904100002517225
+      },
+      "a7": {
+        "mean_accuracy": 0.7374513261020184,
+        "memory_bytes": 3995648,
+        "update_seconds_so_far": 0.060904100002517225
+      },
+      "A5a": {
+        "mean_accuracy": 0.6833692267537117,
+        "memory_bytes": 129536,
+        "update_seconds_so_far": 0.4219310999797017
+      },
+      "a5a": {
+        "mean_accuracy": 0.6833692267537117,
+        "memory_bytes": 129536,
+        "update_seconds_so_far": 0.4219310999797017
+      },
+      "A5b": {
+        "mean_accuracy": 0.7315532453358173,
+        "memory_bytes": 6538752,
+        "update_seconds_so_far": 0.19537790003596456
+      },
+      "a5b": {
+        "mean_accuracy": 0.7315532453358173,
+        "memory_bytes": 6538752,
+        "update_seconds_so_far": 0.19537790003596456
+      },
+      "A6": {
+        "mean_accuracy": 0.7906822115182877,
+        "memory_bytes": 272531456,
+        "update_seconds_so_far": 24.220340099975147
+      },
+      "a6": {
+        "mean_accuracy": 0.7906822115182877,
+        "memory_bytes": 272531456,
+        "update_seconds_so_far": 24.220340099975147
+      },
+      "A7all": {
+        "mean_accuracy": 0.7374513261020184,
+        "memory_bytes": 3995648,
+        "update_seconds_so_far": 0.007728099975793157
+      },
+      "a7all": {
+        "mean_accuracy": 0.7374513261020184,
+        "memory_bytes": 3995648,
+        "update_seconds_so_far": 0.007728099975793157
+      }
+    },
+    {
+      "phase": 16,
+      "V0": {
+        "regimes_seen": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21
+        ],
+        "mean_accuracy": 0.7344870093990775,
+        "per_regime_accuracy": {
+          "0": 0.8899999856948853,
+          "1": 0.8508771657943726,
+          "2": 0.8301886916160583,
+          "3": 0.8100000023841858,
+          "4": 0.9120370149612427,
+          "5": 0.9736841917037964,
+          "6": 0.7933333516120911,
+          "7": 0.6566666960716248,
+          "8": 0.47333332896232605,
+          "14": 0.6633333563804626,
+          "15": 0.5600000023841858,
+          "16": 0.5634920597076416,
+          "17": 0.5933333039283752,
+          "18": 0.6639999747276306,
+          "19": 0.7680000066757202,
+          "20": 0.7160000205039978,
+          "21": 0.7680000066757202
+        },
+        "forgetting": 0.03777899965643883,
+        "n_experts": 15,
+        "memory_bytes": 11150400,
+        "update_seconds_so_far": 26.73804700000619,
+        "unknown_flag": {
+          "false_new_rate": 0.0,
+          "ood_detection_rate": 0.0,
+          "ood_by_domain": {
+            "stories": 0.0,
+            "wiki": 0.0,
+            "science_questions": 0.0
+          }
+        }
+      },
+      "v0": {
+        "regimes_seen": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21
+        ],
+        "mean_accuracy": 0.7344870093990775,
+        "per_regime_accuracy": {
+          "0": 0.8899999856948853,
+          "1": 0.8508771657943726,
+          "2": 0.8301886916160583,
+          "3": 0.8100000023841858,
+          "4": 0.9120370149612427,
+          "5": 0.9736841917037964,
+          "6": 0.7933333516120911,
+          "7": 0.6566666960716248,
+          "8": 0.47333332896232605,
+          "14": 0.6633333563804626,
+          "15": 0.5600000023841858,
+          "16": 0.5634920597076416,
+          "17": 0.5933333039283752,
+          "18": 0.6639999747276306,
+          "19": 0.7680000066757202,
+          "20": 0.7160000205039978,
+          "21": 0.7680000066757202
+        },
+        "forgetting": 0.03777899965643883,
+        "n_experts": 15,
+        "memory_bytes": 11150400,
+        "update_seconds_so_far": 26.73804700000619,
+        "unknown_flag": {
+          "false_new_rate": 0.0,
+          "ood_detection_rate": 0.0,
+          "ood_by_domain": {
+            "stories": 0.0,
+            "wiki": 0.0,
+            "science_questions": 0.0
+          }
+        }
+      },
+      "A3": {
+        "mean_accuracy": 0.7101559779223274,
+        "memory_bytes": 4793844,
+        "update_seconds_so_far": 5.71101730002556
+      },
+      "a3": {
+        "mean_accuracy": 0.7101559779223274,
+        "memory_bytes": 4793844,
+        "update_seconds_so_far": 5.71101730002556
+      },
+      "A7": {
+        "mean_accuracy": 0.716424773721134,
+        "memory_bytes": 4200448,
+        "update_seconds_so_far": 0.0648959000063769
+      },
+      "a7": {
+        "mean_accuracy": 0.716424773721134,
+        "memory_bytes": 4200448,
+        "update_seconds_so_far": 0.0648959000063769
+      },
+      "A5a": {
+        "mean_accuracy": 0.6702049760257497,
+        "memory_bytes": 129536,
+        "update_seconds_so_far": 0.4423056999767141
+      },
+      "a5a": {
+        "mean_accuracy": 0.6702049760257497,
+        "memory_bytes": 129536,
+        "update_seconds_so_far": 0.4423056999767141
+      },
+      "A5b": {
+        "mean_accuracy": 0.7098691814086017,
+        "memory_bytes": 6868992,
+        "update_seconds_so_far": 0.2088101000408642
+      },
+      "a5b": {
+        "mean_accuracy": 0.7098691814086017,
+        "memory_bytes": 6868992,
+        "update_seconds_so_far": 0.2088101000408642
+      },
+      "A6": {
+        "mean_accuracy": 0.7738414757391986,
+        "memory_bytes": 272531456,
+        "update_seconds_so_far": 25.448391699977947
+      },
+      "a6": {
+        "mean_accuracy": 0.7738414757391986,
+        "memory_bytes": 272531456,
+        "update_seconds_so_far": 25.448391699977947
+      },
+      "A7all": {
+        "mean_accuracy": 0.716424773721134,
+        "memory_bytes": 4200448,
+        "update_seconds_so_far": 0.008666099980473518
+      },
+      "a7all": {
+        "mean_accuracy": 0.716424773721134,
+        "memory_bytes": 4200448,
+        "update_seconds_so_far": 0.008666099980473518
+      }
+    },
+    {
+      "phase": 17,
+      "V0": {
+        "regimes_seen": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21
+        ],
+        "mean_accuracy": 0.7135731213622623,
+        "per_regime_accuracy": {
+          "0": 0.8866666555404663,
+          "1": 0.8508771657943726,
+          "2": 0.8301886916160583,
+          "3": 0.8100000023841858,
+          "4": 0.9074074029922485,
+          "5": 0.9736841917037964,
+          "6": 0.7866666913032532,
+          "7": 0.6166666746139526,
+          "8": 0.4466666579246521,
+          "9": 0.4466666579246521,
+          "14": 0.6633333563804626,
+          "15": 0.5566666722297668,
+          "16": 0.5634920597076416,
+          "17": 0.5933333039283752,
+          "18": 0.6639999747276306,
+          "19": 0.7680000066757202,
+          "20": 0.7120000123977661,
+          "21": 0.7680000066757202
+        },
+        "forgetting": 0.04077021339360405,
+        "n_experts": 16,
+        "memory_bytes": 11880556,
+        "update_seconds_so_far": 27.78367850000359,
+        "unknown_flag": {
+          "false_new_rate": 0.0,
+          "ood_detection_rate": 0.0,
+          "ood_by_domain": {
+            "stories": 0.0,
+            "wiki": 0.0,
+            "science_questions": 0.0
+          }
+        }
+      },
+      "v0": {
+        "regimes_seen": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21
+        ],
+        "mean_accuracy": 0.7135731213622623,
+        "per_regime_accuracy": {
+          "0": 0.8866666555404663,
+          "1": 0.8508771657943726,
+          "2": 0.8301886916160583,
+          "3": 0.8100000023841858,
+          "4": 0.9074074029922485,
+          "5": 0.9736841917037964,
+          "6": 0.7866666913032532,
+          "7": 0.6166666746139526,
+          "8": 0.4466666579246521,
+          "9": 0.4466666579246521,
+          "14": 0.6633333563804626,
+          "15": 0.5566666722297668,
+          "16": 0.5634920597076416,
+          "17": 0.5933333039283752,
+          "18": 0.6639999747276306,
+          "19": 0.7680000066757202,
+          "20": 0.7120000123977661,
+          "21": 0.7680000066757202
+        },
+        "forgetting": 0.04077021339360405,
+        "n_experts": 16,
+        "memory_bytes": 11880556,
+        "update_seconds_so_far": 27.78367850000359,
+        "unknown_flag": {
+          "false_new_rate": 0.0,
+          "ood_detection_rate": 0.0,
+          "ood_by_domain": {
+            "stories": 0.0,
+            "wiki": 0.0,
+            "science_questions": 0.0
+          }
+        }
+      },
+      "A3": {
+        "mean_accuracy": 0.6802572806676229,
+        "memory_bytes": 4998644,
+        "update_seconds_so_far": 6.806464800021786
+      },
+      "a3": {
+        "mean_accuracy": 0.6802572806676229,
+        "memory_bytes": 4998644,
+        "update_seconds_so_far": 6.806464800021786
+      },
+      "A7": {
+        "mean_accuracy": 0.6966233965423372,
+        "memory_bytes": 4405248,
+        "update_seconds_so_far": 0.06834230000458774
+      },
+      "a7": {
+        "mean_accuracy": 0.6966233965423372,
+        "memory_bytes": 4405248,
+        "update_seconds_so_far": 0.06834230000458774
+      },
+      "A5a": {
+        "mean_accuracy": 0.6541959444681803,
+        "memory_bytes": 129536,
+        "update_seconds_so_far": 0.46221709998644656
+      },
+      "a5a": {
+        "mean_accuracy": 0.6541959444681803,
+        "memory_bytes": 129536,
+        "update_seconds_so_far": 0.46221709998644656
+      },
+      "A5b": {
+        "mean_accuracy": 0.6860634005732007,
+        "memory_bytes": 7331328,
+        "update_seconds_so_far": 0.22281250004380126
+      },
+      "a5b": {
+        "mean_accuracy": 0.6860634005732007,
+        "memory_bytes": 7331328,
+        "update_seconds_so_far": 0.22281250004380126
+      },
+      "A6": {
+        "mean_accuracy": 0.7568272633685006,
+        "memory_bytes": 272531456,
+        "update_seconds_so_far": 26.66795909998109
+      },
+      "a6": {
+        "mean_accuracy": 0.7568272633685006,
+        "memory_bytes": 272531456,
+        "update_seconds_so_far": 26.66795909998109
+      },
+      "A7all": {
+        "mean_accuracy": 0.6966233965423372,
+        "memory_bytes": 4405248,
+        "update_seconds_so_far": 0.009005299980344716
+      },
+      "a7all": {
+        "mean_accuracy": 0.6966233965423372,
+        "memory_bytes": 4405248,
+        "update_seconds_so_far": 0.009005299980344716
+      }
+    },
+    {
+      "phase": 18,
+      "V0": {
+        "regimes_seen": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21
+        ],
+        "mean_accuracy": 0.6897100837607133,
+        "per_regime_accuracy": {
+          "0": 0.8866666555404663,
+          "1": 0.8508771657943726,
+          "2": 0.8301886916160583,
+          "3": 0.8066666722297668,
+          "4": 0.9074074029922485,
+          "5": 0.9605262875556946,
+          "6": 0.753333330154419,
+          "7": 0.54666668176651,
+          "8": 0.4300000071525574,
+          "9": 0.4333333373069763,
+          "10": 0.4233333468437195,
+          "14": 0.6499999761581421,
+          "15": 0.5566666722297668,
+          "16": 0.5634920597076416,
+          "17": 0.5933333039283752,
+          "18": 0.6639999747276306,
+          "19": 0.7680000066757202,
+          "20": 0.7120000123977661,
+          "21": 0.7680000066757202
+        },
+        "forgetting": 0.047569531533453197,
+        "n_experts": 17,
+        "memory_bytes": 12610712,
+        "update_seconds_so_far": 29.146440900003654,
+        "unknown_flag": {
+          "false_new_rate": 0.0,
+          "ood_detection_rate": 0.0,
+          "ood_by_domain": {
+            "stories": 0.0,
+            "wiki": 0.0,
+            "science_questions": 0.0
+          }
+        }
+      },
+      "v0": {
+        "regimes_seen": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21
+        ],
+        "mean_accuracy": 0.6897100837607133,
+        "per_regime_accuracy": {
+          "0": 0.8866666555404663,
+          "1": 0.8508771657943726,
+          "2": 0.8301886916160583,
+          "3": 0.8066666722297668,
+          "4": 0.9074074029922485,
+          "5": 0.9605262875556946,
+          "6": 0.753333330154419,
+          "7": 0.54666668176651,
+          "8": 0.4300000071525574,
+          "9": 0.4333333373069763,
+          "10": 0.4233333468437195,
+          "14": 0.6499999761581421,
+          "15": 0.5566666722297668,
+          "16": 0.5634920597076416,
+          "17": 0.5933333039283752,
+          "18": 0.6639999747276306,
+          "19": 0.7680000066757202,
+          "20": 0.7120000123977661,
+          "21": 0.7680000066757202
+        },
+        "forgetting": 0.047569531533453197,
+        "n_experts": 17,
+        "memory_bytes": 12610712,
+        "update_seconds_so_far": 29.146440900003654,
+        "unknown_flag": {
+          "false_new_rate": 0.0,
+          "ood_detection_rate": 0.0,
+          "ood_by_domain": {
+            "stories": 0.0,
+            "wiki": 0.0,
+            "science_questions": 0.0
+          }
+        }
+      },
+      "A3": {
+        "mean_accuracy": 0.6773064905091336,
+        "memory_bytes": 5203444,
+        "update_seconds_so_far": 7.121060700021189
+      },
+      "a3": {
+        "mean_accuracy": 0.6773064905091336,
+        "memory_bytes": 5203444,
+        "update_seconds_so_far": 7.121060700021189
+      },
+      "A7": {
+        "mean_accuracy": 0.6764502399846127,
+        "memory_bytes": 4610048,
+        "update_seconds_so_far": 0.07117220000145608
+      },
+      "a7": {
+        "mean_accuracy": 0.6764502399846127,
+        "memory_bytes": 4610048,
+        "update_seconds_so_far": 0.07117220000145608
+      },
+      "A5a": {
+        "mean_accuracy": 0.6416760071327812,
+        "memory_bytes": 129536,
+        "update_seconds_so_far": 0.48265029998947284
+      },
+      "a5a": {
+        "mean_accuracy": 0.6416760071327812,
+        "memory_bytes": 129536,
+        "update_seconds_so_far": 0.48265029998947284
+      },
+      "A5b": {
+        "mean_accuracy": 0.6609723426793751,
+        "memory_bytes": 7727616,
+        "update_seconds_so_far": 0.2352882000413956
+      },
+      "a5b": {
+        "mean_accuracy": 0.6609723426793751,
+        "memory_bytes": 7727616,
+        "update_seconds_so_far": 0.2352882000413956
+      },
+      "A6": {
+        "mean_accuracy": 0.7359462552949002,
+        "memory_bytes": 272531456,
+        "update_seconds_so_far": 27.89947429998938
+      },
+      "a6": {
+        "mean_accuracy": 0.7359462552949002,
+        "memory_bytes": 272531456,
+        "update_seconds_so_far": 27.89947429998938
+      },
+      "A7all": {
+        "mean_accuracy": 0.6764502399846127,
+        "memory_bytes": 4610048,
+        "update_seconds_so_far": 0.009339499974885257
+      },
+      "a7all": {
+        "mean_accuracy": 0.6764502399846127,
+        "memory_bytes": 4610048,
+        "update_seconds_so_far": 0.009339499974885257
+      }
+    },
+    {
+      "phase": 19,
+      "V0": {
+        "regimes_seen": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21
+        ],
+        "mean_accuracy": 0.683057913184166,
+        "per_regime_accuracy": {
+          "0": 0.8866666555404663,
+          "1": 0.8508771657943726,
+          "2": 0.8301886916160583,
+          "3": 0.8066666722297668,
+          "4": 0.9074074029922485,
+          "5": 0.9605262875556946,
+          "6": 0.6766666769981384,
+          "7": 0.5400000214576721,
+          "8": 0.4233333468437195,
+          "9": 0.4333333373069763,
+          "10": 0.4233333468437195,
+          "11": 0.6466666460037231,
+          "14": 0.6499999761581421,
+          "15": 0.5566666722297668,
+          "16": 0.5634920597076416,
+          "17": 0.5933333039283752,
+          "18": 0.6639999747276306,
+          "19": 0.7680000066757202,
+          "20": 0.7120000123977661,
+          "21": 0.7680000066757202
+        },
+        "forgetting": 0.04980271270400599,
+        "n_experts": 18,
+        "memory_bytes": 13340868,
+        "update_seconds_so_far": 30.283732100004272,
+        "unknown_flag": {
+          "false_new_rate": 0.0,
+          "ood_detection_rate": 0.0,
+          "ood_by_domain": {
+            "stories": 0.0,
+            "wiki": 0.0,
+            "science_questions": 0.0
+          }
+        }
+      },
+      "v0": {
+        "regimes_seen": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21
+        ],
+        "mean_accuracy": 0.683057913184166,
+        "per_regime_accuracy": {
+          "0": 0.8866666555404663,
+          "1": 0.8508771657943726,
+          "2": 0.8301886916160583,
+          "3": 0.8066666722297668,
+          "4": 0.9074074029922485,
+          "5": 0.9605262875556946,
+          "6": 0.6766666769981384,
+          "7": 0.5400000214576721,
+          "8": 0.4233333468437195,
+          "9": 0.4333333373069763,
+          "10": 0.4233333468437195,
+          "11": 0.6466666460037231,
+          "14": 0.6499999761581421,
+          "15": 0.5566666722297668,
+          "16": 0.5634920597076416,
+          "17": 0.5933333039283752,
+          "18": 0.6639999747276306,
+          "19": 0.7680000066757202,
+          "20": 0.7120000123977661,
+          "21": 0.7680000066757202
+        },
+        "forgetting": 0.04980271270400599,
+        "n_experts": 18,
+        "memory_bytes": 13340868,
+        "update_seconds_so_far": 30.283732100004272,
+        "unknown_flag": {
+          "false_new_rate": 0.0,
+          "ood_detection_rate": 0.0,
+          "ood_by_domain": {
+            "stories": 0.0,
+            "wiki": 0.0,
+            "science_questions": 0.0
+          }
+        }
+      },
+      "A3": {
+        "mean_accuracy": 0.6619941219687462,
+        "memory_bytes": 5408244,
+        "update_seconds_so_far": 7.345794400018349
+      },
+      "a3": {
+        "mean_accuracy": 0.6619941219687462,
+        "memory_bytes": 5408244,
+        "update_seconds_so_far": 7.345794400018349
+      },
+      "A7": {
+        "mean_accuracy": 0.6726277291774749,
+        "memory_bytes": 4814848,
+        "update_seconds_so_far": 0.07396410000364995
+      },
+      "a7": {
+        "mean_accuracy": 0.6726277291774749,
+        "memory_bytes": 4814848,
+        "update_seconds_so_far": 0.07396410000364995
+      },
+      "A5a": {
+        "mean_accuracy": 0.6408922076225281,
+        "memory_bytes": 129536,
+        "update_seconds_so_far": 0.5026863999919442
+      },
+      "a5a": {
+        "mean_accuracy": 0.6408922076225281,
+        "memory_bytes": 129536,
+        "update_seconds_so_far": 0.5026863999919442
+      },
+      "A5b": {
+        "mean_accuracy": 0.6580869525671005,
+        "memory_bytes": 7859712,
+        "update_seconds_so_far": 0.24684000003981055
+      },
+      "a5b": {
+        "mean_accuracy": 0.6580869525671005,
+        "memory_bytes": 7859712,
+        "update_seconds_so_far": 0.24684000003981055
+      },
+      "A6": {
+        "mean_accuracy": 0.7301344752311707,
+        "memory_bytes": 272531456,
+        "update_seconds_so_far": 29.12184429998888
+      },
+      "a6": {
+        "mean_accuracy": 0.7301344752311707,
+        "memory_bytes": 272531456,
+        "update_seconds_so_far": 29.12184429998888
+      },
+      "A7all": {
+        "mean_accuracy": 0.6726277291774749,
+        "memory_bytes": 4814848,
+        "update_seconds_so_far": 0.009696999975858489
+      },
+      "a7all": {
+        "mean_accuracy": 0.6726277291774749,
+        "memory_bytes": 4814848,
+        "update_seconds_so_far": 0.009696999975858489
+      }
+    },
+    {
+      "phase": 20,
+      "V0": {
+        "regimes_seen": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21
+        ],
+        "mean_accuracy": 0.6687853137652079,
+        "per_regime_accuracy": {
+          "0": 0.8866666555404663,
+          "1": 0.8508771657943726,
+          "2": 0.8301886916160583,
+          "3": 0.8066666722297668,
+          "4": 0.9074074029922485,
+          "5": 0.9605262875556946,
+          "6": 0.6766666769981384,
+          "7": 0.5400000214576721,
+          "8": 0.41999998688697815,
+          "9": 0.4333333373069763,
+          "10": 0.4233333468437195,
+          "11": 0.6466666460037231,
+          "12": 0.41333332657814026,
+          "14": 0.6233333349227905,
+          "15": 0.5566666722297668,
+          "16": 0.5634920597076416,
+          "17": 0.5933333039283752,
+          "18": 0.6639999747276306,
+          "19": 0.7680000066757202,
+          "20": 0.7120000123977661,
+          "21": 0.7680000066757202
+        },
+        "forgetting": 0.04881257712841034,
+        "n_experts": 19,
+        "memory_bytes": 14071024,
+        "update_seconds_so_far": 31.52139150000221,
+        "unknown_flag": {
+          "false_new_rate": 0.0,
+          "ood_detection_rate": 0.0,
+          "ood_by_domain": {
+            "stories": 0.0,
+            "wiki": 0.0,
+            "science_questions": 0.0
+          }
+        }
+      },
+      "v0": {
+        "regimes_seen": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21
+        ],
+        "mean_accuracy": 0.6687853137652079,
+        "per_regime_accuracy": {
+          "0": 0.8866666555404663,
+          "1": 0.8508771657943726,
+          "2": 0.8301886916160583,
+          "3": 0.8066666722297668,
+          "4": 0.9074074029922485,
+          "5": 0.9605262875556946,
+          "6": 0.6766666769981384,
+          "7": 0.5400000214576721,
+          "8": 0.41999998688697815,
+          "9": 0.4333333373069763,
+          "10": 0.4233333468437195,
+          "11": 0.6466666460037231,
+          "12": 0.41333332657814026,
+          "14": 0.6233333349227905,
+          "15": 0.5566666722297668,
+          "16": 0.5634920597076416,
+          "17": 0.5933333039283752,
+          "18": 0.6639999747276306,
+          "19": 0.7680000066757202,
+          "20": 0.7120000123977661,
+          "21": 0.7680000066757202
+        },
+        "forgetting": 0.04881257712841034,
+        "n_experts": 19,
+        "memory_bytes": 14071024,
+        "update_seconds_so_far": 31.52139150000221,
+        "unknown_flag": {
+          "false_new_rate": 0.0,
+          "ood_detection_rate": 0.0,
+          "ood_by_domain": {
+            "stories": 0.0,
+            "wiki": 0.0,
+            "science_questions": 0.0
+          }
+        }
+      },
+      "A3": {
+        "mean_accuracy": 0.6446152286870139,
+        "memory_bytes": 5613044,
+        "update_seconds_so_far": 7.561338500006968
+      },
+      "a3": {
+        "mean_accuracy": 0.6446152286870139,
+        "memory_bytes": 5613044,
+        "update_seconds_so_far": 7.561338500006968
+      },
+      "A7": {
+        "mean_accuracy": 0.6625025953565326,
+        "memory_bytes": 5019648,
+        "update_seconds_so_far": 0.07670790000338457
+      },
+      "a7": {
+        "mean_accuracy": 0.6625025953565326,
+        "memory_bytes": 5019648,
+        "update_seconds_so_far": 0.07670790000338457
+      },
+      "A5a": {
+        "mean_accuracy": 0.6329538424809774,
+        "memory_bytes": 129536,
+        "update_seconds_so_far": 0.5228206999927352
+      },
+      "a5a": {
+        "mean_accuracy": 0.6329538424809774,
+        "memory_bytes": 129536,
+        "update_seconds_so_far": 0.5228206999927352
+      },
+      "A5b": {
+        "mean_accuracy": 0.6541657866466613,
+        "memory_bytes": 8057856,
+        "update_seconds_so_far": 0.2598987000492343
+      },
+      "a5b": {
+        "mean_accuracy": 0.6541657866466613,
+        "memory_bytes": 8057856,
+        "update_seconds_so_far": 0.2598987000492343
+      },
+      "A6": {
+        "mean_accuracy": 0.721114368665786,
+        "memory_bytes": 272531456,
+        "update_seconds_so_far": 30.32889569998588
+      },
+      "a6": {
+        "mean_accuracy": 0.721114368665786,
+        "memory_bytes": 272531456,
+        "update_seconds_so_far": 30.32889569998588
+      },
+      "A7all": {
+        "mean_accuracy": 0.6625025953565326,
+        "memory_bytes": 5019648,
+        "update_seconds_so_far": 0.010042399975645822
+      },
+      "a7all": {
+        "mean_accuracy": 0.6625025953565326,
+        "memory_bytes": 5019648,
+        "update_seconds_so_far": 0.010042399975645822
+      }
+    },
+    {
+      "phase": 21,
+      "V0": {
+        "regimes_seen": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21
+        ],
+        "mean_accuracy": 0.6503556790676984,
+        "per_regime_accuracy": {
+          "0": 0.8866666555404663,
+          "1": 0.8508771657943726,
+          "2": 0.8301886916160583,
+          "3": 0.8066666722297668,
+          "4": 0.9074074029922485,
+          "5": 0.9605262875556946,
+          "6": 0.6700000166893005,
+          "7": 0.5333333611488342,
+          "8": 0.41333332657814026,
+          "9": 0.4333333373069763,
+          "10": 0.41333332657814026,
+          "11": 0.6466666460037231,
+          "12": 0.33666667342185974,
+          "13": 0.38999998569488525,
+          "14": 0.6033333539962769,
+          "15": 0.5566666722297668,
+          "16": 0.5634920597076416,
+          "17": 0.5933333039283752,
+          "18": 0.6639999747276306,
+          "19": 0.7680000066757202,
+          "20": 0.7120000123977661,
+          "21": 0.7680000066757202
+        },
+        "forgetting": 0.052519913230623515,
+        "n_experts": 20,
+        "memory_bytes": 14801180,
+        "update_seconds_so_far": 32.55206850000104,
+        "unknown_flag": {
+          "false_new_rate": 0.0,
+          "ood_detection_rate": 0.0,
+          "ood_by_domain": {
+            "stories": 0.0,
+            "wiki": 0.0,
+            "science_questions": 0.0
+          }
+        }
+      },
+      "v0": {
+        "regimes_seen": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21
+        ],
+        "mean_accuracy": 0.6503556790676984,
+        "per_regime_accuracy": {
+          "0": 0.8866666555404663,
+          "1": 0.8508771657943726,
+          "2": 0.8301886916160583,
+          "3": 0.8066666722297668,
+          "4": 0.9074074029922485,
+          "5": 0.9605262875556946,
+          "6": 0.6700000166893005,
+          "7": 0.5333333611488342,
+          "8": 0.41333332657814026,
+          "9": 0.4333333373069763,
+          "10": 0.41333332657814026,
+          "11": 0.6466666460037231,
+          "12": 0.33666667342185974,
+          "13": 0.38999998569488525,
+          "14": 0.6033333539962769,
+          "15": 0.5566666722297668,
+          "16": 0.5634920597076416,
+          "17": 0.5933333039283752,
+          "18": 0.6639999747276306,
+          "19": 0.7680000066757202,
+          "20": 0.7120000123977661,
+          "21": 0.7680000066757202
+        },
+        "forgetting": 0.052519913230623515,
+        "n_experts": 20,
+        "memory_bytes": 14801180,
+        "update_seconds_so_far": 32.55206850000104,
+        "unknown_flag": {
+          "false_new_rate": 0.0,
+          "ood_detection_rate": 0.0,
+          "ood_by_domain": {
+            "stories": 0.0,
+            "wiki": 0.0,
+            "science_questions": 0.0
+          }
+        }
+      },
+      "A3": {
+        "mean_accuracy": 0.6238332516090437,
+        "memory_bytes": 5817844,
+        "update_seconds_so_far": 7.801183100000344
+      },
+      "a3": {
+        "mean_accuracy": 0.6238332516090437,
+        "memory_bytes": 5817844,
+        "update_seconds_so_far": 7.801183100000344
+      },
+      "A7": {
+        "mean_accuracy": 0.6425403600389307,
+        "memory_bytes": 5224448,
+        "update_seconds_so_far": 0.07960420000381419
+      },
+      "a7": {
+        "mean_accuracy": 0.6425403600389307,
+        "memory_bytes": 5224448,
+        "update_seconds_so_far": 0.07960420000381419
+      },
+      "A5a": {
+        "mean_accuracy": 0.6152266724543138,
+        "memory_bytes": 129536,
+        "update_seconds_so_far": 0.5465816999931121
+      },
+      "a5a": {
+        "mean_accuracy": 0.6152266724543138,
+        "memory_bytes": 129536,
+        "update_seconds_so_far": 0.5465816999931121
+      },
+      "A5b": {
+        "mean_accuracy": 0.6407529738816348,
+        "memory_bytes": 8256000,
+        "update_seconds_so_far": 0.27244150004844414
+      },
+      "a5b": {
+        "mean_accuracy": 0.6407529738816348,
+        "memory_bytes": 8256000,
+        "update_seconds_so_far": 0.27244150004844414
+      },
+      "A6": {
+        "mean_accuracy": 0.7001976872032339,
+        "memory_bytes": 272531456,
+        "update_seconds_so_far": 31.54112519998671
+      },
+      "a6": {
+        "mean_accuracy": 0.7001976872032339,
+        "memory_bytes": 272531456,
+        "update_seconds_so_far": 31.54112519998671
+      },
+      "A7all": {
+        "mean_accuracy": 0.6425403600389307,
+        "memory_bytes": 5224448,
+        "update_seconds_so_far": 0.010540599974774523
+      },
+      "a7all": {
+        "mean_accuracy": 0.6425403600389307,
+        "memory_bytes": 5224448,
+        "update_seconds_so_far": 0.010540599974774523
+      }
+    },
+    {
+      "phase": 22,
+      "V0": {
+        "regimes_seen": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21
+        ],
+        "mean_accuracy": 0.6513282643123106,
+        "per_regime_accuracy": {
+          "0": 0.8866666555404663,
+          "1": 0.8508771657943726,
+          "2": 0.8301886916160583,
+          "3": 0.8066666722297668,
+          "4": 0.9074074029922485,
+          "5": 0.9605262875556946,
+          "6": 0.6700000166893005,
+          "7": 0.5333333611488342,
+          "8": 0.41333332657814026,
+          "9": 0.4333333373069763,
+          "10": 0.41333332657814026,
+          "11": 0.6466666460037231,
+          "12": 0.33666667342185974,
+          "13": 0.38999998569488525,
+          "14": 0.6033333539962769,
+          "15": 0.5566666722297668,
+          "16": 0.5555555820465088,
+          "17": 0.5866666436195374,
+          "18": 0.6679999828338623,
+          "19": 0.7720000147819519,
+          "20": 0.7360000014305115,
+          "21": 0.7720000147819519
+        },
+        "forgetting": 0.049160059202801094,
+        "n_experts": 20,
+        "memory_bytes": 14802204,
+        "update_seconds_so_far": 36.91829219998908,
+        "unknown_flag": {
+          "false_new_rate": 0.0,
+          "ood_detection_rate": 0.0,
+          "ood_by_domain": {
+            "stories": 0.0,
+            "wiki": 0.0,
+            "science_questions": 0.0
+          }
+        }
+      },
+      "v0": {
+        "regimes_seen": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21
+        ],
+        "mean_accuracy": 0.6513282643123106,
+        "per_regime_accuracy": {
+          "0": 0.8866666555404663,
+          "1": 0.8508771657943726,
+          "2": 0.8301886916160583,
+          "3": 0.8066666722297668,
+          "4": 0.9074074029922485,
+          "5": 0.9605262875556946,
+          "6": 0.6700000166893005,
+          "7": 0.5333333611488342,
+          "8": 0.41333332657814026,
+          "9": 0.4333333373069763,
+          "10": 0.41333332657814026,
+          "11": 0.6466666460037231,
+          "12": 0.33666667342185974,
+          "13": 0.38999998569488525,
+          "14": 0.6033333539962769,
+          "15": 0.5566666722297668,
+          "16": 0.5555555820465088,
+          "17": 0.5866666436195374,
+          "18": 0.6679999828338623,
+          "19": 0.7720000147819519,
+          "20": 0.7360000014305115,
+          "21": 0.7720000147819519
+        },
+        "forgetting": 0.049160059202801094,
+        "n_experts": 20,
+        "memory_bytes": 14802204,
+        "update_seconds_so_far": 36.91829219998908,
+        "unknown_flag": {
+          "false_new_rate": 0.0,
+          "ood_detection_rate": 0.0,
+          "ood_by_domain": {
+            "stories": 0.0,
+            "wiki": 0.0,
+            "science_questions": 0.0
+          }
+        }
+      },
+      "A3": {
+        "mean_accuracy": 0.6566185653209686,
+        "memory_bytes": 6585844,
+        "update_seconds_so_far": 8.63469329999134
+      },
+      "a3": {
+        "mean_accuracy": 0.6566185653209686,
+        "memory_bytes": 6585844,
+        "update_seconds_so_far": 8.63469329999134
+      },
+      "A7": {
+        "mean_accuracy": 0.6419039951129393,
+        "memory_bytes": 5992448,
+        "update_seconds_so_far": 0.09025820001625107
+      },
+      "a7": {
+        "mean_accuracy": 0.6419039951129393,
+        "memory_bytes": 5992448,
+        "update_seconds_so_far": 0.09025820001625107
+      },
+      "A5a": {
+        "mean_accuracy": 0.6132363771850412,
+        "memory_bytes": 129536,
+        "update_seconds_so_far": 0.6345883000067261
+      },
+      "a5a": {
+        "mean_accuracy": 0.6132363771850412,
+        "memory_bytes": 129536,
+        "update_seconds_so_far": 0.6345883000067261
+      },
+      "A5b": {
+        "mean_accuracy": 0.6226346831430088,
+        "memory_bytes": 8256000,
+        "update_seconds_so_far": 0.3122819000418531
+      },
+      "a5b": {
+        "mean_accuracy": 0.6226346831430088,
+        "memory_bytes": 8256000,
+        "update_seconds_so_far": 0.3122819000418531
+      },
+      "A6": {
+        "mean_accuracy": 0.7001976872032339,
+        "memory_bytes": 272531456,
+        "update_seconds_so_far": 35.7644365999804
+      },
+      "a6": {
+        "mean_accuracy": 0.7001976872032339,
+        "memory_bytes": 272531456,
+        "update_seconds_so_far": 35.7644365999804
+      },
+      "A7all": {
+        "mean_accuracy": 0.6419039951129393,
+        "memory_bytes": 5992448,
+        "update_seconds_so_far": 0.011692399973981082
+      },
+      "a7all": {
+        "mean_accuracy": 0.6419039951129393,
+        "memory_bytes": 5992448,
+        "update_seconds_so_far": 0.011692399973981082
+      }
+    },
+    {
+      "phase": 23,
+      "V0": {
+        "regimes_seen": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21
+        ],
+        "mean_accuracy": 0.6517269895835356,
+        "per_regime_accuracy": {
+          "0": 0.8833333253860474,
+          "1": 0.859649121761322,
+          "2": 0.8301886916160583,
+          "3": 0.8100000023841858,
+          "4": 0.9074074029922485,
+          "5": 0.9605262875556946,
+          "6": 0.6700000166893005,
+          "7": 0.5333333611488342,
+          "8": 0.41333332657814026,
+          "9": 0.4333333373069763,
+          "10": 0.41333332657814026,
+          "11": 0.6466666460037231,
+          "12": 0.33666667342185974,
+          "13": 0.38999998569488525,
+          "14": 0.6033333539962769,
+          "15": 0.5566666722297668,
+          "16": 0.5555555820465088,
+          "17": 0.5866666436195374,
+          "18": 0.6679999828338623,
+          "19": 0.7720000147819519,
+          "20": 0.7360000014305115,
+          "21": 0.7720000147819519
+        },
+        "forgetting": 0.04876133393157612,
+        "n_experts": 20,
+        "memory_bytes": 14798908,
+        "update_seconds_so_far": 37.76267619999271,
+        "unknown_flag": {
+          "false_new_rate": 0.0,
+          "ood_detection_rate": 0.0,
+          "ood_by_domain": {
+            "stories": 0.0,
+            "wiki": 0.0,
+            "science_questions": 0.0
+          }
+        }
+      },
+      "v0": {
+        "regimes_seen": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21
+        ],
+        "mean_accuracy": 0.6517269895835356,
+        "per_regime_accuracy": {
+          "0": 0.8833333253860474,
+          "1": 0.859649121761322,
+          "2": 0.8301886916160583,
+          "3": 0.8100000023841858,
+          "4": 0.9074074029922485,
+          "5": 0.9605262875556946,
+          "6": 0.6700000166893005,
+          "7": 0.5333333611488342,
+          "8": 0.41333332657814026,
+          "9": 0.4333333373069763,
+          "10": 0.41333332657814026,
+          "11": 0.6466666460037231,
+          "12": 0.33666667342185974,
+          "13": 0.38999998569488525,
+          "14": 0.6033333539962769,
+          "15": 0.5566666722297668,
+          "16": 0.5555555820465088,
+          "17": 0.5866666436195374,
+          "18": 0.6679999828338623,
+          "19": 0.7720000147819519,
+          "20": 0.7360000014305115,
+          "21": 0.7720000147819519
+        },
+        "forgetting": 0.04876133393157612,
+        "n_experts": 20,
+        "memory_bytes": 14798908,
+        "update_seconds_so_far": 37.76267619999271,
+        "unknown_flag": {
+          "false_new_rate": 0.0,
+          "ood_detection_rate": 0.0,
+          "ood_by_domain": {
+            "stories": 0.0,
+            "wiki": 0.0,
+            "science_questions": 0.0
+          }
+        }
+      },
+      "A3": {
+        "mean_accuracy": 0.6433344429189508,
+        "memory_bytes": 6688244,
+        "update_seconds_so_far": 8.762851099989348
+      },
+      "a3": {
+        "mean_accuracy": 0.6433344429189508,
+        "memory_bytes": 6688244,
+        "update_seconds_so_far": 8.762851099989348
+      },
+      "A7": {
+        "mean_accuracy": 0.641911968588829,
+        "memory_bytes": 6094848,
+        "update_seconds_so_far": 0.09165250001024106
+      },
+      "a7": {
+        "mean_accuracy": 0.641911968588829,
+        "memory_bytes": 6094848,
+        "update_seconds_so_far": 0.09165250001024106
+      },
+      "A5a": {
+        "mean_accuracy": 0.6132969842715696,
+        "memory_bytes": 129536,
+        "update_seconds_so_far": 0.648905600010039
+      },
+      "a5a": {
+        "mean_accuracy": 0.6132969842715696,
+        "memory_bytes": 129536,
+        "update_seconds_so_far": 0.648905600010039
+      },
+      "A5b": {
+        "mean_accuracy": 0.6241786954077807,
+        "memory_bytes": 8256000,
+        "update_seconds_so_far": 0.3185258000448812
+      },
+      "a5b": {
+        "mean_accuracy": 0.6241786954077807,
+        "memory_bytes": 8256000,
+        "update_seconds_so_far": 0.3185258000448812
+      },
+      "A6": {
+        "mean_accuracy": 0.7014394781806252,
+        "memory_bytes": 272531456,
+        "update_seconds_so_far": 36.380354999982956
+      },
+      "a6": {
+        "mean_accuracy": 0.7014394781806252,
+        "memory_bytes": 272531456,
+        "update_seconds_so_far": 36.380354999982956
+      },
+      "A7all": {
+        "mean_accuracy": 0.641911968588829,
+        "memory_bytes": 6094848,
+        "update_seconds_so_far": 0.01191589996960829
+      },
+      "a7all": {
+        "mean_accuracy": 0.641911968588829,
+        "memory_bytes": 6094848,
+        "update_seconds_so_far": 0.01191589996960829
+      }
+    },
+    {
+      "phase": 24,
+      "V0": {
+        "regimes_seen": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21
+        ],
+        "mean_accuracy": 0.6526471552523699,
+        "per_regime_accuracy": {
+          "0": 0.8833333253860474,
+          "1": 0.8552631735801697,
+          "2": 0.8301886916160583,
+          "3": 0.8299999833106995,
+          "4": 0.9120370149612427,
+          "5": 0.9605262875556946,
+          "6": 0.6700000166893005,
+          "7": 0.5333333611488342,
+          "8": 0.41333332657814026,
+          "9": 0.4333333373069763,
+          "10": 0.41333332657814026,
+          "11": 0.6466666460037231,
+          "12": 0.33666667342185974,
+          "13": 0.38999998569488525,
+          "14": 0.6033333539962769,
+          "15": 0.5566666722297668,
+          "16": 0.5555555820465088,
+          "17": 0.5866666436195374,
+          "18": 0.6679999828338623,
+          "19": 0.7720000147819519,
+          "20": 0.7360000014305115,
+          "21": 0.7720000147819519
+        },
+        "forgetting": 0.04784116826274178,
+        "n_experts": 20,
+        "memory_bytes": 14771036,
+        "update_seconds_so_far": 38.35300639999332,
+        "unknown_flag": {
+          "false_new_rate": 0.0,
+          "ood_detection_rate": 0.0,
+          "ood_by_domain": {
+            "stories": 0.0,
+            "wiki": 0.0,
+            "science_questions": 0.0
+          }
+        }
+      },
+      "v0": {
+        "regimes_seen": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21
+        ],
+        "mean_accuracy": 0.6526471552523699,
+        "per_regime_accuracy": {
+          "0": 0.8833333253860474,
+          "1": 0.8552631735801697,
+          "2": 0.8301886916160583,
+          "3": 0.8299999833106995,
+          "4": 0.9120370149612427,
+          "5": 0.9605262875556946,
+          "6": 0.6700000166893005,
+          "7": 0.5333333611488342,
+          "8": 0.41333332657814026,
+          "9": 0.4333333373069763,
+          "10": 0.41333332657814026,
+          "11": 0.6466666460037231,
+          "12": 0.33666667342185974,
+          "13": 0.38999998569488525,
+          "14": 0.6033333539962769,
+          "15": 0.5566666722297668,
+          "16": 0.5555555820465088,
+          "17": 0.5866666436195374,
+          "18": 0.6679999828338623,
+          "19": 0.7720000147819519,
+          "20": 0.7360000014305115,
+          "21": 0.7720000147819519
+        },
+        "forgetting": 0.04784116826274178,
+        "n_experts": 20,
+        "memory_bytes": 14771036,
+        "update_seconds_so_far": 38.35300639999332,
+        "unknown_flag": {
+          "false_new_rate": 0.0,
+          "ood_detection_rate": 0.0,
+          "ood_by_domain": {
+            "stories": 0.0,
+            "wiki": 0.0,
+            "science_questions": 0.0
+          }
+        }
+      },
+      "A3": {
+        "mean_accuracy": 0.6367085792801597,
+        "memory_bytes": 6790644,
+        "update_seconds_so_far": 8.888834099998348
+      },
+      "a3": {
+        "mean_accuracy": 0.6367085792801597,
+        "memory_bytes": 6790644,
+        "update_seconds_so_far": 8.888834099998348
+      },
+      "A7": {
+        "mean_accuracy": 0.6432135768912055,
+        "memory_bytes": 6197248,
+        "update_seconds_so_far": 0.09364150000692462
+      },
+      "a7": {
+        "mean_accuracy": 0.6432135768912055,
+        "memory_bytes": 6197248,
+        "update_seconds_so_far": 0.09364150000692462
+      },
+      "A5a": {
+        "mean_accuracy": 0.6132491352883253,
+        "memory_bytes": 129536,
+        "update_seconds_so_far": 0.6627166000107536
+      },
+      "a5a": {
+        "mean_accuracy": 0.6132491352883253,
+        "memory_bytes": 129536,
+        "update_seconds_so_far": 0.6627166000107536
+      },
+      "A5b": {
+        "mean_accuracy": 0.624709580432285,
+        "memory_bytes": 8256000,
+        "update_seconds_so_far": 0.32378260004043113
+      },
+      "a5b": {
+        "mean_accuracy": 0.624709580432285,
+        "memory_bytes": 8256000,
+        "update_seconds_so_far": 0.32378260004043113
+      },
+      "A6": {
+        "mean_accuracy": 0.7015191587534818,
+        "memory_bytes": 272531456,
+        "update_seconds_so_far": 37.01187629998458
+      },
+      "a6": {
+        "mean_accuracy": 0.7015191587534818,
+        "memory_bytes": 272531456,
+        "update_seconds_so_far": 37.01187629998458
+      },
+      "A7all": {
+        "mean_accuracy": 0.6432135768912055,
+        "memory_bytes": 6197248,
+        "update_seconds_so_far": 0.012124799970479216
+      },
+      "a7all": {
+        "mean_accuracy": 0.6432135768912055,
+        "memory_bytes": 6197248,
+        "update_seconds_so_far": 0.012124799970479216
+      }
+    },
+    {
+      "phase": 25,
+      "V0": {
+        "regimes_seen": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21
+        ],
+        "mean_accuracy": 0.6517380611463026,
+        "per_regime_accuracy": {
+          "0": 0.8833333253860474,
+          "1": 0.8552631735801697,
+          "2": 0.8301886916160583,
+          "3": 0.8299999833106995,
+          "4": 0.9120370149612427,
+          "5": 0.9605262875556946,
+          "6": 0.6666666865348816,
+          "7": 0.5299999713897705,
+          "8": 0.41333332657814026,
+          "9": 0.4333333373069763,
+          "10": 0.41333332657814026,
+          "11": 0.6466666460037231,
+          "12": 0.3333333432674408,
+          "13": 0.4000000059604645,
+          "14": 0.5866666436195374,
+          "15": 0.5533333420753479,
+          "16": 0.5555555820465088,
+          "17": 0.5866666436195374,
+          "18": 0.6679999828338623,
+          "19": 0.7720000147819519,
+          "20": 0.7360000014305115,
+          "21": 0.7720000147819519
+        },
+        "forgetting": 0.04875026236880909,
+        "n_experts": 20,
+        "memory_bytes": 14743164,
+        "update_seconds_so_far": 38.886826499991,
+        "unknown_flag": {
+          "false_new_rate": 0.0,
+          "ood_detection_rate": 0.0,
+          "ood_by_domain": {
+            "stories": 0.0,
+            "wiki": 0.0,
+            "science_questions": 0.0
+          }
+        }
+      },
+      "v0": {
+        "regimes_seen": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21
+        ],
+        "mean_accuracy": 0.6517380611463026,
+        "per_regime_accuracy": {
+          "0": 0.8833333253860474,
+          "1": 0.8552631735801697,
+          "2": 0.8301886916160583,
+          "3": 0.8299999833106995,
+          "4": 0.9120370149612427,
+          "5": 0.9605262875556946,
+          "6": 0.6666666865348816,
+          "7": 0.5299999713897705,
+          "8": 0.41333332657814026,
+          "9": 0.4333333373069763,
+          "10": 0.41333332657814026,
+          "11": 0.6466666460037231,
+          "12": 0.3333333432674408,
+          "13": 0.4000000059604645,
+          "14": 0.5866666436195374,
+          "15": 0.5533333420753479,
+          "16": 0.5555555820465088,
+          "17": 0.5866666436195374,
+          "18": 0.6679999828338623,
+          "19": 0.7720000147819519,
+          "20": 0.7360000014305115,
+          "21": 0.7720000147819519
+        },
+        "forgetting": 0.04875026236880909,
+        "n_experts": 20,
+        "memory_bytes": 14743164,
+        "update_seconds_so_far": 38.886826499991,
+        "unknown_flag": {
+          "false_new_rate": 0.0,
+          "ood_detection_rate": 0.0,
+          "ood_by_domain": {
+            "stories": 0.0,
+            "wiki": 0.0,
+            "science_questions": 0.0
+          }
+        }
+      },
+      "A3": {
+        "mean_accuracy": 0.6166826567866586,
+        "memory_bytes": 6893044,
+        "update_seconds_so_far": 9.009969199996704
+      },
+      "a3": {
+        "mean_accuracy": 0.6166826567866586,
+        "memory_bytes": 6893044,
+        "update_seconds_so_far": 9.009969199996704
+      },
+      "A7": {
+        "mean_accuracy": 0.6445772146636789,
+        "memory_bytes": 6299648,
+        "update_seconds_so_far": 0.09528440000940464
+      },
+      "a7": {
+        "mean_accuracy": 0.6445772146636789,
+        "memory_bytes": 6299648,
+        "update_seconds_so_far": 0.09528440000940464
+      },
+      "A5a": {
+        "mean_accuracy": 0.6134437119418924,
+        "memory_bytes": 129536,
+        "update_seconds_so_far": 0.6758474000089336
+      },
+      "a5a": {
+        "mean_accuracy": 0.6134437119418924,
+        "memory_bytes": 129536,
+        "update_seconds_so_far": 0.6758474000089336
+      },
+      "A5b": {
+        "mean_accuracy": 0.6206953742287376,
+        "memory_bytes": 8256000,
+        "update_seconds_so_far": 0.32848740004192223
+      },
+      "a5b": {
+        "mean_accuracy": 0.6206953742287376,
+        "memory_bytes": 8256000,
+        "update_seconds_so_far": 0.32848740004192223
+      },
+      "A6": {
+        "mean_accuracy": 0.7006115154786543,
+        "memory_bytes": 272531456,
+        "update_seconds_so_far": 37.64545679998628
+      },
+      "a6": {
+        "mean_accuracy": 0.7006115154786543,
+        "memory_bytes": 272531456,
+        "update_seconds_so_far": 37.64545679998628
+      },
+      "A7all": {
+        "mean_accuracy": 0.6445772146636789,
+        "memory_bytes": 6299648,
+        "update_seconds_so_far": 0.01233249996585073
+      },
+      "a7all": {
+        "mean_accuracy": 0.6445772146636789,
+        "memory_bytes": 6299648,
+        "update_seconds_so_far": 0.01233249996585073
+      }
+    },
+    {
+      "phase": 26,
+      "V0": {
+        "regimes_seen": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21
+        ],
+        "mean_accuracy": 0.6502484814687208,
+        "per_regime_accuracy": {
+          "0": 0.8799999952316284,
+          "1": 0.8552631735801697,
+          "2": 0.8238993883132935,
+          "3": 0.8299999833106995,
+          "4": 0.8888888955116272,
+          "5": 0.9605262875556946,
+          "6": 0.6666666865348816,
+          "7": 0.5299999713897705,
+          "8": 0.41333332657814026,
+          "9": 0.4333333373069763,
+          "10": 0.41333332657814026,
+          "11": 0.6466666460037231,
+          "12": 0.3333333432674408,
+          "13": 0.4000000059604645,
+          "14": 0.5866666436195374,
+          "15": 0.5533333420753479,
+          "16": 0.5555555820465088,
+          "17": 0.5866666436195374,
+          "18": 0.6679999828338623,
+          "19": 0.7720000147819519,
+          "20": 0.7360000014305115,
+          "21": 0.7720000147819519
+        },
+        "forgetting": 0.05069438842209903,
+        "n_experts": 20,
+        "memory_bytes": 14715292,
+        "update_seconds_so_far": 39.80494829999225,
+        "unknown_flag": {
+          "false_new_rate": 0.0,
+          "ood_detection_rate": 0.0,
+          "ood_by_domain": {
+            "stories": 0.0,
+            "wiki": 0.0,
+            "science_questions": 0.0
+          }
+        }
+      },
+      "v0": {
+        "regimes_seen": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21
+        ],
+        "mean_accuracy": 0.6502484814687208,
+        "per_regime_accuracy": {
+          "0": 0.8799999952316284,
+          "1": 0.8552631735801697,
+          "2": 0.8238993883132935,
+          "3": 0.8299999833106995,
+          "4": 0.8888888955116272,
+          "5": 0.9605262875556946,
+          "6": 0.6666666865348816,
+          "7": 0.5299999713897705,
+          "8": 0.41333332657814026,
+          "9": 0.4333333373069763,
+          "10": 0.41333332657814026,
+          "11": 0.6466666460037231,
+          "12": 0.3333333432674408,
+          "13": 0.4000000059604645,
+          "14": 0.5866666436195374,
+          "15": 0.5533333420753479,
+          "16": 0.5555555820465088,
+          "17": 0.5866666436195374,
+          "18": 0.6679999828338623,
+          "19": 0.7720000147819519,
+          "20": 0.7360000014305115,
+          "21": 0.7720000147819519
+        },
+        "forgetting": 0.05069438842209903,
+        "n_experts": 20,
+        "memory_bytes": 14715292,
+        "update_seconds_so_far": 39.80494829999225,
+        "unknown_flag": {
+          "false_new_rate": 0.0,
+          "ood_detection_rate": 0.0,
+          "ood_by_domain": {
+            "stories": 0.0,
+            "wiki": 0.0,
+            "science_questions": 0.0
+          }
+        }
+      },
+      "A3": {
+        "mean_accuracy": 0.6104161468419161,
+        "memory_bytes": 6995444,
+        "update_seconds_so_far": 9.141792499995063
+      },
+      "a3": {
+        "mean_accuracy": 0.6104161468419161,
+        "memory_bytes": 6995444,
+        "update_seconds_so_far": 9.141792499995063
+      },
+      "A7": {
+        "mean_accuracy": 0.6438815390521829,
+        "memory_bytes": 6402048,
+        "update_seconds_so_far": 0.09692480001831427
+      },
+      "a7": {
+        "mean_accuracy": 0.6438815390521829,
+        "memory_bytes": 6402048,
+        "update_seconds_so_far": 0.09692480001831427
+      },
+      "A5a": {
+        "mean_accuracy": 0.612575960430232,
+        "memory_bytes": 129536,
+        "update_seconds_so_far": 0.6886304000145174
+      },
+      "a5a": {
+        "mean_accuracy": 0.612575960430232,
+        "memory_bytes": 129536,
+        "update_seconds_so_far": 0.6886304000145174
+      },
+      "A5b": {
+        "mean_accuracy": 0.6217660091140054,
+        "memory_bytes": 8256000,
+        "update_seconds_so_far": 0.33347510004387004
+      },
+      "a5b": {
+        "mean_accuracy": 0.6217660091140054,
+        "memory_bytes": 8256000,
+        "update_seconds_so_far": 0.33347510004387004
+      },
+      "A6": {
+        "mean_accuracy": 0.7002342478795485,
+        "memory_bytes": 272531456,
+        "update_seconds_so_far": 38.274416899985226
+      },
+      "a6": {
+        "mean_accuracy": 0.7002342478795485,
+        "memory_bytes": 272531456,
+        "update_seconds_so_far": 38.274416899985226
+      },
+      "A7all": {
+        "mean_accuracy": 0.6438815390521829,
+        "memory_bytes": 6402048,
+        "update_seconds_so_far": 0.012538199967821129
+      },
+      "a7all": {
+        "mean_accuracy": 0.6438815390521829,
+        "memory_bytes": 6402048,
+        "update_seconds_so_far": 0.012538199967821129
+      }
+    },
+    {
+      "phase": 27,
+      "V0": {
+        "regimes_seen": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21
+        ],
+        "mean_accuracy": 0.6501575735482302,
+        "per_regime_accuracy": {
+          "0": 0.8799999952316284,
+          "1": 0.8552631735801697,
+          "2": 0.8238993883132935,
+          "3": 0.8299999833106995,
+          "4": 0.8888888955116272,
+          "5": 0.9605262875556946,
+          "6": 0.6666666865348816,
+          "7": 0.5333333611488342,
+          "8": 0.41999998688697815,
+          "9": 0.44333332777023315,
+          "10": 0.4033333361148834,
+          "11": 0.6466666460037231,
+          "12": 0.3333333432674408,
+          "13": 0.4000000059604645,
+          "14": 0.5866666436195374,
+          "15": 0.5533333420753479,
+          "16": 0.5555555820465088,
+          "17": 0.5866666436195374,
+          "18": 0.6679999828338623,
+          "19": 0.7720000147819519,
+          "20": 0.7239999771118164,
+          "21": 0.7720000147819519
+        },
+        "forgetting": 0.05078529634258964,
+        "n_experts": 20,
+        "memory_bytes": 14687420,
+        "update_seconds_so_far": 40.38272359999246,
+        "unknown_flag": {
+          "false_new_rate": 0.0,
+          "ood_detection_rate": 0.0,
+          "ood_by_domain": {
+            "stories": 0.0,
+            "wiki": 0.0,
+            "science_questions": 0.0
+          }
+        }
+      },
+      "v0": {
+        "regimes_seen": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21
+        ],
+        "mean_accuracy": 0.6501575735482302,
+        "per_regime_accuracy": {
+          "0": 0.8799999952316284,
+          "1": 0.8552631735801697,
+          "2": 0.8238993883132935,
+          "3": 0.8299999833106995,
+          "4": 0.8888888955116272,
+          "5": 0.9605262875556946,
+          "6": 0.6666666865348816,
+          "7": 0.5333333611488342,
+          "8": 0.41999998688697815,
+          "9": 0.44333332777023315,
+          "10": 0.4033333361148834,
+          "11": 0.6466666460037231,
+          "12": 0.3333333432674408,
+          "13": 0.4000000059604645,
+          "14": 0.5866666436195374,
+          "15": 0.5533333420753479,
+          "16": 0.5555555820465088,
+          "17": 0.5866666436195374,
+          "18": 0.6679999828338623,
+          "19": 0.7720000147819519,
+          "20": 0.7239999771118164,
+          "21": 0.7720000147819519
+        },
+        "forgetting": 0.05078529634258964,
+        "n_experts": 20,
+        "memory_bytes": 14687420,
+        "update_seconds_so_far": 40.38272359999246,
+        "unknown_flag": {
+          "false_new_rate": 0.0,
+          "ood_detection_rate": 0.0,
+          "ood_by_domain": {
+            "stories": 0.0,
+            "wiki": 0.0,
+            "science_questions": 0.0
+          }
+        }
+      },
+      "A3": {
+        "mean_accuracy": 0.6006814336234872,
+        "memory_bytes": 7097844,
+        "update_seconds_so_far": 9.274154999995517
+      },
+      "a3": {
+        "mean_accuracy": 0.6006814336234872,
+        "memory_bytes": 7097844,
+        "update_seconds_so_far": 9.274154999995517
+      },
+      "A7": {
+        "mean_accuracy": 0.6453966904770244,
+        "memory_bytes": 6504448,
+        "update_seconds_so_far": 0.09878830001980532
+      },
+      "a7": {
+        "mean_accuracy": 0.6453966904770244,
+        "memory_bytes": 6504448,
+        "update_seconds_so_far": 0.09878830001980532
+      },
+      "A5a": {
+        "mean_accuracy": 0.6134372028437528,
+        "memory_bytes": 129536,
+        "update_seconds_so_far": 0.6986749000170676
+      },
+      "a5a": {
+        "mean_accuracy": 0.6134372028437528,
+        "memory_bytes": 129536,
+        "update_seconds_so_far": 0.6986749000170676
+      },
+      "A5b": {
+        "mean_accuracy": 0.6300675957040354,
+        "memory_bytes": 8256000,
+        "update_seconds_so_far": 0.3390342000457167
+      },
+      "a5b": {
+        "mean_accuracy": 0.6300675957040354,
+        "memory_bytes": 8256000,
+        "update_seconds_so_far": 0.3390342000457167
+      },
+      "A6": {
+        "mean_accuracy": 0.7013857622038234,
+        "memory_bytes": 272531456,
+        "update_seconds_so_far": 38.91154179998193
+      },
+      "a6": {
+        "mean_accuracy": 0.7013857622038234,
+        "memory_bytes": 272531456,
+        "update_seconds_so_far": 38.91154179998193
+      },
+      "A7all": {
+        "mean_accuracy": 0.6453966904770244,
+        "memory_bytes": 6504448,
+        "update_seconds_so_far": 0.012748299963277532
+      },
+      "a7all": {
+        "mean_accuracy": 0.6453966904770244,
+        "memory_bytes": 6504448,
+        "update_seconds_so_far": 0.012748299963277532
+      }
+    }
+  ],
+  "batch_hashes": {
+    "V0": "aa822ce924addc5d3df623df515c31dd89939c8aebdf290bfc557dee985bf0e0",
+    "A3": "aa822ce924addc5d3df623df515c31dd89939c8aebdf290bfc557dee985bf0e0",
+    "A7": "aa822ce924addc5d3df623df515c31dd89939c8aebdf290bfc557dee985bf0e0",
+    "A5a": "aa822ce924addc5d3df623df515c31dd89939c8aebdf290bfc557dee985bf0e0",
+    "A5b": "aa822ce924addc5d3df623df515c31dd89939c8aebdf290bfc557dee985bf0e0",
+    "A6": "aa822ce924addc5d3df623df515c31dd89939c8aebdf290bfc557dee985bf0e0",
+    "A7all": "aa822ce924addc5d3df623df515c31dd89939c8aebdf290bfc557dee985bf0e0"
+  }
+}

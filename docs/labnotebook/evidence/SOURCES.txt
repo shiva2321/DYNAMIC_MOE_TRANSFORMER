@@ -551,3 +551,12 @@ results/v0/smoke_seq_800/record.json
 results/v0/smoke_seq_800/summary.txt
 results/v0/review_seq_800/record.json
 results/v0/review_mix_800/record.json
+docs/superpowers/handoff/V0_FIX_RESULT.md
+docs/superpowers/handoff/V0_FIX_COMMANDS.txt
+docs/superpowers/handoff/V0_FIX_TEST_OUTPUT.txt
+m1/precision_check.py
+results/v0/smoke2_seq_800/summary.txt
+results/v0/smoke2_seq_800/record.json
+results/v0/smoke2_mix_800/record.json
+results/v0/smoke2_drift_800/summary.txt
+results/v0/review2_mix_800/record.json

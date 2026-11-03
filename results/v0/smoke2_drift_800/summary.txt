@@ -1,0 +1,38 @@
+V0 WALKING SKELETON DEMONSTRATION (Schedule: drift, Seed: 800)
+LABEL: DEMONSTRATION, NOT A RESULT
+--------------------------------------------------------------------------------
+1. BEHAVIOUR AND ACCURACY:
+V0 final mean accuracy across all seen regimes: 63.19%.
+V0 forgetting up to stream end: 6.78%.
+Comparator A3 final accuracy: 57.21%, forgetting: 8.85%.
+Comparator A7 final accuracy: 54.74%, forgetting: 4.70%.
+Comparator A5a final accuracy: 61.26%, forgetting: 3.90%.
+Comparator A5b final accuracy: 66.12%, forgetting: 1.67%.
+Comparator A6 final accuracy: 69.55%, forgetting: 1.71%.
+Comparator A7all final accuracy: 64.67%, forgetting: 1.00%.
+On this stream, comparator(s) ahead of V0 on final mean accuracy: A5b (diff +2.94%, memory 7.87 MB vs V0 1.18 MB); A6 (diff +6.36%, memory 259.91 MB vs V0 1.18 MB); A7all (diff +1.48%, memory 4.98 MB vs V0 1.18 MB).
+
+2. COST NEXT TO BEHAVIOUR:
+V0 spawned 1 experts with a final memory footprint of 1,240,044 bytes (1.18 MB).
+V0 cumulative update time: 13.41 seconds.
+V0 answer latency: 0.52 ms (batch 1), 0.73 ms (batch 32).
+Raw training stream size: 5,222,400 bytes (4.98 MB); V0 final memory is 1.18 MB (0.24x raw stream size).
+A3 memory: 1,239,540 bytes (1.18 MB), update: 5.49s, latency: 0.11 ms (b1), 0.18 ms (b32).
+A7 memory: 1,239,552 bytes (1.18 MB), update: 0.06s, latency: 0.11 ms (b1), 0.31 ms (b32).
+A5a memory: 129,536 bytes (0.12 MB), update: 0.50s, latency: 0.06 ms (b1), 0.09 ms (b32).
+A5b memory: 8,256,000 bytes (7.87 MB), update: 0.29s, latency: 4.66 ms (b1), 6.57 ms (b32).
+A6 memory: 272,531,456 bytes (259.91 MB), update: 29.87s, latency: 0.45 ms (b1), 1.86 ms (b32).
+A7all memory: 5,222,400 bytes (4.98 MB), update: 0.01s, latency: 0.30 ms (b1), 1.68 ms (b32).
+
+3. UNKNOWN FLAG & NOVELTY DETECTION:
+V0 false new rate on known test examples: 0.00%.
+V0 out-of-domain detection rate: 0.00%.
+V0 rank AUROC vs out-of-domain sets (1 - p_nov): 0.8755.
+  - vs stories: 0.8358
+  - vs wiki: 0.8875
+  - vs science_questions: 0.9033
+The unknown flag never fired at its configured level (on known or on out-of-domain examples); the AUROC measures the novelty score, not the flag.
+A novelty AUROC value near 0.5 means the unknown flag cannot distinguish out-of-domain text from known topics and does not work.
+
+--------------------------------------------------------------------------------
+End of demonstration summary.

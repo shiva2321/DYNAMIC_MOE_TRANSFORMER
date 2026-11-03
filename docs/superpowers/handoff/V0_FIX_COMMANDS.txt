@@ -1,0 +1,53 @@
+python -c "from m1.queue import load_tuning_map; print(load_tuning_map(\"results/m1/tuning\", \"B3seq\"))"
+python -c "from m1.queue import load_tuning_map; print(load_tuning_map('results/m1/tuning', 'B3seq'))"
+python -c "from m1.beds import build_bed; from m1.arms import build_arm; from m1.queue import load_tuning_map; b=build_bed('B3seq', 22, 800); tm=load_tuning_map('results/m1/tuning', 'B3seq'); [build_arm(a, b, pool_memory_bytes=10000000, tuning=tm.get(a)) for a in ['A3', 'A7', 'A5a', 'A5b', 'A6', 'A7all', 'A8']]; print('All 7 arms built successfully!')"
+Get-ChildItem results/m1/tuning
+python -c "from m1.queue import load_tuning_map; print({b: list(load_tuning_map(\"results/m1/tuning\", b).keys()) for b in [\"B3seq\", \"B3mix\", \"B3drift\"]})"
+python -c "import time; from costlab.env import fixed_threads; from m1.beds import build_bed; from m1.arms import build_arm; from m1.queue import load_tuning_map;
+with fixed_threads(n=2, cpus=[8, 10]):
+    b = build_bed(\"B3seq\", 22, 800)
+    tm = load_tuning_map(\"results/m1/tuning\", \"B3seq\")
+    for aid in [\"A5b\", \"A6\", \"A7all\"]:
+        arm = build_arm(aid, b, tuning=tm.get(aid))
+        t0 = time.perf_counter()
+        for x, y, _, _, _ in b.walk_full(64):
+            arm.observe(x, y)
+        dt = time.perf_counter() - t0
+        print(f\"{aid}: {dt:.2f}s\")
+"
+Test-Path results/m1/dev_b/B3seq_n22_H_ULDA__seed800.json
+python -c "import time; from costlab.env import fixed_threads; from costlab.counting import MacCount; from m1.beds import build_bed; from m1.queue import load_tuning_map; import m1.cell; m1.cell.count_macs = lambda fn, **kw: MacCount(macs=0, flops=0, by_op={});
+with fixed_threads(n=2, cpus=[8, 10]):
+    t0 = time.perf_counter()
+    b = build_bed(\"B3seq\", 22, 800)
+    tm = load_tuning_map(\"results/m1/tuning\", \"B3seq\")
+    rec = m1.cell.execute_cell(b, \"H_ULDA\", profile=\"det\", tuning=tm.get(\"A1q\"))
+    dt = time.perf_counter() - t0
+    print(f\"execute_cell with count_macs stubbed took {dt:.2f}s, acc={rec[\"accuracy\"]}\")
+"
+echo ping
+python -c "import time; from costlab.env import fixed_threads; from costlab.count import MacCount; from m1.beds import build_bed; from m1.queue import load_tuning_map; import m1.cell; m1.cell.count_macs = lambda fn, **kw: MacCount(macs=0, flops=0, by_op={});
+with fixed_threads(n=2, cpus=[8, 10]):
+    t0 = time.perf_counter()
+    b = build_bed('B3seq', 22, 800)
+    tm = load_tuning_map('results/m1/tuning', 'B3seq')
+    rec = m1.cell.execute_cell(b, 'H_ULDA', profile='det', tuning=tm.get('A1q'))
+    dt = time.perf_counter() - t0
+    acc = rec['accuracy']
+    print(f'execute_cell took {dt:.2f}s, acc={acc}')
+"
+Select-String -Path "v0/*.py", "tests/v0/*.py" -Pattern "all three"
+python -m pytest tests/v0 -v > docs/superpowers/handoff/V0_FIX_TEST_OUTPUT.txt 2>&1
+Get-Content docs/superpowers/handoff/V0_FIX_TEST_OUTPUT.txt -Tail 30
+Get-Content docs/superpowers/handoff/V0_FIX_TEST_OUTPUT.txt -Tail 30
+Get-Content docs/superpowers/handoff/V0_FIX_TEST_OUTPUT.txt -Tail 30
+Get-Content docs/superpowers/handoff/V0_FIX_TEST_OUTPUT.txt
+python -m pytest tests/v0/test_v0.py::test_assembly_v0_equals_h_ulda --durations=0
+python -c "from m1.beds import build_bed; b = build_bed(\"B3seq\", 22, 800); print({k: v.shape for k, v in b.stream.ood.items()})"
+# lock test
+# AppendAllText test
+python -m v0.demo --schedule seq --seed 800 --out results/v0/smoke2_seq_800
+python -m v0.demo --schedule mix --seed 800 --out results/v0/smoke2_mix_800
+python -m v0.demo --schedule drift --seed 800 --out results/v0/smoke2_drift_800
+python -m v0.report --runs results/v0/smoke2_seq_800 results/v0/smoke2_mix_800 results/v0/smoke2_drift_800 --out results/v0/report2
+python -c "import pathlib; p = pathlib.Path('docs/superpowers/handoff/V0_FIX_TEST_OUTPUT.txt'); data = p.read_bytes(); text = data.decode('utf-16le') if data.startswith(b'\xff\xfe') else data.decode('utf-8'); p.write_text(text, encoding='utf-8')"

@@ -1,8 +1,8 @@
 {
- "generated": "2026-11-04 02:00:32",
- "head": "ba24d8a",
+ "generated": "2026-11-04 03:05:20",
+ "head": "7601fb2",
  "branch": "main",
- "n_files": 1368,
+ "n_files": 1377,
  "files": [
   {
    "path": "demos/demo_growmoe_continual_learning.py",
@@ -281,10 +281,28 @@
    "last_commit": "ba24d8a"
   },
   {
+   "path": "docs/superpowers/handoff/V0_FIX_COMMANDS.txt",
+   "sha256": "c97bb4a2363a1592e489ae9a579b6fc2ff6822573aae82b01481d36a4ab3ab29",
+   "bytes": 3968,
+   "last_commit": null
+  },
+  {
+   "path": "docs/superpowers/handoff/V0_FIX_RESULT.md",
+   "sha256": "f5e3cace81171e64359ad28d581849c43fd82e40f7f8b46bf5ccd609db7b7d00",
+   "bytes": 19405,
+   "last_commit": null
+  },
+  {
    "path": "docs/superpowers/handoff/V0_FIX_SPEC.md",
    "sha256": "9ac217929a633d33013d2b022e9bc0531d8885944134b67687951d38864469f2",
    "bytes": 6165,
    "last_commit": "ba24d8a"
+  },
+  {
+   "path": "docs/superpowers/handoff/V0_FIX_TEST_OUTPUT.txt",
+   "sha256": "b41368dee64cbb1f7113b31d972ac34259f275e5790509bb840915b8ed9082c4",
+   "bytes": 2198,
+   "last_commit": null
   },
   {
    "path": "docs/superpowers/handoff/YGGDRASIL_ARCH_HANDOFF.md",
@@ -525,6 +543,12 @@
    "sha256": "75f2d31b43dde20733a7d68ba2bc5b82b3cc8dc9e427591c39920f38d53b588e",
    "bytes": 1527,
    "last_commit": "1be43ed"
+  },
+  {
+   "path": "m1/precision_check.py",
+   "sha256": "30334e094946154eaed2dcd7cdbdc6681836dde5ff2d3ed730f7b10cde9c9c21",
+   "bytes": 7485,
+   "last_commit": null
   },
   {
    "path": "research/DYNAMIC_MOE_RESEARCH_AND_DESIGN.md",
@@ -8123,6 +8147,12 @@
    "last_commit": "53c7e8d"
   },
   {
+   "path": "results/v0/review2_mix_800/record.json",
+   "sha256": "5e603173e03cf4c589f88435c9df2b4190bec49f9699ebd017fa437c392adc7e",
+   "bytes": 43500,
+   "last_commit": null
+  },
+  {
    "path": "results/v0/review_mix_800/record.json",
    "sha256": "14396d6398b401493d5ec2f7f9cefa644188fb37c93c21867f6e1229c5cf59b1",
    "bytes": 21743,
@@ -8133,6 +8163,30 @@
    "sha256": "6788d0b3c06fcadb2363e2ccf1171b2b564c43c91b4c1afa019826a116359870",
    "bytes": 60291,
    "last_commit": "ba24d8a"
+  },
+  {
+   "path": "results/v0/smoke2_drift_800/summary.txt",
+   "sha256": "8e55778bd3692fbb1722ce748e457b69b3265b6b056bf6937150352139e48388",
+   "bytes": 2415,
+   "last_commit": null
+  },
+  {
+   "path": "results/v0/smoke2_mix_800/record.json",
+   "sha256": "e5b68501253ea4c70984027ff19d16a75f671bcb86543cf6d5421379f8068e26",
+   "bytes": 43485,
+   "last_commit": null
+  },
+  {
+   "path": "results/v0/smoke2_seq_800/record.json",
+   "sha256": "e05320df8565f25818448f8d451280e05d670a01204dd61a6c040d53721cc454",
+   "bytes": 141983,
+   "last_commit": null
+  },
+  {
+   "path": "results/v0/smoke2_seq_800/summary.txt",
+   "sha256": "da845ee6cb46dbf8ff6ae9924fa18e34a0f3b0683833cf85dcd448459e07458e",
+   "bytes": 2483,
+   "last_commit": null
   },
   {
    "path": "results/v0/smoke_seq_800/record.json",
@@ -8184,8 +8238,8 @@
   },
   {
    "path": "tests/v0/test_v0.py",
-   "sha256": "702e1dd0ef13fecb18f4e5be3dd12e6d618e388daef2755df44c84717d57b829",
-   "bytes": 8168,
+   "sha256": "fc74d6f33afea04e291c526d3746b9613c22c3cd6b874702e8dc30464ec07224",
+   "bytes": 14810,
    "last_commit": "ba24d8a"
   },
   {
@@ -8196,20 +8250,20 @@
   },
   {
    "path": "v0/demo.py",
-   "sha256": "44b584720747ef6fd8f1807835b4b6e79901118c971ea7cab8005aca1bff77f6",
-   "bytes": 29455,
+   "sha256": "0ca6714bfc4527efe8afce25eeffe4ea721a7ebba7b82e5e6e16463692924c97",
+   "bytes": 32625,
    "last_commit": "ba24d8a"
   },
   {
    "path": "v0/report.py",
-   "sha256": "fb8d5224d1788048c44b0b803882a02d939d0464dbd07965d1bc9a21970dfb36",
-   "bytes": 9172,
+   "sha256": "202f25f0ea3b53c4662ece7ee09a877ec20682fc92300146b04543270ebf51f6",
+   "bytes": 9624,
    "last_commit": "ba24d8a"
   },
   {
    "path": "v0/system.py",
-   "sha256": "2efbd3bbfb4f622ed22a38d8ea8a5d220fd84edfe360856c8cf2b651f71e398d",
-   "bytes": 3864,
+   "sha256": "04f4832fcf673ebb7471abdea4435067cd1f63283c309d399d7e0524b3d4610f",
+   "bytes": 4760,
    "last_commit": "ba24d8a"
   }
  ]

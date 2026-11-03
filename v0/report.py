@@ -29,6 +29,7 @@ from costlab.env import fixed_threads
 from m1.report import ARM_COLORS
 
 FORBIDDEN_REPORT_SEEDS = set(range(810, 830))
+COMPARATOR_ORDER = ["A3", "A7", "A5a", "A5b", "A6", "A7all", "A8"]
 
 
 def atomic_write_text(path: Path, text: str) -> None:
@@ -41,48 +42,53 @@ def atomic_write_text(path: Path, text: str) -> None:
 def write_summary_figure(path: Path, records: List[Dict[str, Any]]) -> None:
     """Render summary figure comparing final metrics across merged runs."""
     path.parent.mkdir(parents=True, exist_ok=True)
-    fig, (ax1, ax2, ax3) = plt.subplots(1, 3, figsize=(15, 5))
+    fig, (ax1, ax2, ax3) = plt.subplots(1, 3, figsize=(16, 5))
 
-    labels = [f"{r['schedule']}_s{r['seed']}" for r in records]
+    labels = [f"{r.get('schedule', '?')}_s{r.get('seed', '?')}" for r in records]
     x = np.arange(len(records))
-    width = 0.2
+
+    present_comps = [a for a in COMPARATOR_ORDER if any(a in r.get("arms", {}) for r in records)]
+    all_arms = ["V0"] + present_comps
+    k_arms = len(all_arms)
+    bar_width = 0.8 / max(1, k_arms)
 
     # 1. Final accuracy
-    v0_accs = [r["arms"]["V0"]["final_accuracy"] for r in records]
-    ax1.bar(x - 1.5 * width, v0_accs, width, label="V0", color="#1f77b4")
-
-    has_a3 = all("A3" in r["arms"] for r in records)
-    if has_a3:
-        a3_accs = [r["arms"]["A3"]["final_accuracy"] for r in records]
-        a7_accs = [r["arms"]["A7"]["final_accuracy"] for r in records]
-        a5a_accs = [r["arms"]["A5a"]["final_accuracy"] for r in records]
-        ax1.bar(x - 0.5 * width, a3_accs, width, label="A3 (ReplayNet)", color=ARM_COLORS.get("A3", "#2ca02c"))
-        ax1.bar(x + 0.5 * width, a7_accs, width, label="A7 (kNN)", color=ARM_COLORS.get("A7", "#e377c2"))
-        ax1.bar(x + 1.5 * width, a5a_accs, width, label="A5a (LDA)", color=ARM_COLORS.get("A5a", "#9467bd"))
+    for i, arm_id in enumerate(all_arms):
+        accs = []
+        for r in records:
+            arm_data = r.get("arms", {}).get(arm_id)
+            accs.append(arm_data["final_accuracy"] if arm_data else 0.0)
+        offset = x + (i - (k_arms - 1) / 2.0) * bar_width
+        c = "#1f77b4" if arm_id == "V0" else ARM_COLORS.get(arm_id, "#555555")
+        ax1.bar(offset, accs, bar_width, label=arm_id, color=c)
 
     ax1.set_title("Final Accuracy by Run", fontsize=11)
     ax1.set_xticks(x)
     ax1.set_xticklabels(labels, rotation=20, ha="right", fontsize=9)
     ax1.set_ylabel("Accuracy", fontsize=9)
     ax1.grid(True, linestyle=":", alpha=0.6)
-    ax1.legend(fontsize=8)
+    ax1.legend(fontsize=7)
 
-    # 2. Final memory
-    v0_mems = [r["arms"]["V0"]["final_memory_bytes"] / (1024 * 1024) for r in records]
-    ax2.bar(x - width, v0_mems, width, label="V0", color="#1f77b4")
-    if has_a3:
-        a3_mems = [r["arms"]["A3"]["final_memory_bytes"] / (1024 * 1024) for r in records]
-        ax2.bar(x, a3_mems, width, label="A3", color=ARM_COLORS.get("A3", "#2ca02c"))
+    # 2. Final memory (MB)
+    for i, arm_id in enumerate(all_arms):
+        mems = []
+        for r in records:
+            arm_data = r.get("arms", {}).get(arm_id)
+            mems.append((arm_data["final_memory_bytes"] / (1024 * 1024)) if arm_data else 0.0)
+        offset = x + (i - (k_arms - 1) / 2.0) * bar_width
+        c = "#1f77b4" if arm_id == "V0" else ARM_COLORS.get(arm_id, "#555555")
+        ax2.bar(offset, mems, bar_width, label=arm_id, color=c)
+
     ax2.set_title("Final Memory Footprint (MB)", fontsize=11)
     ax2.set_xticks(x)
     ax2.set_xticklabels(labels, rotation=20, ha="right", fontsize=9)
     ax2.set_ylabel("Memory (MB)", fontsize=9)
     ax2.grid(True, linestyle=":", alpha=0.6)
-    ax2.legend(fontsize=8)
+    ax2.legend(fontsize=7)
 
     # 3. Novelty AUROC
-    aucs = [r["arms"]["V0"]["auroc"].get("mean", 0.5) for r in records]
-    ax3.bar(x, aucs, width * 1.5, color="#ff7f0e", label="V0 Mean AUROC")
+    aucs = [r.get("arms", {}).get("V0", {}).get("auroc", {}).get("mean", 0.5) for r in records]
+    ax3.bar(x, aucs, bar_width * 2.0, color="#ff7f0e", label="V0 Mean AUROC")
     ax3.axhline(0.5, color="red", linestyle="--", linewidth=1.2, label="Chance (0.50)")
     ax3.set_title("V0 Novelty AUROC (vs OOD)", fontsize=11)
     ax3.set_xticks(x)
@@ -154,29 +160,49 @@ def run_report(
 
         header_label = "SYNTHETIC" if is_synthetic else "DEV (development seeds only)"
 
+        present_comps = [a for a in COMPARATOR_ORDER if any(a in r.get("arms", {}) for r in records)]
+
         # Build table.md
+        header_cols = ["Schedule", "Seed", "V0 Acc"] + [f"{a} Acc" for a in present_comps] + [
+            "V0 Experts",
+            "V0 Mem (MB)",
+            "Mean AUROC",
+            "V0 Latency b1 (ms)",
+        ]
         lines = [
             f"# {header_label} V0 Walking Skeleton Merged Report",
             "",
-            "| Schedule | Seed | V0 Acc | A3 Acc | A7 Acc | A5a Acc | V0 Experts | V0 Mem (MB) | Mean AUROC | V0 Latency b1 (ms) |",
-            "|---|---|---|---|---|---|---|---|---|---|",
+            "| " + " | ".join(header_cols) + " |",
+            "|---|---|---|" + "|".join("---" for _ in present_comps) + "|---|---|---|---|",
         ]
 
         for r in records:
             sched = r.get("schedule", "unknown")
             s = r.get("seed", "unknown")
-            v0_a = r["arms"]["V0"]
-            v0_acc = f"{v0_a['final_accuracy']:.2%}"
-            a3_acc = f"{r['arms']['A3']['final_accuracy']:.2%}" if "A3" in r["arms"] else "-"
-            a7_acc = f"{r['arms']['A7']['final_accuracy']:.2%}" if "A7" in r["arms"] else "-"
-            a5a_acc = f"{r['arms']['A5a']['final_accuracy']:.2%}" if "A5a" in r["arms"] else "-"
+            arms_dict = r.get("arms", {})
+            v0_a = arms_dict.get("V0", {})
+            v0_acc = f"{v0_a.get('final_accuracy', 0.0):.2%}"
+            comp_cells = [
+                f"{arms_dict[a]['final_accuracy']:.2%}" if a in arms_dict else "-"
+                for a in present_comps
+            ]
             v0_exp = v0_a.get("final_experts", len(v0_a.get("per_regime_accuracy", [])))
-            v0_mem = f"{v0_a['final_memory_bytes'] / (1024*1024):.2f}"
-            mean_auc = f"{v0_a['auroc'].get('mean', 0.5):.4f}" if "auroc" in v0_a else "-"
-            lat = v0_a.get("answer_latency", {}).get("1", {}).get("latency_median_s", 0.0) * 1000.0
+            v0_mem = f"{v0_a.get('final_memory_bytes', 0) / (1024*1024):.2f}"
+            mean_auc = (
+                f"{v0_a.get('auroc', {}).get('mean', 0.5):.4f}"
+                if "auroc" in v0_a
+                else "-"
+            )
+            lat = (
+                v0_a.get("answer_latency", {})
+                .get("1", {})
+                .get("latency_median_s", 0.0)
+                * 1000.0
+            )
             lat_str = f"{lat:.2f}"
 
-            lines.append(f"| {sched} | {s} | {v0_acc} | {a3_acc} | {a7_acc} | {a5a_acc} | {v0_exp} | {v0_mem} | {mean_auc} | {lat_str} |")
+            row_cells = [sched, str(s), v0_acc] + comp_cells + [str(v0_exp), v0_mem, mean_auc, lat_str]
+            lines.append("| " + " | ".join(row_cells) + " |")
 
         lines.extend([
             "",

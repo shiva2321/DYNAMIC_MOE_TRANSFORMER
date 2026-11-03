@@ -95,14 +95,34 @@ def build_v0(
 
     if isinstance(tuning_dir, (str, Path)):
         tuning_map = load_tuning_map(str(tuning_dir), bed.name)
-        arm_tuning = tuning_map.get("A1q", {})
+        if not tuning_map or "A1q" not in tuning_map:
+            raise ValueError(
+                f"Tuning file for bed {bed.name!r} in {tuning_dir} has no 'A1q' entry; "
+                "refusing to fall back to default operating point."
+            )
+        arm_tuning = tuning_map["A1q"]
     elif isinstance(tuning_dir, dict):
-        arm_tuning = tuning_dir.get("A1q", tuning_dir)
+        if "A1q" in tuning_dir:
+            arm_tuning = tuning_dir["A1q"]
+        elif "inner_steps" in tuning_dir and "q" in tuning_dir:
+            arm_tuning = tuning_dir
+        else:
+            raise ValueError(
+                f"Tuning dictionary for bed {bed.name!r} has no 'A1q' entry; "
+                "refusing to fall back to default operating point."
+            )
     else:
-        arm_tuning = {}
+        raise ValueError(
+            f"Expected tuning_dir as Path, str or dict, got {type(tuning_dir)}: missing 'A1q' operating point."
+        )
 
-    steps = kwargs.pop("inner_steps", arm_tuning.get("inner_steps", 5) if arm_tuning else 5)
-    q = kwargs.pop("q", arm_tuning.get("q", 0.05) if arm_tuning else 0.05)
+    if not isinstance(arm_tuning, dict) or "inner_steps" not in arm_tuning or "q" not in arm_tuning:
+        raise ValueError(
+            f"Tuning map for bed {bed.name!r} has invalid 'A1q' entry (must contain 'inner_steps' and 'q'): {arm_tuning!r}"
+        )
+
+    steps = kwargs.pop("inner_steps", arm_tuning["inner_steps"])
+    q = kwargs.pop("q", arm_tuning["q"])
 
     return build_pool_candidate(
         cand_name="ULDA",

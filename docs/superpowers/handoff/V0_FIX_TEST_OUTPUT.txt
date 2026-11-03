@@ -1,0 +1,28 @@
+﻿============================= test session starts =============================
+platform win32 -- Python 3.12.10, pytest-9.0.3, pluggy-1.6.0 -- C:\Users\Asta\AppData\Local\Programs\Python\Python312\python.exe
+cachedir: .pytest_cache
+benchmark: 5.2.3 (defaults: timer=time.perf_counter disable_gc=False min_rounds=5 min_time=0.000005 max_time=1.0 calibration_precision=10 warmup=False warmup_iterations=100000)
+rootdir: D:\spherical_hyperspace_memory
+configfile: pytest.ini
+plugins: anyio-4.13.0, libtmux-0.62.0, benchmark-5.2.3
+collecting ... collected 11 items
+
+tests/v0/test_v0.py::test_build_v0_config_and_bed_rejection PASSED       [  9%]
+tests/v0/test_v0.py::test_build_v0_missing_a1q_raises_error PASSED       [ 18%]
+tests/v0/test_v0.py::test_demo_short_run_and_files PASSED                [ 27%]
+tests/v0/test_v0.py::test_assembly_v0_equals_h_ulda PASSED               [ 36%]
+tests/v0/test_v0.py::test_comparators_batch_order_and_replay_memory PASSED [ 45%]
+tests/v0/test_v0.py::test_auroc_handmade_scores PASSED                   [ 54%]
+tests/v0/test_v0.py::test_report_on_synthetic_fixtures PASSED            [ 63%]
+tests/v0/test_v0.py::test_rerun_finished_demo_skips PASSED               [ 72%]
+tests/v0/test_v0.py::test_summary_ahead_comparators_and_no_all_three PASSED [ 81%]
+tests/v0/test_v0.py::test_summary_capped_arms_and_raw_stream_comparison PASSED [ 90%]
+tests/v0/test_v0.py::test_summary_silent_flag_disclosure PASSED          [100%]
+
+============================== warnings summary ===============================
+C:\Users\Asta\AppData\Local\Programs\Python\Python312\Lib\site-packages\torch\cuda\__init__.py:61
+  C:\Users\Asta\AppData\Local\Programs\Python\Python312\Lib\site-packages\torch\cuda\__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+    import pynvml  # type: ignore[import]
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+================== 11 passed, 1 warning in 301.24s (0:05:01) ==================

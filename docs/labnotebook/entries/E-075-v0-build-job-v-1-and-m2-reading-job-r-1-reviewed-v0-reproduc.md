@@ -4,7 +4,7 @@
 - **Date:** 2026-11-04
 - **Track:** W
 - **Type:** review
-- **Status:** in progress (V0 awaits the fix round V-2; the reading notes are accepted with the reviewer's corrections)
+- **Status:** completed (V0 accepted after the fix round V-2; the reading notes are accepted with the reviewer's corrections)
 - **Evidence grade:** B for the reproduction checks (separate processes, development seed 800, two schedules); the smoke numbers are one development seed and are not results
 - **Code / commit:** `v0/system.py`, `v0/demo.py`, `v0/auroc.py`, `v0/report.py`, `tests/v0/test_v0.py` (Gemini); `docs/superpowers/handoff/M2_READING_NOTES.md` (Gemini, section 11 by Claude)
 - **People:** Gemini built and read (Antigravity, relayed by the user); Claude reviewed and reran
@@ -45,6 +45,10 @@ Measured: everything marked rerun. Not measured: the effect of any of the struct
 - D-99: V0 is accepted conditionally on job V-2; the reading notes are accepted with section 11. M1 stays frozen; the grid-edge and fidelity limits of A5a, A5b and A6 are named in the M1 report; faithful baselines are decided for M2 (Q-85).
 - F-114, C-204, C-205.
 - Next: the user hands the V-2 prompt to Gemini; Claude reviews; then V1 (exact removal, probe P2).
+
+## Update: fix round V-2 reviewed (2026-11-04)
+The fence held again (only Gemini's own V0 files changed). All six findings are repaired: the comparator list is A3, A7, A5a, A5b, A6, A7all (A8 with a flag); the summary names every comparator ahead of V0 with its memory; the memory cap of A3 and A7 on seq is stated (6.77 and 6.20 MB because they already hold the 6.20 MB stream, V0 14.01 MB = 2.26 times the raw stream); the silent flag is stated; `build_v0` raises without a tuned A1q entry; the command log (53 lines) was written by the shell and is nearly complete (a file-lock problem forced a few commands to go unlogged). Reviewer rerun of the mix schedule: all seven arms and all phases bit-identical to Gemini's record apart from timings; ten of eleven tests rerun in 69 s. Disclosed deviations: the full test file takes 301 s (assembly test 223 s) and the seq smoke run 274 s, against the 2-minute rule.
+**What the full comparator list shows on development seed 800 (a demonstration, one seed, not a result):** final mean accuracy V0 against the strongest comparator: seq 65.02 against A6 70.14 (+5.12 points for A6, 259.91 MB against 14.01 MB), mix 65.21 against A6 +4.81 points (259.91 MB against 1.06 MB), drift 63.19 against A5b +2.94 (7.87 MB), A6 +6.36 (259.91 MB) and A7all +1.48 (4.98 MB). V0 answers about 30 times slower than a dense replay network on seq (4.04 ms against 0.14 ms at batch 1). The picture is the one the earlier first look at seed 810 of the scored run gave: on real text the closed-form heads are ahead in accuracy, the pool is the cheapest in memory among the ones ahead, and the unknown flag is silent.
 
 ## Evidence
 - `docs/superpowers/handoff/V0_BUILD_RESULT.md`, `V0_BUILD_TEST_OUTPUT.txt`, `V0_BUILD_COMMANDS.txt` - Gemini's report, raw test output, command log (incomplete)
