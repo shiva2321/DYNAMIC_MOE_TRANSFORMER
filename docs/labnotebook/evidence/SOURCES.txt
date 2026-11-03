@@ -537,3 +537,17 @@ results/m1/smoke/gpu_review/cells_b2/B2_n6_A8__seed800.json
 results/m1/smoke/gpu_review/cells_b2_patched/B2_n6_A3__seed800.json
 results/m1/smoke/gpu/cells/B2_n6_A3__seed800.json
 results/m1/smoke/gpu/cells/B1_n10_A3__seed800.json
+docs/superpowers/handoff/V0_BUILD_RESULT.md
+docs/superpowers/handoff/V0_BUILD_TEST_OUTPUT.txt
+docs/superpowers/handoff/V0_BUILD_COMMANDS.txt
+docs/superpowers/handoff/M2_READING_NOTES.md
+docs/superpowers/handoff/V0_FIX_SPEC.md
+v0/system.py
+v0/demo.py
+v0/auroc.py
+v0/report.py
+tests/v0/test_v0.py
+results/v0/smoke_seq_800/record.json
+results/v0/smoke_seq_800/summary.txt
+results/v0/review_seq_800/record.json
+results/v0/review_mix_800/record.json

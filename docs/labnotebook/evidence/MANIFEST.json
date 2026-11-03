@@ -1,8 +1,8 @@
 {
- "generated": "2026-11-04 00:59:06",
- "head": "8c07267",
+ "generated": "2026-11-04 01:59:59",
+ "head": "19ed1fc",
  "branch": "main",
- "n_files": 1353,
+ "n_files": 1368,
  "files": [
   {
    "path": "demos/demo_growmoe_continual_learning.py",
@@ -161,6 +161,12 @@
    "last_commit": "8c07267"
   },
   {
+   "path": "docs/superpowers/handoff/KICKOFF_V0_FIX_2026-11-04.md",
+   "sha256": "08bccc40bbdc93579ca838e3b9eb91f44e3ffae921075ff66c957c673624adec",
+   "bytes": 1923,
+   "last_commit": null
+  },
+  {
    "path": "docs/superpowers/handoff/M1_GPU_REPEAT_RESULT.md",
    "sha256": "f9360dbc5eb2184a779bee446190d17ce2829d8036acb8b2994826f3b40e9b2a",
    "bytes": 17108,
@@ -209,6 +215,12 @@
    "last_commit": "6a78a2d"
   },
   {
+   "path": "docs/superpowers/handoff/M2_READING_NOTES.md",
+   "sha256": "ab8863c9da50c058188ad3f96a391cc6a0ae96ca578fc5d13b5ceb202c9e5005",
+   "bytes": 43125,
+   "last_commit": null
+  },
+  {
    "path": "docs/superpowers/handoff/M2_READING_SPEC.md",
    "sha256": "1bbcab2b7e1dcfaa3e8e9e05b7c2f9e3cae7ba1917e984d167d6ea59b2531302",
    "bytes": 6531,
@@ -245,10 +257,34 @@
    "last_commit": "090ece8"
   },
   {
+   "path": "docs/superpowers/handoff/V0_BUILD_COMMANDS.txt",
+   "sha256": "53b97925f1ac3284a74047e696bf47240691b043359bf7785a7fdf062a2d5ffc",
+   "bytes": 395,
+   "last_commit": null
+  },
+  {
+   "path": "docs/superpowers/handoff/V0_BUILD_RESULT.md",
+   "sha256": "ff2bc36ea2ca09e3d29c63cd6daf0b14cf09f9a794b6b0085d35c9942c4a1f44",
+   "bytes": 13784,
+   "last_commit": null
+  },
+  {
    "path": "docs/superpowers/handoff/V0_BUILD_SPEC.md",
    "sha256": "a78416d53247ff9fe82e1bba5889a259238b96c665a47192fd88f3c0b39bd38c",
    "bytes": 8692,
    "last_commit": "8c07267"
+  },
+  {
+   "path": "docs/superpowers/handoff/V0_BUILD_TEST_OUTPUT.txt",
+   "sha256": "7614f447ef7c046255cdaa4338f708d360a4705d2386881d067fd94e113ef46c",
+   "bytes": 1833,
+   "last_commit": null
+  },
+  {
+   "path": "docs/superpowers/handoff/V0_FIX_SPEC.md",
+   "sha256": "9ac217929a633d33013d2b022e9bc0531d8885944134b67687951d38864469f2",
+   "bytes": 6165,
+   "last_commit": null
   },
   {
    "path": "docs/superpowers/handoff/YGGDRASIL_ARCH_HANDOFF.md",
@@ -8087,6 +8123,30 @@
    "last_commit": "53c7e8d"
   },
   {
+   "path": "results/v0/review_mix_800/record.json",
+   "sha256": "14396d6398b401493d5ec2f7f9cefa644188fb37c93c21867f6e1229c5cf59b1",
+   "bytes": 21743,
+   "last_commit": null
+  },
+  {
+   "path": "results/v0/review_seq_800/record.json",
+   "sha256": "6788d0b3c06fcadb2363e2ccf1171b2b564c43c91b4c1afa019826a116359870",
+   "bytes": 60291,
+   "last_commit": null
+  },
+  {
+   "path": "results/v0/smoke_seq_800/record.json",
+   "sha256": "a56954b6ba33ba962647f52a050d41f8c903e6b35c359ec73777bb680dfca9a3",
+   "bytes": 60267,
+   "last_commit": null
+  },
+  {
+   "path": "results/v0/smoke_seq_800/summary.txt",
+   "sha256": "128fb7d576821986d75e7e02e6de4a245eaf72a2a70e220045273b5504950857",
+   "bytes": 1432,
+   "last_commit": null
+  },
+  {
    "path": "tests/geomlab/test_phase0.py",
    "sha256": "04d592483e7cf05b2a1664a83b5cf08add189c9949fccd9fb8bfa6baff04317a",
    "bytes": 4307,
@@ -8121,6 +8181,36 @@
    "sha256": "15dda9df4b3445015628b112d252184c31fed60643cf6a4c44a48899d2c6b2f1",
    "bytes": 15666,
    "last_commit": "1be43ed"
+  },
+  {
+   "path": "tests/v0/test_v0.py",
+   "sha256": "702e1dd0ef13fecb18f4e5be3dd12e6d618e388daef2755df44c84717d57b829",
+   "bytes": 8168,
+   "last_commit": null
+  },
+  {
+   "path": "v0/auroc.py",
+   "sha256": "0fa75f534de475d38d8eba43e39048a15cf2c170c2e00cb843fe910eba0b15ab",
+   "bytes": 1395,
+   "last_commit": null
+  },
+  {
+   "path": "v0/demo.py",
+   "sha256": "44b584720747ef6fd8f1807835b4b6e79901118c971ea7cab8005aca1bff77f6",
+   "bytes": 29455,
+   "last_commit": null
+  },
+  {
+   "path": "v0/report.py",
+   "sha256": "fb8d5224d1788048c44b0b803882a02d939d0464dbd07965d1bc9a21970dfb36",
+   "bytes": 9172,
+   "last_commit": null
+  },
+  {
+   "path": "v0/system.py",
+   "sha256": "2efbd3bbfb4f622ed22a38d8ea8a5d220fd84edfe360856c8cf2b651f71e398d",
+   "bytes": 3864,
+   "last_commit": null
   }
  ]
 }

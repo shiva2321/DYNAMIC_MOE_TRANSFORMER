@@ -1,0 +1,30 @@
+V0 WALKING SKELETON DEMONSTRATION (Schedule: mix, Seed: 800)
+LABEL: DEMONSTRATION, NOT A RESULT
+--------------------------------------------------------------------------------
+1. BEHAVIOUR AND ACCURACY:
+V0 final mean accuracy across all seen regimes: 65.21%.
+Forgetting up to stream end: 0.34%.
+Comparator ReplayNet (A3) final accuracy: 58.79%.
+Comparator kNN (A7) final accuracy: 53.92%.
+Comparator Streaming LDA (A5a) final accuracy: 61.50%.
+On this stream, V0 achieved higher final mean accuracy than all three honest comparators.
+
+2. COST NEXT TO BEHAVIOUR:
+V0 spawned 1 experts with a final memory footprint of 1,109,484 bytes (1.06 MB).
+V0 cumulative update time: 14.96 seconds.
+V0 answer latency: 0.54 ms (batch 1), 0.77 ms (batch 32).
+A3 ReplayNet memory: 1,108,980 bytes (1.06 MB), answer latency: 0.12 ms (batch 1).
+A7 kNN memory: 1,108,992 bytes.
+A5a Streaming LDA memory: 129,536 bytes.
+
+3. UNKNOWN FLAG & NOVELTY DETECTION:
+V0 false new rate on known test examples: 0.00%.
+V0 out-of-domain detection rate: 0.00%.
+V0 rank AUROC vs out-of-domain sets (1 - p_nov): 0.8502.
+  - vs stories: 0.7796
+  - vs wiki: 0.8784
+  - vs science_questions: 0.8926
+A novelty AUROC value near 0.5 means the unknown flag cannot distinguish out-of-domain text from known topics and does not work.
+
+--------------------------------------------------------------------------------
+End of demonstration summary.

@@ -1,0 +1,2179 @@
+{
+  "label": "DEMONSTRATION, NOT A RESULT",
+  "status": "complete",
+  "bed": "B3seq",
+  "schedule": "seq",
+  "seed": 800,
+  "max_phases": null,
+  "commit": "19ed1fc6b445057465ba28574a5a2723eca2c3b9",
+  "environment": {
+    "python": "3.12.10",
+    "torch": "2.6.0+cu124",
+    "cuda": "12.4",
+    "cuda_available": true,
+    "gpu_name": "NVIDIA GeForce RTX 3060",
+    "gpu_driver": "610.60",
+    "cpu_name": "AMD Ryzen 5 7600 6-Core Processor",
+    "logical_cores": 12,
+    "ram_bytes": 34081722368,
+    "torch_intraop_threads": 2,
+    "torch_interop_threads": 6,
+    "env_vars": {
+      "OMP_NUM_THREADS": "unset",
+      "MKL_NUM_THREADS": "unset",
+      "OPENBLAS_NUM_THREADS": "unset",
+      "NUMEXPR_NUM_THREADS": "unset"
+    },
+    "git_commit": "19ed1fc6b445057465ba28574a5a2723eca2c3b9",
+    "timestamp": "2026-11-03T20:20:31.363311+00:00"
+  },
+  "pinning": {
+    "threads": 2,
+    "cpus": [
+      8,
+      10
+    ]
+  },
+  "parts_description": [
+    {
+      "part": "encoder",
+      "name": "Frozen encoder",
+      "source": "MiniLM through unimoe/frontends.py",
+      "state": "cached on disk under results/unimoe/emb, offline (d=128 projected)"
+    },
+    {
+      "part": "pool",
+      "name": "Pool with spawn, extend and merge",
+      "source": "growmoe/pools/phylo.py inside unimoe/pools.py UniPool",
+      "state": "tuned operating point of M1 (A1q: inner_steps=50, q=0.05)"
+    },
+    {
+      "part": "head",
+      "name": "Closed-form head in every expert",
+      "source": "ULDA of unimoe/systems2.py",
+      "state": "running LDA head inside every expert"
+    },
+    {
+      "part": "flag",
+      "name": "Unknown flag",
+      "source": "density and conformal flag of the pool, fingerprint shortlist",
+      "state": "weak on topical text, reported with measured AUROC"
+    },
+    {
+      "part": "what_is_off",
+      "name": "What is off",
+      "source": "asking reader, growth after birth, notebook newborns, skip and chance flags",
+      "state": "switched off in V0"
+    }
+  ],
+  "arms": {
+    "V0": {
+      "config": {
+        "arm": "V0",
+        "variant": "baseline_v1",
+        "name": "UniPool",
+        "seed": 807,
+        "inner_steps": 50,
+        "route_rule": "accept_then_logf",
+        "router": true,
+        "spawn_rule": "transfer",
+        "growth_rule": "gap",
+        "q": 0.05,
+        "alpha_spawn": 0.01,
+        "m_min": 32,
+        "gate_shortlist_min_experts": 64,
+        "skip_known": null,
+        "transfer_chance": null,
+        "transfer_chance_weak_only": false,
+        "set_gate": true,
+        "set_gate_confirm": 2,
+        "sig_dedupe": true,
+        "infant_relax": 1.0,
+        "gap_mode": "recipe",
+        "domain_blocks": [],
+        "domain_head": "off",
+        "domain_beta": 1.0,
+        "lda_blend": 0.5,
+        "lda_shrink": 0.1,
+        "candidate": "ULDA"
+      },
+      "final_accuracy": 0.6501575735482302,
+      "per_regime_accuracy": [
+        0.8799999952316284,
+        0.8552631735801697,
+        0.8238993883132935,
+        0.8299999833106995,
+        0.8888888955116272,
+        0.9605262875556946,
+        0.6666666865348816,
+        0.5333333611488342,
+        0.41999998688697815,
+        0.44333332777023315,
+        0.4033333361148834,
+        0.6466666460037231,
+        0.3333333432674408,
+        0.4000000059604645,
+        0.5866666436195374,
+        0.5533333420753479,
+        0.5555555820465088,
+        0.5866666436195374,
+        0.6679999828338623,
+        0.7720000147819519,
+        0.7239999771118164,
+        0.7720000147819519
+      ],
+      "final_memory_bytes": 14687420,
+      "final_experts": 20,
+      "forgetting": 0.05078529634258964,
+      "update_seconds_total": 37.03251669997917,
+      "answer_latency": {
+        "1": {
+          "batch_size": 1,
+          "rows_timed": 1,
+          "latency_median_s": 0.004066100002091844,
+          "latency_mean_s": 0.004119870000795345,
+          "latency_std_s": 0.00021495864237823945,
+          "latency_cv": 0.05217607408407097,
+          "latency_p95_s": 0.004484920001050341,
+          "items_per_second": 245.93590897556393
+        },
+        "32": {
+          "batch_size": 32,
+          "rows_timed": 32,
+          "latency_median_s": 0.005675750000591506,
+          "latency_mean_s": 0.005746710000676103,
+          "latency_std_s": 0.0005014595108531056,
+          "latency_cv": 0.08726027775790124,
+          "latency_p95_s": 0.006514835000780294,
+          "items_per_second": 5638.021406274955
+        }
+      },
+      "auroc": {
+        "by_dataset": {
+          "stories": 0.633554831895793,
+          "wiki": 0.6854611864108432,
+          "science_questions": 0.721764067359033
+        },
+        "mean": 0.680260028555223
+      }
+    },
+    "A3": {
+      "config": {
+        "arm": "A3",
+        "name": "ReplayNet at equal memory",
+        "seed": 800,
+        "hidden": 512,
+        "inner_steps": 20,
+        "replay_size": 12704,
+        "target_pool_bytes": 14687420
+      },
+      "final_accuracy": 0.6006814336234872,
+      "per_regime_accuracy": [
+        0.7666666507720947,
+        0.7719298005104065,
+        0.6918238997459412,
+        0.753333330154419,
+        0.7268518805503845,
+        0.9210526347160339,
+        0.503333330154419,
+        0.6033333539962769,
+        0.4000000059604645,
+        0.3166666626930237,
+        0.25,
+        0.6733333468437195,
+        0.3566666543483734,
+        0.35333332419395447,
+        0.6033333539962769,
+        0.503333330154419,
+        0.5833333134651184,
+        0.5766666531562805,
+        0.6679999828338623,
+        0.7440000176429749,
+        0.7919999957084656,
+        0.656000018119812
+      ],
+      "final_memory_bytes": 7097844,
+      "update_seconds_total": 8.122894500025723,
+      "answer_latency": {
+        "1": {
+          "batch_size": 1,
+          "rows_timed": 1,
+          "latency_median_s": 0.00011174999963259324,
+          "latency_mean_s": 0.0001135899994551437,
+          "latency_std_s": 5.181044126047957e-06,
+          "latency_cv": 0.04561179814156028,
+          "latency_p95_s": 0.00012237999853823565,
+          "items_per_second": 8948.545890718176
+        },
+        "32": {
+          "batch_size": 32,
+          "rows_timed": 32,
+          "latency_median_s": 0.00020039999981236178,
+          "latency_mean_s": 0.00019986000006610993,
+          "latency_std_s": 1.1615335723898996e-05,
+          "latency_cv": 0.05811736075281128,
+          "latency_p95_s": 0.00021721000175602966,
+          "items_per_second": 159680.6388720668
+        }
+      }
+    },
+    "A7": {
+      "config": {
+        "arm": "A7",
+        "name": "KnnMemory at equal memory",
+        "seed": 800,
+        "k": 5,
+        "capacity": 28686,
+        "target_pool_bytes": 14687420
+      },
+      "final_accuracy": 0.6453966904770244,
+      "per_regime_accuracy": [
+        0.8833333253860474,
+        0.8552631735801697,
+        0.7798742055892944,
+        0.846666693687439,
+        0.875,
+        0.9605262875556946,
+        0.7133333086967468,
+        0.5366666913032532,
+        0.3933333456516266,
+        0.3866666555404663,
+        0.3033333420753479,
+        0.746666669845581,
+        0.4300000071525574,
+        0.3499999940395355,
+        0.5666666626930237,
+        0.5600000023841858,
+        0.5753968358039856,
+        0.6000000238418579,
+        0.6759999990463257,
+        0.7639999985694885,
+        0.7279999852180481,
+        0.6679999828338623
+      ],
+      "final_memory_bytes": 6504448,
+      "update_seconds_total": 0.0977097000250069,
+      "answer_latency": {
+        "1": {
+          "batch_size": 1,
+          "rows_timed": 1,
+          "latency_median_s": 0.00041419999979552813,
+          "latency_mean_s": 0.0004133799997362075,
+          "latency_std_s": 9.09739260769368e-05,
+          "latency_cv": 0.22007336139869008,
+          "latency_p95_s": 0.0005242050001470487,
+          "items_per_second": 2414.292613456434
+        },
+        "32": {
+          "batch_size": 32,
+          "rows_timed": 32,
+          "latency_median_s": 0.002319999997780542,
+          "latency_mean_s": 0.0023898599989479407,
+          "latency_std_s": 0.000560288681249843,
+          "latency_cv": 0.23444414379775058,
+          "latency_p95_s": 0.0032864299973880406,
+          "items_per_second": 13793.103461471213
+        }
+      }
+    },
+    "A5a": {
+      "config": {
+        "arm": "A5a",
+        "name": "StreamingLDA",
+        "seed": 800,
+        "shrinkage": 0.001
+      },
+      "final_accuracy": 0.6134372028437528,
+      "per_regime_accuracy": [
+        0.8700000047683716,
+        0.8508771657943726,
+        0.6477987170219421,
+        0.8333333134651184,
+        0.8287037014961243,
+        0.9868420958518982,
+        0.6800000071525574,
+        0.5733333230018616,
+        0.5066666603088379,
+        0.49000000953674316,
+        0.5533333420753479,
+        0.7799999713897705,
+        0.4033333361148834,
+        0.3700000047683716,
+        0.6299999952316284,
+        0.38999998569488525,
+        0.4920634925365448,
+        0.3733333349227905,
+        0.5960000157356262,
+        0.5519999861717224,
+        0.6159999966621399,
+        0.47200000286102295
+      ],
+      "final_memory_bytes": 129536,
+      "update_seconds_total": 0.6632667000085348,
+      "answer_latency": {
+        "1": {
+          "batch_size": 1,
+          "rows_timed": 1,
+          "latency_median_s": 5.7249999372288585e-05,
+          "latency_mean_s": 6.100999962654896e-05,
+          "latency_std_s": 8.133668095694195e-06,
+          "latency_cv": 0.13331696681661293,
+          "latency_p95_s": 7.589999950141645e-05,
+          "items_per_second": 17467.2490998147
+        },
+        "32": {
+          "batch_size": 32,
+          "rows_timed": 32,
+          "latency_median_s": 9.114999920711853e-05,
+          "latency_mean_s": 9.152999991783873e-05,
+          "latency_std_s": 1.6398159127973463e-06,
+          "latency_cv": 0.0179156114308895,
+          "latency_p95_s": 9.419499856448965e-05,
+          "items_per_second": 351069.6684405555
+        }
+      }
+    }
+  },
+  "phases": [
+    {
+      "phase": 0,
+      "v0": {
+        "regimes_seen": [
+          15
+        ],
+        "mean_accuracy": 0.6000000238418579,
+        "per_regime_accuracy": {
+          "15": 0.6000000238418579
+        },
+        "forgetting": 0.0,
+        "n_experts": 1,
+        "memory_bytes": 731436,
+        "update_seconds_so_far": 3.995688800005155,
+        "unknown_flag": {
+          "false_new_rate": 0.0,
+          "ood_detection_rate": 1.0,
+          "ood_by_domain": {
+            "stories": 1.0,
+            "wiki": 1.0,
+            "science_questions": 1.0
+          }
+        }
+      },
+      "a3": {
+        "mean_accuracy": 0.6066666841506958,
+        "memory_bytes": 798196,
+        "update_seconds_so_far": 0.2689903000027698
+      },
+      "a7": {
+        "mean_accuracy": 0.5600000023841858,
+        "memory_bytes": 204800,
+        "update_seconds_so_far": 0.0028418000001693144
+      },
+      "a5a": {
+        "mean_accuracy": 0.5600000023841858,
+        "memory_bytes": 129536,
+        "update_seconds_so_far": 0.021428500000183703
+      }
+    },
+    {
+      "phase": 1,
+      "v0": {
+        "regimes_seen": [
+          15,
+          16
+        ],
+        "mean_accuracy": 0.6095238327980042,
+        "per_regime_accuracy": {
+          "15": 0.6000000238418579,
+          "16": 0.6190476417541504
+        },
+        "forgetting": 0.0,
+        "n_experts": 2,
+        "memory_bytes": 1468032,
+        "update_seconds_so_far": 5.264919600005669,
+        "unknown_flag": {
+          "false_new_rate": 0.0,
+          "ood_detection_rate": 1.0,
+          "ood_by_domain": {
+            "stories": 1.0,
+            "wiki": 1.0,
+            "science_questions": 1.0
+          }
+        }
+      },
+      "a3": {
+        "mean_accuracy": 0.6055555641651154,
+        "memory_bytes": 1139188,
+        "update_seconds_so_far": 0.6897506999994221
+      },
+      "a7": {
+        "mean_accuracy": 0.5657142996788025,
+        "memory_bytes": 545792,
+        "update_seconds_so_far": 0.00816060000215657
+      },
+      "a5a": {
+        "mean_accuracy": 0.5191269814968109,
+        "memory_bytes": 129536,
+        "update_seconds_so_far": 0.06040319999738131
+      }
+    },
+    {
+      "phase": 2,
+      "v0": {
+        "regimes_seen": [
+          15,
+          16,
+          17
+        ],
+        "mean_accuracy": 0.5963492194811503,
+        "per_regime_accuracy": {
+          "15": 0.6000000238418579,
+          "16": 0.6190476417541504,
+          "17": 0.5699999928474426
+        },
+        "forgetting": 0.0,
+        "n_experts": 3,
+        "memory_bytes": 2204372,
+        "update_seconds_so_far": 6.798189300003287,
+        "unknown_flag": {
+          "false_new_rate": 0.0,
+          "ood_detection_rate": 1.0,
+          "ood_by_domain": {
+            "stories": 1.0,
+            "wiki": 1.0,
+            "science_questions": 1.0
+          }
+        }
+      },
+      "a3": {
+        "mean_accuracy": 0.6214285691579183,
+        "memory_bytes": 1480180,
+        "update_seconds_so_far": 1.118723499996122
+      },
+      "a7": {
+        "mean_accuracy": 0.578253984451294,
+        "memory_bytes": 886784,
+        "update_seconds_so_far": 0.013016499997320352
+      },
+      "a5a": {
+        "mean_accuracy": 0.4982539812723796,
+        "memory_bytes": 129536,
+        "update_seconds_so_far": 0.09475019999808865
+      }
+    },
+    {
+      "phase": 3,
+      "v0": {
+        "regimes_seen": [
+          15,
+          16,
+          17,
+          18
+        ],
+        "mean_accuracy": 0.6046984195709229,
+        "per_regime_accuracy": {
+          "15": 0.6000000238418579,
+          "16": 0.567460298538208,
+          "17": 0.5633333325386047,
+          "18": 0.6880000233650208
+        },
+        "forgetting": 0.019418001174926758,
+        "n_experts": 3,
+        "memory_bytes": 2349420,
+        "update_seconds_so_far": 8.281877500005066,
+        "unknown_flag": {
+          "false_new_rate": 0.0,
+          "ood_detection_rate": 1.0,
+          "ood_by_domain": {
+            "stories": 1.0,
+            "wiki": 1.0,
+            "science_questions": 1.0
+          }
+        }
+      },
+      "a3": {
+        "mean_accuracy": 0.6249285936355591,
+        "memory_bytes": 1821172,
+        "update_seconds_so_far": 1.5333385999911116
+      },
+      "a7": {
+        "mean_accuracy": 0.6030238270759583,
+        "memory_bytes": 1227776,
+        "update_seconds_so_far": 0.017740800001774915
+      },
+      "a5a": {
+        "mean_accuracy": 0.5234603136777878,
+        "memory_bytes": 129536,
+        "update_seconds_so_far": 0.1290272999976878
+      }
+    },
+    {
+      "phase": 4,
+      "v0": {
+        "regimes_seen": [
+          15,
+          16,
+          17,
+          18,
+          19
+        ],
+        "mean_accuracy": 0.650431752204895,
+        "per_regime_accuracy": {
+          "15": 0.6000000238418579,
+          "16": 0.5634920597076416,
+          "17": 0.6166666746139526,
+          "18": 0.6880000233650208,
+          "19": 0.7839999794960022
+        },
+        "forgetting": 0.002222225069999695,
+        "n_experts": 3,
+        "memory_bytes": 2496272,
+        "update_seconds_so_far": 10.128947300010623,
+        "unknown_flag": {
+          "false_new_rate": 0.0,
+          "ood_detection_rate": 1.0,
+          "ood_by_domain": {
+            "stories": 1.0,
+            "wiki": 1.0,
+            "science_questions": 1.0
+          }
+        }
+      },
+      "a3": {
+        "mean_accuracy": 0.6518349170684814,
+        "memory_bytes": 2162164,
+        "update_seconds_so_far": 1.9443794999970123
+      },
+      "a7": {
+        "mean_accuracy": 0.6352127075195313,
+        "memory_bytes": 1568768,
+        "update_seconds_so_far": 0.022684600015054457
+      },
+      "a5a": {
+        "mean_accuracy": 0.5229142844676972,
+        "memory_bytes": 129536,
+        "update_seconds_so_far": 0.16500630000518868
+      }
+    },
+    {
+      "phase": 5,
+      "v0": {
+        "regimes_seen": [
+          15,
+          16,
+          17,
+          18,
+          19,
+          20
+        ],
+        "mean_accuracy": 0.6740264594554901,
+        "per_regime_accuracy": {
+          "15": 0.6000000238418579,
+          "16": 0.5634920597076416,
+          "17": 0.6166666746139526,
+          "18": 0.6880000233650208,
+          "19": 0.7839999794960022,
+          "20": 0.7919999957084656
+        },
+        "forgetting": 0.011111116409301758,
+        "n_experts": 4,
+        "memory_bytes": 3233128,
+        "update_seconds_so_far": 12.387461300007999,
+        "unknown_flag": {
+          "false_new_rate": 0.0,
+          "ood_detection_rate": 1.0,
+          "ood_by_domain": {
+            "stories": 1.0,
+            "wiki": 1.0,
+            "science_questions": 1.0
+          }
+        }
+      },
+      "a3": {
+        "mean_accuracy": 0.6890581945578257,
+        "memory_bytes": 2503156,
+        "update_seconds_so_far": 2.366609900000185
+      },
+      "a7": {
+        "mean_accuracy": 0.6530105868975321,
+        "memory_bytes": 1909760,
+        "update_seconds_so_far": 0.027536400019016583
+      },
+      "a5a": {
+        "mean_accuracy": 0.5458571463823318,
+        "memory_bytes": 129536,
+        "update_seconds_so_far": 0.20005410000521806
+      }
+    },
+    {
+      "phase": 6,
+      "v0": {
+        "regimes_seen": [
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21
+        ],
+        "mean_accuracy": 0.6937369619097028,
+        "per_regime_accuracy": {
+          "15": 0.6000000238418579,
+          "16": 0.5634920597076416,
+          "17": 0.6166666746139526,
+          "18": 0.6880000233650208,
+          "19": 0.7839999794960022,
+          "20": 0.7919999957084656,
+          "21": 0.8119999766349792
+        },
+        "forgetting": 0.009259263674418131,
+        "n_experts": 5,
+        "memory_bytes": 3969984,
+        "update_seconds_so_far": 14.535882500007574,
+        "unknown_flag": {
+          "false_new_rate": 0.0,
+          "ood_detection_rate": 1.0,
+          "ood_by_domain": {
+            "stories": 1.0,
+            "wiki": 1.0,
+            "science_questions": 1.0
+          }
+        }
+      },
+      "a3": {
+        "mean_accuracy": 0.6953605328287397,
+        "memory_bytes": 2844148,
+        "update_seconds_so_far": 2.785500099998899
+      },
+      "a7": {
+        "mean_accuracy": 0.6545804994446891,
+        "memory_bytes": 2250752,
+        "update_seconds_so_far": 0.03228050003235694
+      },
+      "a5a": {
+        "mean_accuracy": 0.5485260827200753,
+        "memory_bytes": 129536,
+        "update_seconds_so_far": 0.23388830000476446
+      }
+    },
+    {
+      "phase": 7,
+      "v0": {
+        "regimes_seen": [
+          0,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21
+        ],
+        "mean_accuracy": 0.7216031774878502,
+        "per_regime_accuracy": {
+          "0": 0.9166666865348816,
+          "15": 0.6000000238418579,
+          "16": 0.5634920597076416,
+          "17": 0.6166666746139526,
+          "18": 0.6880000233650208,
+          "19": 0.7839999794960022,
+          "20": 0.7919999957084656,
+          "21": 0.8119999766349792
+        },
+        "forgetting": 0.007936511720929827,
+        "n_experts": 6,
+        "memory_bytes": 4700912,
+        "update_seconds_so_far": 15.762871600014478,
+        "unknown_flag": {
+          "false_new_rate": 0.0,
+          "ood_detection_rate": 1.0,
+          "ood_by_domain": {
+            "stories": 1.0,
+            "wiki": 1.0,
+            "science_questions": 1.0
+          }
+        }
+      },
+      "a3": {
+        "mean_accuracy": 0.7015238031744957,
+        "memory_bytes": 3048948,
+        "update_seconds_so_far": 3.063058200004889
+      },
+      "a7": {
+        "mean_accuracy": 0.6840079352259636,
+        "memory_bytes": 2455552,
+        "update_seconds_so_far": 0.035214100033044815
+      },
+      "a5a": {
+        "mean_accuracy": 0.5879603214561939,
+        "memory_bytes": 129536,
+        "update_seconds_so_far": 0.25555370000438415
+      }
+    },
+    {
+      "phase": 8,
+      "v0": {
+        "regimes_seen": [
+          0,
+          1,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21
+        ],
+        "mean_accuracy": 0.7363178332646688,
+        "per_regime_accuracy": {
+          "0": 0.9066666960716248,
+          "1": 0.8640350699424744,
+          "15": 0.6000000238418579,
+          "16": 0.5634920597076416,
+          "17": 0.6166666746139526,
+          "18": 0.6880000233650208,
+          "19": 0.7839999794960022,
+          "20": 0.7919999957084656,
+          "21": 0.8119999766349792
+        },
+        "forgetting": 0.008194446563720703,
+        "n_experts": 7,
+        "memory_bytes": 5402684,
+        "update_seconds_so_far": 16.931388700013486,
+        "unknown_flag": {
+          "false_new_rate": 0.0,
+          "ood_detection_rate": 1.0,
+          "ood_by_domain": {
+            "stories": 1.0,
+            "wiki": 1.0,
+            "science_questions": 1.0
+          }
+        }
+      },
+      "a3": {
+        "mean_accuracy": 0.7250713772243924,
+        "memory_bytes": 3253748,
+        "update_seconds_so_far": 3.3267420000083803
+      },
+      "a7": {
+        "mean_accuracy": 0.7037380470169915,
+        "memory_bytes": 2660352,
+        "update_seconds_so_far": 0.03947620003236807
+      },
+      "a5a": {
+        "mean_accuracy": 0.6182259420553843,
+        "memory_bytes": 129536,
+        "update_seconds_so_far": 0.27580549999765935
+      }
+    },
+    {
+      "phase": 9,
+      "v0": {
+        "regimes_seen": [
+          0,
+          1,
+          2,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21
+        ],
+        "mean_accuracy": 0.7427979290485383,
+        "per_regime_accuracy": {
+          "0": 0.903333306312561,
+          "1": 0.8508771657943726,
+          "2": 0.8176100850105286,
+          "15": 0.6000000238418579,
+          "16": 0.5634920597076416,
+          "17": 0.6166666746139526,
+          "18": 0.6880000233650208,
+          "19": 0.7839999794960022,
+          "20": 0.7919999957084656,
+          "21": 0.8119999766349792
+        },
+        "forgetting": 0.009116318490770128,
+        "n_experts": 8,
+        "memory_bytes": 6133356,
+        "update_seconds_so_far": 17.878697800002556,
+        "unknown_flag": {
+          "false_new_rate": 0.0,
+          "ood_detection_rate": 1.0,
+          "ood_by_domain": {
+            "stories": 1.0,
+            "wiki": 1.0,
+            "science_questions": 1.0
+          }
+        }
+      },
+      "a3": {
+        "mean_accuracy": 0.7039357483386993,
+        "memory_bytes": 3458548,
+        "update_seconds_so_far": 3.591568300005747
+      },
+      "a7": {
+        "mean_accuracy": 0.7143533229827881,
+        "memory_bytes": 2865152,
+        "update_seconds_so_far": 0.042520900035015075
+      },
+      "a5a": {
+        "mean_accuracy": 0.6285914301872253,
+        "memory_bytes": 129536,
+        "update_seconds_so_far": 0.29701550000027055
+      }
+    },
+    {
+      "phase": 10,
+      "v0": {
+        "regimes_seen": [
+          0,
+          1,
+          2,
+          3,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21
+        ],
+        "mean_accuracy": 0.7388873533769087,
+        "per_regime_accuracy": {
+          "0": 0.8566666841506958,
+          "1": 0.8421052694320679,
+          "2": 0.7861635088920593,
+          "3": 0.7866666913032532,
+          "15": 0.6000000238418579,
+          "16": 0.5634920597076416,
+          "17": 0.6166666746139526,
+          "18": 0.6880000233650208,
+          "19": 0.7839999794960022,
+          "20": 0.7919999957084656,
+          "21": 0.8119999766349792
+        },
+        "forgetting": 0.01689319610595703,
+        "n_experts": 9,
+        "memory_bytes": 6864028,
+        "update_seconds_so_far": 18.90421520000382,
+        "unknown_flag": {
+          "false_new_rate": 0.0,
+          "ood_detection_rate": 1.0,
+          "ood_by_domain": {
+            "stories": 1.0,
+            "wiki": 1.0,
+            "science_questions": 1.0
+          }
+        }
+      },
+      "a3": {
+        "mean_accuracy": 0.7137769460678101,
+        "memory_bytes": 3663348,
+        "update_seconds_so_far": 3.8107938000066497
+      },
+      "a7": {
+        "mean_accuracy": 0.7184145504778082,
+        "memory_bytes": 3069952,
+        "update_seconds_so_far": 0.0454043000281672
+      },
+      "a5a": {
+        "mean_accuracy": 0.639249408786947,
+        "memory_bytes": 129536,
+        "update_seconds_so_far": 0.3179976000028546
+      }
+    },
+    {
+      "phase": 11,
+      "v0": {
+        "regimes_seen": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21
+        ],
+        "mean_accuracy": 0.7509732296069463,
+        "per_regime_accuracy": {
+          "0": 0.8933333158493042,
+          "1": 0.8640350699424744,
+          "2": 0.8301886916160583,
+          "3": 0.8299999833106995,
+          "4": 0.9212962985038757,
+          "15": 0.6000000238418579,
+          "16": 0.5634920597076416,
+          "17": 0.5933333039283752,
+          "18": 0.6639999747276306,
+          "19": 0.7680000066757202,
+          "20": 0.7160000205039978,
+          "21": 0.7680000066757202
+        },
+        "forgetting": 0.018755490129644222,
+        "n_experts": 10,
+        "memory_bytes": 7589540,
+        "update_seconds_so_far": 19.924552099997527,
+        "unknown_flag": {
+          "false_new_rate": 0.0,
+          "ood_detection_rate": 1.0,
+          "ood_by_domain": {
+            "stories": 1.0,
+            "wiki": 1.0,
+            "science_questions": 1.0
+          }
+        }
+      },
+      "a3": {
+        "mean_accuracy": 0.7262370387713114,
+        "memory_bytes": 3868148,
+        "update_seconds_so_far": 4.039702500002022
+      },
+      "a7": {
+        "mean_accuracy": 0.7312947511672974,
+        "memory_bytes": 3274752,
+        "update_seconds_so_far": 0.048439200028951745
+      },
+      "a5a": {
+        "mean_accuracy": 0.6503933270772299,
+        "memory_bytes": 129536,
+        "update_seconds_so_far": 0.33831410000129836
+      }
+    },
+    {
+      "phase": 12,
+      "v0": {
+        "regimes_seen": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21
+        ],
+        "mean_accuracy": 0.7686041685251089,
+        "per_regime_accuracy": {
+          "0": 0.8933333158493042,
+          "1": 0.8640350699424744,
+          "2": 0.8301886916160583,
+          "3": 0.8233333230018616,
+          "4": 0.9212962985038757,
+          "5": 0.9868420958518982,
+          "15": 0.6000000238418579,
+          "16": 0.5634920597076416,
+          "17": 0.5933333039283752,
+          "18": 0.6639999747276306,
+          "19": 0.7680000066757202,
+          "20": 0.7160000205039978,
+          "21": 0.7680000066757202
+        },
+        "forgetting": 0.0224074125289917,
+        "n_experts": 11,
+        "memory_bytes": 8229520,
+        "update_seconds_so_far": 20.496984199999133,
+        "unknown_flag": {
+          "false_new_rate": 0.0,
+          "ood_detection_rate": 1.0,
+          "ood_by_domain": {
+            "stories": 1.0,
+            "wiki": 1.0,
+            "science_questions": 1.0
+          }
+        }
+      },
+      "a3": {
+        "mean_accuracy": 0.7661646421139057,
+        "memory_bytes": 3974644,
+        "update_seconds_so_far": 4.157125100005942
+      },
+      "a7": {
+        "mean_accuracy": 0.7491708627113929,
+        "memory_bytes": 3381248,
+        "update_seconds_so_far": 0.05036510002537398
+      },
+      "a5a": {
+        "mean_accuracy": 0.6761522889137268,
+        "memory_bytes": 129536,
+        "update_seconds_so_far": 0.3489193000095838
+      }
+    },
+    {
+      "phase": 13,
+      "v0": {
+        "regimes_seen": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21
+        ],
+        "mean_accuracy": 0.7627765493733543,
+        "per_regime_accuracy": {
+          "0": 0.8899999856948853,
+          "1": 0.8508771657943726,
+          "2": 0.8301886916160583,
+          "3": 0.8166666626930237,
+          "4": 0.9212962985038757,
+          "5": 0.9736841917037964,
+          "14": 0.746666669845581,
+          "15": 0.5766666531562805,
+          "16": 0.5634920597076416,
+          "17": 0.5933333039283752,
+          "18": 0.6639999747276306,
+          "19": 0.7680000066757202,
+          "20": 0.7160000205039978,
+          "21": 0.7680000066757202
+        },
+        "forgetting": 0.025272163060995247,
+        "n_experts": 12,
+        "memory_bytes": 8959932,
+        "update_seconds_so_far": 21.472014399998443,
+        "unknown_flag": {
+          "false_new_rate": 0.0,
+          "ood_detection_rate": 0.2777777810891469,
+          "ood_by_domain": {
+            "stories": 0.0,
+            "wiki": 0.49000000953674316,
+            "science_questions": 0.34333333373069763
+          }
+        }
+      },
+      "a3": {
+        "mean_accuracy": 0.7500172214848655,
+        "memory_bytes": 4179444,
+        "update_seconds_so_far": 4.3919725000087055
+      },
+      "a7": {
+        "mean_accuracy": 0.7411348479134696,
+        "memory_bytes": 3586048,
+        "update_seconds_so_far": 0.05340550002802047
+      },
+      "a5a": {
+        "mean_accuracy": 0.6767627277544567,
+        "memory_bytes": 129536,
+        "update_seconds_so_far": 0.36923560001014266
+      }
+    },
+    {
+      "phase": 14,
+      "v0": {
+        "regimes_seen": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21
+        ],
+        "mean_accuracy": 0.7703692237536113,
+        "per_regime_accuracy": {
+          "0": 0.8899999856948853,
+          "1": 0.8508771657943726,
+          "2": 0.8301886916160583,
+          "3": 0.8166666626930237,
+          "4": 0.9212962985038757,
+          "5": 0.9736841917037964,
+          "6": 0.9266666769981384,
+          "14": 0.7099999785423279,
+          "15": 0.5633333325386047,
+          "16": 0.5634920597076416,
+          "17": 0.5933333039283752,
+          "18": 0.6639999747276306,
+          "19": 0.7680000066757202,
+          "20": 0.7160000205039978,
+          "21": 0.7680000066757202
+        },
+        "forgetting": 0.02703843797956194,
+        "n_experts": 13,
+        "memory_bytes": 9690088,
+        "update_seconds_so_far": 22.4032240000015,
+        "unknown_flag": {
+          "false_new_rate": 0.0,
+          "ood_detection_rate": 0.0,
+          "ood_by_domain": {
+            "stories": 0.0,
+            "wiki": 0.0,
+            "science_questions": 0.0
+          }
+        }
+      },
+      "a3": {
+        "mean_accuracy": 0.7708321332931518,
+        "memory_bytes": 4384244,
+        "update_seconds_so_far": 4.644138200012094
+      },
+      "a7": {
+        "mean_accuracy": 0.7495036363601685,
+        "memory_bytes": 3790848,
+        "update_seconds_so_far": 0.05667490002451814
+      },
+      "a5a": {
+        "mean_accuracy": 0.6877126932144165,
+        "memory_bytes": 129536,
+        "update_seconds_so_far": 0.389694800003781
+      }
+    },
+    {
+      "phase": 15,
+      "v0": {
+        "regimes_seen": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21
+        ],
+        "mean_accuracy": 0.7568507790565491,
+        "per_regime_accuracy": {
+          "0": 0.8899999856948853,
+          "1": 0.8508771657943726,
+          "2": 0.8301886916160583,
+          "3": 0.8100000023841858,
+          "4": 0.9120370149612427,
+          "5": 0.9736841917037964,
+          "6": 0.846666693687439,
+          "7": 0.6833333373069763,
+          "14": 0.6800000071525574,
+          "15": 0.5600000023841858,
+          "16": 0.5634920597076416,
+          "17": 0.5933333039283752,
+          "18": 0.6639999747276306,
+          "19": 0.7680000066757202,
+          "20": 0.7160000205039978,
+          "21": 0.7680000066757202
+        },
+        "forgetting": 0.03385315736134847,
+        "n_experts": 14,
+        "memory_bytes": 10420244,
+        "update_seconds_so_far": 23.431500399998185,
+        "unknown_flag": {
+          "false_new_rate": 0.0,
+          "ood_detection_rate": 0.0,
+          "ood_by_domain": {
+            "stories": 0.0,
+            "wiki": 0.0,
+            "science_questions": 0.0
+          }
+        }
+      },
+      "a3": {
+        "mean_accuracy": 0.7439101934432983,
+        "memory_bytes": 4589044,
+        "update_seconds_so_far": 4.900764100013475
+      },
+      "a7": {
+        "mean_accuracy": 0.7374513261020184,
+        "memory_bytes": 3995648,
+        "update_seconds_so_far": 0.06116480002310709
+      },
+      "a5a": {
+        "mean_accuracy": 0.6833692267537117,
+        "memory_bytes": 129536,
+        "update_seconds_so_far": 0.41014510000968585
+      }
+    },
+    {
+      "phase": 16,
+      "v0": {
+        "regimes_seen": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21
+        ],
+        "mean_accuracy": 0.7344870093990775,
+        "per_regime_accuracy": {
+          "0": 0.8899999856948853,
+          "1": 0.8508771657943726,
+          "2": 0.8301886916160583,
+          "3": 0.8100000023841858,
+          "4": 0.9120370149612427,
+          "5": 0.9736841917037964,
+          "6": 0.7933333516120911,
+          "7": 0.6566666960716248,
+          "8": 0.47333332896232605,
+          "14": 0.6633333563804626,
+          "15": 0.5600000023841858,
+          "16": 0.5634920597076416,
+          "17": 0.5933333039283752,
+          "18": 0.6639999747276306,
+          "19": 0.7680000066757202,
+          "20": 0.7160000205039978,
+          "21": 0.7680000066757202
+        },
+        "forgetting": 0.03777899965643883,
+        "n_experts": 15,
+        "memory_bytes": 11150400,
+        "update_seconds_so_far": 24.456658299997798,
+        "unknown_flag": {
+          "false_new_rate": 0.0,
+          "ood_detection_rate": 0.0,
+          "ood_by_domain": {
+            "stories": 0.0,
+            "wiki": 0.0,
+            "science_questions": 0.0
+          }
+        }
+      },
+      "a3": {
+        "mean_accuracy": 0.7101559779223274,
+        "memory_bytes": 4793844,
+        "update_seconds_so_far": 5.161942900009308
+      },
+      "a7": {
+        "mean_accuracy": 0.716424773721134,
+        "memory_bytes": 4200448,
+        "update_seconds_so_far": 0.06418310002118233
+      },
+      "a5a": {
+        "mean_accuracy": 0.6702049760257497,
+        "memory_bytes": 129536,
+        "update_seconds_so_far": 0.4303961000077834
+      }
+    },
+    {
+      "phase": 17,
+      "v0": {
+        "regimes_seen": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21
+        ],
+        "mean_accuracy": 0.7135731213622623,
+        "per_regime_accuracy": {
+          "0": 0.8866666555404663,
+          "1": 0.8508771657943726,
+          "2": 0.8301886916160583,
+          "3": 0.8100000023841858,
+          "4": 0.9074074029922485,
+          "5": 0.9736841917037964,
+          "6": 0.7866666913032532,
+          "7": 0.6166666746139526,
+          "8": 0.4466666579246521,
+          "9": 0.4466666579246521,
+          "14": 0.6633333563804626,
+          "15": 0.5566666722297668,
+          "16": 0.5634920597076416,
+          "17": 0.5933333039283752,
+          "18": 0.6639999747276306,
+          "19": 0.7680000066757202,
+          "20": 0.7120000123977661,
+          "21": 0.7680000066757202
+        },
+        "forgetting": 0.04077021339360405,
+        "n_experts": 16,
+        "memory_bytes": 11880556,
+        "update_seconds_so_far": 25.468345199995383,
+        "unknown_flag": {
+          "false_new_rate": 0.0,
+          "ood_detection_rate": 0.0,
+          "ood_by_domain": {
+            "stories": 0.0,
+            "wiki": 0.0,
+            "science_questions": 0.0
+          }
+        }
+      },
+      "a3": {
+        "mean_accuracy": 0.6802572806676229,
+        "memory_bytes": 4998644,
+        "update_seconds_so_far": 5.422700700015412
+      },
+      "a7": {
+        "mean_accuracy": 0.6966233965423372,
+        "memory_bytes": 4405248,
+        "update_seconds_so_far": 0.06702440002845833
+      },
+      "a5a": {
+        "mean_accuracy": 0.6541959444681803,
+        "memory_bytes": 129536,
+        "update_seconds_so_far": 0.4510610000033921
+      }
+    },
+    {
+      "phase": 18,
+      "v0": {
+        "regimes_seen": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21
+        ],
+        "mean_accuracy": 0.6897100837607133,
+        "per_regime_accuracy": {
+          "0": 0.8866666555404663,
+          "1": 0.8508771657943726,
+          "2": 0.8301886916160583,
+          "3": 0.8066666722297668,
+          "4": 0.9074074029922485,
+          "5": 0.9605262875556946,
+          "6": 0.753333330154419,
+          "7": 0.54666668176651,
+          "8": 0.4300000071525574,
+          "9": 0.4333333373069763,
+          "10": 0.4233333468437195,
+          "14": 0.6499999761581421,
+          "15": 0.5566666722297668,
+          "16": 0.5634920597076416,
+          "17": 0.5933333039283752,
+          "18": 0.6639999747276306,
+          "19": 0.7680000066757202,
+          "20": 0.7120000123977661,
+          "21": 0.7680000066757202
+        },
+        "forgetting": 0.047569531533453197,
+        "n_experts": 17,
+        "memory_bytes": 12610712,
+        "update_seconds_so_far": 26.634441599999263,
+        "unknown_flag": {
+          "false_new_rate": 0.0,
+          "ood_detection_rate": 0.0,
+          "ood_by_domain": {
+            "stories": 0.0,
+            "wiki": 0.0,
+            "science_questions": 0.0
+          }
+        }
+      },
+      "a3": {
+        "mean_accuracy": 0.6773064905091336,
+        "memory_bytes": 5203444,
+        "update_seconds_so_far": 5.685274700012087
+      },
+      "a7": {
+        "mean_accuracy": 0.6764502399846127,
+        "memory_bytes": 4610048,
+        "update_seconds_so_far": 0.06997040002897847
+      },
+      "a5a": {
+        "mean_accuracy": 0.6416760071327812,
+        "memory_bytes": 129536,
+        "update_seconds_so_far": 0.47134590000860044
+      }
+    },
+    {
+      "phase": 19,
+      "v0": {
+        "regimes_seen": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21
+        ],
+        "mean_accuracy": 0.683057913184166,
+        "per_regime_accuracy": {
+          "0": 0.8866666555404663,
+          "1": 0.8508771657943726,
+          "2": 0.8301886916160583,
+          "3": 0.8066666722297668,
+          "4": 0.9074074029922485,
+          "5": 0.9605262875556946,
+          "6": 0.6766666769981384,
+          "7": 0.5400000214576721,
+          "8": 0.4233333468437195,
+          "9": 0.4333333373069763,
+          "10": 0.4233333468437195,
+          "11": 0.6466666460037231,
+          "14": 0.6499999761581421,
+          "15": 0.5566666722297668,
+          "16": 0.5634920597076416,
+          "17": 0.5933333039283752,
+          "18": 0.6639999747276306,
+          "19": 0.7680000066757202,
+          "20": 0.7120000123977661,
+          "21": 0.7680000066757202
+        },
+        "forgetting": 0.04980271270400599,
+        "n_experts": 18,
+        "memory_bytes": 13340868,
+        "update_seconds_so_far": 27.712584100012464,
+        "unknown_flag": {
+          "false_new_rate": 0.0,
+          "ood_detection_rate": 0.0,
+          "ood_by_domain": {
+            "stories": 0.0,
+            "wiki": 0.0,
+            "science_questions": 0.0
+          }
+        }
+      },
+      "a3": {
+        "mean_accuracy": 0.6619941219687462,
+        "memory_bytes": 5408244,
+        "update_seconds_so_far": 5.952930200015544
+      },
+      "a7": {
+        "mean_accuracy": 0.6726277291774749,
+        "memory_bytes": 4814848,
+        "update_seconds_so_far": 0.07274540002254071
+      },
+      "a5a": {
+        "mean_accuracy": 0.6408922076225281,
+        "memory_bytes": 129536,
+        "update_seconds_so_far": 0.4919172000118124
+      }
+    },
+    {
+      "phase": 20,
+      "v0": {
+        "regimes_seen": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21
+        ],
+        "mean_accuracy": 0.6687853137652079,
+        "per_regime_accuracy": {
+          "0": 0.8866666555404663,
+          "1": 0.8508771657943726,
+          "2": 0.8301886916160583,
+          "3": 0.8066666722297668,
+          "4": 0.9074074029922485,
+          "5": 0.9605262875556946,
+          "6": 0.6766666769981384,
+          "7": 0.5400000214576721,
+          "8": 0.41999998688697815,
+          "9": 0.4333333373069763,
+          "10": 0.4233333468437195,
+          "11": 0.6466666460037231,
+          "12": 0.41333332657814026,
+          "14": 0.6233333349227905,
+          "15": 0.5566666722297668,
+          "16": 0.5634920597076416,
+          "17": 0.5933333039283752,
+          "18": 0.6639999747276306,
+          "19": 0.7680000066757202,
+          "20": 0.7120000123977661,
+          "21": 0.7680000066757202
+        },
+        "forgetting": 0.04881257712841034,
+        "n_experts": 19,
+        "memory_bytes": 14071024,
+        "update_seconds_so_far": 28.75851120000516,
+        "unknown_flag": {
+          "false_new_rate": 0.0,
+          "ood_detection_rate": 0.0,
+          "ood_by_domain": {
+            "stories": 0.0,
+            "wiki": 0.0,
+            "science_questions": 0.0
+          }
+        }
+      },
+      "a3": {
+        "mean_accuracy": 0.6446152286870139,
+        "memory_bytes": 5613044,
+        "update_seconds_so_far": 6.216385600015201
+      },
+      "a7": {
+        "mean_accuracy": 0.6625025953565326,
+        "memory_bytes": 5019648,
+        "update_seconds_so_far": 0.07619800002066768
+      },
+      "a5a": {
+        "mean_accuracy": 0.6329538424809774,
+        "memory_bytes": 129536,
+        "update_seconds_so_far": 0.5123398000068846
+      }
+    },
+    {
+      "phase": 21,
+      "v0": {
+        "regimes_seen": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21
+        ],
+        "mean_accuracy": 0.6503556790676984,
+        "per_regime_accuracy": {
+          "0": 0.8866666555404663,
+          "1": 0.8508771657943726,
+          "2": 0.8301886916160583,
+          "3": 0.8066666722297668,
+          "4": 0.9074074029922485,
+          "5": 0.9605262875556946,
+          "6": 0.6700000166893005,
+          "7": 0.5333333611488342,
+          "8": 0.41333332657814026,
+          "9": 0.4333333373069763,
+          "10": 0.41333332657814026,
+          "11": 0.6466666460037231,
+          "12": 0.33666667342185974,
+          "13": 0.38999998569488525,
+          "14": 0.6033333539962769,
+          "15": 0.5566666722297668,
+          "16": 0.5634920597076416,
+          "17": 0.5933333039283752,
+          "18": 0.6639999747276306,
+          "19": 0.7680000066757202,
+          "20": 0.7120000123977661,
+          "21": 0.7680000066757202
+        },
+        "forgetting": 0.052519913230623515,
+        "n_experts": 20,
+        "memory_bytes": 14801180,
+        "update_seconds_so_far": 29.79501529999834,
+        "unknown_flag": {
+          "false_new_rate": 0.0,
+          "ood_detection_rate": 0.0,
+          "ood_by_domain": {
+            "stories": 0.0,
+            "wiki": 0.0,
+            "science_questions": 0.0
+          }
+        }
+      },
+      "a3": {
+        "mean_accuracy": 0.6238332516090437,
+        "memory_bytes": 5817844,
+        "update_seconds_so_far": 6.484526500014908
+      },
+      "a7": {
+        "mean_accuracy": 0.6425403600389307,
+        "memory_bytes": 5224448,
+        "update_seconds_so_far": 0.0789489000235335
+      },
+      "a5a": {
+        "mean_accuracy": 0.6152266724543138,
+        "memory_bytes": 129536,
+        "update_seconds_so_far": 0.5327023000099871
+      }
+    },
+    {
+      "phase": 22,
+      "v0": {
+        "regimes_seen": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21
+        ],
+        "mean_accuracy": 0.6513282643123106,
+        "per_regime_accuracy": {
+          "0": 0.8866666555404663,
+          "1": 0.8508771657943726,
+          "2": 0.8301886916160583,
+          "3": 0.8066666722297668,
+          "4": 0.9074074029922485,
+          "5": 0.9605262875556946,
+          "6": 0.6700000166893005,
+          "7": 0.5333333611488342,
+          "8": 0.41333332657814026,
+          "9": 0.4333333373069763,
+          "10": 0.41333332657814026,
+          "11": 0.6466666460037231,
+          "12": 0.33666667342185974,
+          "13": 0.38999998569488525,
+          "14": 0.6033333539962769,
+          "15": 0.5566666722297668,
+          "16": 0.5555555820465088,
+          "17": 0.5866666436195374,
+          "18": 0.6679999828338623,
+          "19": 0.7720000147819519,
+          "20": 0.7360000014305115,
+          "21": 0.7720000147819519
+        },
+        "forgetting": 0.049160059202801094,
+        "n_experts": 20,
+        "memory_bytes": 14802204,
+        "update_seconds_so_far": 33.89611699998568,
+        "unknown_flag": {
+          "false_new_rate": 0.0,
+          "ood_detection_rate": 0.0,
+          "ood_by_domain": {
+            "stories": 0.0,
+            "wiki": 0.0,
+            "science_questions": 0.0
+          }
+        }
+      },
+      "a3": {
+        "mean_accuracy": 0.6566185653209686,
+        "memory_bytes": 6585844,
+        "update_seconds_so_far": 7.405106900019746
+      },
+      "a7": {
+        "mean_accuracy": 0.6419039951129393,
+        "memory_bytes": 5992448,
+        "update_seconds_so_far": 0.08977140003116801
+      },
+      "a5a": {
+        "mean_accuracy": 0.6132363771850412,
+        "memory_bytes": 129536,
+        "update_seconds_so_far": 0.609592300010263
+      }
+    },
+    {
+      "phase": 23,
+      "v0": {
+        "regimes_seen": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21
+        ],
+        "mean_accuracy": 0.6517269895835356,
+        "per_regime_accuracy": {
+          "0": 0.8833333253860474,
+          "1": 0.859649121761322,
+          "2": 0.8301886916160583,
+          "3": 0.8100000023841858,
+          "4": 0.9074074029922485,
+          "5": 0.9605262875556946,
+          "6": 0.6700000166893005,
+          "7": 0.5333333611488342,
+          "8": 0.41333332657814026,
+          "9": 0.4333333373069763,
+          "10": 0.41333332657814026,
+          "11": 0.6466666460037231,
+          "12": 0.33666667342185974,
+          "13": 0.38999998569488525,
+          "14": 0.6033333539962769,
+          "15": 0.5566666722297668,
+          "16": 0.5555555820465088,
+          "17": 0.5866666436195374,
+          "18": 0.6679999828338623,
+          "19": 0.7720000147819519,
+          "20": 0.7360000014305115,
+          "21": 0.7720000147819519
+        },
+        "forgetting": 0.04876133393157612,
+        "n_experts": 20,
+        "memory_bytes": 14798908,
+        "update_seconds_so_far": 34.785757099991315,
+        "unknown_flag": {
+          "false_new_rate": 0.0,
+          "ood_detection_rate": 0.0,
+          "ood_by_domain": {
+            "stories": 0.0,
+            "wiki": 0.0,
+            "science_questions": 0.0
+          }
+        }
+      },
+      "a3": {
+        "mean_accuracy": 0.6433344429189508,
+        "memory_bytes": 6688244,
+        "update_seconds_so_far": 7.543344700017769
+      },
+      "a7": {
+        "mean_accuracy": 0.641911968588829,
+        "memory_bytes": 6094848,
+        "update_seconds_so_far": 0.0913939000274695
+      },
+      "a5a": {
+        "mean_accuracy": 0.6132969842715696,
+        "memory_bytes": 129536,
+        "update_seconds_so_far": 0.6202432000100089
+      }
+    },
+    {
+      "phase": 24,
+      "v0": {
+        "regimes_seen": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21
+        ],
+        "mean_accuracy": 0.6526471552523699,
+        "per_regime_accuracy": {
+          "0": 0.8833333253860474,
+          "1": 0.8552631735801697,
+          "2": 0.8301886916160583,
+          "3": 0.8299999833106995,
+          "4": 0.9120370149612427,
+          "5": 0.9605262875556946,
+          "6": 0.6700000166893005,
+          "7": 0.5333333611488342,
+          "8": 0.41333332657814026,
+          "9": 0.4333333373069763,
+          "10": 0.41333332657814026,
+          "11": 0.6466666460037231,
+          "12": 0.33666667342185974,
+          "13": 0.38999998569488525,
+          "14": 0.6033333539962769,
+          "15": 0.5566666722297668,
+          "16": 0.5555555820465088,
+          "17": 0.5866666436195374,
+          "18": 0.6679999828338623,
+          "19": 0.7720000147819519,
+          "20": 0.7360000014305115,
+          "21": 0.7720000147819519
+        },
+        "forgetting": 0.04784116826274178,
+        "n_experts": 20,
+        "memory_bytes": 14771036,
+        "update_seconds_so_far": 35.35328469998785,
+        "unknown_flag": {
+          "false_new_rate": 0.0,
+          "ood_detection_rate": 0.0,
+          "ood_by_domain": {
+            "stories": 0.0,
+            "wiki": 0.0,
+            "science_questions": 0.0
+          }
+        }
+      },
+      "a3": {
+        "mean_accuracy": 0.6367085792801597,
+        "memory_bytes": 6790644,
+        "update_seconds_so_far": 7.685403900017263
+      },
+      "a7": {
+        "mean_accuracy": 0.6432135768912055,
+        "memory_bytes": 6197248,
+        "update_seconds_so_far": 0.09284730002400465
+      },
+      "a5a": {
+        "mean_accuracy": 0.6132491352883253,
+        "memory_bytes": 129536,
+        "update_seconds_so_far": 0.6304774000091129
+      }
+    },
+    {
+      "phase": 25,
+      "v0": {
+        "regimes_seen": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21
+        ],
+        "mean_accuracy": 0.6517380611463026,
+        "per_regime_accuracy": {
+          "0": 0.8833333253860474,
+          "1": 0.8552631735801697,
+          "2": 0.8301886916160583,
+          "3": 0.8299999833106995,
+          "4": 0.9120370149612427,
+          "5": 0.9605262875556946,
+          "6": 0.6666666865348816,
+          "7": 0.5299999713897705,
+          "8": 0.41333332657814026,
+          "9": 0.4333333373069763,
+          "10": 0.41333332657814026,
+          "11": 0.6466666460037231,
+          "12": 0.3333333432674408,
+          "13": 0.4000000059604645,
+          "14": 0.5866666436195374,
+          "15": 0.5533333420753479,
+          "16": 0.5555555820465088,
+          "17": 0.5866666436195374,
+          "18": 0.6679999828338623,
+          "19": 0.7720000147819519,
+          "20": 0.7360000014305115,
+          "21": 0.7720000147819519
+        },
+        "forgetting": 0.04875026236880909,
+        "n_experts": 20,
+        "memory_bytes": 14743164,
+        "update_seconds_so_far": 35.88704829998824,
+        "unknown_flag": {
+          "false_new_rate": 0.0,
+          "ood_detection_rate": 0.0,
+          "ood_by_domain": {
+            "stories": 0.0,
+            "wiki": 0.0,
+            "science_questions": 0.0
+          }
+        }
+      },
+      "a3": {
+        "mean_accuracy": 0.6166826567866586,
+        "memory_bytes": 6893044,
+        "update_seconds_so_far": 7.833809400017344
+      },
+      "a7": {
+        "mean_accuracy": 0.6445772146636789,
+        "memory_bytes": 6299648,
+        "update_seconds_so_far": 0.09430710002197884
+      },
+      "a5a": {
+        "mean_accuracy": 0.6134437119418924,
+        "memory_bytes": 129536,
+        "update_seconds_so_far": 0.6410357000095246
+      }
+    },
+    {
+      "phase": 26,
+      "v0": {
+        "regimes_seen": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21
+        ],
+        "mean_accuracy": 0.6502484814687208,
+        "per_regime_accuracy": {
+          "0": 0.8799999952316284,
+          "1": 0.8552631735801697,
+          "2": 0.8238993883132935,
+          "3": 0.8299999833106995,
+          "4": 0.8888888955116272,
+          "5": 0.9605262875556946,
+          "6": 0.6666666865348816,
+          "7": 0.5299999713897705,
+          "8": 0.41333332657814026,
+          "9": 0.4333333373069763,
+          "10": 0.41333332657814026,
+          "11": 0.6466666460037231,
+          "12": 0.3333333432674408,
+          "13": 0.4000000059604645,
+          "14": 0.5866666436195374,
+          "15": 0.5533333420753479,
+          "16": 0.5555555820465088,
+          "17": 0.5866666436195374,
+          "18": 0.6679999828338623,
+          "19": 0.7720000147819519,
+          "20": 0.7360000014305115,
+          "21": 0.7720000147819519
+        },
+        "forgetting": 0.05069438842209903,
+        "n_experts": 20,
+        "memory_bytes": 14715292,
+        "update_seconds_so_far": 36.46944149998308,
+        "unknown_flag": {
+          "false_new_rate": 0.0,
+          "ood_detection_rate": 0.0,
+          "ood_by_domain": {
+            "stories": 0.0,
+            "wiki": 0.0,
+            "science_questions": 0.0
+          }
+        }
+      },
+      "a3": {
+        "mean_accuracy": 0.6104161468419161,
+        "memory_bytes": 6995444,
+        "update_seconds_so_far": 7.977415900018968
+      },
+      "a7": {
+        "mean_accuracy": 0.6438815390521829,
+        "memory_bytes": 6402048,
+        "update_seconds_so_far": 0.09577340002579149
+      },
+      "a5a": {
+        "mean_accuracy": 0.612575960430232,
+        "memory_bytes": 129536,
+        "update_seconds_so_far": 0.6516946000119788
+      }
+    },
+    {
+      "phase": 27,
+      "v0": {
+        "regimes_seen": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21
+        ],
+        "mean_accuracy": 0.6501575735482302,
+        "per_regime_accuracy": {
+          "0": 0.8799999952316284,
+          "1": 0.8552631735801697,
+          "2": 0.8238993883132935,
+          "3": 0.8299999833106995,
+          "4": 0.8888888955116272,
+          "5": 0.9605262875556946,
+          "6": 0.6666666865348816,
+          "7": 0.5333333611488342,
+          "8": 0.41999998688697815,
+          "9": 0.44333332777023315,
+          "10": 0.4033333361148834,
+          "11": 0.6466666460037231,
+          "12": 0.3333333432674408,
+          "13": 0.4000000059604645,
+          "14": 0.5866666436195374,
+          "15": 0.5533333420753479,
+          "16": 0.5555555820465088,
+          "17": 0.5866666436195374,
+          "18": 0.6679999828338623,
+          "19": 0.7720000147819519,
+          "20": 0.7239999771118164,
+          "21": 0.7720000147819519
+        },
+        "forgetting": 0.05078529634258964,
+        "n_experts": 20,
+        "memory_bytes": 14687420,
+        "update_seconds_so_far": 37.03251669997917,
+        "unknown_flag": {
+          "false_new_rate": 0.0,
+          "ood_detection_rate": 0.0,
+          "ood_by_domain": {
+            "stories": 0.0,
+            "wiki": 0.0,
+            "science_questions": 0.0
+          }
+        }
+      },
+      "a3": {
+        "mean_accuracy": 0.6006814336234872,
+        "memory_bytes": 7097844,
+        "update_seconds_so_far": 8.122894500025723
+      },
+      "a7": {
+        "mean_accuracy": 0.6453966904770244,
+        "memory_bytes": 6504448,
+        "update_seconds_so_far": 0.0977097000250069
+      },
+      "a5a": {
+        "mean_accuracy": 0.6134372028437528,
+        "memory_bytes": 129536,
+        "update_seconds_so_far": 0.6632667000085348
+      }
+    }
+  ],
+  "batch_hashes": {
+    "V0": "aa822ce924addc5d3df623df515c31dd89939c8aebdf290bfc557dee985bf0e0",
+    "A3": "aa822ce924addc5d3df623df515c31dd89939c8aebdf290bfc557dee985bf0e0",
+    "A7": "aa822ce924addc5d3df623df515c31dd89939c8aebdf290bfc557dee985bf0e0",
+    "A5a": "aa822ce924addc5d3df623df515c31dd89939c8aebdf290bfc557dee985bf0e0"
+  }
+}

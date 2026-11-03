@@ -1,0 +1,5 @@
+python -m pytest tests/v0 -v
+python -m v0.demo --schedule seq --seed 800 --out results/v0/smoke_seq_800
+python -m v0.demo --schedule mix --seed 800 --out results/v0/smoke_mix_800  
+python -m v0.demo --schedule drift --seed 800 --out results/v0/smoke_drift_800  
+python -m v0.report --runs results/v0/smoke_seq_800 results/v0/smoke_mix_800 results/v0/smoke_drift_800 --out results/v0/report  
