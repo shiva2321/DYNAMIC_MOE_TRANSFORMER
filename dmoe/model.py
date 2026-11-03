@@ -1,4 +1,4 @@
-from typing import Dict, List, Union
+from typing import Dict, List, Optional, Union
 
 import torch
 import torch.nn as nn
@@ -20,6 +20,7 @@ class SelfStabilizingDynamicMorphicMoE(nn.Module):
         initial_experts: int = 3,
         theta_up: float = 0.45,
         theta_down: float = 0.05,
+        theta_novelty_vertical: float = 2.5,
         min_layers: int = 1,
         max_layers: int = 8,
     ):
@@ -29,6 +30,7 @@ class SelfStabilizingDynamicMorphicMoE(nn.Module):
         self.d_ff = d_ff
         self.theta_up = theta_up
         self.theta_down = theta_down
+        self.theta_novelty_vertical = theta_novelty_vertical
         self.min_layers = min_layers
         self.max_layers = max_layers
 
@@ -50,7 +52,7 @@ class SelfStabilizingDynamicMorphicMoE(nn.Module):
 
     def forward(self, x: torch.Tensor, output_head: str = "token") -> Dict[str, Union[torch.Tensor, List[torch.Tensor]]]:
         z_r, z_i = self.encoder(x)
-        z_r, z_i, structural_error = self.manifold_corr(z_r, z_i)
+        z_r, z_i, structural_error, novelty_score = self.manifold_corr(z_r, z_i)
 
         entropy_traces = []
         for layer in self.layers:
@@ -62,17 +64,26 @@ class SelfStabilizingDynamicMorphicMoE(nn.Module):
         return {
             "output": output,
             "structural_error": structural_error,
+            "novelty_score": novelty_score,
             "routing_entropies": entropy_traces,
             "z_real": z_r,
             "z_imag": z_i,
         }
 
-    def execute_graph_mutation(self) -> Dict[str, Union[int, List[int], List[str]]]:
+    def execute_graph_mutation(
+        self, novelty_score: Optional[float] = None
+    ) -> Dict[str, Union[int, List[int], List[str]]]:
         mutation_logs = []
         current_error = self.manifold_corr.running_error_magnitude.item()
+        current_novelty = (
+            novelty_score if novelty_score is not None else self.manifold_corr.last_novelty_score.item()
+        )
         device = next(self.parameters()).device
 
-        if current_error > self.theta_up and len(self.layers) < self.max_layers:
+        vertical_error_trigger = current_error > self.theta_up
+        vertical_novelty_trigger = current_novelty > self.theta_novelty_vertical
+
+        if (vertical_error_trigger or vertical_novelty_trigger) and len(self.layers) < self.max_layers:
             new_layer = DynamicMorphicTransformerLayer(
                 self.d_model,
                 self.num_heads,
@@ -80,10 +91,16 @@ class SelfStabilizingDynamicMorphicMoE(nn.Module):
                 initial_experts=self.layers[-1].moe.num_experts,
             ).to(device)
             self.layers.append(new_layer)
-            mutation_logs.append(
-                f"[Vertical Growth] Structural Error={current_error:.4f} > {self.theta_up:.4f}. "
-                f"Appended Layer #{len(self.layers)}."
-            )
+            if vertical_error_trigger:
+                mutation_logs.append(
+                    f"[Vertical Growth] Structural Error={current_error:.4f} > {self.theta_up:.4f}. "
+                    f"Appended Layer #{len(self.layers)}."
+                )
+            else:
+                mutation_logs.append(
+                    f"[Vertical Growth] Novelty Z-Score={current_novelty:.4f} > "
+                    f"{self.theta_novelty_vertical:.4f}. Appended Layer #{len(self.layers)}."
+                )
 
         elif len(self.layers) > self.min_layers:
             salience_values = [l.layer_salience.item() for l in self.layers]
@@ -97,7 +114,7 @@ class SelfStabilizingDynamicMorphicMoE(nn.Module):
                 )
 
         for idx, layer in enumerate(self.layers):
-            spawned, pruned, log_msg = layer.moe.mutate_topology()
+            spawned, pruned, log_msg = layer.moe.mutate_topology(novelty_score=current_novelty)
             if spawned or pruned:
                 mutation_logs.append(f"[Horizontal Morph Layer {idx}] {log_msg}")
 
@@ -132,4 +149,3 @@ def rebuild_optimizer_preserving_state(
                 new_optimizer.state[p] = saved_state
 
     return new_optimizer
-

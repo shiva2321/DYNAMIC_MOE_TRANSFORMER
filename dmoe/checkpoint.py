@@ -13,6 +13,7 @@ def save_checkpoint(model: nn.Module, path: str) -> None:
         "d_ff": model.d_ff,
         "theta_up": model.theta_up,
         "theta_down": model.theta_down,
+        "theta_novelty_vertical": model.theta_novelty_vertical,
         "min_layers": model.min_layers,
         "max_layers": model.max_layers,
     }
@@ -43,6 +44,7 @@ def load_checkpoint(path: str, model_cls, device: Optional[torch.device] = None)
         initial_experts=experts_per_layer[0] if experts_per_layer else 1,
         theta_up=config["theta_up"],
         theta_down=config["theta_down"],
+        theta_novelty_vertical=config.get("theta_novelty_vertical", 2.5),
         min_layers=config["min_layers"],
         max_layers=config["max_layers"],
     )
@@ -58,8 +60,13 @@ def load_checkpoint(path: str, model_cls, device: Optional[torch.device] = None)
         model.encoder._get_numeric_projector(f_dim, torch.device("cpu"))
     model.load_state_dict(payload["state_dict"])
 
+    for layer in model.layers:
+        for idx, expert in enumerate(layer.moe.experts):
+            if bool(layer.moe.expert_frozen[idx]):
+                for p in expert.parameters():
+                    p.requires_grad_(False)
+
     if device is not None:
         model = model.to(device)
 
     return model
-

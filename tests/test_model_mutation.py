@@ -158,3 +158,30 @@ def test_model_runs_on_cuda_after_mutation():
     out = model(x)["output"]
     assert out.device.type == "cuda"
 
+
+def test_vertical_growth_triggers_from_novelty_score_alone():
+    model = _tiny_model(theta_up=10.0)  # make the error-magnitude trigger unreachable
+    with torch.no_grad():
+        model.manifold_corr.running_error_magnitude.fill_(0.0)
+        model.manifold_corr.last_novelty_score = torch.tensor(5.0)
+    report = model.execute_graph_mutation()
+    assert model.num_layers == 3
+    assert any("Novelty Z-Score" in log for log in report["mutation_logs"])
+
+
+def test_execute_graph_mutation_accepts_explicit_novelty_override():
+    model = _tiny_model(theta_up=10.0)
+    report = model.execute_graph_mutation(novelty_score=5.0)
+    assert model.num_layers == 3
+    assert any("Novelty Z-Score" in log for log in report["mutation_logs"])
+
+
+def test_forward_returns_novelty_score_in_output_dict():
+    model = _tiny_model()
+    model.eval()
+    x = torch.randint(0, 100, (1, 4), dtype=torch.long)
+    out = model(x)
+    assert "novelty_score" in out
+    assert out["novelty_score"].dim() == 0
+
+
