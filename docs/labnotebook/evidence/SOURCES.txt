@@ -524,3 +524,16 @@ results/m1/diag/gpu_probe_2026-11-03.json
 m1/diag_gpu_probe.py
 docs/superpowers/handoff/M1_GPU_REPEAT_SPEC.md
 docs/superpowers/handoff/KICKOFF_M1_GPU_REPEAT_2026-11-03.md
+docs/superpowers/handoff/M1_GPU_REPEAT_RESULT.md
+m1/gpu_repeat.py
+m1/gpu_report.py
+m1/gpu_run.sh
+tests/m1/test_gpu_repeat.py
+results/m1/smoke/gpu_review/report/REPORT_M1_GPU.md
+results/m1/smoke/gpu_review/report/gpu_verdicts.json
+results/m1/smoke/gpu_review/cells_b2/B2_n6_A3__seed800.json
+results/m1/smoke/gpu_review/cells_b2/B2_n6_A6__seed800.json
+results/m1/smoke/gpu_review/cells_b2/B2_n6_A8__seed800.json
+results/m1/smoke/gpu_review/cells_b2_patched/B2_n6_A3__seed800.json
+results/m1/smoke/gpu/cells/B2_n6_A3__seed800.json
+results/m1/smoke/gpu/cells/B1_n10_A3__seed800.json

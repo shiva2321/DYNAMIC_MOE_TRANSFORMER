@@ -1,0 +1,341 @@
+{
+  "schema_version": "1.2.0",
+  "bed": "B2",
+  "n_regimes": 6,
+  "arm": "A3",
+  "seed": 800,
+  "split": "dev",
+  "freeze_sha256": null,
+  "commit": "e365275a8ed6a6b8c20837c7a5221ab5c8af3ed5",
+  "environment": {
+    "python": "3.12.10",
+    "torch": "2.6.0+cu124",
+    "cuda": "12.4",
+    "cuda_available": true,
+    "gpu_name": "NVIDIA GeForce RTX 3060",
+    "gpu_driver": "610.60",
+    "cpu_name": "AMD Ryzen 5 7600 6-Core Processor",
+    "logical_cores": 12,
+    "ram_bytes": 34081722368,
+    "torch_intraop_threads": 2,
+    "torch_interop_threads": 6,
+    "env_vars": {
+      "OMP_NUM_THREADS": "3",
+      "MKL_NUM_THREADS": "3",
+      "OPENBLAS_NUM_THREADS": "3",
+      "NUMEXPR_NUM_THREADS": "unset"
+    },
+    "git_commit": "e365275a8ed6a6b8c20837c7a5221ab5c8af3ed5",
+    "timestamp": "2026-11-03T03:56:26.122000+00:00"
+  },
+  "pinning": {
+    "threads": 2,
+    "cpus": [
+      8,
+      10
+    ],
+    "blas_limited": true
+  },
+  "profile": "full",
+  "bed_info": {
+    "d": 128,
+    "classes": 77,
+    "regimes": 6,
+    "phases": 9,
+    "total_samples": 3000,
+    "regime_names": [
+      "banking_r0",
+      "banking_r1",
+      "banking_r2",
+      "banking_r3",
+      "banking_r4",
+      "banking_r5"
+    ]
+  },
+  "tuning_ref": "92174721fb0d5c3362ee22a37d5bf00099c8512835dcdd62935db598e202e74b",
+  "reference_pool": {
+    "arm": "A1",
+    "bytes": 1590840,
+    "macs": null
+  },
+  "uncounted_note": false,
+  "pool_time_split": null,
+  "config": {
+    "arm": "A3",
+    "name": "ReplayNet at equal memory",
+    "seed": 800,
+    "hidden": 1024,
+    "inner_steps": 20,
+    "replay_size": 968,
+    "target_pool_bytes": 1590840
+  },
+  "accuracy": 0.847777783870697,
+  "per_regime_accuracy": [
+    0.8600000143051147,
+    0.9066666960716248,
+    0.9333333373069763,
+    0.8600000143051147,
+    0.8133333325386047,
+    0.7133333086967468
+  ],
+  "forgetting": 0.036666671435038246,
+  "update_cost": {
+    "wall_clock_per_observe": [
+      0.03428669999993872,
+      0.05297479999717325,
+      0.04202079999959096,
+      0.04218399999081157,
+      0.04230479999387171,
+      0.04221499999403022,
+      0.04307080000580754,
+      0.04271859998698346,
+      0.042025000002468005,
+      0.04214410000713542,
+      0.041947999998228624,
+      0.04208379999909084,
+      0.041925700003048405,
+      0.04096330000902526,
+      0.04215649999969173,
+      0.04219079999893438,
+      0.04188590000558179,
+      0.041933300002710894,
+      0.04234720001113601,
+      0.041660299990326166,
+      0.04091480000352021,
+      0.04219839999859687,
+      0.04218770000443328,
+      0.04164520000631455,
+      0.04149879999749828,
+      0.04150810001010541,
+      0.04216420000011567,
+      0.04101329999684822,
+      0.041919099996448494,
+      0.04186230000050273,
+      0.04180739998992067,
+      0.0414559999917401,
+      0.04157810000469908,
+      0.041755900005227886,
+      0.0420425000047544,
+      0.04402739999932237,
+      0.04161849999218248,
+      0.041519200007314794,
+      0.041393999999854714,
+      0.0412235999974655,
+      0.04138149999198504,
+      0.041277299998910166,
+      0.041437699997914024,
+      0.04119360000186134,
+      0.04136899999866728,
+      0.04342249999172054,
+      0.04116600000998005,
+      0.0416008000029251,
+      0.04134199999680277,
+      0.04081679999944754,
+      0.04175519999989774,
+      0.04133680000086315,
+      0.04131990000314545,
+      0.04091060000064317
+    ],
+    "wall_clock_per_regime": {
+      "0": 0.46398249999037944,
+      "1": 0.29380850000598,
+      "2": 0.46051160000206437,
+      "3": 0.2922157000139123,
+      "4": 0.45774379999784287,
+      "5": 0.29244149998703506
+    },
+    "wall_clock_total": 2.260703599997214,
+    "counted_macs": 96875520000,
+    "peak_memory": {
+      "rss_start_bytes": 1821224960,
+      "rss_peak_bytes": 1857511424,
+      "rss_diff_bytes": 36286464,
+      "rss_samples_count": 221,
+      "rss_sampler_errors": 0,
+      "cuda_start_bytes": 68708352,
+      "cuda_peak_bytes": 74462208,
+      "cuda_allocated_bytes": 74462208,
+      "cuda_diff_bytes": 5753856,
+      "device": "cuda"
+    },
+    "eval_wall_clock_per_regime_boundary": [
+      0.0037772999930894002,
+      0.0034588000125950202,
+      0.0035050000005867332,
+      0.003465200003120117,
+      0.0049629999994067475,
+      0.0034442999894963577,
+      0.003450500007602386,
+      0.003467100003035739,
+      0.0034465999924577773
+    ]
+  },
+  "answer_cost": {
+    "1": {
+      "batch_size": 1,
+      "rows_timed": 1,
+      "counted_macs": 272000,
+      "active_bytes": 1095041,
+      "latency_median_s": 0.00041744999907677993,
+      "latency_mean_s": 0.0004194799985270947,
+      "latency_std_s": 8.754907175126805e-06,
+      "latency_cv": 0.0208708572658234,
+      "latency_p95_s": 0.00043095999644719994,
+      "items_per_second": 2395.4964719405207
+    },
+    "32": {
+      "batch_size": 32,
+      "rows_timed": 32,
+      "counted_macs": 8704000,
+      "active_bytes": 1095041,
+      "latency_median_s": 0.0004275999963283539,
+      "latency_mean_s": 0.0004337199978181161,
+      "latency_std_s": 1.680349076216056e-05,
+      "latency_cv": 0.03874271614565311,
+      "latency_p95_s": 0.0004613199933373835,
+      "items_per_second": 74836.29624595976
+    }
+  },
+  "memory_bytes": 1590580,
+  "accounting": {
+    "n_experts": 1,
+    "params": 273741,
+    "stored_vectors": 968,
+    "memory_bytes": 1590580,
+    "gate_macs": 0,
+    "expert_macs": 272000,
+    "predict_macs": 272000
+  },
+  "memory_bytes_by_regime": {
+    "0": 1299764,
+    "1": 1504564,
+    "2": 1590580,
+    "3": 1590580,
+    "4": 1590580,
+    "5": 1590580
+  },
+  "describe": {
+    "arm": "A3",
+    "name": "ReplayNet at equal memory",
+    "seed": 800,
+    "hidden": 1024,
+    "inner_steps": 20,
+    "replay_size": 968,
+    "target_pool_bytes": 1590840
+  },
+  "device": "cuda",
+  "gpu": {
+    "name": "NVIDIA GeForce RTX 3060",
+    "driver": "610.60",
+    "torch": "2.6.0+cu124",
+    "cuda": "12.4",
+    "state_before": {
+      "utilization_gpu_pct": 0,
+      "utilization_mem_pct": 0,
+      "memory_used_bytes": 4226846720,
+      "memory_total_bytes": 12884901888,
+      "power_watts": 43.723
+    }
+  },
+  "vram_peak_bytes": 74462208,
+  "numerics": {
+    "allow_tf32_matmul": false,
+    "allow_tf32_cudnn": false,
+    "cublas_workspace_config": ":4096:8",
+    "deterministic_algorithms": true,
+    "deterministic_warn_only": true,
+    "precision": "fp32_fp64"
+  },
+  "warmup_s": 0.21495219999633264,
+  "energy": {
+    "available": true,
+    "cooldown_s": 5.0,
+    "idle_baseline": {
+      "duration_s": 1.0079562999890186,
+      "mean_watts": 43.5667,
+      "min_watts": 43.561,
+      "max_watts": 43.58,
+      "samples_count": 20,
+      "samples": [
+        43.58,
+        43.58,
+        43.58,
+        43.58,
+        43.58,
+        43.58,
+        43.561,
+        43.561,
+        43.561,
+        43.561,
+        43.561,
+        43.561,
+        43.561,
+        43.561,
+        43.561,
+        43.561,
+        43.561,
+        43.561,
+        43.561,
+        43.561
+      ]
+    },
+    "idle_stable": true,
+    "answer_batch_32": {
+      "counter_joules": 47.535,
+      "integrated_joules": 44.306523943857385,
+      "mean_watts": 47.53219084757285,
+      "duration_s": 1.0000590999989072,
+      "calls": 2361,
+      "joules_per_call": 0.020133418043202032,
+      "power_samples_count": 22,
+      "power_sample_errors": 0,
+      "gpu_state_before": {
+        "utilization_gpu_pct": 0,
+        "utilization_mem_pct": 0,
+        "memory_used_bytes": 4435161088,
+        "memory_total_bytes": 12884901888,
+        "power_watts": 43.561
+      },
+      "gpu_state_after": {
+        "utilization_gpu_pct": 23,
+        "utilization_mem_pct": 2,
+        "memory_used_bytes": 4435161088,
+        "memory_total_bytes": 12884901888,
+        "power_watts": 45.398
+      }
+    },
+    "update_100_steps": {
+      "counter_joules": 211.714,
+      "integrated_joules": 207.97076342366248,
+      "mean_watts": 50.910013423880166,
+      "duration_s": 4.158592500010855,
+      "calls": 1,
+      "joules_per_call": 211.714,
+      "power_samples_count": 84,
+      "power_sample_errors": 0,
+      "gpu_state_before": {
+        "utilization_gpu_pct": 23,
+        "utilization_mem_pct": 2,
+        "memory_used_bytes": 4435161088,
+        "memory_total_bytes": 12884901888,
+        "power_watts": 45.398
+      },
+      "gpu_state_after": {
+        "utilization_gpu_pct": 31,
+        "utilization_mem_pct": 4,
+        "memory_used_bytes": 4439355392,
+        "memory_total_bytes": 12884901888,
+        "power_watts": 51.008
+      }
+    },
+    "joules_per_answer_batch_32": 0.020133418043202032,
+    "joules_per_100_updates": 211.714,
+    "net_joules_per_answer_batch_32": 0.0016796803083767927,
+    "net_joules_per_100_updates": 30.537848129777103
+  },
+  "macs_check": {
+    "update": "equal",
+    "answer_1": "equal",
+    "answer_32": "equal"
+  }
+}
