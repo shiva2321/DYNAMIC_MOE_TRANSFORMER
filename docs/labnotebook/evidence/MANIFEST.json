@@ -1,6 +1,6 @@
 {
- "generated": "2026-11-03 09:30:16",
- "head": "e365275",
+ "generated": "2026-11-03 09:30:45",
+ "head": "1be43ed",
  "branch": "main",
  "n_files": 1349,
  "files": [
@@ -152,7 +152,7 @@
    "path": "docs/superpowers/handoff/M1_GPU_REPEAT_RESULT.md",
    "sha256": "f9360dbc5eb2184a779bee446190d17ce2829d8036acb8b2994826f3b40e9b2a",
    "bytes": 17108,
-   "last_commit": null
+   "last_commit": "1be43ed"
   },
   {
    "path": "docs/superpowers/handoff/M1_GPU_REPEAT_SPEC.md",
@@ -452,19 +452,19 @@
    "path": "m1/gpu_repeat.py",
    "sha256": "ea705fbc67d2025ff3753664c4e42f7eb152cb74b8915a2e2f93fe11ad1ab7a3",
    "bytes": 35883,
-   "last_commit": null
+   "last_commit": "1be43ed"
   },
   {
    "path": "m1/gpu_report.py",
    "sha256": "a325beb5296b2c021603c67232b2805adee4cb98e3e65631cb60be04b289b455",
    "bytes": 23971,
-   "last_commit": null
+   "last_commit": "1be43ed"
   },
   {
    "path": "m1/gpu_run.sh",
    "sha256": "75f2d31b43dde20733a7d68ba2bc5b82b3cc8dc9e427591c39920f38d53b588e",
    "bytes": 1527,
-   "last_commit": null
+   "last_commit": "1be43ed"
   },
   {
    "path": "research/DYNAMIC_MOE_RESEARCH_AND_DESIGN.md",
@@ -7934,49 +7934,49 @@
    "path": "results/m1/smoke/gpu/cells/B1_n10_A3__seed800.json",
    "sha256": "3c14ce40d47ff91f6237a6055c35c0785840473070dbfb9cdd3c256084d2bdda",
    "bytes": 12201,
-   "last_commit": null
+   "last_commit": "1be43ed"
   },
   {
    "path": "results/m1/smoke/gpu/cells/B2_n6_A3__seed800.json",
    "sha256": "66a5baf37172df6d5cea9d91987264d2b3fd8bbf8aafbafcaa11e9085b713d07",
    "bytes": 8909,
-   "last_commit": null
+   "last_commit": "1be43ed"
   },
   {
    "path": "results/m1/smoke/gpu_review/cells_b2/B2_n6_A3__seed800.json",
    "sha256": "4f17bbfe8c6f5cd50eaa66d0764525b6c83afc96de14cc3051ae85d0d7a7af45",
    "bytes": 8904,
-   "last_commit": null
+   "last_commit": "1be43ed"
   },
   {
    "path": "results/m1/smoke/gpu_review/cells_b2/B2_n6_A6__seed800.json",
    "sha256": "b20f603d266ed8f86a0fcb6cb6991c3eb4a02778e5039058a818ca439ede5fd7",
    "bytes": 8741,
-   "last_commit": null
+   "last_commit": "1be43ed"
   },
   {
    "path": "results/m1/smoke/gpu_review/cells_b2/B2_n6_A8__seed800.json",
    "sha256": "bf0929b506973a16cc93a2a3254f43eaf191267d8aa8a229beab87480d594463",
    "bytes": 8700,
-   "last_commit": null
+   "last_commit": "1be43ed"
   },
   {
    "path": "results/m1/smoke/gpu_review/cells_b2_patched/B2_n6_A3__seed800.json",
    "sha256": "ae5ef368384323c3ad2b7d3eaab5c3a9bc9ef749b789bbae8830c16f9a92590e",
    "bytes": 9170,
-   "last_commit": null
+   "last_commit": "1be43ed"
   },
   {
    "path": "results/m1/smoke/gpu_review/report/gpu_verdicts.json",
    "sha256": "319748ffe7b9b3805c053e966b592876f9d130418d35257598562c4448602fff",
    "bytes": 192910,
-   "last_commit": null
+   "last_commit": "1be43ed"
   },
   {
    "path": "results/m1/smoke/gpu_review/report/REPORT_M1_GPU.md",
    "sha256": "72e249f6476598f7a25c5bc4b984bebb7452f0764193801f66096aef2b852347",
    "bytes": 11431,
-   "last_commit": null
+   "last_commit": "1be43ed"
   },
   {
    "path": "results/m1/tuning/B1.json",
@@ -8096,7 +8096,7 @@
    "path": "tests/m1/test_gpu_repeat.py",
    "sha256": "15dda9df4b3445015628b112d252184c31fed60643cf6a4c44a48899d2c6b2f1",
    "bytes": 15666,
-   "last_commit": null
+   "last_commit": "1be43ed"
   }
  ]
 }
