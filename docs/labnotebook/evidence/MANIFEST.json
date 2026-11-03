@@ -1,8 +1,8 @@
 {
- "generated": "2026-11-03 05:04:59",
- "head": "e85041c",
+ "generated": "2026-11-03 07:16:41",
+ "head": "1177f9f",
  "branch": "main",
- "n_files": 1329,
+ "n_files": 1332,
  "files": [
   {
    "path": "demos/demo_growmoe_continual_learning.py",
@@ -27,6 +27,12 @@
    "sha256": "3ea954ca9d51919537fe0bd84ee3a500fb9e0b401fe5ae7111a2370bc9ae3af9",
    "bytes": 8519,
    "last_commit": "84862b0"
+  },
+  {
+   "path": "docs/roadmap/M1_FREEZE.json",
+   "sha256": "f19dbd67dd6e08729acc75f7670b6d38f4822b9dcda08d4adbb5ef2d722f3bc3",
+   "bytes": 4772,
+   "last_commit": "1177f9f"
   },
   {
    "path": "docs/roadmap/PRIOR_ART.md",
@@ -411,6 +417,12 @@
    "sha256": "152ef314a8862f657eaf1de014fb6d3de491e98b9d33b48c7a31dc75d4cdd776",
    "bytes": 9740,
    "last_commit": "8312306"
+  },
+  {
+   "path": "m1/diag_a3_edge.py",
+   "sha256": "109e97cb3e63018c22a538845948e15b5b03bd065f58b9ce2fccdf13aba8d0eb",
+   "bytes": 1576,
+   "last_commit": null
   },
   {
    "path": "research/DYNAMIC_MOE_RESEARCH_AND_DESIGN.md",
@@ -7853,6 +7865,12 @@
    "last_commit": "e85041c"
   },
   {
+   "path": "results/m1/diag/a3_edge_probe_B1.json",
+   "sha256": "e057f8b231e5c7576c042118586e3fa2cb71a6974d493c3296d153f521119861",
+   "bytes": 974,
+   "last_commit": null
+  },
+  {
    "path": "results/m1/harness/harness_check_N10_seeds100.json",
    "sha256": "0364224f7a1818d75cc962800448448f1bc211c0a9344ea2aae3b36e1a7ac4ef",
    "bytes": 1594,
@@ -7866,33 +7884,33 @@
   },
   {
    "path": "results/m1/tuning/B1.json",
-   "sha256": "02e82ee4299145331d92b68d2a64dcfae704814f970f6e724c340f874b29749c",
+   "sha256": "f4b184d70cb11cf1e9915cd7ef453dfb139dcb1a44d6e9b8872b6e62b29de9fd",
    "bytes": 89597,
-   "last_commit": "5377beb"
+   "last_commit": "a1464ee"
   },
   {
    "path": "results/m1/tuning/B2.json",
-   "sha256": "151dd1f3a220334bba0425bc5cb75e8fec981998336c2aa69993228b1fa2ef17",
+   "sha256": "b8ac3b331512f61e5245de1a1691354b3d85b9ec6d3549a0624aeba6ea5b754b",
    "bytes": 90030,
-   "last_commit": "5377beb"
+   "last_commit": "a1464ee"
   },
   {
    "path": "results/m1/tuning/B3drift.json",
-   "sha256": "e598d1c7b306f01ef2862575945c8e40148bdccf1c575259c328456f986d346e",
+   "sha256": "72f13a0fcebf0cdf1ee5780e5bcf005ca580eae34dc62c8749d5497b4726fe22",
    "bytes": 95892,
-   "last_commit": "5377beb"
+   "last_commit": "a1464ee"
   },
   {
    "path": "results/m1/tuning/B3mix.json",
-   "sha256": "15bf3c52409eb60749c2c62ae403176458445d4aedb6b9e581d1ea761b772e02",
+   "sha256": "e57e87b2c1322d0331c00cb8f8829bf19aa980ee4a109b870d151e1e8b5e0777",
    "bytes": 95890,
-   "last_commit": "5377beb"
+   "last_commit": "a1464ee"
   },
   {
    "path": "results/m1/tuning/B3seq.json",
-   "sha256": "0713c24a877fbe89a36d57ca5833a81eebbe5bdd8862c84ba006e2688c947927",
+   "sha256": "5f29aef3e68fc6eb9facaa4d3c1f2d33157a3eda16b53365df5ffb280fedc928",
    "bytes": 95890,
-   "last_commit": "5377beb"
+   "last_commit": "a1464ee"
   },
   {
    "path": "results/unimoe/ANALYSIS.md",
