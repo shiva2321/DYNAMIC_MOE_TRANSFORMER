@@ -65,6 +65,9 @@ class DynamicMorphicMoE(nn.Module):
         tau_split: float = 1.25,
         tau_death: float = 0.04,
         min_experts: int = 2,
+        maturity_age: int = 200,
+        tau_novelty: float = 2.5,
+        entropy_floor: float = 0.3,
     ):
         super().__init__()
         self.d_model = d_model
@@ -72,10 +75,15 @@ class DynamicMorphicMoE(nn.Module):
         self.tau_split = tau_split
         self.tau_death = tau_death
         self.min_experts = min_experts
+        self.maturity_age = maturity_age
+        self.tau_novelty = tau_novelty
+        self.entropy_floor = entropy_floor
 
         self.experts = nn.ModuleList([ComplexExpert(d_model, d_ff) for _ in range(initial_experts)])
         self.router_linear = nn.Linear(2 * d_model, initial_experts)
         self.register_buffer("expert_usage", torch.ones(initial_experts) / initial_experts)
+        self.register_buffer("expert_age", torch.zeros(initial_experts))
+        self.register_buffer("expert_frozen", torch.zeros(initial_experts, dtype=torch.bool))
         self._last_entropy = torch.tensor(0.0)
 
     @property
@@ -100,6 +108,7 @@ class DynamicMorphicMoE(nn.Module):
         if self.training:
             with torch.no_grad():
                 self.expert_usage.mul_(0.9).add_(mean_probs.detach() * 0.1)
+                self.expert_age.add_(1.0)
 
         acc_r = torch.zeros_like(z_r)
         acc_i = torch.zeros_like(z_i)
@@ -112,7 +121,20 @@ class DynamicMorphicMoE(nn.Module):
 
         return acc_r, acc_i, entropy
 
-    def mutate_topology(self, last_entropy: Optional[float] = None) -> Tuple[bool, bool, str]:
+    def freeze_mature_experts(self) -> int:
+        newly_frozen = 0
+        for idx, expert in enumerate(self.experts):
+            if not bool(self.expert_frozen[idx]) and self.expert_age[idx].item() >= self.maturity_age:
+                for p in expert.parameters():
+                    p.requires_grad_(False)
+                with torch.no_grad():
+                    self.expert_frozen[idx] = True
+                newly_frozen += 1
+        return newly_frozen
+
+    def mutate_topology(
+        self, last_entropy: Optional[float] = None, novelty_score: Optional[float] = None
+    ) -> Tuple[bool, bool, str]:
         if last_entropy is None:
             last_entropy = self._last_entropy.item()
 
@@ -121,7 +143,14 @@ class DynamicMorphicMoE(nn.Module):
         action_log = []
         device = self.router_linear.weight.device
 
-        if last_entropy > self.tau_split:
+        entropy_trigger = last_entropy > self.tau_split
+        novelty_trigger = (
+            novelty_score is not None
+            and novelty_score > self.tau_novelty
+            and last_entropy > self.entropy_floor
+        )
+
+        if entropy_trigger or novelty_trigger:
             most_used_idx = int(torch.argmax(self.expert_usage).item())
             new_expert = self.experts[most_used_idx].clone_with_mutation(mutation_std=0.015).to(device)
             self.experts.append(new_expert)
@@ -144,6 +173,12 @@ class DynamicMorphicMoE(nn.Module):
                 [self.expert_usage, torch.tensor([self.expert_usage[most_used_idx].item() * 0.5], device=device)]
             )
             self._replace_buffer("expert_usage", new_usage)
+
+            new_age = torch.cat([self.expert_age, torch.zeros(1, device=device)])
+            self._replace_buffer("expert_age", new_age)
+
+            new_frozen = torch.cat([self.expert_frozen, torch.zeros(1, dtype=torch.bool, device=device)])
+            self._replace_buffer("expert_frozen", new_frozen)
 
             spawned = True
             action_log.append(f"Split parent expert #{most_used_idx} -> New Total: {len(self.experts)}")
@@ -168,9 +203,14 @@ class DynamicMorphicMoE(nn.Module):
                 new_usage = self.expert_usage[keep_indices].clone()
                 self._replace_buffer("expert_usage", new_usage)
 
+                new_age = self.expert_age[keep_indices].clone()
+                self._replace_buffer("expert_age", new_age)
+
+                new_frozen = self.expert_frozen[keep_indices].clone()
+                self._replace_buffer("expert_frozen", new_frozen)
+
                 pruned = True
                 action_log.append(f"Expunged dormant expert #{least_idx} -> New Total: {len(self.experts)}")
 
         log_str = "; ".join(action_log) if action_log else "Stable"
         return spawned, pruned, log_str
-
