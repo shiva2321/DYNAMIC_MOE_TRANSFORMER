@@ -1,8 +1,8 @@
 {
- "generated": "2026-11-03 09:30:45",
- "head": "1be43ed",
+ "generated": "2026-11-03 09:46:06",
+ "head": "f5ea5c7",
  "branch": "main",
- "n_files": 1349,
+ "n_files": 1351,
  "files": [
   {
    "path": "demos/demo_growmoe_continual_learning.py",
@@ -107,6 +107,12 @@
    "last_commit": "fc6cda2"
   },
   {
+   "path": "docs/superpowers/handoff/KICKOFF_M2_READING_2026-11-03.md",
+   "sha256": "708274464efb5d3e62d0980e3c09d1342e4d4fbf0280352541b9e9d644f90774",
+   "bytes": 1556,
+   "last_commit": null
+  },
+  {
    "path": "docs/superpowers/handoff/KICKOFF_M5_REAL_TEXT_STREAM_2026-10-13.md",
    "sha256": "758818726e4d8b992a2a57627b16c094a294923c661b800dcaacce9ee5ade56c",
    "bytes": 4897,
@@ -195,6 +201,12 @@
    "sha256": "9b447db37460b75eebe3b3b07e8342997c5a90b70396370d218f2610ec814b7c",
    "bytes": 22994,
    "last_commit": "6a78a2d"
+  },
+  {
+   "path": "docs/superpowers/handoff/M2_READING_SPEC.md",
+   "sha256": "1bbcab2b7e1dcfaa3e8e9e05b7c2f9e3cae7ba1917e984d167d6ea59b2531302",
+   "bytes": 6531,
+   "last_commit": null
   },
   {
    "path": "docs/superpowers/handoff/REVIEW_2026-10-05_R10_AND_Y1.md",
