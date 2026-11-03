@@ -20,8 +20,12 @@ class GeometricCorrectiveManifold(nn.Module):
         self.corrector_linear2 = ComplexLinear(d_model, d_model)
 
         self.register_buffer("running_error_magnitude", torch.tensor(0.5, dtype=torch.float32))
+        self.register_buffer("running_error_variance", torch.tensor(1.0, dtype=torch.float32))
+        self.last_novelty_score = torch.tensor(0.0)
 
-    def forward(self, z_r: torch.Tensor, z_i: torch.Tensor) -> Tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
+    def forward(
+        self, z_r: torch.Tensor, z_i: torch.Tensor
+    ) -> Tuple[torch.Tensor, torch.Tensor, torch.Tensor, torch.Tensor]:
         p1_r, p1_i = self.predictor_stage1(z_r, z_i)
         pred_r, pred_i = self.predictor_stage2(p1_r, p1_i)
 
@@ -31,11 +35,18 @@ class GeometricCorrectiveManifold(nn.Module):
         error_norm = torch.sqrt(delta_r ** 2 + delta_i ** 2 + 1e-8)
         batch_mean_error = error_norm.mean()
 
+        prior_mean = self.running_error_magnitude.detach().clone()
+        prior_var = self.running_error_variance.detach().clone()
+        novelty_score = (batch_mean_error.detach() - prior_mean) / (torch.sqrt(prior_var) + 1e-8)
+        self.last_novelty_score = novelty_score
+
         if self.training:
             with torch.no_grad():
+                deviation = batch_mean_error.detach() - prior_mean
                 self.running_error_magnitude.mul_(self.momentum).add_(
                     batch_mean_error.detach() * (1.0 - self.momentum)
                 )
+                self.running_error_variance.mul_(self.momentum).add_((deviation ** 2) * (1.0 - self.momentum))
 
         c1_r, c1_i = self.corrector_linear1(delta_r, delta_i)
         c1_act_r, c1_act_i = self.act(c1_r, c1_i)
@@ -44,5 +55,4 @@ class GeometricCorrectiveManifold(nn.Module):
         corrected_r = z_r + corr_r
         corrected_i = z_i + corr_i
 
-        return corrected_r, corrected_i, batch_mean_error
-
+        return corrected_r, corrected_i, batch_mean_error, novelty_score
