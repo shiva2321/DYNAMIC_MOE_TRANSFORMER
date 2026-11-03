@@ -7,6 +7,8 @@ from dmoe.encoder import UniversalMultimodalEncoder
 from dmoe.manifold import GeometricCorrectiveManifold
 from dmoe.decoder import UniversalProjectiveDecoder
 from dmoe.checkpoint import save_checkpoint, load_checkpoint
+from dmoe.replay_buffer import ReplayBuffer
+from dmoe.continual import ContinualLearner
 
 __all__ = [
     "SelfStabilizingDynamicMorphicMoE",
@@ -23,5 +25,6 @@ __all__ = [
     "UniversalProjectiveDecoder",
     "save_checkpoint",
     "load_checkpoint",
+    "ReplayBuffer",
+    "ContinualLearner",
 ]
-
