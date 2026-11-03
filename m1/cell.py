@@ -22,6 +22,7 @@ from growmoe.accounting import measured_gate_macs_per_input, pool_report
 from growmoe.metrics import accuracy_stats
 from m1.arms import build_arm, pool_budget_bytes, pool_budget_macs
 from m1.beds import Bed
+from m1.freeze import freeze_digest, require_frozen
 
 SCHEMA_VERSION = "1.2.0"
 _REQUIRED_ROOT = (
@@ -232,7 +233,7 @@ def execute_cell(
 ) -> Dict[str, Any]:
     """Execute one benchmark cell (bed x arm x seed) and gather all costlab metrics."""
     if split == "report":
-        raise ValueError("Stage B refuses --split report; report seeds are reserved.")
+        require_frozen([bed.seed])
 
     if profile not in ("full", "det", "light"):
         raise ValueError(f"Unknown profile {profile!r}; must be 'full' (everything), 'det' (deterministic metrics only, no timing) or 'light' (tuning).")
@@ -400,6 +401,7 @@ def execute_cell(
         "arm": arm_name,
         "seed": bed.seed,
         "split": split,
+        "freeze_sha256": freeze_digest() if split == "report" else None,
         "commit": commit,
         "environment": env_info,
         "pinning": pinning,

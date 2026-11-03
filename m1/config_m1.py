@@ -97,6 +97,9 @@ EDGE_EXTEND_CAP_STEPS: int = 200
 
 EDGE_EXTEND_FACTOR_WIDTH: int = 2
 EDGE_EXTEND_CAP_WIDTH: int = 8192
+# The replay network A3 still gained about one point on B1 from 8192 to 16384 (edge probe of 2026-11-03, E-072), so its cap is one doubling higher.
+# Raising it for every width arm would also re-open A8, a ceiling arm that is not a competitor (E-068).
+EDGE_EXTEND_CAP_WIDTH_BY_ARM: Dict[str, int] = {"A3": 16384}
 
 EDGE_EXTEND_FACTOR_D: int = 2
 EDGE_EXTEND_CAP_D: int = 8192

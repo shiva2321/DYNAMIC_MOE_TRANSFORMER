@@ -1036,3 +1036,66 @@ def test_memory_by_regime_keeps_the_first_visit_of_each_regime():
     by_regime = [rec["memory_bytes_by_regime"][str(r)] for r in range(bed.n_regimes)]
     assert by_regime == sorted(by_regime) and len(set(by_regime)) == len(by_regime)
     assert by_regime[-1] < rec["memory_bytes"]                                       # the revisit phases added samples after the last first visit
+
+
+def _fake_frozen_root(tmp_path):
+    """A directory holding small stand-ins for every frozen file."""
+    import m1.freeze as freeze
+
+    for name in freeze.FROZEN_FILES + freeze.RECORDED_FILES:
+        p = tmp_path / name
+        p.parent.mkdir(parents=True, exist_ok=True)
+        p.write_text(f"content of {name}", encoding="utf-8")
+    return freeze
+
+
+def test_freeze_opens_the_report_seeds_only_while_the_frozen_files_match(tmp_path):
+    freeze = _fake_frozen_root(tmp_path)
+    assert "not frozen" in freeze.check_frozen([810], tmp_path)[0]                    # no freeze file: closed
+    with pytest.raises(ValueError, match="refuses --split report"):
+        freeze.require_frozen([810], tmp_path)
+
+    freeze.write_freeze(tmp_path, readings={"M1-8": "the A2 record with the most regimes"}, run_plan={"timed": [810, 811]})
+    assert freeze.check_frozen(range(810, 820), tmp_path) == []                       # open for the ten report seeds
+    assert freeze.freeze_digest(tmp_path) is not None
+    with pytest.raises(FileExistsError):
+        freeze.write_freeze(tmp_path)                                                 # a freeze is never overwritten
+
+    assert "seed 820" in freeze.check_frozen([810, 820], tmp_path)[0]                 # the reserve stays closed
+    assert "seed 800" in freeze.check_frozen([800], tmp_path)[0]                      # so do the development seeds
+
+    (tmp_path / "m1/config_m1.py").write_text("an edit after the freeze", encoding="utf-8")
+    assert any("m1/config_m1.py changed after the freeze" in p for p in freeze.check_frozen([810], tmp_path))
+    (tmp_path / "m1/report.py").write_text("a repair of the report script", encoding="utf-8")
+    assert not any("report.py" in p for p in freeze.check_frozen([810], tmp_path))   # code files are recorded, not enforced
+
+    (tmp_path / "results/m1/tuning/B1.json").unlink()
+    assert any("B1.json no longer exists" in p for p in freeze.check_frozen([810], tmp_path))
+
+
+def test_report_cells_carry_the_freeze_digest_and_the_queue_needs_tuning(tmp_path, monkeypatch, small_bed):
+    import m1.cell as cell_mod
+
+    seen = []
+    monkeypatch.setattr(cell_mod, "require_frozen", lambda seeds, *a, **k: seen.append(list(seeds)))
+    monkeypatch.setattr(cell_mod, "freeze_digest", lambda *a, **k: "feedface")
+    rec = execute_cell(small_bed, "A1", split="report", profile="det")
+    assert seen == [[small_bed.seed]] and rec["split"] == "report" and rec["freeze_sha256"] == "feedface"
+    assert execute_cell(small_bed, "A1", split="dev", profile="det")["freeze_sha256"] is None
+
+    monkeypatch.setattr(queue_mod, "require_frozen", lambda *a, **k: None)
+    with pytest.raises(ValueError, match="without --tuning"):
+        run_queue(split="report", beds=["B1"], ns=[2], arms=["A1"], seeds=[810], out=tmp_path)
+
+
+def test_a_raised_width_cap_makes_only_that_arms_tuning_entry_stale(tmp_path, monkeypatch):
+    import m1.tune as tune_mod
+
+    driver = TuningDriver("B1", 30, tmp_path, seeds=[800])
+    assert tune_mod.EDGE_EXTEND_CAP_WIDTH_BY_ARM["A3"] > tune_mod.EDGE_EXTEND_CAP_WIDTH
+    arms = ("A3", "A3-2", "A4", "A8")
+    with_cap = {a: driver.grid_ref(a) for a in arms}
+    monkeypatch.setattr(tune_mod, "EDGE_EXTEND_CAP_WIDTH_BY_ARM", {})
+    without_cap = {a: driver.grid_ref(a) for a in arms}
+    assert with_cap["A3"] != without_cap["A3"] and with_cap["A3-2"] != without_cap["A3-2"]
+    assert with_cap["A4"] == without_cap["A4"] and with_cap["A8"] == without_cap["A8"]

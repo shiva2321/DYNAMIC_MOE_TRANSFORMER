@@ -1029,17 +1029,17 @@
       ]
     },
     "A3": {
-      "grid_ref": "416157882ae0dd3a",
+      "grid_ref": "35117a818aea27a4",
       "chosen": {
-        "hidden": 8192,
+        "hidden": 16384,
         "inner_steps": 20
       },
       "at_edge": true,
-      "tuning_ref": "34380446bbf2de987d6b8a60bad98aa11159a924c71631f65ddc5c672eed25ce",
+      "tuning_ref": "6b1ac21805cb17083cfcae4791a1a7feea706c9cb88bedb28702338476911891",
       "best_summary": {
-        "mean_accuracy": 0.34576666613419854,
-        "mean_memory_bytes": 21535264.0,
-        "mean_wall_clock": 234.84800290000567
+        "mean_accuracy": 0.3527166662613551,
+        "mean_memory_bytes": 29956640.0,
+        "mean_wall_clock": 227.28562097997929
       },
       "trials": [
         {
@@ -2305,7 +2305,7 @@
       ]
     },
     "A3-2": {
-      "grid_ref": "ca2e43c8deedeea7",
+      "grid_ref": "629dd4e7fb03879e",
       "chosen": {
         "hidden": 4096,
         "inner_steps": 20

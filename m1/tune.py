@@ -39,6 +39,7 @@ from m1.config_m1 import (
     EDGE_EXTEND_CAP_D,
     EDGE_EXTEND_CAP_STEPS,
     EDGE_EXTEND_CAP_WIDTH,
+    EDGE_EXTEND_CAP_WIDTH_BY_ARM,
     EDGE_EXTEND_FACTOR_D,
     EDGE_EXTEND_FACTOR_STEPS,
     EDGE_EXTEND_FACTOR_WIDTH,
@@ -380,6 +381,8 @@ class TuningDriver:
         ref_pool = "A2" if arm_id.endswith("-2") else {"A3": "A1", "A4": "A1", "A7": "A1"}.get(base)
         payload = {"arm": arm_id, "grid": grids[base], "seeds": self.seeds, "n": self.n_regimes, "smoke": s,
                    "ref": self.state["arms"].get(ref_pool, {}).get("tuning_ref") if ref_pool else None}
+        if base in EDGE_EXTEND_CAP_WIDTH_BY_ARM and not s:
+            payload["cap"] = EDGE_EXTEND_CAP_WIDTH_BY_ARM[base]                  # a raised cap makes the entry stale, so its edge extension is run again
         return hashlib.sha256(json.dumps(payload, sort_keys=True, default=str).encode("utf-8")).hexdigest()[:16]
 
     def tune_arm(self, arm_id: str) -> Dict[str, Any]:
@@ -456,7 +459,8 @@ class TuningDriver:
             best = select_best_candidate(trials_summary)
             at_edge = False
             if best["config"]["hidden"] == grid_w[-1] and not self.smoke:
-                best, at_edge = self._extend_edge(arm_id, best, "hidden", EDGE_EXTEND_FACTOR_WIDTH, EDGE_EXTEND_CAP_WIDTH, ref_pool=ref_pool)
+                cap_w = EDGE_EXTEND_CAP_WIDTH_BY_ARM.get(arm_id[:-2] if arm_id.endswith("-2") else arm_id, EDGE_EXTEND_CAP_WIDTH)
+                best, at_edge = self._extend_edge(arm_id, best, "hidden", EDGE_EXTEND_FACTOR_WIDTH, cap_w, ref_pool=ref_pool)
 
         elif arm_id in ("A4", "A4-2"):
             grid_w = SMOKE_GRID_A4_WIDTH if self.smoke else GRID_A4_WIDTH

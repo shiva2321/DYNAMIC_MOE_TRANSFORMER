@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import argparse
-import sys
 import time
 from pathlib import Path
 from typing import Any, Dict, List, Optional
@@ -21,6 +20,7 @@ from m1.cell import (
     save_cell_record,
 )
 from m1.config_m1 import H_CANDIDATES_ALL_BEDS, H_CANDIDATES_B3, PINNING_CPUS, PINNING_THREADS
+from m1.freeze import require_frozen
 
 ALL_ARM_ORDER = [
     "A1",
@@ -84,7 +84,7 @@ def load_tuning_map(tuning_arg: Optional[str], bed_name: str) -> Dict[str, Any]:
 
 def parse_args(argv: Optional[List[str]] = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Run queue of benchmark cells idempotently.")
-    parser.add_argument("--split", default="dev", help="Split name ('dev' only; 'report' refused).")
+    parser.add_argument("--split", default="dev", help="Split name ('dev', or 'report' once m1.freeze has frozen the preregistration; report seeds only).")
     parser.add_argument("--beds", default="B1", help="Comma-separated bed names (default: B1).")
     parser.add_argument("--ns", default="10", help="Comma-separated regime counts (default: 10).")
     parser.add_argument("--arms", default=",".join(ALL_ARM_ORDER), help="Comma-separated arms.")
@@ -114,7 +114,9 @@ def run_queue(
 ) -> None:
     """Execute queue of cells, skipping records that are complete, valid, and match current config."""
     if split == "report":
-        raise ValueError("Stage B refuses --split report; report seeds are reserved.")
+        require_frozen(seeds)
+        if not tuning_dir:
+            raise ValueError("Stage B refuses --split report without --tuning: the report seeds run the tuned operating points only.")
 
     shard_k, shard_m = (int(v) for v in shard.split("/"))
     if not (0 <= shard_k < shard_m):
@@ -246,11 +248,7 @@ def run_queue(
 def main(argv: Optional[List[str]] = None) -> None:
     args = parse_args(argv)
 
-    if args.split == "report":
-        print("Error: --split report is refused; report seeds are reserved.", file=sys.stderr)
-        sys.exit(1)
-
-    beds = [b.strip() for b in args.beds.split(",") if b.strip()]
+    beds =[b.strip() for b in args.beds.split(",") if b.strip()]
     ns = [int(n.strip()) for n in args.ns.split(",") if n.strip()]
     arms = [a.strip() for a in args.arms.split(",") if a.strip()]
     seeds = parse_seeds(args.seeds)
