@@ -84,3 +84,41 @@ def test_skip_hint_prevents_loop_even_when_enabled():
     x = torch.randint(0, 100, (1, 4), dtype=torch.long)
     out = model(x)
     assert out["simulation_steps_used"] == 0
+
+
+def test_damped_loop_stays_bounded_under_forced_excessive_iterations():
+    # Forces far more iterations than any sane trained cap (20, vs. the
+    # 4-ish range this phase trains with) and asserts the damping
+    # mechanism keeps the latent state finite and bounded -- direct
+    # evidence against the divergence this whole design exists to avoid.
+    model = _sim_model(
+        max_simulation_steps=20, theta_converge=-1000.0, min_improvement=-1000.0, skip_threshold=-100.0
+    )
+    model.eval()
+    x = torch.randint(0, 100, (2, 6), dtype=torch.long)
+    out = model(x)
+
+    max_r = out["z_real"].abs().max().item()
+    max_i = out["z_imag"].abs().max().item()
+    print(f"\nForced 20-step loop max |z_real|={max_r:.4f}, max |z_imag|={max_i:.4f}")
+
+    assert out["simulation_steps_used"] == 20
+    assert torch.isfinite(out["z_real"]).all()
+    assert torch.isfinite(out["z_imag"]).all()
+    assert max_r < 1e4
+    assert max_i < 1e4
+
+
+def test_gradients_flow_through_damped_loop_including_damping_parameter():
+    model = _sim_model(max_simulation_steps=3, skip_threshold=-100.0)
+    model.train()
+    x = torch.randint(0, 100, (2, 4), dtype=torch.long)
+
+    out = model(x, output_head="token")
+    loss = out["output"].sum()
+    loss.backward()
+
+    assert model.loop_damping_logit.grad is not None
+    assert not torch.isnan(model.loop_damping_logit.grad).any()
+    assert model.layers[-1].attn.q_proj.weight_real.grad is not None
+    assert not torch.isnan(model.layers[-1].attn.q_proj.weight_real.grad).any()
