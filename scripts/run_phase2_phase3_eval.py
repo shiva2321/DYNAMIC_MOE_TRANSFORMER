@@ -11,7 +11,7 @@ from dmoe.model import SelfStabilizingDynamicMorphicMoE
 from dmoe.continual import ContinualLearner
 from tests.test_jepa import _train_model, _train_and_eval_probe
 from tests.test_simulation_loop import _sim_model
-from tests.test_tokenizer_free import _structured_byte_batch
+from tests.test_tokenizer_free import _train_byte_model, _eval_topic_probe
 from tests.test_continual_learning import (
     _retention_model,
     _task_a_batch,
@@ -178,66 +178,11 @@ def eval_phase3_tokenizer_free() -> dict:
     n_tokenized = sum(p.numel() for p in tokenized_model.parameters())
     n_byte = sum(p.numel() for p in byte_model.parameters())
 
-    def run_seed(seed: int):
-        def train_m(use_jepa: bool):
-            torch.manual_seed(seed)
-            m = SelfStabilizingDynamicMorphicMoE(
-                d_model=16,
-                num_heads=2,
-                d_ff=32,
-                initial_layers=1,
-                initial_experts=2,
-                theta_up=100.0,
-                theta_down=-1.0,
-                tokenizer_free=True,
-                chunk_size=4,
-            )
-            jepa_mod = JEPAModule(m.encoder, predictor_hidden_dim=32, mask_ratio=0.25, ema_decay=0.95)
-            params = list(m.parameters()) + (list(jepa_mod.trainable_parameters()) if use_jepa else [])
-            opt = torch.optim.AdamW(params, lr=5e-3)
-            for step in range(80):
-                torch.manual_seed(seed * 10000 + 1000 + step)
-                b_in, b_coarse_tgt, _ = _structured_byte_batch(batch_size=16)
-                opt.zero_grad()
-                out = m(b_in)
-                t_loss = F.cross_entropy(out["output"].reshape(-1, 256), b_coarse_tgt.reshape(-1))
-                if use_jepa:
-                    torch.manual_seed(seed * 10000 + 5000 + step)
-                    t_loss = t_loss + jepa_mod.compute_loss(b_in)
-                t_loss.backward()
-                opt.step()
-                if use_jepa:
-                    jepa_mod.update_target_encoder()
-            return m
-
-        def eval_p(m):
-            torch.manual_seed(seed + 100)
-            for p in m.encoder.parameters():
-                p.requires_grad_(False)
-            probe = torch.nn.Linear(m.d_model * 2, 16)
-            p_opt = torch.optim.AdamW(probe.parameters(), lr=2e-2)
-            for step in range(80):
-                torch.manual_seed(seed * 10000 + 9000 + step)
-                b_in, _, topics = _structured_byte_batch(batch_size=16)
-                with torch.no_grad():
-                    r, i = m.encoder(b_in)
-                    pooled = torch.cat([r.mean(dim=1), i.mean(dim=1)], dim=-1)
-                p_opt.zero_grad()
-                F.cross_entropy(probe(pooled), topics).backward()
-                p_opt.step()
-            torch.manual_seed(seed * 10000 + 9999)
-            eval_in, _, eval_topics = _structured_byte_batch(batch_size=64)
-            with torch.no_grad():
-                r, i = m.encoder(eval_in)
-                pooled = torch.cat([r.mean(dim=1), i.mean(dim=1)], dim=-1)
-                return F.cross_entropy(probe(pooled), eval_topics).item()
-
-        return eval_p(train_m(True)), eval_p(train_m(False))
-
     j_losses, b_losses = [], []
     wins = 0
     for s in range(20):
-        jl, bl = run_seed(s)
+        jl = _eval_topic_probe(_train_byte_model(use_jepa=True, seed=s), seed=s)
+        bl = _eval_topic_probe(_train_byte_model(use_jepa=False, seed=s), seed=s)
         j_losses.append(jl)
         b_losses.append(bl)
         wins += int(jl < bl)

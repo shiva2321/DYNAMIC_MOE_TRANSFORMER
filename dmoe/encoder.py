@@ -4,7 +4,9 @@ from typing import Tuple
 import torch
 import torch.nn as nn
 
-from dmoe.chunker import MultiScaleByteChunker
+from dmoe.chunker import BYTE_MASK_ID, MultiScaleByteChunker
+
+DEFAULT_VOCAB_MASK_ID = 31999
 
 
 class UniversalMultimodalEncoder(nn.Module):
@@ -31,6 +33,18 @@ class UniversalMultimodalEncoder(nn.Module):
         self.unify_real = nn.Linear(d_model, d_model)
         self.unify_imag = nn.Linear(d_model, d_model)
 
+    @property
+    def effective_chunk_size(self) -> int:
+        return self.chunk_size if self.tokenizer_free else 1
+
+    @property
+    def default_mask_token_id(self) -> int:
+        return BYTE_MASK_ID if self.tokenizer_free else DEFAULT_VOCAB_MASK_ID
+
+    def _embed_sequence(self, x: torch.Tensor) -> torch.Tensor:
+        embedder = self.byte_chunker if self.tokenizer_free else self.text_embed
+        return embedder(x)
+
     def _get_numeric_projector(self, feature_dim: int, device: torch.device) -> nn.Linear:
         key = str(feature_dim)
         if key not in self.numeric_projectors:
@@ -39,10 +53,7 @@ class UniversalMultimodalEncoder(nn.Module):
 
     def forward(self, x: torch.Tensor) -> Tuple[torch.Tensor, torch.Tensor]:
         if x.dim() == 2 and not x.is_floating_point():
-            if self.tokenizer_free:
-                emb = self.byte_chunker(x)
-            else:
-                emb = self.text_embed(x)
+            emb = self._embed_sequence(x)
             seq_len = emb.size(1)
             real_comp = self.unify_real(emb)
             positions = torch.arange(seq_len, device=x.device, dtype=torch.float32).unsqueeze(-1)

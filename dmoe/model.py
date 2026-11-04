@@ -5,6 +5,7 @@ import torch
 import torch.nn as nn
 
 from dmoe.encoder import UniversalMultimodalEncoder
+from dmoe.experts import first_triggered_reason
 from dmoe.manifold import GeometricCorrectiveManifold
 from dmoe.layer import DynamicMorphicTransformerLayer
 from dmoe.decoder import UniversalProjectiveDecoder
@@ -91,26 +92,26 @@ class SelfStabilizingDynamicMorphicMoE(nn.Module):
 
         damping = torch.sigmoid(self.loop_damping_logit)
         steps_used = 0
+        max_steps = (
+            random.randint(1, self.max_simulation_steps)
+            if self.training
+            else self.max_simulation_steps
+        )
+        previous_error = None
 
-        if self.training:
-            steps = random.randint(1, self.max_simulation_steps)
-            for _ in range(steps):
-                norm_r, norm_i = self._complex_unit_norm(z_r, z_i)
-                corrected_r, corrected_i, _, _ = self.manifold_corr(norm_r, norm_i)
-                candidate_r, candidate_i, _ = self.layers[-1](corrected_r, corrected_i)
-                z_r = z_r + damping * (candidate_r - z_r)
-                z_i = z_i + damping * (candidate_i - z_i)
-                steps_used += 1
-        else:
-            previous_error = None
-            for _ in range(self.max_simulation_steps):
-                norm_r, norm_i = self._complex_unit_norm(z_r, z_i)
-                corrected_r, corrected_i, structural_error, _ = self.manifold_corr(norm_r, norm_i)
-                candidate_r, candidate_i, _ = self.layers[-1](corrected_r, corrected_i)
-                z_r = z_r + damping * (candidate_r - z_r)
-                z_i = z_i + damping * (candidate_i - z_i)
-                steps_used += 1
+        for _ in range(max_steps):
+            norm_r, norm_i = self._complex_unit_norm(z_r, z_i)
+            corrected_r, corrected_i, structural_error, _ = self.manifold_corr(
+                norm_r, norm_i, update_stats=False
+            )
+            candidate_r, candidate_i, _ = self.layers[-1](
+                corrected_r, corrected_i, update_stats=False
+            )
+            z_r = z_r + damping * (candidate_r - z_r)
+            z_i = z_i + damping * (candidate_i - z_i)
+            steps_used += 1
 
+            if not self.training:
                 current_error = structural_error.item()
                 if current_error < self.theta_converge:
                     break
@@ -120,23 +121,28 @@ class SelfStabilizingDynamicMorphicMoE(nn.Module):
 
         return z_r, z_i, steps_used
 
-    def forward(self, x: torch.Tensor, output_head: str = "token") -> Dict[str, Union[torch.Tensor, List[torch.Tensor]]]:
+    def forward(
+        self, x: torch.Tensor, output_head: str = "token", update_stats: bool = True
+    ) -> Dict[str, Union[torch.Tensor, List[torch.Tensor], int]]:
         z_r, z_i = self.encoder(x)
-        z_r, z_i, structural_error, novelty_score = self.manifold_corr(z_r, z_i)
+        z_r, z_i, structural_error, novelty_score = self.manifold_corr(
+            z_r, z_i, update_stats=update_stats
+        )
 
         entropy_traces = []
         for layer in self.layers:
-            z_r, z_i, entropy = layer(z_r, z_i)
+            z_r, z_i, entropy = layer(z_r, z_i, update_stats=update_stats)
             entropy_traces.append(entropy)
 
         simulation_steps_used = 0
         if self.enable_simulation_loop:
             z_r, z_i, simulation_steps_used = self._run_simulation_loop(z_r, z_i)
 
-        output = self.decoder(z_r, z_i, head=output_head)
+        output, decoder_latent = self.decoder.forward_with_latent(z_r, z_i, head=output_head)
 
         return {
             "output": output,
+            "decoder_latent": decoder_latent,
             "structural_error": structural_error,
             "novelty_score": novelty_score,
             "routing_entropies": entropy_traces,
@@ -155,10 +161,20 @@ class SelfStabilizingDynamicMorphicMoE(nn.Module):
         )
         device = next(self.parameters()).device
 
-        vertical_error_trigger = current_error > self.theta_up
-        vertical_novelty_trigger = current_novelty > self.theta_novelty_vertical
+        vertical_reason = first_triggered_reason(
+            [
+                (
+                    current_error > self.theta_up,
+                    f"Structural Error={current_error:.4f} > {self.theta_up:.4f}",
+                ),
+                (
+                    current_novelty > self.theta_novelty_vertical,
+                    f"Novelty Z-Score={current_novelty:.4f} > {self.theta_novelty_vertical:.4f}",
+                ),
+            ]
+        )
 
-        if (vertical_error_trigger or vertical_novelty_trigger) and len(self.layers) < self.max_layers:
+        if vertical_reason is not None and len(self.layers) < self.max_layers:
             new_layer = DynamicMorphicTransformerLayer(
                 self.d_model,
                 self.num_heads,
@@ -166,16 +182,9 @@ class SelfStabilizingDynamicMorphicMoE(nn.Module):
                 initial_experts=self.layers[-1].moe.num_experts,
             ).to(device)
             self.layers.append(new_layer)
-            if vertical_error_trigger:
-                mutation_logs.append(
-                    f"[Vertical Growth] Structural Error={current_error:.4f} > {self.theta_up:.4f}. "
-                    f"Appended Layer #{len(self.layers)}."
-                )
-            else:
-                mutation_logs.append(
-                    f"[Vertical Growth] Novelty Z-Score={current_novelty:.4f} > "
-                    f"{self.theta_novelty_vertical:.4f}. Appended Layer #{len(self.layers)}."
-                )
+            mutation_logs.append(
+                f"[Vertical Growth] {vertical_reason}. Appended Layer #{len(self.layers)}."
+            )
 
         elif len(self.layers) > self.min_layers:
             salience_values = [l.layer_salience.item() for l in self.layers]

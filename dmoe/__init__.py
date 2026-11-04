@@ -10,7 +10,7 @@ from dmoe.checkpoint import save_checkpoint, load_checkpoint
 from dmoe.replay_buffer import ReplayBuffer
 from dmoe.continual import ContinualLearner
 from dmoe.jepa import JEPAModule, MASK_TOKEN_ID
-from dmoe.chunker import MultiScaleByteChunker, BYTE_MASK_ID
+from dmoe.chunker import MultiScaleByteChunker, BYTE_MASK_ID, BYTE_PAD_ID
 
 __all__ = [
     "SelfStabilizingDynamicMorphicMoE",
@@ -33,4 +33,5 @@ __all__ = [
     "MASK_TOKEN_ID",
     "MultiScaleByteChunker",
     "BYTE_MASK_ID",
+    "BYTE_PAD_ID",
 ]

@@ -1,9 +1,11 @@
-from typing import Any, Dict, Optional
+from collections import defaultdict
+from typing import Any, Dict, List, Optional, Tuple
 
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
+from dmoe.chunker import BYTE_PAD_ID
 from dmoe.model import rebuild_optimizer_preserving_state
 from dmoe.replay_buffer import ReplayBuffer
 
@@ -47,28 +49,63 @@ class ContinualLearner:
                 if self.entropy_floor is not None:
                     layer.moe.entropy_floor = self.entropy_floor
 
+    def _extract_latent(self, out: Dict[str, Any]) -> torch.Tensor:
+        if "decoder_latent" in out:
+            return out["decoder_latent"]
+        return self.model.decoder(out["z_real"], out["z_imag"], head="latent")
+
+    def _forward_replay(self, replay_x: torch.Tensor, replay_head: str) -> Dict[str, Any]:
+        try:
+            return self.model(replay_x, output_head=replay_head, update_stats=False)
+        except TypeError:
+            return self.model(replay_x, output_head=replay_head)
+
     def step(self, x: torch.Tensor, targets: torch.Tensor, output_head: str = "token") -> Dict[str, Any]:
         self.model.train()
         self.optimizer.zero_grad()
 
         out = self.model(x, output_head=output_head)
+        input_novelty_score = (
+            out["novelty_score"].item()
+            if "novelty_score" in out
+            else self.model.manifold_corr.last_novelty_score.item()
+        )
         task_loss = self._task_loss(out["output"], targets, output_head)
         with torch.no_grad():
-            latent_snapshot = self.model.decoder(out["z_real"], out["z_imag"], head="latent").detach().clone()
+            latent_snapshot = self._extract_latent(out).detach().clone()
 
         rehearsal_loss = torch.tensor(0.0, device=x.device)
         distillation_loss = torch.tensor(0.0, device=x.device)
         replay_samples = self.replay_buffer.sample(self.replay_batch_size)
         if replay_samples:
+            groups: Dict[Tuple[Any, ...], List[Tuple[torch.Tensor, torch.Tensor, torch.Tensor]]] = defaultdict(list)
+            for replay_x, replay_targets, replay_head, replay_latent in replay_samples:
+                key = (
+                    replay_head,
+                    tuple(replay_x.shape[1:]),
+                    tuple(replay_targets.shape[1:]),
+                    tuple(replay_latent.shape[1:]),
+                )
+                groups[key].append((replay_x, replay_targets, replay_latent))
+
             rehearsal_losses = []
             distillation_losses = []
-            for replay_x, replay_targets, replay_head, replay_latent in replay_samples:
-                replay_out = self.model(replay_x, output_head=replay_head)
-                rehearsal_losses.append(self._task_loss(replay_out["output"], replay_targets, replay_head))
-                current_latent = self.model.decoder(replay_out["z_real"], replay_out["z_imag"], head="latent")
-                distillation_losses.append(F.mse_loss(current_latent, replay_latent))
-            rehearsal_loss = torch.stack(rehearsal_losses).mean()
-            distillation_loss = torch.stack(distillation_losses).mean()
+            weights = []
+            for (replay_head, _, _, _), items in groups.items():
+                batch_x = torch.cat([item[0] for item in items], dim=0)
+                batch_targets = torch.cat([item[1] for item in items], dim=0)
+                batch_latent = torch.cat([item[2] for item in items], dim=0)
+
+                replay_out = self._forward_replay(batch_x, replay_head)
+                rehearsal_losses.append(self._task_loss(replay_out["output"], batch_targets, replay_head))
+                current_latent = self._extract_latent(replay_out)
+                distillation_losses.append(F.mse_loss(current_latent, batch_latent))
+                weights.append(float(len(items)))
+
+            weight_tensor = torch.tensor(weights, device=x.device)
+            weight_tensor = weight_tensor / weight_tensor.sum()
+            rehearsal_loss = (torch.stack(rehearsal_losses) * weight_tensor).sum()
+            distillation_loss = (torch.stack(distillation_losses) * weight_tensor).sum()
 
         total_loss = task_loss + rehearsal_loss + self.distillation_weight * distillation_loss
         total_loss.backward()
@@ -79,8 +116,7 @@ class ContinualLearner:
         self.global_step += 1
         mutation_report = None
         if self.global_step % self.mutation_check_interval == 0:
-            novelty_score = self.model.manifold_corr.last_novelty_score.item()
-            mutation_report = self.model.execute_graph_mutation(novelty_score=novelty_score)
+            mutation_report = self.model.execute_graph_mutation(novelty_score=input_novelty_score)
             self._apply_thresholds()
             if mutation_report["mutation_logs"]:
                 self.optimizer = rebuild_optimizer_preserving_state(
@@ -97,12 +133,23 @@ class ContinualLearner:
             "rehearsal_loss": rehearsal_loss.item(),
             "distillation_loss": distillation_loss.item(),
             "total_loss": total_loss.item(),
-            "novelty_score": self.model.manifold_corr.last_novelty_score.item(),
+            "novelty_score": input_novelty_score,
             "mutation_report": mutation_report,
         }
 
     @staticmethod
     def _task_loss(output: torch.Tensor, targets: torch.Tensor, output_head: str) -> torch.Tensor:
+        if output.dim() == 4:
+            bsz, s_chunks, c_size, vocab = output.shape
+            flat_out = output.reshape(bsz, s_chunks * c_size, vocab)
+            flat_tgt = targets.reshape(bsz, -1)
+            if flat_tgt.size(1) < flat_out.size(1):
+                flat_out = flat_out[:, : flat_tgt.size(1), :]
+            return F.cross_entropy(
+                flat_out.reshape(-1, vocab),
+                flat_tgt.reshape(-1),
+                ignore_index=BYTE_PAD_ID,
+            )
         if output_head in ("token", "byte_chunk"):
             return F.cross_entropy(output.reshape(-1, output.size(-1)), targets.reshape(-1))
         return F.mse_loss(output, targets)

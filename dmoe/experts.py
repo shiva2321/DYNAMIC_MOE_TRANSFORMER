@@ -1,10 +1,17 @@
-from typing import Optional, Tuple
+from typing import Optional, Sequence, Tuple
 
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
 from dmoe.complex_ops import ComplexLinear, ModReLU
+
+
+def first_triggered_reason(triggers: Sequence[Tuple[bool, str]]) -> Optional[str]:
+    for fired, reason in triggers:
+        if fired:
+            return reason
+    return None
 
 
 class ComplexExpert(nn.Module):
@@ -95,7 +102,14 @@ class DynamicMorphicMoE(nn.Module):
             del self._buffers[name]
         self.register_buffer(name, tensor)
 
-    def forward(self, z_r: torch.Tensor, z_i: torch.Tensor) -> Tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
+    def _set_expert_buffers(self, usage: torch.Tensor, age: torch.Tensor, frozen: torch.Tensor) -> None:
+        self._replace_buffer("expert_usage", usage)
+        self._replace_buffer("expert_age", age)
+        self._replace_buffer("expert_frozen", frozen)
+
+    def forward(
+        self, z_r: torch.Tensor, z_i: torch.Tensor, update_stats: bool = True
+    ) -> Tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
         flat_input = torch.cat([z_r, z_i], dim=-1)
 
         router_logits = self.router_linear(flat_input)
@@ -103,12 +117,13 @@ class DynamicMorphicMoE(nn.Module):
 
         mean_probs = router_probs.mean(dim=(0, 1))
         entropy = -torch.sum(mean_probs * torch.log(mean_probs + 1e-9))
-        self._last_entropy = entropy.detach()
 
-        if self.training:
-            with torch.no_grad():
-                self.expert_usage.mul_(0.9).add_(mean_probs.detach() * 0.1)
-                self.expert_age.add_(1.0)
+        if update_stats:
+            self._last_entropy = entropy.detach()
+            if self.training:
+                with torch.no_grad():
+                    self.expert_usage.mul_(0.9).add_(mean_probs.detach() * 0.1)
+                    self.expert_age.add_(1.0)
 
         acc_r = torch.zeros_like(z_r)
         acc_i = torch.zeros_like(z_i)
@@ -143,14 +158,22 @@ class DynamicMorphicMoE(nn.Module):
         action_log = []
         device = self.router_linear.weight.device
 
-        entropy_trigger = last_entropy > self.tau_split
-        novelty_trigger = (
-            novelty_score is not None
-            and novelty_score > self.tau_novelty
-            and last_entropy > self.entropy_floor
+        spawn_reason = first_triggered_reason(
+            [
+                (
+                    last_entropy > self.tau_split,
+                    f"Routing entropy={last_entropy:.4f} > {self.tau_split:.4f}",
+                ),
+                (
+                    novelty_score is not None
+                    and novelty_score > self.tau_novelty
+                    and last_entropy > self.entropy_floor,
+                    f"Novelty={novelty_score if novelty_score is not None else 0.0:.4f} > {self.tau_novelty:.4f}",
+                ),
+            ]
         )
 
-        if entropy_trigger or novelty_trigger:
+        if spawn_reason is not None:
             most_used_idx = int(torch.argmax(self.expert_usage).item())
             new_expert = self.experts[most_used_idx].clone_with_mutation(mutation_std=0.015).to(device)
             self.experts.append(new_expert)
@@ -169,19 +192,21 @@ class DynamicMorphicMoE(nn.Module):
                 new_router.bias[old_b.size(0)].copy_(old_b[most_used_idx])
             self.router_linear = new_router
 
-            new_usage = torch.cat(
-                [self.expert_usage, torch.tensor([self.expert_usage[most_used_idx].item() * 0.5], device=device)]
+            self._set_expert_buffers(
+                usage=torch.cat(
+                    [
+                        self.expert_usage,
+                        torch.tensor([self.expert_usage[most_used_idx].item() * 0.5], device=device),
+                    ]
+                ),
+                age=torch.cat([self.expert_age, torch.zeros(1, device=device)]),
+                frozen=torch.cat([self.expert_frozen, torch.zeros(1, dtype=torch.bool, device=device)]),
             )
-            self._replace_buffer("expert_usage", new_usage)
-
-            new_age = torch.cat([self.expert_age, torch.zeros(1, device=device)])
-            self._replace_buffer("expert_age", new_age)
-
-            new_frozen = torch.cat([self.expert_frozen, torch.zeros(1, dtype=torch.bool, device=device)])
-            self._replace_buffer("expert_frozen", new_frozen)
 
             spawned = True
-            action_log.append(f"Split parent expert #{most_used_idx} -> New Total: {len(self.experts)}")
+            action_log.append(
+                f"Split parent expert #{most_used_idx} ({spawn_reason}) -> New Total: {len(self.experts)}"
+            )
 
         elif len(self.experts) > self.min_experts:
             min_val, least_used_idx = torch.min(self.expert_usage, dim=0)
@@ -200,14 +225,11 @@ class DynamicMorphicMoE(nn.Module):
                     new_router.bias.copy_(old_b[keep_indices])
                 self.router_linear = new_router
 
-                new_usage = self.expert_usage[keep_indices].clone()
-                self._replace_buffer("expert_usage", new_usage)
-
-                new_age = self.expert_age[keep_indices].clone()
-                self._replace_buffer("expert_age", new_age)
-
-                new_frozen = self.expert_frozen[keep_indices].clone()
-                self._replace_buffer("expert_frozen", new_frozen)
+                self._set_expert_buffers(
+                    usage=self.expert_usage[keep_indices].clone(),
+                    age=self.expert_age[keep_indices].clone(),
+                    frozen=self.expert_frozen[keep_indices].clone(),
+                )
 
                 pruned = True
                 action_log.append(f"Expunged dormant expert #{least_idx} -> New Total: {len(self.experts)}")

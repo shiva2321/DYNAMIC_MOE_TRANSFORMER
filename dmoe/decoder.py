@@ -1,3 +1,5 @@
+from typing import Tuple
+
 import torch
 import torch.nn as nn
 
@@ -28,8 +30,7 @@ class UniversalProjectiveDecoder(nn.Module):
             self.byte_chunk_head = None
         self.continuous_head = nn.Linear(d_model, continuous_dim)
 
-    def forward(self, z_r: torch.Tensor, z_i: torch.Tensor, head: str = "token") -> torch.Tensor:
-        unified_hidden = self.final_norm(self.proj_real(z_r) + self.proj_imag(z_i))
+    def _project_from_latent(self, unified_hidden: torch.Tensor, head: str = "token") -> torch.Tensor:
         if head == "byte_chunk" or (head == "token" and self.tokenizer_free):
             if self.byte_chunk_head is None:
                 raise ValueError("byte_chunk head requires tokenizer_free=True on UniversalProjectiveDecoder")
@@ -43,3 +44,13 @@ class UniversalProjectiveDecoder(nn.Module):
             return unified_hidden
         else:
             raise ValueError(f"Unknown output head specification: {head}")
+
+    def forward_with_latent(
+        self, z_r: torch.Tensor, z_i: torch.Tensor, head: str = "token"
+    ) -> Tuple[torch.Tensor, torch.Tensor]:
+        unified_hidden = self.final_norm(self.proj_real(z_r) + self.proj_imag(z_i))
+        return self._project_from_latent(unified_hidden, head=head), unified_hidden
+
+    def forward(self, z_r: torch.Tensor, z_i: torch.Tensor, head: str = "token") -> torch.Tensor:
+        output, _ = self.forward_with_latent(z_r, z_i, head=head)
+        return output

@@ -21,18 +21,20 @@ class DynamicMorphicTransformerLayer(nn.Module):
         self.alpha_residual = nn.Parameter(torch.ones(1))
         self.register_buffer("layer_salience", torch.tensor(1.0, dtype=torch.float32))
 
-    def forward(self, z_r: torch.Tensor, z_i: torch.Tensor) -> Tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
+    def forward(
+        self, z_r: torch.Tensor, z_i: torch.Tensor, update_stats: bool = True
+    ) -> Tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
         n1_r, n1_i = self.norm1(z_r, z_i)
         att_r, att_i = self.attn(n1_r, n1_i)
         mid_r = z_r + self.alpha_residual * att_r
         mid_i = z_i + self.alpha_residual * att_i
 
         n2_r, n2_i = self.norm2(mid_r, mid_i)
-        moe_r, moe_i, entropy = self.moe(n2_r, n2_i)
+        moe_r, moe_i, entropy = self.moe(n2_r, n2_i, update_stats=update_stats)
         out_r = mid_r + self.alpha_residual * moe_r
         out_i = mid_i + self.alpha_residual * moe_i
 
-        if self.training:
+        if self.training and update_stats:
             with torch.no_grad():
                 diff_norm = torch.sqrt((out_r - z_r) ** 2 + (out_i - z_i) ** 2 + 1e-8).mean()
                 in_norm = torch.sqrt(z_r ** 2 + z_i ** 2 + 1e-8).mean()
@@ -40,4 +42,3 @@ class DynamicMorphicTransformerLayer(nn.Module):
                 self.layer_salience.mul_(0.95).add_(salience * 0.05)
 
         return out_r, out_i, entropy
-

@@ -8,13 +8,13 @@
     "baseline_forgetting": 0.4383
   },
   "phase2b_i_jepa": {
-    "early_avg": 0.8683,
-    "late_avg": 0.6849,
-    "off_diagonal_mean": 1.127,
-    "jepa_probe_loss": 3.8804,
+    "early_avg": 0.6242,
+    "late_avg": 0.3891,
+    "off_diagonal_mean": 0.9849,
+    "jepa_probe_loss": 3.8843,
     "baseline_probe_loss": 3.8242,
-    "max_grad_real_tokens": 0.0308,
-    "grad_mask_token": 0.1958
+    "max_grad_real_tokens": 0.0,
+    "grad_mask_token": 0.1572
   },
   "phase2b_ii_simulation_loop": {
     "passed_seeds": 20,
@@ -27,16 +27,16 @@
   },
   "phase3_tokenizer_free": {
     "tokenized_params": 2123499,
-    "tokenizer_free_params": 105327,
-    "seed0_jepa_probe_loss": 0.0875,
-    "seed0_baseline_probe_loss": 0.8783,
+    "tokenizer_free_params": 105359,
+    "seed0_jepa_probe_loss": 0.0791,
+    "seed0_baseline_probe_loss": 0.635,
     "wins_20_seeds": 20,
     "total_seeds": 20,
-    "jepa_mean": 0.1308,
-    "jepa_std": 0.0505,
-    "jepa_median": 0.1165,
-    "baseline_mean": 0.5502,
-    "baseline_std": 0.1266,
-    "baseline_median": 0.528
+    "jepa_mean": 0.1294,
+    "jepa_std": 0.0656,
+    "jepa_median": 0.1068,
+    "baseline_mean": 0.5919,
+    "baseline_std": 0.2092,
+    "baseline_median": 0.5614
   }
 }

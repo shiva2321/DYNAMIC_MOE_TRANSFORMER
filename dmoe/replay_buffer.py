@@ -23,6 +23,10 @@ class ReplayBuffer:
             self._items[replace_idx] = item
 
     def sample(self, k: int) -> List[Any]:
+        if k < 0:
+            raise ValueError("k must be non-negative")
+        if k == 0 or not self._items:
+            return []
         if k >= len(self._items):
             return list(self._items)
         return random.sample(self._items, k)
