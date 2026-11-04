@@ -136,3 +136,88 @@ def test_target_encoder_representations_do_not_collapse_after_training():
     print(f"\nTarget encoder pairwise off-diagonal mean distance: {off_diagonal.mean().item():.4f}")
     assert off_diagonal.mean().item() > 1e-3
 
+
+def _task_a_batch(batch_size=8, seq_len=6):
+    tokens = torch.randint(0, 50, (batch_size, seq_len), dtype=torch.long)
+    targets = (tokens + 1) % 50
+    return tokens, targets
+
+
+def _train_model(use_jepa: bool, steps: int, seed: int) -> SelfStabilizingDynamicMorphicMoE:
+    torch.manual_seed(seed)
+    model = SelfStabilizingDynamicMorphicMoE(
+        d_model=16,
+        num_heads=2,
+        d_ff=32,
+        initial_layers=1,
+        initial_experts=2,
+        theta_up=100.0,
+        theta_down=-1.0,
+        min_layers=1,
+        max_layers=2,
+    )
+    params = list(model.parameters())
+    jepa = None
+    if use_jepa:
+        jepa = JEPAModule(model.encoder, predictor_hidden_dim=32, mask_ratio=0.3, ema_decay=0.9)
+        params += list(jepa.trainable_parameters())
+    optimizer = torch.optim.AdamW(params, lr=5e-3)
+
+    for _ in range(steps):
+        tokens, targets = _task_a_batch()
+        optimizer.zero_grad()
+        out = model(tokens, output_head="token")
+        loss = F.cross_entropy(out["output"].view(-1, out["output"].size(-1)), targets.view(-1))
+        if use_jepa:
+            loss = loss + jepa.compute_loss(tokens)
+        loss.backward()
+        optimizer.step()
+        if use_jepa:
+            jepa.update_target_encoder()
+
+    return model
+
+
+def _train_and_eval_probe(model: SelfStabilizingDynamicMorphicMoE, probe_steps: int = 60, seed: int = 1) -> float:
+    # The probe predicts Task A's rule output for the sequence's first
+    # position only -- enough to test whether the frozen, pooled
+    # representation linearly encodes the task's structure, without
+    # needing a full sequence-level probe head.
+    torch.manual_seed(seed)
+    for p in model.encoder.parameters():
+        p.requires_grad_(False)
+
+    probe = torch.nn.Linear(model.d_model * 2, 50)
+    probe_optimizer = torch.optim.AdamW(probe.parameters(), lr=1e-2)
+
+    for _ in range(probe_steps):
+        tokens, targets = _task_a_batch()
+        with torch.no_grad():
+            real, imag = model.encoder(tokens)
+            pooled = torch.cat([real.mean(dim=1), imag.mean(dim=1)], dim=-1)
+        probe_optimizer.zero_grad()
+        logits = probe(pooled)
+        probe_loss = F.cross_entropy(logits, targets[:, 0])
+        probe_loss.backward()
+        probe_optimizer.step()
+
+    eval_tokens, eval_targets = _task_a_batch(batch_size=32)
+    with torch.no_grad():
+        real, imag = model.encoder(eval_tokens)
+        pooled = torch.cat([real.mean(dim=1), imag.mean(dim=1)], dim=-1)
+        logits = probe(pooled)
+        eval_loss = F.cross_entropy(logits, eval_targets[:, 0]).item()
+    return eval_loss
+
+
+def test_downstream_probe_jepa_outperforms_task_only_baseline():
+    model_jepa = _train_model(use_jepa=True, steps=80, seed=0)
+    model_baseline = _train_model(use_jepa=False, steps=80, seed=0)
+
+    jepa_probe_loss = _train_and_eval_probe(model_jepa, seed=1)
+    baseline_probe_loss = _train_and_eval_probe(model_baseline, seed=1)
+    print(f"\nDownstream probe loss: jepa={jepa_probe_loss:.4f}, baseline={baseline_probe_loss:.4f}")
+
+    assert jepa_probe_loss < baseline_probe_loss
+
+
