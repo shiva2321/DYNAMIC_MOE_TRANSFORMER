@@ -1,0 +1,257 @@
+Get-ChildItem -Path v1, tests/v1, results/v1 -ErrorAction SilentlyContinue
+Get-Content docs/superpowers/handoff/V1_REMOVAL_COMMANDS.txt
+python -c "from unimoe.domains import ALL_DOMAINS; print([(d.name, d.n_classes, d.label_offset) for d in ALL_DOMAINS])"
+python -c "import unimoe.domains as ud; print(dir(ud)); print(ud.DOMAIN_CONFIGS.keys() if hasattr(ud, 'DOMAIN_CONFIGS') else None)"
+python -c "import m1.beds; bed = m1.beds.build_bed('B3seq', 22, 800); print(len(bed.stream), type(bed.stream[0]), bed.test_sets.keys() if hasattr(bed, 'test_sets') else None)"
+python -c "import m1.beds; bed = m1.beds.build_bed('B3seq', 22, 800); print(dir(bed)); print(dir(bed.stream)); print(len(bed.test))"
+python -c "import m1.beds; bed = m1.beds.build_bed('B3seq', 22, 800); print(list(bed.test_sets.keys())); print([(r['name'], r.get('domain'), len(r.get('classes', []))) for r in bed.regime_info[:5]])"
+python -c "import m1.beds; bed = m1.beds.build_bed('B3seq', 22, 800); print(type(bed.regime_info), list(bed.regime_info.keys())[:5]); print(bed.regime_info[0])"
+python -c "import m1.beds; bed = m1.beds.build_bed('B3seq', 22, 800); print([(k, v['name'], v['domain']) for k, v in bed.regime_info.items()])"
+python -c "import m1.beds; bed = m1.beds.build_bed('B3seq', 22, 800); labels_per_regime = {}; 
+for b in bed.batches:
+    r = b.regime
+    labels_per_regime.setdefault(r, set()).update(b.y.tolist())
+for r, s in sorted(labels_per_regime.items()):
+    print(r, bed.regime_info[r]['name'], bed.regime_info[r]['domain'], sorted(list(s)))
+"
+python -c "import m1.beds; bed = m1.beds.build_bed('B3seq', 22, 800); labels_per_regime = {}; 
+for b in bed.batches():
+    r = b.regime
+    labels_per_regime.setdefault(r, set()).update(b.y.tolist())
+for r, s in sorted(labels_per_regime.items()):
+    print(r, bed.regime_info[r]['name'], bed.regime_info[r]['domain'], len(s), min(s), max(s))
+"
+python -c "import m1.beds; bed = m1.beds.build_bed('B3seq', 22, 800); b0 = next(bed.batches()); print(type(b0), len(b0)); print([type(x) for x in b0])"
+python -c "import m1.beds; bed = m1.beds.build_bed('B3seq', 22, 800); labels_per_regime = {}; 
+for x, y, r in bed.batches():
+    labels_per_regime.setdefault(r, set()).update(y.tolist())
+for r, s in sorted(labels_per_regime.items()):
+    print(r, bed.regime_info[r]['name'], bed.regime_info[r]['domain'], len(s), min(s), max(s))
+"
+python -c "import m1.beds; bed = m1.beds.build_bed('B3seq', 22, 800);
+dom_classes = {}
+reg_classes = {}
+for x, y, r in bed.batches():
+    d = bed.regime_info[r]['domain']
+    dom_classes.setdefault(d, set()).update(y.tolist())
+    reg_classes.setdefault(r, set()).update(y.tolist())
+print('DOMAINS:')
+for d, s in sorted(dom_classes.items()):
+    print(d, len(s), sorted(list(s)))
+print('REGIME 0:', sorted(list(reg_classes[0])))
+print('REGIME 6 (agnews_g0):', sorted(list(reg_classes[6])))
+print('REGIME 12 (emotion_g0):', sorted(list(reg_classes[12])))
+"
+python -c "import inspect; from growmoe.memory_baselines import ClassMean; print(inspect.getsource(ClassMean))"
+python -c "import inspect; from growmoe.memory_baselines import KnnMemory; print(inspect.getsource(KnnMemory))"
+python -c "import inspect; from m1.baselines_extra import MahalanobisProto; print(inspect.getsource(MahalanobisProto))"
+python -c "import inspect; from m1.baselines_extra import RandomFeatureRidge; print(inspect.getsource(RandomFeatureRidge))"
+python -c "import inspect; from growmoe.memory_baselines import StreamingLDA; print(inspect.getsource(StreamingLDA))"
+python -c "import inspect; from v0.system import build_v0; print(inspect.getsource(build_v0))"
+python -c "import inspect; from m1.arms import build_pool_candidate; print(inspect.getsource(build_pool_candidate))"
+python -c "import inspect; from unimoe.pools import UniPool; print(inspect.getsource(UniPool))"
+python -c "import inspect; import unimoe.heads as HD; print(inspect.getsource(HD.LdaHead))"
+python -c "import inspect; from growmoe.pools.phylo import PhyloMoE; print(inspect.getsource(PhyloMoE.__init__))"
+python -c "import inspect; from growmoe.pools.phylo import PhyloMoE; print(inspect.getsource(PhyloMoE._route_state))"
+python -c "import inspect; from growmoe.router import RouteRule; print(inspect.getsource(RouteRule))"
+python -c "import inspect; from growmoe.pools.phylo import PhyloMoE; print(inspect.getsource(PhyloMoE._refit_router))"
+python -c "import inspect; from growmoe.pools.base import ExpertRecord; print(inspect.getsource(ExpertRecord))"
+python -c "import inspect; from growmoe.pools.base import BasePool; print(inspect.getsource(BasePool.remove_expert) if hasattr(BasePool, 'remove_expert') else 'no remove_expert') "
+python -c "from growmoe.pools.phylo import PhyloMoE; print(PhyloMoE.remove_expert is PhyloMoE.__mro__[1].remove_expert)"
+python -c "import inspect; import growmoe.probation as pb; print(inspect.getsource(pb))"
+python -c "import inspect; import growmoe.signature as sg; print(inspect.getsource(sg.VmfSignature))"
+python -c "import inspect; from growmoe.pools.phylo import PhyloMoE; print('\n'.join([line for line in inspect.getsource(PhyloMoE).splitlines() if 'sig' in line]))"
+python -c "import time, torch, costlab.env; costlab.env.fixed_threads(n=2, cpus=[8, 10]); import m1.beds; t0 = time.time(); bed = m1.beds.build_bed('B3seq', 22, 800); print(f'Bed build: {time.time()-t0:.2f}s, total samples: {bed.total_samples}')"
+python -c "import time, torch, costlab.env; costlab.env.fixed_threads(n=2, cpus=[8, 10]); import m1.beds; from growmoe.memory_baselines import ClassMean, KnnMemory, StreamingLDA; from m1.baselines_extra import MahalanobisProto, RandomFeatureRidge; bed = m1.beds.build_bed('B3seq', 22, 800); cm = ClassMean(bed); t0 = time.time();
+for x, y, r in bed.batches():
+    cm.observe(x, y)
+print(f'ClassMean: {time.time()-t0:.2f}s')
+knn = KnnMemory(bed); t0 = time.time();
+for x, y, r in bed.batches():
+    knn.observe(x, y)
+print(f'KnnMemory: {time.time()-t0:.2f}s')
+mp = MahalanobisProto(bed); t0 = time.time();
+for x, y, r in bed.batches():
+    mp.observe(x, y)
+print(f'MahalanobisProto: {time.time()-t0:.2f}s')
+rf = RandomFeatureRidge(bed); t0 = time.time();
+for x, y, r in bed.batches():
+    rf.observe(x, y)
+print(f'RandomFeatureRidge: {time.time()-t0:.2f}s')
+slda = StreamingLDA(bed); t0 = time.time();
+for x, y, r in bed.batches():
+    slda.observe(x, y)
+print(f'StreamingLDA: {time.time()-t0:.2f}s')
+"
+python -c "import time, torch, costlab.env; costlab.env.fixed_threads(n=2, cpus=[8, 10]); import m1.beds; from growmoe.memory_baselines import ClassMean; bed = m1.beds.build_bed('B3seq', 22, 800); cm = ClassMean(bed);
+for x, y, r in bed.batches(): cm.observe(x, y)
+t0 = time.time(); total_test = 0
+for r, (tx, ty) in bed.test_sets.items():
+    p = cm.predict(tx)
+    total_test += tx.shape[0]
+print(f'Total test: {total_test}, eval time: {time.time()-t0:.2f}s')
+"
+python -c "import time, torch, costlab.env; costlab.env.fixed_threads(n=2, cpus=[8, 10]); import m1.beds, v0.system; bed = m1.beds.build_bed('B3seq', 22, 800); arm = v0.system.build_v0(bed); t0 = time.time(); res = arm.run(bed); print(f'V0 run time: {time.time()-t0:.2f}s, acc: {res.metrics.get('mean_acc')}')"
+python -c "import m1.beds, v0.system; bed = m1.beds.build_bed('B3seq', 22, 800); arm = v0.system.build_v0(bed); print(dir(arm))"
+python -c "import time, torch, costlab.env; costlab.env.fixed_threads(n=2, cpus=[8, 10]); import m1.beds, v0.system; bed = m1.beds.build_bed('B3seq', 22, 800); arm = v0.system.build_v0(bed); t0 = time.time(); res = bed.walk_full(arm); print(f'V0 walk time: {time.time()-t0:.2f}s, acc: {res.get('mean_acc')}')"
+python -c "import inspect; import v0.demo as vd; print(inspect.getsource(vd.run_single_arm))"
+python -c "import v0.demo as vd; print(dir(vd))"
+python -c "import inspect; import v0.demo as vd; print(inspect.getsource(vd.run_demo)[:1000])"
+python -c "import inspect; import v0.demo as vd; lines = inspect.getsource(vd.run_demo).splitlines(); print('\n'.join(lines[30:70]))"
+python -c "import inspect; import v0.demo as vd; lines = inspect.getsource(vd.run_demo).splitlines(); print('\n'.join(lines[70:110]))"
+python -c "import inspect; import v0.demo as vd; lines = inspect.getsource(vd.run_demo).splitlines(); print('\n'.join(lines[110:150]))"
+python -c "import time, torch, costlab.env; costlab.env.fixed_threads(n=2, cpus=[8, 10]); import m1.beds, v0.system; bed = m1.beds.build_bed('B3seq', 22, 800); v0 = v0.system.build_v0(bed); t0 = time.time();
+for x_b, y_b, regimes, first_regimes, phase_idx in bed.walk_full(64):
+    v0.observe(x_b, y_b)
+print(f'V0 observe full stream: {time.time()-t0:.2f}s, n_experts: {len(v0.model.experts)}')
+"
+python -c "import costlab.env; costlab.env.fixed_threads(n=2, cpus=[8, 10]); import m1.beds, v0.system; bed = m1.beds.build_bed('B3seq', 22, 800); v0 = v0.system.build_v0(bed);
+for x, y, r, f, p in bed.walk_full(64):
+    v0.observe(x, y)
+    if len(v0.model.experts) >= 5: break
+print('experts:', list(v0.model.experts.keys()))
+print('_parents:', v0.model._parents)
+print('parents per expert:', {e: r.parent for e, r in v0.model.experts.items()})
+"
+python -c "import m1.beds, v0.system; bed = m1.beds.build_bed('B3seq', 22, 800); arm = v0.system.build_v0(bed); print('merge:', getattr(arm.cfg, 'merge', None)); print('merge_rule:', getattr(arm.cfg, 'merge_rule', None))"
+python -c "import costlab.env; costlab.env.fixed_threads(n=2, cpus=[8, 10]); import m1.beds, v0.system; bed = m1.beds.build_bed('B3seq', 22, 800); v0 = v0.system.build_v0(bed);
+for x, y, r, f, p in bed.walk_full(64):
+    v0.observe(x, y)
+print('Expert seen masks:')
+for e, rec in sorted(v0.model.experts.items()):
+    seen_classes = torch.where(rec.module.seen)[0].tolist()
+    print(f'Expert {e} (parent {rec.parent}, birth {rec.birth_step}): seen {len(seen_classes)} classes: min {min(seen_classes) if seen_classes else None}, max {max(seen_classes) if seen_classes else None}')
+"
+python -m pytest tests/v1 -v > docs/superpowers/handoff/V1_REMOVAL_TEST_OUTPUT.txt 2>&1
+Get-Content docs/superpowers/handoff/V1_REMOVAL_TEST_OUTPUT.txt
+python -m pytest tests/v1 -v > docs/superpowers/handoff/V1_REMOVAL_TEST_OUTPUT.txt 2>&1
+Get-Content docs/superpowers/handoff/V1_REMOVAL_TEST_OUTPUT.txt
+python -m pytest tests/v1 -v > docs/superpowers/handoff/V1_REMOVAL_TEST_OUTPUT.txt 2>&1
+Get-Content docs/superpowers/handoff/V1_REMOVAL_TEST_OUTPUT.txt
+python v1/run_heads_experiments.py --rid R1 --seed 800
+python v1/run_heads_experiments.py --rid R1 --seed 800
+python -c "import json; res = json.load(open('results/v1/heads_r1_s800.json')); print({k: (v['classification'], v['max_stat_diff'], v['max_prob_diff'], v['argmax_agreement']) for k, v in res['models'].items()}); print('Streaming vs Exact LDA:', res['streaming_lda_vs_exact_lda'])"
+python v1/run_heads_experiments.py --rid R2 --seed 800
+python v1/run_heads_experiments.py --rid R3 --seed 800
+python v1/run_heads_experiments.py --rid R4 --seed 800
+python -c "import sys; from pathlib import Path; sys.path.insert(0, str(Path.cwd())); from v1.run_heads_experiments import run_heads_experiment; [run_heads_experiment(r, 801, Path('results/v1')) for r in ['R1', 'R2', 'R3', 'R4']]"
+python -c "import sys; from pathlib import Path; sys.path.insert(0, str(Path.cwd())); from v1.run_heads_experiments import run_heads_experiment; [run_heads_experiment(r, 802, Path('results/v1')) for r in ['R1', 'R2', 'R3', 'R4']]"
+Get-ChildItem -Path results/v1/heads_*.json | Select-Object Name, Length
+python -c "import copy, costlab.env; costlab.env.fixed_threads(n=2, cpus=[8, 10]); import m1.beds, v0.system; bed = m1.beds.build_bed('B3seq', 22, 800); v0 = v0.system.build_v0(bed); xb, yb, r = next(bed.batches()); v0.observe(xb, yb); v0_copy = copy.deepcopy(v0); print('deepcopy successful, n_experts:', len(v0_copy.model.experts))"
+python v1/run_pool_experiments.py --rid R1 --seed 800
+python -c "import inspect; from growmoe.pools.base import Reservoir; print(inspect.getsource(Reservoir))"
+python -m pytest tests/v1 -v > docs/superpowers/handoff/V1_REMOVAL_TEST_OUTPUT.txt 2>&1
+Get-Content docs/superpowers/handoff/V1_REMOVAL_TEST_OUTPUT.txt
+python v1/run_pool_experiments.py --rid R1 --seed 800
+python -c "import json; res = json.load(open('results/v1/pool_r1_s800.json')); print('Exposure:', res['exposure']); print('Mean acc retained:', res['comparison']['mean_accuracy_retained']); print('Routing agreement:', res['comparison']['routing_agreement_retained']); print('Argmax agreement:', res['comparison']['argmax_agreement_retained']); print('Removed eval:', res['comparison']['removed_class_evaluation'])"
+python -c "import json; res = json.load(open('results/v1/pool_r1_s800.json')); print(res['certificate']['status']); print('certified_clean:', res['certificate']['certified_clean']); print('trace audit summary:', {k: v['count'] for k, v in res['certificate']['trace_audit'].items() if isinstance(v, dict)})"
+python -c "import torch, pickle; res = torch.load('results/v1/pool_r1_s800.json') if False else None; print('test') "
+python -c "import inspect; from v1.pool_removal import compare_pool_removal; lines = inspect.getsource(compare_pool_removal).splitlines(); print('\n'.join(lines[50:75]))"
+python -c "import inspect; from v1.pool_removal import compare_pool_removal; lines = inspect.getsource(compare_pool_removal).splitlines(); print('\n'.join(lines[75:100]))"
+python -m pytest tests/v1 -v > docs/superpowers/handoff/V1_REMOVAL_TEST_OUTPUT.txt 2>&1
+Get-Content docs/superpowers/handoff/V1_REMOVAL_TEST_OUTPUT.txt
+python v1/run_pool_experiments.py --rid R1 --seed 800 --overwrite
+python v1/run_pool_experiments.py --rid R2 --seed 800
+python v1/run_pool_experiments.py --rid R3 --seed 800
+python v1/run_pool_experiments.py --rid R4 --seed 800
+python v1/run_pool_experiments.py --rid R1 --seed 801
+python v1/run_pool_experiments.py --rid R2 --seed 801
+python v1/run_pool_experiments.py --rid R3 --seed 801
+python v1/run_pool_experiments.py --rid R4 --seed 801
+python v1/run_pool_experiments.py --rid R1 --seed 802
+python v1/run_pool_experiments.py --rid R2 --seed 802
+python v1/run_pool_experiments.py --rid R3 --seed 802
+python v1/run_pool_experiments.py --rid R4 --seed 802
+python -m pytest tests/v1 -v > docs/superpowers/handoff/V1_REMOVAL_TEST_OUTPUT.txt 2>&1
+Get-Content docs/superpowers/handoff/V1_REMOVAL_TEST_OUTPUT.txt
+Get-ChildItem -Path results/v1/*.json | Select-Object Name, Length
+python -c "import json, glob; h_files = sorted(glob.glob(\"results/v1/heads_*.json\")); p_files = sorted(glob.glob(\"results/v1/pool_*.json\")); print(\"Heads files:\", len(h_files), \"Pool files:\", len(p_files)); h0 = json.load(open(h_files[0])); print(\"Head keys:\", list(h0.keys()), list(h0[\"models\"].keys())); p0 = json.load(open(p_files[0])); print(\"Pool keys:\", list(p0.keys()))"
+python -c "import json; h0 = json.load(open(\"results/v1/heads_r1_s800.json\")); print(\"ClassMean:\", h0[\"models\"][\"ClassMean\"]); print(\"ExactLda:\", h0[\"models\"][\"ExactLda\"]); print(\"StreamingLDA:\", h0[\"models\"][\"StreamingLDA\"]); print(\"Streaming vs Exact:\", h0[\"streaming_lda_vs_exact_lda\"]); p0 = json.load(open(\"results/v1/pool_r1_s800.json\")); print(\"Exposure:\", p0[\"exposure\"]); print(\"Certificate:\", p0[\"certificate\"]); print(\"Comparison summary:\", {k: p0[\"comparison\"][k] for k in [\"mean_accuracy_retained\", \"routing_agreement_retained\", \"argmax_agreement_retained\", \"expert_weight_differences\", \"removed_class_evaluation\"]})"
+python -c "import json; p0 = json.load(open(\"results/v1/pool_r1_s800.json\")); print(list(p0[\"comparison\"].keys()))"
+python -c "import json; p0 = json.load(open(\"results/v1/pool_r1_s800.json\")); print(p0[\"comparison\"][\"expert_weight_matching\"]); print(p0[\"comparison\"][\"removed_class_evaluation\"])"
+python -c "
+import json, glob, numpy as np
+
+print(\"=== PART A: CLOSED-FORM HEADS SUMMARY ===\")
+models = [\"ClassMean\", \"KnnMemory\", \"MahalanobisProto\", \"RandomFeatureRidge\", \"ExactLda\", \"StreamingLDA\"]
+r_sets = [\"R1\", \"R2\", \"R3\", \"R4\"]
+seeds = [800, 801, 802]
+
+for m in models:
+    stat_diffs = []
+    weight_diffs = []
+    prob_diffs = []
+    agreements = []
+    for rid in r_sets:
+        for s in seeds:
+            f = f\"results/v1/heads_{rid.lower()}_s{s}.json\"
+            d = json.load(open(f))
+            res = d[\"models\"][m]
+            stat_diffs.append(res[\"max_stat_diff\"])
+            weight_diffs.append(res[\"max_weight_diff\"])
+            prob_diffs.append(res[\"max_prob_diff\"])
+            agreements.append(res[\"argmax_agreement\"])
+    print(f\"{m:20s}: stat_max={max(stat_diffs):.2e}, weight_max={max(weight_diffs):.2e}, prob_max={max(prob_diffs):.2e}, min_agree={min(agreements):.6f}\")
+
+print(\"\n=== STREAMING LDA vs EXACT LDA ===\")
+cov_frob = []
+acc_diffs = []
+agrees = []
+for rid in r_sets:
+    for s in seeds:
+        f = f\"results/v1/heads_{rid.lower()}_s{s}.json\"
+        d = json.load(open(f))
+        comp = d[\"streaming_lda_vs_exact_lda\"]
+        cov_frob.append(comp[\"covariance_frobenius_diff\"])
+        acc_diffs.append(comp[\"accuracy_diff\"])
+        agrees.append(comp[\"agreement\"])
+print(f\"Cov Frobenius diff: mean={np.mean(cov_frob):.4e}, min={min(cov_frob):.4e}, max={max(cov_frob):.4e}\")
+print(f\"Accuracy diff: mean={np.mean(acc_diffs):.4e}, min={min(acc_diffs):.4e}, max={max(acc_diffs):.4e}\")
+print(f\"Argmax agreement: mean={np.mean(agrees):.4f}, min={min(agrees):.4f}, max={max(agrees):.4f}\")
+
+print(\"\n=== PART B: POOL REMOVAL SUMMARY ===\")
+for rid in r_sets:
+    print(f\"--- {rid} ---\")
+    for s in seeds:
+        f = f\"results/v1/pool_{rid.lower()}_s{s}.json\"
+        d = json.load(open(f))
+        exp = d[\"exposure\"]
+        comp = d[\"comparison\"]
+        cert = d[\"certificate\"]
+        rem_eval = comp[\"removed_class_evaluation\"]
+        match = comp[\"expert_weight_matching\"]
+        print(f\"Seed {s}: dropped={len(exp[\"dropped_experts\"])}, retained={len(exp[\"retained_experts\"])}, collateral_lost={exp[\"n_collateral_classes_lost\"]}, P_full={comp[\"mean_accuracy_retained\"][\"P_full\"]:.4f}, P_rem={comp[\"mean_accuracy_retained\"][\"P_removed\"]:.4f}, P_nev={comp[\"mean_accuracy_retained\"][\"P_never\"]:.4f}, route_agree={comp[\"routing_agreement_retained\"]:.4f}, argmax_agree={comp[\"argmax_agreement_retained\"]:.4f}, matched_exp={match[\"n_matched\"]}/{match[\"n_matched\"]+match[\"n_unmatched\"]}, rem_pred={rem_eval[\"predictions_predicting_removed_label\"]}/{rem_eval[\"total_removed_test_samples\"]}, traces={cert[\"trace_audit\"][\"total_traces_found\"]}\")
+"
+python v1/summarize_results.py
+python -c "import json; d = json.load(open(\"results/v1/pool_r3_s801.json\")); print(\"R3 S801 cert:\", d[\"certificate\"]); d4 = json.load(open(\"results/v1/pool_r4_s802.json\")); print(\"R4 S802 exp:\", d4[\"exposure\"])"
+python -c "import json; d4 = json.load(open(\"results/v1/pool_r4_s802.json\")); print(\"target_labels:\", d4[\"target_labels\"]); print(\"exposure:\", d4[\"exposure\"])"
+python -c "import json; d4 = json.load(open(\"results/v1/pool_r4_s802.json\")); print(\"target_classes:\", d4[\"target_classes\"]); print(\"exposure:\", d4[\"exposure\"])"
+# test write
+python -c "import json; d = json.load(open(\"results/v1/pool_r4_s802.json\")); print(d[\"certificate\"][\"exposure_summary\"])"
+python -c "
+import inspect
+from growmoe import memory_baselines as mb
+from m1 import baselines_extra as be
+import unimoe.heads as uh
+import unimoe.pools as up
+import growmoe.pools.phylo as gp
+import growmoe.pools.base as gb
+import growmoe.signature as gs
+import growmoe.router as gr
+
+print(\"ClassMean lines:\", inspect.getsourcelines(mb.ClassMean)[1])
+print(\"KnnMemory lines:\", inspect.getsourcelines(mb.KnnMemory)[1])
+print(\"StreamingLDA lines:\", inspect.getsourcelines(mb.StreamingLDA)[1])
+print(\"MahalanobisProto lines:\", inspect.getsourcelines(be.MahalanobisProto)[1])
+print(\"RandomFeatureRidge lines:\", inspect.getsourcelines(be.RandomFeatureRidge)[1])
+print(\"LdaHead lines:\", inspect.getsourcelines(uh.LdaHead)[1])
+print(\"Reservoir lines:\", inspect.getsourcelines(gb.Reservoir)[1])
+print(\"UniPool lines:\", inspect.getsourcelines(up.UniPool)[1])
+print(\"PhyloMoE lines:\", inspect.getsourcelines(gp.PhyloMoE)[1])
+print(\"VmfSignature lines:\", inspect.getsourcelines(gs.VmfSignature)[1])
+print(\"RouteRule lines:\", inspect.getsourcelines(gr.RouteRule)[1])
+"
+python v1/generate_audit_data.py
+python -c "import json; d = json.load(open(\"results/v1/pool_r1_s800.json\")); print(d[\"timing_seconds\"])"
+python v1/generate_audit_data.py
+python v1/generate_audit_data.py

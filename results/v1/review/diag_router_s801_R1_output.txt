@@ -1,0 +1,5 @@
+instance-level callables on pool: ['_lda_absorb', '_refit_router', 'observe', 'train_expert']
+copy's wrapped methods are the originals' (same function object): {'_lda_absorb': True, '_refit_router': True, 'observe': True, 'train_expert': True}
+route eids of copy right after remove_labels: None | original's: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18] live in copy: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14, 15, 16, 17, 18]
+seed 801 R1: P_removed retained accuracy as Gemini evaluated it (router not refit in the copy, rule 'density'): 0.6088; with the copy's own router refit (rule 'lda', eids [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14, 15, 16, 17, 18]): 0.6233
+P_full: 0.6469 rule density

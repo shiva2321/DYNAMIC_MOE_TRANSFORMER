@@ -1,0 +1,209 @@
+{
+  "status": "complete",
+  "removal_set": "R4",
+  "target_classes": [
+    77,
+    78
+  ],
+  "seed": 802,
+  "models": {
+    "ClassMean": {
+      "classification": "exact",
+      "max_stat_diff": 0.0,
+      "stat_diffs": {
+        "_sum": 0.0,
+        "_cnt": 0.0
+      },
+      "max_weight_diff": 0.0,
+      "weight_diffs": {},
+      "max_prob_diff": 0.0,
+      "argmax_agreement": 1.0,
+      "test_accuracy_downdated": 0.5522250533103943,
+      "test_accuracy_never": 0.5522250533103943,
+      "downdate_meta": {
+        "model": "M_class_mean",
+        "removed_labels": [
+          77,
+          78
+        ],
+        "classification": "exact",
+        "downdated_fields": [
+          "_sum",
+          "_cnt"
+        ],
+        "notes": "Per-class sums and counts zeroed. Retained classes completely untouched."
+      }
+    },
+    "KnnMemory": {
+      "classification": "exact",
+      "max_stat_diff": 0.0,
+      "stat_diffs": {
+        "_n": 0.0,
+        "_X": 0.0,
+        "_Y": 0.0
+      },
+      "max_weight_diff": 0.0,
+      "weight_diffs": {},
+      "max_prob_diff": 0.0,
+      "argmax_agreement": 1.0,
+      "test_accuracy_downdated": 0.6228392720222473,
+      "test_accuracy_never": 0.6228392720222473,
+      "downdate_meta": {
+        "model": "M_knn_all",
+        "removed_labels": [
+          77,
+          78
+        ],
+        "removed_samples": 600,
+        "classification": "exact",
+        "downdated_fields": [
+          "_X",
+          "_Y",
+          "_n"
+        ],
+        "notes": "Exact when capacity=None (stream preservation). Approximate if bounded capacity reservoir evicted prior items."
+      }
+    },
+    "MahalanobisProto": {
+      "classification": "exact",
+      "max_stat_diff": 0.0,
+      "stat_diffs": {
+        "_cnt": 0.0,
+        "_sum": 0.0,
+        "_outer": 0.0
+      },
+      "max_weight_diff": 0.0,
+      "weight_diffs": {
+        "_inv_covs": 0.0,
+        "_means": 0.0
+      },
+      "max_prob_diff": 0.0,
+      "argmax_agreement": 1.0,
+      "test_accuracy_downdated": 0.5055167078971863,
+      "test_accuracy_never": 0.5055167078971863,
+      "downdate_meta": {
+        "model": "M_mahalanobis_proto",
+        "removed_labels": [
+          77,
+          78
+        ],
+        "classification": "exact",
+        "downdated_fields": [
+          "_cnt",
+          "_sum",
+          "_outer",
+          "_inv_covs",
+          "_means"
+        ],
+        "notes": "Sufficient statistics are strictly class-separable; recomputed pooled covariance and class covariances are exact."
+      }
+    },
+    "RandomFeatureRidge": {
+      "classification": "exact",
+      "max_stat_diff": 5.684341886080802e-14,
+      "stat_diffs": {
+        "_G": 5.684341886080802e-14,
+        "_B": 0.0,
+        "_cnt": 0.0
+      },
+      "max_weight_diff": 3.808064974464287e-14,
+      "weight_diffs": {
+        "_W": 3.808064974464287e-14
+      },
+      "max_prob_diff": 0.0,
+      "argmax_agreement": 1.0,
+      "test_accuracy_downdated": 0.6338727474212646,
+      "test_accuracy_never": 0.6338727474212646,
+      "downdate_meta": {
+        "model": "M_random_feature_ridge",
+        "removed_labels": [
+          77,
+          78
+        ],
+        "classification": "exact",
+        "downdated_fields": [
+          "_G",
+          "_B",
+          "_cnt",
+          "_W"
+        ],
+        "notes": "Gram matrix G downdated using removed sample features (phi^T phi); B zeroed on removed classes. Exact up to float64 roundoff."
+      }
+    },
+    "ExactLda": {
+      "classification": "exact",
+      "max_stat_diff": 0.0,
+      "stat_diffs": {
+        "_cnt": 0.0,
+        "_sum": 0.0,
+        "_outer": 0.0
+      },
+      "max_weight_diff": 0.0,
+      "weight_diffs": {
+        "w": 0.0,
+        "b": 0.0
+      },
+      "max_prob_diff": 0.0,
+      "argmax_agreement": 1.0,
+      "test_accuracy_downdated": 0.5810959935188293,
+      "test_accuracy_never": 0.5810959935188293,
+      "downdate_meta": {
+        "model": "M_exact_lda",
+        "removed_labels": [
+          77,
+          78
+        ],
+        "classification": "exact",
+        "downdated_fields": [
+          "_cnt",
+          "_sum",
+          "_outer",
+          "_W"
+        ],
+        "notes": "Per-class count, sum, and outer product statistics zeroed. Recomputed pooled covariance and discriminant weights are exact."
+      }
+    },
+    "StreamingLDA": {
+      "classification": "approximate",
+      "max_stat_diff": 0.0002738683823044442,
+      "stat_diffs": {
+        "_cnt": 0.0,
+        "_mu": 0.0,
+        "_cov": 0.0002738683823044442,
+        "_n": 0.0
+      },
+      "max_weight_diff": 0.4585259243015365,
+      "weight_diffs": {
+        "w": 0.4585259243015365,
+        "b": 0.22426269758815565
+      },
+      "max_prob_diff": 0.05367249250411987,
+      "argmax_agreement": 0.990253746509552,
+      "test_accuracy_downdated": 0.5803604125976562,
+      "test_accuracy_never": 0.5805442929267883,
+      "downdate_meta": {
+        "model": "M_streaming_lda",
+        "removed_labels": [
+          77,
+          78
+        ],
+        "classification": "approximate",
+        "downdated_fields": [
+          "_cnt",
+          "_mu",
+          "_n",
+          "_W"
+        ],
+        "notes": "Running covariance _cov has order-dependent non-linear updates mixing all classes; cannot be downdated without stream replay."
+      }
+    }
+  },
+  "streaming_lda_vs_exact_lda": {
+    "covariance_max_diff": 0.00042959765147290545,
+    "covariance_frobenius_diff": 0.004861625431220911,
+    "exact_lda_retained_accuracy": 0.5764986872673035,
+    "streaming_lda_retained_accuracy": 0.5755792856216431,
+    "accuracy_diff": 0.0009194016456604004,
+    "agreement": 0.9928282499313354
+  }
+}

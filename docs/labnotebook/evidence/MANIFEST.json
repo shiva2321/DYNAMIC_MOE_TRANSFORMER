@@ -1,8 +1,8 @@
 {
- "generated": "2026-11-04 03:09:19",
- "head": "97b0c17",
+ "generated": "2026-11-04 10:48:14",
+ "head": "1873490",
  "branch": "main",
- "n_files": 1379,
+ "n_files": 1405,
  "files": [
   {
    "path": "demos/demo_growmoe_continual_learning.py",
@@ -167,6 +167,12 @@
    "last_commit": "ba24d8a"
   },
   {
+   "path": "docs/superpowers/handoff/KICKOFF_V1_FIX_2026-11-04.md",
+   "sha256": "c537123a6b67220f813e5186aa86acef4c7a0d8ede676c846212dcc4f85fe455",
+   "bytes": 3041,
+   "last_commit": null
+  },
+  {
    "path": "docs/superpowers/handoff/KICKOFF_V1_REMOVAL_2026-11-04.md",
    "sha256": "93850a6f35d6d47d7dccdfa1ace446d7f84e1d49ef74765e5299f71b3339d67e",
    "bytes": 2371,
@@ -231,6 +237,12 @@
    "sha256": "1bbcab2b7e1dcfaa3e8e9e05b7c2f9e3cae7ba1917e984d167d6ea59b2531302",
    "bytes": 6531,
    "last_commit": "f3b0afb"
+  },
+  {
+   "path": "docs/superpowers/handoff/P2_REMOVAL_AUDIT.md",
+   "sha256": "9a770183552c72635346daf5420872c770093c316a6d5b4841b43957bee5eccf",
+   "bytes": 16560,
+   "last_commit": null
   },
   {
    "path": "docs/superpowers/handoff/REVIEW_2026-10-05_R10_AND_Y1.md",
@@ -311,10 +323,34 @@
    "last_commit": "11ce5c8"
   },
   {
+   "path": "docs/superpowers/handoff/V1_FIX_SPEC.md",
+   "sha256": "877373807bf11a180cf3acc26e4213788762dc4d33f27e19ca3803ea7d39b95d",
+   "bytes": 15654,
+   "last_commit": null
+  },
+  {
+   "path": "docs/superpowers/handoff/V1_REMOVAL_COMMANDS.txt",
+   "sha256": "0935d00809a06a71e60df97bfd415e16086d5ded1ae3dba04a83e8c22e82b9c8",
+   "bytes": 20660,
+   "last_commit": null
+  },
+  {
+   "path": "docs/superpowers/handoff/V1_REMOVAL_RESULT.md",
+   "sha256": "25acdfcfc15351a976d90f7a3ae898b08364138bea105cd11c6c58d4ddc781b0",
+   "bytes": 16934,
+   "last_commit": null
+  },
+  {
    "path": "docs/superpowers/handoff/V1_REMOVAL_SPEC.md",
    "sha256": "4b8539d4cb78640e958d7db66daaa196d7f3ad704f2a09f32943d02af9ab83ff",
    "bytes": 9135,
    "last_commit": "97b0c17"
+  },
+  {
+   "path": "docs/superpowers/handoff/V1_REMOVAL_TEST_OUTPUT.txt",
+   "sha256": "439b99ae6791a40b64c8f7e6d0cf0dad5a6e73be0567f1d312d42193f57e017a",
+   "bytes": 3536,
+   "last_commit": null
   },
   {
    "path": "docs/superpowers/handoff/YGGDRASIL_ARCH_HANDOFF.md",
@@ -8027,6 +8063,12 @@
    "last_commit": "11ea50b"
   },
   {
+   "path": "results/m1/precision_check_after_812.json",
+   "sha256": "51fc9353f6ef9b7b7562de5eb4cbebdf89c77b215a0dfa1aa1dbafd5cda21d0f",
+   "bytes": 1659,
+   "last_commit": null
+  },
+  {
    "path": "results/m1/smoke/gpu/cells/B1_n10_A3__seed800.json",
    "sha256": "3c14ce40d47ff91f6237a6055c35c0785840473070dbfb9cdd3c256084d2bdda",
    "bytes": 12201,
@@ -8213,6 +8255,90 @@
    "last_commit": "ba24d8a"
   },
   {
+   "path": "results/v1/heads_r1_s800.json",
+   "sha256": "87e17edda100785c3406ce1c27f4279445fc8abed828c2ea548b9375e8e100a1",
+   "bytes": 5782,
+   "last_commit": null
+  },
+  {
+   "path": "results/v1/heads_r2_s801.json",
+   "sha256": "1b0f41ce101845f2cd067aae73ee0600e994f1338d67d2214ea9c4ee50f944c4",
+   "bytes": 6189,
+   "last_commit": null
+  },
+  {
+   "path": "results/v1/pool_r1_s801.json",
+   "sha256": "900b8f6d878c166704644e7c415e22e6fe548f55bcf38421a17f88871a932eea",
+   "bytes": 8853,
+   "last_commit": null
+  },
+  {
+   "path": "results/v1/pool_r3_s801.json",
+   "sha256": "c1199c47c33458c4a770689479c4b9c1323965bd2c1e5b23c667e8ea37e88738",
+   "bytes": 8584,
+   "last_commit": null
+  },
+  {
+   "path": "results/v1/pool_r3_s802.json",
+   "sha256": "dfe125ed78383bcbdd4db6cc2f2812748e254018e4b0e554173269bd118bf383",
+   "bytes": 7510,
+   "last_commit": null
+  },
+  {
+   "path": "results/v1/pool_r4_s802.json",
+   "sha256": "88bc2e883c17bab1a451d7a158ce1bac5034f2d0bbc144a480bbde8614324d6e",
+   "bytes": 8231,
+   "last_commit": null
+  },
+  {
+   "path": "results/v1/review/chk_params_output.txt",
+   "sha256": "b62a29c505125851aa8190a38541a04ba8761515c8061c8f700c41a26ce65e29",
+   "bytes": 368,
+   "last_commit": null
+  },
+  {
+   "path": "results/v1/review/diag_router_s801_R1_output.txt",
+   "sha256": "63ea49312d4750175a5a9611e25fede4b111207a9f6adfbf6b5730a5f88b0cf4",
+   "bytes": 729,
+   "last_commit": null
+  },
+  {
+   "path": "results/v1/review/diag_v1_s801_output.txt",
+   "sha256": "ce6873dbc162fbd75c1c669a7bef1764f2136da5edb4f0755d7a14aeca2cf0f1",
+   "bytes": 1825,
+   "last_commit": null
+  },
+  {
+   "path": "results/v1/review/heads_r2_s801_rerun.json",
+   "sha256": "1ee2d72ffa16b9018303d470700f703fa2c4b66f184a6bea7483b687c8f97481",
+   "bytes": 6191,
+   "last_commit": null
+  },
+  {
+   "path": "results/v1/review/review_v1_pool.py",
+   "sha256": "d3e51855b3602b3df2acadd225257617ba22dd34319fce85b5e6351689d0d36d",
+   "bytes": 8699,
+   "last_commit": null
+  },
+  {
+   "path": "results/v1/review/review_v1_pool_clock_aligned.json",
+   "sha256": "dd30876e3743eb2986e981708b9fdb63cbd18e3e98188ef04f04dc31b6a4a8b1",
+   "bytes": 23305,
+   "last_commit": null
+  },
+  {
+   "path": "results/v1/review/review_v1_pool_clock_and_id_aligned.json",
+   "sha256": "13901dab03d3f3d1c10b8838465f818df151c0a0e642170466d054cf04c1f234",
+   "bytes": 35692,
+   "last_commit": null
+  },
+  {
+   "path": "results/v1/review/review_v1_pool_out.json",
+   "sha256": "5b1746019cda0fde9e4dbfc1cbce12ba5e7a0bb5011929a3f187e2ce21095791",
+   "bytes": 60325,
+   "last_commit": null
+  },
+  {
    "path": "tests/geomlab/test_phase0.py",
    "sha256": "04d592483e7cf05b2a1664a83b5cf08add189c9949fccd9fb8bfa6baff04317a",
    "bytes": 4307,
@@ -8255,6 +8381,12 @@
    "last_commit": "11ce5c8"
   },
   {
+   "path": "tests/v1/test_v1.py",
+   "sha256": "7d206a03fe9988007a9013b087402a38c3bbe2ebb7a40a2918f4a32a265b435c",
+   "bytes": 12268,
+   "last_commit": null
+  },
+  {
    "path": "v0/auroc.py",
    "sha256": "0fa75f534de475d38d8eba43e39048a15cf2c170c2e00cb843fe910eba0b15ab",
    "bytes": 1395,
@@ -8277,6 +8409,30 @@
    "sha256": "04f4832fcf673ebb7471abdea4435067cd1f63283c309d399d7e0524b3d4610f",
    "bytes": 4760,
    "last_commit": "11ce5c8"
+  },
+  {
+   "path": "v1/downdate.py",
+   "sha256": "6a49a974eb94cf3aca5489f47baef9ec06e8cf400f186f11cc0faefc621ff4cb",
+   "bytes": 12969,
+   "last_commit": null
+  },
+  {
+   "path": "v1/pool_removal.py",
+   "sha256": "57f701a9dc937db8744e8a05cf74aac93af7f0612997b0903373e2146d7abd25",
+   "bytes": 26264,
+   "last_commit": null
+  },
+  {
+   "path": "v1/run_heads_experiments.py",
+   "sha256": "037f51e4363675b7faacdab7a614510c22d7c0e095a6ed0d8e8f062f5493a4c5",
+   "bytes": 11235,
+   "last_commit": null
+  },
+  {
+   "path": "v1/run_pool_experiments.py",
+   "sha256": "76e7df6fc73466c804694be6e06b3b4f265022d831871c7e436c87e23094f22a",
+   "bytes": 7028,
+   "last_commit": null
   }
  ]
 }

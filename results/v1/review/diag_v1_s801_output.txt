@@ -1,0 +1,9 @@
+expert meta keys: {'sig': ['VmfSignature'], 'monitor': ['LossChangeMonitor'], 'recent': ['deque'], 'infant_calls_seen': ['int'], 'loss_hist': ['list'], 'policy': ['GrowthPolicy'], 'lda': ['LdaHead'], 'windows': ['SourceWindows'], 'ref': ['deque'], 'gap': ['GapMonitor'], 'supersedes': ['int']}
+pool attrs: ['_boot_x', '_boot_y', '_cap', '_dom_M', '_dom_of_label', '_held', '_held_step', '_infant', '_lda_absorb', '_next_id', '_parents', '_refit_router', '_rng', '_route', '_route_age', '_route_dirty', '_set', 'cfg', 'domain_lda', 'events', 'experts', 'gate_stats', 'grow_cfg', 'grow_stats', 'observe', 'probation', 'samples_seen', 'sig_cls', 'skip_stats', 'step', 'train_expert']
+event kinds: {'spawn': ['affinity', 'evidence', 'expert', 'init', 'lam', 'loss_cluster', 'loss_ref', 'margin', 'n_cluster', 'n_ref', 'p_conflict', 'parent'], 'set_held': ['n', 'tried'], 'set_novel': ['n', 'tried'], 'extend': ['affinity', 'expert', 'loss_cluster', 'loss_ref', 'margin', 'n_cluster', 'n_ref', 'p_conflict'], 'breaker_open': ['until'], 'alarm': ['expert', 'statistic']}
+arm attrs: ['arm_id', 'bed', 'candidate', 'cfg', 'model', 'time_split', 'variant']
+expert 0 replay labels unique: [107, 108]
+route eids before: None live: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
+attempt 1: dropped [12] route eids None live [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14, 15, 16, 17, 18] clean True router stale {'count': 0, 'classification': 'exact'}
+attempt 2: dropped [12] route eids [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18] live [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14, 15, 16, 17, 18] clean False router stale {'count': 1, 'classification': 'exact'}
+direct labels of 12 (first 30): [0, 9, 10, 11, 12, 13, 14, 24, 29, 37, 39, 40, 41, 43, 49, 72, 73] contains removed: True

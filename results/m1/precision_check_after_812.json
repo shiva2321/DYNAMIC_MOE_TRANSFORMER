@@ -1,0 +1,75 @@
+{
+  "seeds": [
+    810,
+    811,
+    812
+  ],
+  "intervals": [
+    {
+      "rule": "growth",
+      "bed": "pooled over beds",
+      "n_seeds": 3,
+      "half_width_points": 6.864320645994883,
+      "limit_points": 7.5,
+      "within_limit": true
+    },
+    {
+      "rule": "skip",
+      "bed": "B2",
+      "n_seeds": 3,
+      "half_width_points": 4.003818140532505,
+      "limit_points": 5.0,
+      "within_limit": true
+    },
+    {
+      "rule": "skip",
+      "bed": "B3seq",
+      "n_seeds": 3,
+      "half_width_points": 9.860048241171231,
+      "limit_points": 5.0,
+      "within_limit": false
+    },
+    {
+      "rule": "skip",
+      "bed": "B3mix",
+      "n_seeds": 3,
+      "half_width_points": 11.516715389307098,
+      "limit_points": 5.0,
+      "within_limit": false
+    },
+    {
+      "rule": "skip",
+      "bed": "B3drift",
+      "n_seeds": 3,
+      "half_width_points": 1.2049847053528164,
+      "limit_points": 5.0,
+      "within_limit": true
+    },
+    {
+      "rule": "lda_head",
+      "bed": "B3seq",
+      "n_seeds": 3,
+      "half_width_points": 0.5159138834007261,
+      "limit_points": 5.0,
+      "within_limit": true
+    },
+    {
+      "rule": "lda_head",
+      "bed": "B3mix",
+      "n_seeds": 3,
+      "half_width_points": 3.007846878827407,
+      "limit_points": 5.0,
+      "within_limit": true
+    },
+    {
+      "rule": "lda_head",
+      "bed": "B3drift",
+      "n_seeds": 3,
+      "half_width_points": 12.335137504008028,
+      "limit_points": 5.0,
+      "within_limit": false
+    }
+  ],
+  "incomplete": [],
+  "decision": "CONTINUE with seeds 813 and 814"
+}

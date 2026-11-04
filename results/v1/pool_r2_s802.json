@@ -1,0 +1,399 @@
+{
+  "status": "complete",
+  "removal_set": "R2",
+  "target_classes": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "seed": 802,
+  "timing_seconds": {
+    "removal": 2.96520640000017,
+    "never_train": 30.242092100001173,
+    "comparison": 9.048342699999921,
+    "total": 42.257933000000776
+  },
+  "exposure": {
+    "n_direct_exposed": 3,
+    "n_indirect_exposed": 0,
+    "dropped_experts": [
+      5,
+      6,
+      7
+    ],
+    "retained_experts": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18
+    ],
+    "n_collateral_classes_lost": 33,
+    "collateral_classes_lost": [
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      22,
+      24,
+      29,
+      30,
+      37,
+      39,
+      40,
+      41,
+      42,
+      43,
+      44,
+      47,
+      55,
+      58,
+      59,
+      60,
+      61,
+      62,
+      65,
+      68,
+      69,
+      70,
+      71,
+      72,
+      73,
+      74
+    ],
+    "n_retained_in_exposed": 33
+  },
+  "certificate": {
+    "status": "certified_removal",
+    "target_labels": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "exposure_summary": {
+      "n_direct_exposed": 3,
+      "n_indirect_exposed": 0,
+      "dropped_experts": [
+        5,
+        6,
+        7
+      ],
+      "retained_experts": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18
+      ],
+      "n_collateral_classes_lost": 33,
+      "collateral_classes_lost": [
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        22,
+        24,
+        29,
+        30,
+        37,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        47,
+        55,
+        58,
+        59,
+        60,
+        61,
+        62,
+        65,
+        68,
+        69,
+        70,
+        71,
+        72,
+        73,
+        74
+      ],
+      "n_retained_in_exposed": 33
+    },
+    "trace_audit": {
+      "expert_module_seen": {
+        "count": 0,
+        "details": {},
+        "classification": "exact"
+      },
+      "expert_replay_samples": {
+        "count": 0,
+        "details": {},
+        "classification": "exact"
+      },
+      "expert_lda_counts": {
+        "count": 0,
+        "details": {},
+        "classification": "exact"
+      },
+      "expert_signature_prototypes": {
+        "count": 0,
+        "details": {},
+        "classification": "exact"
+      },
+      "pool_domain_lda_counts": {
+        "count": 0,
+        "classification": "not_removable_without_data",
+        "notes": "Class counts and sums zeroed, but pooled scatter S retains traces unless x_rem is provided"
+      },
+      "pool_probation_samples": {
+        "count": 0,
+        "classification": "exact"
+      },
+      "pool_held_samples": {
+        "count": 0,
+        "classification": "exact"
+      },
+      "pool_boot_samples": {
+        "count": 0,
+        "classification": "exact"
+      },
+      "pool_router_stale_eids": {
+        "count": 0,
+        "classification": "exact"
+      },
+      "total_traces_found": 0
+    },
+    "certified_clean": true
+  },
+  "comparison": {
+    "seed": 802,
+    "target_labels": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "mean_accuracy_retained": {
+      "P_full": 0.6419949816031889,
+      "P_removed": 0.5263343141837553,
+      "P_never": 0.6410388851707632
+    },
+    "per_regime_accuracy_retained": {
+      "P_full": {
+        "0": 0.8458646535873413,
+        "1": 0.9318181872367859,
+        "2": 0.8148148059844971,
+        "3": 0.8235294222831726,
+        "4": 0.8166666626930237,
+        "5": 0.8703703880310059,
+        "6": 0.6399999856948853,
+        "7": 0.5600000023841858,
+        "8": 0.3333333432674408,
+        "9": 0.5366666913032532,
+        "10": 0.44333332777023315,
+        "11": 0.7400000095367432,
+        "12": 0.4000000059604645,
+        "13": 0.3499999940395355,
+        "14": 0.5400000214576721,
+        "15": 0.6299999952316284,
+        "16": 0.64682537317276,
+        "17": 0.596666693687439,
+        "18": 0.5320000052452087,
+        "19": 0.7080000042915344,
+        "20": 0.7120000123977661,
+        "21": 0.6520000100135803
+      },
+      "P_removed": {
+        "0": 0.0,
+        "1": 0.0,
+        "2": 0.0,
+        "3": 0.8235294222831726,
+        "4": 0.8600000143051147,
+        "5": 0.875,
+        "6": 0.6399999856948853,
+        "7": 0.5600000023841858,
+        "8": 0.3333333432674408,
+        "9": 0.5366666913032532,
+        "10": 0.44333332777023315,
+        "11": 0.7400000095367432,
+        "12": 0.4000000059604645,
+        "13": 0.3499999940395355,
+        "14": 0.5400000214576721,
+        "15": 0.6299999952316284,
+        "16": 0.64682537317276,
+        "17": 0.596666693687439,
+        "18": 0.5320000052452087,
+        "19": 0.7080000042915344,
+        "20": 0.7120000123977661,
+        "21": 0.6520000100135803
+      },
+      "P_never": {
+        "0": 0.8345864415168762,
+        "1": 0.9261363744735718,
+        "2": 0.8074073791503906,
+        "3": 0.8235294222831726,
+        "4": 0.8199999928474426,
+        "5": 0.8703703880310059,
+        "6": 0.6399999856948853,
+        "7": 0.5600000023841858,
+        "8": 0.3333333432674408,
+        "9": 0.5366666913032532,
+        "10": 0.44333332777023315,
+        "11": 0.7400000095367432,
+        "12": 0.4000000059604645,
+        "13": 0.3499999940395355,
+        "14": 0.5400000214576721,
+        "15": 0.6299999952316284,
+        "16": 0.64682537317276,
+        "17": 0.596666693687439,
+        "18": 0.5320000052452087,
+        "19": 0.7080000042915344,
+        "20": 0.7120000123977661,
+        "21": 0.6520000100135803
+      }
+    },
+    "routing_agreement_retained": 0.8999645709991455,
+    "argmax_agreement_retained": 0.8999645709991455,
+    "expert_weight_matching": {
+      "n_matched": 16,
+      "n_unmatched": 0,
+      "details": {
+        "0": {
+          "matched_never_eid": 0,
+          "birth_step": 0,
+          "max_weight_diff": 0.0,
+          "frobenius_diff": 0.0
+        },
+        "1": {
+          "matched_never_eid": 1,
+          "birth_step": 8,
+          "max_weight_diff": 0.0,
+          "frobenius_diff": 0.0
+        },
+        "2": {
+          "matched_never_eid": 2,
+          "birth_step": 15,
+          "max_weight_diff": 0.0,
+          "frobenius_diff": 0.0
+        },
+        "3": {
+          "matched_never_eid": 3,
+          "birth_step": 22,
+          "max_weight_diff": 0.0,
+          "frobenius_diff": 0.0
+        },
+        "4": {
+          "matched_never_eid": 4,
+          "birth_step": 29,
+          "max_weight_diff": 0.0,
+          "frobenius_diff": 0.0
+        },
+        "8": {
+          "matched_never_eid": 8,
+          "birth_step": 57,
+          "max_weight_diff": 0.0,
+          "frobenius_diff": 0.0
+        },
+        "9": {
+          "matched_never_eid": 9,
+          "birth_step": 64,
+          "max_weight_diff": 0.0,
+          "frobenius_diff": 0.0
+        },
+        "10": {
+          "matched_never_eid": 10,
+          "birth_step": 71,
+          "max_weight_diff": 0.0,
+          "frobenius_diff": 0.0
+        },
+        "11": {
+          "matched_never_eid": 11,
+          "birth_step": 78,
+          "max_weight_diff": 0.0,
+          "frobenius_diff": 0.0
+        },
+        "12": {
+          "matched_never_eid": 12,
+          "birth_step": 85,
+          "max_weight_diff": 0.0,
+          "frobenius_diff": 0.0
+        },
+        "13": {
+          "matched_never_eid": 13,
+          "birth_step": 92,
+          "max_weight_diff": 0.0,
+          "frobenius_diff": 0.0
+        },
+        "14": {
+          "matched_never_eid": 14,
+          "birth_step": 99,
+          "max_weight_diff": 0.0,
+          "frobenius_diff": 0.0
+        },
+        "15": {
+          "matched_never_eid": 15,
+          "birth_step": 106,
+          "max_weight_diff": 0.0,
+          "frobenius_diff": 0.0
+        },
+        "16": {
+          "matched_never_eid": 16,
+          "birth_step": 112,
+          "max_weight_diff": 0.0,
+          "frobenius_diff": 0.0
+        },
+        "17": {
+          "matched_never_eid": 17,
+          "birth_step": 124,
+          "max_weight_diff": 0.0,
+          "frobenius_diff": 0.0
+        },
+        "18": {
+          "matched_never_eid": 18,
+          "birth_step": 135,
+          "max_weight_diff": 0.0,
+          "frobenius_diff": 0.0
+        }
+      }
+    },
+    "removed_class_evaluation": {
+      "total_removed_test_samples": 90,
+      "predictions_predicting_removed_label": 0,
+      "accuracy_on_removed_classes": 0.0
+    }
+  }
+}
