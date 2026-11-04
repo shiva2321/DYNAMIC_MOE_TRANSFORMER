@@ -185,3 +185,36 @@ def test_forward_returns_novelty_score_in_output_dict():
     assert out["novelty_score"].dim() == 0
 
 
+def test_checkpoint_round_trip_with_simulation_loop_enabled(tmp_path):
+    model = SelfStabilizingDynamicMorphicMoE(
+        d_model=8,
+        num_heads=2,
+        d_ff=16,
+        initial_layers=2,
+        initial_experts=2,
+        theta_up=100.0,
+        theta_down=-1.0,
+        min_layers=1,
+        max_layers=2,
+        enable_simulation_loop=True,
+        max_simulation_steps=3,
+        theta_converge=0.1,
+        min_improvement=0.01,
+        skip_threshold=-100.0,
+    )
+    model.eval()
+    x = torch.randint(0, 100, (1, 4), dtype=torch.long)
+    with torch.no_grad():
+        out_before = model(x)["output"]
+
+    path = tmp_path / "ckpt_sim_loop.pt"
+    model.save_checkpoint(str(path))
+    loaded = SelfStabilizingDynamicMorphicMoE.load_checkpoint(str(path))
+    loaded.eval()
+    with torch.no_grad():
+        out_after = loaded(x)["output"]
+
+    assert loaded.enable_simulation_loop is True
+    assert hasattr(loaded, "loop_damping_logit")
+    assert torch.equal(model.loop_damping_logit, loaded.loop_damping_logit)
+    assert torch.allclose(out_before, out_after, atol=1e-6)

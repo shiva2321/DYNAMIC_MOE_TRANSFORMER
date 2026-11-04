@@ -16,6 +16,11 @@ def save_checkpoint(model: nn.Module, path: str) -> None:
         "theta_novelty_vertical": model.theta_novelty_vertical,
         "min_layers": model.min_layers,
         "max_layers": model.max_layers,
+        "enable_simulation_loop": model.enable_simulation_loop,
+        "max_simulation_steps": model.max_simulation_steps,
+        "theta_converge": model.theta_converge,
+        "min_improvement": model.min_improvement,
+        "skip_threshold": model.skip_threshold,
     }
     experts_per_layer = [layer.moe.num_experts for layer in model.layers]
     numeric_projector_dims = [int(k) for k in model.encoder.numeric_projectors.keys()]
@@ -47,6 +52,11 @@ def load_checkpoint(path: str, model_cls, device: Optional[torch.device] = None)
         theta_novelty_vertical=config.get("theta_novelty_vertical", 2.5),
         min_layers=config["min_layers"],
         max_layers=config["max_layers"],
+        enable_simulation_loop=config.get("enable_simulation_loop", False),
+        max_simulation_steps=config.get("max_simulation_steps", 4),
+        theta_converge=config.get("theta_converge", 0.1),
+        min_improvement=config.get("min_improvement", 0.01),
+        skip_threshold=config.get("skip_threshold", 0.0),
     )
 
     rebuilt_layers = nn.ModuleList(
