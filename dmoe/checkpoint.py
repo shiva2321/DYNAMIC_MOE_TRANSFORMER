@@ -21,6 +21,8 @@ def save_checkpoint(model: nn.Module, path: str) -> None:
         "theta_converge": model.theta_converge,
         "min_improvement": model.min_improvement,
         "skip_threshold": model.skip_threshold,
+        "tokenizer_free": getattr(model, "tokenizer_free", False),
+        "chunk_size": getattr(model, "chunk_size", 4),
     }
     experts_per_layer = [layer.moe.num_experts for layer in model.layers]
     numeric_projector_dims = [int(k) for k in model.encoder.numeric_projectors.keys()]
@@ -57,6 +59,8 @@ def load_checkpoint(path: str, model_cls, device: Optional[torch.device] = None)
         theta_converge=config.get("theta_converge", 0.1),
         min_improvement=config.get("min_improvement", 0.01),
         skip_threshold=config.get("skip_threshold", 0.0),
+        tokenizer_free=config.get("tokenizer_free", False),
+        chunk_size=config.get("chunk_size", 4),
     )
 
     rebuilt_layers = nn.ModuleList(

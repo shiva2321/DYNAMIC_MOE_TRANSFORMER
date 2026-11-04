@@ -4,13 +4,22 @@ from typing import Tuple
 import torch
 import torch.nn as nn
 
+from dmoe.chunker import MultiScaleByteChunker
+
 
 class UniversalMultimodalEncoder(nn.Module):
-    def __init__(self, d_model: int):
+    def __init__(self, d_model: int, tokenizer_free: bool = False, chunk_size: int = 4):
         super().__init__()
         self.d_model = d_model
+        self.tokenizer_free = tokenizer_free
+        self.chunk_size = chunk_size
 
-        self.text_embed = nn.Embedding(32000, d_model)
+        if self.tokenizer_free:
+            self.byte_chunker = MultiScaleByteChunker(d_model, chunk_size=chunk_size)
+            self.text_embed = None
+        else:
+            self.text_embed = nn.Embedding(32000, d_model)
+            self.byte_chunker = None
         self.text_phase_proj = nn.Linear(d_model, d_model)
 
         self.image_patch_proj = nn.Conv2d(in_channels=3, out_channels=d_model, kernel_size=4, stride=4)
@@ -30,9 +39,13 @@ class UniversalMultimodalEncoder(nn.Module):
 
     def forward(self, x: torch.Tensor) -> Tuple[torch.Tensor, torch.Tensor]:
         if x.dim() == 2 and not x.is_floating_point():
-            emb = self.text_embed(x)
+            if self.tokenizer_free:
+                emb = self.byte_chunker(x)
+            else:
+                emb = self.text_embed(x)
+            seq_len = emb.size(1)
             real_comp = self.unify_real(emb)
-            positions = torch.arange(x.size(1), device=x.device, dtype=torch.float32).unsqueeze(-1)
+            positions = torch.arange(seq_len, device=x.device, dtype=torch.float32).unsqueeze(-1)
             omega = torch.exp(
                 torch.arange(0, self.d_model, 2, device=x.device, dtype=torch.float32)
                 * -(math.log(10000.0) / self.d_model)
@@ -61,4 +74,3 @@ class UniversalMultimodalEncoder(nn.Module):
             raise ValueError(f"Unsupported multimodal tensor shape: {tuple(x.shape)}")
 
         return real_comp, imag_comp
-

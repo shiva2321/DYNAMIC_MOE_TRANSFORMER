@@ -1,0 +1,42 @@
+{
+  "phase2a_retention": {
+    "mitigated_after_a": 3.4701,
+    "mitigated_after_b": 1.724,
+    "mitigated_forgetting": -1.7461,
+    "baseline_after_a": 4.3685,
+    "baseline_after_b": 4.8068,
+    "baseline_forgetting": 0.4383
+  },
+  "phase2b_i_jepa": {
+    "early_avg": 0.8683,
+    "late_avg": 0.6849,
+    "off_diagonal_mean": 1.127,
+    "jepa_probe_loss": 3.8804,
+    "baseline_probe_loss": 3.8242,
+    "max_grad_real_tokens": 0.0308,
+    "grad_mask_token": 0.1958
+  },
+  "phase2b_ii_simulation_loop": {
+    "passed_seeds": 20,
+    "total_seeds": 20,
+    "steps_min": 20,
+    "steps_max": 20,
+    "max_norm_min": 2.8478,
+    "max_norm_median": 4.152,
+    "max_norm_max": 6.1803
+  },
+  "phase3_tokenizer_free": {
+    "tokenized_params": 2123499,
+    "tokenizer_free_params": 105327,
+    "seed0_jepa_probe_loss": 0.0875,
+    "seed0_baseline_probe_loss": 0.8783,
+    "wins_20_seeds": 20,
+    "total_seeds": 20,
+    "jepa_mean": 0.1308,
+    "jepa_std": 0.0505,
+    "jepa_median": 0.1165,
+    "baseline_mean": 0.5502,
+    "baseline_std": 0.1266,
+    "baseline_median": 0.528
+  }
+}

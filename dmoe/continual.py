@@ -103,6 +103,6 @@ class ContinualLearner:
 
     @staticmethod
     def _task_loss(output: torch.Tensor, targets: torch.Tensor, output_head: str) -> torch.Tensor:
-        if output_head == "token":
-            return F.cross_entropy(output.view(-1, output.size(-1)), targets.view(-1))
+        if output_head in ("token", "byte_chunk"):
+            return F.cross_entropy(output.reshape(-1, output.size(-1)), targets.reshape(-1))
         return F.mse_loss(output, targets)

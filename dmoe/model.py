@@ -29,6 +29,8 @@ class SelfStabilizingDynamicMorphicMoE(nn.Module):
         theta_converge: float = 0.1,
         min_improvement: float = 0.01,
         skip_threshold: float = 0.0,
+        tokenizer_free: bool = False,
+        chunk_size: int = 4,
     ):
         super().__init__()
         self.d_model = d_model
@@ -44,8 +46,12 @@ class SelfStabilizingDynamicMorphicMoE(nn.Module):
         self.theta_converge = theta_converge
         self.min_improvement = min_improvement
         self.skip_threshold = skip_threshold
+        self.tokenizer_free = tokenizer_free
+        self.chunk_size = chunk_size
 
-        self.encoder = UniversalMultimodalEncoder(d_model)
+        self.encoder = UniversalMultimodalEncoder(
+            d_model, tokenizer_free=tokenizer_free, chunk_size=chunk_size
+        )
         self.manifold_corr = GeometricCorrectiveManifold(d_model)
 
         self.layers = nn.ModuleList(
@@ -55,7 +61,9 @@ class SelfStabilizingDynamicMorphicMoE(nn.Module):
             ]
         )
 
-        self.decoder = UniversalProjectiveDecoder(d_model)
+        self.decoder = UniversalProjectiveDecoder(
+            d_model, tokenizer_free=tokenizer_free, chunk_size=chunk_size
+        )
 
         if self.enable_simulation_loop:
             self.loop_damping_logit = nn.Parameter(torch.tensor(0.0))
@@ -63,6 +71,17 @@ class SelfStabilizingDynamicMorphicMoE(nn.Module):
     @property
     def num_layers(self) -> int:
         return len(self.layers)
+
+    @staticmethod
+    def _complex_unit_norm(
+        z_r: torch.Tensor, z_i: torch.Tensor, eps: float = 1e-5
+    ) -> Tuple[torch.Tensor, torch.Tensor]:
+        mean_r = z_r.mean(dim=-1, keepdim=True)
+        mean_i = z_i.mean(dim=-1, keepdim=True)
+        cent_r = z_r - mean_r
+        cent_i = z_i - mean_i
+        std = torch.sqrt((cent_r ** 2 + cent_i ** 2).mean(dim=-1, keepdim=True) + eps)
+        return cent_r / std, cent_i / std
 
     def _run_simulation_loop(
         self, z_r: torch.Tensor, z_i: torch.Tensor
@@ -76,7 +95,8 @@ class SelfStabilizingDynamicMorphicMoE(nn.Module):
         if self.training:
             steps = random.randint(1, self.max_simulation_steps)
             for _ in range(steps):
-                corrected_r, corrected_i, _, _ = self.manifold_corr(z_r, z_i)
+                norm_r, norm_i = self._complex_unit_norm(z_r, z_i)
+                corrected_r, corrected_i, _, _ = self.manifold_corr(norm_r, norm_i)
                 candidate_r, candidate_i, _ = self.layers[-1](corrected_r, corrected_i)
                 z_r = z_r + damping * (candidate_r - z_r)
                 z_i = z_i + damping * (candidate_i - z_i)
@@ -84,7 +104,8 @@ class SelfStabilizingDynamicMorphicMoE(nn.Module):
         else:
             previous_error = None
             for _ in range(self.max_simulation_steps):
-                corrected_r, corrected_i, structural_error, _ = self.manifold_corr(z_r, z_i)
+                norm_r, norm_i = self._complex_unit_norm(z_r, z_i)
+                corrected_r, corrected_i, structural_error, _ = self.manifold_corr(norm_r, norm_i)
                 candidate_r, candidate_i, _ = self.layers[-1](corrected_r, corrected_i)
                 z_r = z_r + damping * (candidate_r - z_r)
                 z_i = z_i + damping * (candidate_i - z_i)
