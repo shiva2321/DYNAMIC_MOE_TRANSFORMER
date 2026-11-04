@@ -9,6 +9,7 @@ from dmoe.decoder import UniversalProjectiveDecoder
 from dmoe.checkpoint import save_checkpoint, load_checkpoint
 from dmoe.replay_buffer import ReplayBuffer
 from dmoe.continual import ContinualLearner
+from dmoe.jepa import JEPAModule, MASK_TOKEN_ID
 
 __all__ = [
     "SelfStabilizingDynamicMorphicMoE",
@@ -27,4 +28,6 @@ __all__ = [
     "load_checkpoint",
     "ReplayBuffer",
     "ContinualLearner",
+    "JEPAModule",
+    "MASK_TOKEN_ID",
 ]
