@@ -137,21 +137,37 @@ class DeltaComplexLinear(nn.Module):
 
 
 class ComplexExpert(nn.Module):
-    def __init__(self, d_model: int, d_ff: int):
+    def __init__(self, d_model: int, d_ff: int, max_exemplars: int = 64):
         super().__init__()
+        self.d_model = d_model
+        self.d_ff = d_ff
+        self.max_exemplars = max_exemplars
         self.linear1 = ComplexLinear(d_model, d_ff)
         self.act = ModReLU(d_ff)
         self.linear2 = ComplexLinear(d_ff, d_model)
+        self.register_buffer("exemplars", torch.zeros(0, d_model, dtype=torch.float32))
 
     def forward(self, z_r: torch.Tensor, z_i: torch.Tensor) -> Tuple[torch.Tensor, torch.Tensor]:
         h_r, h_i = self.linear1(z_r, z_i)
         h_r, h_i = self.act(h_r, h_i)
         return self.linear2(h_r, h_i)
 
+    @torch.no_grad()
+    def update_exemplars(self, latents: torch.Tensor) -> None:
+        """Keep a rolling window of recent representations to serve as reference samples for routing."""
+        flat = latents.detach().reshape(-1, self.d_model).float()
+        if self.exemplars.numel() == 0:
+            self.exemplars = flat[: self.max_exemplars].clone()
+        else:
+            combined = torch.cat([self.exemplars, flat], dim=0)
+            if combined.size(0) > self.max_exemplars:
+                combined = combined[-self.max_exemplars :]
+            self.exemplars = combined.clone()
+
     def clone_with_mutation(self, mutation_std: float = 0.02) -> "ComplexExpert":
         d_model = self.linear1.in_features
         d_ff = self.linear1.out_features
-        new_expert = ComplexExpert(d_model, d_ff).to(self.linear1.weight_real.device)
+        new_expert = ComplexExpert(d_model, d_ff, max_exemplars=self.max_exemplars).to(self.linear1.weight_real.device)
 
         with torch.no_grad():
             new_expert.linear1.weight_real.copy_(
@@ -394,6 +410,7 @@ class DynamicMorphicMoE(nn.Module):
             ).to(device)
         else:
             new_expert = self.experts[source_idx].clone_with_mutation(mutation_std=0.015).to(device)
+            new_expert.exemplars = torch.zeros(0, self.d_model, dtype=torch.float32, device=device)
 
         self.experts.append(new_expert)
         new_idx = len(self.experts) - 1

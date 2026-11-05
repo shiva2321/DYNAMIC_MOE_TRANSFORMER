@@ -1,7 +1,7 @@
 {
   "exp_id": "dmoe_v4_mixed_stream",
-  "generated_at": "2026-11-05T15:00:53.753069",
-  "git_commit": "4b5cc27e3e666931ab2df01eb5c0ffec00783d05",
+  "generated_at": "2026-11-05T17:14:56.693173",
+  "git_commit": "dc398e62d501086e99e61a0a6c7473f82316f404",
   "git_branch": "v4",
   "system": {
     "platform": "Windows-11-10.0.26200-SP0",
@@ -95,75 +95,75 @@
     },
     "NullControl_ShuffledTargets": {
       "loss_mixed_final": {
-        "mean": 2.6033,
-        "std": 0.0195,
-        "ci95": 0.0086,
-        "min": 2.5657,
-        "max": 2.6554
+        "mean": 2.6266,
+        "std": 0.0198,
+        "ci95": 0.0087,
+        "min": 2.5826,
+        "max": 2.6692
       },
       "acc_mixed_final": {
-        "mean": 0.1954,
-        "std": 0.0302,
-        "ci95": 0.0132,
-        "min": 0.1592,
-        "max": 0.291
+        "mean": 0.1715,
+        "std": 0.0115,
+        "ci95": 0.0051,
+        "min": 0.1523,
+        "max": 0.1982
       },
       "acc_route_final": {
-        "mean": 0.9859,
-        "std": 0.0175,
-        "ci95": 0.0077,
-        "min": 0.9375,
+        "mean": 0.9867,
+        "std": 0.0146,
+        "ci95": 0.0064,
+        "min": 0.9531,
         "max": 1.0
       },
       "acc_A_final": {
-        "mean": 0.1915,
-        "std": 0.0539,
-        "ci95": 0.0236,
-        "min": 0.0925,
-        "max": 0.2909
+        "mean": 0.1724,
+        "std": 0.0238,
+        "ci95": 0.0105,
+        "min": 0.1167,
+        "max": 0.2083
       },
       "acc_B_final": {
-        "mean": 0.1907,
-        "std": 0.049,
-        "ci95": 0.0215,
-        "min": 0.1063,
-        "max": 0.3068
+        "mean": 0.1741,
+        "std": 0.0205,
+        "ci95": 0.009,
+        "min": 0.1283,
+        "max": 0.2072
       },
       "acc_C_final": {
-        "mean": 0.2026,
-        "std": 0.0591,
-        "ci95": 0.0259,
-        "min": 0.0703,
-        "max": 0.2962
+        "mean": 0.1685,
+        "std": 0.029,
+        "ci95": 0.0127,
+        "min": 0.125,
+        "max": 0.2407
       },
       "acc_A_initial": {
-        "mean": 0.1935,
-        "std": 0.064,
-        "ci95": 0.0281,
-        "min": 0.0859,
-        "max": 0.3027
+        "mean": 0.1802,
+        "std": 0.0458,
+        "ci95": 0.0201,
+        "min": 0.0771,
+        "max": 0.2783
       },
       "retention_A": {
-        "mean": 1.0585,
-        "std": 0.3335,
-        "ci95": 0.1461,
-        "min": 0.5539,
-        "max": 1.8182
+        "mean": 1.0316,
+        "std": 0.3558,
+        "ci95": 0.1559,
+        "min": 0.5355,
+        "max": 2.1603
       }
     },
     "NullControl_BlindZeroInput": {
       "loss_mixed_final": {
-        "mean": 20.6883,
-        "std": 4.6623,
-        "ci95": 2.0434,
-        "min": 10.433,
-        "max": 26.7967
+        "mean": 11.7227,
+        "std": 2.6113,
+        "ci95": 1.1444,
+        "min": 7.4834,
+        "max": 16.0574
       },
       "acc_mixed_final": {
-        "mean": 0.0723,
-        "std": 0.0208,
-        "ci95": 0.0091,
-        "min": 0.0371,
+        "mean": 0.0837,
+        "std": 0.0121,
+        "ci95": 0.0053,
+        "min": 0.0557,
         "max": 0.1035
       },
       "acc_route_final": {
@@ -174,25 +174,25 @@
         "max": 0.4688
       },
       "acc_A_final": {
-        "mean": 0.0673,
-        "std": 0.0488,
-        "ci95": 0.0214,
+        "mean": 0.0945,
+        "std": 0.0627,
+        "ci95": 0.0275,
         "min": 0.0312,
-        "max": 0.2031
+        "max": 0.1938
       },
       "acc_B_final": {
-        "mean": 0.0831,
-        "std": 0.054,
-        "ci95": 0.0237,
-        "min": 0.0184,
-        "max": 0.191
+        "mean": 0.0861,
+        "std": 0.053,
+        "ci95": 0.0232,
+        "min": 0.0382,
+        "max": 0.1776
       },
       "acc_C_final": {
-        "mean": 0.0668,
-        "std": 0.0486,
-        "ci95": 0.0213,
-        "min": 0.0298,
-        "max": 0.1842
+        "mean": 0.0688,
+        "std": 0.052,
+        "ci95": 0.0228,
+        "min": 0.0195,
+        "max": 0.1821
       },
       "acc_A_initial": {
         "mean": 0.9534,
@@ -202,27 +202,27 @@
         "max": 0.9678
       },
       "retention_A": {
-        "mean": 0.0707,
-        "std": 0.0514,
-        "ci95": 0.0225,
+        "mean": 0.099,
+        "std": 0.0657,
+        "ci95": 0.0288,
         "min": 0.033,
-        "max": 0.2129
+        "max": 0.2031
       }
     },
     "Baseline_RegularTransformer_NoReplay": {
       "loss_mixed_final": {
-        "mean": 4.0062,
-        "std": 0.4238,
-        "ci95": 0.1857,
-        "min": 3.2763,
-        "max": 4.6441
+        "mean": 4.1999,
+        "std": 0.3735,
+        "ci95": 0.1637,
+        "min": 3.5201,
+        "max": 4.703
       },
       "acc_mixed_final": {
-        "mean": 0.3375,
-        "std": 0.0561,
-        "ci95": 0.0246,
-        "min": 0.2578,
-        "max": 0.4453
+        "mean": 0.3356,
+        "std": 0.0551,
+        "ci95": 0.0241,
+        "min": 0.2559,
+        "max": 0.4355
       },
       "acc_route_final": {
         "mean": 0.0,
@@ -232,22 +232,22 @@
         "max": 0.0
       },
       "acc_A_final": {
-        "mean": 0.0037,
+        "mean": 0.0036,
         "std": 0.0035,
         "ci95": 0.0015,
         "min": 0.0,
         "max": 0.0119
       },
       "acc_B_final": {
-        "mean": 0.0974,
-        "std": 0.019,
-        "ci95": 0.0083,
-        "min": 0.0382,
-        "max": 0.125
+        "mean": 0.0929,
+        "std": 0.0181,
+        "ci95": 0.008,
+        "min": 0.0347,
+        "max": 0.1217
       },
       "acc_C_final": {
-        "mean": 0.9566,
-        "std": 0.0087,
+        "mean": 0.9554,
+        "std": 0.0086,
         "ci95": 0.0038,
         "min": 0.9401,
         "max": 0.9722
@@ -260,8 +260,8 @@
         "max": 0.9678
       },
       "retention_A": {
-        "mean": 0.0039,
-        "std": 0.0037,
+        "mean": 0.0038,
+        "std": 0.0036,
         "ci95": 0.0016,
         "min": 0.0,
         "max": 0.0126
@@ -269,18 +269,18 @@
     },
     "Baseline_RegularTransformer_Replay128": {
       "loss_mixed_final": {
-        "mean": 0.3996,
-        "std": 0.0312,
-        "ci95": 0.0137,
-        "min": 0.3493,
-        "max": 0.4556
+        "mean": 0.5201,
+        "std": 0.0307,
+        "ci95": 0.0134,
+        "min": 0.4342,
+        "max": 0.5711
       },
       "acc_mixed_final": {
-        "mean": 0.9536,
-        "std": 0.0053,
-        "ci95": 0.0023,
-        "min": 0.9424,
-        "max": 0.9619
+        "mean": 0.9356,
+        "std": 0.0092,
+        "ci95": 0.004,
+        "min": 0.917,
+        "max": 0.9541
       },
       "acc_route_final": {
         "mean": 0.0,
@@ -290,25 +290,25 @@
         "max": 0.0
       },
       "acc_A_final": {
-        "mean": 0.9553,
-        "std": 0.0131,
-        "ci95": 0.0058,
-        "min": 0.9271,
-        "max": 0.975
+        "mean": 0.9321,
+        "std": 0.0157,
+        "ci95": 0.0069,
+        "min": 0.9051,
+        "max": 0.9594
       },
       "acc_B_final": {
-        "mean": 0.9513,
-        "std": 0.0106,
-        "ci95": 0.0047,
-        "min": 0.9375,
-        "max": 0.9706
+        "mean": 0.922,
+        "std": 0.0189,
+        "ci95": 0.0083,
+        "min": 0.8854,
+        "max": 0.9517
       },
       "acc_C_final": {
-        "mean": 0.9556,
-        "std": 0.0088,
-        "ci95": 0.0038,
+        "mean": 0.9549,
+        "std": 0.0082,
+        "ci95": 0.0036,
         "min": 0.9401,
-        "max": 0.9722
+        "max": 0.9699
       },
       "acc_A_initial": {
         "mean": 0.9531,
@@ -318,54 +318,54 @@
         "max": 0.9678
       },
       "retention_A": {
-        "mean": 1.0024,
-        "std": 0.0178,
-        "ci95": 0.0078,
-        "min": 0.958,
-        "max": 1.0243
+        "mean": 0.9781,
+        "std": 0.0191,
+        "ci95": 0.0084,
+        "min": 0.9472,
+        "max": 1.0097
       }
     },
     "dMoE_v4_MixedStream_ZeroReplay": {
       "loss_mixed_final": {
-        "mean": 2.9981,
-        "std": 0.826,
-        "ci95": 0.362,
-        "min": 2.1133,
-        "max": 5.1804
+        "mean": 1.858,
+        "std": 0.5413,
+        "ci95": 0.2372,
+        "min": 1.1829,
+        "max": 3.0528
       },
       "acc_mixed_final": {
-        "mean": 0.9385,
-        "std": 0.0164,
-        "ci95": 0.0072,
-        "min": 0.9062,
-        "max": 0.9629
+        "mean": 0.9379,
+        "std": 0.0184,
+        "ci95": 0.0081,
+        "min": 0.8945,
+        "max": 0.9619
       },
       "acc_route_final": {
-        "mean": 0.9867,
-        "std": 0.0178,
-        "ci95": 0.0078,
-        "min": 0.9531,
+        "mean": 0.9844,
+        "std": 0.0183,
+        "ci95": 0.008,
+        "min": 0.9375,
         "max": 1.0
       },
       "acc_A_final": {
-        "mean": 0.9201,
-        "std": 0.0525,
-        "ci95": 0.023,
-        "min": 0.775,
-        "max": 0.9722
+        "mean": 0.9237,
+        "std": 0.0445,
+        "ci95": 0.0195,
+        "min": 0.7833,
+        "max": 0.9688
       },
       "acc_B_final": {
-        "mean": 0.9422,
-        "std": 0.0311,
-        "ci95": 0.0136,
-        "min": 0.8456,
+        "mean": 0.9388,
+        "std": 0.0314,
+        "ci95": 0.0138,
+        "min": 0.8346,
         "max": 0.9706
       },
       "acc_C_final": {
-        "mean": 0.9516,
-        "std": 0.0173,
-        "ci95": 0.0076,
-        "min": 0.9028,
+        "mean": 0.949,
+        "std": 0.0211,
+        "ci95": 0.0093,
+        "min": 0.8993,
         "max": 0.9722
       },
       "acc_A_initial": {
@@ -376,44 +376,126 @@
         "max": 0.9678
       },
       "retention_A": {
-        "mean": 0.9651,
-        "std": 0.0556,
-        "ci95": 0.0244,
-        "min": 0.8098,
-        "max": 1.0228
+        "mean": 0.9689,
+        "std": 0.0475,
+        "ci95": 0.0208,
+        "min": 0.8185,
+        "max": 1.0195
+      }
+    },
+    "dMoE_v4_PureNeural_ZeroReplay": {
+      "loss_mixed_final": {
+        "mean": 0.5608,
+        "std": 0.106,
+        "ci95": 0.0465,
+        "min": 0.4042,
+        "max": 0.8494
+      },
+      "acc_mixed_final": {
+        "mean": 0.9117,
+        "std": 0.0263,
+        "ci95": 0.0115,
+        "min": 0.8369,
+        "max": 0.958
+      },
+      "acc_route_final": {
+        "mean": 0.9859,
+        "std": 0.0175,
+        "ci95": 0.0077,
+        "min": 0.9375,
+        "max": 1.0
+      },
+      "acc_A_final": {
+        "mean": 0.9206,
+        "std": 0.0363,
+        "ci95": 0.0159,
+        "min": 0.8375,
+        "max": 0.9688
+      },
+      "acc_B_final": {
+        "mean": 0.9102,
+        "std": 0.0475,
+        "ci95": 0.0208,
+        "min": 0.7647,
+        "max": 0.9656
+      },
+      "acc_C_final": {
+        "mean": 0.9007,
+        "std": 0.041,
+        "ci95": 0.018,
+        "min": 0.8267,
+        "max": 0.9671
+      },
+      "acc_A_initial": {
+        "mean": 0.9408,
+        "std": 0.0081,
+        "ci95": 0.0036,
+        "min": 0.9268,
+        "max": 0.9619
+      },
+      "retention_A": {
+        "mean": 0.9786,
+        "std": 0.0394,
+        "ci95": 0.0173,
+        "min": 0.8869,
+        "max": 1.028
       }
     }
   },
   "falsifiers": {
     "F1_mixed_acc_ge_0.70": {
       "threshold": 0.7,
-      "measured": 0.9385,
+      "measured": 0.9379,
       "passed": true,
       "claim": "dMoE v4 mixed stream accuracy must be >= 0.7000"
     },
     "F2_retention_A_ge_0.75": {
       "threshold": 0.75,
-      "measured": 0.9651,
+      "measured": 0.9689,
       "passed": true,
       "claim": "Domain A retention ratio must be >= 0.7500"
     },
     "F3_routing_acc_ge_0.90": {
       "threshold": 0.9,
-      "measured": 0.9867,
+      "measured": 0.9844,
       "passed": true,
       "claim": "Per-sequence routing accuracy must be >= 0.9000"
     },
     "F4_margin_over_no_replay_gt_0.25": {
       "threshold": 0.25,
-      "measured": 0.601,
+      "measured": 0.6023,
       "passed": true,
       "claim": "dMoE v4 mixed stream gain over dense un-replayed transformer must be > +0.2500"
     },
     "F5_ceiling_le_0.97": {
       "threshold": 0.97,
-      "measured": 0.9629,
+      "measured": 0.9619,
       "passed": true,
       "claim": "No condition may exceed 0.9700 on 5% noise data (data leakage guard)"
+    },
+    "F1b_pure_neural_mixed_acc_ge_0.70": {
+      "threshold": 0.7,
+      "measured": 0.9117,
+      "passed": true,
+      "claim": "dMoE v4 Pure Neural (no LDA) mixed stream accuracy must be >= 0.7000"
+    },
+    "F2b_pure_neural_retention_A_ge_0.75": {
+      "threshold": 0.75,
+      "measured": 0.9786,
+      "passed": true,
+      "claim": "dMoE v4 Pure Neural (no LDA) Domain A retention ratio must be >= 0.7500"
+    },
+    "F3b_pure_neural_routing_acc_ge_0.90": {
+      "threshold": 0.9,
+      "measured": 0.9859,
+      "passed": true,
+      "claim": "dMoE v4 Pure Neural (no LDA) per-sequence routing accuracy must be >= 0.9000"
+    },
+    "F4b_pure_neural_margin_gt_0.25": {
+      "threshold": 0.25,
+      "measured": 0.5761,
+      "passed": true,
+      "claim": "dMoE v4 Pure Neural gain over dense un-replayed transformer must be > +0.2500"
     }
   },
   "all_falsifiers_passed": true

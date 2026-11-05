@@ -228,3 +228,62 @@ def test_continual_learner_always_plastic_mixed_stream():
     logits = learner.predict_logits(x_mix, output_head="byte_chunk")
     assert logits.shape == (32, 4 * 4, 256)
     assert torch.isfinite(logits).all()
+
+
+def test_pure_neural_continual_learning_no_lda():
+    """Verify pure neural continual learning without LDA maintains modular expert heads."""
+    torch.manual_seed(42)
+    model = SelfStabilizingDynamicMorphicMoE(
+        d_model=32,
+        num_heads=2,
+        d_ff=128,
+        initial_layers=2,
+        initial_experts=1,
+        tokenizer_free=True,
+        chunk_size=4,
+        enable_local_lda=False,
+        enable_setgate=True,
+    )
+    opt = torch.optim.AdamW([p for p in model.parameters() if p.requires_grad], lr=4e-3)
+    learner = ContinualLearner(
+        model=model,
+        optimizer=opt,
+        replay_buffer_capacity=0,
+        enable_local_lda=False,
+        enable_setgate=True,
+        freeze_backbone_on_domain=True,
+        enable_null_space=False,
+    )
+
+    # Train on domain 0
+    for st in range(10):
+        x0, y0 = generate_easy_domain_batch(0, batch_size=16, seq_len=16, seed=900 + st)
+        res0 = learner.step(x0, y0, output_head="byte_chunk")
+        assert math.isfinite(res0["total_loss"])
+
+    # Domain transition: freezes expert 0 and head 0, spawns expert 1 and head 1
+    learner.domain_transition(new_domain_id=1)
+    assert len(model.layers[0].moe.experts) == 2
+    assert len(model.decoder.expert_heads) == 2
+    assert model.layers[0].moe.expert_frozen[0].item() is True
+    assert model.layers[0].moe.expert_frozen[1].item() is False
+
+    # Check head 0 frozen and head 1 trainable
+    assert all(not p.requires_grad for p in model.decoder.expert_heads[0].parameters())
+    assert all(p.requires_grad for p in model.decoder.expert_heads[1].parameters())
+
+    # Train on domain 1
+    for st in range(10):
+        x1, y1 = generate_easy_domain_batch(1, batch_size=16, seq_len=16, seed=950 + st)
+        res1 = learner.step(x1, y1, output_head="byte_chunk")
+        assert math.isfinite(res1["total_loss"])
+
+    # Evaluate pure neural forward pass on mixed stream
+    x0_test, _ = generate_easy_domain_batch(0, batch_size=16, seq_len=16, seed=1000)
+    x1_test, _ = generate_easy_domain_batch(1, batch_size=16, seq_len=16, seed=1001)
+    x_mix = torch.cat([x0_test, x1_test], dim=0)
+
+    logits = learner.predict_logits(x_mix, output_head="byte_chunk")
+    assert logits.shape == (32, 4, 4, 256)
+    assert torch.isfinite(logits).all()
+

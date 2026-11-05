@@ -65,4 +65,5 @@ The claim that `dMoE_v4` solves mixed-stream continual learning without replay i
 4. `Baseline_RegularTransformer_NoReplay`: Parameter-matched regular Transformer trained sequentially without replay.
 5. `Baseline_RegularTransformer_Replay128`: Parameter-matched regular Transformer trained with 128-sample replay buffer.
 6. `dMoE_v4_MixedStream_ZeroReplay`: Proposed dMoE v4 with per-sequence content router and local LDA fast memory.
+7. `dMoE_v4_PureNeural_ZeroReplay` (Post-Audit Addition): Pure neural network with per-sequence router, modular per-domain decoder heads, zero LDA, and zero replay. Added following codebase audit to verify pure neural backpropagation without closed-form LDA assistance.
 

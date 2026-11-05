@@ -225,7 +225,7 @@ class SelfStabilizingDynamicMorphicMoE(nn.Module):
             else None
         )
         output, decoder_latent = self.decoder.forward_with_latent(
-            z_r, z_i, head=output_head, byte_residuals=byte_residuals
+            z_r, z_i, head=output_head, byte_residuals=byte_residuals, assigned_experts=self.last_assigned_experts
         )
 
         return {

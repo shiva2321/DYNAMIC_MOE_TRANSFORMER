@@ -72,7 +72,7 @@ def _git(*args: str) -> str:
         return f"unavailable: {err}"
 
 
-def _make_dmoe_v4(seed: int) -> SelfStabilizingDynamicMorphicMoE:
+def _make_dmoe_v4(seed: int, enable_local_lda: bool = True) -> SelfStabilizingDynamicMorphicMoE:
     random.seed(seed)
     torch.manual_seed(seed)
     return SelfStabilizingDynamicMorphicMoE(
@@ -83,7 +83,7 @@ def _make_dmoe_v4(seed: int) -> SelfStabilizingDynamicMorphicMoE:
         initial_experts=1,
         tokenizer_free=True,
         chunk_size=4,
-        enable_local_lda=True,
+        enable_local_lda=enable_local_lda,
         enable_setgate=True,
     )
 
@@ -282,7 +282,7 @@ def run_condition_seed(cond_name: str, seed: int, steps_per_domain: int) -> Dict
         )
 
     if cond_name == "dMoE_v4_MixedStream_ZeroReplay":
-        model = _make_dmoe_v4(seed).to(DEVICE)
+        model = _make_dmoe_v4(seed, enable_local_lda=True).to(DEVICE)
         opt = torch.optim.AdamW([p for p in model.parameters() if p.requires_grad], lr=LR)
         learner = ContinualLearner(
             model,
@@ -297,6 +297,20 @@ def run_condition_seed(cond_name: str, seed: int, steps_per_domain: int) -> Dict
         )
         return _train_sequential(model, learner, seed, steps_per_domain, shuffle_targets=False, is_dmoe=True)
 
+    if cond_name == "dMoE_v4_PureNeural_ZeroReplay":
+        model = _make_dmoe_v4(seed, enable_local_lda=False).to(DEVICE)
+        opt = torch.optim.AdamW([p for p in model.parameters() if p.requires_grad], lr=LR)
+        learner = ContinualLearner(
+            model,
+            opt,
+            replay_buffer_capacity=0,
+            enable_local_lda=False,
+            enable_setgate=True,
+            freeze_backbone_on_domain=True,
+            enable_null_space=False,
+        )
+        return _train_sequential(model, learner, seed, steps_per_domain, shuffle_targets=False, is_dmoe=True)
+
     raise ValueError(f"Unknown condition: {cond_name}")
 
 
@@ -307,6 +321,7 @@ CONDITIONS = [
     "Baseline_RegularTransformer_NoReplay",
     "Baseline_RegularTransformer_Replay128",
     "dMoE_v4_MixedStream_ZeroReplay",
+    "dMoE_v4_PureNeural_ZeroReplay",
 ]
 
 
@@ -374,6 +389,7 @@ def run_merge(steps_per_domain: int) -> Path:
 
     # Pre-registered Falsifiers Audit
     v4 = summary.get("dMoE_v4_MixedStream_ZeroReplay", {})
+    v4_pure = summary.get("dMoE_v4_PureNeural_ZeroReplay", {})
     base_no_rep = summary.get("Baseline_RegularTransformer_NoReplay", {})
     v4_acc = v4.get("acc_mixed_final", {}).get("mean", 0.0)
     v4_ret = v4.get("retention_A", {}).get("mean", 0.0)
@@ -416,6 +432,35 @@ def run_merge(steps_per_domain: int) -> Path:
             "claim": "No condition may exceed 0.9700 on 5% noise data (data leakage guard)",
         },
     }
+
+    if v4_pure:
+        pure_acc = v4_pure.get("acc_mixed_final", {}).get("mean", 0.0)
+        pure_ret = v4_pure.get("retention_A", {}).get("mean", 0.0)
+        pure_route = v4_pure.get("acc_route_final", {}).get("mean", 0.0)
+        falsifiers["F1b_pure_neural_mixed_acc_ge_0.70"] = {
+            "threshold": 0.7000,
+            "measured": pure_acc,
+            "passed": bool(pure_acc >= 0.7000),
+            "claim": "dMoE v4 Pure Neural (no LDA) mixed stream accuracy must be >= 0.7000",
+        }
+        falsifiers["F2b_pure_neural_retention_A_ge_0.75"] = {
+            "threshold": 0.7500,
+            "measured": pure_ret,
+            "passed": bool(pure_ret >= 0.7500),
+            "claim": "dMoE v4 Pure Neural (no LDA) Domain A retention ratio must be >= 0.7500",
+        }
+        falsifiers["F3b_pure_neural_routing_acc_ge_0.90"] = {
+            "threshold": 0.9000,
+            "measured": pure_route,
+            "passed": bool(pure_route >= 0.9000),
+            "claim": "dMoE v4 Pure Neural (no LDA) per-sequence routing accuracy must be >= 0.9000",
+        }
+        falsifiers["F4b_pure_neural_margin_gt_0.25"] = {
+            "threshold": 0.2500,
+            "measured": round(pure_acc - base_acc, 4),
+            "passed": bool((pure_acc - base_acc) > 0.2500),
+            "claim": "dMoE v4 Pure Neural gain over dense un-replayed transformer must be > +0.2500",
+        }
 
     all_passed = all(f["passed"] for f in falsifiers.values())
 

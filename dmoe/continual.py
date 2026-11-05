@@ -258,21 +258,46 @@ class ContinualLearner:
                 for idx, is_frozen in enumerate(layer.moe.expert_frozen):
                     if not bool(is_frozen):
                         layer.moe.freeze_expert(idx)
+                        if hasattr(self.model, "decoder") and hasattr(self.model.decoder, "freeze_expert_head"):
+                            self.model.decoder.freeze_expert_head(idx)
                 if spawn_new_expert:
                     layer.moe.spawn_expert()
+
+        if spawn_new_expert and hasattr(self.model, "decoder") and hasattr(self.model.decoder, "spawn_expert_head"):
+            self.model.decoder.spawn_expert_head()
 
         if self.freeze_backbone_on_domain and not self.enable_null_space and (new_domain_id is None or new_domain_id >= 1):
             if hasattr(self.model, "encoder"):
                 for p in self.model.encoder.parameters():
                     p.requires_grad_(False)
-            for layer in self.model.layers:
-                for sub in ("norm1", "attn", "norm2"):
-                    if hasattr(layer, sub):
-                        for p in getattr(layer, sub).parameters():
-                            p.requires_grad_(False)
-            if hasattr(self.model, "decoder"):
-                for p in self.model.decoder.parameters():
+            if hasattr(self.model, "manifold_corr"):
+                for p in self.model.manifold_corr.parameters():
                     p.requires_grad_(False)
+            for layer in self.model.layers:
+                for sub in ("norm1", "attn", "norm2", "alpha_residual"):
+                    if hasattr(layer, sub):
+                        val = getattr(layer, sub)
+                        if isinstance(val, nn.Parameter):
+                            val.requires_grad_(False)
+                        elif isinstance(val, nn.Module):
+                            for p in val.parameters():
+                                p.requires_grad_(False)
+            if hasattr(self.model, "decoder"):
+                if hasattr(self.model.decoder, "proj_real"):
+                    for p in self.model.decoder.proj_real.parameters():
+                        p.requires_grad_(False)
+                if hasattr(self.model.decoder, "proj_imag"):
+                    for p in self.model.decoder.proj_imag.parameters():
+                        p.requires_grad_(False)
+                if hasattr(self.model.decoder, "final_norm"):
+                    for p in self.model.decoder.final_norm.parameters():
+                        p.requires_grad_(False)
+                if hasattr(self.model.decoder, "continuous_head"):
+                    for p in self.model.decoder.continuous_head.parameters():
+                        p.requires_grad_(False)
+                if hasattr(self.model.decoder, "expert_heads") and len(self.model.decoder.expert_heads) > 0 and spawn_new_expert:
+                    for p in self.model.decoder.expert_heads[-1].parameters():
+                        p.requires_grad_(True)
 
         active_params = [p for p in self.model.parameters() if p.requires_grad]
         if active_params:
@@ -310,6 +335,12 @@ class ContinualLearner:
                         exp_logits = expert.predict_logits(slot_feats[seq_mask])
                         if exp_logits is not None:
                             all_logits[seq_mask] = exp_logits.reshape(len(seq_mask), n_slots, 256)
+                if self.fast_memory_blend < 1.0:
+                    slow_reshaped = slow_logits.view(x.size(0), n_slots, 256)
+                    slow_norm = F.log_softmax(slow_reshaped, dim=-1)
+                    fast_norm = F.log_softmax(all_logits, dim=-1)
+                    w = self.fast_memory_blend
+                    return (1.0 - w) * slow_norm + w * fast_norm
                 return all_logits
 
             chosen_idx = getattr(last_moe, "last_routed_expert", 0)
@@ -318,6 +349,13 @@ class ContinualLearner:
                 if hasattr(expert, "predict_logits"):
                     fast_logits = expert.predict_logits(slot_feats)
                     if fast_logits is not None:
+                        if self.fast_memory_blend < 1.0:
+                            n_slots = slot_feats.size(1) * slot_feats.size(2)
+                            slow_reshaped = slow_logits.view(x.size(0), n_slots, 256)
+                            slow_norm = F.log_softmax(slow_reshaped, dim=-1)
+                            fast_norm = F.log_softmax(fast_logits, dim=-1)
+                            w = self.fast_memory_blend
+                            return (1.0 - w) * slow_norm + w * fast_norm
                         return fast_logits
             return slow_logits
 
