@@ -55,11 +55,14 @@ class SelfStabilizingDynamicMorphicMoE(nn.Module):
         self.enable_setgate = enable_setgate
 
         if enable_setgate:
-            from dmoe.routing import SetGate
+            from dmoe.routing import SequenceContentRouter, SetGate
             self.setgate = SetGate(d_model=d_model, alpha=0.05, num_perms=60)
+            self.sequence_router = SequenceContentRouter(d_model=d_model, sim_threshold=0.5)
         else:
             self.setgate = None
+            self.sequence_router = None
         self.last_routed_expert = 0
+        self.last_assigned_experts = None
         self.last_routing_verdict = "novel"
         self.last_routing_p_val = 0.0
 
@@ -168,39 +171,43 @@ class SelfStabilizingDynamicMorphicMoE(nn.Module):
             z_r, z_i, update_stats=update_stats
         )
 
-        if self.enable_setgate and self.setgate is not None and len(self.layers) > 0:
-            chunk0_lat = torch.sqrt(z_r**2 + z_i**2)[:, 0, :]
+        if self.enable_setgate and len(self.layers) > 0 and self.sequence_router is not None:
             moe0 = self.layers[0].moe
             expert_exemplars = [e.exemplars if hasattr(e, "exemplars") else None for e in moe0.experts]
-            step_val = int(moe0.expert_age.sum().item())
-            verdict, owner_idx, p_val = self.setgate.route_batch(chunk0_lat, expert_exemplars, step=step_val)
-            if verdict == "known" and owner_idx >= 0:
-                chosen_expert = owner_idx
-            elif self.training:
-                unfrozen = [i for i, f in enumerate(moe0.expert_frozen) if not f]
-                chosen_expert = unfrozen[0] if unfrozen else 0
-            else:
-                candidates = []
-                batch_cent = chunk0_lat.mean(dim=0)
-                for e_idx, e in enumerate(moe0.experts):
-                    if hasattr(e, "exemplars") and e.exemplars.numel() > 0:
-                        d = (e.exemplars.mean(dim=0) - batch_cent).norm().item()
-                        candidates.append((d, e_idx))
-                chosen_expert = min(candidates, key=lambda c: c[0])[1] if candidates else 0
+            seq_sig = self.sequence_router.extract_signature(x, self.encoder)
 
-            self.last_routed_expert = chosen_expert
-            self.last_routing_verdict = verdict
-            self.last_routing_p_val = p_val
-            if update_stats and self.training and not bool(moe0.expert_frozen[chosen_expert]):
-                for layer in self.layers:
-                    if hasattr(layer, "moe") and chosen_expert < len(layer.moe.experts):
-                        layer.moe.experts[chosen_expert].update_exemplars(chunk0_lat)
+            unfrozen = [i for i, f in enumerate(moe0.expert_frozen) if not f]
+            fallback = unfrozen[0] if unfrozen else 0
+
+            assigned_experts, max_sims, is_novel = self.sequence_router.route_sequences(
+                seq_sig, expert_exemplars, fallback_expert=fallback
+            )
+
+            # If training with unfrozen expert, assign active training domain expert and update its exemplars
+            if self.training and unfrozen:
+                chosen_training_expert = unfrozen[0]
+                assigned_experts = torch.full_like(assigned_experts, chosen_training_expert)
+                if update_stats and not bool(moe0.expert_frozen[chosen_training_expert]):
+                    for layer in self.layers:
+                        if hasattr(layer, "moe") and chosen_training_expert < len(layer.moe.experts):
+                            layer.moe.experts[chosen_training_expert].update_exemplars(seq_sig)
+
+            self.last_assigned_experts = assigned_experts
+            self.last_routed_expert = int(assigned_experts[0].item()) if assigned_experts.numel() > 0 else 0
+            self.last_routing_verdict = "novel" if is_novel.all().item() else "known"
+            self.last_routing_p_val = float(max_sims.mean().item())
+
             for layer in self.layers:
                 if hasattr(layer, "moe"):
-                    layer.moe.force_routed_expert = chosen_expert
+                    layer.moe.assigned_experts = assigned_experts
+                    layer.moe.force_routed_expert = (
+                        self.last_routed_expert if (assigned_experts == assigned_experts[0]).all() else None
+                    )
         else:
+            self.last_assigned_experts = None
             for layer in self.layers:
                 if hasattr(layer, "moe"):
+                    layer.moe.assigned_experts = None
                     layer.moe.force_routed_expert = None
 
         entropy_traces = []
@@ -232,6 +239,17 @@ class SelfStabilizingDynamicMorphicMoE(nn.Module):
             "z_imag": z_i,
             "simulation_steps_used": simulation_steps_used,
         }
+
+    def update_sequence_exemplars(self, exemplars_list: List[torch.Tensor]) -> None:
+        """Populate sequence exemplars across layer experts."""
+        if not hasattr(self, "layers") or len(self.layers) == 0:
+            return
+        for exp_idx, sig in enumerate(exemplars_list):
+            for layer in self.layers:
+                if hasattr(layer, "moe") and exp_idx < len(layer.moe.experts):
+                    expert = layer.moe.experts[exp_idx]
+                    if hasattr(expert, "update_exemplars"):
+                        expert.update_exemplars(sig)
 
     def execute_graph_mutation(
         self, novelty_score: Optional[float] = None

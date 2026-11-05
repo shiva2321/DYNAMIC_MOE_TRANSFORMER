@@ -8,6 +8,7 @@ import torch.nn.functional as F
 from dmoe.chunker import BYTE_PAD_ID
 from dmoe.fast_memory import ExactLdaFastMemory, MultiSlotExactLdaMemory
 from dmoe.model import rebuild_optimizer_preserving_state
+from dmoe.null_space import NullSpaceProjector
 from dmoe.replay_buffer import ReplayBuffer
 
 
@@ -30,6 +31,9 @@ class ContinualLearner:
         enable_local_lda: Optional[bool] = None,
         enable_setgate: Optional[bool] = None,
         freeze_backbone_on_domain: bool = False,
+        enable_null_space: bool = False,
+        null_space_energy_threshold: float = 0.98,
+        null_space_max_rank_ratio: float = 0.6,
     ):
         self.model = model
         self.optimizer = optimizer
@@ -55,6 +59,16 @@ class ContinualLearner:
             else bool(enable_setgate)
         )
         self.freeze_backbone_on_domain = freeze_backbone_on_domain
+        self.enable_null_space = enable_null_space
+        self.null_space_projector: Optional[NullSpaceProjector] = (
+            NullSpaceProjector(
+                model=self.model,
+                energy_threshold=null_space_energy_threshold,
+                max_rank_ratio=null_space_max_rank_ratio,
+            )
+            if enable_null_space
+            else None
+        )
         self.fast_memory: Optional[nn.Module] = None
         self.global_step = 0
         self._apply_thresholds()
@@ -155,6 +169,8 @@ class ContinualLearner:
 
         total_loss = task_loss + rehearsal_loss + self.distillation_weight * distillation_loss
         total_loss.backward()
+        if getattr(self, "null_space_projector", None) is not None:
+            self.null_space_projector.project_gradients()
         self.optimizer.step()
 
         if self.enable_local_lda and hasattr(self.model, "layers"):
@@ -162,12 +178,22 @@ class ContinualLearner:
                 slot_feats = self.model.decoder.extract_slot_features(
                     out["decoder_latent"], out.get("byte_residuals")
                 )
+                assigned = getattr(self.model, "last_assigned_experts", None)
                 for layer in self.model.layers:
                     if hasattr(layer, "moe") and getattr(layer.moe, "enable_local_lda", False):
-                        chosen_idx = getattr(layer.moe, "last_routed_expert", None)
-                        if chosen_idx is not None and chosen_idx < len(layer.moe.experts):
-                            if not bool(layer.moe.expert_frozen[chosen_idx]):
-                                layer.moe.experts[chosen_idx].absorb(slot_feats, targets, ignore_index=BYTE_PAD_ID)
+                        if assigned is not None and assigned.numel() == x.size(0):
+                            for exp_idx, expert in enumerate(layer.moe.experts):
+                                if not bool(layer.moe.expert_frozen[exp_idx]):
+                                    seq_mask = (assigned == exp_idx).nonzero(as_tuple=True)[0]
+                                    if len(seq_mask) > 0:
+                                        layer.moe.experts[exp_idx].absorb(
+                                            slot_feats[seq_mask], targets[seq_mask], ignore_index=BYTE_PAD_ID
+                                        )
+                        else:
+                            chosen_idx = getattr(layer.moe, "last_routed_expert", None)
+                            if chosen_idx is not None and chosen_idx < len(layer.moe.experts):
+                                if not bool(layer.moe.expert_frozen[chosen_idx]):
+                                    layer.moe.experts[chosen_idx].absorb(slot_feats, targets, ignore_index=BYTE_PAD_ID)
 
         if self.enable_fast_memory:
             with torch.no_grad():
@@ -207,25 +233,35 @@ class ContinualLearner:
             "mutation_report": mutation_report,
         }
 
-    def domain_transition(self, new_domain_id: Optional[int] = None) -> None:
+    def domain_transition(
+        self,
+        new_domain_id: Optional[int] = None,
+        spawn_new_expert: bool = True,
+    ) -> None:
         """
         Transition to a new domain:
+        - Update null-space projection basis for completed domain.
         - Freeze all active experts from the completed domain.
-        - Spawn a dedicated expert for the new domain in each layer.
-        - If freeze_backbone_on_domain, freeze encoder, attention, and decoder.
+        - Spawn a dedicated expert for the new domain in each layer if requested.
+        - If freeze_backbone_on_domain (and not using always-plastic null-space projection),
+          freeze encoder, attention, and decoder.
         - Rebuild the optimizer for trainable parameters only.
         """
         if not hasattr(self.model, "layers"):
             return
+
+        if getattr(self, "null_space_projector", None) is not None and new_domain_id is not None and new_domain_id >= 1:
+            self.null_space_projector.update_basis_for_domain(new_domain_id - 1)
 
         for layer in self.model.layers:
             if hasattr(layer, "moe"):
                 for idx, is_frozen in enumerate(layer.moe.expert_frozen):
                     if not bool(is_frozen):
                         layer.moe.freeze_expert(idx)
-                layer.moe.spawn_expert()
+                if spawn_new_expert:
+                    layer.moe.spawn_expert()
 
-        if self.freeze_backbone_on_domain and (new_domain_id is None or new_domain_id >= 1):
+        if self.freeze_backbone_on_domain and not self.enable_null_space and (new_domain_id is None or new_domain_id >= 1):
             if hasattr(self.model, "encoder"):
                 for p in self.model.encoder.parameters():
                     p.requires_grad_(False)
@@ -261,13 +297,25 @@ class ContinualLearner:
 
         if self.enable_local_lda and hasattr(self.model, "layers"):
             last_moe = self.model.layers[-1].moe
+            assigned = getattr(self.model, "last_assigned_experts", None)
+            slot_feats = self.model.decoder.extract_slot_features(
+                out["decoder_latent"], out.get("byte_residuals")
+            )
+            if assigned is not None and assigned.numel() == x.size(0):
+                n_slots = slot_feats.size(1) * slot_feats.size(2)
+                all_logits = torch.zeros(x.size(0), n_slots, 256, device=x.device)
+                for exp_idx, expert in enumerate(last_moe.experts):
+                    seq_mask = (assigned == exp_idx).nonzero(as_tuple=True)[0]
+                    if len(seq_mask) > 0 and hasattr(expert, "predict_logits"):
+                        exp_logits = expert.predict_logits(slot_feats[seq_mask])
+                        if exp_logits is not None:
+                            all_logits[seq_mask] = exp_logits.reshape(len(seq_mask), n_slots, 256)
+                return all_logits
+
             chosen_idx = getattr(last_moe, "last_routed_expert", 0)
             if chosen_idx < len(last_moe.experts):
                 expert = last_moe.experts[chosen_idx]
                 if hasattr(expert, "predict_logits"):
-                    slot_feats = self.model.decoder.extract_slot_features(
-                        out["decoder_latent"], out.get("byte_residuals")
-                    )
                     fast_logits = expert.predict_logits(slot_feats)
                     if fast_logits is not None:
                         return fast_logits

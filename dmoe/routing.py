@@ -146,3 +146,87 @@ class SetGate(nn.Module):
 
         # All existing experts rejected the batch -> Truly NOVEL domain!
         return "novel", -1, best_p
+
+
+class SequenceContentRouter(nn.Module):
+    """
+    Per-Sequence Content-Addressed Router for Mixed Streams (B2).
+    Evaluates each sequence individually against expert centroids in normalized latent space.
+    Operates in O(B * E * d) entirely on GPU with zero host-device synchronization.
+    """
+
+    def __init__(self, d_model: int, sim_threshold: float = 0.5):
+        super().__init__()
+        self.d_model = d_model
+        self.sim_threshold = float(sim_threshold)
+
+    @torch.no_grad()
+    def extract_signature(self, x: torch.Tensor, encoder: nn.Module) -> torch.Tensor:
+        """
+        Extract normalized sequence content signature [B, d_model].
+        Modality-agnostic: pooled byte embedding for bytes, token embedding for text, patch for image.
+        """
+        if hasattr(encoder, "byte_chunker") and encoder.byte_chunker is not None:
+            emb = encoder.byte_chunker.byte_embed(x.long().clamp(0, 257))
+            sig = emb.mean(dim=1)
+        elif hasattr(encoder, "text_embed") and encoder.text_embed is not None:
+            emb = encoder.text_embed(x.long())
+            sig = emb.mean(dim=1)
+        elif x.dim() == 4 and hasattr(encoder, "image_patch_proj"):
+            patches = encoder.image_patch_proj(x).flatten(2).transpose(1, 2)
+            sig = patches.mean(dim=1)
+        elif x.dim() == 3:
+            sig = x.mean(dim=1)
+        else:
+            sig = x.float().reshape(x.size(0), -1)[:, : self.d_model]
+
+        return F.normalize(sig, p=2, dim=-1)
+
+    @torch.no_grad()
+    def route_sequences(
+        self,
+        signatures: torch.Tensor,
+        expert_exemplars: List[Optional[torch.Tensor]],
+        fallback_expert: int = 0,
+    ) -> Tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
+        """
+        Route each sequence individually based on normalized cosine similarity to expert centroids.
+
+        Args:
+            signatures: [B, d_model] normalized sequence signatures.
+            expert_exemplars: list of [M_e, d_model] tensors per expert.
+            fallback_expert: default expert index if no expert has exemplars.
+
+        Returns:
+            assigned_experts: [B] long tensor of expert indices.
+            max_sims: [B] float tensor of similarity to winning expert.
+            is_novel: [B] bool tensor indicating whether max_sim < sim_threshold.
+        """
+        bsz = signatures.size(0)
+        device = signatures.device
+
+        valid_experts = []
+        centroids = []
+        for e_idx, ex in enumerate(expert_exemplars):
+            if ex is not None and ex.numel() > 0:
+                cent = F.normalize(ex.mean(dim=0, keepdim=True).float(), p=2, dim=-1)
+                valid_experts.append(e_idx)
+                centroids.append(cent)
+
+        if not centroids:
+            return (
+                torch.full((bsz,), fallback_expert, dtype=torch.long, device=device),
+                torch.zeros(bsz, device=device),
+                torch.ones(bsz, dtype=torch.bool, device=device),
+            )
+
+        stacked_centroids = torch.cat(centroids, dim=0).to(device)
+        sims = torch.matmul(signatures, stacked_centroids.T)
+        max_sims, best_sub_idx = sims.max(dim=-1)
+
+        expert_map = torch.tensor(valid_experts, dtype=torch.long, device=device)
+        assigned_experts = expert_map[best_sub_idx]
+        is_novel = max_sims < self.sim_threshold
+
+        return assigned_experts, max_sims, is_novel
+

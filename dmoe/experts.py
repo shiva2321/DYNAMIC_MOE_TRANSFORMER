@@ -428,6 +428,34 @@ class DynamicMorphicMoE(nn.Module):
     def forward(
         self, z_r: torch.Tensor, z_i: torch.Tensor, update_stats: bool = True
     ) -> Tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
+        if getattr(self, "assigned_experts", None) is not None:
+            assigned = self.assigned_experts
+            if (assigned == assigned[0]).all():
+                chosen_idx = min(int(assigned[0].item()), len(self.experts) - 1)
+                self.last_routed_expert = chosen_idx
+                if update_stats and self.training:
+                    with torch.no_grad():
+                        self.expert_usage.mul_(0.9)
+                        self.expert_usage[chosen_idx].add_(0.1)
+                        self.expert_age[chosen_idx].add_(1.0)
+                exp_out_r, exp_out_i = self.experts[chosen_idx](z_r, z_i)
+                return exp_out_r, exp_out_i, torch.tensor(0.0, device=z_r.device)
+            else:
+                out_r = torch.zeros_like(z_r)
+                out_i = torch.zeros_like(z_i)
+                for exp_idx, expert in enumerate(self.experts):
+                    seq_mask = (assigned == exp_idx).nonzero(as_tuple=True)[0]
+                    if len(seq_mask) > 0:
+                        er, ei = expert(z_r[seq_mask], z_i[seq_mask])
+                        out_r[seq_mask] = er
+                        out_i[seq_mask] = ei
+                        if update_stats and self.training:
+                            with torch.no_grad():
+                                self.expert_usage[exp_idx].add_(0.1 * len(seq_mask) / len(assigned))
+                                self.expert_age[exp_idx].add_(1.0)
+                self.last_routed_expert = int(assigned[0].item())
+                return out_r, out_i, torch.tensor(0.0, device=z_r.device)
+
         if getattr(self, "force_routed_expert", None) is not None:
             chosen_idx = min(self.force_routed_expert, len(self.experts) - 1)
             self.last_routed_expert = chosen_idx
