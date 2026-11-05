@@ -5,3 +5,6 @@ __pycache__/
 .pytest_cache/
 *.ckpt
 *.pt
+.claude/
+.tmp_review/
+diff_output.txt

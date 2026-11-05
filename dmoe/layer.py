@@ -9,14 +9,30 @@ from dmoe.experts import DynamicMorphicMoE
 
 
 class DynamicMorphicTransformerLayer(nn.Module):
-    def __init__(self, d_model: int, num_heads: int, d_ff: int, initial_experts: int = 4):
+    def __init__(
+        self,
+        d_model: int,
+        num_heads: int,
+        d_ff: int,
+        initial_experts: int = 4,
+        enable_local_lda: bool = False,
+        enable_setgate: bool = False,
+        **moe_kwargs,
+    ):
         super().__init__()
         self.d_model = d_model
         self.norm1 = ComplexLayerNorm(d_model)
         self.attn = ComplexMultiHeadAttention(d_model, num_heads)
 
         self.norm2 = ComplexLayerNorm(d_model)
-        self.moe = DynamicMorphicMoE(d_model, d_ff, initial_experts=initial_experts)
+        self.moe = DynamicMorphicMoE(
+            d_model,
+            d_ff,
+            initial_experts=initial_experts,
+            enable_local_lda=enable_local_lda,
+            enable_setgate=enable_setgate,
+            **moe_kwargs,
+        )
 
         self.alpha_residual = nn.Parameter(torch.ones(1))
         self.register_buffer("layer_salience", torch.tensor(1.0, dtype=torch.float32))

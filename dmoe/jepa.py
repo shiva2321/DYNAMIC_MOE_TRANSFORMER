@@ -64,29 +64,25 @@ class JEPAModule(nn.Module):
         tgt_slice_r = target_r[:, start:end, :].detach()
         tgt_slice_i = target_i[:, start:end, :].detach()
 
-        if self.context_encoder.tokenizer_free:
-            unmasked = [idx for idx in range(seq_len) if idx < start or idx >= end]
-            if unmasked:
-                vis_r = context_r[:, unmasked, :]
-                vis_i = context_i[:, unmasked, :]
-                ctx_pool_r = vis_r.mean(dim=1, keepdim=True)
-                ctx_pool_i = vis_i.mean(dim=1, keepdim=True)
-            else:
-                vis_r = context_r
-                vis_i = context_i
-                ctx_pool_r = torch.zeros_like(context_r[:, :1, :])
-                ctx_pool_i = torch.zeros_like(context_i[:, :1, :])
+        unmasked = [idx for idx in range(seq_len) if idx < start or idx >= end]
+        if unmasked:
+            vis_r = context_r[:, unmasked, :]
+            vis_i = context_i[:, unmasked, :]
+            ctx_pool_r = vis_r.mean(dim=1, keepdim=True)
+            ctx_pool_i = vis_i.mean(dim=1, keepdim=True)
+        else:
+            vis_r = context_r
+            vis_i = context_i
+            ctx_pool_r = torch.zeros_like(context_r[:, :1, :])
+            ctx_pool_i = torch.zeros_like(context_i[:, :1, :])
 
-            pred_r, pred_i = self.predictor(ctx_slice_r + ctx_pool_r, ctx_slice_i + ctx_pool_i)
-            pred_loss = F.mse_loss(pred_r, tgt_slice_r) + F.mse_loss(pred_i, tgt_slice_i)
+        pred_r, pred_i = self.predictor(ctx_slice_r + ctx_pool_r, ctx_slice_i + ctx_pool_i)
+        pred_loss = F.mse_loss(pred_r, tgt_slice_r) + F.mse_loss(pred_i, tgt_slice_i)
 
-            std_r = torch.sqrt(vis_r.var(dim=(0, 1), unbiased=False) + 1e-4)
-            std_i = torch.sqrt(vis_i.var(dim=(0, 1), unbiased=False) + 1e-4)
-            var_loss = F.relu(1.0 - std_r).mean() + F.relu(1.0 - std_i).mean()
-            return pred_loss + 0.1 * var_loss
-
-        pred_r, pred_i = self.predictor(ctx_slice_r, ctx_slice_i)
-        return F.mse_loss(pred_r, tgt_slice_r) + F.mse_loss(pred_i, tgt_slice_i)
+        std_r = torch.sqrt(vis_r.var(dim=(0, 1), unbiased=False) + 1e-4)
+        std_i = torch.sqrt(vis_i.var(dim=(0, 1), unbiased=False) + 1e-4)
+        var_loss = F.relu(1.0 - std_r).mean() + F.relu(1.0 - std_i).mean()
+        return pred_loss + 0.1 * var_loss
 
     @torch.no_grad()
     def update_target_encoder(self) -> None:

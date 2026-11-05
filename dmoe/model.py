@@ -32,6 +32,8 @@ class SelfStabilizingDynamicMorphicMoE(nn.Module):
         skip_threshold: float = 0.0,
         tokenizer_free: bool = False,
         chunk_size: int = 4,
+        enable_local_lda: bool = False,
+        enable_setgate: bool = False,
     ):
         super().__init__()
         self.d_model = d_model
@@ -49,6 +51,17 @@ class SelfStabilizingDynamicMorphicMoE(nn.Module):
         self.skip_threshold = skip_threshold
         self.tokenizer_free = tokenizer_free
         self.chunk_size = chunk_size
+        self.enable_local_lda = enable_local_lda
+        self.enable_setgate = enable_setgate
+
+        if enable_setgate:
+            from dmoe.routing import SetGate
+            self.setgate = SetGate(d_model=d_model, alpha=0.05, num_perms=60)
+        else:
+            self.setgate = None
+        self.last_routed_expert = 0
+        self.last_routing_verdict = "novel"
+        self.last_routing_p_val = 0.0
 
         self.encoder = UniversalMultimodalEncoder(
             d_model, tokenizer_free=tokenizer_free, chunk_size=chunk_size
@@ -57,7 +70,14 @@ class SelfStabilizingDynamicMorphicMoE(nn.Module):
 
         self.layers = nn.ModuleList(
             [
-                DynamicMorphicTransformerLayer(d_model, num_heads, d_ff, initial_experts=initial_experts)
+                DynamicMorphicTransformerLayer(
+                    d_model,
+                    num_heads,
+                    d_ff,
+                    initial_experts=initial_experts,
+                    enable_local_lda=enable_local_lda,
+                    enable_setgate=enable_setgate,
+                )
                 for _ in range(initial_layers)
             ]
         )
@@ -98,6 +118,7 @@ class SelfStabilizingDynamicMorphicMoE(nn.Module):
             else self.max_simulation_steps
         )
         previous_error = None
+        active_fractions = []
 
         for _ in range(max_steps):
             norm_r, norm_i = self._complex_unit_norm(z_r, z_i)
@@ -107,8 +128,23 @@ class SelfStabilizingDynamicMorphicMoE(nn.Module):
             candidate_r, candidate_i, _ = self.layers[-1](
                 corrected_r, corrected_i, update_stats=False
             )
-            z_r = z_r + damping * (candidate_r - z_r)
-            z_i = z_i + damping * (candidate_i - z_i)
+
+            # Per-token selective simulation halting when evaluating with a positive convergence threshold
+            if (
+                not self.training
+                and self.theta_converge > 0.0
+                and self.manifold_corr.last_token_error is not None
+            ):
+                tok_err = self.manifold_corr.last_token_error.unsqueeze(-1)
+                active_mask = (tok_err >= self.theta_converge).to(dtype=z_r.dtype)
+                active_fractions.append(float(active_mask.mean().item()))
+                step_scale = damping * active_mask
+            else:
+                active_fractions.append(1.0)
+                step_scale = damping
+
+            z_r = z_r + step_scale * (candidate_r - z_r)
+            z_i = z_i + step_scale * (candidate_i - z_i)
             steps_used += 1
 
             if not self.training:
@@ -119,6 +155,9 @@ class SelfStabilizingDynamicMorphicMoE(nn.Module):
                     break
                 previous_error = current_error
 
+        self.last_active_token_fraction = (
+            sum(active_fractions) / len(active_fractions) if active_fractions else 0.0
+        )
         return z_r, z_i, steps_used
 
     def forward(
@@ -129,6 +168,41 @@ class SelfStabilizingDynamicMorphicMoE(nn.Module):
             z_r, z_i, update_stats=update_stats
         )
 
+        if self.enable_setgate and self.setgate is not None and len(self.layers) > 0:
+            chunk0_lat = torch.sqrt(z_r**2 + z_i**2)[:, 0, :]
+            moe0 = self.layers[0].moe
+            expert_exemplars = [e.exemplars if hasattr(e, "exemplars") else None for e in moe0.experts]
+            step_val = int(moe0.expert_age.sum().item())
+            verdict, owner_idx, p_val = self.setgate.route_batch(chunk0_lat, expert_exemplars, step=step_val)
+            if verdict == "known" and owner_idx >= 0:
+                chosen_expert = owner_idx
+            elif self.training:
+                unfrozen = [i for i, f in enumerate(moe0.expert_frozen) if not f]
+                chosen_expert = unfrozen[0] if unfrozen else 0
+            else:
+                candidates = []
+                batch_cent = chunk0_lat.mean(dim=0)
+                for e_idx, e in enumerate(moe0.experts):
+                    if hasattr(e, "exemplars") and e.exemplars.numel() > 0:
+                        d = (e.exemplars.mean(dim=0) - batch_cent).norm().item()
+                        candidates.append((d, e_idx))
+                chosen_expert = min(candidates, key=lambda c: c[0])[1] if candidates else 0
+
+            self.last_routed_expert = chosen_expert
+            self.last_routing_verdict = verdict
+            self.last_routing_p_val = p_val
+            if update_stats and self.training and not bool(moe0.expert_frozen[chosen_expert]):
+                for layer in self.layers:
+                    if hasattr(layer, "moe") and chosen_expert < len(layer.moe.experts):
+                        layer.moe.experts[chosen_expert].update_exemplars(chunk0_lat)
+            for layer in self.layers:
+                if hasattr(layer, "moe"):
+                    layer.moe.force_routed_expert = chosen_expert
+        else:
+            for layer in self.layers:
+                if hasattr(layer, "moe"):
+                    layer.moe.force_routed_expert = None
+
         entropy_traces = []
         for layer in self.layers:
             z_r, z_i, entropy = layer(z_r, z_i, update_stats=update_stats)
@@ -138,11 +212,19 @@ class SelfStabilizingDynamicMorphicMoE(nn.Module):
         if self.enable_simulation_loop:
             z_r, z_i, simulation_steps_used = self._run_simulation_loop(z_r, z_i)
 
-        output, decoder_latent = self.decoder.forward_with_latent(z_r, z_i, head=output_head)
+        byte_residuals = (
+            self.encoder.byte_chunker.last_byte_features
+            if self.tokenizer_free and self.encoder.byte_chunker is not None
+            else None
+        )
+        output, decoder_latent = self.decoder.forward_with_latent(
+            z_r, z_i, head=output_head, byte_residuals=byte_residuals
+        )
 
         return {
             "output": output,
             "decoder_latent": decoder_latent,
+            "byte_residuals": byte_residuals,
             "structural_error": structural_error,
             "novelty_score": novelty_score,
             "routing_entropies": entropy_traces,

@@ -1,4 +1,5 @@
-from typing import List, Sequence, Tuple, Union
+import math
+from typing import List, Optional, Sequence, Tuple, Union
 
 import torch
 import torch.nn as nn
@@ -11,8 +12,9 @@ BYTE_PAD_ID = 257
 class MultiScaleByteChunker(nn.Module):
     """
     Tokenizer-free byte stream chunker combining Charformer GBST-style
-    multi-scale 1D convolutions (for shift-resilient local n-gram context)
-    with MEGABYTE/BLT-style strided patch projection into d_model.
+    multi-scale 1D convolutions (for shift-resilient local n-gram context),
+    intra-chunk complex phase-rotation / cyclic roll binding, and
+    MEGABYTE/BLT-style strided patch projection into d_model.
     """
 
     def __init__(
@@ -38,6 +40,16 @@ class MultiScaleByteChunker(nn.Module):
 
         self.chunk_proj = nn.Linear(chunk_size * d_model, d_model)
         self.chunk_norm = nn.LayerNorm(d_model)
+
+        # Deterministic intra-chunk phase-rotation basis (consumes zero RNG on init)
+        slot_idx = torch.arange(chunk_size, dtype=torch.float32).unsqueeze(-1)
+        dim_idx = torch.arange(d_model, dtype=torch.float32).unsqueeze(0)
+        slot_angles = slot_idx * (2.0 * math.pi / max(chunk_size, 1)) + dim_idx * (
+            math.pi / max(d_model, 1)
+        )
+        self.register_buffer("slot_phase_basis", torch.sin(slot_angles).unsqueeze(0).unsqueeze(0))
+        self.slot_phase_gate = nn.Parameter(torch.tensor(0.0))
+        self.last_byte_features: Optional[torch.Tensor] = None
 
     @staticmethod
     def text_to_bytes(
@@ -106,5 +118,12 @@ class MultiScaleByteChunker(nn.Module):
             ms_features = F.pad(ms_features, (0, 0, 0, pad_len))
 
         num_chunks = ms_features.size(1) // self.chunk_size
-        chunked = ms_features.reshape(bsz, num_chunks, self.chunk_size * self.d_model)
+        slot_features = ms_features.reshape(bsz, num_chunks, self.chunk_size, self.d_model)
+        # Apply gated intra-chunk phase-rotation + cyclic roll binding per byte slot
+        rolled = torch.roll(slot_features, shifts=1, dims=-1)
+        slot_features = slot_features + torch.tanh(self.slot_phase_gate) * (
+            slot_features * self.slot_phase_basis + 0.25 * rolled
+        )
+        self.last_byte_features = slot_features
+        chunked = slot_features.reshape(bsz, num_chunks, self.chunk_size * self.d_model)
         return self.chunk_norm(self.chunk_proj(chunked))
