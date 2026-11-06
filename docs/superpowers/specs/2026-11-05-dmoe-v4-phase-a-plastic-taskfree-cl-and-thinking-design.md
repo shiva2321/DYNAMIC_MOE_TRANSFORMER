@@ -1,6 +1,6 @@
 # dMoE v4 · Phase A — Always-Plastic, Task-ID-Free Continual Learning and Trained Latent Thinking
 
-Repository: `D:\Dynamic_MOE_Transformer` · Date: 2026-11-05 · Status: **DRAFT for approval — nothing built.**
+Repository: `D:\Dynamic_MOE_Transformer` · Date: 2026-11-05 · Status: **DRAFT for approval.** *(Amended 2026-11-06 — see §14: the user chose belief revision + continual updating as the first "hero" capability, then deliberate reasoning; complex numbers are dropped. Code for v3/v4 Sprint 1 was written by another agent before approval; this doc governs what comes next.)*
 Companion: `2026-11-05-dmoe-v4-research-synthesis-and-roadmap.md` (evidence, sources, hypotheses H1–H8).
 Efficiency work is **Phase B**, deliberately after this phase (user decision).
 
@@ -164,3 +164,41 @@ Everything else: module and class structure; the optimiser wrapper that projects
 - **Token-level routing under high ρ** may be intrinsically ambiguous; abstention and coverage must be reported, not hidden.
 - **Thinking may not help at toy scale** (depth-recurrent LMs show marginal gains on GSM8K); T4 is chosen because recursion has the clearest published wins there (TRM, Attractor Models — single-group results, no independent replication found).
 - **Toy ladder may still be too easy**; hence the lookup-only control and the gated real-byte stage.
+
+---
+
+## 14. Amendment (2026-11-06): hero capability, Track K, and revised order
+
+**User decisions.** (a) First capability to win, against a size-matched transformer: **belief revision + continual updating**; second: **deliberate latent reasoning** (M4). (b) **Complex numbers are dropped** (supersedes §7.3's "use first, then ablate"). (c) The goal is one decisive, size-matched win on one axis — not "better at everything".
+
+**Revised order (supersedes §10 for the next step).**
+1. **Benchmarks, baselines and PREREG first** — header-free T1 and Track K below. They are model-independent, define what is being optimised, and give a regression gate before any refactor (baselines already drifted between the two v4 runs, so a gate is needed).
+2. **Real-valued refactor** on a branch, fp32 now. BF16 is deferred to Phase B: on a 32-wide toy it gains nothing, and the closed-form statistics must stay fp32/fp64 (Cholesky in bf16 is unsafe). Regression gate: the real-valued model must match the complex one on the existing v3/v4 benchmarks before the complex path is deleted. Coordinate with whoever else is editing `dmoe/`; this touches nearly every file.
+3. **Evidence-accumulating upkeeper** (below).
+4. **Head-to-head** on Track K with the baselines below.
+
+### 14.1 Track K — belief revision and robust updating
+
+Rules are context-defined (T1-style), byte-level, **no header tags**. The learner is **never given a flag** saying evidence is "verified" or "noise"; the harness knows ground truth only for scoring.
+
+| Task | Setup | Correct behaviour |
+|---|---|---|
+| **K1 new-rule acquisition** | A rule never seen before appears; n ∈ {1, 3, 10} exposures | Learn quickly at low confidence; old rules retained; learning curve vs n |
+| **K2 burst resistance** | A rule established with ≥ M observations receives a *temporally clustered* burst of B contradictory examples from a one-off source, then normal evidence resumes | No durable flip |
+| **K3 genuine revision** | The rule changes *persistently*: contradictory evidence recurs across ≥ R later batches/sources | Flip once accumulated evidence outweighs the prior count; flip latency measured |
+| **K4 curation under capacity** | Fixed slot budget smaller than the number of facts; usage frequencies differ | Rarely used facts may be dropped; frequently used ones kept; retention correlates with usage |
+
+**Noise taxonomy matters.** Independent random label noise is *already* handled by ordinary training through averaging (every dense baseline here reaches the 0.953 ceiling at 5% noise), so an "iid 15% corrupted labels" test will not separate architectures. The discriminating case is *structured* conflict: a short burst from one source (K2) versus a real, persistent change (K3). Telling those apart needs tracking of time and source consistency.
+
+**Policy to implement (a prior-count view, not an "N strikes" rule).** No existing belief → learn immediately at low confidence. Contradiction of a confident (high-count) belief → resist. Evidence accumulates → flip when contradictory count outweighs the prior. M, B, R, N and the noise rates are fixed in the PREREG before any run.
+
+**Memory honesty.** Seeing that a contradiction *repeats* requires remembering earlier contradictions. That is a fixed-size **tentative-belief store**: statistics keyed by context signature (proposed value, count, last-seen, source id) — never raw samples. It counts against the fixed-size-memory constraint (§4.2) and is reported in bytes. It must not be described as "no memory about the past".
+
+**Baselines — all required, parameter-matched *and* FLOP-matched:**
+1. dense, no replay · 2. dense + replay-128 · 3. dense + LoRA-per-domain + router (the mainstream modular answer) · 4. dense with the new evidence supplied **in context** (what mainstream practice would actually do) · 5. a **non-neural count/key-value store with counters**.
+
+Baseline 5 is the integrity check: if a dictionary with counters solves Track K as well as dMoE, the honest claim is "the mechanism works", not "the neural architecture is better". Report whichever is true.
+
+**Success (PROVISIONAL; frozen after M0 sets ceilings).** On K2 and K3, dMoE beats baselines 1 and 4 with paired-CI excluding 0 and effect ≥ 0.10 accuracy; on K1 it matches or beats replay; on K4 retention correlates positively with usage; NLL ≤ 1.5× dense-with-replay (calibration, §9 S3). Nulls and ceiling guards as in §9 S5.
+
+**Claims discipline.** "Mainstream models are fundamentally incapable of belief revision" is too strong: in-context learning is a form of revision and replay/LoRA retain a lot. Baselines 3–5 exist precisely so the win, if it comes, is against the real alternatives and not a straw man.
