@@ -238,6 +238,7 @@ class RealSelfStabilizingDMoE(nn.Module):
         self.chunk_size = chunk_size
 
         self.byte_embed = nn.Embedding(258, d_model)
+        self.pos_embed = nn.Parameter(torch.randn(1, 64, d_model) * 0.02)
         self.chunk_proj = nn.Linear(d_model * chunk_size, d_model)
         self.sequence_router = SequenceContentRouter(d_model=d_model, sim_threshold=0.5)
 
@@ -257,7 +258,10 @@ class RealSelfStabilizingDMoE(nn.Module):
         embedded = self.byte_embed(x)  # [B, L, d_model]
         n_chunks = L // self.chunk_size
         chunked = embedded.view(B, n_chunks, self.chunk_size * self.d_model)
-        return self.chunk_proj(chunked)  # [B, n_chunks, d_model]
+        h = self.chunk_proj(chunked)  # [B, n_chunks, d_model]
+        if n_chunks <= self.pos_embed.size(1):
+            h = h + self.pos_embed[:, :n_chunks, :]
+        return h
 
     def forward(
         self,

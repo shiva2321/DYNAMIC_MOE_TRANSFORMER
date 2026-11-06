@@ -161,8 +161,8 @@ class NonNeuralDictionaryBaseline:
         y_cpu = y.detach().cpu().tolist()
 
         for b in range(B):
-            for t in range(L):
-                prev_x = x_cpu[b][t - 1] if t > 0 else x_cpu[b][-1]
+            for t in range(1, L):
+                prev_x = x_cpu[b][t - 1]
                 cur_x = x_cpu[b][t]
                 target_y = y_cpu[b][t]
                 key = (prev_x, cur_x)
@@ -195,8 +195,9 @@ class NonNeuralDictionaryBaseline:
         preds = torch.zeros(B, L, dtype=torch.long, device=x.device)
 
         for b in range(B):
-            for t in range(L):
-                prev_x = x_cpu[b][t - 1] if t > 0 else x_cpu[b][-1]
+            preds[b, 0] = x[b, 0]
+            for t in range(1, L):
+                prev_x = x_cpu[b][t - 1]
                 cur_x = x_cpu[b][t]
                 key = (prev_x, cur_x)
                 if key in self.primary_store:

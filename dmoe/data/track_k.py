@@ -81,6 +81,7 @@ def generate_t1_batch(
     seed: int = 0,
     rule_table_override: Optional[torch.Tensor] = None,
     domain_seed: Optional[int] = None,
+    seen_pairs_only: Optional[List[Tuple[int, int]]] = None,
 ) -> Tuple[torch.Tensor, torch.Tensor]:
     """
     Generate a batch of header-free, context-dependent sequences for domain_id:
@@ -91,6 +92,14 @@ def generate_t1_batch(
     gen = torch.Generator().manual_seed(int(seed))
     d_seed = domain_seed if domain_seed is not None else (int(domain_id) * 37 + 7)
     P = make_markov_matrix(domain_id, num_states=ALPHABET_SIZE, rho=rho, seed=d_seed)
+    if seen_pairs_only is not None:
+        mask_seen = torch.zeros(ALPHABET_SIZE, ALPHABET_SIZE)
+        for prev_s, cur_s in seen_pairs_only:
+            mask_seen[prev_s, cur_s] = 1.0
+        P = P * mask_seen
+        row_sums = P.sum(dim=-1, keepdim=True)
+        P = torch.where(row_sums > 0, P / row_sums, torch.ones_like(P) / ALPHABET_SIZE)
+
     rule_table = (
         rule_table_override
         if rule_table_override is not None
@@ -111,8 +120,8 @@ def generate_t1_batch(
 
     # Compute target y_t = pi_k(x_t, x_{t-1})
     y_idx = torch.zeros(batch_size, seq_len, dtype=torch.long)
-    # For t = 0, wrap around to last token or use self
-    y_idx[:, 0] = rule_table[x_idx[:, -1], x_idx[:, 0]]
+    # For t = 0, no prior token in sequence; dummy target (not evaluated)
+    y_idx[:, 0] = x_idx[:, 0]
     for t in range(1, seq_len):
         y_idx[:, t] = rule_table[x_idx[:, t - 1], x_idx[:, t]]
 
@@ -137,6 +146,7 @@ def generate_k2_burst_stream(
     seq_len: int = 16,
     seed: int = 0,
     domain_seed: Optional[int] = None,
+    seen_pairs_only: Optional[List[Tuple[int, int]]] = None,
 ) -> List[Dict[str, Any]]:
     """
     Task K2 Stream:
@@ -162,6 +172,7 @@ def generate_k2_burst_stream(
             seed=seed * 10000 + st,
             rule_table_override=active_table,
             domain_seed=d_seed,
+            seen_pairs_only=seen_pairs_only,
         )
         stream.append({
             "step": st,
@@ -182,6 +193,7 @@ def generate_k3_revision_stream(
     seq_len: int = 16,
     seed: int = 0,
     domain_seed: Optional[int] = None,
+    seen_pairs_only: Optional[List[Tuple[int, int]]] = None,
 ) -> List[Dict[str, Any]]:
     """
     Task K3 Stream:
@@ -204,6 +216,7 @@ def generate_k3_revision_stream(
             seed=seed * 10000 + st,
             rule_table_override=active_table,
             domain_seed=d_seed,
+            seen_pairs_only=seen_pairs_only,
         )
         stream.append({
             "step": st,
@@ -214,3 +227,107 @@ def generate_k3_revision_stream(
             "source_id": source_id,
         })
     return stream
+
+
+def get_context_split(
+    domain_id: int = 0,
+    alphabet_size: int = ALPHABET_SIZE,
+    split_ratio: float = 0.75,
+    seed: int = 42,
+) -> Tuple[List[Tuple[int, int]], List[Tuple[int, int]]]:
+    """
+    Split the alphabet_size x alphabet_size contexts into seen and held-out context sets.
+    seen: 192 bigram pairs (75%).
+    held-out: 64 bigram pairs (25%).
+    """
+    all_pairs = [(a, b) for a in range(alphabet_size) for b in range(alphabet_size)]
+    gen = torch.Generator().manual_seed(int(seed) * 1000 + int(domain_id) * 17 + 101)
+    perm = torch.randperm(len(all_pairs), generator=gen).tolist()
+    n_seen = int(len(all_pairs) * split_ratio)
+    seen_pairs = [all_pairs[i] for i in perm[:n_seen]]
+    heldout_pairs = [all_pairs[i] for i in perm[n_seen:]]
+    return seen_pairs, heldout_pairs
+
+
+def generate_heldout_eval_batch(
+    domain_id: int,
+    heldout_pairs: List[Tuple[int, int]],
+    batch_size: int = 32,
+    seq_len: int = 16,
+    seed: int = 999,
+    rule_table_override: Optional[torch.Tensor] = None,
+    domain_seed: Optional[int] = None,
+) -> Tuple[torch.Tensor, torch.Tensor]:
+    """
+    Generate an evaluation batch where token transitions belong to heldout_pairs.
+    Used to test whether a model generalises beyond memorised dictionary keys.
+    """
+    gen = torch.Generator().manual_seed(int(seed))
+    d_seed = domain_seed if domain_seed is not None else (int(domain_id) * 37 + 7)
+    rule_table = (
+        rule_table_override
+        if rule_table_override is not None
+        else make_bigram_rule_table(domain_id, alphabet_size=ALPHABET_SIZE, seed=d_seed)
+    )
+
+    x_idx = torch.zeros(batch_size, seq_len, dtype=torch.long)
+    y_idx = torch.zeros(batch_size, seq_len, dtype=torch.long)
+
+    for b in range(batch_size):
+        for t in range(0, seq_len, 2):
+            idx = int(torch.randint(0, len(heldout_pairs), (1,), generator=gen).item())
+            prev_s, cur_s = heldout_pairs[idx]
+            x_idx[b, t] = prev_s
+            if t + 1 < seq_len:
+                x_idx[b, t + 1] = cur_s
+                y_idx[b, t + 1] = rule_table[prev_s, cur_s]
+
+    x_bytes = x_idx + ALPHABET_START
+    y_bytes = y_idx + ALPHABET_START
+    return x_bytes, y_bytes
+
+
+def generate_in_context_batch(
+    domain_id: int,
+    batch_size: int = 16,
+    num_demos: int = 4,
+    seed: int = 0,
+    rule_table_override: Optional[torch.Tensor] = None,
+    domain_seed: Optional[int] = None,
+) -> Tuple[torch.Tensor, torch.Tensor]:
+    """
+    Generate sequences formatted as in-context learning demonstrations:
+    Prompt format: [prev_1, cur_1, target_1, prev_2, cur_2, target_2, ..., prev_q, cur_q]
+    """
+    gen = torch.Generator().manual_seed(int(seed))
+    d_seed = domain_seed if domain_seed is not None else (int(domain_id) * 37 + 7)
+    rule_table = (
+        rule_table_override
+        if rule_table_override is not None
+        else make_bigram_rule_table(domain_id, alphabet_size=ALPHABET_SIZE, seed=d_seed)
+    )
+
+    seq_len = num_demos * 3 + 2
+    x_idx = torch.zeros(batch_size, seq_len, dtype=torch.long)
+    y_idx = torch.zeros(batch_size, seq_len, dtype=torch.long)
+
+    for b in range(batch_size):
+        for d in range(num_demos):
+            prev_s = int(torch.randint(0, ALPHABET_SIZE, (1,), generator=gen).item())
+            cur_s = int(torch.randint(0, ALPHABET_SIZE, (1,), generator=gen).item())
+            target_s = int(rule_table[prev_s, cur_s].item())
+            pos = d * 3
+            x_idx[b, pos] = prev_s
+            x_idx[b, pos + 1] = cur_s
+            x_idx[b, pos + 2] = target_s
+            y_idx[b, pos + 2] = target_s
+
+        q_prev = int(torch.randint(0, ALPHABET_SIZE, (1,), generator=gen).item())
+        q_cur = int(torch.randint(0, ALPHABET_SIZE, (1,), generator=gen).item())
+        q_target = int(rule_table[q_prev, q_cur].item())
+        q_pos = num_demos * 3
+        x_idx[b, q_pos] = q_prev
+        x_idx[b, q_pos + 1] = q_cur
+        y_idx[b, q_pos + 1] = q_target
+
+    return x_idx + ALPHABET_START, y_idx + ALPHABET_START

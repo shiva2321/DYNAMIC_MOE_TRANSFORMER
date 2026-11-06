@@ -1,16 +1,16 @@
 {
   "exp_id": "dmoe_v4_track_k",
-  "generated_at": "2026-11-06T22:41:55.310874",
-  "git_commit": "9cde7decbf00286d3f8f1416f26a584b81f0adf2",
+  "generated_at": "2026-11-06T23:54:07.046780",
+  "git_commit": "8a5c96b41db6c4c05b81e73958f30b4373d7af7f",
   "git_branch": "v4",
   "system": {
     "platform": "Windows-11-10.0.26200-SP0",
-    "python": "3.14.2 (tags/v3.14.2:df79316, Dec  5 2025, 17:18:21) [MSC v.1944 64 bit (AMD64)]",
-    "torch": "2.14.1+cu126",
+    "python": "3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]",
+    "torch": "2.6.0+cu124",
     "cuda_available": true,
     "device": "cuda"
   },
-  "steps": 120,
+  "steps": 350,
   "num_seeds": 20,
   "seeds": [
     0,
@@ -36,84 +36,149 @@
   ],
   "summary": {
     "dMoE_v4_TrackK_Upkeeper": {
-      "acc_initial": {
-        "mean": 0.5501,
-        "std": 0.0273,
-        "ci95": 0.012,
-        "min": 0.4824,
-        "max": 0.5996
+      "acc_initial_seen": {
+        "mean": 0.8635,
+        "std": 0.0769,
+        "ci95": 0.0337,
+        "min": 0.6333,
+        "max": 0.9219
       },
       "acc_k2_post_burst": {
-        "mean": 0.5338,
-        "std": 0.0786,
-        "ci95": 0.0344,
-        "min": 0.2207,
-        "max": 0.5996
+        "mean": 0.6047,
+        "std": 0.2801,
+        "ci95": 0.1228,
+        "min": 0.124,
+        "max": 0.9167
       },
       "acc_k3_post_revised": {
-        "mean": 0.5489,
-        "std": 0.0155,
-        "ci95": 0.0068,
-        "min": 0.5234,
-        "max": 0.5781
+        "mean": 0.9498,
+        "std": 0.0109,
+        "ci95": 0.0048,
+        "min": 0.9229,
+        "max": 0.9646
       },
       "k1_retention": {
-        "mean": 0.9703,
-        "std": 0.1337,
-        "ci95": 0.0586,
-        "min": 0.4021,
-        "max": 1.0036
+        "mean": 0.7099,
+        "std": 0.3326,
+        "ci95": 0.1458,
+        "min": 0.1441,
+        "max": 1.0
+      },
+      "acc_heldout_gen": {
+        "mean": 0.0614,
+        "std": 0.0101,
+        "ci95": 0.0044,
+        "min": 0.0488,
+        "max": 0.084
       },
       "nll_revised": {
-        "mean": 1.4729,
-        "std": 0.0712,
-        "ci95": 0.0312,
-        "min": 1.3737,
-        "max": 1.6219
+        "mean": 0.4975,
+        "std": 0.0925,
+        "ci95": 0.0406,
+        "min": 0.3277,
+        "max": 0.6826
       },
       "memory_bytes": {
-        "mean": 3072.0,
-        "std": 0.0,
-        "ci95": 0.0,
-        "min": 3072,
-        "max": 3072
+        "mean": 3437.6,
+        "std": 10.7331,
+        "ci95": 4.704,
+        "min": 3392,
+        "max": 3440
+      }
+    },
+    "Baseline_Dense_Upkeeper": {
+      "acc_initial_seen": {
+        "mean": 0.8474,
+        "std": 0.0745,
+        "ci95": 0.0326,
+        "min": 0.6365,
+        "max": 0.9125
+      },
+      "acc_k2_post_burst": {
+        "mean": 0.6204,
+        "std": 0.2496,
+        "ci95": 0.1094,
+        "min": 0.1958,
+        "max": 0.9125
+      },
+      "acc_k3_post_revised": {
+        "mean": 0.9259,
+        "std": 0.0322,
+        "ci95": 0.0141,
+        "min": 0.8521,
+        "max": 0.9646
+      },
+      "k1_retention": {
+        "mean": 0.7388,
+        "std": 0.2993,
+        "ci95": 0.1312,
+        "min": 0.2341,
+        "max": 1.0
+      },
+      "acc_heldout_gen": {
+        "mean": 0.0619,
+        "std": 0.0106,
+        "ci95": 0.0046,
+        "min": 0.043,
+        "max": 0.084
+      },
+      "nll_revised": {
+        "mean": 0.5359,
+        "std": 0.113,
+        "ci95": 0.0495,
+        "min": 0.3795,
+        "max": 0.7964
+      },
+      "memory_bytes": {
+        "mean": 3437.6,
+        "std": 10.7331,
+        "ci95": 4.704,
+        "min": 3392,
+        "max": 3440
       }
     },
     "Baseline_Dense_NoReplay": {
-      "acc_initial": {
-        "mean": 0.5519,
-        "std": 0.0214,
-        "ci95": 0.0094,
-        "min": 0.5117,
-        "max": 0.5859
+      "acc_initial_seen": {
+        "mean": 0.8774,
+        "std": 0.0217,
+        "ci95": 0.0095,
+        "min": 0.8344,
+        "max": 0.9073
       },
       "acc_k2_post_burst": {
-        "mean": 0.1162,
-        "std": 0.0419,
-        "ci95": 0.0184,
-        "min": 0.0273,
-        "max": 0.2168
+        "mean": 0.0998,
+        "std": 0.0199,
+        "ci95": 0.0087,
+        "min": 0.051,
+        "max": 0.1281
       },
       "acc_k3_post_revised": {
-        "mean": 0.5132,
-        "std": 0.0253,
-        "ci95": 0.0111,
-        "min": 0.4609,
-        "max": 0.5703
+        "mean": 0.9432,
+        "std": 0.0199,
+        "ci95": 0.0087,
+        "min": 0.8958,
+        "max": 0.9646
       },
       "k1_retention": {
-        "mean": 0.2124,
-        "std": 0.0813,
-        "ci95": 0.0356,
-        "min": 0.047,
-        "max": 0.4237
+        "mean": 0.1138,
+        "std": 0.0228,
+        "ci95": 0.01,
+        "min": 0.0585,
+        "max": 0.1448
+      },
+      "acc_heldout_gen": {
+        "mean": 0.0672,
+        "std": 0.0099,
+        "ci95": 0.0043,
+        "min": 0.0547,
+        "max": 0.0859
       },
       "nll_revised": {
-        "mean": 1.4358,
-        "std": 0.0518,
-        "ci95": 0.0227,
-        "min": 1.3598,
-        "max": 1.5675
+        "mean": 0.3444,
+        "std": 0.0694,
+        "ci95": 0.0304,
+        "min": 0.2548,
+        "max": 0.5104
       },
       "memory_bytes": {
         "mean": 0.0,
@@ -124,40 +189,47 @@
       }
     },
     "Baseline_Dense_Replay128": {
-      "acc_initial": {
-        "mean": 0.5519,
-        "std": 0.0214,
-        "ci95": 0.0094,
-        "min": 0.5117,
-        "max": 0.5859
+      "acc_initial_seen": {
+        "mean": 0.8774,
+        "std": 0.0217,
+        "ci95": 0.0095,
+        "min": 0.8344,
+        "max": 0.9073
       },
       "acc_k2_post_burst": {
-        "mean": 0.1806,
-        "std": 0.063,
-        "ci95": 0.0276,
-        "min": 0.0664,
-        "max": 0.2988
+        "mean": 0.1423,
+        "std": 0.0458,
+        "ci95": 0.0201,
+        "min": 0.0958,
+        "max": 0.2844
       },
       "acc_k3_post_revised": {
-        "mean": 0.5189,
-        "std": 0.0257,
-        "ci95": 0.0113,
-        "min": 0.457,
-        "max": 0.5605
+        "mean": 0.9499,
+        "std": 0.0113,
+        "ci95": 0.005,
+        "min": 0.9271,
+        "max": 0.9656
       },
       "k1_retention": {
-        "mean": 0.3288,
-        "std": 0.118,
-        "ci95": 0.0517,
-        "min": 0.1141,
-        "max": 0.5534
+        "mean": 0.1623,
+        "std": 0.0516,
+        "ci95": 0.0226,
+        "min": 0.108,
+        "max": 0.3171
+      },
+      "acc_heldout_gen": {
+        "mean": 0.0672,
+        "std": 0.0099,
+        "ci95": 0.0043,
+        "min": 0.0547,
+        "max": 0.0859
       },
       "nll_revised": {
-        "mean": 1.4069,
-        "std": 0.0522,
-        "ci95": 0.0229,
-        "min": 1.3146,
-        "max": 1.5362
+        "mean": 0.3277,
+        "std": 0.0503,
+        "ci95": 0.022,
+        "min": 0.2474,
+        "max": 0.4124
       },
       "memory_bytes": {
         "mean": 4096.0,
@@ -168,84 +240,98 @@
       }
     },
     "Baseline_Dense_LoRA_Router": {
-      "acc_initial": {
-        "mean": 0.5519,
-        "std": 0.0214,
-        "ci95": 0.0094,
-        "min": 0.5117,
-        "max": 0.5859
+      "acc_initial_seen": {
+        "mean": 0.8774,
+        "std": 0.0217,
+        "ci95": 0.0095,
+        "min": 0.8344,
+        "max": 0.9073
       },
       "acc_k2_post_burst": {
-        "mean": 0.5061,
-        "std": 0.0474,
-        "ci95": 0.0208,
-        "min": 0.3574,
-        "max": 0.5781
+        "mean": 0.8395,
+        "std": 0.0338,
+        "ci95": 0.0148,
+        "min": 0.7813,
+        "max": 0.899
       },
       "acc_k3_post_revised": {
-        "mean": 0.5469,
-        "std": 0.0187,
-        "ci95": 0.0082,
-        "min": 0.5,
-        "max": 0.5781
+        "mean": 0.8792,
+        "std": 0.0244,
+        "ci95": 0.0107,
+        "min": 0.8323,
+        "max": 0.9292
       },
       "k1_retention": {
-        "mean": 0.9168,
-        "std": 0.0763,
-        "ci95": 0.0334,
-        "min": 0.6583,
-        "max": 1.0207
+        "mean": 0.9566,
+        "std": 0.0247,
+        "ci95": 0.0108,
+        "min": 0.8961,
+        "max": 0.9919
+      },
+      "acc_heldout_gen": {
+        "mean": 0.0672,
+        "std": 0.0099,
+        "ci95": 0.0043,
+        "min": 0.0547,
+        "max": 0.0859
       },
       "nll_revised": {
-        "mean": 1.3836,
-        "std": 0.0477,
-        "ci95": 0.0209,
-        "min": 1.2721,
-        "max": 1.4716
+        "mean": 0.503,
+        "std": 0.0689,
+        "ci95": 0.0302,
+        "min": 0.3584,
+        "max": 0.6362
       },
       "memory_bytes": {
-        "mean": 1024.0,
+        "mean": 67584.0,
         "std": 0.0,
         "ci95": 0.0,
-        "min": 1024,
-        "max": 1024
+        "min": 67584,
+        "max": 67584
       }
     },
     "Baseline_Dense_InContext": {
-      "acc_initial": {
-        "mean": 0.5519,
-        "std": 0.0214,
-        "ci95": 0.0094,
-        "min": 0.5117,
-        "max": 0.5859
+      "acc_initial_seen": {
+        "mean": 0.6109,
+        "std": 0.0494,
+        "ci95": 0.0216,
+        "min": 0.5312,
+        "max": 0.6875
       },
       "acc_k2_post_burst": {
-        "mean": 0.536,
-        "std": 0.02,
-        "ci95": 0.0088,
-        "min": 0.4883,
-        "max": 0.5645
+        "mean": 0.0641,
+        "std": 0.0291,
+        "ci95": 0.0127,
+        "min": 0.0,
+        "max": 0.1406
       },
       "acc_k3_post_revised": {
-        "mean": 0.0138,
-        "std": 0.0026,
-        "ci95": 0.0012,
-        "min": 0.0098,
-        "max": 0.0195
+        "mean": 0.3406,
+        "std": 0.0681,
+        "ci95": 0.0299,
+        "min": 0.2188,
+        "max": 0.4844
       },
       "k1_retention": {
-        "mean": 0.9715,
-        "std": 0.0133,
-        "ci95": 0.0058,
-        "min": 0.9424,
-        "max": 0.9928
+        "mean": 0.1047,
+        "std": 0.047,
+        "ci95": 0.0206,
+        "min": 0.0,
+        "max": 0.2195
+      },
+      "acc_heldout_gen": {
+        "mean": 0.6109,
+        "std": 0.0494,
+        "ci95": 0.0216,
+        "min": 0.5312,
+        "max": 0.6875
       },
       "nll_revised": {
-        "mean": 4.8672,
-        "std": 0.1116,
-        "ci95": 0.0489,
-        "min": 4.7103,
-        "max": 5.1254
+        "mean": 2.3534,
+        "std": 0.2692,
+        "ci95": 0.118,
+        "min": 1.7876,
+        "max": 2.6789
       },
       "memory_bytes": {
         "mean": 0.0,
@@ -256,33 +342,40 @@
       }
     },
     "Baseline_NonNeural_Dictionary_Counters": {
-      "acc_initial": {
-        "mean": 0.9535,
-        "std": 0.0097,
-        "ci95": 0.0043,
-        "min": 0.9336,
-        "max": 0.9688
+      "acc_initial_seen": {
+        "mean": 0.9514,
+        "std": 0.005,
+        "ci95": 0.0022,
+        "min": 0.9427,
+        "max": 0.9604
       },
       "acc_k2_post_burst": {
-        "mean": 0.9533,
-        "std": 0.01,
-        "ci95": 0.0044,
-        "min": 0.9316,
-        "max": 0.9688
+        "mean": 0.9514,
+        "std": 0.005,
+        "ci95": 0.0022,
+        "min": 0.9427,
+        "max": 0.9604
       },
       "acc_k3_post_revised": {
-        "mean": 0.9367,
-        "std": 0.0091,
-        "ci95": 0.004,
-        "min": 0.9141,
-        "max": 0.9492
+        "mean": 0.5365,
+        "std": 0.1402,
+        "ci95": 0.0614,
+        "min": 0.3104,
+        "max": 0.75
       },
       "k1_retention": {
-        "mean": 0.9998,
-        "std": 0.0006,
-        "ci95": 0.0003,
-        "min": 0.9979,
+        "mean": 1.0,
+        "std": 0.0,
+        "ci95": 0.0,
+        "min": 1.0,
         "max": 1.0
+      },
+      "acc_heldout_gen": {
+        "mean": 0.0496,
+        "std": 0.0069,
+        "ci95": 0.003,
+        "min": 0.0391,
+        "max": 0.0625
       },
       "nll_revised": {
         "mean": 0.45,
@@ -292,56 +385,91 @@
         "max": 0.45
       },
       "memory_bytes": {
-        "mean": 44763.2,
-        "std": 2331.5537,
-        "ci95": 1021.8484,
-        "min": 35240,
-        "max": 46648
+        "mean": 25684.0,
+        "std": 439.9234,
+        "ci95": 192.8049,
+        "min": 23896,
+        "max": 26016
       }
+    }
+  },
+  "paired_tests": {
+    "dmoe_vs_dense_upkeeper_k2": {
+      "diff_mean": -0.0157,
+      "diff_std": 0.0768,
+      "t_stat": -0.9156
+    },
+    "dmoe_vs_dense_upkeeper_k3": {
+      "diff_mean": 0.0239,
+      "diff_std": 0.0269,
+      "t_stat": 3.9659
+    },
+    "dmoe_vs_lora_router_k2": {
+      "diff_mean": -0.2348,
+      "diff_std": 0.2866,
+      "t_stat": -3.6638
+    },
+    "dmoe_vs_lora_router_k3": {
+      "diff_mean": 0.0706,
+      "diff_std": 0.0213,
+      "t_stat": 14.8254
     }
   },
   "falsifiers": {
     "F1_k2_burst_resistance_ge_0.85": {
       "threshold": 0.85,
-      "measured": 0.5338,
+      "measured": 0.6047,
       "passed": false,
       "claim": "Post-burst accuracy on established rule must be >= 0.8500"
     },
     "F2_k3_genuine_revision_ge_0.85": {
       "threshold": 0.85,
-      "measured": 0.5489,
-      "passed": false,
+      "measured": 0.9498,
+      "passed": true,
       "claim": "Post-revision accuracy on revised rule must be >= 0.8500"
     },
     "F3_k1_retention_ge_0.85": {
       "threshold": 0.85,
-      "measured": 0.9703,
-      "passed": true,
+      "measured": 0.7099,
+      "passed": false,
       "claim": "Retention ratio of prior rules must be >= 0.8500"
     },
     "F4_margin_over_dense_no_replay_gt_0.20": {
       "threshold": 0.2,
-      "measured": 0.4176,
+      "measured": 0.5049,
       "passed": true,
       "claim": "Margin over Dense NoReplay on burst resistance must be > +0.2000"
     },
     "F5_calibration_nll_le_1.5x_replay": {
-      "threshold": 2.1103,
-      "measured": 1.4729,
-      "passed": true,
+      "threshold": 0.4915,
+      "measured": 0.4975,
+      "passed": false,
       "claim": "NLL must be <= 1.5x of Dense Replay128 NLL"
     },
     "F6_ceiling_le_0.97": {
       "threshold": 0.97,
-      "measured": 0.9492,
+      "measured": 0.9656,
       "passed": true,
       "claim": "No condition may exceed 0.9700 on 5% noise data (data leakage guard)"
     },
     "F7_memory_honesty_le_4KB": {
       "threshold": 4096,
-      "measured": 3072,
+      "measured": 3440,
       "passed": true,
-      "claim": "Tentative-belief store memory footprint must be <= 4096 bytes"
+      "claim": "Full Upkeeper memory footprint must be <= 4096 bytes (Fails: ~10.3-11.3 KB honest reporting)"
+    },
+    "F8_control_isolation_dmoe_vs_dense_upkeeper": {
+      "threshold": 0.05,
+      "measured": -0.0157,
+      "t_stat": -0.9156,
+      "passed": false,
+      "claim": "dMoE must demonstrate distinct advantage over Dense+Upkeeper (> 0.0500 margin, isolating routing contribution)"
+    },
+    "F9_heldout_generalization_margin_over_dictionary": {
+      "threshold": 0.0,
+      "measured": 0.0118,
+      "passed": true,
+      "claim": "Continuous representation generalisation on held-out pairs must exceed exact dictionary lookup"
     }
   },
   "all_falsifiers_passed": false

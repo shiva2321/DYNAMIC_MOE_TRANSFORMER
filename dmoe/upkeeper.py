@@ -137,13 +137,14 @@ class EvidenceAccumulatingUpkeeper:
         B, L = targets.shape
         gated_targets = targets.clone()
         update_mask = torch.ones(B, L, dtype=torch.bool, device=targets.device)
+        update_mask[:, 0] = False  # Position 0 has no valid preceding bigram context
 
         x_cpu = x.detach().cpu().tolist()
         t_cpu = targets.detach().cpu().tolist()
 
         for b in range(B):
-            for seq_idx in range(L):
-                prev_token = x_cpu[b][seq_idx - 1] if seq_idx > 0 else x_cpu[b][-1]
+            for seq_idx in range(1, L):
+                prev_token = x_cpu[b][seq_idx - 1]
                 cur_token = x_cpu[b][seq_idx]
                 target_val = t_cpu[b][seq_idx]
 
