@@ -1,0 +1,95 @@
+{
+  "elapsed_sec": 34.30680274963379,
+  "summary": {
+    "Baseline_Flat": {
+      "recall_acc": {
+        "mean": 0.2609375,
+        "std": 0.07819332949391367
+      },
+      "traj_acc": {
+        "mean": 0.3794921875,
+        "std": 0.07450602298430309
+      },
+      "wm_cos_1step": {
+        "mean": 0.0,
+        "std": 0.0
+      }
+    },
+    "Full_Cognitive": {
+      "recall_acc": {
+        "mean": 0.7828125,
+        "std": 0.3050078444175658
+      },
+      "traj_acc": {
+        "mean": 0.905078125,
+        "std": 0.011521782190431738
+      },
+      "wm_cos_1step": {
+        "mean": 0.7411389827728272,
+        "std": 0.03129847798931048
+      }
+    }
+  },
+  "seeds": [
+    {
+      "Baseline_Flat": {
+        "recall_acc": 0.3046875,
+        "traj_acc": 0.50390625,
+        "wm_cos_1step": 0.0
+      },
+      "Full_Cognitive": {
+        "recall_acc": 1.0,
+        "traj_acc": 0.9150390625,
+        "wm_cos_1step": 0.7740173935890198
+      }
+    },
+    {
+      "Baseline_Flat": {
+        "recall_acc": 0.3203125,
+        "traj_acc": 0.3447265625,
+        "wm_cos_1step": 0.0
+      },
+      "Full_Cognitive": {
+        "recall_acc": 0.265625,
+        "traj_acc": 0.9091796875,
+        "wm_cos_1step": 0.776608407497406
+      }
+    },
+    {
+      "Baseline_Flat": {
+        "recall_acc": 0.27734375,
+        "traj_acc": 0.322265625,
+        "wm_cos_1step": 0.0
+      },
+      "Full_Cognitive": {
+        "recall_acc": 0.8828125,
+        "traj_acc": 0.8994140625,
+        "wm_cos_1step": 0.7179217338562012
+      }
+    },
+    {
+      "Baseline_Flat": {
+        "recall_acc": 0.27734375,
+        "traj_acc": 0.392578125,
+        "wm_cos_1step": 0.0
+      },
+      "Full_Cognitive": {
+        "recall_acc": 1.0,
+        "traj_acc": 0.9140625,
+        "wm_cos_1step": 0.7218815088272095
+      }
+    },
+    {
+      "Baseline_Flat": {
+        "recall_acc": 0.125,
+        "traj_acc": 0.333984375,
+        "wm_cos_1step": 0.0
+      },
+      "Full_Cognitive": {
+        "recall_acc": 0.765625,
+        "traj_acc": 0.8876953125,
+        "wm_cos_1step": 0.7152658700942993
+      }
+    }
+  ]
+}

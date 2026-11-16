@@ -1,0 +1,183 @@
+{
+  "elapsed_sec": 33.45797538757324,
+  "summary": {
+    "Old_MeanOnly": {
+      "in_dist": {
+        "mean": 0.0,
+        "sd": 0.0
+      },
+      "coarse": {
+        "mean": 1.0,
+        "sd": 0.0
+      },
+      "near_twin": {
+        "mean": 0.0,
+        "sd": 0.0
+      },
+      "local_nuance": {
+        "mean": 0.0,
+        "sd": 0.0
+      }
+    },
+    "New_Unified": {
+      "in_dist": {
+        "mean": 0.0,
+        "sd": 0.0
+      },
+      "coarse": {
+        "mean": 1.0,
+        "sd": 0.0
+      },
+      "near_twin": {
+        "mean": 1.0,
+        "sd": 0.0
+      },
+      "local_nuance": {
+        "mean": 1.0,
+        "sd": 0.0
+      }
+    }
+  },
+  "per_seed": [
+    {
+      "Old_MeanOnly": {
+        "in_dist": 0.0,
+        "coarse": 1.0,
+        "near_twin": 0.0,
+        "local_nuance": 0.0
+      },
+      "New_Unified": {
+        "in_dist": 0.0,
+        "coarse": 1.0,
+        "near_twin": 1.0,
+        "local_nuance": 1.0
+      }
+    },
+    {
+      "Old_MeanOnly": {
+        "in_dist": 0.0,
+        "coarse": 1.0,
+        "near_twin": 0.0,
+        "local_nuance": 0.0
+      },
+      "New_Unified": {
+        "in_dist": 0.0,
+        "coarse": 1.0,
+        "near_twin": 1.0,
+        "local_nuance": 1.0
+      }
+    },
+    {
+      "Old_MeanOnly": {
+        "in_dist": 0.0,
+        "coarse": 1.0,
+        "near_twin": 0.0,
+        "local_nuance": 0.0
+      },
+      "New_Unified": {
+        "in_dist": 0.0,
+        "coarse": 1.0,
+        "near_twin": 1.0,
+        "local_nuance": 1.0
+      }
+    },
+    {
+      "Old_MeanOnly": {
+        "in_dist": 0.0,
+        "coarse": 1.0,
+        "near_twin": 0.0,
+        "local_nuance": 0.0
+      },
+      "New_Unified": {
+        "in_dist": 0.0,
+        "coarse": 1.0,
+        "near_twin": 1.0,
+        "local_nuance": 1.0
+      }
+    },
+    {
+      "Old_MeanOnly": {
+        "in_dist": 0.0,
+        "coarse": 1.0,
+        "near_twin": 0.0,
+        "local_nuance": 0.0
+      },
+      "New_Unified": {
+        "in_dist": 0.0,
+        "coarse": 1.0,
+        "near_twin": 1.0,
+        "local_nuance": 1.0
+      }
+    },
+    {
+      "Old_MeanOnly": {
+        "in_dist": 0.0,
+        "coarse": 1.0,
+        "near_twin": 0.0,
+        "local_nuance": 0.0
+      },
+      "New_Unified": {
+        "in_dist": 0.0,
+        "coarse": 1.0,
+        "near_twin": 1.0,
+        "local_nuance": 1.0
+      }
+    },
+    {
+      "Old_MeanOnly": {
+        "in_dist": 0.0,
+        "coarse": 1.0,
+        "near_twin": 0.0,
+        "local_nuance": 0.0
+      },
+      "New_Unified": {
+        "in_dist": 0.0,
+        "coarse": 1.0,
+        "near_twin": 1.0,
+        "local_nuance": 1.0
+      }
+    },
+    {
+      "Old_MeanOnly": {
+        "in_dist": 0.0,
+        "coarse": 1.0,
+        "near_twin": 0.0,
+        "local_nuance": 0.0
+      },
+      "New_Unified": {
+        "in_dist": 0.0,
+        "coarse": 1.0,
+        "near_twin": 1.0,
+        "local_nuance": 1.0
+      }
+    },
+    {
+      "Old_MeanOnly": {
+        "in_dist": 0.0,
+        "coarse": 1.0,
+        "near_twin": 0.0,
+        "local_nuance": 0.0
+      },
+      "New_Unified": {
+        "in_dist": 0.0,
+        "coarse": 1.0,
+        "near_twin": 1.0,
+        "local_nuance": 1.0
+      }
+    },
+    {
+      "Old_MeanOnly": {
+        "in_dist": 0.0,
+        "coarse": 1.0,
+        "near_twin": 0.0,
+        "local_nuance": 0.0
+      },
+      "New_Unified": {
+        "in_dist": 0.0,
+        "coarse": 1.0,
+        "near_twin": 1.0,
+        "local_nuance": 1.0
+      }
+    }
+  ]
+}

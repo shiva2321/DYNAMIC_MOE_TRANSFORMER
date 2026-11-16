@@ -1,0 +1,239 @@
+{
+  "elapsed_sec": 87.53668117523193,
+  "summary": {
+    "Baseline_NoLifecycle": {
+      "acc_d0": {
+        "mean": 0.0,
+        "sd": 0.0
+      },
+      "acc_d1": {
+        "mean": 0.0435546875,
+        "sd": 0.08054019591542237
+      },
+      "acc_d2": {
+        "mean": 1.0,
+        "sd": 0.0
+      },
+      "mean_acc": {
+        "mean": 0.3478515625,
+        "sd": 0.026846731971807467
+      },
+      "num_experts": {
+        "mean": 1.0,
+        "sd": 0.0
+      },
+      "false_spawns": {
+        "mean": 0.0,
+        "sd": 0.0
+      }
+    },
+    "dMoE_AutoLifecycle": {
+      "acc_d0": {
+        "mean": 0.9953125,
+        "sd": 0.010546071214227388
+      },
+      "acc_d1": {
+        "mean": 0.9796875,
+        "sd": 0.020898336091394666
+      },
+      "acc_d2": {
+        "mean": 0.978125,
+        "sd": 0.039802027446964164
+      },
+      "mean_acc": {
+        "mean": 0.984375,
+        "sd": 0.0188589939083337
+      },
+      "num_experts": {
+        "mean": 3.0,
+        "sd": 0.0
+      },
+      "false_spawns": {
+        "mean": 0.0,
+        "sd": 0.0
+      }
+    }
+  },
+  "per_seed": [
+    {
+      "Baseline_NoLifecycle": {
+        "acc_d0": 0.0,
+        "acc_d1": 0.0,
+        "acc_d2": 1.0,
+        "mean_acc": 0.3333333333333333,
+        "num_experts": 1.0,
+        "false_spawns": 0.0
+      },
+      "dMoE_AutoLifecycle": {
+        "acc_d0": 1.0,
+        "acc_d1": 0.984375,
+        "acc_d2": 0.953125,
+        "mean_acc": 0.9791666666666666,
+        "num_experts": 3.0,
+        "false_spawns": 0.0
+      }
+    },
+    {
+      "Baseline_NoLifecycle": {
+        "acc_d0": 0.0,
+        "acc_d1": 0.0,
+        "acc_d2": 1.0,
+        "mean_acc": 0.3333333333333333,
+        "num_experts": 1.0,
+        "false_spawns": 0.0
+      },
+      "dMoE_AutoLifecycle": {
+        "acc_d0": 1.0,
+        "acc_d1": 1.0,
+        "acc_d2": 1.0,
+        "mean_acc": 1.0,
+        "num_experts": 3.0,
+        "false_spawns": 0.0
+      }
+    },
+    {
+      "Baseline_NoLifecycle": {
+        "acc_d0": 0.0,
+        "acc_d1": 0.23046875,
+        "acc_d2": 1.0,
+        "mean_acc": 0.41015625,
+        "num_experts": 1.0,
+        "false_spawns": 0.0
+      },
+      "dMoE_AutoLifecycle": {
+        "acc_d0": 1.0,
+        "acc_d1": 0.984375,
+        "acc_d2": 1.0,
+        "mean_acc": 0.9947916666666666,
+        "num_experts": 3.0,
+        "false_spawns": 0.0
+      }
+    },
+    {
+      "Baseline_NoLifecycle": {
+        "acc_d0": 0.0,
+        "acc_d1": 0.0,
+        "acc_d2": 1.0,
+        "mean_acc": 0.3333333333333333,
+        "num_experts": 1.0,
+        "false_spawns": 0.0
+      },
+      "dMoE_AutoLifecycle": {
+        "acc_d0": 1.0,
+        "acc_d1": 0.96875,
+        "acc_d2": 0.96875,
+        "mean_acc": 0.9791666666666666,
+        "num_experts": 3.0,
+        "false_spawns": 0.0
+      }
+    },
+    {
+      "Baseline_NoLifecycle": {
+        "acc_d0": 0.0,
+        "acc_d1": 0.0,
+        "acc_d2": 1.0,
+        "mean_acc": 0.3333333333333333,
+        "num_experts": 1.0,
+        "false_spawns": 0.0
+      },
+      "dMoE_AutoLifecycle": {
+        "acc_d0": 1.0,
+        "acc_d1": 0.984375,
+        "acc_d2": 0.984375,
+        "mean_acc": 0.9895833333333334,
+        "num_experts": 3.0,
+        "false_spawns": 0.0
+      }
+    },
+    {
+      "Baseline_NoLifecycle": {
+        "acc_d0": 0.0,
+        "acc_d1": 0.0625,
+        "acc_d2": 1.0,
+        "mean_acc": 0.3541666666666667,
+        "num_experts": 1.0,
+        "false_spawns": 0.0
+      },
+      "dMoE_AutoLifecycle": {
+        "acc_d0": 1.0,
+        "acc_d1": 1.0,
+        "acc_d2": 1.0,
+        "mean_acc": 1.0,
+        "num_experts": 3.0,
+        "false_spawns": 0.0
+      }
+    },
+    {
+      "Baseline_NoLifecycle": {
+        "acc_d0": 0.0,
+        "acc_d1": 0.0,
+        "acc_d2": 1.0,
+        "mean_acc": 0.3333333333333333,
+        "num_experts": 1.0,
+        "false_spawns": 0.0
+      },
+      "dMoE_AutoLifecycle": {
+        "acc_d0": 0.96875,
+        "acc_d1": 0.953125,
+        "acc_d2": 1.0,
+        "mean_acc": 0.9739583333333334,
+        "num_experts": 3.0,
+        "false_spawns": 0.0
+      }
+    },
+    {
+      "Baseline_NoLifecycle": {
+        "acc_d0": 0.0,
+        "acc_d1": 0.0,
+        "acc_d2": 1.0,
+        "mean_acc": 0.3333333333333333,
+        "num_experts": 1.0,
+        "false_spawns": 0.0
+      },
+      "dMoE_AutoLifecycle": {
+        "acc_d0": 1.0,
+        "acc_d1": 0.984375,
+        "acc_d2": 1.0,
+        "mean_acc": 0.9947916666666666,
+        "num_experts": 3.0,
+        "false_spawns": 0.0
+      }
+    },
+    {
+      "Baseline_NoLifecycle": {
+        "acc_d0": 0.0,
+        "acc_d1": 0.142578125,
+        "acc_d2": 1.0,
+        "mean_acc": 0.380859375,
+        "num_experts": 1.0,
+        "false_spawns": 0.0
+      },
+      "dMoE_AutoLifecycle": {
+        "acc_d0": 0.984375,
+        "acc_d1": 1.0,
+        "acc_d2": 1.0,
+        "mean_acc": 0.9947916666666666,
+        "num_experts": 3.0,
+        "false_spawns": 0.0
+      }
+    },
+    {
+      "Baseline_NoLifecycle": {
+        "acc_d0": 0.0,
+        "acc_d1": 0.0,
+        "acc_d2": 1.0,
+        "mean_acc": 0.3333333333333333,
+        "num_experts": 1.0,
+        "false_spawns": 0.0
+      },
+      "dMoE_AutoLifecycle": {
+        "acc_d0": 1.0,
+        "acc_d1": 0.9375,
+        "acc_d2": 0.875,
+        "mean_acc": 0.9375,
+        "num_experts": 3.0,
+        "false_spawns": 0.0
+      }
+    }
+  ]
+}

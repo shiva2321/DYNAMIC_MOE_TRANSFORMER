@@ -77,12 +77,35 @@ class JEPAModule(nn.Module):
             ctx_pool_i = torch.zeros_like(context_i[:, :1, :])
 
         pred_r, pred_i = self.predictor(ctx_slice_r + ctx_pool_r, ctx_slice_i + ctx_pool_i)
-        pred_loss = F.mse_loss(pred_r, tgt_slice_r) + F.mse_loss(pred_i, tgt_slice_i)
+        pred_n_r = F.normalize(pred_r, dim=-1, eps=1e-6)
+        pred_n_i = F.normalize(pred_i, dim=-1, eps=1e-6)
+        tgt_n_r = F.normalize(tgt_slice_r, dim=-1, eps=1e-6)
+        tgt_n_i = F.normalize(tgt_slice_i, dim=-1, eps=1e-6)
+        pred_loss = 0.5 * (
+            (1.0 - (pred_n_r * tgt_n_r).sum(dim=-1)).mean()
+            + (1.0 - (pred_n_i * tgt_n_i).sum(dim=-1)).mean()
+        )
 
-        std_r = torch.sqrt(vis_r.var(dim=(0, 1), unbiased=False) + 1e-4)
-        std_i = torch.sqrt(vis_i.var(dim=(0, 1), unbiased=False) + 1e-4)
-        var_loss = F.relu(1.0 - std_r).mean() + F.relu(1.0 - std_i).mean()
-        return pred_loss + 0.1 * var_loss
+        var_loss = pred_loss * 0.0
+        cov_loss = pred_loss * 0.0
+        if vis_r.size(0) > 1:
+            # Center per sequence position across batch so fixed phase_pos cannot fake variance.
+            tok_r = (vis_r - vis_r.mean(dim=0, keepdim=True)).reshape(-1, vis_r.size(-1))
+            tok_i = (vis_i - vis_i.mean(dim=0, keepdim=True)).reshape(-1, vis_i.size(-1))
+            std_r = torch.sqrt(tok_r.var(dim=0, unbiased=False) + 1e-4)
+            std_i = torch.sqrt(tok_i.var(dim=0, unbiased=False) + 1e-4)
+            var_loss = 0.5 * (F.relu(1.0 - std_r).mean() + F.relu(1.0 - std_i).mean())
+
+            def _offdiag_corr(x: torch.Tensor, std: torch.Tensor) -> torch.Tensor:
+                xn = x / std
+                corr = (xn.t() @ xn) / max(x.size(0), 1)
+                dim = corr.size(0)
+                eye = torch.eye(dim, device=corr.device, dtype=corr.dtype)
+                return (corr.pow(2) * (1.0 - eye)).sum() / max(dim * (dim - 1), 1)
+
+            cov_loss = 0.5 * (_offdiag_corr(tok_r, std_r) + _offdiag_corr(tok_i, std_i))
+
+        return 0.25 * (pred_loss + var_loss + cov_loss)
 
     @torch.no_grad()
     def update_target_encoder(self) -> None:

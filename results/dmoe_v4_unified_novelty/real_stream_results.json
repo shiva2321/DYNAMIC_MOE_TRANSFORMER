@@ -1,0 +1,93 @@
+{
+  "config": {
+    "seeds": 10,
+    "train_steps": 80,
+    "out": "results/dmoe_v4_unified_novelty/real_stream_results.json"
+  },
+  "num_prose_windows": 7054,
+  "num_code_windows": 1267,
+  "structured_summary": {
+    "Old_MeanOnly": {
+      "in_dist_real": {
+        "mean": 0.0,
+        "std": 0.0
+      },
+      "coarse_real_code": {
+        "mean": 0.0,
+        "std": 0.0
+      },
+      "near_twin_real": {
+        "mean": 0.0,
+        "std": 0.0
+      },
+      "local_nuance_real": {
+        "mean": 0.0,
+        "std": 0.0
+      }
+    },
+    "New_Unified": {
+      "in_dist_real": {
+        "mean": 0.0,
+        "std": 0.0
+      },
+      "coarse_real_code": {
+        "mean": 1.0,
+        "std": 0.0
+      },
+      "near_twin_real": {
+        "mean": 1.0,
+        "std": 0.0
+      },
+      "local_nuance_real": {
+        "mean": 1.0,
+        "std": 0.0
+      }
+    }
+  },
+  "open_corpus_summary": {
+    "Old_MeanOnly": {
+      "in_dist_real": {
+        "mean": 1.0,
+        "std": 0.0
+      },
+      "coarse_real_code": {
+        "mean": 1.0,
+        "std": 0.0
+      },
+      "near_twin_real": {
+        "mean": 1.0,
+        "std": 0.0
+      },
+      "local_nuance_real": {
+        "mean": 1.0,
+        "std": 0.0
+      },
+      "local_nuance_ascii": {
+        "mean": 1.0,
+        "std": 0.0
+      }
+    },
+    "New_Unified": {
+      "in_dist_real": {
+        "mean": 0.0,
+        "std": 0.0
+      },
+      "coarse_real_code": {
+        "mean": 1.0,
+        "std": 0.0
+      },
+      "near_twin_real": {
+        "mean": 1.0,
+        "std": 0.0
+      },
+      "local_nuance_real": {
+        "mean": 1.0,
+        "std": 0.0
+      },
+      "local_nuance_ascii": {
+        "mean": 1.0,
+        "std": 0.0
+      }
+    }
+  }
+}

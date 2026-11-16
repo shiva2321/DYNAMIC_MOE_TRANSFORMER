@@ -1,0 +1,155 @@
+{
+  "elapsed_sec": 333.8247826099396,
+  "summary": {
+    "Baseline_Flat": {
+      "recall_acc": {
+        "mean": 0.340234375,
+        "std": 0.044934139328245054
+      },
+      "traj_acc": {
+        "mean": 0.96123046875,
+        "std": 0.014189497558262806
+      },
+      "wm_cos_1step": {
+        "mean": 0.0,
+        "std": 0.0
+      }
+    },
+    "Full_Cognitive": {
+      "recall_acc": {
+        "mean": 0.8234375,
+        "std": 0.2912175671915625
+      },
+      "traj_acc": {
+        "mean": 0.9505859375,
+        "std": 0.008929007383330047
+      },
+      "wm_cos_1step": {
+        "mean": 0.864119029045105,
+        "std": 0.01628511754471641
+      }
+    }
+  },
+  "seeds": [
+    {
+      "Baseline_Flat": {
+        "recall_acc": 0.4296875,
+        "traj_acc": 0.982421875,
+        "wm_cos_1step": 0.0
+      },
+      "Full_Cognitive": {
+        "recall_acc": 0.47265625,
+        "traj_acc": 0.939453125,
+        "wm_cos_1step": 0.8736917972564697
+      }
+    },
+    {
+      "Baseline_Flat": {
+        "recall_acc": 0.33984375,
+        "traj_acc": 0.9677734375,
+        "wm_cos_1step": 0.0
+      },
+      "Full_Cognitive": {
+        "recall_acc": 1.0,
+        "traj_acc": 0.95703125,
+        "wm_cos_1step": 0.8727066516876221
+      }
+    },
+    {
+      "Baseline_Flat": {
+        "recall_acc": 0.36328125,
+        "traj_acc": 0.9375,
+        "wm_cos_1step": 0.0
+      },
+      "Full_Cognitive": {
+        "recall_acc": 1.0,
+        "traj_acc": 0.953125,
+        "wm_cos_1step": 0.8456387519836426
+      }
+    },
+    {
+      "Baseline_Flat": {
+        "recall_acc": 0.3203125,
+        "traj_acc": 0.958984375,
+        "wm_cos_1step": 0.0
+      },
+      "Full_Cognitive": {
+        "recall_acc": 0.1484375,
+        "traj_acc": 0.94140625,
+        "wm_cos_1step": 0.8587061762809753
+      }
+    },
+    {
+      "Baseline_Flat": {
+        "recall_acc": 0.2890625,
+        "traj_acc": 0.9736328125,
+        "wm_cos_1step": 0.0
+      },
+      "Full_Cognitive": {
+        "recall_acc": 0.98828125,
+        "traj_acc": 0.9462890625,
+        "wm_cos_1step": 0.8297725319862366
+      }
+    },
+    {
+      "Baseline_Flat": {
+        "recall_acc": 0.3046875,
+        "traj_acc": 0.9619140625,
+        "wm_cos_1step": 0.0
+      },
+      "Full_Cognitive": {
+        "recall_acc": 1.0,
+        "traj_acc": 0.9462890625,
+        "wm_cos_1step": 0.8778018951416016
+      }
+    },
+    {
+      "Baseline_Flat": {
+        "recall_acc": 0.3203125,
+        "traj_acc": 0.94140625,
+        "wm_cos_1step": 0.0
+      },
+      "Full_Cognitive": {
+        "recall_acc": 0.99609375,
+        "traj_acc": 0.962890625,
+        "wm_cos_1step": 0.8636705279350281
+      }
+    },
+    {
+      "Baseline_Flat": {
+        "recall_acc": 0.30078125,
+        "traj_acc": 0.96484375,
+        "wm_cos_1step": 0.0
+      },
+      "Full_Cognitive": {
+        "recall_acc": 0.8515625,
+        "traj_acc": 0.9404296875,
+        "wm_cos_1step": 0.8603990077972412
+      }
+    },
+    {
+      "Baseline_Flat": {
+        "recall_acc": 0.3359375,
+        "traj_acc": 0.9521484375,
+        "wm_cos_1step": 0.0
+      },
+      "Full_Cognitive": {
+        "recall_acc": 0.77734375,
+        "traj_acc": 0.95703125,
+        "wm_cos_1step": 0.8805398941040039
+      }
+    },
+    {
+      "Baseline_Flat": {
+        "recall_acc": 0.3984375,
+        "traj_acc": 0.9716796875,
+        "wm_cos_1step": 0.0
+      },
+      "Full_Cognitive": {
+        "recall_acc": 1.0,
+        "traj_acc": 0.9619140625,
+        "wm_cos_1step": 0.8782630562782288
+      }
+    }
+  ]
+}

@@ -8,3 +8,4 @@ __pycache__/
 .claude/
 .tmp_review/
 diff_output.txt
+research_base/

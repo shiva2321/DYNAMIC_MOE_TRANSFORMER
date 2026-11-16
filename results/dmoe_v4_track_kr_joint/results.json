@@ -1,0 +1,2030 @@
+{
+  "protocol": {
+    "seeds": 20,
+    "train_steps": 200,
+    "rev_steps": 220,
+    "elapsed_sec": 1240.1502597332
+  },
+  "summary": {
+    "Null_Untrained": {
+      "acc_initial": {
+        "mean": 0.0030517578125,
+        "sd": 0.005186570862632065,
+        "ci95": 0.002273114903717144
+      },
+      "acc_initial_ood": {
+        "mean": 0.0028800745494663715,
+        "sd": 0.004560925072355395,
+        "ci95": 0.001998913546405682
+      },
+      "acc_k2_post_burst": {
+        "mean": 0.0030517578125,
+        "sd": 0.005186570862632065,
+        "ci95": 0.002273114903717144
+      },
+      "k1_retention": {
+        "mean": 1.0,
+        "sd": 0.0,
+        "ci95": 0.0
+      },
+      "acc_k3_post_revised": {
+        "mean": 0.00380859375,
+        "sd": 0.007072940835935365,
+        "ci95": 0.00309985299595719
+      },
+      "acc_k3_ood_revised": {
+        "mean": 0.0018899156420957297,
+        "sd": 0.003378460882563073,
+        "ci95": 0.0014806757657760531
+      },
+      "active_token_fraction": {
+        "mean": 0.0,
+        "sd": 0.0,
+        "ci95": 0.0
+      }
+    },
+    "Null_Shuffled": {
+      "acc_initial": {
+        "mean": 0.123291015625,
+        "sd": 0.003435363105339426,
+        "ci95": 0.0015056142644630105
+      },
+      "acc_initial_ood": {
+        "mean": 0.12764302641153336,
+        "sd": 0.01169466745349063,
+        "ci95": 0.005125413994450843
+      },
+      "acc_k2_post_burst": {
+        "mean": 0.123291015625,
+        "sd": 0.003435363105339426,
+        "ci95": 0.0015056142644630105
+      },
+      "k1_retention": {
+        "mean": 1.0,
+        "sd": 0.0,
+        "ci95": 0.0
+      },
+      "acc_k3_post_revised": {
+        "mean": 0.12672119140625,
+        "sd": 0.005894858017774845,
+        "ci95": 0.0025835354361090266
+      },
+      "acc_k3_ood_revised": {
+        "mean": 0.12912301160395145,
+        "sd": 0.015378986630298776,
+        "ci95": 0.0067401380679600635
+      },
+      "active_token_fraction": {
+        "mean": 0.0,
+        "sd": 0.0,
+        "ci95": 0.0
+      }
+    },
+    "Baseline_Dense_1Pass_NoReplay": {
+      "acc_initial": {
+        "mean": 0.45419921875,
+        "sd": 0.006656158514504035,
+        "ci95": 0.0029171900898592286
+      },
+      "acc_initial_ood": {
+        "mean": 0.12961268983781338,
+        "sd": 0.017957290735585486,
+        "ci95": 0.007870129664193284
+      },
+      "acc_k2_post_burst": {
+        "mean": 0.431494140625,
+        "sd": 0.006870908843185381,
+        "ci95": 0.003011308571151123
+      },
+      "k1_retention": {
+        "mean": 0.9500987315396745,
+        "sd": 0.014496815794162706,
+        "ci95": 0.006353509652315919
+      },
+      "acc_k3_post_revised": {
+        "mean": 0.483984375,
+        "sd": 0.014397304174932379,
+        "ci95": 0.006309896762266503
+      },
+      "acc_k3_ood_revised": {
+        "mean": 0.12293573953211308,
+        "sd": 0.012235062517325224,
+        "ci95": 0.005362252573548984
+      },
+      "active_token_fraction": {
+        "mean": 0.0,
+        "sd": 0.0,
+        "ci95": 0.0
+      }
+    },
+    "Baseline_Dense_1Pass_Replay128": {
+      "acc_initial": {
+        "mean": 0.45419921875,
+        "sd": 0.006656158514504035,
+        "ci95": 0.0029171900898592286
+      },
+      "acc_initial_ood": {
+        "mean": 0.12961268983781338,
+        "sd": 0.017957290735585486,
+        "ci95": 0.007870129664193284
+      },
+      "acc_k2_post_burst": {
+        "mean": 0.43204345703125,
+        "sd": 0.008140610667608284,
+        "ci95": 0.003567779930901885
+      },
+      "k1_retention": {
+        "mean": 0.9512778169086745,
+        "sd": 0.01548382822257668,
+        "ci95": 0.006786086921691794
+      },
+      "acc_k3_post_revised": {
+        "mean": 0.48504638671875,
+        "sd": 0.013500516481911664,
+        "ci95": 0.005916862226642515
+      },
+      "acc_k3_ood_revised": {
+        "mean": 0.1249684203416109,
+        "sd": 0.009363849433962389,
+        "ci95": 0.0041038879576209145
+      },
+      "active_token_fraction": {
+        "mean": 0.0,
+        "sd": 0.0,
+        "ci95": 0.0
+      }
+    },
+    "Baseline_Dense_1Pass_Upkeeper": {
+      "acc_initial": {
+        "mean": 0.45419921875,
+        "sd": 0.006656158514504035,
+        "ci95": 0.0029171900898592286
+      },
+      "acc_initial_ood": {
+        "mean": 0.12961268983781338,
+        "sd": 0.017957290735585486,
+        "ci95": 0.007870129664193284
+      },
+      "acc_k2_post_burst": {
+        "mean": 0.45419921875,
+        "sd": 0.006656158514504035,
+        "ci95": 0.0029171900898592286
+      },
+      "k1_retention": {
+        "mean": 1.0,
+        "sd": 0.0,
+        "ci95": 0.0
+      },
+      "acc_k3_post_revised": {
+        "mean": 0.48560791015625,
+        "sd": 0.013700177719408487,
+        "ci95": 0.006004367622147381
+      },
+      "acc_k3_ood_revised": {
+        "mean": 0.12377261519432067,
+        "sd": 0.014950966089939828,
+        "ci95": 0.0065525497952543385
+      },
+      "active_token_fraction": {
+        "mean": 0.0,
+        "sd": 0.0,
+        "ci95": 0.0
+      }
+    },
+    "Baseline_NonNeural_Dictionary_Counters": {
+      "acc_initial": {
+        "mean": 0.627685546875,
+        "sd": 0.007403033319369035,
+        "ci95": 0.003244522405393794
+      },
+      "acc_initial_ood": {
+        "mean": 0.1269012838602066,
+        "sd": 0.014018472494257745,
+        "ci95": 0.006143866457822784
+      },
+      "acc_k2_post_burst": {
+        "mean": 0.62763671875,
+        "sd": 0.00734585961330903,
+        "ci95": 0.0032194649239117444
+      },
+      "k1_retention": {
+        "mean": 0.9999240109450318,
+        "sd": 0.0013192669782074809,
+        "ci95": 0.0005781942461735614
+      },
+      "acc_k3_post_revised": {
+        "mean": 0.6197998046875,
+        "sd": 0.00808641204876947,
+        "ci95": 0.003544026338883889
+      },
+      "acc_k3_ood_revised": {
+        "mean": 0.12135554552078247,
+        "sd": 0.01362027186034179,
+        "ci95": 0.005969347335343346
+      },
+      "active_token_fraction": {
+        "mean": 0.0,
+        "sd": 0.0,
+        "ci95": 0.0
+      }
+    },
+    "dMoE_Thinker_NoUpkeeper": {
+      "acc_initial": {
+        "mean": 0.998291015625,
+        "sd": 0.0016558422810364424,
+        "ci95": 0.000725704876481496
+      },
+      "acc_initial_ood": {
+        "mean": 0.9891406446695328,
+        "sd": 0.010231822714920303,
+        "ci95": 0.004484294020360497
+      },
+      "acc_k2_post_burst": {
+        "mean": 0.4079345703125,
+        "sd": 0.025499353544310127,
+        "ci95": 0.011175584429846017
+      },
+      "k1_retention": {
+        "mean": 0.4086188121642067,
+        "sd": 0.025300535585902034,
+        "ci95": 0.011088448617696966
+      },
+      "acc_k3_post_revised": {
+        "mean": 0.99862060546875,
+        "sd": 0.0014373337673556235,
+        "ci95": 0.0006299392979919562
+      },
+      "acc_k3_ood_revised": {
+        "mean": 0.9913754880428314,
+        "sd": 0.008970927641238831,
+        "ci95": 0.003931682389300207
+      },
+      "active_token_fraction": {
+        "mean": 0.368935546875,
+        "sd": 0.008257928643162292,
+        "ci95": 0.0036191968006928834
+      }
+    },
+    "Null_Blind": {
+      "acc_initial": {
+        "mean": 0.123876953125,
+        "sd": 0.004658849057506601,
+        "ci95": 0.0020418306251411347
+      },
+      "acc_initial_ood": {
+        "mean": 0.1251251518726349,
+        "sd": 0.010596984324308348,
+        "ci95": 0.004644333151908015
+      },
+      "acc_k2_post_burst": {
+        "mean": 0.123876953125,
+        "sd": 0.004658849057506601,
+        "ci95": 0.0020418306251411347
+      },
+      "k1_retention": {
+        "mean": 1.0,
+        "sd": 0.0,
+        "ci95": 0.0
+      },
+      "acc_k3_post_revised": {
+        "mean": 0.1245361328125,
+        "sd": 0.0071735723757287454,
+        "ci95": 0.0031439567128342507
+      },
+      "acc_k3_ood_revised": {
+        "mean": 0.12446102760732174,
+        "sd": 0.01839914583011312,
+        "ci95": 0.008063781197596686
+      },
+      "active_token_fraction": {
+        "mean": 0.0,
+        "sd": 0.0,
+        "ci95": 0.0
+      }
+    },
+    "dMoE_Thinker_Upkeeper_Adaptive": {
+      "acc_initial": {
+        "mean": 0.998291015625,
+        "sd": 0.0016558422810364424,
+        "ci95": 0.000725704876481496
+      },
+      "acc_initial_ood": {
+        "mean": 0.9891406446695328,
+        "sd": 0.010231822714920303,
+        "ci95": 0.004484294020360497
+      },
+      "acc_k2_post_burst": {
+        "mean": 0.998291015625,
+        "sd": 0.0016558422810364424,
+        "ci95": 0.000725704876481496
+      },
+      "k1_retention": {
+        "mean": 1.0,
+        "sd": 0.0,
+        "ci95": 0.0
+      },
+      "acc_k3_post_revised": {
+        "mean": 0.99884033203125,
+        "sd": 0.001877578501636521,
+        "ci95": 0.0008228850598992862
+      },
+      "acc_k3_ood_revised": {
+        "mean": 0.9925740122795105,
+        "sd": 0.012085478874977278,
+        "ci95": 0.005296694651797027
+      },
+      "active_token_fraction": {
+        "mean": 0.37576904296875,
+        "sd": 0.00551431076752319,
+        "ci95": 0.0024167532501472144
+      },
+      "tentative_store_bytes": {
+        "mean": 0.0,
+        "sd": 0.0,
+        "ci95": 0.0
+      }
+    }
+  },
+  "per_seed": [
+    {
+      "Null_Untrained": {
+        "acc_initial": 0.0,
+        "acc_initial_ood": 0.0,
+        "acc_k2_post_burst": 0.0,
+        "k1_retention": 1.0,
+        "acc_k3_post_revised": 0.0,
+        "acc_k3_ood_revised": 0.0,
+        "active_token_fraction": 0.0
+      },
+      "Null_Shuffled": {
+        "acc_initial": 0.119873046875,
+        "acc_initial_ood": 0.14801444113254547,
+        "acc_k2_post_burst": 0.119873046875,
+        "k1_retention": 1.0,
+        "acc_k3_post_revised": 0.117919921875,
+        "acc_k3_ood_revised": 0.12408758699893951,
+        "active_token_fraction": 0.0
+      },
+      "Baseline_Dense_1Pass_NoReplay": {
+        "acc_initial": 0.46142578125,
+        "acc_initial_ood": 0.1335740089416504,
+        "acc_k2_post_burst": 0.438232421875,
+        "k1_retention": 0.9497354497354498,
+        "acc_k3_post_revised": 0.5107421875,
+        "acc_k3_ood_revised": 0.12591241300106049,
+        "active_token_fraction": 0.0
+      },
+      "Baseline_Dense_1Pass_Replay128": {
+        "acc_initial": 0.46142578125,
+        "acc_initial_ood": 0.1335740089416504,
+        "acc_k2_post_burst": 0.443359375,
+        "k1_retention": 0.9608465608465608,
+        "acc_k3_post_revised": 0.507568359375,
+        "acc_k3_ood_revised": 0.12956205010414124,
+        "active_token_fraction": 0.0
+      },
+      "Baseline_Dense_1Pass_Upkeeper": {
+        "acc_initial": 0.46142578125,
+        "acc_initial_ood": 0.1335740089416504,
+        "acc_k2_post_burst": 0.46142578125,
+        "k1_retention": 1.0,
+        "acc_k3_post_revised": 0.50732421875,
+        "acc_k3_ood_revised": 0.12408758699893951,
+        "active_token_fraction": 0.0
+      },
+      "Baseline_NonNeural_Dictionary_Counters": {
+        "acc_initial": 0.62451171875,
+        "acc_initial_ood": 0.11732851713895798,
+        "acc_k2_post_burst": 0.626708984375,
+        "k1_retention": 1.0035183737294762,
+        "acc_k3_post_revised": 0.622314453125,
+        "acc_k3_ood_revised": 0.11313868314027786,
+        "active_token_fraction": 0.0
+      },
+      "dMoE_Thinker_NoUpkeeper": {
+        "acc_initial": 0.999755859375,
+        "acc_initial_ood": 0.9981949329376221,
+        "acc_k2_post_burst": 0.39501953125,
+        "k1_retention": 0.3951159951159951,
+        "acc_k3_post_revised": 0.99951171875,
+        "acc_k3_ood_revised": 0.9963503479957581,
+        "active_token_fraction": 0.359814453125
+      },
+      "Null_Blind": {
+        "acc_initial": 0.1279296875,
+        "acc_initial_ood": 0.14620938897132874,
+        "acc_k2_post_burst": 0.1279296875,
+        "k1_retention": 1.0,
+        "acc_k3_post_revised": 0.124267578125,
+        "acc_k3_ood_revised": 0.09671533107757568,
+        "active_token_fraction": 0.0
+      },
+      "dMoE_Thinker_Upkeeper_Adaptive": {
+        "acc_initial": 0.999755859375,
+        "acc_initial_ood": 0.9981949329376221,
+        "acc_k2_post_burst": 0.999755859375,
+        "k1_retention": 1.0,
+        "acc_k3_post_revised": 1.0,
+        "acc_k3_ood_revised": 1.0,
+        "active_token_fraction": 0.3736328125,
+        "tentative_store_bytes": 0.0
+      }
+    },
+    {
+      "Null_Untrained": {
+        "acc_initial": 0.0,
+        "acc_initial_ood": 0.0,
+        "acc_k2_post_burst": 0.0,
+        "k1_retention": 1.0,
+        "acc_k3_post_revised": 0.0,
+        "acc_k3_ood_revised": 0.0,
+        "active_token_fraction": 0.0
+      },
+      "Null_Shuffled": {
+        "acc_initial": 0.120849609375,
+        "acc_initial_ood": 0.1334405094385147,
+        "acc_k2_post_burst": 0.120849609375,
+        "k1_retention": 1.0,
+        "acc_k3_post_revised": 0.129638671875,
+        "acc_k3_ood_revised": 0.1346469670534134,
+        "active_token_fraction": 0.0
+      },
+      "Baseline_Dense_1Pass_NoReplay": {
+        "acc_initial": 0.43701171875,
+        "acc_initial_ood": 0.11575562506914139,
+        "acc_k2_post_burst": 0.4189453125,
+        "k1_retention": 0.958659217877095,
+        "acc_k3_post_revised": 0.496337890625,
+        "acc_k3_ood_revised": 0.13628900051116943,
+        "active_token_fraction": 0.0
+      },
+      "Baseline_Dense_1Pass_Replay128": {
+        "acc_initial": 0.43701171875,
+        "acc_initial_ood": 0.11575562506914139,
+        "acc_k2_post_burst": 0.419677734375,
+        "k1_retention": 0.9603351955307262,
+        "acc_k3_post_revised": 0.496826171875,
+        "acc_k3_ood_revised": 0.13957306742668152,
+        "active_token_fraction": 0.0
+      },
+      "Baseline_Dense_1Pass_Upkeeper": {
+        "acc_initial": 0.43701171875,
+        "acc_initial_ood": 0.11575562506914139,
+        "acc_k2_post_burst": 0.43701171875,
+        "k1_retention": 1.0,
+        "acc_k3_post_revised": 0.49267578125,
+        "acc_k3_ood_revised": 0.13300493359565735,
+        "active_token_fraction": 0.0
+      },
+      "Baseline_NonNeural_Dictionary_Counters": {
+        "acc_initial": 0.611083984375,
+        "acc_initial_ood": 0.09967845678329468,
+        "acc_k2_post_burst": 0.61083984375,
+        "k1_retention": 0.9996004794246903,
+        "acc_k3_post_revised": 0.6142578125,
+        "acc_k3_ood_revised": 0.12972085177898407,
+        "active_token_fraction": 0.0
+      },
+      "dMoE_Thinker_NoUpkeeper": {
+        "acc_initial": 0.995849609375,
+        "acc_initial_ood": 0.9726687669754028,
+        "acc_k2_post_burst": 0.43017578125,
+        "k1_retention": 0.43196861975974504,
+        "acc_k3_post_revised": 0.99755859375,
+        "acc_k3_ood_revised": 0.9868637323379517,
+        "active_token_fraction": 0.37958984375
+      },
+      "Null_Blind": {
+        "acc_initial": 0.130859375,
+        "acc_initial_ood": 0.13826365768909454,
+        "acc_k2_post_burst": 0.130859375,
+        "k1_retention": 1.0,
+        "acc_k3_post_revised": 0.12158203125,
+        "acc_k3_ood_revised": 0.12479474395513535,
+        "active_token_fraction": 0.0
+      },
+      "dMoE_Thinker_Upkeeper_Adaptive": {
+        "acc_initial": 0.995849609375,
+        "acc_initial_ood": 0.9726687669754028,
+        "acc_k2_post_burst": 0.995849609375,
+        "k1_retention": 1.0,
+        "acc_k3_post_revised": 0.99951171875,
+        "acc_k3_ood_revised": 0.9983579516410828,
+        "active_token_fraction": 0.38349609375,
+        "tentative_store_bytes": 0.0
+      }
+    },
+    {
+      "Null_Untrained": {
+        "acc_initial": 0.000244140625,
+        "acc_initial_ood": 0.0,
+        "acc_k2_post_burst": 0.000244140625,
+        "k1_retention": 1.0,
+        "acc_k3_post_revised": 0.0,
+        "acc_k3_ood_revised": 0.0,
+        "active_token_fraction": 0.0
+      },
+      "Null_Shuffled": {
+        "acc_initial": 0.125,
+        "acc_initial_ood": 0.12164579331874847,
+        "acc_k2_post_burst": 0.125,
+        "k1_retention": 1.0,
+        "acc_k3_post_revised": 0.131103515625,
+        "acc_k3_ood_revised": 0.12271973490715027,
+        "active_token_fraction": 0.0
+      },
+      "Baseline_Dense_1Pass_NoReplay": {
+        "acc_initial": 0.457275390625,
+        "acc_initial_ood": 0.12343470007181168,
+        "acc_k2_post_burst": 0.440673828125,
+        "k1_retention": 0.9636946075814202,
+        "acc_k3_post_revised": 0.469970703125,
+        "acc_k3_ood_revised": 0.13101160526275635,
+        "active_token_fraction": 0.0
+      },
+      "Baseline_Dense_1Pass_Replay128": {
+        "acc_initial": 0.457275390625,
+        "acc_initial_ood": 0.12343470007181168,
+        "acc_k2_post_burst": 0.440185546875,
+        "k1_retention": 0.9626268019220502,
+        "acc_k3_post_revised": 0.47216796875,
+        "acc_k3_ood_revised": 0.14096185564994812,
+        "active_token_fraction": 0.0
+      },
+      "Baseline_Dense_1Pass_Upkeeper": {
+        "acc_initial": 0.457275390625,
+        "acc_initial_ood": 0.12343470007181168,
+        "acc_k2_post_burst": 0.457275390625,
+        "k1_retention": 1.0,
+        "acc_k3_post_revised": 0.484375,
+        "acc_k3_ood_revised": 0.13764511048793793,
+        "active_token_fraction": 0.0
+      },
+      "Baseline_NonNeural_Dictionary_Counters": {
+        "acc_initial": 0.63720703125,
+        "acc_initial_ood": 0.14132378995418549,
+        "acc_k2_post_burst": 0.63623046875,
+        "k1_retention": 0.9984674329501916,
+        "acc_k3_post_revised": 0.609130859375,
+        "acc_k3_ood_revised": 0.1127694845199585,
+        "active_token_fraction": 0.0
+      },
+      "dMoE_Thinker_NoUpkeeper": {
+        "acc_initial": 0.999755859375,
+        "acc_initial_ood": 0.9982110857963562,
+        "acc_k2_post_burst": 0.438232421875,
+        "k1_retention": 0.43833943833943834,
+        "acc_k3_post_revised": 0.998779296875,
+        "acc_k3_ood_revised": 0.9917080998420715,
+        "active_token_fraction": 0.3755859375
+      },
+      "Null_Blind": {
+        "acc_initial": 0.11572265625,
+        "acc_initial_ood": 0.12701252102851868,
+        "acc_k2_post_burst": 0.11572265625,
+        "k1_retention": 1.0,
+        "acc_k3_post_revised": 0.117431640625,
+        "acc_k3_ood_revised": 0.10779435932636261,
+        "active_token_fraction": 0.0
+      },
+      "dMoE_Thinker_Upkeeper_Adaptive": {
+        "acc_initial": 0.999755859375,
+        "acc_initial_ood": 0.9982110857963562,
+        "acc_k2_post_burst": 0.999755859375,
+        "k1_retention": 1.0,
+        "acc_k3_post_revised": 0.999755859375,
+        "acc_k3_ood_revised": 0.9983416199684143,
+        "active_token_fraction": 0.3830078125,
+        "tentative_store_bytes": 0.0
+      }
+    },
+    {
+      "Null_Untrained": {
+        "acc_initial": 0.0,
+        "acc_initial_ood": 0.0,
+        "acc_k2_post_burst": 0.0,
+        "k1_retention": 1.0,
+        "acc_k3_post_revised": 0.0,
+        "acc_k3_ood_revised": 0.0,
+        "active_token_fraction": 0.0
+      },
+      "Null_Shuffled": {
+        "acc_initial": 0.123779296875,
+        "acc_initial_ood": 0.1335740089416504,
+        "acc_k2_post_burst": 0.123779296875,
+        "k1_retention": 1.0,
+        "acc_k3_post_revised": 0.12939453125,
+        "acc_k3_ood_revised": 0.15140844881534576,
+        "active_token_fraction": 0.0
+      },
+      "Baseline_Dense_1Pass_NoReplay": {
+        "acc_initial": 0.44580078125,
+        "acc_initial_ood": 0.08664260059595108,
+        "acc_k2_post_burst": 0.440673828125,
+        "k1_retention": 0.988499452354874,
+        "acc_k3_post_revised": 0.49609375,
+        "acc_k3_ood_revised": 0.11795774102210999,
+        "active_token_fraction": 0.0
+      },
+      "Baseline_Dense_1Pass_Replay128": {
+        "acc_initial": 0.44580078125,
+        "acc_initial_ood": 0.08664260059595108,
+        "acc_k2_post_burst": 0.4384765625,
+        "k1_retention": 0.9835706462212487,
+        "acc_k3_post_revised": 0.500244140625,
+        "acc_k3_ood_revised": 0.1232394352555275,
+        "active_token_fraction": 0.0
+      },
+      "Baseline_Dense_1Pass_Upkeeper": {
+        "acc_initial": 0.44580078125,
+        "acc_initial_ood": 0.08664260059595108,
+        "acc_k2_post_burst": 0.44580078125,
+        "k1_retention": 1.0,
+        "acc_k3_post_revised": 0.498291015625,
+        "acc_k3_ood_revised": 0.12147887051105499,
+        "active_token_fraction": 0.0
+      },
+      "Baseline_NonNeural_Dictionary_Counters": {
+        "acc_initial": 0.6318359375,
+        "acc_initial_ood": 0.11552346497774124,
+        "acc_k2_post_burst": 0.631591796875,
+        "k1_retention": 0.999613601236476,
+        "acc_k3_post_revised": 0.624755859375,
+        "acc_k3_ood_revised": 0.11795774102210999,
+        "active_token_fraction": 0.0
+      },
+      "dMoE_Thinker_NoUpkeeper": {
+        "acc_initial": 0.997802734375,
+        "acc_initial_ood": 0.9855595827102661,
+        "acc_k2_post_burst": 0.41943359375,
+        "k1_retention": 0.4203572302422315,
+        "acc_k3_post_revised": 0.998046875,
+        "acc_k3_ood_revised": 0.98591548204422,
+        "active_token_fraction": 0.36845703125
+      },
+      "Null_Blind": {
+        "acc_initial": 0.123779296875,
+        "acc_initial_ood": 0.1335740089416504,
+        "acc_k2_post_burst": 0.123779296875,
+        "k1_retention": 1.0,
+        "acc_k3_post_revised": 0.12939453125,
+        "acc_k3_ood_revised": 0.15140844881534576,
+        "active_token_fraction": 0.0
+      },
+      "dMoE_Thinker_Upkeeper_Adaptive": {
+        "acc_initial": 0.997802734375,
+        "acc_initial_ood": 0.9855595827102661,
+        "acc_k2_post_burst": 0.997802734375,
+        "k1_retention": 1.0,
+        "acc_k3_post_revised": 0.991943359375,
+        "acc_k3_ood_revised": 0.9489436149597168,
+        "active_token_fraction": 0.3744140625,
+        "tentative_store_bytes": 0.0
+      }
+    },
+    {
+      "Null_Untrained": {
+        "acc_initial": 0.0,
+        "acc_initial_ood": 0.0,
+        "acc_k2_post_burst": 0.0,
+        "k1_retention": 1.0,
+        "acc_k3_post_revised": 0.0,
+        "acc_k3_ood_revised": 0.0,
+        "active_token_fraction": 0.0
+      },
+      "Null_Shuffled": {
+        "acc_initial": 0.118408203125,
+        "acc_initial_ood": 0.13718411326408386,
+        "acc_k2_post_burst": 0.118408203125,
+        "k1_retention": 1.0,
+        "acc_k3_post_revised": 0.1435546875,
+        "acc_k3_ood_revised": 0.16934046149253845,
+        "active_token_fraction": 0.0
+      },
+      "Baseline_Dense_1Pass_NoReplay": {
+        "acc_initial": 0.4619140625,
+        "acc_initial_ood": 0.13537906110286713,
+        "acc_k2_post_burst": 0.4443359375,
+        "k1_retention": 0.9619450317124736,
+        "acc_k3_post_revised": 0.480712890625,
+        "acc_k3_ood_revised": 0.13190729916095734,
+        "active_token_fraction": 0.0
+      },
+      "Baseline_Dense_1Pass_Replay128": {
+        "acc_initial": 0.4619140625,
+        "acc_initial_ood": 0.13537906110286713,
+        "acc_k2_post_burst": 0.438720703125,
+        "k1_retention": 0.9497885835095138,
+        "acc_k3_post_revised": 0.488525390625,
+        "acc_k3_ood_revised": 0.13190729916095734,
+        "active_token_fraction": 0.0
+      },
+      "Baseline_Dense_1Pass_Upkeeper": {
+        "acc_initial": 0.4619140625,
+        "acc_initial_ood": 0.13537906110286713,
+        "acc_k2_post_burst": 0.4619140625,
+        "k1_retention": 1.0,
+        "acc_k3_post_revised": 0.488037109375,
+        "acc_k3_ood_revised": 0.15329767763614655,
+        "active_token_fraction": 0.0
+      },
+      "Baseline_NonNeural_Dictionary_Counters": {
+        "acc_initial": 0.628173828125,
+        "acc_initial_ood": 0.13718411326408386,
+        "acc_k2_post_burst": 0.629150390625,
+        "k1_retention": 1.0015546055188496,
+        "acc_k3_post_revised": 0.62109375,
+        "acc_k3_ood_revised": 0.14438502490520477,
+        "active_token_fraction": 0.0
+      },
+      "dMoE_Thinker_NoUpkeeper": {
+        "acc_initial": 0.998046875,
+        "acc_initial_ood": 0.9891696572303772,
+        "acc_k2_post_burst": 0.374267578125,
+        "k1_retention": 0.375,
+        "acc_k3_post_revised": 0.999267578125,
+        "acc_k3_ood_revised": 0.9946523904800415,
+        "active_token_fraction": 0.350146484375
+      },
+      "Null_Blind": {
+        "acc_initial": 0.118408203125,
+        "acc_initial_ood": 0.13718411326408386,
+        "acc_k2_post_burst": 0.118408203125,
+        "k1_retention": 1.0,
+        "acc_k3_post_revised": 0.1435546875,
+        "acc_k3_ood_revised": 0.16934046149253845,
+        "active_token_fraction": 0.0
+      },
+      "dMoE_Thinker_Upkeeper_Adaptive": {
+        "acc_initial": 0.998046875,
+        "acc_initial_ood": 0.9891696572303772,
+        "acc_k2_post_burst": 0.998046875,
+        "k1_retention": 1.0,
+        "acc_k3_post_revised": 0.999755859375,
+        "acc_k3_ood_revised": 0.9982174634933472,
+        "active_token_fraction": 0.36591796875,
+        "tentative_store_bytes": 0.0
+      }
+    },
+    {
+      "Null_Untrained": {
+        "acc_initial": 0.0,
+        "acc_initial_ood": 0.0,
+        "acc_k2_post_burst": 0.0,
+        "k1_retention": 1.0,
+        "acc_k3_post_revised": 0.0,
+        "acc_k3_ood_revised": 0.0,
+        "active_token_fraction": 0.0
+      },
+      "Null_Shuffled": {
+        "acc_initial": 0.1279296875,
+        "acc_initial_ood": 0.13725490868091583,
+        "acc_k2_post_burst": 0.1279296875,
+        "k1_retention": 1.0,
+        "acc_k3_post_revised": 0.125244140625,
+        "acc_k3_ood_revised": 0.14436618983745575,
+        "active_token_fraction": 0.0
+      },
+      "Baseline_Dense_1Pass_NoReplay": {
+        "acc_initial": 0.44775390625,
+        "acc_initial_ood": 0.12091503292322159,
+        "acc_k2_post_burst": 0.421630859375,
+        "k1_retention": 0.9416575790621592,
+        "acc_k3_post_revised": 0.5009765625,
+        "acc_k3_ood_revised": 0.09154929220676422,
+        "active_token_fraction": 0.0
+      },
+      "Baseline_Dense_1Pass_Replay128": {
+        "acc_initial": 0.44775390625,
+        "acc_initial_ood": 0.12091503292322159,
+        "acc_k2_post_burst": 0.42626953125,
+        "k1_retention": 0.9520174482006543,
+        "acc_k3_post_revised": 0.4990234375,
+        "acc_k3_ood_revised": 0.11091548949480057,
+        "active_token_fraction": 0.0
+      },
+      "Baseline_Dense_1Pass_Upkeeper": {
+        "acc_initial": 0.44775390625,
+        "acc_initial_ood": 0.12091503292322159,
+        "acc_k2_post_burst": 0.44775390625,
+        "k1_retention": 1.0,
+        "acc_k3_post_revised": 0.50390625,
+        "acc_k3_ood_revised": 0.09859155118465424,
+        "active_token_fraction": 0.0
+      },
+      "Baseline_NonNeural_Dictionary_Counters": {
+        "acc_initial": 0.618896484375,
+        "acc_initial_ood": 0.13071896135807037,
+        "acc_k2_post_burst": 0.619140625,
+        "k1_retention": 1.0003944773175542,
+        "acc_k3_post_revised": 0.612060546875,
+        "acc_k3_ood_revised": 0.09154929220676422,
+        "active_token_fraction": 0.0
+      },
+      "dMoE_Thinker_NoUpkeeper": {
+        "acc_initial": 0.999755859375,
+        "acc_initial_ood": 0.9983659982681274,
+        "acc_k2_post_burst": 0.440673828125,
+        "k1_retention": 0.44078144078144077,
+        "acc_k3_post_revised": 0.995361328125,
+        "acc_k3_ood_revised": 0.9700704216957092,
+        "active_token_fraction": 0.368359375
+      },
+      "Null_Blind": {
+        "acc_initial": 0.125732421875,
+        "acc_initial_ood": 0.11764705926179886,
+        "acc_k2_post_burst": 0.125732421875,
+        "k1_retention": 1.0,
+        "acc_k3_post_revised": 0.1220703125,
+        "acc_k3_ood_revised": 0.10739436745643616,
+        "active_token_fraction": 0.0
+      },
+      "dMoE_Thinker_Upkeeper_Adaptive": {
+        "acc_initial": 0.999755859375,
+        "acc_initial_ood": 0.9983659982681274,
+        "acc_k2_post_burst": 0.999755859375,
+        "k1_retention": 1.0,
+        "acc_k3_post_revised": 0.99755859375,
+        "acc_k3_ood_revised": 0.9876760244369507,
+        "active_token_fraction": 0.376220703125,
+        "tentative_store_bytes": 0.0
+      }
+    },
+    {
+      "Null_Untrained": {
+        "acc_initial": 0.00048828125,
+        "acc_initial_ood": 0.0,
+        "acc_k2_post_burst": 0.00048828125,
+        "k1_retention": 1.0,
+        "acc_k3_post_revised": 0.0009765625,
+        "acc_k3_ood_revised": 0.0,
+        "active_token_fraction": 0.0
+      },
+      "Null_Shuffled": {
+        "acc_initial": 0.121826171875,
+        "acc_initial_ood": 0.11092149466276169,
+        "acc_k2_post_burst": 0.121826171875,
+        "k1_retention": 1.0,
+        "acc_k3_post_revised": 0.12109375,
+        "acc_k3_ood_revised": 0.13333332538604736,
+        "active_token_fraction": 0.0
+      },
+      "Baseline_Dense_1Pass_NoReplay": {
+        "acc_initial": 0.446044921875,
+        "acc_initial_ood": 0.11774743348360062,
+        "acc_k2_post_burst": 0.42578125,
+        "k1_retention": 0.9545703338806787,
+        "acc_k3_post_revised": 0.483154296875,
+        "acc_k3_ood_revised": 0.11481481045484543,
+        "active_token_fraction": 0.0
+      },
+      "Baseline_Dense_1Pass_Replay128": {
+        "acc_initial": 0.446044921875,
+        "acc_initial_ood": 0.11774743348360062,
+        "acc_k2_post_burst": 0.420654296875,
+        "k1_retention": 0.9430760810071155,
+        "acc_k3_post_revised": 0.482666015625,
+        "acc_k3_ood_revised": 0.11666666716337204,
+        "active_token_fraction": 0.0
+      },
+      "Baseline_Dense_1Pass_Upkeeper": {
+        "acc_initial": 0.446044921875,
+        "acc_initial_ood": 0.11774743348360062,
+        "acc_k2_post_burst": 0.446044921875,
+        "k1_retention": 1.0,
+        "acc_k3_post_revised": 0.495849609375,
+        "acc_k3_ood_revised": 0.11851851642131805,
+        "active_token_fraction": 0.0
+      },
+      "Baseline_NonNeural_Dictionary_Counters": {
+        "acc_initial": 0.626953125,
+        "acc_initial_ood": 0.138225257396698,
+        "acc_k2_post_burst": 0.626953125,
+        "k1_retention": 1.0,
+        "acc_k3_post_revised": 0.6328125,
+        "acc_k3_ood_revised": 0.1240740716457367,
+        "active_token_fraction": 0.0
+      },
+      "dMoE_Thinker_NoUpkeeper": {
+        "acc_initial": 0.9951171875,
+        "acc_initial_ood": 0.9709897041320801,
+        "acc_k2_post_burst": 0.38427734375,
+        "k1_retention": 0.3861629048086359,
+        "acc_k3_post_revised": 0.999267578125,
+        "acc_k3_ood_revised": 0.9944444298744202,
+        "active_token_fraction": 0.367919921875
+      },
+      "Null_Blind": {
+        "acc_initial": 0.12451171875,
+        "acc_initial_ood": 0.11092149466276169,
+        "acc_k2_post_burst": 0.12451171875,
+        "k1_retention": 1.0,
+        "acc_k3_post_revised": 0.129150390625,
+        "acc_k3_ood_revised": 0.11481481045484543,
+        "active_token_fraction": 0.0
+      },
+      "dMoE_Thinker_Upkeeper_Adaptive": {
+        "acc_initial": 0.9951171875,
+        "acc_initial_ood": 0.9709897041320801,
+        "acc_k2_post_burst": 0.9951171875,
+        "k1_retention": 1.0,
+        "acc_k3_post_revised": 0.998291015625,
+        "acc_k3_ood_revised": 0.9888888597488403,
+        "active_token_fraction": 0.368701171875,
+        "tentative_store_bytes": 0.0
+      }
+    },
+    {
+      "Null_Untrained": {
+        "acc_initial": 0.004638671875,
+        "acc_initial_ood": 0.010309278964996338,
+        "acc_k2_post_burst": 0.004638671875,
+        "k1_retention": 1.0,
+        "acc_k3_post_revised": 0.00537109375,
+        "acc_k3_ood_revised": 0.0053956834599375725,
+        "active_token_fraction": 0.0
+      },
+      "Null_Shuffled": {
+        "acc_initial": 0.121337890625,
+        "acc_initial_ood": 0.10824742168188095,
+        "acc_k2_post_burst": 0.121337890625,
+        "k1_retention": 1.0,
+        "acc_k3_post_revised": 0.13525390625,
+        "acc_k3_ood_revised": 0.14388489723205566,
+        "active_token_fraction": 0.0
+      },
+      "Baseline_Dense_1Pass_NoReplay": {
+        "acc_initial": 0.453857421875,
+        "acc_initial_ood": 0.1168384924530983,
+        "acc_k2_post_burst": 0.42529296875,
+        "k1_retention": 0.9370629370629371,
+        "acc_k3_post_revised": 0.49609375,
+        "acc_k3_ood_revised": 0.10971223562955856,
+        "active_token_fraction": 0.0
+      },
+      "Baseline_Dense_1Pass_Replay128": {
+        "acc_initial": 0.453857421875,
+        "acc_initial_ood": 0.1168384924530983,
+        "acc_k2_post_burst": 0.427490234375,
+        "k1_retention": 0.9419042495965573,
+        "acc_k3_post_revised": 0.501953125,
+        "acc_k3_ood_revised": 0.11510791629552841,
+        "active_token_fraction": 0.0
+      },
+      "Baseline_Dense_1Pass_Upkeeper": {
+        "acc_initial": 0.453857421875,
+        "acc_initial_ood": 0.1168384924530983,
+        "acc_k2_post_burst": 0.453857421875,
+        "k1_retention": 1.0,
+        "acc_k3_post_revised": 0.498291015625,
+        "acc_k3_ood_revised": 0.10611511021852493,
+        "active_token_fraction": 0.0
+      },
+      "Baseline_NonNeural_Dictionary_Counters": {
+        "acc_initial": 0.6201171875,
+        "acc_initial_ood": 0.09278350323438644,
+        "acc_k2_post_burst": 0.620361328125,
+        "k1_retention": 1.0003937007874015,
+        "acc_k3_post_revised": 0.62548828125,
+        "acc_k3_ood_revised": 0.1133093535900116,
+        "active_token_fraction": 0.0
+      },
+      "dMoE_Thinker_NoUpkeeper": {
+        "acc_initial": 1.0,
+        "acc_initial_ood": 1.0,
+        "acc_k2_post_burst": 0.428955078125,
+        "k1_retention": 0.428955078125,
+        "acc_k3_post_revised": 0.998291015625,
+        "acc_k3_ood_revised": 0.9946043491363525,
+        "active_token_fraction": 0.368994140625
+      },
+      "Null_Blind": {
+        "acc_initial": 0.121337890625,
+        "acc_initial_ood": 0.10824742168188095,
+        "acc_k2_post_burst": 0.121337890625,
+        "k1_retention": 1.0,
+        "acc_k3_post_revised": 0.13525390625,
+        "acc_k3_ood_revised": 0.14388489723205566,
+        "active_token_fraction": 0.0
+      },
+      "dMoE_Thinker_Upkeeper_Adaptive": {
+        "acc_initial": 1.0,
+        "acc_initial_ood": 1.0,
+        "acc_k2_post_burst": 1.0,
+        "k1_retention": 1.0,
+        "acc_k3_post_revised": 0.999755859375,
+        "acc_k3_ood_revised": 1.0,
+        "active_token_fraction": 0.372119140625,
+        "tentative_store_bytes": 0.0
+      }
+    },
+    {
+      "Null_Untrained": {
+        "acc_initial": 0.019287109375,
+        "acc_initial_ood": 0.007092198356986046,
+        "acc_k2_post_burst": 0.019287109375,
+        "k1_retention": 1.0,
+        "acc_k3_post_revised": 0.027587890625,
+        "acc_k3_ood_revised": 0.0017361111240461469,
+        "active_token_fraction": 0.0
+      },
+      "Null_Shuffled": {
+        "acc_initial": 0.1279296875,
+        "acc_initial_ood": 0.11170212179422379,
+        "acc_k2_post_burst": 0.1279296875,
+        "k1_retention": 1.0,
+        "acc_k3_post_revised": 0.12158203125,
+        "acc_k3_ood_revised": 0.142361119389534,
+        "active_token_fraction": 0.0
+      },
+      "Baseline_Dense_1Pass_NoReplay": {
+        "acc_initial": 0.45556640625,
+        "acc_initial_ood": 0.13829787075519562,
+        "acc_k2_post_burst": 0.431884765625,
+        "k1_retention": 0.9480171489817792,
+        "acc_k3_post_revised": 0.489013671875,
+        "acc_k3_ood_revised": 0.1493055522441864,
+        "active_token_fraction": 0.0
+      },
+      "Baseline_Dense_1Pass_Replay128": {
+        "acc_initial": 0.45556640625,
+        "acc_initial_ood": 0.13829787075519562,
+        "acc_k2_post_burst": 0.434814453125,
+        "k1_retention": 0.9544480171489818,
+        "acc_k3_post_revised": 0.4833984375,
+        "acc_k3_ood_revised": 0.142361119389534,
+        "active_token_fraction": 0.0
+      },
+      "Baseline_Dense_1Pass_Upkeeper": {
+        "acc_initial": 0.45556640625,
+        "acc_initial_ood": 0.13829787075519562,
+        "acc_k2_post_burst": 0.45556640625,
+        "k1_retention": 1.0,
+        "acc_k3_post_revised": 0.478271484375,
+        "acc_k3_ood_revised": 0.1371527761220932,
+        "active_token_fraction": 0.0
+      },
+      "Baseline_NonNeural_Dictionary_Counters": {
+        "acc_initial": 0.63134765625,
+        "acc_initial_ood": 0.13297872245311737,
+        "acc_k2_post_burst": 0.631103515625,
+        "k1_retention": 0.9996133023975251,
+        "acc_k3_post_revised": 0.61962890625,
+        "acc_k3_ood_revised": 0.109375,
+        "active_token_fraction": 0.0
+      },
+      "dMoE_Thinker_NoUpkeeper": {
+        "acc_initial": 0.99951171875,
+        "acc_initial_ood": 0.9964538812637329,
+        "acc_k2_post_burst": 0.419921875,
+        "k1_retention": 0.4201270151441133,
+        "acc_k3_post_revised": 1.0,
+        "acc_k3_ood_revised": 1.0,
+        "active_token_fraction": 0.363525390625
+      },
+      "Null_Blind": {
+        "acc_initial": 0.12744140625,
+        "acc_initial_ood": 0.12411347031593323,
+        "acc_k2_post_burst": 0.12744140625,
+        "k1_retention": 1.0,
+        "acc_k3_post_revised": 0.129638671875,
+        "acc_k3_ood_revised": 0.1336805522441864,
+        "active_token_fraction": 0.0
+      },
+      "dMoE_Thinker_Upkeeper_Adaptive": {
+        "acc_initial": 0.99951171875,
+        "acc_initial_ood": 0.9964538812637329,
+        "acc_k2_post_burst": 0.99951171875,
+        "k1_retention": 1.0,
+        "acc_k3_post_revised": 0.999755859375,
+        "acc_k3_ood_revised": 0.9982638955116272,
+        "active_token_fraction": 0.377001953125,
+        "tentative_store_bytes": 0.0
+      }
+    },
+    {
+      "Null_Untrained": {
+        "acc_initial": 0.00244140625,
+        "acc_initial_ood": 0.005319148767739534,
+        "acc_k2_post_burst": 0.00244140625,
+        "k1_retention": 1.0,
+        "acc_k3_post_revised": 0.0009765625,
+        "acc_k3_ood_revised": 0.001683501643128693,
+        "active_token_fraction": 0.0
+      },
+      "Null_Shuffled": {
+        "acc_initial": 0.127685546875,
+        "acc_initial_ood": 0.12765957415103912,
+        "acc_k2_post_burst": 0.127685546875,
+        "k1_retention": 1.0,
+        "acc_k3_post_revised": 0.13037109375,
+        "acc_k3_ood_revised": 0.12289562076330185,
+        "active_token_fraction": 0.0
+      },
+      "Baseline_Dense_1Pass_NoReplay": {
+        "acc_initial": 0.459228515625,
+        "acc_initial_ood": 0.11524822562932968,
+        "acc_k2_post_burst": 0.4287109375,
+        "k1_retention": 0.9335459861775651,
+        "acc_k3_post_revised": 0.482421875,
+        "acc_k3_ood_revised": 0.12962962687015533,
+        "active_token_fraction": 0.0
+      },
+      "Baseline_Dense_1Pass_Replay128": {
+        "acc_initial": 0.459228515625,
+        "acc_initial_ood": 0.11524822562932968,
+        "acc_k2_post_burst": 0.430419921875,
+        "k1_retention": 0.9372674109516215,
+        "acc_k3_post_revised": 0.482421875,
+        "acc_k3_ood_revised": 0.11952861398458481,
+        "active_token_fraction": 0.0
+      },
+      "Baseline_Dense_1Pass_Upkeeper": {
+        "acc_initial": 0.459228515625,
+        "acc_initial_ood": 0.11524822562932968,
+        "acc_k2_post_burst": 0.459228515625,
+        "k1_retention": 1.0,
+        "acc_k3_post_revised": 0.490234375,
+        "acc_k3_ood_revised": 0.12962962687015533,
+        "active_token_fraction": 0.0
+      },
+      "Baseline_NonNeural_Dictionary_Counters": {
+        "acc_initial": 0.622802734375,
+        "acc_initial_ood": 0.12765957415103912,
+        "acc_k2_post_burst": 0.621826171875,
+        "k1_retention": 0.9984319874558997,
+        "acc_k3_post_revised": 0.62255859375,
+        "acc_k3_ood_revised": 0.13131313025951385,
+        "active_token_fraction": 0.0
+      },
+      "dMoE_Thinker_NoUpkeeper": {
+        "acc_initial": 0.99951171875,
+        "acc_initial_ood": 0.9964538812637329,
+        "acc_k2_post_burst": 0.383544921875,
+        "k1_retention": 0.3837322911577919,
+        "acc_k3_post_revised": 0.99853515625,
+        "acc_k3_ood_revised": 0.9898989796638489,
+        "active_token_fraction": 0.371533203125
+      },
+      "Null_Blind": {
+        "acc_initial": 0.116943359375,
+        "acc_initial_ood": 0.11702127009630203,
+        "acc_k2_post_burst": 0.116943359375,
+        "k1_retention": 1.0,
+        "acc_k3_post_revised": 0.1220703125,
+        "acc_k3_ood_revised": 0.13636364042758942,
+        "active_token_fraction": 0.0
+      },
+      "dMoE_Thinker_Upkeeper_Adaptive": {
+        "acc_initial": 0.99951171875,
+        "acc_initial_ood": 0.9964538812637329,
+        "acc_k2_post_burst": 0.99951171875,
+        "k1_retention": 1.0,
+        "acc_k3_post_revised": 0.998779296875,
+        "acc_k3_ood_revised": 0.991582453250885,
+        "active_token_fraction": 0.379931640625,
+        "tentative_store_bytes": 0.0
+      }
+    },
+    {
+      "Null_Untrained": {
+        "acc_initial": 0.0,
+        "acc_initial_ood": 0.0,
+        "acc_k2_post_burst": 0.0,
+        "k1_retention": 1.0,
+        "acc_k3_post_revised": 0.0,
+        "acc_k3_ood_revised": 0.0,
+        "active_token_fraction": 0.0
+      },
+      "Null_Shuffled": {
+        "acc_initial": 0.118408203125,
+        "acc_initial_ood": 0.1160714328289032,
+        "acc_k2_post_burst": 0.118408203125,
+        "k1_retention": 1.0,
+        "acc_k3_post_revised": 0.127685546875,
+        "acc_k3_ood_revised": 0.13028764724731445,
+        "active_token_fraction": 0.0
+      },
+      "Baseline_Dense_1Pass_NoReplay": {
+        "acc_initial": 0.447021484375,
+        "acc_initial_ood": 0.15000000596046448,
+        "acc_k2_post_burst": 0.429931640625,
+        "k1_retention": 0.9617695248498088,
+        "acc_k3_post_revised": 0.460205078125,
+        "acc_k3_ood_revised": 0.12351945787668228,
+        "active_token_fraction": 0.0
+      },
+      "Baseline_Dense_1Pass_Replay128": {
+        "acc_initial": 0.447021484375,
+        "acc_initial_ood": 0.15000000596046448,
+        "acc_k2_post_burst": 0.43115234375,
+        "k1_retention": 0.9645002730748226,
+        "acc_k3_post_revised": 0.465087890625,
+        "acc_k3_ood_revised": 0.1201353594660759,
+        "active_token_fraction": 0.0
+      },
+      "Baseline_Dense_1Pass_Upkeeper": {
+        "acc_initial": 0.447021484375,
+        "acc_initial_ood": 0.15000000596046448,
+        "acc_k2_post_burst": 0.447021484375,
+        "k1_retention": 1.0,
+        "acc_k3_post_revised": 0.452880859375,
+        "acc_k3_ood_revised": 0.10829102993011475,
+        "active_token_fraction": 0.0
+      },
+      "Baseline_NonNeural_Dictionary_Counters": {
+        "acc_initial": 0.625732421875,
+        "acc_initial_ood": 0.10892856866121292,
+        "acc_k2_post_burst": 0.625244140625,
+        "k1_retention": 0.999219664455716,
+        "acc_k3_post_revised": 0.602783203125,
+        "acc_k3_ood_revised": 0.10998307913541794,
+        "active_token_fraction": 0.0
+      },
+      "dMoE_Thinker_NoUpkeeper": {
+        "acc_initial": 0.99462890625,
+        "acc_initial_ood": 0.9660714268684387,
+        "acc_k2_post_burst": 0.3720703125,
+        "k1_retention": 0.374079528718704,
+        "acc_k3_post_revised": 0.999755859375,
+        "acc_k3_ood_revised": 0.9983079433441162,
+        "active_token_fraction": 0.3794921875
+      },
+      "Null_Blind": {
+        "acc_initial": 0.118408203125,
+        "acc_initial_ood": 0.1160714328289032,
+        "acc_k2_post_burst": 0.118408203125,
+        "k1_retention": 1.0,
+        "acc_k3_post_revised": 0.127685546875,
+        "acc_k3_ood_revised": 0.13028764724731445,
+        "active_token_fraction": 0.0
+      },
+      "dMoE_Thinker_Upkeeper_Adaptive": {
+        "acc_initial": 0.99462890625,
+        "acc_initial_ood": 0.9660714268684387,
+        "acc_k2_post_burst": 0.99462890625,
+        "k1_retention": 1.0,
+        "acc_k3_post_revised": 0.999267578125,
+        "acc_k3_ood_revised": 0.9949238300323486,
+        "active_token_fraction": 0.3796875,
+        "tentative_store_bytes": 0.0
+      }
+    },
+    {
+      "Null_Untrained": {
+        "acc_initial": 0.0,
+        "acc_initial_ood": 0.0,
+        "acc_k2_post_burst": 0.0,
+        "k1_retention": 1.0,
+        "acc_k3_post_revised": 0.000244140625,
+        "acc_k3_ood_revised": 0.0,
+        "active_token_fraction": 0.0
+      },
+      "Null_Shuffled": {
+        "acc_initial": 0.124755859375,
+        "acc_initial_ood": 0.12454873323440552,
+        "acc_k2_post_burst": 0.124755859375,
+        "k1_retention": 1.0,
+        "acc_k3_post_revised": 0.130126953125,
+        "acc_k3_ood_revised": 0.10934744030237198,
+        "active_token_fraction": 0.0
+      },
+      "Baseline_Dense_1Pass_NoReplay": {
+        "acc_initial": 0.453369140625,
+        "acc_initial_ood": 0.1498194932937622,
+        "acc_k2_post_burst": 0.427490234375,
+        "k1_retention": 0.9429186860527733,
+        "acc_k3_post_revised": 0.458984375,
+        "acc_k3_ood_revised": 0.11992944777011871,
+        "active_token_fraction": 0.0
+      },
+      "Baseline_Dense_1Pass_Replay128": {
+        "acc_initial": 0.453369140625,
+        "acc_initial_ood": 0.1498194932937622,
+        "acc_k2_post_burst": 0.421875,
+        "k1_retention": 0.9305331179321487,
+        "acc_k3_post_revised": 0.4599609375,
+        "acc_k3_ood_revised": 0.11640211194753647,
+        "active_token_fraction": 0.0
+      },
+      "Baseline_Dense_1Pass_Upkeeper": {
+        "acc_initial": 0.453369140625,
+        "acc_initial_ood": 0.1498194932937622,
+        "acc_k2_post_burst": 0.453369140625,
+        "k1_retention": 1.0,
+        "acc_k3_post_revised": 0.4619140625,
+        "acc_k3_ood_revised": 0.11640211194753647,
+        "active_token_fraction": 0.0
+      },
+      "Baseline_NonNeural_Dictionary_Counters": {
+        "acc_initial": 0.6328125,
+        "acc_initial_ood": 0.128158837556839,
+        "acc_k2_post_burst": 0.6337890625,
+        "k1_retention": 1.001543209876543,
+        "acc_k3_post_revised": 0.63134765625,
+        "acc_k3_ood_revised": 0.14109346270561218,
+        "active_token_fraction": 0.0
+      },
+      "dMoE_Thinker_NoUpkeeper": {
+        "acc_initial": 0.999267578125,
+        "acc_initial_ood": 0.994584858417511,
+        "acc_k2_post_burst": 0.4111328125,
+        "k1_retention": 0.41143415587588567,
+        "acc_k3_post_revised": 0.9970703125,
+        "acc_k3_ood_revised": 0.978835940361023,
+        "active_token_fraction": 0.358349609375
+      },
+      "Null_Blind": {
+        "acc_initial": 0.124267578125,
+        "acc_initial_ood": 0.11732851713895798,
+        "acc_k2_post_burst": 0.124267578125,
+        "k1_retention": 1.0,
+        "acc_k3_post_revised": 0.126953125,
+        "acc_k3_ood_revised": 0.13051146268844604,
+        "active_token_fraction": 0.0
+      },
+      "dMoE_Thinker_Upkeeper_Adaptive": {
+        "acc_initial": 0.999267578125,
+        "acc_initial_ood": 0.994584858417511,
+        "acc_k2_post_burst": 0.999267578125,
+        "k1_retention": 1.0,
+        "acc_k3_post_revised": 0.99951171875,
+        "acc_k3_ood_revised": 0.9964726567268372,
+        "active_token_fraction": 0.374169921875,
+        "tentative_store_bytes": 0.0
+      }
+    },
+    {
+      "Null_Untrained": {
+        "acc_initial": 0.0029296875,
+        "acc_initial_ood": 0.0069444444961845875,
+        "acc_k2_post_burst": 0.0029296875,
+        "k1_retention": 1.0,
+        "acc_k3_post_revised": 0.008056640625,
+        "acc_k3_ood_revised": 0.013651876710355282,
+        "active_token_fraction": 0.0
+      },
+      "Null_Shuffled": {
+        "acc_initial": 0.121826171875,
+        "acc_initial_ood": 0.1163194477558136,
+        "acc_k2_post_burst": 0.121826171875,
+        "k1_retention": 1.0,
+        "acc_k3_post_revised": 0.124755859375,
+        "acc_k3_ood_revised": 0.12116040289402008,
+        "active_token_fraction": 0.0
+      },
+      "Baseline_Dense_1Pass_NoReplay": {
+        "acc_initial": 0.46142578125,
+        "acc_initial_ood": 0.1041666641831398,
+        "acc_k2_post_burst": 0.424560546875,
+        "k1_retention": 0.9201058201058201,
+        "acc_k3_post_revised": 0.47509765625,
+        "acc_k3_ood_revised": 0.11945392191410065,
+        "active_token_fraction": 0.0
+      },
+      "Baseline_Dense_1Pass_Replay128": {
+        "acc_initial": 0.46142578125,
+        "acc_initial_ood": 0.1041666641831398,
+        "acc_k2_post_burst": 0.424072265625,
+        "k1_retention": 0.919047619047619,
+        "acc_k3_post_revised": 0.476318359375,
+        "acc_k3_ood_revised": 0.12457337230443954,
+        "active_token_fraction": 0.0
+      },
+      "Baseline_Dense_1Pass_Upkeeper": {
+        "acc_initial": 0.46142578125,
+        "acc_initial_ood": 0.1041666641831398,
+        "acc_k2_post_burst": 0.46142578125,
+        "k1_retention": 1.0,
+        "acc_k3_post_revised": 0.482421875,
+        "acc_k3_ood_revised": 0.13651876151561737,
+        "active_token_fraction": 0.0
+      },
+      "Baseline_NonNeural_Dictionary_Counters": {
+        "acc_initial": 0.631591796875,
+        "acc_initial_ood": 0.1458333283662796,
+        "acc_k2_post_burst": 0.6318359375,
+        "k1_retention": 1.0003865481252416,
+        "acc_k3_post_revised": 0.614990234375,
+        "acc_k3_ood_revised": 0.1331057995557785,
+        "active_token_fraction": 0.0
+      },
+      "dMoE_Thinker_NoUpkeeper": {
+        "acc_initial": 0.9990234375,
+        "acc_initial_ood": 0.9930555820465088,
+        "acc_k2_post_burst": 0.453125,
+        "k1_retention": 0.45356793743890517,
+        "acc_k3_post_revised": 0.999267578125,
+        "acc_k3_ood_revised": 0.9948804974555969,
+        "active_token_fraction": 0.372119140625
+      },
+      "Null_Blind": {
+        "acc_initial": 0.1259765625,
+        "acc_initial_ood": 0.1197916641831398,
+        "acc_k2_post_burst": 0.1259765625,
+        "k1_retention": 1.0,
+        "acc_k3_post_revised": 0.11328125,
+        "acc_k3_ood_revised": 0.1433447003364563,
+        "active_token_fraction": 0.0
+      },
+      "dMoE_Thinker_Upkeeper_Adaptive": {
+        "acc_initial": 0.9990234375,
+        "acc_initial_ood": 0.9930555820465088,
+        "acc_k2_post_burst": 0.9990234375,
+        "k1_retention": 1.0,
+        "acc_k3_post_revised": 1.0,
+        "acc_k3_ood_revised": 0.9999999403953552,
+        "active_token_fraction": 0.379345703125,
+        "tentative_store_bytes": 0.0
+      }
+    },
+    {
+      "Null_Untrained": {
+        "acc_initial": 0.01123046875,
+        "acc_initial_ood": 0.0,
+        "acc_k2_post_burst": 0.01123046875,
+        "k1_retention": 1.0,
+        "acc_k3_post_revised": 0.010498046875,
+        "acc_k3_ood_revised": 0.0017271157121285796,
+        "active_token_fraction": 0.0
+      },
+      "Null_Shuffled": {
+        "acc_initial": 0.123779296875,
+        "acc_initial_ood": 0.13893967866897583,
+        "acc_k2_post_burst": 0.123779296875,
+        "k1_retention": 1.0,
+        "acc_k3_post_revised": 0.124267578125,
+        "acc_k3_ood_revised": 0.1105354055762291,
+        "active_token_fraction": 0.0
+      },
+      "Baseline_Dense_1Pass_NoReplay": {
+        "acc_initial": 0.455078125,
+        "acc_initial_ood": 0.14442414045333862,
+        "acc_k2_post_burst": 0.4287109375,
+        "k1_retention": 0.9420600858369099,
+        "acc_k3_post_revised": 0.50048828125,
+        "acc_k3_ood_revised": 0.11917098611593246,
+        "active_token_fraction": 0.0
+      },
+      "Baseline_Dense_1Pass_Replay128": {
+        "acc_initial": 0.455078125,
+        "acc_initial_ood": 0.14442414045333862,
+        "acc_k2_post_burst": 0.424072265625,
+        "k1_retention": 0.9318669527896996,
+        "acc_k3_post_revised": 0.502685546875,
+        "acc_k3_ood_revised": 0.11571675539016724,
+        "active_token_fraction": 0.0
+      },
+      "Baseline_Dense_1Pass_Upkeeper": {
+        "acc_initial": 0.455078125,
+        "acc_initial_ood": 0.14442414045333862,
+        "acc_k2_post_burst": 0.455078125,
+        "k1_retention": 1.0,
+        "acc_k3_post_revised": 0.4970703125,
+        "acc_k3_ood_revised": 0.11398963630199432,
+        "active_token_fraction": 0.0
+      },
+      "Baseline_NonNeural_Dictionary_Counters": {
+        "acc_initial": 0.6357421875,
+        "acc_initial_ood": 0.12614260613918304,
+        "acc_k2_post_burst": 0.63623046875,
+        "k1_retention": 1.0007680491551458,
+        "acc_k3_post_revised": 0.620849609375,
+        "acc_k3_ood_revised": 0.12435232847929001,
+        "active_token_fraction": 0.0
+      },
+      "dMoE_Thinker_NoUpkeeper": {
+        "acc_initial": 0.998779296875,
+        "acc_initial_ood": 0.9926874041557312,
+        "acc_k2_post_burst": 0.405517578125,
+        "k1_retention": 0.4060131997066732,
+        "acc_k3_post_revised": 1.0,
+        "acc_k3_ood_revised": 1.0,
+        "active_token_fraction": 0.3662109375
+      },
+      "Null_Blind": {
+        "acc_initial": 0.12548828125,
+        "acc_initial_ood": 0.13528336584568024,
+        "acc_k2_post_burst": 0.12548828125,
+        "k1_retention": 1.0,
+        "acc_k3_post_revised": 0.125732421875,
+        "acc_k3_ood_revised": 0.12089809775352478,
+        "active_token_fraction": 0.0
+      },
+      "dMoE_Thinker_Upkeeper_Adaptive": {
+        "acc_initial": 0.998779296875,
+        "acc_initial_ood": 0.9926874041557312,
+        "acc_k2_post_burst": 0.998779296875,
+        "k1_retention": 1.0,
+        "acc_k3_post_revised": 0.999755859375,
+        "acc_k3_ood_revised": 0.9982728958129883,
+        "active_token_fraction": 0.37412109375,
+        "tentative_store_bytes": 0.0
+      }
+    },
+    {
+      "Null_Untrained": {
+        "acc_initial": 0.0068359375,
+        "acc_initial_ood": 0.015306122601032257,
+        "acc_k2_post_burst": 0.0068359375,
+        "k1_retention": 1.0,
+        "acc_k3_post_revised": 0.00439453125,
+        "acc_k3_ood_revised": 0.005328597035259008,
+        "active_token_fraction": 0.0
+      },
+      "Null_Shuffled": {
+        "acc_initial": 0.123779296875,
+        "acc_initial_ood": 0.13605442643165588,
+        "acc_k2_post_burst": 0.123779296875,
+        "k1_retention": 1.0,
+        "acc_k3_post_revised": 0.125244140625,
+        "acc_k3_ood_revised": 0.12966252863407135,
+        "active_token_fraction": 0.0
+      },
+      "Baseline_Dense_1Pass_NoReplay": {
+        "acc_initial": 0.451416015625,
+        "acc_initial_ood": 0.1309523731470108,
+        "acc_k2_post_burst": 0.436279296875,
+        "k1_retention": 0.9664683612763656,
+        "acc_k3_post_revised": 0.49072265625,
+        "acc_k3_ood_revised": 0.12611012160778046,
+        "active_token_fraction": 0.0
+      },
+      "Baseline_Dense_1Pass_Replay128": {
+        "acc_initial": 0.451416015625,
+        "acc_initial_ood": 0.1309523731470108,
+        "acc_k2_post_burst": 0.43408203125,
+        "k1_retention": 0.9616008653326122,
+        "acc_k3_post_revised": 0.485595703125,
+        "acc_k3_ood_revised": 0.11722913384437561,
+        "active_token_fraction": 0.0
+      },
+      "Baseline_Dense_1Pass_Upkeeper": {
+        "acc_initial": 0.451416015625,
+        "acc_initial_ood": 0.1309523731470108,
+        "acc_k2_post_burst": 0.451416015625,
+        "k1_retention": 1.0,
+        "acc_k3_post_revised": 0.477294921875,
+        "acc_k3_ood_revised": 0.12611012160778046,
+        "active_token_fraction": 0.0
+      },
+      "Baseline_NonNeural_Dictionary_Counters": {
+        "acc_initial": 0.627685546875,
+        "acc_initial_ood": 0.12244898080825806,
+        "acc_k2_post_burst": 0.627685546875,
+        "k1_retention": 1.0,
+        "acc_k3_post_revised": 0.631591796875,
+        "acc_k3_ood_revised": 0.14031971991062164,
+        "active_token_fraction": 0.0
+      },
+      "dMoE_Thinker_NoUpkeeper": {
+        "acc_initial": 0.999755859375,
+        "acc_initial_ood": 0.9982993006706238,
+        "acc_k2_post_burst": 0.39208984375,
+        "k1_retention": 0.3921855921855922,
+        "acc_k3_post_revised": 0.998291015625,
+        "acc_k3_ood_revised": 0.9875666499137878,
+        "active_token_fraction": 0.37431640625
+      },
+      "Null_Blind": {
+        "acc_initial": 0.1298828125,
+        "acc_initial_ood": 0.12074829638004303,
+        "acc_k2_post_burst": 0.1298828125,
+        "k1_retention": 1.0,
+        "acc_k3_post_revised": 0.121826171875,
+        "acc_k3_ood_revised": 0.11900532990694046,
+        "active_token_fraction": 0.0
+      },
+      "dMoE_Thinker_Upkeeper_Adaptive": {
+        "acc_initial": 0.999755859375,
+        "acc_initial_ood": 0.9982993006706238,
+        "acc_k2_post_burst": 0.999755859375,
+        "k1_retention": 1.0,
+        "acc_k3_post_revised": 1.0,
+        "acc_k3_ood_revised": 1.0,
+        "active_token_fraction": 0.375537109375,
+        "tentative_store_bytes": 0.0
+      }
+    },
+    {
+      "Null_Untrained": {
+        "acc_initial": 0.0,
+        "acc_initial_ood": 0.0,
+        "acc_k2_post_burst": 0.0,
+        "k1_retention": 1.0,
+        "acc_k3_post_revised": 0.0,
+        "acc_k3_ood_revised": 0.0,
+        "active_token_fraction": 0.0
+      },
+      "Null_Shuffled": {
+        "acc_initial": 0.13037109375,
+        "acc_initial_ood": 0.1317957192659378,
+        "acc_k2_post_burst": 0.13037109375,
+        "k1_retention": 1.0,
+        "acc_k3_post_revised": 0.123291015625,
+        "acc_k3_ood_revised": 0.10954063385725021,
+        "active_token_fraction": 0.0
+      },
+      "Baseline_Dense_1Pass_NoReplay": {
+        "acc_initial": 0.4541015625,
+        "acc_initial_ood": 0.1515650749206543,
+        "acc_k2_post_burst": 0.430908203125,
+        "k1_retention": 0.9489247311827957,
+        "acc_k3_post_revised": 0.467041015625,
+        "acc_k3_ood_revised": 0.13074204325675964,
+        "active_token_fraction": 0.0
+      },
+      "Baseline_Dense_1Pass_Replay128": {
+        "acc_initial": 0.4541015625,
+        "acc_initial_ood": 0.1515650749206543,
+        "acc_k2_post_burst": 0.432861328125,
+        "k1_retention": 0.9532258064516129,
+        "acc_k3_post_revised": 0.469970703125,
+        "acc_k3_ood_revised": 0.12544170022010803,
+        "active_token_fraction": 0.0
+      },
+      "Baseline_Dense_1Pass_Upkeeper": {
+        "acc_initial": 0.4541015625,
+        "acc_initial_ood": 0.1515650749206543,
+        "acc_k2_post_burst": 0.4541015625,
+        "k1_retention": 1.0,
+        "acc_k3_post_revised": 0.477294921875,
+        "acc_k3_ood_revised": 0.14134275913238525,
+        "active_token_fraction": 0.0
+      },
+      "Baseline_NonNeural_Dictionary_Counters": {
+        "acc_initial": 0.61279296875,
+        "acc_initial_ood": 0.13344316184520721,
+        "acc_k2_post_burst": 0.612548828125,
+        "k1_retention": 0.999601593625498,
+        "acc_k3_post_revised": 0.626220703125,
+        "acc_k3_ood_revised": 0.10954063385725021,
+        "active_token_fraction": 0.0
+      },
+      "dMoE_Thinker_NoUpkeeper": {
+        "acc_initial": 0.99658203125,
+        "acc_initial_ood": 0.9818780422210693,
+        "acc_k2_post_burst": 0.40234375,
+        "k1_retention": 0.4037236648701617,
+        "acc_k3_post_revised": 0.9951171875,
+        "acc_k3_ood_revised": 0.9717314839363098,
+        "active_token_fraction": 0.35947265625
+      },
+      "Null_Blind": {
+        "acc_initial": 0.13037109375,
+        "acc_initial_ood": 0.1317957192659378,
+        "acc_k2_post_burst": 0.13037109375,
+        "k1_retention": 1.0,
+        "acc_k3_post_revised": 0.123291015625,
+        "acc_k3_ood_revised": 0.10954063385725021,
+        "active_token_fraction": 0.0
+      },
+      "dMoE_Thinker_Upkeeper_Adaptive": {
+        "acc_initial": 0.99658203125,
+        "acc_initial_ood": 0.9818780422210693,
+        "acc_k2_post_burst": 0.99658203125,
+        "k1_retention": 1.0,
+        "acc_k3_post_revised": 0.99853515625,
+        "acc_k3_ood_revised": 0.9893993139266968,
+        "active_token_fraction": 0.36630859375,
+        "tentative_store_bytes": 0.0
+      }
+    },
+    {
+      "Null_Untrained": {
+        "acc_initial": 0.0,
+        "acc_initial_ood": 0.0,
+        "acc_k2_post_burst": 0.0,
+        "k1_retention": 1.0,
+        "acc_k3_post_revised": 0.0009765625,
+        "acc_k3_ood_revised": 0.0,
+        "active_token_fraction": 0.0
+      },
+      "Null_Shuffled": {
+        "acc_initial": 0.125732421875,
+        "acc_initial_ood": 0.1473136842250824,
+        "acc_k2_post_burst": 0.125732421875,
+        "k1_retention": 1.0,
+        "acc_k3_post_revised": 0.124267578125,
+        "acc_k3_ood_revised": 0.12136752158403397,
+        "active_token_fraction": 0.0
+      },
+      "Baseline_Dense_1Pass_NoReplay": {
+        "acc_initial": 0.459716796875,
+        "acc_initial_ood": 0.1559792011976242,
+        "acc_k2_post_burst": 0.43505859375,
+        "k1_retention": 0.9463621879978757,
+        "acc_k3_post_revised": 0.479248046875,
+        "acc_k3_ood_revised": 0.13333334028720856,
+        "active_token_fraction": 0.0
+      },
+      "Baseline_Dense_1Pass_Replay128": {
+        "acc_initial": 0.459716796875,
+        "acc_initial_ood": 0.1559792011976242,
+        "acc_k2_post_burst": 0.4384765625,
+        "k1_retention": 0.953797132235794,
+        "acc_k3_post_revised": 0.48046875,
+        "acc_k3_ood_revised": 0.1367521435022354,
+        "active_token_fraction": 0.0
+      },
+      "Baseline_Dense_1Pass_Upkeeper": {
+        "acc_initial": 0.459716796875,
+        "acc_initial_ood": 0.1559792011976242,
+        "acc_k2_post_burst": 0.459716796875,
+        "k1_retention": 1.0,
+        "acc_k3_post_revised": 0.484130859375,
+        "acc_k3_ood_revised": 0.14358974993228912,
+        "active_token_fraction": 0.0
+      },
+      "Baseline_NonNeural_Dictionary_Counters": {
+        "acc_initial": 0.635009765625,
+        "acc_initial_ood": 0.14038127660751343,
+        "acc_k2_post_burst": 0.634765625,
+        "k1_retention": 0.9996155324875048,
+        "acc_k3_post_revised": 0.621826171875,
+        "acc_k3_ood_revised": 0.1367521435022354,
+        "active_token_fraction": 0.0
+      },
+      "dMoE_Thinker_NoUpkeeper": {
+        "acc_initial": 0.997802734375,
+        "acc_initial_ood": 0.9861351847648621,
+        "acc_k2_post_burst": 0.355224609375,
+        "k1_retention": 0.3560068509909469,
+        "acc_k3_post_revised": 0.999755859375,
+        "acc_k3_ood_revised": 0.9982905983924866,
+        "active_token_fraction": 0.36142578125
+      },
+      "Null_Blind": {
+        "acc_initial": 0.118896484375,
+        "acc_initial_ood": 0.11785095185041428,
+        "acc_k2_post_burst": 0.118896484375,
+        "k1_retention": 1.0,
+        "acc_k3_post_revised": 0.11376953125,
+        "acc_k3_ood_revised": 0.1111111119389534,
+        "active_token_fraction": 0.0
+      },
+      "dMoE_Thinker_Upkeeper_Adaptive": {
+        "acc_initial": 0.997802734375,
+        "acc_initial_ood": 0.9861351847648621,
+        "acc_k2_post_burst": 0.997802734375,
+        "k1_retention": 1.0,
+        "acc_k3_post_revised": 0.998779296875,
+        "acc_k3_ood_revised": 0.9914529919624329,
+        "active_token_fraction": 0.37666015625,
+        "tentative_store_bytes": 0.0
+      }
+    },
+    {
+      "Null_Untrained": {
+        "acc_initial": 0.0,
+        "acc_initial_ood": 0.0,
+        "acc_k2_post_burst": 0.0,
+        "k1_retention": 1.0,
+        "acc_k3_post_revised": 0.0,
+        "acc_k3_ood_revised": 0.0,
+        "active_token_fraction": 0.0
+      },
+      "Null_Shuffled": {
+        "acc_initial": 0.123046875,
+        "acc_initial_ood": 0.12208259105682373,
+        "acc_k2_post_burst": 0.123046875,
+        "k1_retention": 1.0,
+        "acc_k3_post_revised": 0.12744140625,
+        "acc_k3_ood_revised": 0.12478335946798325,
+        "active_token_fraction": 0.0
+      },
+      "Baseline_Dense_1Pass_NoReplay": {
+        "acc_initial": 0.459228515625,
+        "acc_initial_ood": 0.13644523918628693,
+        "acc_k2_post_burst": 0.43505859375,
+        "k1_retention": 0.9473684210526315,
+        "acc_k3_post_revised": 0.495361328125,
+        "acc_k3_ood_revised": 0.1265164613723755,
+        "active_token_fraction": 0.0
+      },
+      "Baseline_Dense_1Pass_Replay128": {
+        "acc_initial": 0.459228515625,
+        "acc_initial_ood": 0.13644523918628693,
+        "acc_k2_post_burst": 0.439697265625,
+        "k1_retention": 0.9574694311536417,
+        "acc_k3_post_revised": 0.49267578125,
+        "acc_k3_ood_revised": 0.12824957072734833,
+        "active_token_fraction": 0.0
+      },
+      "Baseline_Dense_1Pass_Upkeeper": {
+        "acc_initial": 0.459228515625,
+        "acc_initial_ood": 0.13644523918628693,
+        "acc_k2_post_burst": 0.459228515625,
+        "k1_retention": 1.0,
+        "acc_k3_post_revised": 0.4892578125,
+        "acc_k3_ood_revised": 0.11611784994602203,
+        "active_token_fraction": 0.0
+      },
+      "Baseline_NonNeural_Dictionary_Counters": {
+        "acc_initial": 0.633056640625,
+        "acc_initial_ood": 0.13105924427509308,
+        "acc_k2_post_burst": 0.63134765625,
+        "k1_retention": 0.9973004242190513,
+        "acc_k3_post_revised": 0.61767578125,
+        "acc_k3_ood_revised": 0.1109185442328453,
+        "active_token_fraction": 0.0
+      },
+      "dMoE_Thinker_NoUpkeeper": {
+        "acc_initial": 0.9970703125,
+        "acc_initial_ood": 0.9784560203552246,
+        "acc_k2_post_burst": 0.41455078125,
+        "k1_retention": 0.41576885406464253,
+        "acc_k3_post_revised": 1.0,
+        "acc_k3_ood_revised": 1.0,
+        "active_token_fraction": 0.376611328125
+      },
+      "Null_Blind": {
+        "acc_initial": 0.123046875,
+        "acc_initial_ood": 0.12208259105682373,
+        "acc_k2_post_burst": 0.123046875,
+        "k1_retention": 1.0,
+        "acc_k3_post_revised": 0.12744140625,
+        "acc_k3_ood_revised": 0.12478335946798325,
+        "active_token_fraction": 0.0
+      },
+      "dMoE_Thinker_Upkeeper_Adaptive": {
+        "acc_initial": 0.9970703125,
+        "acc_initial_ood": 0.9784560203552246,
+        "acc_k2_post_burst": 0.9970703125,
+        "k1_retention": 1.0,
+        "acc_k3_post_revised": 0.996337890625,
+        "acc_k3_ood_revised": 0.9740034937858582,
+        "active_token_fraction": 0.36923828125,
+        "tentative_store_bytes": 0.0
+      }
+    },
+    {
+      "Null_Untrained": {
+        "acc_initial": 0.00244140625,
+        "acc_initial_ood": 0.0036697247996926308,
+        "acc_k2_post_burst": 0.00244140625,
+        "k1_retention": 1.0,
+        "acc_k3_post_revised": 0.001220703125,
+        "acc_k3_ood_revised": 0.0033167495857924223,
+        "active_token_fraction": 0.0
+      },
+      "Null_Shuffled": {
+        "acc_initial": 0.12060546875,
+        "acc_initial_ood": 0.11926605552434921,
+        "acc_k2_post_burst": 0.12060546875,
+        "k1_retention": 1.0,
+        "acc_k3_post_revised": 0.11865234375,
+        "acc_k3_ood_revised": 0.1111111119389534,
+        "active_token_fraction": 0.0
+      },
+      "Baseline_Dense_1Pass_NoReplay": {
+        "acc_initial": 0.461181640625,
+        "acc_initial_ood": 0.14678898453712463,
+        "acc_k2_post_burst": 0.438232421875,
+        "k1_retention": 0.9502382212811011,
+        "acc_k3_post_revised": 0.475341796875,
+        "acc_k3_ood_revised": 0.1094527393579483,
+        "active_token_fraction": 0.0
+      },
+      "Baseline_Dense_1Pass_Replay128": {
+        "acc_initial": 0.461181640625,
+        "acc_initial_ood": 0.14678898453712463,
+        "acc_k2_post_burst": 0.4482421875,
+        "k1_retention": 0.9719428268925357,
+        "acc_k3_post_revised": 0.481689453125,
+        "acc_k3_ood_revised": 0.12603648006916046,
+        "active_token_fraction": 0.0
+      },
+      "Baseline_Dense_1Pass_Upkeeper": {
+        "acc_initial": 0.461181640625,
+        "acc_initial_ood": 0.14678898453712463,
+        "acc_k2_post_burst": 0.461181640625,
+        "k1_retention": 1.0,
+        "acc_k3_post_revised": 0.4833984375,
+        "acc_k3_ood_revised": 0.10447761416435242,
+        "active_token_fraction": 0.0
+      },
+      "Baseline_NonNeural_Dictionary_Counters": {
+        "acc_initial": 0.6328125,
+        "acc_initial_ood": 0.12844036519527435,
+        "acc_k2_post_burst": 0.632080078125,
+        "k1_retention": 0.9988425925925926,
+        "acc_k3_post_revised": 0.6171875,
+        "acc_k3_ood_revised": 0.11940298229455948,
+        "active_token_fraction": 0.0
+      },
+      "dMoE_Thinker_NoUpkeeper": {
+        "acc_initial": 0.99951171875,
+        "acc_initial_ood": 0.9963302612304688,
+        "acc_k2_post_burst": 0.41943359375,
+        "k1_retention": 0.41963849535906206,
+        "acc_k3_post_revised": 1.0,
+        "acc_k3_ood_revised": 1.0,
+        "active_token_fraction": 0.3806640625
+      },
+      "Null_Blind": {
+        "acc_initial": 0.128662109375,
+        "acc_initial_ood": 0.14128440618515015,
+        "acc_k2_post_burst": 0.128662109375,
+        "k1_retention": 1.0,
+        "acc_k3_post_revised": 0.11767578125,
+        "acc_k3_ood_revised": 0.09784411638975143,
+        "active_token_fraction": 0.0
+      },
+      "dMoE_Thinker_Upkeeper_Adaptive": {
+        "acc_initial": 0.99951171875,
+        "acc_initial_ood": 0.9963302612304688,
+        "acc_k2_post_burst": 0.99951171875,
+        "k1_retention": 1.0,
+        "acc_k3_post_revised": 0.99951171875,
+        "acc_k3_ood_revised": 0.9966832399368286,
+        "active_token_fraction": 0.380615234375,
+        "tentative_store_bytes": 0.0
+      }
+    },
+    {
+      "Null_Untrained": {
+        "acc_initial": 0.010498046875,
+        "acc_initial_ood": 0.008960573002696037,
+        "acc_k2_post_burst": 0.010498046875,
+        "k1_retention": 1.0,
+        "acc_k3_post_revised": 0.015869140625,
+        "acc_k3_ood_revised": 0.00495867757126689,
+        "active_token_fraction": 0.0
+      },
+      "Null_Shuffled": {
+        "acc_initial": 0.118896484375,
+        "acc_initial_ood": 0.13082437217235565,
+        "acc_k2_post_burst": 0.118896484375,
+        "k1_retention": 1.0,
+        "acc_k3_post_revised": 0.12353515625,
+        "acc_k3_ood_revised": 0.1256198287010193,
+        "active_token_fraction": 0.0
+      },
+      "Baseline_Dense_1Pass_NoReplay": {
+        "acc_initial": 0.45556640625,
+        "acc_initial_ood": 0.11827956885099411,
+        "acc_k2_post_burst": 0.427490234375,
+        "k1_retention": 0.9383708467309754,
+        "acc_k3_post_revised": 0.4716796875,
+        "acc_k3_ood_revised": 0.11239669471979141,
+        "active_token_fraction": 0.0
+      },
+      "Baseline_Dense_1Pass_Replay128": {
+        "acc_initial": 0.45556640625,
+        "acc_initial_ood": 0.11827956885099411,
+        "acc_k2_post_burst": 0.42626953125,
+        "k1_retention": 0.9356913183279743,
+        "acc_k3_post_revised": 0.4716796875,
+        "acc_k3_ood_revised": 0.11900826543569565,
+        "active_token_fraction": 0.0
+      },
+      "Baseline_Dense_1Pass_Upkeeper": {
+        "acc_initial": 0.45556640625,
+        "acc_initial_ood": 0.11827956885099411,
+        "acc_k2_post_burst": 0.45556640625,
+        "k1_retention": 1.0,
+        "acc_k3_post_revised": 0.46923828125,
+        "acc_k3_ood_revised": 0.1090909093618393,
+        "active_token_fraction": 0.0
+      },
+      "Baseline_NonNeural_Dictionary_Counters": {
+        "acc_initial": 0.633544921875,
+        "acc_initial_ood": 0.13978494703769684,
+        "acc_k2_post_burst": 0.63330078125,
+        "k1_retention": 0.9996146435452794,
+        "acc_k3_post_revised": 0.607421875,
+        "acc_k3_ood_revised": 0.11404958367347717,
+        "active_token_fraction": 0.0
+      },
+      "dMoE_Thinker_NoUpkeeper": {
+        "acc_initial": 0.998291015625,
+        "acc_initial_ood": 0.9892473220825195,
+        "acc_k2_post_burst": 0.418701171875,
+        "k1_retention": 0.4194179505991685,
+        "acc_k3_post_revised": 0.99853515625,
+        "acc_k3_ood_revised": 0.9933884143829346,
+        "active_token_fraction": 0.376123046875
+      },
+      "Null_Blind": {
+        "acc_initial": 0.119873046875,
+        "acc_initial_ood": 0.12007168680429459,
+        "acc_k2_post_burst": 0.119873046875,
+        "k1_retention": 1.0,
+        "acc_k3_post_revised": 0.11865234375,
+        "acc_k3_ood_revised": 0.11570248007774353,
+        "active_token_fraction": 0.0
+      },
+      "dMoE_Thinker_Upkeeper_Adaptive": {
+        "acc_initial": 0.998291015625,
+        "acc_initial_ood": 0.9892473220825195,
+        "acc_k2_post_burst": 0.998291015625,
+        "k1_retention": 1.0,
+        "acc_k3_post_revised": 1.0,
+        "acc_k3_ood_revised": 1.0,
+        "active_token_fraction": 0.38525390625,
+        "tentative_store_bytes": 0.0
+      }
+    }
+  ]
+}
