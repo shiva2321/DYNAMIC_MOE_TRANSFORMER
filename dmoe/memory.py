@@ -31,6 +31,10 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
+if torch.cuda.is_available():
+    torch.backends.cuda.matmul.allow_tf32 = True
+    torch.backends.cudnn.allow_tf32 = True
+
 
 @functools.lru_cache(maxsize=64)
 def _get_scan_masks(
@@ -371,14 +375,19 @@ def _chunked_gated_delta_scan(
     bc_u = bc.unsqueeze(-1)
     qk_decay = torch.bmm(qc, kc.transpose(1, 2)) * decay_mat
 
+    amp_low = M.dtype in (torch.bfloat16, torch.float16)
     if nc == 1 and init_state is None and not return_state:
-        W_u = torch.linalg.solve_triangular(eye + M, bc_u * vc, upper=False, unitriangular=True)
+        lhs = (eye + M).float() if amp_low else (eye + M)
+        rhs1 = (bc_u * vc).float() if amp_low else (bc_u * vc)
+        W_u = torch.linalg.solve_triangular(lhs, rhs1, upper=False, unitriangular=True).to(dtype=k.dtype)
         out = torch.bmm(qk_decay, W_u)
         return out.view(B, H, C, dh).transpose(1, 2)[:, :L], None
 
     exp_g = torch.exp(g).unsqueeze(-1)
     rhs = torch.cat([bc_u * vc, (bc_u * exp_g) * kc], dim=-1)
-    sol = torch.linalg.solve_triangular(eye + M, rhs, upper=False, unitriangular=True)
+    lhs = (eye + M).float() if amp_low else (eye + M)
+    rhs_s = rhs.float() if amp_low else rhs
+    sol = torch.linalg.solve_triangular(lhs, rhs_s, upper=False, unitriangular=True).to(dtype=k.dtype)
     W_u, A_mod = sol.split(dh, dim=-1)
 
     if nc == 1:
@@ -450,6 +459,7 @@ class LongTermSlotMemory(nn.Module):
         write_surprise_threshold: float = 0.25,
         ema_decay: float = 0.85,
         merge_cos_threshold: float = 0.92,
+        null_logit: float = 3.2,
     ):
         super().__init__()
         self.d_model = d_model
@@ -468,7 +478,7 @@ class LongTermSlotMemory(nn.Module):
         # initialize at 3.2 to preserve untrained random-slot rejection (mass_1 < 0.15)
         # while avoiding the 4.5 cold-start softmax gradient starvation on random keys.
         self.logit_scale = nn.Parameter(torch.tensor(12.0))
-        self.null_logit = nn.Parameter(torch.tensor(3.2))
+        self.null_logit = nn.Parameter(torch.tensor(float(null_logit)))
 
         self.register_buffer("slot_keys", torch.zeros(num_slots, d_model))
         self.register_buffer("slot_vals", torch.zeros(num_slots, d_model))
@@ -516,9 +526,11 @@ class LongTermSlotMemory(nn.Module):
         self,
         key_latents: torch.Tensor,
         value_latents: torch.Tensor,
+        normalize_k: bool = True,
     ) -> Tuple[torch.Tensor, torch.Tensor]:
         """Differentiably project raw key/value latents into the LTM key/value space."""
-        k_norm = F.normalize(self.k_proj(key_latents), p=2, dim=-1, eps=1e-6)
+        k_proj_out = self.k_proj(key_latents)
+        k_norm = F.normalize(k_proj_out, p=2, dim=-1, eps=1e-6) if normalize_k else k_proj_out
         v_proj = self.v_proj(value_latents)
         return k_norm, v_proj
 
@@ -528,6 +540,7 @@ class LongTermSlotMemory(nn.Module):
         ep_keys: Optional[torch.Tensor] = None,
         ep_vals: Optional[torch.Tensor] = None,
         ep_mask: Optional[torch.Tensor] = None,
+        include_null_for_ep: bool = True,
     ) -> Tuple[torch.Tensor, torch.Tensor]:
         """
         Retrieve relevant long-term memory for query_latents [B, L, d_model] from:
@@ -568,8 +581,9 @@ class LongTermSlotMemory(nn.Module):
                 valid_count = valid_count + float(ep_keys.size(1))
             logit_parts.append(ep_logits)
 
-        null_col = self.null_logit.view(1, 1, 1) + torch.log(valid_count.clamp(min=1.0))
-        logit_parts.append(null_col.expand(B, L, 1))
+        if include_null_for_ep or m_pers > 0 or not has_ep:
+            null_col = self.null_logit.view(1, 1, 1) + torch.log(valid_count.clamp(min=1.0))
+            logit_parts.append(null_col.expand(B, L, 1))
 
         all_logits = torch.cat(logit_parts, dim=-1)
         all_probs = F.softmax(all_logits, dim=-1)
@@ -721,6 +735,7 @@ class DualTimescaleMemory(nn.Module):
         write_surprise_threshold: float = 0.25,
         conv_kernel: int = 4,
         signed_beta: bool = True,
+        ltm_null_logit: float = 3.2,
     ):
         super().__init__()
         self.in_norm = nn.LayerNorm(d_model)
@@ -734,6 +749,7 @@ class DualTimescaleMemory(nn.Module):
             d_model=d_model,
             num_slots=num_ltm_slots,
             write_surprise_threshold=write_surprise_threshold,
+            null_logit=ltm_null_logit,
         )
         self.stm_gate = nn.Linear(d_model, 1)
         # Contextual LTM gate sees causal short-term state so prefix rules/tasks can suppress
@@ -744,6 +760,7 @@ class DualTimescaleMemory(nn.Module):
         self.ltm_ctx_proj = nn.Linear(d_model, d_model, bias=False)
         with torch.no_grad():
             self.ltm_ctx_proj.weight.zero_()
+        self.register_buffer("_zero_writes", torch.tensor(0, dtype=torch.long), persistent=False)
 
     def reset_long_term(self) -> None:
         self.long_term.reset()
@@ -761,9 +778,15 @@ class DualTimescaleMemory(nn.Module):
         ep_vals: Optional[torch.Tensor] = None,
         ep_mask: Optional[torch.Tensor] = None,
         write_mask: Optional[torch.Tensor] = None,
+        return_stm_state: bool = True,
     ) -> Dict[str, torch.Tensor]:
         x_norm = self.in_norm(x)
-        stm_out, stm_state = self.short_term(x_norm, init_state=init_stm_state, write_mask=write_mask)
+        stm_out, stm_state = self.short_term(
+            x_norm,
+            init_state=init_stm_state,
+            return_state=return_stm_state,
+            write_mask=write_mask,
+        )
         ltm_q = self.build_ltm_query(x_norm, stm_out)
         ltm_out, ltm_probs = self.long_term.read(
             ltm_q, ep_keys=ep_keys, ep_vals=ep_vals, ep_mask=ep_mask
@@ -777,6 +800,11 @@ class DualTimescaleMemory(nn.Module):
         if update_ltm:
             writes = self.long_term.write(ltm_q, surprise=surprise)
 
+        ltm_writes_t = (
+            self._zero_writes
+            if writes == 0
+            else torch.tensor(writes, dtype=torch.long, device=x.device)
+        )
         return {
             "fused": fused,
             "x_norm": x_norm,
@@ -785,5 +813,5 @@ class DualTimescaleMemory(nn.Module):
             "stm_state": stm_state,
             "ltm_out": ltm_out,
             "ltm_probs": ltm_probs,
-            "ltm_writes": torch.tensor(writes, device=x.device),
+            "ltm_writes": ltm_writes_t,
         }

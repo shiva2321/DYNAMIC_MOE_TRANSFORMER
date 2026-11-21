@@ -47,6 +47,12 @@ class AutonomousExpertLifecycleManager(nn.Module):
         min_usage_threshold: float = 0.02,
         revival_sim_threshold: float = 0.80,
         ema_decay: float = 0.95,
+        extend_loss_margin: float = 0.25,
+        preserve_input_novel_on_extend: bool = False,
+        defer_on_novel_streak: bool = False,
+        enable_mixed_split: bool = False,
+        mixed_split_gap: float = 0.12,
+        max_coactive_experts: int = 4,
     ):
         super().__init__()
         self.d_model = int(d_model)
@@ -60,6 +66,12 @@ class AutonomousExpertLifecycleManager(nn.Module):
         self.min_usage_threshold = float(min_usage_threshold)
         self.revival_sim_threshold = float(revival_sim_threshold)
         self.ema_decay = float(ema_decay)
+        self.extend_loss_margin = float(extend_loss_margin)
+        self.preserve_input_novel_on_extend = bool(preserve_input_novel_on_extend)
+        self.defer_on_novel_streak = bool(defer_on_novel_streak)
+        self.enable_mixed_split = bool(enable_mixed_split)
+        self.mixed_split_gap = float(mixed_split_gap)
+        self.max_coactive_experts = max(2, int(max_coactive_experts))
 
         self.novelty_detector = UnifiedNoveltyDetector(
             d_model=self.d_model,
@@ -71,6 +83,7 @@ class AutonomousExpertLifecycleManager(nn.Module):
         self.expert_steps_trained: List[int] = [0]
         self.expert_converged: List[bool] = [False]
         self.novel_streak: int = 0
+        self.mixed_streak: int = 0
         self.cooldown_remaining: int = 0
         self.should_defer_update: bool = False
         self.total_spawns: int = 0
@@ -161,6 +174,7 @@ class AutonomousExpertLifecycleManager(nn.Module):
         token_surprise: Optional[torch.Tensor] = None,
         token_nll: Optional[torch.Tensor] = None,
         is_training: bool = True,
+        proto_sig: Optional[torch.Tensor] = None,
     ) -> Tuple[int, List[str]]:
         """
         Execute one autonomous lifecycle tick:
@@ -175,7 +189,8 @@ class AutonomousExpertLifecycleManager(nn.Module):
             events: list of lifecycle events triggered on this step.
         """
         self.last_events = []
-        moe0 = model.layers[0].moe
+        moe_ref_idx = int(getattr(model, "_moe_ref_layer_idx", 0))
+        moe0 = model.layers[moe_ref_idx].moe
         self.sync_num_experts(len(moe0.experts), moe0.expert_frozen)
 
         # 1. Update usage and age across all MoE layers
@@ -193,17 +208,28 @@ class AutonomousExpertLifecycleManager(nn.Module):
             active_idx = active_indices[0]
 
         if is_training:
-            self.expert_steps_trained[active_idx] += 1
-            # Schmitt-trigger hysteresis: only latch convergence once surprise drops
-            # well below novel_surprise_threshold (0.75x) after initial warmup steps,
-            # preventing stochastic mini-batch jitter around the threshold from latching
-            # convergence and immediately firing a false novelty alarm.
-            if (
-                mean_surprise is not None
-                and self.expert_steps_trained[active_idx] >= max(5, self.min_mature_steps // 2)
-                and mean_surprise < self.novel_surprise_threshold * 0.75
-            ):
-                self.expert_converged[active_idx] = True
+            for ai in active_indices:
+                if len(active_indices) == 1 or bool((assigned_experts == ai).any().item()):
+                    self.expert_steps_trained[ai] += 1
+                    a_stats = (
+                        self.novelty_detector.expert_stats[ai]
+                        if ai < len(self.novelty_detector.expert_stats)
+                        else None
+                    )
+                    has_cal_nll = (
+                        token_nll is not None
+                        and a_stats is not None
+                        and a_stats.key_counts.get("nll_mean", 0) >= 5
+                    )
+                    if (
+                        mean_surprise is not None
+                        and self.expert_steps_trained[ai] >= max(5, self.min_mature_steps // 2)
+                        and mean_surprise < self.novel_surprise_threshold * 0.75
+                    ) or (
+                        self.expert_steps_trained[ai] >= self.min_mature_steps
+                        and has_cal_nll
+                    ):
+                        self.expert_converged[ai] = True
 
         # 2. Multi-scale novelty evaluation (coarse + near-twin + local token nuance)
         self.novelty_detector.sync_num_experts(len(moe0.experts))
@@ -265,6 +291,13 @@ class AutonomousExpertLifecycleManager(nn.Module):
                 if token_nll is not None:
                     eval_nll = token_nll[routed_mask.to(token_nll.device)]
 
+        routed_past_warmup = (
+            routed_converged
+            or (
+                routed_idx < len(self.expert_steps_trained)
+                and self.expert_steps_trained[routed_idx] >= max(5, self.min_mature_steps // 2)
+            )
+        )
         verdict = self.novelty_detector.evaluate(
             expert_idx=routed_idx,
             seq_sig=eval_sig,
@@ -275,12 +308,21 @@ class AutonomousExpertLifecycleManager(nn.Module):
             expert_is_converged=routed_converged,
             update_baseline=is_training,
             external_novel=bool(input_novel_batch and routed_converged),
+            record_outcome_baseline=routed_past_warmup,
         )
         self.last_novelty_verdict = verdict
 
+        r_stats = self.novelty_detector.expert_stats[routed_idx]
+        eff_surp_thresh = self.novel_surprise_threshold
+        if r_stats.key_counts.get("surp_mean", 0) >= 5 and "surp_mean" in r_stats.means:
+            surp_std = max(r_stats.vars.get("surp_mean", 0.0025) ** 0.5, 0.04)
+            eff_surp_thresh = max(
+                self.novel_surprise_threshold,
+                r_stats.means["surp_mean"] + max(0.08, 2.75 * surp_std),
+            )
         surprise_novel = (
             eval_mean_surprise is not None
-            and eval_mean_surprise >= self.novel_surprise_threshold
+            and eval_mean_surprise >= eff_surp_thresh
             and (routed_to_frozen or self.expert_converged[active_idx])
         )
         macro_verdict_novel = verdict.novelty_type in ("coarse_domain", "near_twin_rule")
@@ -289,10 +331,48 @@ class AutonomousExpertLifecycleManager(nn.Module):
                 macro_verdict_novel = False
         if verdict.novelty_type == "local_nuance":
             self.last_events.append("local_nuance_detected")
+
+        # M05 Outcome-Based Transfer Rule: if existing calibrated expert (or current active expert)
+        # already predicts the candidate batch within scale-invariant margin of its reference NLL,
+        # extend rather than spawning a duplicate expert.
+        margin = float(getattr(self, "extend_loss_margin", 0.25))
+        allow_extend_check = (not self.preserve_input_novel_on_extend) or (not input_novel_batch)
+        if (
+            allow_extend_check
+            and eval_nll is not None
+            and r_stats.key_counts.get("nll_mean", 0) >= 5
+            and "nll_mean" in r_stats.means
+        ):
+            cur_nll = float(eval_nll.float().mean().item())
+            base_nll = r_stats.means["nll_mean"]
+            eff_margin = max(margin, 0.25 * base_nll)
+            if cur_nll <= base_nll + eff_margin:
+                if (input_novel_batch or surprise_novel or macro_verdict_novel) and is_training:
+                    self.last_events.append(f"extended_expert_{routed_idx}")
+                    if eval_latents is not None:
+                        self.novelty_detector.update_token_prototypes(routed_idx, eval_latents)
+                input_novel_batch = False
+                surprise_novel = False
+                macro_verdict_novel = False
+
+        if (
+            allow_extend_check
+            and routed_idx != active_idx
+            and eval_nll is not None
+            and active_idx < len(self.novelty_detector.expert_stats)
+        ):
+            a_stats_chk = self.novelty_detector.expert_stats[active_idx]
+            if a_stats_chk.key_counts.get("nll_mean", 0) >= 5 and "nll_mean" in a_stats_chk.means:
+                cur_nll_a = float(eval_nll.float().mean().item())
+                a_base = a_stats_chk.means["nll_mean"]
+                if cur_nll_a <= a_base + max(margin, 0.25 * a_base):
+                    input_novel_batch = False
+                    surprise_novel = False
+                    macro_verdict_novel = False
+
         batch_is_novel = input_novel_batch or surprise_novel or macro_verdict_novel
         in_warmup = (
             is_training
-            and (not routed_to_frozen)
             and (not self.expert_converged[active_idx])
             and self.expert_steps_trained[active_idx] < max(6, self.min_mature_steps // 2)
         )
@@ -304,45 +384,114 @@ class AutonomousExpertLifecycleManager(nn.Module):
 
         # 3. M05 Transfer Check & Self-triggered Freeze + Spawn when novelty is confirmed
         active_is_mature = self.expert_steps_trained[active_idx] >= self.min_mature_steps
+        can_freeze_spawn = (
+            not self.enable_mixed_split
+            or len(active_indices) >= self.max_coactive_experts
+        )
         should_spawn = (
             is_training
+            and can_freeze_spawn
             and self.novel_streak >= self.novel_confirm_steps
             and active_is_mature
             and len(moe0.experts) < self.max_experts
         )
+        defer_trigger = batch_is_novel or (self.defer_on_novel_streak and self.novel_streak >= 1)
         self.should_defer_update = bool(
             is_training
-            and batch_is_novel
+            and defer_trigger
+            and can_freeze_spawn
             and self.expert_converged[active_idx]
             and len(moe0.experts) < self.max_experts
         )
-        if should_spawn and eval_nll is not None and not surprise_novel:
-            # M05: if existing converged expert already predicts the new cluster within margin
-            # (and NLL trigger did not fire), extend current expert instead of duplicate spawning.
-            r_stats = self.novelty_detector.expert_stats[routed_idx]
-            if r_stats.count >= 5 and ("nll_mean" in r_stats.means) and (not macro_verdict_novel):
-                cur_nll = float(eval_nll.float().mean().item())
-                base_nll = r_stats.means.get("nll_mean", 0.0)
-                margin = float(getattr(self, "extend_loss_margin", 0.25))
-                if cur_nll <= base_nll + margin:
-                    should_spawn = False
-                    self.novel_streak = 0
-                    self.last_events.append(f"extended_expert_{routed_idx}")
+
+        # 3b. Optional Mixed-Stream Mitosis: split bimodal active clusters without freezing
+        should_mixed_split = False
+        split_parent_idx = active_idx
+        split_idx_global: Optional[torch.Tensor] = None
+        split_mask_sub: Optional[torch.Tensor] = None
+        split_src = proto_sig if proto_sig is not None else seq_sig
+        if (
+            self.enable_mixed_split
+            and is_training
+            and (not should_spawn)
+            and (not batch_is_novel)
+            and self.cooldown_remaining == 0
+            and len(moe0.experts) < min(self.max_experts, self.max_coactive_experts)
+            and len(active_indices) < self.max_coactive_experts
+            and split_src.size(0) >= 8
+        ):
+            # Pick most populated mature active expert in this batch to check for internal bimodality
+            best_cnt, cand_p = 0, None
+            for ai in active_indices:
+                if self.expert_steps_trained[ai] >= self.min_mature_steps:
+                    cnt = int((assigned_experts == ai).sum().item())
+                    if cnt > best_cnt:
+                        best_cnt, cand_p = cnt, ai
+            if cand_p is not None and best_cnt >= 6:
+                sub_idx = (assigned_experts == cand_p).nonzero(as_tuple=True)[0]
+                p_raw = split_src[sub_idx.to(split_src.device)].detach().float()
+                p_cent = F.normalize(p_raw - p_raw.mean(dim=0, keepdim=True), p=2, dim=-1, eps=1e-6)
+                sim_m = p_cent @ p_cent.T
+                pair_min = torch.argmin(sim_m)
+                i0 = int((pair_min // sim_m.size(1)).item())
+                i1 = int((pair_min % sim_m.size(1)).item())
+                c0, c1 = p_cent[i0], p_cent[i1]
+                a_mask = (p_cent @ c0) >= (p_cent @ c1)
+                for _ in range(3):
+                    if bool(a_mask.any()) and bool((~a_mask).any()):
+                        c0 = F.normalize(p_cent[a_mask].mean(dim=0), p=2, dim=-1, eps=1e-6)
+                        c1 = F.normalize(p_cent[~a_mask].mean(dim=0), p=2, dim=-1, eps=1e-6)
+                        a_mask = (p_cent @ c0) >= (p_cent @ c1)
+                frac_b = float((~a_mask).float().mean().item())
+                if 0.25 <= frac_b <= 0.75:
+                    intra0 = float((p_cent[a_mask] @ c0).mean().item())
+                    intra1 = float((p_cent[~a_mask] @ c1).mean().item())
+                    cross = float((c0 @ c1).item())
+                    gap = 0.5 * (intra0 + intra1) - max(cross, -1.0)
+                    if gap >= self.mixed_split_gap:
+                        self.mixed_streak += 1
+                        split_parent_idx = cand_p
+                        split_idx_global = sub_idx
+                        split_mask_sub = ~a_mask
+                    else:
+                        self.mixed_streak = 0
+                else:
+                    self.mixed_streak = 0
+            else:
+                self.mixed_streak = 0
+            should_mixed_split = self.mixed_streak >= self.novel_confirm_steps
+        elif not batch_is_novel:
+            self.mixed_streak = 0
 
         if should_spawn:
-            # Consolidate current mature active expert
-            for layer in model.layers:
-                layer.moe.freeze_expert(active_idx)
-            model.decoder.freeze_expert_head(active_idx)
-            self.expert_states[active_idx] = STATE_FROZEN
-            self.last_events.append(f"froze_expert_{active_idx}")
+            # Automatically consolidate GPM null-space basis before freezing active expert(s)
+            nsp = getattr(model, "null_space_projector", None)
+            if nsp is not None and hasattr(nsp, "update_basis_for_domain"):
+                nsp.update_basis_for_domain(active_idx)
+            if getattr(self, "freeze_embed_after_first", False) and hasattr(model, "byte_embed"):
+                model.byte_embed.weight.requires_grad_(False)
+
+            for freeze_i in active_indices:
+                for layer in model.layers:
+                    layer.moe.freeze_expert(freeze_i)
+                    if hasattr(layer, "freeze_expert_adapters"):
+                        layer.freeze_expert_adapters(freeze_i)
+                model.decoder.freeze_expert_head(freeze_i)
+                if getattr(model, "thinker", None) is not None and hasattr(model.thinker, "freeze_expert_adapter"):
+                    model.thinker.freeze_expert_adapter(freeze_i)
+                self.expert_states[freeze_i] = STATE_FROZEN
+                self.last_events.append(f"froze_expert_{freeze_i}")
 
             # Weak-parent rule (M05): if parent surprise is worse than threshold, fresh init
             fresh_init = mean_surprise is not None and mean_surprise >= self.weak_parent_surprise
             new_idx = -1
             for layer in model.layers:
                 new_idx = layer.moe.spawn_expert(source_idx=active_idx, fresh_init=fresh_init)
+                if hasattr(layer, "spawn_expert_adapters"):
+                    layer.spawn_expert_adapters(source_idx=active_idx, fresh_init=fresh_init)
             model.decoder.spawn_expert_head()
+            if getattr(model, "thinker", None) is not None and hasattr(model.thinker, "spawn_expert_adapter"):
+                model.thinker.spawn_expert_adapter(source_idx=active_idx, fresh_init=fresh_init)
             if hasattr(model, "causal_router") and model.causal_router is not None:
                 model.causal_router.sync_num_experts(len(moe0.experts))
 
@@ -350,6 +499,7 @@ class AutonomousExpertLifecycleManager(nn.Module):
             self.expert_steps_trained.append(0)
             self.expert_converged.append(False)
             self.novel_streak = 0
+            self.mixed_streak = 0
             self.cooldown_remaining = self.min_mature_steps // 2
             self.total_spawns += 1
             prev_active_idx = active_idx
@@ -357,6 +507,37 @@ class AutonomousExpertLifecycleManager(nn.Module):
             self.last_events.append(
                 f"spawned_expert_{new_idx}_{'fresh' if fresh_init else f'from_{prev_active_idx}'}"
             )
+        elif should_mixed_split and split_idx_global is not None and split_mask_sub is not None:
+            new_idx = -1
+            for layer in model.layers:
+                new_idx = layer.moe.spawn_expert(source_idx=split_parent_idx, fresh_init=False)
+                if hasattr(layer, "spawn_expert_adapters"):
+                    layer.spawn_expert_adapters(source_idx=split_parent_idx, fresh_init=False)
+            model.decoder.spawn_expert_head()
+            if getattr(model, "thinker", None) is not None and hasattr(model.thinker, "spawn_expert_adapter"):
+                model.thinker.spawn_expert_adapter(source_idx=split_parent_idx, fresh_init=False)
+            if hasattr(model, "causal_router") and model.causal_router is not None:
+                model.causal_router.sync_num_experts(len(moe0.experts))
+                if proto_sig is not None:
+                    sub_p = proto_sig[split_idx_global.to(proto_sig.device)].detach()
+                    c_b = sub_p[split_mask_sub.to(sub_p.device)]
+                    c_a = sub_p[(~split_mask_sub).to(sub_p.device)]
+                    if c_a.numel() > 0:
+                        model.causal_router.expert_protos[split_parent_idx] = None
+                        if split_parent_idx < len(model.causal_router._sim_counts):
+                            model.causal_router._sim_counts[split_parent_idx] = 0
+                            model.causal_router._sim_means[split_parent_idx] = 0.0
+                            model.causal_router._sim_vars[split_parent_idx] = 0.01
+                        model.causal_router.update_prototypes(split_parent_idx, c_a)
+                    if c_b.numel() > 0:
+                        model.causal_router.update_prototypes(new_idx, c_b)
+            self.expert_states.append(STATE_ACTIVE)
+            self.expert_steps_trained.append(0)
+            self.expert_converged.append(False)
+            self.mixed_streak = 0
+            self.cooldown_remaining = self.min_mature_steps // 2
+            self.total_spawns += 1
+            self.last_events.append(f"mixed_split_coactive_expert_{new_idx}_from_{split_parent_idx}")
 
         # 4. Downgrade long-idle FROZEN experts to DORMANT
         num_non_dormant = sum(1 for s in self.expert_states if s != STATE_DORMANT)
@@ -397,7 +578,11 @@ class AutonomousExpertLifecycleManager(nn.Module):
         if prune_candidate is not None:
             for layer in model.layers:
                 layer.moe.prune_expert(prune_candidate)
+                if hasattr(layer, "prune_expert_adapters"):
+                    layer.prune_expert_adapters(prune_candidate)
             model.decoder.prune_expert_head(prune_candidate)
+            if getattr(model, "thinker", None) is not None and hasattr(model.thinker, "prune_expert_adapter"):
+                model.thinker.prune_expert_adapter(prune_candidate)
             if hasattr(model, "causal_router") and model.causal_router is not None:
                 model.causal_router.prune_expert(prune_candidate)
             self.expert_states.pop(prune_candidate)
@@ -411,4 +596,146 @@ class AutonomousExpertLifecycleManager(nn.Module):
             active_idx = active_indices[0] if active_indices else 0
 
         return active_idx, list(self.last_events)
+
+    def step_contextual_nuance_lifecycle(
+        self,
+        model: Any,
+        nuance_mask: torch.Tensor,
+        q_tok: torch.Tensor,
+        nuance_score: torch.Tensor,
+        top_ids: torch.Tensor,
+        top_w: torch.Tensor,
+        nuance_buffer: Any,
+        *,
+        is_training: bool = True,
+        cluster_min_count: int = 20,
+        cluster_min_cos: float = 0.72,
+        coarse_macro_sim_thresh: float = 0.45,
+        mean_residual_err: Optional[float] = None,
+    ) -> Tuple[int, List[str]]:
+        """
+        v7 Tier-B Nuance Lifecycle Step:
+          - Tracks usage/age over active non-trunk MoE layer.
+          - Buffers `nuance_mask` chunk queries in `NuanceClusterBuffer`.
+          - Spawns a targeted specialist ONLY when a dense coherent nuance cluster
+            accumulates and unresolved error persists (either nuance extension or
+            full GPM + freeze macro domain consolidation).
+        """
+        self.last_events = []
+        moe_ref_idx = int(getattr(model, "_moe_ref_layer_idx", 0))
+        moe0 = model.layers[moe_ref_idx].moe
+        n_exp = len(moe0.experts)
+        if n_exp == 0:
+            return 0, []
+        self.sync_num_experts(n_exp, moe0.expert_frozen)
+
+        # Update usage/age from primary assigned chunks (fallback to active expert 0)
+        primary_seq = top_ids[:, 0, 0] if top_ids.dim() >= 3 else top_ids.reshape(-1)
+        for layer in model.layers:
+            if not getattr(layer.moe, "v7_trunk_only", False) and len(layer.moe.experts) > 0:
+                self.update_usage_and_age(layer.moe, primary_seq)
+
+        if self.cooldown_remaining > 0:
+            self.cooldown_remaining -= 1
+
+        active_indices = [i for i, s in enumerate(self.expert_states) if s == STATE_ACTIVE]
+        active_idx = active_indices[0] if active_indices else 0
+        if is_training:
+            for ai in active_indices:
+                if ai < len(self.expert_steps_trained):
+                    self.expert_steps_trained[ai] += 1
+
+        if (not is_training) or nuance_buffer is None:
+            return active_idx, []
+
+        m_flat = nuance_mask.reshape(-1)
+        if bool(m_flat.any().item()):
+            q_flat = q_tok.detach().reshape(-1, q_tok.size(-1))[m_flat]
+            s_flat = nuance_score.detach().reshape(-1)[m_flat]
+            cr = getattr(model, "context_router", None)
+            if cr is not None:
+                c_sim = cr.compute_queries_similarity(q_flat) if hasattr(cr, "compute_queries_similarity") else None
+            else:
+                c_sim = None
+            if c_sim is None and cr is not None and hasattr(cr, "expert_keys"):
+                keys_e = torch.nn.functional.normalize(cr.expert_keys[: cr.num_experts].float(), dim=-1)
+                q_n = torch.nn.functional.normalize(q_flat.float(), dim=-1)
+                c_sim = torch.einsum("nd,emd->nem", q_n, keys_e).max(dim=-1).values.max(dim=-1).values
+            nuance_buffer.push(q_flat, err_vals=s_flat, coarse_sims=c_sim)
+            self.last_events.append("local_nuance_detected")
+
+        if self.cooldown_remaining > 0 or len(self.expert_states) >= self.max_experts:
+            return active_idx, list(self.last_events)
+
+        ready, _, c_vecs, mean_cos, mean_coarse = nuance_buffer.check_coherent_cluster(
+            min_count=cluster_min_count,
+            min_cos=cluster_min_cos,
+        )
+        newest_idx = active_indices[-1] if active_indices else active_idx
+        mature_ok = (
+            newest_idx < len(self.expert_steps_trained)
+            and self.expert_steps_trained[newest_idx] >= self.min_mature_steps
+        )
+        if not (ready and mature_ok and c_vecs is not None):
+            return active_idx, list(self.last_events)
+
+        is_macro_shift = mean_coarse < coarse_macro_sim_thresh
+        nsp = getattr(model, "null_space_projector", None)
+        cr = getattr(model, "context_router", None)
+        if is_macro_shift:
+            if nsp is not None and hasattr(nsp, "update_basis_for_domain"):
+                nsp.update_basis_for_domain(active_idx)
+            for freeze_i in list(active_indices):
+                for layer in model.layers:
+                    layer.moe.freeze_expert(freeze_i)
+                    if hasattr(layer, "freeze_expert_adapters"):
+                        layer.freeze_expert_adapters(freeze_i)
+                if getattr(model, "decoder", None) is not None and hasattr(model.decoder, "freeze_expert_head"):
+                    model.decoder.freeze_expert_head(freeze_i)
+                if getattr(model, "thinker", None) is not None and hasattr(model.thinker, "freeze_expert_adapter"):
+                    model.thinker.freeze_expert_adapter(freeze_i)
+                if cr is not None and hasattr(cr, "freeze_expert"):
+                    cr.freeze_expert(freeze_i)
+                self.expert_states[freeze_i] = STATE_FROZEN
+                self.last_events.append(f"froze_expert_{freeze_i}")
+        else:
+            # Localized nuance extension: keep existing mature specialists co-active unless over capacity
+            unfrozen = [i for i, s in enumerate(self.expert_states) if s == STATE_ACTIVE]
+            if len(unfrozen) >= self.max_coactive_experts:
+                oldest_u = unfrozen[0]
+                for layer in model.layers:
+                    layer.moe.freeze_expert(oldest_u)
+                    if hasattr(layer, "freeze_expert_adapters"):
+                        layer.freeze_expert_adapters(oldest_u)
+                if cr is not None and hasattr(cr, "freeze_expert"):
+                    cr.freeze_expert(oldest_u)
+                self.expert_states[oldest_u] = STATE_FROZEN
+                self.last_events.append(f"froze_expert_{oldest_u}")
+
+        fresh_init = bool(is_macro_shift)
+        new_idx = -1
+        for layer in model.layers:
+            idx_l = layer.moe.spawn_expert(source_idx=active_idx, fresh_init=fresh_init)
+            if not getattr(layer.moe, "v7_trunk_only", False):
+                new_idx = idx_l
+            if hasattr(layer, "spawn_expert_adapters"):
+                layer.spawn_expert_adapters(source_idx=active_idx, fresh_init=fresh_init)
+        if getattr(model, "decoder", None) is not None and hasattr(model.decoder, "spawn_expert_head"):
+            model.decoder.spawn_expert_head()
+        if getattr(model, "thinker", None) is not None and hasattr(model.thinker, "spawn_expert_adapter"):
+            model.thinker.spawn_expert_adapter(source_idx=active_idx, fresh_init=fresh_init)
+        if cr is not None:
+            cr.sync_num_experts(len(moe0.experts))
+            if hasattr(cr, "seed_expert_from_vectors"):
+                cr.seed_expert_from_vectors(new_idx, c_vecs)
+
+        nuance_buffer.pop_cluster(min_cos=cluster_min_cos)
+        self.expert_states.append(STATE_ACTIVE)
+        self.expert_steps_trained.append(0)
+        self.expert_converged.append(False)
+        self.cooldown_remaining = max(5, self.min_mature_steps // 2)
+        self.total_spawns += 1
+        tag = "spawned_expert" if is_macro_shift else "spawned_nuance"
+        self.last_events.append(f"{tag}_{new_idx}")
+        return new_idx, list(self.last_events)
 

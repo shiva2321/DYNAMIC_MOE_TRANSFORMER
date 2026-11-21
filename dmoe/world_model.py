@@ -14,7 +14,7 @@ Addresses the legacy M17 JEPA caveats and SKIP_landmines ('need world_model.imag
 """
 
 import copy
-from typing import Dict, Optional, Tuple
+from typing import Dict, List, Optional, Tuple
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -57,6 +57,9 @@ class LatentWorldModel(nn.Module):
         self.target_byte_embed: Optional[nn.Embedding] = None
         self.target_chunk_proj: Optional[nn.Linear] = None
         self.target_pos_embed: Optional[nn.Parameter] = None
+        self.target_chunker: Optional[nn.Module] = None
+        self.target_deep_layers: Optional[nn.ModuleList] = None
+        self.target_expr_head: Optional[nn.Module] = None
         self.chunk_size: int = 1
 
     def bind_encoder(
@@ -65,8 +68,15 @@ class LatentWorldModel(nn.Module):
         chunk_proj: nn.Linear,
         pos_embed: nn.Parameter,
         chunk_size: int,
+        add_pos: bool = True,
     ) -> None:
-        """Create frozen EMA target copies of the encoder modules."""
+        """Create frozen EMA target copies of the encoder modules.
+
+        add_pos must mirror the online encoder: RealSelfStabilizingDMoE.encode() adds pos_embed only
+        when use_rope is False, so a RoPE model must bind with add_pos=False or targets and online
+        latents disagree for sequences with <= pos_embed.size(1) chunks (preflight audit C1).
+        """
+        self.target_add_pos = bool(add_pos)
         self.target_byte_embed = copy.deepcopy(byte_embed)
         self.target_chunk_proj = copy.deepcopy(chunk_proj)
         self.target_pos_embed = nn.Parameter(pos_embed.detach().clone(), requires_grad=False)
@@ -75,6 +85,60 @@ class LatentWorldModel(nn.Module):
         for p in self.target_chunk_proj.parameters():
             p.requires_grad_(False)
         self.chunk_size = chunk_size
+
+    def bind_chunker(self, chunker: nn.Module) -> None:
+        """Bind a frozen EMA copy of a `MultiScaleByteChunker` for chunk-level JEPA targets."""
+        self.target_chunker = copy.deepcopy(chunker)
+        for p in self.target_chunker.parameters():
+            p.requires_grad_(False)
+        self.chunk_size = int(getattr(chunker, "chunk_size", self.chunk_size))
+
+    @torch.no_grad()
+    def update_target_chunker(self, online_chunker: nn.Module) -> None:
+        """EMA update of frozen target `MultiScaleByteChunker`."""
+        if self.target_chunker is None:
+            return
+        d = self.ema_decay
+        for tp, op in zip(self.target_chunker.parameters(), online_chunker.parameters()):
+            tp.mul_(d).add_(op.detach() * (1.0 - d))
+
+    def bind_deep_trunk(
+        self,
+        chunker: Optional[nn.Module],
+        trunk_layers: List[nn.Module],
+        expr_head: Optional[nn.Module] = None,
+    ) -> None:
+        """Bind frozen EMA deep trunk (`ms_chunker + trunk layers + expr_head`) for I3 deep-target JEPA."""
+        if chunker is not None:
+            self.bind_chunker(chunker)
+        self.target_deep_layers = copy.deepcopy(nn.ModuleList(list(trunk_layers)))
+        for p in self.target_deep_layers.parameters():
+            p.requires_grad_(False)
+        self.target_deep_layers.eval()
+        if expr_head is not None:
+            self.target_expr_head = copy.deepcopy(expr_head)
+            for p in self.target_expr_head.parameters():
+                p.requires_grad_(False)
+            self.target_expr_head.eval()
+
+    @torch.no_grad()
+    def update_deep_trunk(
+        self,
+        chunker: Optional[nn.Module],
+        trunk_layers: List[nn.Module],
+        expr_head: Optional[nn.Module] = None,
+    ) -> None:
+        """EMA update of frozen deep target encoder without touching online gradients."""
+        if chunker is not None:
+            self.update_target_chunker(chunker)
+        d = self.ema_decay
+        if self.target_deep_layers is not None:
+            for tl, ol in zip(self.target_deep_layers, trunk_layers):
+                for tp, op in zip(tl.parameters(), ol.parameters()):
+                    tp.mul_(d).add_(op.detach() * (1.0 - d))
+        if self.target_expr_head is not None and expr_head is not None:
+            for tp, op in zip(self.target_expr_head.parameters(), expr_head.parameters()):
+                tp.mul_(d).add_(op.detach() * (1.0 - d))
 
     @torch.no_grad()
     def update_target_encoder(
@@ -96,6 +160,14 @@ class LatentWorldModel(nn.Module):
     @torch.no_grad()
     def encode_target(self, x: torch.Tensor) -> torch.Tensor:
         """Compute stop-gradient EMA target latents [B, n_chunks, d_model]."""
+        if self.target_chunker is not None:
+            h = self.target_chunker(x)
+            if self.target_deep_layers is not None:
+                for tl in self.target_deep_layers:
+                    h, _ = tl(h, update_stats=False)
+                if self.target_expr_head is not None:
+                    h = self.target_expr_head(h)
+            return h
         if self.target_byte_embed is None or self.target_chunk_proj is None or self.target_pos_embed is None:
             raise RuntimeError("LatentWorldModel.bind_encoder() must be called before encode_target().")
         B, L = x.shape
@@ -103,9 +175,28 @@ class LatentWorldModel(nn.Module):
         n_chunks = L // self.chunk_size
         chunked = embedded.view(B, n_chunks, self.chunk_size * self.d_model)
         h = self.target_chunk_proj(chunked)
-        if n_chunks <= self.target_pos_embed.size(1):
+        if getattr(self, "target_add_pos", True) and n_chunks <= self.target_pos_embed.size(1):
             h = h + self.target_pos_embed[:, :n_chunks, :]
         return h
+
+    @torch.no_grad()
+    def encode_target_summary(self, x: torch.Tensor) -> torch.Tensor:
+        """Compute stop-gradient pooled target concept summary [B, d_model] blending deep EMA trunk & sparse nonnegative k-grams."""
+        tgt = self.encode_target(x)
+        D_t = tgt.size(-1)
+        z_deep = F.layer_norm(tgt.float(), (D_t,)).mean(dim=1)
+        pos_c = getattr(self.target_chunker, "last_pos_chunks", None) if self.target_chunker is not None else None
+        if pos_c is not None and pos_c.size(0) == x.size(0):
+            pos_f = pos_c.float()
+            valid_c = (pos_f.abs().sum(dim=-1, keepdim=True) > 1e-6).float()
+            pos_mean = (pos_f * valid_c).sum(dim=1) / valid_c.sum(dim=1).clamp_min(1.0)
+            pos_max = pos_f.max(dim=1).values
+            pos_pool = F.layer_norm(0.45 * pos_mean + 0.55 * pos_max, (D_t,))
+            return F.normalize(
+                0.20 * F.normalize(z_deep, dim=-1) + 0.80 * F.normalize(pos_pool, dim=-1),
+                dim=-1,
+            )
+        return F.normalize(z_deep, dim=-1)
 
     def predict_next_latent(
         self,
@@ -231,7 +322,8 @@ class LatentWorldModel(nn.Module):
 
             # Calibrate uncertainty head against actual 1 - cosine prediction error in [0, 1].
             err_target = (1.0 - cos_tok.detach()).clamp(0.0, 1.0)
-            unc_k = F.binary_cross_entropy(unc_slice.clamp(1e-5, 1.0 - 1e-5), err_target)
+            with torch.amp.autocast(unc_slice.device.type, enabled=False):
+                unc_k = F.binary_cross_entropy(unc_slice.float().clamp(1e-5, 1.0 - 1e-5), err_target.float())
             unc_losses.append(unc_k)
 
             if k == 1:
@@ -253,7 +345,30 @@ class LatentWorldModel(nn.Module):
         off_diag = corr.pow(2) * (1.0 - torch.eye(D, device=corr.device, dtype=corr.dtype))
         cov_loss = off_diag.sum() / max(D * (D - 1), 1)
 
-        total = pred_loss + 0.5 * rollout_loss + 0.1 * var_loss + 0.04 * cov_loss + 0.35 * unc_loss
+        # In-batch multi-step future contrastive InfoNCE matching evaluation horizon [t+1..t+k]
+        contrast_loss = z_seq.sum() * 0.0
+        if B >= 4 and L >= 6:
+            t_mid = max(1, (L // 2) - 1)
+            k_span = min(H, L - 1 - t_mid)
+            if k_span >= 1:
+                # Multi-step rollout at midpoint t_mid matches evaluation horizon [:k_span]
+                cur_m = z_seq[:, t_mid, :]
+                mem_m = mem_ctx[:, t_mid, :] if mem_ctx is not None else None
+                rolls = []
+                for _ in range(k_span):
+                    cur_m, _ = self.predict_next_latent(cur_m, mem_ctx=mem_m)
+                    rolls.append(cur_m)
+                pred_span = torch.stack(rolls, dim=1).mean(dim=1)
+                tgt_span = F.layer_norm(target_latents[:, t_mid + 1 : t_mid + 1 + k_span, :].detach(), (D,)).mean(dim=1)
+                z_p_n = F.normalize(pred_span.float(), dim=-1)
+                z_t_n = F.normalize(tgt_span.float(), dim=-1)
+                logits_c = (z_p_n @ z_t_n.t()) / 0.15
+                lbl_c = torch.arange(B, device=z_seq.device)
+                contrast_loss = 0.5 * (
+                    F.cross_entropy(logits_c, lbl_c) + F.cross_entropy(logits_c.t(), lbl_c)
+                ).to(z_seq.dtype)
+
+        total = pred_loss + 0.5 * rollout_loss + 0.1 * var_loss + 0.04 * cov_loss + 0.35 * unc_loss + 0.35 * contrast_loss
         return {
             "loss": total,
             "pred_loss": pred_loss.detach(),
@@ -261,6 +376,7 @@ class LatentWorldModel(nn.Module):
             "var_loss": var_loss.detach(),
             "cov_loss": cov_loss.detach(),
             "unc_loss": unc_loss.detach(),
+            "contrast_loss": contrast_loss.detach(),
             "mean_unc": mean_unc_1step,
             "cos_sim_1step": cos_1step,
         }

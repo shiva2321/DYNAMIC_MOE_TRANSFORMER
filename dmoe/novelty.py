@@ -19,6 +19,7 @@ adapt automatically to each expert's own in-distribution variance.
 """
 
 from dataclasses import dataclass, field
+import math
 from typing import Dict, List, Optional, Tuple
 import torch
 import torch.nn as nn
@@ -144,6 +145,7 @@ class UnifiedNoveltyDetector(nn.Module):
         expert_is_converged: bool = False,
         update_baseline: bool = True,
         external_novel: bool = False,
+        record_outcome_baseline: Optional[bool] = None,
     ) -> NoveltyVerdict:
         """
         Evaluate whether the current batch exhibits coarse, near-twin, or local-nuance novelty
@@ -218,14 +220,16 @@ class UnifiedNoveltyDetector(nn.Module):
         ) or (is_calibrated and z_seq >= self.z_threshold and seq_dist >= max(0.28, base_seq + 0.12))
 
         if is_calibrated:
+            nll_delta_m = max(0.35, 0.25 * base_nll_m)
+            nll_delta_t = max(0.40, 0.25 * base_nll_t)
             near_twin_trigger = expert_is_converged and (
                 (z_surp_m >= self.z_threshold and surp_mean >= max(self.surp_threshold, base_surp + 0.10))
-                or (token_nll is not None and z_nll_m >= self.z_threshold and nll_mean >= max(0.50, base_nll_m + 0.35))
+                or (token_nll is not None and z_nll_m >= self.z_threshold and nll_mean >= max(0.50, base_nll_m + nll_delta_m))
             )
             local_nuance_trigger = (
                 (tok_dist_map is not None and z_tok >= self.z_threshold and tok_dist_tail >= max(self.tok_dist_threshold, base_tok + 0.08))
                 or (expert_is_converged and z_surp_t >= self.z_threshold and surp_tail >= max(0.35, base_surp_t + 0.08))
-                or (expert_is_converged and token_nll is not None and z_nll_t >= self.z_threshold and nll_tail >= max(0.80, base_nll_t + 0.40))
+                or (expert_is_converged and token_nll is not None and z_nll_t >= self.z_threshold and nll_tail >= max(0.80, base_nll_t + nll_delta_t))
             )
         elif not update_baseline:
             # Uncalibrated one-shot evaluation fallback
@@ -271,7 +275,12 @@ class UnifiedNoveltyDetector(nn.Module):
             obs: Dict[str, float] = {"seq_dist": seq_dist}
             if tok_dist_map is not None:
                 obs["tok_dist_tail"] = tok_dist_tail
-            if expert_is_converged:
+            should_rec_outcome = (
+                expert_is_converged
+                if record_outcome_baseline is None
+                else bool(record_outcome_baseline)
+            )
+            if should_rec_outcome:
                 if token_surprise is not None:
                     obs["surp_mean"] = surp_mean
                     obs["surp_tail"] = surp_tail
@@ -296,4 +305,207 @@ class UnifiedNoveltyDetector(nn.Module):
             },
             novel_token_mask=novel_token_mask,
         )
+
+    def evaluate_contextual_chunks(
+        self,
+        d_ctx: torch.Tensor,
+        primary_experts: torch.Tensor,
+        pc_err: Optional[torch.Tensor] = None,
+        wm_unc: Optional[torch.Tensor] = None,
+        belief_conflict: Optional[torch.Tensor] = None,
+        z_nuance_thresh: float = 2.0,
+        d_sem_thresh: float = 2.0,
+        belief_thresh: float = 0.50,
+        update_stats: bool = True,
+        min_std: float = 0.06,
+    ) -> Dict[str, torch.Tensor]:
+        """
+        v7 Per-Chunk Contextual & Semantic Nuance Detection (`[B, T]`):
+          1. `z_ctx`: Online expert-calibrated z-score over contextual manifold distance `d_ctx`.
+          2. `z_sem`: Online expert-calibrated z-score over World-Model discrepancy `d_sem`.
+          3. `z_belief`: Belief-state contradiction score.
+        Returns `nuance_mask [B, T]` (triggers Tier-A `k=2` + Thinker escalation) & continuous scores.
+        """
+        B, T = d_ctx.shape
+        dev = d_ctx.device
+        dc = d_ctx.detach().float()
+        e_flat = primary_experts.detach().reshape(-1)
+        dc_flat = dc.reshape(-1)
+        zc_flat = torch.zeros_like(dc_flat)
+
+        if pc_err is not None:
+            T_pc = min(T, pc_err.size(1))
+            pe = pc_err[:, :T_pc].detach().float().to(dev)
+            if wm_unc is not None:
+                wu = wm_unc[:, :T_pc].detach().float().to(dev)
+                ds = F.relu(pe - 0.35 * wu)
+            else:
+                ds = F.relu(pe)
+            d_sem = F.pad(ds, (0, T - T_pc)) if T_pc < T else ds
+        else:
+            d_sem = torch.zeros_like(dc)
+
+        ds_flat = d_sem.reshape(-1)
+        zs_flat = torch.zeros_like(ds_flat)
+
+        for e_id in e_flat.unique().tolist():
+            e_int = int(e_id)
+            if e_int >= len(self.expert_stats):
+                self.sync_num_experts(e_int + 1)
+            m = e_flat == e_int
+            vals_c = dc_flat[m]
+            vals_s = ds_flat[m]
+            stats = self.expert_stats[e_int]
+
+            mu_c = float(stats.means.get("d_ctx", 0.35))
+            var_c = max(
+                float(stats.vars.get("d_ctx", 0.0)) + float(stats.means.get("d_ctx_tokvar", 0.0)),
+                min_std * min_std,
+            )
+            sd_c = math.sqrt(var_c)
+            if stats.key_counts.get("d_ctx", stats.count) >= 4:
+                zc_flat[m] = ((vals_c - mu_c) / sd_c).clamp(-4.0, 10.0)
+
+            mu_s = float(stats.means.get("d_sem", 0.50))
+            var_s = max(
+                float(stats.vars.get("d_sem", 0.0)) + float(stats.means.get("d_sem_tokvar", 0.0)),
+                min_std * min_std,
+            )
+            sd_s = math.sqrt(var_s)
+            if stats.key_counts.get("d_sem", stats.count) >= 4 and pc_err is not None:
+                zs_flat[m] = ((vals_s - mu_s) / sd_s).clamp(-4.0, 10.0)
+
+            if update_stats and vals_c.numel() > 0:
+                upd = {"d_ctx": float(vals_c.mean().item())}
+                if vals_c.numel() > 1:
+                    upd["d_ctx_tokvar"] = float(vals_c.var(unbiased=False).item())
+                if pc_err is not None:
+                    upd["d_sem"] = float(vals_s.mean().item())
+                    if vals_s.numel() > 1:
+                        upd["d_sem_tokvar"] = float(vals_s.var(unbiased=False).item())
+                stats.update(upd)
+
+        z_ctx = zc_flat.view(B, T)
+        z_sem = zs_flat.view(B, T)
+
+        if belief_conflict is not None:
+            z_bel = belief_conflict.detach().float().to(dev)[:, :T]
+            if z_bel.size(1) < T:
+                z_bel = F.pad(z_bel, (0, T - z_bel.size(1)))
+        else:
+            z_bel = torch.zeros_like(dc)
+
+        nuance_mask = (z_ctx >= z_nuance_thresh) | (z_sem >= d_sem_thresh) | (z_bel >= belief_thresh)
+        nuance_score = torch.maximum(z_ctx / max(z_nuance_thresh, 1e-4), z_sem / max(d_sem_thresh, 1e-4))
+        nuance_score = torch.maximum(nuance_score, z_bel / max(belief_thresh, 1e-4))
+        return {
+            "nuance_mask": nuance_mask,
+            "nuance_score": nuance_score,
+            "z_ctx": z_ctx,
+            "z_sem": z_sem,
+            "d_sem": d_sem,
+            "z_belief": z_bel,
+        }
+
+
+class NuanceClusterBuffer:
+    """
+    Bounded Tier-B Rolling Nuance Reservoir (`cap <= 128` vectors, `< 150 KB`).
+
+    Holds unresolved nuanced query vectors `(q_tok, err)` until a genuinely recurring,
+    directionally coherent concept cluster accumulates (`count >= min_count`, `mean_cos >= min_cos`),
+    preventing premature noisy specialist spawning.
+    """
+
+    def __init__(self, cap: int = 128, d_route: int = 96):
+        self.cap = max(8, int(cap))
+        self.d_route = int(d_route)
+        self.q_vecs: Optional[torch.Tensor] = None
+        self.err_vals: Optional[torch.Tensor] = None
+        self.coarse_sims: Optional[torch.Tensor] = None
+
+    @torch.no_grad()
+    def push(
+        self,
+        q_vecs: torch.Tensor,
+        err_vals: Optional[torch.Tensor] = None,
+        coarse_sims: Optional[torch.Tensor] = None,
+    ) -> int:
+        if q_vecs.numel() == 0:
+            return len(self)
+        q_cpu = F.normalize(q_vecs.detach().float().cpu().reshape(-1, q_vecs.size(-1)), dim=-1)
+        e_cpu = (
+            err_vals.detach().float().cpu().reshape(-1)
+            if err_vals is not None
+            else torch.ones(q_cpu.size(0), dtype=torch.float32)
+        )
+        c_cpu = (
+            coarse_sims.detach().float().cpu().reshape(-1)
+            if coarse_sims is not None
+            else torch.zeros(q_cpu.size(0), dtype=torch.float32)
+        )
+        if self.q_vecs is None:
+            self.q_vecs = q_cpu[-self.cap :]
+            self.err_vals = e_cpu[-self.cap :]
+            self.coarse_sims = c_cpu[-self.cap :]
+        else:
+            self.q_vecs = torch.cat([self.q_vecs, q_cpu], dim=0)[-self.cap :]
+            self.err_vals = torch.cat([self.err_vals, e_cpu], dim=0)[-self.cap :]
+            self.coarse_sims = torch.cat([self.coarse_sims, c_cpu], dim=0)[-self.cap :]
+        return self.q_vecs.size(0)
+
+    def __len__(self) -> int:
+        return 0 if self.q_vecs is None else int(self.q_vecs.size(0))
+
+    @torch.no_grad()
+    def check_coherent_cluster(
+        self,
+        min_count: int = 20,
+        min_cos: float = 0.72,
+    ) -> Tuple[bool, Optional[torch.Tensor], Optional[torch.Tensor], float, float]:
+        """Return `(ready, centroid, cluster_vecs, mean_cos, mean_coarse_sim)` if a coherent cluster exists."""
+        if self.q_vecs is None or self.q_vecs.size(0) < min_count:
+            return False, None, None, 0.0, 0.0
+        sim_mat = self.q_vecs @ self.q_vecs.t()
+        neighbors = (sim_mat >= min_cos).float().sum(dim=-1)
+        seed_idx = int(torch.argmax(neighbors).item())
+        mask = sim_mat[seed_idx] >= min_cos
+        cnt = int(mask.sum().item())
+        if cnt < min_count:
+            return False, None, None, 0.0, 0.0
+        c_vecs = self.q_vecs[mask]
+        centroid = F.normalize(c_vecs.mean(dim=0), dim=0)
+        c_sims = c_vecs @ centroid
+        mean_cos = float(c_sims.mean().item())
+        if mean_cos < min_cos:
+            return False, None, None, mean_cos, 0.0
+        mean_coarse = float(self.coarse_sims[mask].mean().item()) if self.coarse_sims is not None else 0.0
+        return True, centroid, c_vecs, mean_cos, mean_coarse
+
+    @torch.no_grad()
+    def pop_cluster(self, min_cos: float = 0.72) -> int:
+        """Remove members belonging to the densest coherent cluster once consumed by spawn."""
+        if self.q_vecs is None or self.q_vecs.size(0) == 0:
+            return 0
+        sim_mat = self.q_vecs @ self.q_vecs.t()
+        neighbors = (sim_mat >= min_cos).float().sum(dim=-1)
+        seed_idx = int(torch.argmax(neighbors).item())
+        keep = sim_mat[seed_idx] < min_cos
+        removed = int((~keep).sum().item())
+        if bool(keep.any().item()):
+            self.q_vecs = self.q_vecs[keep]
+            self.err_vals = self.err_vals[keep] if self.err_vals is not None else None
+            self.coarse_sims = self.coarse_sims[keep] if self.coarse_sims is not None else None
+        else:
+            self.q_vecs = None
+            self.err_vals = None
+            self.coarse_sims = None
+        return removed
+
+    def storage_bytes(self) -> int:
+        total = 0
+        for t in (self.q_vecs, self.err_vals, self.coarse_sims):
+            if t is not None:
+                total += t.numel() * 4
+        return total
 

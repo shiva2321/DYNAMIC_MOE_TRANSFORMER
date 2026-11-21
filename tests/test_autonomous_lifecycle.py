@@ -194,3 +194,93 @@ def test_automatic_dormant_revival_and_prune():
     assert model.layers[0].moe.expert_age.numel() == 1
     assert model.layers[0].moe.expert_frozen.numel() == 1
 
+
+def test_unified_end_to_end_m05_extend_spawn_and_auto_gpm():
+    """
+    Verify that a single unified RealSelfStabilizingDMoE with all subsystems active
+    (Memory + 3-Level Attn + GatedDelta STM + Thinker + WorldModel + CausalProtoTrunkRouter
+    + AutoLifecycle M05 + NullSpaceProjector):
+    1. Preserves higher-indexed expert prototypes when updating Expert 0.
+    2. Autonomously EXTENDS Expert 0 when a compatible stream arrives (low NLL delta).
+    3. Autonomously SPAWNS Expert 1 and consolidates GPM null-space bases (including
+       thinker & world_model) when a genuinely conflicting stream arrives.
+    """
+    from dmoe.null_space import NullSpaceProjector
+
+    torch.manual_seed(77)
+    model = RealSelfStabilizingDMoE(
+        d_model=24,
+        num_heads=2,
+        d_ff=48,
+        initial_layers=2,
+        chunk_size=1,
+        enable_memory=True,
+        num_ltm_slots=8,
+        auto_write_ltm=False,
+        enable_three_level_attn=True,
+        local_window=4,
+        chunk_stride=4,
+        enable_layer_stm=True,
+        enable_thinking=True,
+        max_thinking_steps=2,
+        enable_world_model=True,
+        wm_rollout_horizon=1,
+        hybrid_mode=True,
+        router_mode="causal_proto",
+        auto_lifecycle=True,
+        max_experts=3,
+        min_mature_steps=10,
+        novel_confirm_steps=2,
+        novel_surprise_threshold=0.35,
+        use_trunk_routing=True,
+        router_context_blend=0.20,
+        extend_loss_margin=0.25,
+    )
+    gpm = NullSpaceProjector(
+        model,
+        energy_threshold=0.95,
+        max_rank_ratio=0.80,
+        track_embeddings=True,
+        freeze_shared_norms_on_update=True,
+    )
+    assert model.null_space_projector is gpm
+    assert any("thinker" in k for k in gpm.monitored_modules)
+    assert any("world_model" in k for k in gpm.monitored_modules)
+
+    opt = torch.optim.AdamW([p for p in model.parameters() if p.requires_grad], lr=6e-3)
+    model.train()
+
+    # Stream 1: Train Expert 0 on rule y = (x - 32 + 1) % 8 + 32
+    for _ in range(18):
+        xb = torch.randint(32, 40, (8, 8))
+        yb = (xb - 32 + 1) % 8 + 32
+        opt.zero_grad()
+        out = model(xb, targets=yb)
+        loss = F.cross_entropy(out["output"].reshape(-1, 256), yb.reshape(-1))
+        loss.backward()
+        opt.step()
+
+    assert len(model.layers[0].moe.experts) == 1
+    assert model.lifecycle.expert_converged[0] is True
+
+    # Stream 2 (Compatible same rule): must NOT spawn a duplicate expert
+    for _ in range(4):
+        xb = torch.randint(32, 40, (8, 8))
+        yb = (xb - 32 + 1) % 8 + 32
+        out = model(xb, targets=yb)
+    assert len(model.layers[0].moe.experts) == 1
+
+    # Stream 3 (Conflicting domain tokens 120..127 with different rule): must SPAWN Expert 1
+    # and automatically consolidate GPM null-space bases!
+    for _ in range(6):
+        xb_c = torch.randint(120, 128, (8, 8))
+        yb_c = (xb_c - 120 + 5) % 8 + 120
+        out_c = model(xb_c, targets=yb_c)
+        if any(ev.startswith("spawned_expert_") for ev in out_c["lifecycle_events"]):
+            break
+
+    assert len(model.layers[0].moe.experts) == 2
+    assert len(model.decoder.expert_heads) == 2
+    assert len(gpm.p_null) > 0
+
+

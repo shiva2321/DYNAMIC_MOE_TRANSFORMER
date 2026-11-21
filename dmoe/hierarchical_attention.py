@@ -35,6 +35,18 @@ def _get_local_causal_mask(seq_len: int, window: int, device_str: str) -> torch.
 
 
 @functools.lru_cache(maxsize=64)
+def _get_local_key_gate_masks(
+    seq_len: int, window: int, device_str: str
+) -> Tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
+    dev = torch.device(device_str)
+    mask = _get_local_causal_mask(seq_len, window, device_str)
+    ones = torch.ones(seq_len, seq_len, device=dev, dtype=torch.bool)
+    past_only = torch.tril(ones, diagonal=-1).view(1, 1, seq_len, seq_len)
+    pair_past = torch.tril(ones, diagonal=-2).view(1, 1, seq_len, seq_len)
+    return mask, past_only, pair_past
+
+
+@functools.lru_cache(maxsize=64)
 def _get_mid_chunk_idx_and_mask(seq_len: int, stride: int, device_str: str) -> Tuple[torch.Tensor, torch.Tensor]:
     dev = torch.device(device_str)
     n_full = seq_len // stride
@@ -111,21 +123,20 @@ class ThreeLevelAttention(nn.Module):
         v = self._split(v)
         if self.rope is not None:
             q, k = self.rope.apply_rotary(q, k)
-        mask = _get_local_causal_mask(seq_len, self.local_window, str(q.device))
         if key_mask is not None:
             # Causal key gate: suppress corrupted past keys (s < q) and any rejected antecedent key (s + 1 < q)
             # without altering self (s == q) or leaking future tokens into s.
+            mask, past_only, pair_past = _get_local_key_gate_masks(seq_len, self.local_window, str(q.device))
             key_gate = key_mask[:, :seq_len].to(device=q.device, dtype=q.dtype).clamp(min=1e-4, max=1.0)
             log_gate = torch.log(key_gate).view(q.size(0), 1, 1, seq_len)
             log_next = F.pad(log_gate[..., 1:], (0, 1), value=0.0)
-            past_only = torch.tril(torch.ones(seq_len, seq_len, device=q.device, dtype=torch.bool), diagonal=-1)
-            pair_past = torch.tril(torch.ones(seq_len, seq_len, device=q.device, dtype=torch.bool), diagonal=-2)
             bias = torch.zeros(q.size(0), 1, seq_len, seq_len, device=q.device, dtype=q.dtype)
             bias = bias.masked_fill(~mask, -1e9)
             zeros = torch.zeros_like(log_gate)
-            bias = bias + torch.where(past_only.view(1, 1, seq_len, seq_len), log_gate, zeros)
-            bias = bias + torch.where(pair_past.view(1, 1, seq_len, seq_len), log_next, zeros)
+            bias = bias + torch.where(past_only, log_gate, zeros)
+            bias = bias + torch.where(pair_past, log_next, zeros)
             return self._merge(F.scaled_dot_product_attention(q, k, v, attn_mask=bias))
+        mask = _get_local_causal_mask(seq_len, self.local_window, str(q.device))
         return self._merge(F.scaled_dot_product_attention(q, k, v, attn_mask=mask))
 
     def _local_attention(

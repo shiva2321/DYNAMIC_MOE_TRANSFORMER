@@ -50,6 +50,7 @@ class MultiScaleByteChunker(nn.Module):
         self.register_buffer("slot_phase_basis", torch.sin(slot_angles).unsqueeze(0).unsqueeze(0))
         self.slot_phase_gate = nn.Parameter(torch.tensor(0.0))
         self.last_byte_features: Optional[torch.Tensor] = None
+        self.last_pos_chunks: Optional[torch.Tensor] = None
 
     @staticmethod
     def text_to_bytes(
@@ -110,20 +111,26 @@ class MultiScaleByteChunker(nn.Module):
         # Softmax-gated mixture across multi-scale n-gram convolutions [B, L, M, 1]
         gate_weights = F.softmax(self.scale_gate(emb), dim=-1).unsqueeze(-1)
         stacked = torch.stack(scale_outputs, dim=2)  # [B, L, M, d_model]
-        ms_features = ((stacked * gate_weights).sum(dim=2) + emb) * valid_mask  # [B, L, d_model]
+        ms_raw = (stacked * gate_weights).sum(dim=2)
+        ms_features = (ms_raw + emb) * valid_mask  # [B, L, d_model]
+        pos_features = F.relu(ms_raw) * valid_mask  # Sparse nonnegative multi-scale k-gram detector
 
         remainder = seq_len % self.chunk_size
         if remainder != 0:
             pad_len = self.chunk_size - remainder
             ms_features = F.pad(ms_features, (0, 0, 0, pad_len))
+            pos_features = F.pad(pos_features, (0, 0, 0, pad_len))
 
         num_chunks = ms_features.size(1) // self.chunk_size
-        slot_features = ms_features.reshape(bsz, num_chunks, self.chunk_size, self.d_model)
+        clean_slots = ms_features.reshape(bsz, num_chunks, self.chunk_size, self.d_model)
+        pre_phase_mean = clean_slots.mean(dim=2)
+        pos_slots = pos_features.reshape(bsz, num_chunks, self.chunk_size, self.d_model)
+        self.last_pos_chunks = 0.5 * pos_slots.mean(dim=2) + 0.5 * pos_slots.max(dim=2).values
         # Apply gated intra-chunk phase-rotation + cyclic roll binding per byte slot
-        rolled = torch.roll(slot_features, shifts=1, dims=-1)
-        slot_features = slot_features + torch.tanh(self.slot_phase_gate) * (
-            slot_features * self.slot_phase_basis + 0.25 * rolled
+        rolled = torch.roll(clean_slots, shifts=1, dims=-1)
+        slot_features = clean_slots + torch.tanh(self.slot_phase_gate) * (
+            clean_slots * self.slot_phase_basis + 0.25 * rolled
         )
         self.last_byte_features = slot_features
         chunked = slot_features.reshape(bsz, num_chunks, self.chunk_size * self.d_model)
-        return self.chunk_norm(self.chunk_proj(chunked))
+        return self.chunk_norm(self.chunk_proj(chunked) + 0.65 * pre_phase_mean)

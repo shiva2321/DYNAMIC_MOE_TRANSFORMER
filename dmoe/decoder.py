@@ -82,6 +82,9 @@ class UniversalProjectiveDecoder(nn.Module):
             if self.byte_chunk_head is None and len(self.expert_heads) == 0:
                 raise ValueError("byte_chunk head requires tokenizer_free=True on UniversalProjectiveDecoder")
             bsz, seq_len, _ = unified_hidden.shape
+            has_slot_gate = (
+                byte_residuals is not None and float(torch.abs(self.dechunk_slot_gate).detach().item()) > 0.0
+            )
             if assigned_experts is not None and len(self.expert_heads) > 1:
                 logits = torch.zeros(bsz, seq_len, self.chunk_size, 256, device=unified_hidden.device)
                 handled = torch.zeros(bsz, dtype=torch.bool, device=unified_hidden.device)
@@ -90,14 +93,14 @@ class UniversalProjectiveDecoder(nn.Module):
                     if len(mask) > 0:
                         handled[mask] = True
                         exp_out = exp_head(unified_hidden[mask]).view(len(mask), seq_len, self.chunk_size, 256)
-                        if byte_residuals is not None and torch.abs(self.dechunk_slot_gate).item() > 0.0:
+                        if has_slot_gate:
                             slot_mod = (byte_residuals[mask] * self.dechunk_slot_basis).mean(dim=-1, keepdim=True)
                             exp_out = exp_out + torch.tanh(self.dechunk_slot_gate) * slot_mod
                         logits[mask] = exp_out
                 unhandled = (~handled).nonzero(as_tuple=True)[0]
                 if len(unhandled) > 0:
                     fb_out = self.expert_heads[0](unified_hidden[unhandled]).view(len(unhandled), seq_len, self.chunk_size, 256)
-                    if byte_residuals is not None and torch.abs(self.dechunk_slot_gate).item() > 0.0:
+                    if has_slot_gate:
                         slot_mod = (byte_residuals[unhandled] * self.dechunk_slot_basis).mean(dim=-1, keepdim=True)
                         fb_out = fb_out + torch.tanh(self.dechunk_slot_gate) * slot_mod
                     logits[unhandled] = fb_out
@@ -105,7 +108,7 @@ class UniversalProjectiveDecoder(nn.Module):
             else:
                 active_head = self.expert_heads[-1] if len(self.expert_heads) > 0 else self.byte_chunk_head
                 logits = active_head(unified_hidden).view(bsz, seq_len, self.chunk_size, 256)
-                if byte_residuals is not None and torch.abs(self.dechunk_slot_gate).item() > 0.0:
+                if has_slot_gate:
                     slot_mod = (byte_residuals * self.dechunk_slot_basis).mean(dim=-1, keepdim=True)
                     logits = logits + torch.tanh(self.dechunk_slot_gate) * slot_mod
                 return logits

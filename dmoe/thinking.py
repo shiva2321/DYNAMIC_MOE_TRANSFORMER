@@ -20,12 +20,27 @@ Implements an anchor-reinjected, surprise-gated latent reasoning loop:
      and BCE calibration of the surprise head against actual token errors.
 """
 
+import functools
+import math
 from typing import Any, Callable, Dict, List, Optional, Tuple
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
+from dmoe.adapters import RoutedAdapterBank
 from dmoe.rope import RotaryEmbedding
+
+
+@functools.lru_cache(maxsize=64)
+def _get_thinking_causal_masks(
+    seq_len: int, device_str: str
+) -> Tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
+    dev = torch.device(device_str)
+    ones = torch.ones(seq_len, seq_len, device=dev, dtype=torch.bool)
+    causal = torch.tril(ones).view(1, 1, seq_len, seq_len)
+    past_only = torch.tril(ones, diagonal=-1).view(1, 1, seq_len, seq_len)
+    pair_past = torch.tril(ones, diagonal=-2).view(1, 1, seq_len, seq_len)
+    return causal, past_only, pair_past
 
 
 class LatentThinkingBlock(nn.Module):
@@ -36,11 +51,20 @@ class LatentThinkingBlock(nn.Module):
     relational attention while generalizing zero-shot to thinking steps k > K_train.
     """
 
-    def __init__(self, d_model: int, num_heads: int = 2, d_ff: int = 128):
+    def __init__(
+        self,
+        d_model: int,
+        num_heads: int = 2,
+        d_ff: int = 128,
+        enable_expert_adapters: bool = False,
+        adapter_rank: int = 24,
+        initial_experts: int = 1,
+    ):
         super().__init__()
         self.d_model = d_model
         self.num_heads = num_heads
         self.head_dim = d_model // num_heads
+        self.enable_expert_adapters = bool(enable_expert_adapters)
 
         # Time-invariant recurrent fusion of [z_t^(k), z_{t-1}^(k), h_{0,t}]
         self.recur_mlp = nn.Sequential(
@@ -67,6 +91,11 @@ class LatentThinkingBlock(nn.Module):
             nn.Linear(d_ff, d_model),
         )
         self.norm_out = nn.LayerNorm(d_model)
+        self.expert_adapters: Optional[RoutedAdapterBank] = (
+            RoutedAdapterBank(d_model, rank=adapter_rank, initial_experts=initial_experts)
+            if self.enable_expert_adapters
+            else None
+        )
 
     def forward(
         self,
@@ -74,11 +103,18 @@ class LatentThinkingBlock(nn.Module):
         h_anchor: torch.Tensor,
         step_idx: int = 0,
         key_mask: Optional[torch.Tensor] = None,
+        active_mask: Optional[torch.Tensor] = None,
+        expert_ids: Optional[torch.Tensor] = None,
+        force_expert: Optional[int] = None,
+        skip_uniform_check: bool = False,
+        dispatch_plan: Optional[Tuple[torch.Tensor, torch.Tensor, List[int]]] = None,
     ) -> torch.Tensor:
         """
         Compute candidate latent state z_cand from current working state z and anchor h_anchor.
         Strictly time-invariant (does not depend on step_idx) so the operator generalizes
         zero-shot to out-of-distribution thinking depths k > K_train.
+        When active_mask is provided in eval mode, token-wise recur_mlp and ffn execute
+        sparsely on active tokens only (Mixture-of-Recursions style).
         z, h_anchor: [B, L, d_model]
         """
         B, L, D = z.shape
@@ -96,17 +132,15 @@ class LatentThinkingBlock(nn.Module):
             q, k = self.rope.apply_rotary(q, k)
 
         if key_mask is not None:
-            causal = torch.tril(torch.ones(L, L, device=q.device, dtype=torch.bool))
-            past_only = torch.tril(torch.ones(L, L, device=q.device, dtype=torch.bool), diagonal=-1)
-            pair_past = torch.tril(torch.ones(L, L, device=q.device, dtype=torch.bool), diagonal=-2)
+            causal, past_only, pair_past = _get_thinking_causal_masks(L, str(q.device))
             key_gate = key_mask[:, :L].to(device=q.device, dtype=q.dtype).clamp(min=1e-4, max=1.0)
             log_gate = torch.log(key_gate).view(B, 1, 1, L)
             log_next = F.pad(log_gate[..., 1:], (0, 1), value=0.0)
             bias = torch.zeros(B, 1, L, L, device=q.device, dtype=q.dtype)
-            bias = bias.masked_fill(~causal.view(1, 1, L, L), -1e9)
+            bias = bias.masked_fill(~causal, -1e9)
             zeros = torch.zeros_like(log_gate)
-            bias = bias + torch.where(past_only.view(1, 1, L, L), log_gate, zeros)
-            bias = bias + torch.where(pair_past.view(1, 1, L, L), log_next, zeros)
+            bias = bias + torch.where(past_only, log_gate, zeros)
+            bias = bias + torch.where(pair_past, log_next, zeros)
             attn_out = F.scaled_dot_product_attention(q, k, v, attn_mask=bias)
         else:
             attn_out = F.scaled_dot_product_attention(q, k, v, is_causal=True)
@@ -117,9 +151,44 @@ class LatentThinkingBlock(nn.Module):
         z_prev = torch.zeros_like(u)
         if L > 1:
             z_prev[:, 1:, :] = u[:, :-1, :]
+
+        if active_mask is not None and not self.training and dispatch_plan is None:
+            flat_mask = active_mask.reshape(-1)
+            act_idx = flat_mask.nonzero(as_tuple=True)[0]
+            if 0 < act_idx.numel() < B * L:
+                u_flat = u.view(-1, D)[act_idx]
+                zp_flat = z_prev.view(-1, D)[act_idx]
+                ha_flat = h_anchor.view(-1, D)[act_idx]
+                rec_d = self.recur_mlp(torch.cat([u_flat, zp_flat, ha_flat], dim=-1))
+                u2_act = self.norm_recur(u_flat + rec_d)
+                u3_act = u2_act + self.ffn(self.norm2(u2_act))
+                if self.expert_adapters is not None:
+                    e_act = (
+                        expert_ids.unsqueeze(1).expand(B, L).reshape(-1)[act_idx]
+                        if (force_expert is None and expert_ids is not None and expert_ids.numel() == B)
+                        else None
+                    )
+                    u3_act = u3_act + self.expert_adapters(
+                        u2_act,
+                        assigned_experts=e_act,
+                        force_idx=force_expert,
+                        skip_uniform_check=skip_uniform_check,
+                    )
+                z_cand_flat = z.reshape(-1, D).clone()
+                z_cand_flat[act_idx] = self.norm_out(u3_act)
+                return z_cand_flat.view(B, L, D)
+
         recur_delta = self.recur_mlp(torch.cat([u, z_prev, h_anchor], dim=-1))
         u2 = self.norm_recur(u + recur_delta)
         u3 = u2 + self.ffn(self.norm2(u2))
+        if self.expert_adapters is not None:
+            u3 = u3 + self.expert_adapters(
+                u2,
+                assigned_experts=expert_ids,
+                force_idx=force_expert,
+                skip_uniform_check=skip_uniform_check,
+                dispatch_plan=dispatch_plan,
+            )
         z_cand = self.norm_out(u3)
         return z_cand
 
@@ -165,6 +234,12 @@ class SurpriseDrivenLatentThinker(nn.Module):
         min_surprise_drop: float = 0.005,
         abstain_threshold: float = 0.65,
         detached_carry_prob: float = 0.0,
+        enable_expert_adapters: bool = False,
+        adapter_rank: int = 24,
+        initial_experts: int = 1,
+        use_marginal_drop_halt: bool = False,
+        halt_use_energy_only: bool = False,
+        skip_final_lookahead: bool = False,
     ):
         super().__init__()
         self.d_model = d_model
@@ -174,8 +249,18 @@ class SurpriseDrivenLatentThinker(nn.Module):
         self.min_surprise_drop = min_surprise_drop
         self.abstain_threshold = abstain_threshold
         self.detached_carry_prob = detached_carry_prob
+        self.use_marginal_drop_halt = bool(use_marginal_drop_halt)
+        self.halt_use_energy_only = bool(halt_use_energy_only)
+        self.skip_final_lookahead = bool(skip_final_lookahead)
 
-        self.think_block = LatentThinkingBlock(d_model=d_model, num_heads=num_heads, d_ff=d_ff)
+        self.think_block = LatentThinkingBlock(
+            d_model=d_model,
+            num_heads=num_heads,
+            d_ff=d_ff,
+            enable_expert_adapters=enable_expert_adapters,
+            adapter_rank=adapter_rank,
+            initial_experts=initial_experts,
+        )
         self.energy_head = SurpriseEnergyHead(d_model=d_model)
         self.damping_logit = nn.Parameter(torch.tensor(2.2))  # sigmoid(2.2) ~ 0.90
 
@@ -186,6 +271,20 @@ class SurpriseDrivenLatentThinker(nn.Module):
         self.last_surprise_trace: List[torch.Tensor] = []
         self.last_is_unknown: Optional[torch.Tensor] = None
 
+    def spawn_expert_adapter(self, source_idx: Optional[int] = None, fresh_init: bool = False) -> Optional[int]:
+        if self.think_block.expert_adapters is not None:
+            return self.think_block.expert_adapters.spawn(source_idx=source_idx, fresh_init=fresh_init)
+        return None
+
+    def freeze_expert_adapter(self, idx: int) -> None:
+        if self.think_block.expert_adapters is not None:
+            self.think_block.expert_adapters.freeze(idx)
+
+    def prune_expert_adapter(self, idx: int) -> bool:
+        if self.think_block.expert_adapters is not None:
+            return self.think_block.expert_adapters.prune(idx)
+        return False
+
     @staticmethod
     def _normalized_entropy(logits: torch.Tensor) -> torch.Tensor:
         """
@@ -195,7 +294,7 @@ class SurpriseDrivenLatentThinker(nn.Module):
         probs = F.softmax(logits, dim=-1)
         log_probs = F.log_softmax(logits, dim=-1)
         ent = -(probs * log_probs).sum(dim=-1)
-        max_ent = float(torch.log(torch.tensor(float(V), device=logits.device)).item())
+        max_ent = math.log(float(V)) if V > 1 else 1.0
         # Collapse chunk dimension if present: [B, n_chunks, chunk_size, V] -> [B, n_chunks]
         if ent.dim() == 3:
             ent = ent.mean(dim=-1)
@@ -206,40 +305,49 @@ class SurpriseDrivenLatentThinker(nn.Module):
         h_anchor: torch.Tensor,
         z: torch.Tensor,
         z_cand: torch.Tensor,
-        logits: torch.Tensor,
+        logits: Optional[torch.Tensor],
     ) -> Tuple[torch.Tensor, torch.Tensor]:
         """
         Compute composite surprise S_t^(k) in [0, 1] and learned energy E_t^(k) in [0, 1].
         """
         delta_z = z_cand - z
         learned_energy = self.energy_head(h_anchor.detach(), z.detach(), delta_z.detach())
-        pred_entropy = self._normalized_entropy(logits.detach())
         latent_residual = torch.tanh(
             delta_z.detach().norm(p=2, dim=-1) / (self.d_model ** 0.5)
         )
-        surprise = (
-            0.50 * learned_energy + 0.25 * pred_entropy + 0.25 * latent_residual
-        ).clamp(0.0, 1.0)
+        if logits is None:
+            surprise = (0.65 * learned_energy + 0.35 * latent_residual).clamp(0.0, 1.0)
+        else:
+            pred_entropy = self._normalized_entropy(logits.detach())
+            surprise = (
+                0.50 * learned_energy + 0.25 * pred_entropy + 0.25 * latent_residual
+            ).clamp(0.0, 1.0)
         return surprise, learned_energy
 
     def forward(
         self,
         h_anchor: torch.Tensor,
-        decoder_fn: Callable[[torch.Tensor], torch.Tensor],
+        decoder_fn: Optional[Callable[[torch.Tensor], torch.Tensor]],
         force_steps: Optional[int] = None,
         key_mask: Optional[torch.Tensor] = None,
+        expert_ids: Optional[torch.Tensor] = None,
+        force_expert: Optional[int] = None,
+        skip_uniform_check: bool = False,
+        nuance_mask: Optional[torch.Tensor] = None,
+        dispatch_plan: Optional[Tuple[torch.Tensor, torch.Tensor, List[int]]] = None,
     ) -> Dict[str, Any]:
         """
         Execute surprise-driven dynamic latent thinking starting from h_anchor.
 
         Args:
             h_anchor: [B, L, d_model] fast-pass representation from backbone.
-            decoder_fn: callable mapping latent state z [B, L, d_model] -> logits [B, L, ..., V].
+            decoder_fn: optional callable mapping latent state z -> logits; when None,
+                surprise/halting rely strictly on energy + latent residual (no decoder dispatch).
             force_steps: if provided, overrides adaptive halting and runs exactly force_steps.
 
         Returns dict with:
             - z_final: [B, L, d_model] refined latent state
-            - logits_final: final decoded logits
+            - logits_final: final decoded logits (or None when decoder_fn is None)
             - step_logits: list of logits at steps k = 0 .. K
             - step_energies: list of learned energy predictions [B, L] at steps k = 0 .. K
             - surprise_trace: list of composite surprise tensors [B, L]
@@ -252,21 +360,40 @@ class SurpriseDrivenLatentThinker(nn.Module):
         max_k = self.max_thinking_steps if force_steps is None else int(force_steps)
 
         z = h_anchor
-        logits_0 = decoder_fn(z)
-        z_cand_0 = self.think_block(z, h_anchor, step_idx=0, key_mask=key_mask)
+        logits_0 = decoder_fn(z) if decoder_fn is not None else None
+        z_cand_0 = self.think_block(
+            z,
+            h_anchor,
+            step_idx=0,
+            key_mask=key_mask,
+            expert_ids=expert_ids,
+            force_expert=force_expert,
+            skip_uniform_check=skip_uniform_check,
+            dispatch_plan=dispatch_plan,
+        )
         surprise_0, energy_0 = self.compute_surprise(h_anchor, z, z_cand_0, logits_0)
 
         step_logits: List[torch.Tensor] = [logits_0]
         step_energies: List[torch.Tensor] = [energy_0]
         surprise_trace: List[torch.Tensor] = [surprise_0]
+        z_trace: List[torch.Tensor] = [z]
         token_steps = torch.zeros(B, L, device=h_anchor.device, dtype=torch.float32)
 
+        nuance_active = (
+            nuance_mask.to(device=h_anchor.device, dtype=torch.bool)[:, :L]
+            if nuance_mask is not None
+            else None
+        )
+        has_nuance = bool(nuance_active.any().item()) if nuance_active is not None else False
+
+        init_halt_score = energy_0 if self.halt_use_energy_only else surprise_0
         # Fast-path skip at eval when force_steps is None and all tokens have low initial surprise
         if (
             not self.training
             and force_steps is None
             and max_k > 0
-            and float(surprise_0.max().item()) <= self.skip_threshold
+            and (not has_nuance)
+            and float(init_halt_score.max().item()) <= self.skip_threshold
         ):
             self.last_steps_used = 0
             self.last_active_fraction = 0.0
@@ -275,6 +402,7 @@ class SurpriseDrivenLatentThinker(nn.Module):
             self.last_is_unknown = surprise_0 > self.abstain_threshold
             return {
                 "z_final": z,
+                "z_trace": z_trace,
                 "logits_final": logits_0,
                 "step_logits": step_logits,
                 "step_energies": step_energies,
@@ -287,66 +415,122 @@ class SurpriseDrivenLatentThinker(nn.Module):
 
         damping = torch.sigmoid(self.damping_logit)
         active_mask = torch.ones(B, L, device=h_anchor.device, dtype=torch.bool)
-        active_fractions: List[float] = []
+        active_frac_tensors: List[torch.Tensor] = []
         steps_used = 0
-        prev_surprise = surprise_0
+        prev_score = init_halt_score
+        prev_prev_score = init_halt_score
+        cached_next_cand: Optional[torch.Tensor] = z_cand_0
 
         for k in range(max_k):
-            if k == 0:
-                z_cand = z_cand_0
-            else:
-                # Detached-carry regularization during training (TRM-style) so every step
-                # learns to improve from the current state without gradient explosion
-                z_in = (
-                    z.detach()
-                    if (self.training and k > 0 and self.detached_carry_prob >= 1.0)
-                    else (
-                        0.5 * z + 0.5 * z.detach()
-                        if (self.training and k > 0 and self.detached_carry_prob > 0.0)
-                        else z
-                    )
-                )
-                z_cand = self.think_block(z_in, h_anchor, step_idx=k, key_mask=key_mask)
-
             if not self.training and force_steps is None:
-                # Per-token halting condition: halt tokens whose surprise is below theta_halt
-                still_surprised = prev_surprise >= self.theta_halt
+                # Per-token halting: halt when score < theta_halt or marginal improvement stalls
+                still_surprised = prev_score >= self.theta_halt
+                if self.use_marginal_drop_halt and k >= 1:
+                    still_surprised = still_surprised & ((prev_prev_score - prev_score) >= self.min_surprise_drop)
+                if nuance_active is not None:
+                    still_surprised = still_surprised | nuance_active
                 active_mask = active_mask & still_surprised if k > 0 else still_surprised
 
                 if not bool(active_mask.any().item()):
                     break
 
+            z_cand = (
+                cached_next_cand
+                if cached_next_cand is not None
+                else self.think_block(
+                    z,
+                    h_anchor,
+                    step_idx=k,
+                    key_mask=key_mask,
+                    expert_ids=expert_ids,
+                    force_expert=force_expert,
+                    skip_uniform_check=skip_uniform_check,
+                    dispatch_plan=dispatch_plan,
+                )
+            )
+
             mask_float = active_mask.to(dtype=z.dtype).unsqueeze(-1)
-            active_fractions.append(float(active_mask.float().mean().item()))
+            active_frac_tensors.append(active_mask.float().mean())
             token_steps = token_steps + active_mask.float()
 
             # Active tokens advance via learned damped update; halted tokens remain frozen
+            z_prev_step = z
             z = z + mask_float * damping * (z_cand - z)
+            z_trace.append(z)
 
-            logits_k = decoder_fn(z)
-            # Peek next candidate for energy/surprise estimation
-            z_next_cand = self.think_block(z.detach(), h_anchor.detach(), step_idx=k + 1, key_mask=key_mask)
+            logits_k = decoder_fn(z) if decoder_fn is not None else None
+            # Compute next candidate when another step can follow (skip wasted final lookahead if enabled)
+            if k + 1 < max_k:
+                if self.training and self.detached_carry_prob < 1.0:
+                    z_next_in = 0.5 * z + 0.5 * z.detach() if self.detached_carry_prob > 0.0 else z
+                    z_next_cand = self.think_block(
+                        z_next_in,
+                        h_anchor,
+                        step_idx=k + 1,
+                        key_mask=key_mask,
+                        expert_ids=expert_ids,
+                        force_expert=force_expert,
+                        skip_uniform_check=skip_uniform_check,
+                        dispatch_plan=dispatch_plan,
+                    )
+                else:
+                    with torch.no_grad():
+                        z_next_cand = self.think_block(
+                            z.detach(),
+                            h_anchor.detach(),
+                            step_idx=k + 1,
+                            key_mask=key_mask,
+                            active_mask=active_mask if not self.training else None,
+                            expert_ids=expert_ids,
+                            force_expert=force_expert,
+                            skip_uniform_check=skip_uniform_check,
+                            dispatch_plan=dispatch_plan,
+                        )
+            elif self.skip_final_lookahead:
+                z_next_cand = z + (z - z_prev_step)
+            else:
+                with torch.no_grad():
+                    z_next_cand = self.think_block(
+                        z.detach(),
+                        h_anchor.detach(),
+                        step_idx=k + 1,
+                        key_mask=key_mask,
+                        active_mask=active_mask if not self.training else None,
+                        expert_ids=expert_ids,
+                        force_expert=force_expert,
+                        skip_uniform_check=skip_uniform_check,
+                        dispatch_plan=dispatch_plan,
+                    )
+            cached_next_cand = z_next_cand
             surprise_k, energy_k = self.compute_surprise(h_anchor, z, z_next_cand, logits_k)
 
             step_logits.append(logits_k)
             step_energies.append(energy_k)
             surprise_trace.append(surprise_k)
-            prev_surprise = surprise_k
+            prev_prev_score = prev_score
+            prev_score = energy_k if self.halt_use_energy_only else surprise_k
             steps_used += 1
 
         final_surprise = surprise_trace[-1]
         is_unknown = final_surprise > self.abstain_threshold
 
         self.last_steps_used = steps_used
-        self.last_active_fraction = (
-            sum(active_fractions) / len(active_fractions) if active_fractions else 0.0
-        )
+        if active_frac_tensors:
+            mean_af_t = torch.stack(active_frac_tensors).mean()
+            self.last_active_fraction = (
+                0.0
+                if (z.is_cuda and torch.cuda.is_current_stream_capturing())
+                else float(mean_af_t.item())
+            )
+        else:
+            self.last_active_fraction = 0.0
         self.last_token_steps = token_steps
         self.last_surprise_trace = surprise_trace
         self.last_is_unknown = is_unknown
 
         return {
             "z_final": z,
+            "z_trace": z_trace,
             "logits_final": step_logits[-1],
             "step_logits": step_logits,
             "step_energies": step_energies,
@@ -406,16 +590,19 @@ class SurpriseDrivenLatentThinker(nn.Module):
             preds_k = flat_logits.detach().argmax(dim=-1)
             is_err = (preds_k != flat_targets).float()
             energy_flat = step_energies[k].reshape(B * L)
-            if bool(mask_flat.any()):
-                cal_k = F.binary_cross_entropy(
-                    energy_flat[mask_flat].clamp(1e-5, 1.0 - 1e-5),
-                    is_err[mask_flat],
-                )
-            else:
-                cal_k = F.binary_cross_entropy(
-                    energy_flat.clamp(1e-5, 1.0 - 1e-5),
-                    is_err,
-                )
+            with torch.amp.autocast(energy_flat.device.type, enabled=False):
+                ef = energy_flat.float()
+                it = is_err.float()
+                if bool(mask_flat.any()):
+                    cal_k = F.binary_cross_entropy(
+                        ef[mask_flat].clamp(1e-5, 1.0 - 1e-5),
+                        it[mask_flat],
+                    )
+                else:
+                    cal_k = F.binary_cross_entropy(
+                        ef.clamp(1e-5, 1.0 - 1e-5),
+                        it,
+                    )
             cal_losses.append(cal_k)
 
         # 1. Step-weighted deep supervision (later steps weighted higher: w_k = k + 1)

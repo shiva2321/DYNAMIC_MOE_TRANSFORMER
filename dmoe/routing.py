@@ -1,5 +1,6 @@
+import functools
 import math
-from typing import Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 
 import torch
 import torch.nn as nn
@@ -247,6 +248,10 @@ class CausalPrototypeRouter(nn.Module):
         lda_reg: float = 0.05,
         sim_threshold: float = 0.55,
         lda_min_protos: int = 4,
+        tail_window: int = 0,
+        use_idf_weights: bool = False,
+        center_multi_expert: bool = False,
+        revisit_sim_margin: float = 0.0,
     ):
         super().__init__()
         self.d_model = int(d_model)
@@ -255,6 +260,13 @@ class CausalPrototypeRouter(nn.Module):
         self.lda_reg = float(lda_reg)
         self.sim_threshold = float(sim_threshold)
         self.lda_min_protos = int(lda_min_protos)
+        self.tail_window = max(0, int(tail_window))
+        self.use_idf_weights = bool(use_idf_weights)
+        self.center_multi_expert = bool(center_multi_expert)
+        self.revisit_sim_margin = float(revisit_sim_margin)
+
+        self.register_buffer("_byte_ema", torch.ones(258, dtype=torch.float32) / 258.0)
+        self._byte_obs_steps: int = 0
 
         self.expert_protos: List[Optional[torch.Tensor]] = []
         self._sim_means: List[float] = []
@@ -264,6 +276,8 @@ class CausalPrototypeRouter(nn.Module):
         self._lda_w: Optional[torch.Tensor] = None
         self._lda_b: Optional[torch.Tensor] = None
         self._lda_valid_mask: Optional[torch.Tensor] = None
+        self.last_proto_sims: Optional[torch.Tensor] = None
+        self.last_thr_per_exp: Optional[torch.Tensor] = None
 
     @staticmethod
     def _extract_token_embeddings(x: torch.Tensor, encoder: nn.Module) -> torch.Tensor:
@@ -280,23 +294,77 @@ class CausalPrototypeRouter(nn.Module):
         raise ValueError("Unsupported encoder for CausalPrototypeRouter.extract_signature")
 
     @torch.no_grad()
-    def extract_signature(self, x: torch.Tensor, encoder: nn.Module) -> torch.Tensor:
+    def extract_signature(
+        self,
+        x: torch.Tensor,
+        encoder: nn.Module,
+        tail_window: Optional[int] = None,
+        context_h: Optional[torch.Tensor] = None,
+        context_blend: float = 0.0,
+    ) -> torch.Tensor:
         """
         Compute causal sequence transition signature [B, 3 * d_model].
         Prefix x[:, :t] depends strictly on tokens <= t-1.
+        When tail_window > 0, computes the signature over the most recent `tail_window`
+        tokens so mid-stream domain transitions adapt rapidly without early-token dilution.
+        When context_h and context_blend > 0 are provided, blends the contextualized
+        Layer-0 trunk representation into the unigram semantic channel.
         """
-        emb = self._extract_token_embeddings(x, encoder).float()  # [B, L, D]
+        win = self.tail_window if tail_window is None else int(tail_window)
+        x_slice = x[:, -win:] if (win > 0 and x.size(1) > win) else x
+        emb = self._extract_token_embeddings(x_slice, encoder).float()  # [B, L, D]
         B, L, D = emb.shape
-        u_mean = F.normalize(emb.mean(dim=1), p=2, dim=-1, eps=1e-6)
+        if self.use_idf_weights and x_slice.dim() == 2 and x_slice.dtype in (torch.long, torch.int64, torch.int32, torch.uint8):
+            x_ids = x_slice.long().clamp(0, 257)
+            if self.training:
+                counts = torch.bincount(x_ids.reshape(-1), minlength=258).float().to(self._byte_ema.device)
+                freq = counts / counts.sum().clamp_min(1.0)
+                decay = 0.90 if self._byte_obs_steps < 10 else 0.98
+                self._byte_ema.mul_(decay).add_(freq * (1.0 - decay))
+                self._byte_obs_steps += 1
+            p_tok = self._byte_ema.to(emb.device)[x_ids].clamp_min(1e-4)
+            w_tok = (1.0 / torch.sqrt(p_tok)).clamp(max=8.0)
+            w_tok = w_tok / w_tok.mean(dim=1, keepdim=True).clamp_min(1e-6)
+            u_raw = (emb * w_tok.unsqueeze(-1)).mean(dim=1)
+        else:
+            w_tok = None
+            u_raw = emb.mean(dim=1)
+        u_mean = F.normalize(u_raw, p=2, dim=-1, eps=1e-6)
+        if (
+            context_h is not None
+            and context_blend > 0.0
+            and context_h.dim() == 3
+            and context_h.size(-1) == D
+        ):
+            h_slice = context_h[:, -win:] if (win > 0 and context_h.size(1) > win) else context_h
+            if w_tok is not None:
+                ctx_raw = (h_slice.detach().float() * w_tok.unsqueeze(-1)).mean(dim=1)
+            else:
+                ctx_raw = h_slice.detach().float().mean(dim=1)
+            ctx_mean = F.normalize(ctx_raw, p=2, dim=-1, eps=1e-6)
+            u_mean = F.normalize(
+                (1.0 - float(context_blend)) * u_mean + float(context_blend) * ctx_mean,
+                p=2,
+                dim=-1,
+                eps=1e-6,
+            )
         if L >= 2:
             # Non-commutative HRR cyclic-shift binding preserves directed transitions a -> b
             bi_prod = torch.roll(emb[:, :-1, :], shifts=1, dims=-1) * emb[:, 1:, :]
-            b_mean = F.normalize(bi_prod.mean(dim=1), p=2, dim=-1, eps=1e-6)
+            if w_tok is not None:
+                w_bi = 0.5 * (w_tok[:, :-1] + w_tok[:, 1:])
+                b_mean = F.normalize((bi_prod * w_bi.unsqueeze(-1)).mean(dim=1), p=2, dim=-1, eps=1e-6)
+            else:
+                b_mean = F.normalize(bi_prod.mean(dim=1), p=2, dim=-1, eps=1e-6)
         else:
             b_mean = u_mean
         if L >= 3:
             skip_prod = torch.roll(emb[:, :-2, :], shifts=2, dims=-1) * emb[:, 2:, :]
-            s_mean = F.normalize(skip_prod.mean(dim=1), p=2, dim=-1, eps=1e-6)
+            if w_tok is not None:
+                w_sk = 0.5 * (w_tok[:, :-2] + w_tok[:, 2:])
+                s_mean = F.normalize((skip_prod * w_sk.unsqueeze(-1)).mean(dim=1), p=2, dim=-1, eps=1e-6)
+            else:
+                s_mean = F.normalize(skip_prod.mean(dim=1), p=2, dim=-1, eps=1e-6)
         else:
             s_mean = b_mean
         return F.normalize(torch.cat([u_mean, b_mean, s_mean], dim=-1), p=2, dim=-1, eps=1e-6)
@@ -328,7 +396,7 @@ class CausalPrototypeRouter(nn.Module):
 
     @torch.no_grad()
     def update_prototypes(self, expert_idx: int, sigs: torch.Tensor) -> None:
-        self.sync_num_experts(expert_idx + 1)
+        self.sync_num_experts(max(len(self.expert_protos), expert_idx + 1))
         flat = F.normalize(sigs.detach().reshape(-1, self.sig_dim).float(), p=2, dim=-1, eps=1e-6)
         if flat.numel() == 0:
             return
@@ -447,6 +515,8 @@ class CausalPrototypeRouter(nn.Module):
         sigs = F.normalize(signatures.float(), p=2, dim=-1, eps=1e-6)
         k = len(self.expert_protos)
         if k == 0:
+            self.last_proto_sims = None
+            self.last_thr_per_exp = None
             return (
                 torch.full((bsz,), fallback_expert, dtype=torch.long, device=device),
                 torch.zeros(bsz, device=device),
@@ -474,6 +544,8 @@ class CausalPrototypeRouter(nn.Module):
                 has_any[e_idx] = True
 
         if not bool(has_any.any().item()):
+            self.last_proto_sims = None
+            self.last_thr_per_exp = None
             return (
                 torch.full((bsz,), fallback_expert, dtype=torch.long, device=device),
                 torch.zeros(bsz, device=device),
@@ -488,12 +560,33 @@ class CausalPrototypeRouter(nn.Module):
             if self._sim_counts[e_idx] >= 4:
                 std_e = max(self._sim_vars[e_idx] ** 0.5, 0.04)
                 cal_thr = max(0.18, self._sim_means[e_idx] - 2.75 * std_e)
-                thr_per_exp[e_idx] = min(self.sim_threshold, cal_thr)
+                if self._sim_means[e_idx] > self.sim_threshold + 0.12:
+                    thr_per_exp[e_idx] = max(self.sim_threshold, min(0.85, cal_thr))
+                else:
+                    thr_per_exp[e_idx] = min(self.sim_threshold, cal_thr)
+        self.last_proto_sims = proto_sims.detach()
+        self.last_thr_per_exp = thr_per_exp.detach()
 
         if self._lda_w is not None and self._lda_valid_mask is not None:
             usable = self._lda_valid_mask & (~dormant_t)
             if int(usable.sum().item()) >= 2:
                 lda_scores = sigs @ self._lda_w.T + self._lda_b.unsqueeze(0)
+                if self.center_multi_expert:
+                    # Symmetric cross-expert prototype centering removes background vocab direction
+                    mus = [
+                        buf.to(device=device, dtype=torch.float32).mean(dim=0)
+                        for ei, buf in enumerate(self.expert_protos)
+                        if buf is not None and buf.numel() > 0 and not bool(dormant_t[ei].item())
+                    ]
+                    if len(mus) >= 2:
+                        grand_mu = torch.stack(mus, dim=0).mean(dim=0, keepdim=True)
+                        c_sigs = F.normalize(sigs - grand_mu, p=2, dim=-1, eps=1e-6)
+                        c_mus = F.normalize(torch.stack(mus, dim=0) - grand_mu, p=2, dim=-1, eps=1e-6)
+                        # Blend centered cosine discriminative score into LDA logits cleanly
+                        valid_idx = [ei for ei, buf in enumerate(self.expert_protos) if buf is not None and buf.numel() > 0 and not bool(dormant_t[ei].item())]
+                        c_bonus = torch.zeros_like(lda_scores)
+                        c_bonus[:, valid_idx] = (c_sigs @ c_mus.T) * 4.0
+                        lda_scores = lda_scores + c_bonus
                 lda_scores = lda_scores.masked_fill(~usable.unsqueeze(0), -1e9)
                 assigned = lda_scores.argmax(dim=-1)
                 assigned_sim = proto_sims.gather(1, assigned.unsqueeze(1)).squeeze(1)
@@ -516,4 +609,455 @@ class CausalPrototypeRouter(nn.Module):
         if self._lda_b is not None:
             total += self._lda_b.numel() * 4
         return total
+
+
+@functools.lru_cache(maxsize=64)
+def _causal_ema_weights(seq_len: int, decay: float, device_str: str, dtype_str: str) -> torch.Tensor:
+    """Lower-triangular causal EMA matrix `W [T, T]` whose rows sum to `1.0`."""
+    dev = torch.device(device_str)
+    dtype = getattr(torch, dtype_str.split(".")[-1], torch.float32)
+    idx = torch.arange(seq_len, device=dev, dtype=torch.float32)
+    diff = idx.unsqueeze(1) - idx.unsqueeze(0)  # [T, T], >=0 on causal lower triangle
+    causal = diff >= 0
+    weights = torch.where(causal, decay ** diff.clamp_min(0.0), torch.zeros_like(diff))
+    weights = weights / weights.sum(dim=-1, keepdim=True).clamp_min(1e-8)
+    return weights.to(dtype=dtype)
+
+
+def build_token_dispatch_plan(
+    top_ids: torch.Tensor,
+    top_w: torch.Tensor,
+    num_experts: int,
+) -> Tuple[torch.Tensor, torch.Tensor, List[int]]:
+    """
+    Build a sorted sparse dispatch plan `(tok_idx, weights, counts)` ONCE per forward pass.
+    `top_ids, top_w` may have shape `[B, T, K]` or `[N, K]`.
+    """
+    flat_ids = top_ids.reshape(-1, top_ids.size(-1))
+    flat_w = top_w.reshape(-1, top_w.size(-1))
+    mask = flat_w > 0.0
+    nz = mask.nonzero(as_tuple=False)
+    E = max(1, int(num_experts))
+    if nz.numel() == 0:
+        empty_idx = flat_ids.new_zeros((0,), dtype=torch.long)
+        empty_w = flat_w.new_zeros((0,))
+        return empty_idx, empty_w, [0] * E
+
+    tok_idx = nz[:, 0]
+    slot_idx = nz[:, 1]
+    exp_id = flat_ids[tok_idx, slot_idx].clamp(0, E - 1)
+    weights = flat_w[tok_idx, slot_idx]
+    order = torch.argsort(exp_id, stable=True)
+    tok_idx = tok_idx[order]
+    exp_id = exp_id[order]
+    weights = weights[order]
+    counts = torch.bincount(exp_id, minlength=E).tolist()
+    return tok_idx, weights, [int(c) for c in counts]
+
+
+def sparse_weighted_expert_dispatch(
+    x_flat: torch.Tensor,
+    modules: Any,
+    dispatch_plan: Tuple[torch.Tensor, torch.Tensor, List[int]],
+    fn_call: Optional[Any] = None,
+    out_dim: Optional[int] = None,
+) -> Optional[torch.Tensor]:
+    """
+    Shared top-k sorted scatter-add dispatcher over `dispatch_plan = (tok_idx, weights, counts)`.
+    Returns `[N, out_dim]` additive residual or `None` when active count is zero.
+    """
+    tok_idx, weights, counts = dispatch_plan
+    if tok_idx.numel() == 0:
+        return None
+    split_sizes = [int(c) for c in counts]
+    if sum(split_sizes) != tok_idx.numel():
+        return None
+    x_gather = x_flat.index_select(0, tok_idx)
+    chunks = torch.split(x_gather, split_sizes, dim=0)
+    E = len(modules)
+    out_chunks: List[torch.Tensor] = []
+    keep_idx: List[torch.Tensor] = []
+    keep_w: List[torch.Tensor] = []
+    offset = 0
+    for e, ci in enumerate(split_sizes):
+        if ci > 0 and e < E:
+            y_e = fn_call(modules[e], chunks[e], e) if fn_call is not None else modules[e](chunks[e])
+            out_chunks.append(y_e)
+            keep_idx.append(tok_idx[offset : offset + ci])
+            keep_w.append(weights[offset : offset + ci])
+        offset += ci
+    if not out_chunks:
+        return None
+    cat_out = torch.cat(out_chunks, dim=0) * torch.cat(keep_w, dim=0).to(dtype=out_chunks[0].dtype).unsqueeze(-1)
+    d_out = cat_out.size(-1) if out_dim is None else int(out_dim)
+    out = x_flat.new_zeros((x_flat.size(0), d_out), dtype=cat_out.dtype)
+    out.index_add_(0, torch.cat(keep_idx, dim=0), cat_out)
+    return out
+
+
+class CausalContextTokenRouter(nn.Module):
+    """
+    v7 Zero-Replay-Safe Contextual Per-Token/Chunk Router.
+
+    Runs after Layer-3 ThreeLevelAttention (`z_ctx [B, T, D]`):
+      - Projects contextual latents via GPM-protected `q_proj` and `ctx_proj`.
+      - Matches against frozen-when-mature multi-key expert centroids `K_e in [M_k, d_route]`.
+      - Computes differentiable `k in {0, 1, 2}` conditional activation per chunk,
+        immediately escalating `nuance_mask == True` chunks to `k = 2`.
+    """
+
+    def __init__(
+        self,
+        d_model: int,
+        d_route: int = 96,
+        max_experts: int = 16,
+        initial_experts: int = 1,
+        num_keys: int = 8,
+        grad_scale: float = 0.25,
+        ema_decay: float = 0.85,
+        tau_skip: float = 0.38,
+        tau_top2: float = 0.82,
+        delta_mix: float = 0.05,
+        scale: float = 12.0,
+        active_rate_low: float = 0.35,
+        active_rate_high: float = 0.80,
+        warmup_steps: int = 20,
+        sequence_level: bool = False,
+        use_loss_free_balance: bool = True,
+        bias_lr: float = 0.05,
+    ):
+        super().__init__()
+        self.d_model = int(d_model)
+        self.d_route = int(d_route)
+        self.max_experts = int(max_experts)
+        self.num_experts = max(1, int(initial_experts))
+        self.num_keys = max(1, int(num_keys))
+        self.grad_scale = float(grad_scale)
+        self.ema_decay = float(ema_decay)
+        self.tau_skip = float(tau_skip)
+        self.tau_top2 = float(tau_top2)
+        self.delta_mix = float(delta_mix)
+        self.scale = float(scale)
+        self.active_rate_low = float(active_rate_low)
+        self.active_rate_high = float(active_rate_high)
+        self.warmup_steps = int(warmup_steps)
+        self.sequence_level = bool(sequence_level)
+        self.use_loss_free_balance = bool(use_loss_free_balance)
+        self.bias_lr = float(bias_lr)
+
+        self.route_norm = nn.LayerNorm(self.d_model)
+        self.q_proj = nn.Linear(self.d_model, self.d_route, bias=False)
+        self.ctx_proj = nn.Linear(self.d_model, self.d_route, bias=False)
+        hidden_need = max(32, self.d_model // 2)
+        self.need_head = nn.Sequential(
+            nn.Linear(self.d_model, hidden_need),
+            nn.GELU(),
+            nn.Linear(hidden_need, 1),
+        )
+        self.spec_gate_scale = nn.Parameter(torch.tensor(0.5))
+
+        gen = torch.Generator().manual_seed(1337)
+        init_keys = F.normalize(torch.randn(self.max_experts, self.num_keys, self.d_route, generator=gen), dim=-1)
+        self.register_buffer("expert_keys", init_keys)
+        self.register_buffer("key_initialized", torch.zeros(self.max_experts, self.num_keys, dtype=torch.bool))
+        self.register_buffer("key_counts", torch.zeros(self.max_experts, self.num_keys, dtype=torch.float32))
+        self.register_buffer("expert_frozen", torch.zeros(self.max_experts, dtype=torch.bool))
+        self.register_buffer("expert_dormant", torch.zeros(self.max_experts, dtype=torch.bool))
+        self.register_buffer("expert_bias", torch.zeros(self.max_experts, dtype=torch.float32))
+        self.register_buffer("steps_seen", torch.tensor(0, dtype=torch.long))
+
+    def sync_num_experts(self, n: int) -> None:
+        self.num_experts = max(1, min(int(n), self.max_experts))
+
+    @torch.no_grad()
+    def freeze_expert(self, idx: int) -> None:
+        if 0 <= idx < self.max_experts:
+            self.expert_frozen[idx] = True
+
+    @torch.no_grad()
+    def set_dormant(self, idx: int, dormant: bool = True) -> None:
+        if 0 <= idx < self.max_experts:
+            self.expert_dormant[idx] = bool(dormant)
+
+    @torch.no_grad()
+    def seed_expert_from_vectors(self, idx: int, vecs: torch.Tensor) -> None:
+        """Seed multi-key prototypes of `idx` using farthest-point coverage over cluster vectors."""
+        if not (0 <= idx < self.max_experts) or vecs.numel() == 0:
+            return
+        v = F.normalize(vecs.detach().float().to(self.expert_keys.device), dim=-1)
+        n = v.size(0)
+        k_fill = min(self.num_keys, n)
+        chosen: List[torch.Tensor] = [v.mean(dim=0)]
+        chosen[0] = F.normalize(chosen[0], dim=0)
+        for _ in range(1, k_fill):
+            c_mat = torch.stack(chosen, dim=0)
+            max_sim = (v @ c_mat.t()).max(dim=-1).values
+            far_i = int(torch.argmin(max_sim).item())
+            chosen.append(v[far_i])
+        for j in range(k_fill):
+            self.expert_keys[idx, j] = chosen[j]
+            self.key_initialized[idx, j] = True
+            self.key_counts[idx, j] = 1.0
+        for j in range(k_fill, self.num_keys):
+            self.expert_keys[idx, j] = chosen[j % k_fill]
+            self.key_initialized[idx, j] = False
+            self.key_counts[idx, j] = 0.0
+        self.expert_frozen[idx] = False
+        self.expert_dormant[idx] = False
+
+    def compute_queries(
+        self,
+        h_attn3: torch.Tensor,
+        expert_states: Optional[List[int]] = None,
+    ) -> Dict[str, torch.Tensor]:
+        """Compute strictly causal query representations `q_tok`, `need`, `d_ctx`, and `probs`."""
+        B, T, _ = h_attn3.shape
+        h_mix = self.grad_scale * h_attn3 + (1.0 - self.grad_scale) * h_attn3.detach()
+        h_route = self.route_norm(h_mix)
+        if self.sequence_level:
+            h_route = h_route.mean(dim=1, keepdim=True).expand_as(h_route)
+            h_ema = h_route
+        else:
+            W_ema = _causal_ema_weights(T, self.ema_decay, str(h_route.device), str(h_route.dtype))
+            h_ema = torch.matmul(W_ema.unsqueeze(0), h_route)
+        q_tok = F.normalize(self.q_proj(h_route) + self.ctx_proj(h_ema), p=2, dim=-1)
+        need = torch.sigmoid(self.need_head(h_route).squeeze(-1))
+
+        E = self.num_experts
+        keys_e = F.normalize(self.expert_keys[:E].float(), dim=-1)  # [E, M_k, d_r]
+        key_sims = torch.einsum("btd,emd->btem", q_tok.float(), keys_e)
+        init_mask = self.key_initialized[:E]
+        # Prefer initialized slots once an expert has at least one initialized key; before init use full bank
+        has_init = init_mask.any(dim=-1)  # [E]
+        for e in range(E):
+            if bool(has_init[e].item()):
+                key_sims[:, :, e, ~init_mask[e]] = -1.0
+
+        max_key_sim = key_sims.max(dim=-1).values  # [B, T, E]
+        dormant_mask = self.expert_dormant[:E].clone()
+        if expert_states is not None:
+            for e in range(min(E, len(expert_states))):
+                if int(expert_states[e]) == 2:
+                    dormant_mask[e] = True
+        if bool(dormant_mask.any().item()):
+            max_key_sim = max_key_sim.masked_fill(dormant_mask.view(1, 1, E), -2.0)
+
+        d_ctx = (1.0 - max_key_sim.max(dim=-1).values).clamp(0.0, 2.0)
+        logits_r = self.scale * max_key_sim
+        if bool(dormant_mask.any().item()):
+            logits_r = logits_r.masked_fill(dormant_mask.view(1, 1, E), -1e4)
+        probs = F.softmax(logits_r, dim=-1)
+
+        if self.use_loss_free_balance and E > 1:
+            biased_sim = max_key_sim + self.expert_bias[:E].view(1, 1, E)
+            if bool(dormant_mask.any().item()):
+                biased_sim = biased_sim.masked_fill(dormant_mask.view(1, 1, E), -2.0)
+            routing_scores = F.softmax(self.scale * biased_sim, dim=-1)
+        else:
+            routing_scores = probs
+
+        return {
+            "q_tok": q_tok,
+            "need": need,
+            "d_ctx": d_ctx,
+            "max_key_sim": max_key_sim,
+            "probs": probs,
+            "routing_scores": routing_scores,
+            "dormant_mask": dormant_mask,
+        }
+
+    def select_experts(
+        self,
+        query_state: Dict[str, torch.Tensor],
+        nuance_mask: Optional[torch.Tensor] = None,
+        training_step: Optional[int] = None,
+    ) -> Dict[str, torch.Tensor]:
+        """Select per-chunk `k in {0, 1, 2}` specialists, immediately escalating nuanced chunks to `k=2`."""
+        q_tok = query_state["q_tok"]
+        need = query_state["need"]
+        probs = query_state["probs"]
+        routing_scores = query_state.get("routing_scores", probs)
+        d_ctx = query_state["d_ctx"]
+        max_key_sim = query_state.get("max_key_sim", None)
+        B, T, E = probs.shape
+        dev = probs.device
+
+        nuanced = (
+            nuance_mask.to(device=dev, dtype=torch.bool)
+            if nuance_mask is not None
+            else torch.zeros(B, T, dtype=torch.bool, device=dev)
+        )
+        cur_step = int(self.steps_seen.item()) if training_step is None else int(training_step)
+        in_warmup = self.training and cur_step < self.warmup_steps
+        spec_scale = F.softplus(self.spec_gate_scale)
+        gate_val = spec_scale * (0.4 + 0.6 * need)
+
+        if E == 1:
+            is_active = torch.ones_like(nuanced) if in_warmup else ((need >= self.tau_skip) | nuanced)
+            k_used = is_active.long()
+            w1 = torch.where(is_active, gate_val, torch.zeros_like(gate_val))
+            top_ids = torch.zeros(B, T, 2, dtype=torch.long, device=dev)
+            top_w = torch.stack([w1, torch.zeros_like(w1)], dim=-1)
+            load_bal = probs.new_tensor(0.0)
+            if max_key_sim is not None:
+                erc_loss = (1.0 - max_key_sim[..., 0].clamp(-1.0, 1.0)).pow(2).mean()
+            else:
+                erc_loss = probs.new_tensor(0.0)
+        else:
+            _, p_ids = torch.topk(routing_scores, k=2, dim=-1)
+            p_vals = torch.gather(probs, -1, p_ids)
+            margin = p_vals[..., 0] - p_vals[..., 1]
+            is_skip = torch.zeros_like(nuanced) if in_warmup else ((need < self.tau_skip) & (~nuanced))
+            is_top2 = (~is_skip) & ((margin < self.delta_mix) | (need >= self.tau_top2) | nuanced)
+            k_used = torch.where(is_skip, 0, torch.where(is_top2, 2, 1))
+
+            mix_sum = (p_vals[..., 0] + p_vals[..., 1]).clamp_min(1e-6)
+            w_top2 = (p_vals / mix_sum.unsqueeze(-1)) * gate_val.unsqueeze(-1)
+            w_top1 = torch.stack([p_vals[..., 0] * gate_val, torch.zeros_like(gate_val)], dim=-1)
+            w_zero = torch.zeros_like(w_top2)
+
+            top_ids = p_ids
+            top_w = torch.where(
+                is_skip.unsqueeze(-1),
+                w_zero,
+                torch.where(is_top2.unsqueeze(-1), w_top2, w_top1),
+            )
+            # Load-balance across active non-dormant experts
+            dormant_mask = query_state["dormant_mask"]
+            valid_e = (~dormant_mask).float()
+            n_valid = valid_e.sum().clamp_min(1.0)
+            one_hot_top1 = F.one_hot(p_ids[..., 0], num_classes=E).float() * (~is_skip).float().unsqueeze(-1)
+            frac_assigned = one_hot_top1.mean(dim=(0, 1))
+            mean_prob = probs.mean(dim=(0, 1))
+            load_bal = n_valid * (frac_assigned * mean_prob * valid_e).sum()
+            # Expert-Router Coupling (ERC): match q_tok closely to assigned key + encourage distinct functional modes
+            if max_key_sim is not None:
+                assigned_sim = torch.gather(max_key_sim, -1, p_ids[..., :1]).squeeze(-1)
+                active_f = (~is_skip).float()
+                erc_align = (((1.0 - assigned_sim) * active_f).pow(2).sum()) / active_f.sum().clamp_min(1.0)
+                k_means = F.normalize(self.expert_keys[:E].mean(dim=1).float(), dim=-1)
+                off_cos = (k_means @ k_means.t()) * (1.0 - torch.eye(E, device=dev))
+                erc_loss = erc_align + 0.15 * off_cos.pow(2).mean()
+            else:
+                erc_loss = probs.new_tensor(0.0)
+
+        # Soft target-rate regularizer keeps dynamic k alive without forcing degenerate all-0 or all-2
+        mean_need = need.mean()
+        rate_reg = F.relu(self.active_rate_low - mean_need).pow(2) + F.relu(mean_need - self.active_rate_high).pow(2)
+        if self.use_loss_free_balance:
+            # DeepSeek-V3 style loss-free bias handles load balance; avoid homogenizing softmax aux penalty
+            balance_loss = 0.25 * rate_reg + 0.15 * erc_loss
+        else:
+            balance_loss = 0.05 * load_bal + 0.25 * rate_reg + 0.10 * erc_loss
+
+        return {
+            "top_ids": top_ids,
+            "top_w": top_w,
+            "k_used": k_used,
+            "d_ctx": d_ctx,
+            "probs": probs,
+            "q_tok": q_tok,
+            "need": need,
+            "balance_loss": balance_loss,
+            "erc_loss": erc_loss,
+        }
+
+    def forward(
+        self,
+        h_attn3: torch.Tensor,
+        nuance_mask: Optional[torch.Tensor] = None,
+        expert_states: Optional[List[int]] = None,
+        training_step: Optional[int] = None,
+    ) -> Dict[str, torch.Tensor]:
+        q_state = self.compute_queries(h_attn3, expert_states=expert_states)
+        return self.select_experts(q_state, nuance_mask=nuance_mask, training_step=training_step)
+
+    @torch.no_grad()
+    def update_keys(
+        self,
+        q_tok: torch.Tensor,
+        top_ids: torch.Tensor,
+        top_w: torch.Tensor,
+        expert_states: Optional[List[int]] = None,
+        new_subkey_sim: float = 0.72,
+    ) -> None:
+        """
+        Update multi-key prototypes ONLY for `STATE_ACTIVE` experts & adjust loss-free load bias.
+        Permanently frozen (`STATE_FROZEN` / `expert_frozen[e]`) experts receive zero key writes.
+        """
+        self.steps_seen += 1
+        q_flat = F.normalize(q_tok.detach().float().reshape(-1, self.d_route), dim=-1)
+        ids_flat = top_ids.detach().reshape(-1, top_ids.size(-1))
+        w_flat = top_w.detach().reshape(-1, top_w.size(-1))
+        E = self.num_experts
+
+        if self.use_loss_free_balance and E > 1:
+            valid_mask = torch.ones(E, dtype=torch.bool, device=q_flat.device)
+            for e in range(E):
+                if bool(self.expert_dormant[e].item()) or (
+                    expert_states is not None and e < len(expert_states) and int(expert_states[e]) == 2
+                ):
+                    valid_mask[e] = False
+            n_val = max(1, int(valid_mask.sum().item()))
+            active_tok = w_flat[:, 0] > 0.0
+            if bool(active_tok.any().item()):
+                counts_e = torch.bincount(ids_flat[active_tok, 0], minlength=E)[:E].float()
+                frac = counts_e / counts_e.sum().clamp_min(1.0)
+                target = 1.0 / float(n_val)
+                delta = self.bias_lr * torch.sign(target - frac)
+                for e in range(E):
+                    if valid_mask[e]:
+                        self.expert_bias[e] = (self.expert_bias[e] + delta[e]).clamp(-0.35, 0.35)
+
+        for e in range(E):
+            if bool(self.expert_frozen[e].item()):
+                continue
+            if expert_states is not None and e < len(expert_states) and int(expert_states[e]) != 0:
+                continue
+            mask_e = ((ids_flat[:, 0] == e) & (w_flat[:, 0] > 0.0)) | (
+                (ids_flat[:, 1] == e) & (w_flat[:, 1] > 0.0)
+            )
+            if not bool(mask_e.any().item()):
+                continue
+            qe = q_flat[mask_e]
+            if qe.size(0) > 64:
+                qe = qe[:64]
+
+            keys_e = self.expert_keys[e]
+            init_e = self.key_initialized[e]
+            cnt_e = self.key_counts[e]
+            if not bool(init_e[0].item()):
+                keys_e[0] = F.normalize(qe.mean(dim=0), dim=0)
+                init_e[0] = True
+                cnt_e[0] = float(qe.size(0))
+                if qe.size(0) == 1:
+                    continue
+            # Batch-assign remaining queries to nearest initialized key or allocate next uninitialized key
+            init_idx = init_e.nonzero(as_tuple=False).squeeze(-1)
+            sims = qe @ keys_e[init_idx].t()
+            best_sim, best_pos = sims.max(dim=-1)
+            best_slot = init_idx[best_pos]
+
+            uninit_slots = (~init_e).nonzero(as_tuple=False).squeeze(-1).tolist()
+            if uninit_slots:
+                far_mask = best_sim < new_subkey_sim
+                if bool(far_mask.any().item()):
+                    far_vecs = qe[far_mask]
+                    slot_new = uninit_slots[0]
+                    keys_e[slot_new] = F.normalize(far_vecs.mean(dim=0), dim=0)
+                    init_e[slot_new] = True
+                    cnt_e[slot_new] = float(far_vecs.size(0))
+                    qe = qe[~far_mask]
+                    best_slot = best_slot[~far_mask]
+
+            if qe.numel() > 0:
+                for slot_val in best_slot.unique().tolist():
+                    m_s = best_slot == int(slot_val)
+                    c_old = float(cnt_e[slot_val].item())
+                    c_new = float(m_s.sum().item())
+                    eta = min(0.25, c_new / max(1.0, c_old + c_new))
+                    updated = (1.0 - eta) * keys_e[slot_val] + eta * F.normalize(qe[m_s].mean(dim=0), dim=0)
+                    keys_e[slot_val] = F.normalize(updated, dim=0)
+                    cnt_e[slot_val] = min(1000.0, c_old + c_new)
+
 
