@@ -699,6 +699,8 @@ class RealSelfStabilizingDMoE(nn.Module):
         d_sem_nuance_thresh: float = 2.0,
         nuance_cluster_min: int = 20,
         nuance_cluster_cos: float = 0.72,
+        use_rel_pool: bool = True,
+        enable_nuance_escalation: bool = True,
     ):
         super().__init__()
         self.d_model = d_model
@@ -740,8 +742,14 @@ class RealSelfStabilizingDMoE(nn.Module):
         )
         self._moe_ref_layer_idx: int = self.router_layer if self.use_v7_core else 0
         self.detach_decoder = bool(detach_decoder)
-        self.z_nuance_thresh = float(z_nuance_thresh)
-        self.d_sem_nuance_thresh = float(d_sem_nuance_thresh)
+        self.use_rel_pool = bool(use_rel_pool)
+        self.enable_nuance_escalation = bool(enable_nuance_escalation)
+        if not self.enable_nuance_escalation:
+            self.z_nuance_thresh = 1e9
+            self.d_sem_nuance_thresh = 1e9
+        else:
+            self.z_nuance_thresh = float(z_nuance_thresh)
+            self.d_sem_nuance_thresh = float(d_sem_nuance_thresh)
         self.nuance_cluster_min = int(nuance_cluster_min)
         self.nuance_cluster_cos = float(nuance_cluster_cos)
         self.null_space_projector: Optional[Any] = None
@@ -799,7 +807,9 @@ class RealSelfStabilizingDMoE(nn.Module):
         self.ctx_head: Optional[nn.Linear] = nn.Linear(d_model, d_model) if self.use_v7_core else None
         self.abstain_head: Optional[nn.Linear] = nn.Linear(d_model, 1) if self.use_v7_core else None
         self.fsp_head: Optional[nn.Linear] = nn.Linear(d_model, 128) if self.use_v7_core else None
-        self.rel_pool_proj: Optional[nn.Linear] = nn.Linear(3 * d_model, d_model) if self.use_v8_core else None
+        self.rel_pool_proj: Optional[nn.Linear] = (
+            nn.Linear(3 * d_model, d_model) if (self.use_v8_core and self.use_rel_pool) else None
+        )
         self.wm_ret_proj: Optional[nn.Linear] = nn.Linear(d_model, d_model) if self.use_v8_core else None
         self.wm_fut_mlp: Optional[nn.Sequential] = (
             nn.Sequential(
@@ -1290,7 +1300,7 @@ class RealSelfStabilizingDMoE(nn.Module):
         last_idx = torch.where(mask, idx_grid, torch.zeros_like(idx_grid)).max(dim=1).values
         u_last = torch.gather(z_f, 1, last_idx.view(B, 1, 1).expand(B, 1, D)).squeeze(1)
 
-        if not (use_rel and self.rel_pool_proj is not None):
+        if not (use_rel and self.rel_pool_proj is not None and getattr(self, "use_rel_pool", True)):
             raw = (0.65 * u_mean + 0.35 * u_last) if self.use_v8_core else u_mean
             raw_d = raw.to(dtype=z.dtype)
             return raw_d, F.normalize(raw, dim=-1).to(dtype=z.dtype), (u_last - u_mean).to(dtype=z.dtype)
@@ -1432,7 +1442,10 @@ class RealSelfStabilizingDMoE(nn.Module):
                 "z_belief": torch.zeros(B, T, device=h.device),
             }
         )
-        nuance_mask = nuance_info["nuance_mask"] & (content_mask if self.use_v8_core else torch.ones_like(content_mask))
+        if not getattr(self, "enable_nuance_escalation", True):
+            nuance_mask = torch.zeros(B, T, dtype=torch.bool, device=h.device)
+        else:
+            nuance_mask = nuance_info["nuance_mask"] & (content_mask if self.use_v8_core else torch.ones_like(content_mask))
 
         route_res = self.context_router.select_experts(q_state, nuance_mask=nuance_mask)
         top_ids = route_res["top_ids"]
