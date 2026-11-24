@@ -813,6 +813,8 @@ class CausalContextTokenRouter(nn.Module):
         surface_dim: int = 12,
         surface_ema_decay: float = 0.94,
         surface_ridge: float = 0.05,
+        frozen_exempt_balance: bool = False,
+        residual_ortho_router: bool = False,
     ):
         super().__init__()
         self.d_model = int(d_model)
@@ -836,10 +838,25 @@ class CausalContextTokenRouter(nn.Module):
         self.surface_dim = int(surface_dim)
         self.surface_ema_decay = float(surface_ema_decay)
         self.surface_ridge = float(surface_ridge)
+        self.frozen_exempt_balance = bool(frozen_exempt_balance)
+        self.residual_ortho_router = bool(residual_ortho_router)
 
         self.route_norm = nn.LayerNorm(self.d_model)
         self.q_proj = nn.Linear(self.d_model, self.d_route, bias=False)
         self.ctx_proj = nn.Linear(self.d_model, self.d_route, bias=False)
+        if self.residual_ortho_router:
+            # Frozen semi-orthogonal routing anchor preserves full linear separability of h_attn3;
+            # learnable q_proj / ctx_proj act as bounded semantic refinement residuals.
+            gen_o = torch.Generator().manual_seed(4242)
+            raw_q = torch.randn(self.d_model, self.d_route, generator=gen_o)
+            raw_c = torch.randn(self.d_model, self.d_route, generator=gen_o)
+            q_orth, _ = torch.linalg.qr(raw_q, mode="reduced") if self.d_model >= self.d_route else (F.normalize(raw_q, dim=0), None)
+            c_orth, _ = torch.linalg.qr(raw_c, mode="reduced") if self.d_model >= self.d_route else (F.normalize(raw_c, dim=0), None)
+            self.register_buffer("q_ortho_base", q_orth.t().contiguous())
+            self.register_buffer("ctx_ortho_base", c_orth.t().contiguous())
+            with torch.no_grad():
+                self.q_proj.weight.mul_(0.15)
+                self.ctx_proj.weight.mul_(0.15)
         hidden_need = max(32, self.d_model // 2)
         self.need_head = nn.Sequential(
             nn.Linear(self.d_model, hidden_need),
@@ -873,6 +890,8 @@ class CausalContextTokenRouter(nn.Module):
     def freeze_expert(self, idx: int) -> None:
         if 0 <= idx < self.max_experts:
             self.expert_frozen[idx] = True
+            if self.frozen_exempt_balance:
+                self.expert_bias[idx] = 0.0
 
     @torch.no_grad()
     def set_dormant(self, idx: int, dormant: bool = True) -> None:
@@ -913,6 +932,10 @@ class CausalContextTokenRouter(nn.Module):
         n = H.size(0)
         if n < 2:
             return
+        # Freeze surface null-space basis once calibrated (~160 steps) so frozen expert keys
+        # never suffer coordinate-frame drift across later continual domains!
+        if self.frozen_exempt_balance and self._surf_steps_i >= 160:
+            return
         mu_h_b = H.mean(dim=0)
         mu_s_b = S.mean(dim=0)
         steps = self._surf_steps_i
@@ -951,6 +974,7 @@ class CausalContextTokenRouter(nn.Module):
         expert_states: Optional[List[int]] = None,
         surface_feats: Optional[torch.Tensor] = None,
         update_surface_stats: bool = False,
+        content_mask: Optional[torch.Tensor] = None,
     ) -> Dict[str, torch.Tensor]:
         """Compute strictly causal query representations `q_tok`, `need`, `d_ctx`, and `probs`."""
         B, T, _ = h_attn3.shape
@@ -958,19 +982,45 @@ class CausalContextTokenRouter(nn.Module):
         h_route = self.route_norm(h_mix)
         if self.enable_surface_whitening:
             if update_surface_stats and self.training and surface_feats is not None:
-                self._update_surface_subspace(h_route, surface_feats)
+                if content_mask is not None and bool(content_mask.any().item()):
+                    self._update_surface_subspace(h_route[content_mask], surface_feats[content_mask])
+                else:
+                    self._update_surface_subspace(h_route, surface_feats)
             if self._surf_steps_i >= 2:
                 h_c = h_route.float() - self.surf_mu_h.view(1, 1, -1)
                 basis = self.surf_proj_basis  # [D, d_s]
                 proj = torch.matmul(torch.matmul(h_c, basis), basis.t())
                 h_route = (h_c - proj).to(h_route.dtype)
         if self.sequence_level:
-            h_route = h_route.mean(dim=1, keepdim=True).expand_as(h_route)
+            if content_mask is not None:
+                cm_w = content_mask.unsqueeze(-1).to(dtype=h_route.dtype)
+                h_seq = (h_route * cm_w).sum(dim=1, keepdim=True) / cm_w.sum(dim=1, keepdim=True).clamp_min(1.0)
+                h_route = h_seq.expand_as(h_route)
+            else:
+                h_route = h_route.mean(dim=1, keepdim=True).expand_as(h_route)
             h_ema = h_route
         else:
             W_ema = _causal_ema_weights(T, self.ema_decay, str(h_route.device), str(h_route.dtype))
-            h_ema = torch.matmul(W_ema.unsqueeze(0), h_route)
-        q_tok = F.normalize(self.q_proj(h_route) + self.ctx_proj(h_ema), p=2, dim=-1)
+            if content_mask is not None and self.residual_ortho_router:
+                # Mask non-content/leading-space chunks out of causal EMA so padding/space shifts
+                # never dilute subsequent contextual queries (strictly causal).
+                cm_f = content_mask.to(dtype=h_route.dtype)  # [B, T]
+                W_c = W_ema.unsqueeze(0) * cm_f.unsqueeze(1)  # [B, T, T]
+                row_s = W_c.sum(dim=-1, keepdim=True)
+                W_eff = torch.where(row_s > 1e-6, W_c / row_s.clamp_min(1e-6), W_ema.unsqueeze(0))
+                h_ema = torch.bmm(W_eff, h_route)
+            else:
+                h_ema = torch.matmul(W_ema.unsqueeze(0), h_route)
+        if self.residual_ortho_router:
+            q_base = F.linear(h_route, self.q_ortho_base.to(dtype=h_route.dtype))
+            c_base = F.linear(h_ema, self.ctx_ortho_base.to(dtype=h_ema.dtype))
+            q_tok = F.normalize(
+                0.20 * (q_base + self.q_proj(h_route)) + 0.80 * (c_base + self.ctx_proj(h_ema)),
+                p=2,
+                dim=-1,
+            )
+        else:
+            q_tok = F.normalize(self.q_proj(h_route) + self.ctx_proj(h_ema), p=2, dim=-1)
         need = torch.sigmoid(self.need_head(h_route).squeeze(-1))
 
         E = self.num_experts
@@ -1064,7 +1114,8 @@ class CausalContextTokenRouter(nn.Module):
             p_vals = torch.gather(probs, -1, p_ids)
             margin = p_vals[..., 0] - p_vals[..., 1]
             is_skip = (~valid_c) | (torch.zeros_like(nuanced) if in_warmup else ((need < self.tau_skip) & (~nuanced)))
-            is_top2 = (~is_skip) & ((margin < self.delta_mix) | (need >= self.tau_top2) | nuanced)
+            margin_trig = (margin < self.delta_mix) if self.delta_mix > 0.0 else torch.zeros_like(nuanced)
+            is_top2 = (~is_skip) & (margin_trig | (need >= self.tau_top2) | nuanced)
             k_used = torch.where(is_skip, 0, torch.where(is_top2, 2, 1))
 
             mix_sum = (p_vals[..., 0] + p_vals[..., 1]).clamp_min(1e-6)
@@ -1157,20 +1208,37 @@ class CausalContextTokenRouter(nn.Module):
         if self.use_loss_free_balance and E > 1:
             valid_mask = torch.ones(E, dtype=torch.bool, device=q_flat.device)
             for e in range(E):
-                if bool(self.expert_dormant[e].item()) or (
+                is_dorm = bool(self.expert_dormant[e].item()) or (
                     expert_states is not None and e < len(expert_states) and int(expert_states[e]) == 2
-                ):
+                )
+                is_froz = self.frozen_exempt_balance and (
+                    bool(self.expert_frozen[e].item())
+                    or (expert_states is not None and e < len(expert_states) and int(expert_states[e]) == 1)
+                )
+                if is_dorm or is_froz:
                     valid_mask[e] = False
-            n_val = max(1, int(valid_mask.sum().item()))
+                    if self.frozen_exempt_balance:
+                        self.expert_bias[e] = 0.0
+            n_val = int(valid_mask.sum().item())
             active_tok = w_flat[:, 0] > 0.0
-            if bool(active_tok.any().item()):
+            if bool(active_tok.any().item()) and ((not self.frozen_exempt_balance) or n_val >= 2):
                 counts_e = torch.bincount(ids_flat[active_tok, 0], minlength=E)[:E].float()
-                frac = counts_e / counts_e.sum().clamp_min(1.0)
-                target = 1.0 / float(n_val)
-                delta = self.bias_lr * torch.sign(target - frac)
-                for e in range(E):
-                    if valid_mask[e]:
-                        self.expert_bias[e] = (self.expert_bias[e] + delta[e]).clamp(-0.35, 0.35)
+                if self.frozen_exempt_balance:
+                    counts_e = counts_e * valid_mask.float()
+                tot_c = counts_e.sum()
+                if float(tot_c.item()) > 0.0:
+                    frac = counts_e / tot_c.clamp_min(1.0)
+                    target = 1.0 / float(max(1, n_val))
+                    delta = self.bias_lr * torch.sign(target - frac)
+                    for e in range(E):
+                        if valid_mask[e]:
+                            self.expert_bias[e] = (self.expert_bias[e] + delta[e]).clamp(-0.35, 0.35)
+                    if self.frozen_exempt_balance and n_val >= 2:
+                        # Zero-mean center plastic biases so active experts never drift above frozen (0.0) experts!
+                        mean_b = self.expert_bias[:E][valid_mask].mean()
+                        for e in range(E):
+                            if valid_mask[e]:
+                                self.expert_bias[e] = (self.expert_bias[e] - mean_b).clamp(-0.35, 0.35)
 
         for e in range(E):
             if bool(self.expert_frozen[e].item()):

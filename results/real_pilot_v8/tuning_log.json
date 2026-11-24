@@ -1,0 +1,234 @@
+[
+  {
+    "trial": 1,
+    "track": "track1",
+    "seed": 100,
+    "out_dir": "results/real_pilot_v8/dev_t1_trial1",
+    "changes": "Initial v11 Track 1 config (lr_muon=0.012, wd=0.22, gf_alpha=0.95, gf_lamb=1.5, op_rank_low=12, coupled clip).",
+    "results": {
+      "CognitiveDMoE": {
+        "train_seconds": 424.53,
+        "seen_acc": 0.8984,
+        "heldout_unseen_acc": 0.4036,
+        "paraphrase_acc": 0.3854,
+        "iit_heldout_acc": 0.3594,
+        "burst_immunity_acc": 0.75,
+        "shots_4_comp_equiv": 0.6406,
+        "shots_8_lookup": 0.625,
+        "shots_8_comp_equiv": 0.6562,
+        "shots_8_shift": 0.1562,
+        "shots_16_shift": 0.2031,
+        "shots_8_shift_shuff": 0.0469
+      }
+    }
+  },
+  {
+    "trial": 2,
+    "track": "track1",
+    "seed": 100,
+    "out_dir": "results/real_pilot_v8/dev_t1_trial2",
+    "changes": "Decoupled op_opt (zero trunk clip interference), lr_muon=0.009, lr_adam=0.0035, wd=0.14, gf_alpha=0.98, gf_lamb=2.0, op_rank_low=12. SELECTED & FROZEN FOR TRACK 1 TEST.",
+    "results": {
+      "CognitiveDMoE": {
+        "train_seconds": 464.97,
+        "seen_acc": 0.9036,
+        "heldout_unseen_acc": 0.5547,
+        "paraphrase_acc": 0.6016,
+        "iit_heldout_acc": 0.5625,
+        "burst_immunity_acc": 0.7812,
+        "shots_4_comp_equiv": 0.8438,
+        "shots_8_lookup": 0.75,
+        "shots_8_comp_equiv": 0.625,
+        "shots_8_shift": 0.0469,
+        "shots_16_shift": 0.1562,
+        "shots_8_shift_shuff": 0.125
+      }
+    }
+  },
+  {
+    "trial": 3,
+    "track": "track1",
+    "seed": 100,
+    "out_dir": "results/real_pilot_v8/dev_t1_trial3",
+    "changes": "Low Grokfast (gf_lamb=0.5, wd=0.12) + op_rank_low=4 + LOOCV gate (failed to grok on seed 100).",
+    "results": {
+      "CognitiveDMoE": {
+        "train_seconds": 526.45,
+        "seen_acc": 0.9583,
+        "heldout_unseen_acc": 0.0859,
+        "paraphrase_acc": 0.0911,
+        "iit_heldout_acc": 0.0625,
+        "burst_immunity_acc": 0.9922,
+        "shots_4_comp_equiv": 0.6875,
+        "shots_8_lookup": 0.8594,
+        "shots_8_comp_equiv": 0.5938,
+        "shots_8_shift": 0.0156,
+        "shots_16_shift": 0.0469,
+        "shots_8_shift_shuff": 0.0625
+      }
+    }
+  },
+  {
+    "trial": 4,
+    "track": "track1",
+    "seed": 100,
+    "out_dir": "results/real_pilot_v8/dev_t1_trial4",
+    "changes": "Grokfast cooldown (gf_lamb=2.5->0 at 75%) + op_rank_low=4 + LOOCV gate (LOOCV suppressed low-rank head during cold start).",
+    "results": {
+      "CognitiveDMoE": {
+        "train_seconds": 445.56,
+        "seen_acc": 0.9453,
+        "heldout_unseen_acc": 0.1771,
+        "paraphrase_acc": 0.2266,
+        "iit_heldout_acc": 0.25,
+        "burst_immunity_acc": 0.9297,
+        "shots_4_comp_equiv": 0.8594,
+        "shots_8_lookup": 0.8906,
+        "shots_8_comp_equiv": 0.625,
+        "shots_8_shift": 0.0312,
+        "shots_16_shift": 0.0469,
+        "shots_8_shift_shuff": 0.0312
+      }
+    }
+  },
+  {
+    "trial": 1,
+    "track": "track2",
+    "seed": 100,
+    "out_dir": "results/real_pilot_v8/dev_t2_trial1",
+    "changes": "Initial v11 Track 2 config (shift_invariant_pool=True, grad_scale=0.15, cris_weight=0.45, frozen_exempt_balance=True, GPM readout-exempt).",
+    "results": {
+      "CognitiveDMoE": {
+        "train_seconds": 349.69,
+        "b77_acc": 0.4967,
+        "b77_auc": 0.6006,
+        "mean_final_r5": 0.1812,
+        "mean_k": 0.98,
+        "num_experts": 6.0,
+        "lm_ami": 0.0388,
+        "len_ami": 0.0768,
+        "pert": 0.3631,
+        "les_d": 0.0218,
+        "role_spec": 2.676
+      },
+      "CognitiveDMoE_FrozenRandomRouter": {
+        "train_seconds": 340.17,
+        "b77_acc": 0.5258,
+        "b77_auc": 0.6034,
+        "mean_final_r5": 0.25,
+        "mean_k": 0.9805,
+        "num_experts": 6.0,
+        "lm_ami": 0.1385,
+        "len_ami": 0.234,
+        "pert": 0.3214,
+        "les_d": 0.0173,
+        "role_spec": 2.872
+      }
+    }
+  },
+  {
+    "trial": 2,
+    "track": "track2",
+    "seed": 100,
+    "out_dir": "results/real_pilot_v8/dev_t2_trial2",
+    "changes": "Sharp chunker (shift_invariant_pool=False), grad_scale=0.0 + no_grad lower trunk in extract_router_queries, zero-mean centered plastic expert_bias, cris_weight=0.35.",
+    "results": {
+      "CognitiveDMoE": {
+        "train_seconds": 312.63,
+        "b77_acc": 0.505,
+        "b77_auc": 0.4614,
+        "mean_final_r5": 0.2313,
+        "mean_k": 0.9805,
+        "num_experts": 6.0,
+        "lm_ami": 0.1004,
+        "len_ami": 0.1958,
+        "pert": 0.1786,
+        "les_d": 0.0106,
+        "role_spec": 3.141
+      },
+      "CognitiveDMoE_FrozenRandomRouter": {
+        "train_seconds": 299.97,
+        "b77_acc": 0.4733,
+        "b77_auc": 0.5741,
+        "mean_final_r5": 0.2094,
+        "mean_k": 0.9658,
+        "num_experts": 6.0,
+        "lm_ami": 0.2531,
+        "len_ami": 0.3878,
+        "pert": 0.4821,
+        "les_d": 0.0074,
+        "role_spec": 3.55
+      }
+    }
+  },
+  {
+    "trial": 3,
+    "track": "track2",
+    "seed": 100,
+    "out_dir": "results/real_pilot_v8/dev_t2_trial3",
+    "changes": "Froze surf_proj_basis after warmup (>=160 steps), exempted q_proj/ctx_proj from GPM, exp_orth every 4 steps, cris_weight=0.25, pert_every=4, shared_dropout=0.15. SELECTED & FROZEN FOR TRACK 2 TEST.",
+    "results": {
+      "CognitiveDMoE": {
+        "train_seconds": 373.7,
+        "b77_acc": 0.4975,
+        "b77_auc": 0.5261,
+        "mean_final_r5": 0.1969,
+        "mean_k": 0.9736,
+        "num_experts": 6.0,
+        "lm_ami": 0.0529,
+        "len_ami": 0.0809,
+        "pert": 0.494,
+        "les_d": 0.0217,
+        "role_spec": 3.334
+      },
+      "CognitiveDMoE_FrozenRandomRouter": {
+        "train_seconds": 302.81,
+        "b77_acc": 0.4792,
+        "b77_auc": 0.5923,
+        "mean_final_r5": 0.2344,
+        "mean_k": 0.9775,
+        "num_experts": 6.0,
+        "lm_ami": 0.0826,
+        "len_ami": 0.2191,
+        "pert": 0.3929,
+        "les_d": 0.008,
+        "role_spec": 2.944
+      }
+    }
+  },
+  {
+    "trial": 4,
+    "track": "track2",
+    "seed": 100,
+    "out_dir": "results/real_pilot_v8/dev_t2_trial4",
+    "changes": "Reduced pert_every=8 and shared_dropout=0.10 (degraded b77, len_ami, and pert vs Trial 3).",
+    "results": {
+      "CognitiveDMoE": {
+        "train_seconds": 321.82,
+        "b77_acc": 0.4458,
+        "b77_auc": 0.4869,
+        "mean_final_r5": 0.1875,
+        "mean_k": 0.978,
+        "num_experts": 6.0,
+        "lm_ami": 0.1185,
+        "len_ami": 0.232,
+        "pert": 0.3988,
+        "les_d": 0.0176,
+        "role_spec": 3.637
+      },
+      "CognitiveDMoE_FrozenRandomRouter": {
+        "train_seconds": 304.89,
+        "b77_acc": 0.5117,
+        "b77_auc": 0.6099,
+        "mean_final_r5": 0.2031,
+        "mean_k": 0.9795,
+        "num_experts": 6.0,
+        "lm_ami": 0.2377,
+        "len_ami": 0.3854,
+        "pert": 0.3333,
+        "les_d": 0.0098,
+        "role_spec": 3.348
+      }
+    }
+  }
+]

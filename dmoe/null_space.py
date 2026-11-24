@@ -34,12 +34,20 @@ _PRIVATE_MARKERS = (
 _READOUT_HEAD_NAMES = (
     "rel_pool_proj",
     "wm_ret_proj",
+    "wm_fut_mlp",
+    "wm_ret_gate",
     "i7_struct_head",
     "expr_proj",
     "expr_head",
     "ctx_head",
     "fsp_head",
     "abstain_head",
+    "equiv_proto_bank",
+    "need_head",
+    "spec_gate_scale",
+    "long_term.op_",
+    "context_router.q_proj",
+    "context_router.ctx_proj",
 )
 
 
@@ -488,6 +496,10 @@ class NullSpaceProjector:
                     covered.add(id(p))
             for nm, p in self.model.named_parameters():
                 if _is_private_module_name(nm):
+                    continue
+                if self.exempt_readout_heads and any(
+                    nm == h or nm.startswith(f"{h}.") or (h in nm) for h in _READOUT_HEAD_NAMES
+                ):
                     continue
                 if id(p) in covered:
                     continue

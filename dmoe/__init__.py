@@ -11,8 +11,12 @@ from dmoe.replay_buffer import ReplayBuffer
 from dmoe.continual import ContinualLearner
 from dmoe.jepa import JEPAModule, MASK_TOKEN_ID
 from dmoe.chunker import MultiScaleByteChunker, BYTE_MASK_ID, BYTE_PAD_ID
+from dmoe.cognitive_dmoe import CognitiveDMoE, CognitiveDMoEConfig, CognitiveTrainer
 
 __all__ = [
+    "CognitiveDMoE",
+    "CognitiveDMoEConfig",
+    "CognitiveTrainer",
     "SelfStabilizingDynamicMorphicMoE",
     "rebuild_optimizer_preserving_state",
     "DynamicMorphicTransformerLayer",

@@ -22,6 +22,7 @@ class MultiScaleByteChunker(nn.Module):
         d_model: int,
         chunk_size: int = 4,
         kernel_sizes: Tuple[int, ...] = (1, 2, 4, 8),
+        shift_invariant_pool: bool = False,
     ):
         super().__init__()
         if chunk_size <= 0:
@@ -29,6 +30,7 @@ class MultiScaleByteChunker(nn.Module):
         self.d_model = d_model
         self.chunk_size = chunk_size
         self.kernel_sizes = tuple(kernel_sizes)
+        self.shift_invariant_pool = bool(shift_invariant_pool)
 
         # 0..255 for raw UTF-8/binary bytes, 256 for BYTE_MASK_ID, 257 for BYTE_PAD_ID
         self.byte_embed = nn.Embedding(258, d_model, padding_idx=BYTE_PAD_ID)
@@ -49,6 +51,16 @@ class MultiScaleByteChunker(nn.Module):
         )
         self.register_buffer("slot_phase_basis", torch.sin(slot_angles).unsqueeze(0).unsqueeze(0))
         self.slot_phase_gate = nn.Parameter(torch.tensor(0.0))
+        if self.shift_invariant_pool:
+            # Causal triangular BlurPool kernel for shift-resilient strided chunking (Zhang, ICML 2019)
+            if chunk_size == 1:
+                bw = torch.tensor([1.0], dtype=torch.float32)
+            else:
+                half = (chunk_size + 1) / 2.0
+                idx_b = torch.arange(chunk_size, dtype=torch.float32) + 1.0
+                bw = torch.minimum(idx_b, (chunk_size + 1.0) - idx_b)
+                bw = (bw + 0.25) / (bw + 0.25).sum()
+            self.register_buffer("blur_kernel", bw.view(1, 1, chunk_size))
         self.last_byte_features: Optional[torch.Tensor] = None
         self.last_pos_chunks: Optional[torch.Tensor] = None
 
@@ -115,16 +127,37 @@ class MultiScaleByteChunker(nn.Module):
         ms_features = (ms_raw + emb) * valid_mask  # [B, L, d_model]
         pos_features = F.relu(ms_raw) * valid_mask  # Sparse nonnegative multi-scale k-gram detector
 
+        if self.shift_invariant_pool and self.chunk_size > 1:
+            # Strictly causal low-pass BlurPool before strided chunking reduces 1..3-byte shift aliasing
+            bk = self.blur_kernel.to(dtype=ms_features.dtype, device=ms_features.device)
+            bk_d = bk.expand(self.d_model, 1, self.chunk_size)
+            ms_pad_t = F.pad(ms_features.transpose(1, 2), (self.chunk_size - 1, 0))
+            ms_blur = F.conv1d(ms_pad_t, bk_d, groups=self.d_model).transpose(1, 2) * valid_mask
+            pos_pad_t = F.pad(pos_features.transpose(1, 2), (self.chunk_size - 1, 0))
+            pos_blur = F.conv1d(pos_pad_t, bk_d, groups=self.d_model).transpose(1, 2) * valid_mask
+            ms_pool_src = 0.65 * ms_blur + 0.35 * ms_features
+            pos_pool_src = 0.65 * pos_blur + 0.35 * pos_features
+        else:
+            ms_pool_src = ms_features
+            pos_pool_src = pos_features
+
         remainder = seq_len % self.chunk_size
         if remainder != 0:
             pad_len = self.chunk_size - remainder
             ms_features = F.pad(ms_features, (0, 0, 0, pad_len))
-            pos_features = F.pad(pos_features, (0, 0, 0, pad_len))
+            ms_pool_src = F.pad(ms_pool_src, (0, 0, 0, pad_len))
+            pos_pool_src = F.pad(pos_pool_src, (0, 0, 0, pad_len))
+            valid_mask = F.pad(valid_mask, (0, 0, 0, pad_len))
 
         num_chunks = ms_features.size(1) // self.chunk_size
         clean_slots = ms_features.reshape(bsz, num_chunks, self.chunk_size, self.d_model)
-        pre_phase_mean = clean_slots.mean(dim=2)
-        pos_slots = pos_features.reshape(bsz, num_chunks, self.chunk_size, self.d_model)
+        pool_slots = ms_pool_src.reshape(bsz, num_chunks, self.chunk_size, self.d_model)
+        if self.shift_invariant_pool:
+            vm_slots = valid_mask.reshape(bsz, num_chunks, self.chunk_size, 1)
+            pre_phase_mean = (pool_slots * vm_slots).sum(dim=2) / vm_slots.sum(dim=2).clamp_min(1.0)
+        else:
+            pre_phase_mean = clean_slots.mean(dim=2)
+        pos_slots = pos_pool_src.reshape(bsz, num_chunks, self.chunk_size, self.d_model)
         self.last_pos_chunks = 0.5 * pos_slots.mean(dim=2) + 0.5 * pos_slots.max(dim=2).values
         # Apply gated intra-chunk phase-rotation + cyclic roll binding per byte slot
         rolled = torch.roll(clean_slots, shifts=1, dims=-1)
@@ -133,4 +166,6 @@ class MultiScaleByteChunker(nn.Module):
         )
         self.last_byte_features = slot_features
         chunked = slot_features.reshape(bsz, num_chunks, self.chunk_size * self.d_model)
+        if self.shift_invariant_pool:
+            return self.chunk_norm(0.45 * self.chunk_proj(chunked) + 0.85 * pre_phase_mean)
         return self.chunk_norm(self.chunk_proj(chunked) + 0.65 * pre_phase_mean)

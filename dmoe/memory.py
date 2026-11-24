@@ -462,6 +462,8 @@ class LongTermSlotMemory(nn.Module):
         null_logit: float = 3.2,
         enable_dual_ridge_op: bool = False,
         op_rank: int = 48,
+        op_rank_low: int = 8,
+        op_v_low_mlp: bool = False,
     ):
         super().__init__()
         self.d_model = d_model
@@ -471,6 +473,7 @@ class LongTermSlotMemory(nn.Module):
         self.merge_cos_threshold = float(merge_cos_threshold)
         self.enable_dual_ridge_op = bool(enable_dual_ridge_op)
         self.op_rank = int(op_rank)
+        self.op_v_low_mlp = bool(op_v_low_mlp)
 
         self.q_proj = nn.Linear(d_model, d_model)
         self.k_proj = nn.Linear(d_model, d_model)
@@ -481,8 +484,8 @@ class LongTermSlotMemory(nn.Module):
         if self.enable_dual_ridge_op:
             # Dual-Head Closed-Form Ridge Operator:
             #  - High-rank nonlinear head (`op_rank`): sharp discrete/compositional permutation binding
-            #  - Low-rank linear head (`op_rank_low=8`): continuous group/cyclic shift induction on unseen meanings
-            self.op_rank_low = min(8, self.op_rank)
+            #  - Low-rank linear-key head (`op_rank_low`): continuous group/cyclic shift induction on unseen meanings
+            self.op_rank_low = min(int(op_rank_low), self.op_rank)
             self.op_lin = nn.Linear(d_model, self.op_rank, bias=True)
             self.op_mlp = nn.Sequential(
                 nn.Linear(d_model, self.op_rank),
@@ -499,7 +502,15 @@ class LongTermSlotMemory(nn.Module):
             self.op_override_logit = nn.Parameter(torch.tensor(0.5))
 
             self.op_lin_low = nn.Linear(d_model, self.op_rank_low, bias=False)
-            self.op_v_low = nn.Linear(d_model, self.op_rank_low, bias=False)
+            if self.op_v_low_mlp:
+                h_v = max(32, self.op_rank_low * 3)
+                self.op_v_low: nn.Module = nn.Sequential(
+                    nn.Linear(d_model, h_v),
+                    nn.GELU(),
+                    nn.Linear(h_v, self.op_rank_low, bias=False),
+                )
+            else:
+                self.op_v_low = nn.Linear(d_model, self.op_rank_low, bias=False)
             self.op_out_low = nn.Linear(self.op_rank_low, d_model, bias=False)
             self.op_log_lambda_low = nn.Parameter(torch.tensor(-3.0))
             self.op_gate_low = nn.Parameter(torch.tensor(0.85))
@@ -600,7 +611,10 @@ class LongTermSlotMemory(nn.Module):
         k_hi = self._encode_op_feat(key_latents)
         v_hi = self.op_v_proj(value_latents.to(dtype=self.op_v_proj.weight.dtype)).float()
         k_lo = F.normalize(self.op_lin_low(key_latents.to(dtype=self.op_lin_low.weight.dtype)).float(), p=2, dim=-1, eps=1e-6)
-        v_lo = self.op_v_low(value_latents.to(dtype=self.op_v_low.weight.dtype)).float()
+        v_low_dtype = (
+            self.op_v_low[0].weight.dtype if isinstance(self.op_v_low, nn.Sequential) else self.op_v_low.weight.dtype
+        )
+        v_lo = self.op_v_low(value_latents.to(dtype=v_low_dtype)).float()
         return torch.cat([k_hi, k_lo], dim=-1), torch.cat([v_hi, v_lo], dim=-1)
 
     def read_dual_operator(
@@ -628,7 +642,12 @@ class LongTermSlotMemory(nn.Module):
             m_f = op_mask.to(device=dev, dtype=torch.float32).unsqueeze(-1) if op_mask is not None else None
             eye_m = torch.eye(M, device=dev, dtype=torch.float32).unsqueeze(0)
 
-            def _solve_head(q_f: torch.Tensor, k_f: torch.Tensor, v_f: torch.Tensor, log_lam: torch.Tensor) -> torch.Tensor:
+            def _solve_head(
+                q_f: torch.Tensor,
+                k_f: torch.Tensor,
+                v_f: torch.Tensor,
+                log_lam: torch.Tensor,
+            ) -> torch.Tensor:
                 if m_f is not None:
                     k_f = k_f * m_f
                     v_f = v_f * m_f
@@ -647,7 +666,7 @@ class LongTermSlotMemory(nn.Module):
             pred_hi = _solve_head(q_hi, k_hi, v_hi, self.op_log_lambda)
             out = F.linear(pred_hi, self.op_out_proj.weight.float()) * self.op_gate.float()
 
-            # Low-rank linear group head (if packed)
+            # Low-rank linear group head
             if (
                 self.op_lin_low is not None
                 and self.op_out_low is not None
@@ -868,6 +887,8 @@ class DualTimescaleMemory(nn.Module):
         ltm_null_logit: float = 3.2,
         enable_dual_ridge_op: bool = False,
         op_rank: int = 48,
+        op_rank_low: int = 8,
+        op_v_low_mlp: bool = False,
     ):
         super().__init__()
         self.in_norm = nn.LayerNorm(d_model)
@@ -884,6 +905,8 @@ class DualTimescaleMemory(nn.Module):
             null_logit=ltm_null_logit,
             enable_dual_ridge_op=enable_dual_ridge_op,
             op_rank=op_rank,
+            op_rank_low=op_rank_low,
+            op_v_low_mlp=op_v_low_mlp,
         )
         self.stm_gate = nn.Linear(d_model, 1)
         # Contextual LTM gate sees causal short-term state so prefix rules/tasks can suppress
