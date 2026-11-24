@@ -460,6 +460,8 @@ class LongTermSlotMemory(nn.Module):
         ema_decay: float = 0.85,
         merge_cos_threshold: float = 0.92,
         null_logit: float = 3.2,
+        enable_dual_ridge_op: bool = False,
+        op_rank: int = 48,
     ):
         super().__init__()
         self.d_model = d_model
@@ -467,12 +469,54 @@ class LongTermSlotMemory(nn.Module):
         self.write_surprise_threshold = float(write_surprise_threshold)
         self.ema_decay = float(ema_decay)
         self.merge_cos_threshold = float(merge_cos_threshold)
+        self.enable_dual_ridge_op = bool(enable_dual_ridge_op)
+        self.op_rank = int(op_rank)
 
         self.q_proj = nn.Linear(d_model, d_model)
         self.k_proj = nn.Linear(d_model, d_model)
         self.v_proj = nn.Linear(d_model, d_model)
         self.salience_head = nn.Linear(d_model, 1)
         self.out_proj = nn.Linear(d_model, d_model, bias=False)
+
+        if self.enable_dual_ridge_op:
+            # Dual-Head Closed-Form Ridge Operator:
+            #  - High-rank nonlinear head (`op_rank`): sharp discrete/compositional permutation binding
+            #  - Low-rank linear head (`op_rank_low=8`): continuous group/cyclic shift induction on unseen meanings
+            self.op_rank_low = min(8, self.op_rank)
+            self.op_lin = nn.Linear(d_model, self.op_rank, bias=True)
+            self.op_mlp = nn.Sequential(
+                nn.Linear(d_model, self.op_rank),
+                nn.GELU(),
+                nn.Linear(self.op_rank, self.op_rank),
+            )
+            with torch.no_grad():
+                self.op_mlp[2].weight.mul_(0.10)
+                self.op_mlp[2].bias.zero_()
+            self.op_v_proj = nn.Linear(d_model, d_model)
+            self.op_out_proj = nn.Linear(d_model, d_model, bias=False)
+            self.op_log_lambda = nn.Parameter(torch.tensor(-2.5))
+            self.op_gate = nn.Parameter(torch.tensor(0.85))
+            self.op_override_logit = nn.Parameter(torch.tensor(0.5))
+
+            self.op_lin_low = nn.Linear(d_model, self.op_rank_low, bias=False)
+            self.op_v_low = nn.Linear(d_model, self.op_rank_low, bias=False)
+            self.op_out_low = nn.Linear(self.op_rank_low, d_model, bias=False)
+            self.op_log_lambda_low = nn.Parameter(torch.tensor(-3.0))
+            self.op_gate_low = nn.Parameter(torch.tensor(0.85))
+        else:
+            self.op_rank_low = 0
+            self.op_lin = None
+            self.op_mlp = None
+            self.op_v_proj = None
+            self.op_out_proj = None
+            self.op_log_lambda = None
+            self.op_gate = None
+            self.op_override_logit = None
+            self.op_lin_low = None
+            self.op_v_low = None
+            self.op_out_low = None
+            self.op_log_lambda_low = None
+            self.op_gate_low = None
 
         # Learnable temperature and size-invariant null-sink score (logit + log(M));
         # initialize at 3.2 to preserve untrained random-slot rejection (mass_1 < 0.15)
@@ -533,6 +577,92 @@ class LongTermSlotMemory(nn.Module):
         k_norm = F.normalize(k_proj_out, p=2, dim=-1, eps=1e-6) if normalize_k else k_proj_out
         v_proj = self.v_proj(value_latents)
         return k_norm, v_proj
+
+    def _encode_op_feat(self, latents: torch.Tensor) -> torch.Tensor:
+        """Shared feature map phi_op(h) mapping deep latents onto the unit sphere for Dual Ridge solve."""
+        assert self.op_lin is not None and self.op_mlp is not None
+        x_in = latents.to(dtype=self.op_lin.weight.dtype)
+        feat = self.op_lin(x_in) + self.op_mlp(x_in)
+        return F.normalize(feat.float(), p=2, dim=-1, eps=1e-6)
+
+    def encode_op_kv(
+        self,
+        key_latents: torch.Tensor,
+        value_latents: torch.Tensor,
+    ) -> Tuple[torch.Tensor, torch.Tensor]:
+        """
+        Project support shot deep keys and answer values for Dual-Head Closed-Form Ridge Induction.
+        Packs `[high_rank_key, low_rank_key]` and `[high_rank_val, low_rank_val]` along the last dim
+        so the external `(op_keys, op_vals)` contract stays unchanged.
+        """
+        if not self.enable_dual_ridge_op or self.op_v_proj is None or self.op_lin_low is None or self.op_v_low is None:
+            raise RuntimeError("Dual ridge operator is disabled on this LongTermSlotMemory.")
+        k_hi = self._encode_op_feat(key_latents)
+        v_hi = self.op_v_proj(value_latents.to(dtype=self.op_v_proj.weight.dtype)).float()
+        k_lo = F.normalize(self.op_lin_low(key_latents.to(dtype=self.op_lin_low.weight.dtype)).float(), p=2, dim=-1, eps=1e-6)
+        v_lo = self.op_v_low(value_latents.to(dtype=self.op_v_low.weight.dtype)).float()
+        return torch.cat([k_hi, k_lo], dim=-1), torch.cat([v_hi, v_lo], dim=-1)
+
+    def read_dual_operator(
+        self,
+        query_latents: torch.Tensor,
+        op_keys: torch.Tensor,
+        op_vals: torch.Tensor,
+        op_mask: Optional[torch.Tensor] = None,
+    ) -> torch.Tensor:
+        """
+        Dual-Head Closed-Form In-Context Ridge Operator:
+            W_ep = K^T (K K^T + lambda I)^(-1) V
+            y_q  = (phi(q) K^T) (K K^T + lambda I)^(-1) V
+        Combines a high-rank nonlinear head (discrete/compositional binding) with a low-rank
+        linear head (continuous cyclic/group operator induction on unseen meanings).
+        """
+        if not self.enable_dual_ridge_op or self.op_out_proj is None or self.op_log_lambda is None or self.op_gate is None:
+            return query_latents.new_zeros(query_latents.shape)
+        if op_keys.size(1) == 0:
+            return query_latents.new_zeros(query_latents.shape)
+
+        dev = query_latents.device
+        with torch.amp.autocast(device_type=dev.type, enabled=False):
+            B, M, _ = op_keys.shape
+            m_f = op_mask.to(device=dev, dtype=torch.float32).unsqueeze(-1) if op_mask is not None else None
+            eye_m = torch.eye(M, device=dev, dtype=torch.float32).unsqueeze(0)
+
+            def _solve_head(q_f: torch.Tensor, k_f: torch.Tensor, v_f: torch.Tensor, log_lam: torch.Tensor) -> torch.Tensor:
+                if m_f is not None:
+                    k_f = k_f * m_f
+                    v_f = v_f * m_f
+                gram = torch.bmm(k_f, k_f.transpose(1, 2))
+                lam = F.softplus(log_lam.float()).clamp(1e-3, 10.0)
+                A = torch.linalg.solve(gram + lam * eye_m, v_f)
+                k_q = torch.bmm(q_f, k_f.transpose(1, 2))
+                pred_v = torch.bmm(k_q, A)
+                v_norm = pred_v.norm(dim=-1, keepdim=True).clamp_min(1e-6)
+                return pred_v * torch.clamp(12.0 / v_norm, max=1.0)
+
+            # High-rank head
+            k_hi = op_keys[..., : self.op_rank].float()
+            v_hi = op_vals[..., : self.d_model].float()
+            q_hi = self._encode_op_feat(query_latents.float())
+            pred_hi = _solve_head(q_hi, k_hi, v_hi, self.op_log_lambda)
+            out = F.linear(pred_hi, self.op_out_proj.weight.float()) * self.op_gate.float()
+
+            # Low-rank linear group head (if packed)
+            if (
+                self.op_lin_low is not None
+                and self.op_out_low is not None
+                and self.op_log_lambda_low is not None
+                and self.op_gate_low is not None
+                and op_keys.size(-1) >= self.op_rank + self.op_rank_low
+                and op_vals.size(-1) >= self.d_model + self.op_rank_low
+            ):
+                k_lo = op_keys[..., self.op_rank : self.op_rank + self.op_rank_low].float()
+                v_lo = op_vals[..., self.d_model : self.d_model + self.op_rank_low].float()
+                q_lo = F.normalize(F.linear(query_latents.float(), self.op_lin_low.weight.float()), p=2, dim=-1, eps=1e-6)
+                pred_lo = _solve_head(q_lo, k_lo, v_lo, self.op_log_lambda_low)
+                out = out + F.linear(pred_lo, self.op_out_low.weight.float()) * self.op_gate_low.float()
+
+        return out.to(dtype=query_latents.dtype)
 
     def read(
         self,
@@ -736,6 +866,8 @@ class DualTimescaleMemory(nn.Module):
         conv_kernel: int = 4,
         signed_beta: bool = True,
         ltm_null_logit: float = 3.2,
+        enable_dual_ridge_op: bool = False,
+        op_rank: int = 48,
     ):
         super().__init__()
         self.in_norm = nn.LayerNorm(d_model)
@@ -750,6 +882,8 @@ class DualTimescaleMemory(nn.Module):
             num_slots=num_ltm_slots,
             write_surprise_threshold=write_surprise_threshold,
             null_logit=ltm_null_logit,
+            enable_dual_ridge_op=enable_dual_ridge_op,
+            op_rank=op_rank,
         )
         self.stm_gate = nn.Linear(d_model, 1)
         # Contextual LTM gate sees causal short-term state so prefix rules/tasks can suppress

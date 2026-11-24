@@ -1266,6 +1266,7 @@ def classify_v7_spgc_param_groups(
             or "spec_gate_scale" in ln
             or "expr_proj." in ln
             or "equiv_proto_bank" in ln
+            or "long_term.op_" in ln
         )
         is_vec_only = (
             p.ndim != 2
@@ -1278,6 +1279,7 @@ def classify_v7_spgc_param_groups(
             or "context_router.ctx_proj" in ln
             or "expr_proj." in ln
             or "equiv_proto_bank" in ln
+            or "long_term.op_" in ln
         )
         if is_specialist:
             if not is_vec_only:

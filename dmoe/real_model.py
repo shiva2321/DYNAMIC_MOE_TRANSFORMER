@@ -26,6 +26,7 @@ from dmoe.routing import (
     CausalPrototypeRouter,
     SequenceContentRouter,
     build_token_dispatch_plan,
+    compute_chunk_surface_features,
     sparse_weighted_expert_dispatch,
 )
 from dmoe.thinking import SurpriseDrivenLatentThinker
@@ -104,12 +105,16 @@ class RealDynamicMorphicMoE(nn.Module):
         d_ff_shared: Optional[int] = None,
         v7_trunk_only: bool = False,
         init_spec_small: bool = False,
+        specialist_init_scale: float = 0.05,
+        shared_dropout_prob: float = 0.0,
     ):
         super().__init__()
         self.d_model = d_model
         self.d_ff = d_ff
         self.v7_trunk_only = bool(v7_trunk_only)
         self.init_spec_small = bool(init_spec_small)
+        self.specialist_init_scale = float(specialist_init_scale)
+        self.shared_dropout_prob = float(shared_dropout_prob)
         self.use_shared_expert = bool(use_shared_expert or v7_trunk_only)
         sh_dff = int(d_ff_shared) if d_ff_shared is not None else d_ff
         self.shared_expert: Optional[RealExpert] = (
@@ -127,7 +132,7 @@ class RealDynamicMorphicMoE(nn.Module):
             if self.init_spec_small:
                 with torch.no_grad():
                     for exp in experts:
-                        exp.linear2.weight.mul_(0.05)
+                        exp.linear2.weight.mul_(self.specialist_init_scale)
                         exp.linear2.bias.zero_()
             self.experts = nn.ModuleList(experts)
             self.register_buffer("expert_usage", torch.ones(initial_experts) / max(1, initial_experts))
@@ -176,7 +181,7 @@ class RealDynamicMorphicMoE(nn.Module):
             new_expert = RealExpert(self.d_model, self.d_ff).to(device)
             if self.init_spec_small:
                 with torch.no_grad():
-                    new_expert.linear2.weight.mul_(0.05)
+                    new_expert.linear2.weight.mul_(self.specialist_init_scale)
                     new_expert.linear2.bias.zero_()
         else:
             new_expert = self.experts[source_idx].clone_with_mutation(mutation_std=0.015).to(device)
@@ -229,7 +234,14 @@ class RealDynamicMorphicMoE(nn.Module):
             dispatch_plan,
             out_dim=self.d_model,
         )
-        return (base + spec.to(dtype=x.dtype).view_as(x) if spec is not None else base), self._zero_entropy
+        if spec is None:
+            return base, self._zero_entropy
+        spec_3d = spec.to(dtype=x.dtype).view_as(x)
+        if self.training and self.shared_dropout_prob > 0.0 and len(self.experts) >= 2 and self.shared_expert is not None:
+            has_spec = spec_3d.detach().abs().sum(dim=-1, keepdim=True) > 1e-8
+            drop_mask = (torch.rand(has_spec.shape, device=x.device) < self.shared_dropout_prob) & has_spec
+            base = torch.where(drop_mask, base * 0.35, base)
+        return (base + spec_3d), self._zero_entropy
 
     def forward(self, x: torch.Tensor, update_stats: bool = True) -> Tuple[torch.Tensor, torch.Tensor]:
         """
@@ -286,6 +298,8 @@ class RealDynamicMorphicLayer(nn.Module):
         d_ff_shared: Optional[int] = None,
         v7_trunk_only: bool = False,
         init_spec_small: bool = False,
+        specialist_init_scale: float = 0.05,
+        shared_dropout_prob: float = 0.0,
     ):
         super().__init__()
         self.d_model = d_model
@@ -349,6 +363,8 @@ class RealDynamicMorphicLayer(nn.Module):
             d_ff_shared=d_ff_shared,
             v7_trunk_only=v7_trunk_only,
             init_spec_small=init_spec_small,
+            specialist_init_scale=specialist_init_scale,
+            shared_dropout_prob=shared_dropout_prob,
         )
 
     def spawn_expert_adapters(self, source_idx: Optional[int] = None, fresh_init: bool = False) -> None:
@@ -701,6 +717,13 @@ class RealSelfStabilizingDMoE(nn.Module):
         nuance_cluster_cos: float = 0.72,
         use_rel_pool: bool = True,
         enable_nuance_escalation: bool = True,
+        enable_surface_whitening: bool = False,
+        enable_cris_loss: bool = False,
+        enable_dual_ridge_ep: bool = False,
+        dual_ridge_op_rank: int = 48,
+        decouple_nuance_lifecycle: bool = False,
+        specialist_init_scale: float = 0.05,
+        shared_dropout_prob: float = 0.0,
     ):
         super().__init__()
         self.d_model = d_model
@@ -744,7 +767,14 @@ class RealSelfStabilizingDMoE(nn.Module):
         self.detach_decoder = bool(detach_decoder)
         self.use_rel_pool = bool(use_rel_pool)
         self.enable_nuance_escalation = bool(enable_nuance_escalation)
-        if not self.enable_nuance_escalation:
+        self.enable_surface_whitening = bool(enable_surface_whitening)
+        self.enable_cris_loss = bool(enable_cris_loss)
+        self.enable_dual_ridge_ep = bool(enable_dual_ridge_ep)
+        self.dual_ridge_op_rank = int(dual_ridge_op_rank)
+        self.decouple_nuance_lifecycle = bool(decouple_nuance_lifecycle)
+        self.specialist_init_scale = float(specialist_init_scale)
+        self.shared_dropout_prob = float(shared_dropout_prob)
+        if (not self.enable_nuance_escalation) and (not self.decouple_nuance_lifecycle):
             self.z_nuance_thresh = 1e9
             self.d_sem_nuance_thresh = 1e9
         else:
@@ -790,6 +820,15 @@ class RealSelfStabilizingDMoE(nn.Module):
                 max_experts=max_experts,
                 initial_experts=initial_experts,
                 num_keys=router_num_keys,
+                enable_surface_whitening=self.enable_surface_whitening,
+                surface_dim=(6 if self.enable_surface_whitening else 12),
+                delta_mix=(0.0 if (self.decouple_nuance_lifecycle and not self.enable_nuance_escalation) else 0.05),
+                tau_top2=(1.05 if (self.decouple_nuance_lifecycle and not self.enable_nuance_escalation) else 0.82),
+                scale=(16.0 if self.enable_cris_loss else 12.0),
+                ema_decay=(0.92 if self.enable_cris_loss else 0.85),
+                grad_scale=(0.35 if self.enable_cris_loss else 0.25),
+                use_loss_free_balance=True,
+                bias_lr=(0.02 if self.enable_cris_loss else 0.05),
             )
             if self.use_v7_core
             else None
@@ -896,6 +935,8 @@ class RealSelfStabilizingDMoE(nn.Module):
                 d_ff_shared=(sh_dff_val if l_idx < self.router_layer else (d_ff_shared or d_ff)),
                 v7_trunk_only=(self.use_v7_core and l_idx < self.router_layer),
                 init_spec_small=(self.use_v7_core and l_idx >= self.router_layer),
+                specialist_init_scale=self.specialist_init_scale,
+                shared_dropout_prob=(self.shared_dropout_prob if l_idx >= self.router_layer else 0.0),
             )
             for l_idx in range(initial_layers)
         ])
@@ -915,6 +956,8 @@ class RealSelfStabilizingDMoE(nn.Module):
                 num_ltm_slots=num_ltm_slots,
                 signed_beta=signed_beta,
                 ltm_null_logit=ltm_null_logit,
+                enable_dual_ridge_op=self.enable_dual_ridge_ep,
+                op_rank=self.dual_ridge_op_rank,
             )
         else:
             self.memory = None
@@ -1052,6 +1095,93 @@ class RealSelfStabilizingDMoE(nn.Module):
             return base.to(dtype=z_pred_raw.dtype)
         return z_pred_raw
 
+    def _forward_v7_trunk_to_post_moe(
+        self,
+        x: torch.Tensor,
+        h_enc: Optional[torch.Tensor] = None,
+    ) -> torch.Tensor:
+        """Strictly causal forward through memory, all MoE layers, and Thinker (no Decoder, no stat writes)."""
+        h = self.encode(x) if h_enc is None else h_enc
+        T = h.size(1)
+        _, content_mask = self._compute_chunk_masks(x, T)
+        if self.enable_memory and self.memory is not None:
+            h = self.memory(h, update_ltm=False, return_stm_state=False)["fused"]
+        for l_idx in range(self.router_layer):
+            h, _ = self.layers[l_idx](h, update_stats=False)
+        r_layer = self.layers[self.router_layer]
+        h_attn3 = r_layer.forward_context(h)
+        surface_feats = (
+            compute_chunk_surface_features(x, chunk_size=self.chunk_size, num_chunks=T, format_only=True)
+            if self.enable_surface_whitening
+            else None
+        )
+        expert_states = list(self.lifecycle.expert_states) if self.lifecycle is not None else None
+        q_state = self.context_router.compute_queries(
+            h_attn3,
+            expert_states=expert_states,
+            surface_feats=surface_feats,
+            update_surface_stats=False,
+        )
+        route_res = self.context_router.select_experts(
+            q_state,
+            nuance_mask=None,
+            content_mask=(content_mask if self.decouple_nuance_lifecycle else None),
+        )
+        dispatch_plan = build_token_dispatch_plan(
+            route_res["top_ids"], route_res["top_w"], num_experts=len(r_layer.moe.experts)
+        )
+        h, _ = r_layer.forward_moe(h_attn3, update_stats=False, dispatch_plan=dispatch_plan)
+        for layer in self.layers[self.router_layer + 1 :]:
+            h, _ = layer(h, update_stats=False, dispatch_plan=dispatch_plan)
+        if self.enable_world_model and self.world_model is not None and self.wm_imagine_proj is not None and self.wm_imagine_gate is not None:
+            wm_im = self.world_model.imagine(h, horizon=1)
+            z_im = wm_im["imagined_latents"][:, :, 0, :]
+            conf = (1.0 - wm_im["imagined_uncertainty"][:, :, :1]).detach()
+            h = h + torch.tanh(self.wm_imagine_gate) * conf * self.wm_imagine_proj(z_im)
+        if self.enable_thinking and self.thinker is not None:
+            t_out = self.thinker(
+                h,
+                decoder_fn=None,
+                force_steps=None,
+                nuance_mask=None,
+                dispatch_plan=dispatch_plan,
+            )
+            h = t_out["z_final"]
+        return h
+
+    def extract_router_queries(
+        self,
+        x: torch.Tensor,
+    ) -> Tuple[torch.Tensor, torch.Tensor]:
+        """
+        Lightweight lower-trunk + router query extraction `(rq_pool [B, d_route], q_tok [B, T, d_route])`
+        for self-supervised surface-perturbation invariance (CRIS) without running upper MoE/WM/Thinker.
+        """
+        h = self.encode(x)
+        T = h.size(1)
+        _, content_mask = self._compute_chunk_masks(x, T)
+        if self.enable_memory and self.memory is not None:
+            h = self.memory(h, update_ltm=False, return_stm_state=False)["fused"]
+        for l_idx in range(self.router_layer):
+            h, _ = self.layers[l_idx](h, update_stats=False)
+        h_attn3 = self.layers[self.router_layer].forward_context(h)
+        surface_feats = (
+            compute_chunk_surface_features(x, chunk_size=self.chunk_size, num_chunks=T, format_only=True)
+            if self.enable_surface_whitening
+            else None
+        )
+        expert_states = list(self.lifecycle.expert_states) if self.lifecycle is not None else None
+        q_state = self.context_router.compute_queries(
+            h_attn3,
+            expert_states=expert_states,
+            surface_feats=surface_feats,
+            update_surface_stats=False,
+        )
+        q_tok = q_state["q_tok"]
+        w_cm = content_mask.unsqueeze(-1).float()
+        rq_pool = F.normalize((q_tok.float() * w_cm).sum(dim=1) / w_cm.sum(dim=1).clamp_min(1.0), dim=-1)
+        return rq_pool, q_tok
+
     def extract_episode_kv(
         self,
         x_ep: torch.Tensor,
@@ -1088,12 +1218,31 @@ class RealSelfStabilizingDMoE(nn.Module):
             raw_k = torch.gather(h_ep_ctx[:, :-1, :], 1, gather_idx)
             raw_v = torch.gather(h_ep_enc[:, 1:, :], 1, gather_idx)
             ep_keys, ep_vals = self.memory.long_term.encode_kv(raw_k, raw_v, normalize_k=False)
-            return {
+            res: Dict[str, torch.Tensor] = {
                 "ep_keys": ep_keys,
                 "ep_vals": ep_vals,
                 "ep_mask": ep_mask,
                 "ep_salience": salience,
             }
+            if self.enable_dual_ridge_ep and getattr(self.memory.long_term, "enable_dual_ridge_op", False):
+                # Strictly causal post-MoE deep latent at last prompt chunk (t = last_content - 1)
+                # mapped to the final answer chunk (t + 1 = last_content), with zero future leakage.
+                # Extract trunk support states under no_grad (3x faster, preserves grokking stability)
+                # while keeping full gradients through `encode_op_kv` and `read_dual_operator`.
+                with torch.no_grad():
+                    h_deep = self._forward_v7_trunk_to_post_moe(x_ep, h_enc=h_ep_enc.detach())
+                t_grid = torch.arange(T_full, device=x_ep.device).unsqueeze(0).expand(B, T_full)
+                last_c = torch.where(content_mask, t_grid, torch.zeros_like(t_grid)).max(dim=1).values.clamp(min=1)
+                key_idx = (last_c - 1).view(B, 1, 1).expand(B, 1, h_deep.size(-1))
+                val_idx = last_c.view(B, 1, 1).expand(B, 1, h_ep_enc.size(-1))
+                raw_op_k = torch.gather(h_deep, 1, key_idx)    # [B, 1, D]
+                raw_op_v = torch.gather(h_ep_enc, 1, val_idx)  # [B, 1, D]
+                op_keys, op_vals = self.memory.long_term.encode_op_kv(raw_op_k, raw_op_v)
+                op_mask = content_mask.gather(1, last_c.unsqueeze(1))
+                res["op_keys"] = op_keys
+                res["op_vals"] = op_vals
+                res["op_mask"] = op_mask
+            return res
 
         # Reuse episode forward output when provided, else run cleanly without touching stats
         out = cached_out if cached_out is not None else self.forward(x_ep, update_stats=False)
@@ -1353,10 +1502,16 @@ class RealSelfStabilizingDMoE(nn.Module):
 
         mem_out: Optional[Dict[str, torch.Tensor]] = None
         memory_context: Optional[torch.Tensor] = None
+        use_dual_op_active = bool(
+            self.enable_dual_ridge_ep
+            and episode_memory is not None
+            and episode_memory.get("op_keys") is not None
+            and episode_memory.get("op_vals") is not None
+        )
         if self.enable_memory and self.memory is not None:
-            ep_k = episode_memory.get("ep_keys") if episode_memory is not None else None
-            ep_v = episode_memory.get("ep_vals") if episode_memory is not None else None
-            ep_m = episode_memory.get("ep_mask") if episode_memory is not None else None
+            ep_k = None if use_dual_op_active else (episode_memory.get("ep_keys") if episode_memory is not None else None)
+            ep_v = None if use_dual_op_active else (episode_memory.get("ep_vals") if episode_memory is not None else None)
+            ep_m = None if use_dual_op_active else (episode_memory.get("ep_mask") if episode_memory is not None else None)
             do_ltm_w = bool(
                 self.training
                 and self.auto_write_ltm
@@ -1393,6 +1548,7 @@ class RealSelfStabilizingDMoE(nn.Module):
             if (
                 l_idx == 0
                 and self.use_v8_core
+                and (not use_dual_op_active)
                 and episode_memory is not None
                 and self.enable_memory
                 and self.memory is not None
@@ -1404,7 +1560,7 @@ class RealSelfStabilizingDMoE(nn.Module):
                     ep_keys=episode_memory["ep_keys"],
                     ep_vals=episode_memory["ep_vals"],
                     ep_mask=episode_memory.get("ep_mask"),
-                    include_null_for_ep=False,
+                    include_null_for_ep=bool(self.enable_dual_ridge_ep),
                 )
                 h = h + 0.65 * ep_l0.to(h.dtype)
 
@@ -1420,7 +1576,17 @@ class RealSelfStabilizingDMoE(nn.Module):
             wm_unc_mid = wm_mid["imagined_uncertainty"][:, :, 0]
 
         expert_states = list(self.lifecycle.expert_states) if self.lifecycle is not None else None
-        q_state = self.context_router.compute_queries(h_attn3, expert_states=expert_states)
+        surface_feats = (
+            compute_chunk_surface_features(x, chunk_size=self.chunk_size, num_chunks=T, format_only=True)
+            if self.enable_surface_whitening
+            else None
+        )
+        q_state = self.context_router.compute_queries(
+            h_attn3,
+            expert_states=expert_states,
+            surface_feats=surface_feats,
+            update_surface_stats=update_stats,
+        )
         det = self.context_nuance_detector
         nuance_info = (
             det.evaluate_contextual_chunks(
@@ -1442,12 +1608,20 @@ class RealSelfStabilizingDMoE(nn.Module):
                 "z_belief": torch.zeros(B, T, device=h.device),
             }
         )
+        nuance_detect_mask = nuance_info["nuance_mask"] & (
+            content_mask if self.use_v8_core else torch.ones_like(content_mask)
+        )
         if not getattr(self, "enable_nuance_escalation", True):
             nuance_mask = torch.zeros(B, T, dtype=torch.bool, device=h.device)
         else:
-            nuance_mask = nuance_info["nuance_mask"] & (content_mask if self.use_v8_core else torch.ones_like(content_mask))
+            nuance_mask = nuance_detect_mask
+        lifecycle_nuance_mask = nuance_detect_mask if self.decouple_nuance_lifecycle else nuance_mask
 
-        route_res = self.context_router.select_experts(q_state, nuance_mask=nuance_mask)
+        route_res = self.context_router.select_experts(
+            q_state,
+            nuance_mask=nuance_mask,
+            content_mask=(content_mask if self.decouple_nuance_lifecycle else None),
+        )
         top_ids = route_res["top_ids"]
         top_w = route_res["top_w"]
         k_used = route_res["k_used"]
@@ -1527,6 +1701,30 @@ class RealSelfStabilizingDMoE(nn.Module):
             )
             h = think_out["z_final"]
 
+        # v10 Closed-Form Dual Ridge In-Context Operator Readout strictly post-Thinker
+        # so contradictory per-episode shifts never corrupt Layers 0..5, WM, or Thinker!
+        if (
+            self.enable_dual_ridge_ep
+            and episode_memory is not None
+            and self.enable_memory
+            and self.memory is not None
+            and episode_memory.get("op_keys") is not None
+            and episode_memory.get("op_vals") is not None
+        ):
+            h_for_op = h.detach() if self.training else h
+            op_delta = self.memory.long_term.read_dual_operator(
+                h_for_op,
+                op_keys=episode_memory["op_keys"],
+                op_vals=episode_memory["op_vals"],
+                op_mask=episode_memory.get("op_mask"),
+            )
+            override_logit = getattr(self.memory.long_term, "op_override_logit", None)
+            if override_logit is not None:
+                g_ep = torch.sigmoid(override_logit).to(h.dtype)
+                h = (1.0 - g_ep) * h_for_op + op_delta.to(h.dtype)
+            else:
+                h = h_for_op + op_delta.to(h.dtype)
+
         # Post-MoE / Post-Thinker dual meaning factorization & order-sensitive pooling
         z_expr = self.expr_head(h) if self.expr_head is not None else h
         z_ctx = self.ctx_head(h) if self.ctx_head is not None else h
@@ -1573,7 +1771,7 @@ class RealSelfStabilizingDMoE(nn.Module):
             if self.auto_lifecycle and self.lifecycle is not None:
                 _, lifecycle_events = self.lifecycle.step_contextual_nuance_lifecycle(
                     self,
-                    nuance_mask=nuance_mask,
+                    nuance_mask=lifecycle_nuance_mask,
                     q_tok=route_res["q_tok"],
                     nuance_score=nuance_info["nuance_score"],
                     top_ids=top_ids,
@@ -1585,8 +1783,18 @@ class RealSelfStabilizingDMoE(nn.Module):
                 )
 
         # Modal expert per sequence for routing NMI / switch-rate diagnostics
-        masked_ids = torch.where(k_used > 0, top_ids[..., 0], torch.zeros_like(top_ids[..., 0]))
-        seq_modal = torch.mode(masked_ids, dim=1).values
+        if self.decouple_nuance_lifecycle:
+            # Compute modal expert strictly over active content chunks (never trailing BYTE_PAD_ID=257!)
+            n_exp_cur = len(moe_ref.experts)
+            c_active = content_mask & (k_used > 0)
+            has_act = c_active.any(dim=1, keepdim=True)
+            eff_mask = torch.where(has_act, c_active, content_mask)
+            oh_e = F.one_hot(top_ids[..., 0].clamp(0, max(0, n_exp_cur - 1)), num_classes=max(1, n_exp_cur)).float()
+            counts_seq = (oh_e * eff_mask.unsqueeze(-1).float()).sum(dim=1)
+            seq_modal = counts_seq.argmax(dim=-1)
+        else:
+            masked_ids = torch.where(k_used > 0, top_ids[..., 0], torch.zeros_like(top_ids[..., 0]))
+            seq_modal = torch.mode(masked_ids, dim=1).values
         self.last_assigned_experts = seq_modal
         self.last_routed_expert = int(seq_modal[0].item()) if seq_modal.numel() > 0 else 0
         self.last_lifecycle_events = lifecycle_events
@@ -1961,6 +2169,10 @@ class RealSelfStabilizingDMoE(nn.Module):
         balance_weight: float = 0.5,
         teacher_weight: float = 0.0,
         struct_weight: float = 0.20,
+        router_q_perturbed: Optional[torch.Tensor] = None,
+        router_q_pert_idx: Optional[torch.Tensor] = None,
+        cris_weight: float = 0.35,
+        exp_orth_weight: float = 0.15,
     ) -> Dict[str, torch.Tensor]:
         """
         Pure Non-Token `v7`/`v8` Training Loss (`Zero Next-Byte Cross-Entropy`):
@@ -2294,6 +2506,91 @@ class RealSelfStabilizingDMoE(nn.Module):
 
         l_bal = out.get("router_balance_loss", zero)
         l_erc = out.get("router_erc_loss", zero)
+
+        # v10 Causal Role-Intervention Specialization (CRIS) + Expert Subspace Orthogonality
+        l_cris_route = zero
+        l_exp_orth = zero
+        if self.enable_cris_loss:
+            rq_tok = out.get("router_q")
+            if rq_tok is not None and rq_tok.size(0) >= 2:
+                rq_f = rq_tok.float()
+                if c_mask is not None and c_mask.size(1) == rq_f.size(1):
+                    w_rq = c_mask.unsqueeze(-1).float()
+                    rq_pool = F.normalize((rq_f * w_rq).sum(dim=1) / w_rq.sum(dim=1).clamp_min(1.0), dim=-1)
+                else:
+                    rq_pool = F.normalize(rq_f.mean(dim=1), dim=-1)
+
+                # 1. Semantic equivalence invariance for router queries
+                if equiv_labels is not None:
+                    y_eq = equiv_labels.to(dev)
+                    same_eq = (y_eq.unsqueeze(1) == y_eq.unsqueeze(0)) & (y_eq.unsqueeze(1) >= 0)
+                    same_eq.fill_diagonal_(False)
+                    if bool(same_eq.any().item()):
+                        cos_rq = rq_pool @ rq_pool.t()
+                        l_cris_route = l_cris_route + ((1.0 - cos_rq) * same_eq.float()).sum() / same_eq.float().sum().clamp_min(1.0)
+
+                # 2. Separate distinct-domain / hard-negative / contradiction queries without collapsing raw domains
+                if hard_neg_pair_idx is not None:
+                    ha_r, hb_r = hard_neg_pair_idx[0].to(dev), hard_neg_pair_idx[1].to(dev)
+                    if ha_r.numel() > 0:
+                        cos_hn = (rq_pool[ha_r] * rq_pool[hb_r]).sum(dim=-1)
+                        l_cris_route = l_cris_route + 0.45 * F.relu(cos_hn - 0.15).pow(2).mean()
+                # Repel unrelated sequences across batch (excluding same-meaning pairs) so router maintains sharp spread
+                if equiv_labels is not None:
+                    y_eq = equiv_labels.to(dev)
+                    cos_rq = rq_pool @ rq_pool.t()
+                    diff_m = (y_eq.unsqueeze(1) != y_eq.unsqueeze(0))
+                    diff_m.fill_diagonal_(False)
+                    if bool(diff_m.any().item()):
+                        l_cris_route = l_cris_route + 0.30 * (F.relu(cos_rq - 0.35).pow(2) * diff_m.float()).sum() / diff_m.float().sum().clamp_min(1.0)
+
+                # 3. Self-supervised surface formatting perturbation invariance (both query cosine & routing probs!)
+                if router_q_perturbed is not None:
+                    rq_pert = F.normalize(router_q_perturbed.to(dev).float(), dim=-1)
+                    if router_q_pert_idx is not None:
+                        rq_ref = rq_pool[router_q_pert_idx.to(dev)]
+                    else:
+                        rq_ref = rq_pool[: rq_pert.size(0)]
+                    if rq_ref.size(0) == rq_pert.size(0) and rq_pert.size(0) > 0:
+                        l_cris_route = l_cris_route + 2.0 * (1.0 - (rq_ref * rq_pert).sum(dim=-1)).mean()
+                        # Directly align expert assignment distributions under surface formatting perturbation
+                        if self.context_router is not None and self.context_router.num_experts > 1:
+                            E_cur = self.context_router.num_experts
+                            k_e = F.normalize(self.context_router.expert_keys[:E_cur].float(), dim=-1)
+                            s_clean = torch.einsum("bd,emd->bem", rq_ref, k_e).max(dim=-1).values * self.context_router.scale
+                            s_pert = torch.einsum("bd,emd->bem", rq_pert, k_e).max(dim=-1).values * self.context_router.scale
+                            p_clean = F.softmax(s_clean.detach(), dim=-1)
+                            log_p_pert = F.log_softmax(s_pert, dim=-1)
+                            p_pert_d = F.softmax(s_pert.detach(), dim=-1)
+                            log_p_clean = F.log_softmax(s_clean, dim=-1)
+                            sym_kl = 0.5 * (
+                                (p_clean * (p_clean.clamp_min(1e-6).log() - log_p_pert)).sum(dim=-1)
+                                + (p_pert_d * (p_pert_d.clamp_min(1e-6).log() - log_p_clean)).sum(dim=-1)
+                            ).mean()
+                            l_cris_route = l_cris_route + 0.50 * sym_kl
+
+            # 4. Permutation-invariant expert output subspace orthogonality: <G_e, G_{e'}>^2 where G_e = W2_e W2_e^T / ||.||_F
+            orth_terms: List[torch.Tensor] = []
+            for layer in self.layers[self.router_layer :]:
+                exps = layer.moe.experts
+                n_e = len(exps)
+                if n_e >= 2:
+                    grams = []
+                    trainable = []
+                    for exp in exps:
+                        w2 = exp.linear2.weight.float()
+                        g_e = w2 @ w2.t()
+                        g_n = g_e / g_e.norm().clamp_min(1e-6)
+                        grams.append(g_n)
+                        trainable.append(bool(exp.linear2.weight.requires_grad))
+                    for i in range(n_e):
+                        for j in range(i + 1, n_e):
+                            if trainable[i] or trainable[j]:
+                                ov = (grams[i] * grams[j]).sum()
+                                orth_terms.append(ov * ov)
+            if orth_terms:
+                l_exp_orth = torch.stack(orth_terms).mean()
+
         total = (
             wm_weight * (0.40 * wm_loss + 3.20 * l_wm_ret)
             + fsp_weight * l_fsp
@@ -2304,6 +2601,8 @@ class RealSelfStabilizingDMoE(nn.Module):
             + erc_weight * l_erc
             + balance_weight * l_bal
             + teacher_weight * l_gram
+            + cris_weight * l_cris_route
+            + exp_orth_weight * l_exp_orth
         )
         return {
             "loss": total,
@@ -2318,6 +2617,8 @@ class RealSelfStabilizingDMoE(nn.Module):
             "erc_loss": l_erc.detach(),
             "balance_loss": l_bal.detach(),
             "gram_loss": l_gram.detach(),
+            "cris_route_loss": l_cris_route.detach(),
+            "exp_orth_loss": l_exp_orth.detach(),
         }
 
     compute_v8_non_token_loss = compute_v7_non_token_loss

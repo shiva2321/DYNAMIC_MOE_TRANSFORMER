@@ -695,6 +695,90 @@ def sparse_weighted_expert_dispatch(
     return out
 
 
+def compute_chunk_surface_features(
+    x: torch.Tensor,
+    chunk_size: int = 4,
+    num_chunks: Optional[int] = None,
+    format_only: bool = False,
+) -> torch.Tensor:
+    """
+    Compute strictly causal surface-formatting descriptors `[B, T, d_s]` directly from
+    raw byte IDs. When `format_only=True`, returns the 6-D pure formatting subspace
+    `(pad_frac, space_frac, upper_frac, case_diff, rel_pos, causal_len_frac)` so whitening
+    removes length/padding/whitespace/case shortcuts without blinding code/math lexical cues.
+    Uses zero task or role labels.
+    """
+    B, L = x.shape
+    C = max(1, int(chunk_size))
+    T = int(num_chunks) if num_chunks is not None else max(1, (L + C - 1) // C)
+    need_L = T * C
+    if L < need_L:
+        xc = F.pad(x.long(), (0, need_L - L), value=257)
+    else:
+        xc = x[:, :need_L].long()
+    xc = xc.view(B, T, C)
+    dev = x.device
+
+    is_pad = xc == 257
+    valid = (~is_pad) & (xc < 256)
+    v_f = valid.float()
+    v_cnt = v_f.sum(dim=-1).clamp_min(1.0)
+
+    pad_frac = is_pad.float().mean(dim=-1)
+    is_space = (xc == 32) | (xc == 9) | (xc == 10) | (xc == 13)
+    space_frac = is_space.float().mean(dim=-1)
+    lower_frac = ((xc >= 97) & (xc <= 122)).float().mean(dim=-1)
+    upper_frac = ((xc >= 65) & (xc <= 90)).float().mean(dim=-1)
+    t_grid = torch.arange(T, device=dev, dtype=torch.float32)
+    rel_pos = (t_grid / float(max(1, T - 1))).unsqueeze(0).expand(B, T)
+    chunk_non_pad = (~is_pad).any(dim=-1).float()
+    causal_len_frac = torch.cumsum(chunk_non_pad, dim=1) / (t_grid.unsqueeze(0) + 1.0)
+
+    if format_only:
+        case_diff = upper_frac - lower_frac
+        return torch.stack(
+            [pad_frac, space_frac, upper_frac, case_diff, rel_pos, causal_len_frac],
+            dim=-1,
+        )
+
+    digit_frac = ((xc >= 48) & (xc <= 57)).float().mean(dim=-1)
+    is_punct = (
+        ((xc >= 33) & (xc <= 47))
+        | ((xc >= 58) & (xc <= 64))
+        | ((xc >= 91) & (xc <= 96))
+        | ((xc >= 123) & (xc <= 126))
+    )
+    punct_frac = is_punct.float().mean(dim=-1)
+    non_ascii_frac = ((xc >= 128) & (xc < 256)).float().mean(dim=-1)
+
+    xb = xc.clamp(0, 255).float() * v_f
+    mean_byte = (xb.sum(dim=-1) / v_cnt) / 255.0
+    var_byte = (((xb - (mean_byte.unsqueeze(-1) * 255.0)) ** 2) * v_f).sum(dim=-1) / v_cnt
+    std_byte = torch.sqrt(var_byte.clamp_min(0.0)) / 128.0
+    if C >= 2:
+        uniq_frac = (xc[..., 1:] != xc[..., :-1]).float().mean(dim=-1)
+    else:
+        uniq_frac = torch.zeros((B, T), device=dev, dtype=torch.float32)
+
+    return torch.stack(
+        [
+            pad_frac,
+            space_frac,
+            lower_frac,
+            upper_frac,
+            digit_frac,
+            punct_frac,
+            non_ascii_frac,
+            mean_byte,
+            std_byte,
+            uniq_frac,
+            rel_pos,
+            causal_len_frac,
+        ],
+        dim=-1,
+    )
+
+
 class CausalContextTokenRouter(nn.Module):
     """
     v7 Zero-Replay-Safe Contextual Per-Token/Chunk Router.
@@ -725,6 +809,10 @@ class CausalContextTokenRouter(nn.Module):
         sequence_level: bool = False,
         use_loss_free_balance: bool = True,
         bias_lr: float = 0.05,
+        enable_surface_whitening: bool = False,
+        surface_dim: int = 12,
+        surface_ema_decay: float = 0.94,
+        surface_ridge: float = 0.05,
     ):
         super().__init__()
         self.d_model = int(d_model)
@@ -744,6 +832,10 @@ class CausalContextTokenRouter(nn.Module):
         self.sequence_level = bool(sequence_level)
         self.use_loss_free_balance = bool(use_loss_free_balance)
         self.bias_lr = float(bias_lr)
+        self.enable_surface_whitening = bool(enable_surface_whitening)
+        self.surface_dim = int(surface_dim)
+        self.surface_ema_decay = float(surface_ema_decay)
+        self.surface_ridge = float(surface_ridge)
 
         self.route_norm = nn.LayerNorm(self.d_model)
         self.q_proj = nn.Linear(self.d_model, self.d_route, bias=False)
@@ -765,6 +857,14 @@ class CausalContextTokenRouter(nn.Module):
         self.register_buffer("expert_dormant", torch.zeros(self.max_experts, dtype=torch.bool))
         self.register_buffer("expert_bias", torch.zeros(self.max_experts, dtype=torch.float32))
         self.register_buffer("steps_seen", torch.tensor(0, dtype=torch.long))
+        if self.enable_surface_whitening:
+            self.register_buffer("surf_mu_h", torch.zeros(self.d_model, dtype=torch.float32))
+            self.register_buffer("surf_mu_s", torch.zeros(self.surface_dim, dtype=torch.float32))
+            self.register_buffer("surf_C_hs", torch.zeros(self.d_model, self.surface_dim, dtype=torch.float32))
+            self.register_buffer("surf_C_ss", torch.eye(self.surface_dim, dtype=torch.float32) * 1e-2)
+            self.register_buffer("surf_proj_basis", torch.zeros(self.d_model, self.surface_dim, dtype=torch.float32))
+            self.register_buffer("surf_steps", torch.tensor(0, dtype=torch.long))
+        self._surf_steps_i: int = 0
 
     def sync_num_experts(self, n: int) -> None:
         self.num_experts = max(1, min(int(n), self.max_experts))
@@ -805,15 +905,65 @@ class CausalContextTokenRouter(nn.Module):
         self.expert_frozen[idx] = False
         self.expert_dormant[idx] = False
 
+    @torch.no_grad()
+    def _update_surface_subspace(self, h_route: torch.Tensor, surface_feats: torch.Tensor) -> None:
+        """Update running surface cross-covariance and soft-orthogonal null-space basis `surf_proj_basis`."""
+        H = h_route.detach().float().reshape(-1, self.d_model)
+        S = surface_feats.detach().float().reshape(-1, self.surface_dim).to(H.device)
+        n = H.size(0)
+        if n < 2:
+            return
+        mu_h_b = H.mean(dim=0)
+        mu_s_b = S.mean(dim=0)
+        steps = self._surf_steps_i
+        alpha = max(1.0 - self.surface_ema_decay, 1.0 / float(steps + 1))
+        self.surf_mu_h.mul_(1.0 - alpha).add_(mu_h_b * alpha)
+        self.surf_mu_s.mul_(1.0 - alpha).add_(mu_s_b * alpha)
+        Hc = H - self.surf_mu_h.unsqueeze(0)
+        Sc = S - self.surf_mu_s.unsqueeze(0)
+        c_hs_b = (Hc.t() @ Sc) / float(n)
+        c_ss_b = (Sc.t() @ Sc) / float(n)
+        if steps == 0:
+            self.surf_C_hs.copy_(c_hs_b)
+            self.surf_C_ss.copy_(c_ss_b)
+        else:
+            self.surf_C_hs.mul_(1.0 - alpha).add_(c_hs_b * alpha)
+            self.surf_C_ss.mul_(1.0 - alpha).add_(c_ss_b * alpha)
+        new_steps = steps + 1
+        self._surf_steps_i = new_steps
+        self.surf_steps.fill_(new_steps)
+
+        # Recompute SVD basis on warmup steps (2..8) and every 8 steps thereafter to avoid per-step CUDA syncs
+        if new_steps >= 2 and (new_steps <= 8 or (new_steps % 8 == 0)):
+            eye_s = torch.eye(self.surface_dim, device=H.device, dtype=torch.float32)
+            # W_surf = C_hs (C_ss + ridge I)^-1  ->  solve (C_ss + ridge I) W^T = C_hs^T
+            w_t = torch.linalg.solve(self.surf_C_ss + self.surface_ridge * eye_s, self.surf_C_hs.t())
+            W_surf = w_t.t()  # [D, d_s]
+            U, sv, _ = torch.linalg.svd(W_surf, full_matrices=False)
+            # Exact orthogonal projection on active surface singular vectors (avoids soft-residual leakage
+            # while skipping zero-variance directions when a surface feature is constant).
+            active = (sv > 0.05).to(dtype=U.dtype)
+            self.surf_proj_basis.copy_(U * active.unsqueeze(0))
+
     def compute_queries(
         self,
         h_attn3: torch.Tensor,
         expert_states: Optional[List[int]] = None,
+        surface_feats: Optional[torch.Tensor] = None,
+        update_surface_stats: bool = False,
     ) -> Dict[str, torch.Tensor]:
         """Compute strictly causal query representations `q_tok`, `need`, `d_ctx`, and `probs`."""
         B, T, _ = h_attn3.shape
         h_mix = self.grad_scale * h_attn3 + (1.0 - self.grad_scale) * h_attn3.detach()
         h_route = self.route_norm(h_mix)
+        if self.enable_surface_whitening:
+            if update_surface_stats and self.training and surface_feats is not None:
+                self._update_surface_subspace(h_route, surface_feats)
+            if self._surf_steps_i >= 2:
+                h_c = h_route.float() - self.surf_mu_h.view(1, 1, -1)
+                basis = self.surf_proj_basis  # [D, d_s]
+                proj = torch.matmul(torch.matmul(h_c, basis), basis.t())
+                h_route = (h_c - proj).to(h_route.dtype)
         if self.sequence_level:
             h_route = h_route.mean(dim=1, keepdim=True).expand_as(h_route)
             h_ema = h_route
@@ -871,6 +1021,7 @@ class CausalContextTokenRouter(nn.Module):
         query_state: Dict[str, torch.Tensor],
         nuance_mask: Optional[torch.Tensor] = None,
         training_step: Optional[int] = None,
+        content_mask: Optional[torch.Tensor] = None,
     ) -> Dict[str, torch.Tensor]:
         """Select per-chunk `k in {0, 1, 2}` specialists, immediately escalating nuanced chunks to `k=2`."""
         q_tok = query_state["q_tok"]
@@ -887,13 +1038,18 @@ class CausalContextTokenRouter(nn.Module):
             if nuance_mask is not None
             else torch.zeros(B, T, dtype=torch.bool, device=dev)
         )
+        valid_c = (
+            content_mask.to(device=dev, dtype=torch.bool)
+            if content_mask is not None
+            else torch.ones(B, T, dtype=torch.bool, device=dev)
+        )
         cur_step = int(self.steps_seen.item()) if training_step is None else int(training_step)
         in_warmup = self.training and cur_step < self.warmup_steps
         spec_scale = F.softplus(self.spec_gate_scale)
         gate_val = spec_scale * (0.4 + 0.6 * need)
 
         if E == 1:
-            is_active = torch.ones_like(nuanced) if in_warmup else ((need >= self.tau_skip) | nuanced)
+            is_active = (torch.ones_like(nuanced) if in_warmup else ((need >= self.tau_skip) | nuanced)) & valid_c
             k_used = is_active.long()
             w1 = torch.where(is_active, gate_val, torch.zeros_like(gate_val))
             top_ids = torch.zeros(B, T, 2, dtype=torch.long, device=dev)
@@ -907,7 +1063,7 @@ class CausalContextTokenRouter(nn.Module):
             _, p_ids = torch.topk(routing_scores, k=2, dim=-1)
             p_vals = torch.gather(probs, -1, p_ids)
             margin = p_vals[..., 0] - p_vals[..., 1]
-            is_skip = torch.zeros_like(nuanced) if in_warmup else ((need < self.tau_skip) & (~nuanced))
+            is_skip = (~valid_c) | (torch.zeros_like(nuanced) if in_warmup else ((need < self.tau_skip) & (~nuanced)))
             is_top2 = (~is_skip) & ((margin < self.delta_mix) | (need >= self.tau_top2) | nuanced)
             k_used = torch.where(is_skip, 0, torch.where(is_top2, 2, 1))
 
@@ -968,8 +1124,15 @@ class CausalContextTokenRouter(nn.Module):
         nuance_mask: Optional[torch.Tensor] = None,
         expert_states: Optional[List[int]] = None,
         training_step: Optional[int] = None,
+        surface_feats: Optional[torch.Tensor] = None,
+        update_surface_stats: bool = False,
     ) -> Dict[str, torch.Tensor]:
-        q_state = self.compute_queries(h_attn3, expert_states=expert_states)
+        q_state = self.compute_queries(
+            h_attn3,
+            expert_states=expert_states,
+            surface_feats=surface_feats,
+            update_surface_stats=update_surface_stats,
+        )
         return self.select_experts(q_state, nuance_mask=nuance_mask, training_step=training_step)
 
     @torch.no_grad()

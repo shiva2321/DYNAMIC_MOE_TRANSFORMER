@@ -1,0 +1,90 @@
+[
+  {
+    "trial": 1,
+    "track": "track1",
+    "seed": 100,
+    "out_dir": "results/real_pilot_v7/dev_t1_trial1",
+    "changes": "Initial v10 default config (dual_ridge_op_rank=48, include_null_for_ep=False, un-detached h into read_dual_operator).",
+    "results": {
+      "Cog_v10": {"seen_acc": 0.935, "heldout_unseen_acc": 0.305, "iit_heldout_acc": 0.281, "shots_8_lookup_acc": 0.734, "shots_8_comp_equiv_induction_acc": 0.531, "shots_8_unseen_meaning_shift_acc": 0.297, "shots_8_shift_shuffled_null_acc": 0.0625, "shots_8_impossible_perm_null_acc": 0.078},
+      "Cog_v10_NoDualOp": {"seen_acc": 0.932, "heldout_unseen_acc": 0.138, "iit_heldout_acc": 0.125, "shots_8_lookup_acc": 0.516, "shots_8_comp_equiv_induction_acc": 0.328, "shots_8_unseen_meaning_shift_acc": 0.078}
+    }
+  },
+  {
+    "trial": 2,
+    "track": "track1",
+    "seed": 100,
+    "out_dir": "results/real_pilot_v7/dev_t1_trial2",
+    "changes": "Detached h before read_dual_operator (pre-Thinker) and skipped ep_l0 when Dual Ridge active.",
+    "results": {
+      "Cog_v10": {"seen_acc": 0.914, "heldout_unseen_acc": 0.036, "iit_heldout_acc": 0.078, "shots_8_lookup_acc": 0.766, "shots_8_comp_equiv_induction_acc": 0.516, "shots_8_unseen_meaning_shift_acc": 0.078}
+    }
+  },
+  {
+    "trial": 3,
+    "track": "track1",
+    "seed": 100,
+    "out_dir": "results/real_pilot_v7/dev_t1_trial3",
+    "changes": "Moved Dual Ridge post-Thinker, delayed episodic training to step 650, specialist_init_scale=0.05 on Track 1.",
+    "results": {
+      "Cog_v10": {"seen_acc": 0.958, "heldout_unseen_acc": 0.526, "iit_heldout_acc": 0.578, "shots_4_lookup_acc": 0.891, "shots_8_lookup_acc": 0.797, "shots_8_comp_equiv_induction_acc": 0.844, "shots_8_unseen_meaning_shift_acc": 0.188, "shots_16_unseen_meaning_shift_acc": 0.250},
+      "Cog_v9": {"seen_acc": 0.930, "heldout_unseen_acc": 0.060, "iit_heldout_acc": 0.016, "shots_8_lookup_acc": 0.688, "shots_8_comp_equiv_induction_acc": 0.078, "shots_8_unseen_meaning_shift_acc": 0.000}
+    }
+  },
+  {
+    "trial": 4,
+    "track": "track1",
+    "seed": 100,
+    "out_dir": "results/real_pilot_v7/dev_t1_trial4",
+    "changes": "Dual-Head Closed-Form Ridge Operator (48D nonlinear head + 8D low-rank linear group head). FINAL TRACK 1 CONFIG FROZEN.",
+    "results": {
+      "Cog_v10": {"seen_acc": 0.961, "heldout_unseen_acc": 0.474, "iit_heldout_acc": 0.469, "shots_4_lookup_acc": 0.688, "shots_8_lookup_acc": 0.734, "shots_4_comp_equiv_induction_acc": 0.8125, "shots_8_comp_equiv_induction_acc": 0.5625, "shots_8_unseen_meaning_shift_acc": 0.359, "shots_16_unseen_meaning_shift_acc": 0.375, "shots_8_shift_shuffled_null_acc": 0.078, "shots_8_shift_no_mem_blind_acc": 0.016}
+    }
+  },
+  {
+    "trial": 1,
+    "track": "track2",
+    "seed": 100,
+    "out_dir": "results/real_pilot_v7/dev_t2_trial1",
+    "changes": "Initial v10 Track 2 config.",
+    "results": {
+      "Cog_v10": {"b77_acc": 0.488, "mean_k": 1.356, "lm_ami": 0.032, "len_ami": 0.125, "pert": 0.339, "les_d": 0.035},
+      "Cog_v10_NoSIP": {"b77_acc": 0.483, "mean_k": 1.291, "lm_ami": 0.000, "len_ami": 0.419, "pert": 0.351, "les_d": 0.108},
+      "Cog_v10_FrozenRandomRouter": {"b77_acc": 0.482, "mean_k": 1.389, "lm_ami": 0.000, "len_ami": 0.504, "pert": 0.423, "les_d": 0.198}
+    }
+  },
+  {
+    "trial": 2,
+    "track": "track2",
+    "seed": 100,
+    "out_dir": "results/real_pilot_v7/dev_t2_trial2",
+    "changes": "Masked PAD chunks to k=0 and excluded from seq_modal; delta_mix=0.01, tau_top2=0.90, scale=16.0, cris_weight=0.75.",
+    "results": {
+      "Cog_v10": {"b77_acc": 0.503, "mean_k": 1.107, "lm_ami": 0.031, "len_ami": 0.070, "pert": 0.464, "les_d": 0.014, "role_spec": 3.835},
+      "Cog_v10_NoSIP": {"b77_acc": 0.486, "mean_k": 1.238, "lm_ami": 0.048, "len_ami": 0.159, "pert": 0.292, "les_d": 0.028, "role_spec": 2.288},
+      "Cog_v10_FrozenRandomRouter": {"b77_acc": 0.489, "mean_k": 1.250, "lm_ami": 0.126, "len_ami": 0.352, "pert": 0.440, "les_d": 0.035}
+    }
+  },
+  {
+    "trial": 3,
+    "track": "track2",
+    "seed": 100,
+    "out_dir": "results/real_pilot_v7/dev_t2_trial3",
+    "changes": "format_only=True 6D whitening, delta_mix=0.0/tau_top2=1.05, use_loss_free_balance=False.",
+    "results": {
+      "Cog_v10": {"b77_acc": 0.517, "b77_auc": 0.559, "mean_final_r5": 0.166, "mean_k": 0.988, "lm_ami": 0.018, "len_ami": 0.180, "pert": 0.250, "lesion_base_test_acc": 0.869, "les_d": 0.027, "role_spec": 3.253},
+      "Cog_v10_NoSIP": {"b77_acc": 0.481, "mean_k": 1.100, "lm_ami": 0.063, "len_ami": 0.078, "pert": 0.405, "les_d": 0.026},
+      "Cog_v10_FrozenRandomRouter": {"b77_acc": 0.481, "mean_k": 1.130, "lm_ami": 0.144, "len_ami": 0.337, "pert": 0.393, "les_d": 0.024}
+    }
+  },
+  {
+    "trial": 4,
+    "track": "track2",
+    "seed": 100,
+    "out_dir": "results/real_pilot_v7/dev_t2_trial4",
+    "changes": "Removed same_st collapse in CRIS, added symmetric KL alignment on routing probs under surface perturbation, restored gentle loss-free balance (bias_lr=0.02). FINAL TRACK 2 CONFIG FROZEN.",
+    "results": {
+      "Cog_v10": {"train_seconds": 314.0, "b77_acc": 0.540, "mean_k": 1.09, "lm_ami": 0.047, "len_ami": 0.128, "pert": 0.351, "les_d": 0.025}
+    }
+  }
+]
