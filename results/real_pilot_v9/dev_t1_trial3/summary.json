@@ -1,0 +1,373 @@
+{
+  "meta": {
+    "exp_id": "real_pilot_v9",
+    "mode": "dev",
+    "eval_split": "dev",
+    "seeds": [
+      100
+    ],
+    "steps_per_dom": 250,
+    "tracks": "track1",
+    "git_commit": "5ce3a3699e05b01096c41dc169d1a29adfc64404",
+    "git_dirty": true,
+    "utc": "2026-11-24T20:57:05.846914+00:00",
+    "python_version": "3.12.10",
+    "torch_version": "2.6.0+cu124",
+    "device": "cuda",
+    "gpu": "NVIDIA GeForce RTX 3060",
+    "command": "experiments/run_v12_eval.py --mode dev --tracks track1 --seeds 100 --out_name dev_t1_trial3 --log_dev_note t1_trial3_stablemax2x_muon_wd014_4q_procrustes",
+    "cfg": {
+      "t1_lr_muon": 0.011,
+      "t1_lr_adam": 0.0042,
+      "t1_wd_trunk": 0.14,
+      "t1_ortho_grad": false,
+      "t1_use_stablemax": true,
+      "t1_stablemax_scale": 2.0,
+      "t1_ep_start_frac": 0.45,
+      "t1_op_lr": 0.015,
+      "dual_ridge_op_rank": 48,
+      "op_procrustes_planes": 8,
+      "d_ff_shared": 512,
+      "d_ff_spec": 256,
+      "enable_hnet_boundary": true,
+      "dual_granularity_router": true,
+      "enable_surface_whitening": false,
+      "use_vectorized_dispatch": true,
+      "use_infonce_cris": true,
+      "cris_weight": 0.35,
+      "exp_orth_weight": 0.08,
+      "router_anchor_weight": 0.35,
+      "pert_every": 4,
+      "shared_dropout_prob": 0.0,
+      "specialist_init_scale": 0.06,
+      "z_nuance_thresh": 1.6,
+      "d_sem_nuance_thresh": 1.6,
+      "i7_steps": 150
+    }
+  },
+  "arms": {
+    "CognitiveDMoE_v12": {
+      "n_seeds": 1,
+      "track1": {
+        "train_seconds": {
+          "mean": 462.40216612815857,
+          "std": 0.0,
+          "ci95": 0.0,
+          "min": 462.40216612815857,
+          "max": 462.40216612815857,
+          "values": [
+            462.40216612815857
+          ]
+        },
+        "seen_acc": {
+          "mean": 0.9375,
+          "std": 0.0,
+          "ci95": 0.0,
+          "min": 0.9375,
+          "max": 0.9375,
+          "values": [
+            0.9375
+          ]
+        },
+        "heldout_unseen_acc": {
+          "mean": 0.609375,
+          "std": 0.0,
+          "ci95": 0.0,
+          "min": 0.609375,
+          "max": 0.609375,
+          "values": [
+            0.609375
+          ]
+        },
+        "paraphrase_acc": {
+          "mean": 0.6588541666666666,
+          "std": 0.0,
+          "ci95": 0.0,
+          "min": 0.6588541666666666,
+          "max": 0.6588541666666666,
+          "values": [
+            0.6588541666666666
+          ]
+        },
+        "iit_causal_acc": {
+          "mean": 0.984375,
+          "std": 0.0,
+          "ci95": 0.0,
+          "min": 0.984375,
+          "max": 0.984375,
+          "values": [
+            0.984375
+          ]
+        },
+        "iit_heldout_acc": {
+          "mean": 0.609375,
+          "std": 0.0,
+          "ci95": 0.0,
+          "min": 0.609375,
+          "max": 0.609375,
+          "values": [
+            0.609375
+          ]
+        },
+        "iit_random_slice_null": {
+          "mean": 0.03125,
+          "std": 0.0,
+          "ci95": 0.0,
+          "min": 0.03125,
+          "max": 0.03125,
+          "values": [
+            0.03125
+          ]
+        },
+        "burst_immunity_acc": {
+          "mean": 0.859375,
+          "std": 0.0,
+          "ci95": 0.0,
+          "min": 0.859375,
+          "max": 0.859375,
+          "values": [
+            0.859375
+          ]
+        },
+        "abstain_auroc": {
+          "mean": 1.0,
+          "std": 0.0,
+          "ci95": 0.0,
+          "min": 1.0,
+          "max": 1.0,
+          "values": [
+            1.0
+          ]
+        },
+        "near_ood_abstain_auroc": {
+          "mean": 1.0,
+          "std": 0.0,
+          "ci95": 0.0,
+          "min": 1.0,
+          "max": 1.0,
+          "values": [
+            1.0
+          ]
+        },
+        "episodic_v10": {
+          "shots_4": {
+            "lookup_acc": {
+              "mean": 0.703125,
+              "std": 0.0,
+              "ci95": 0.0,
+              "min": 0.703125,
+              "max": 0.703125,
+              "values": [
+                0.703125
+              ]
+            },
+            "shuffled_null_acc": {
+              "mean": 0.046875,
+              "std": 0.0,
+              "ci95": 0.0,
+              "min": 0.046875,
+              "max": 0.046875,
+              "values": [
+                0.046875
+              ]
+            },
+            "impossible_perm_null_acc": {
+              "mean": 0.03125,
+              "std": 0.0,
+              "ci95": 0.0,
+              "min": 0.03125,
+              "max": 0.03125,
+              "values": [
+                0.03125
+              ]
+            },
+            "comp_equiv_induction_acc": {
+              "mean": 0.71875,
+              "std": 0.0,
+              "ci95": 0.0,
+              "min": 0.71875,
+              "max": 0.71875,
+              "values": [
+                0.71875
+              ]
+            },
+            "unseen_meaning_shift_acc": {
+              "mean": 0.359375,
+              "std": 0.0,
+              "ci95": 0.0,
+              "min": 0.359375,
+              "max": 0.359375,
+              "values": [
+                0.359375
+              ]
+            },
+            "shift_shuffled_null_acc": {
+              "mean": 0.0625,
+              "std": 0.0,
+              "ci95": 0.0,
+              "min": 0.0625,
+              "max": 0.0625,
+              "values": [
+                0.0625
+              ]
+            },
+            "shift_no_mem_blind_acc": {
+              "mean": 0.09375,
+              "std": 0.0,
+              "ci95": 0.0,
+              "min": 0.09375,
+              "max": 0.09375,
+              "values": [
+                0.09375
+              ]
+            }
+          },
+          "shots_8": {
+            "lookup_acc": {
+              "mean": 0.609375,
+              "std": 0.0,
+              "ci95": 0.0,
+              "min": 0.609375,
+              "max": 0.609375,
+              "values": [
+                0.609375
+              ]
+            },
+            "shuffled_null_acc": {
+              "mean": 0.078125,
+              "std": 0.0,
+              "ci95": 0.0,
+              "min": 0.078125,
+              "max": 0.078125,
+              "values": [
+                0.078125
+              ]
+            },
+            "impossible_perm_null_acc": {
+              "mean": 0.09375,
+              "std": 0.0,
+              "ci95": 0.0,
+              "min": 0.09375,
+              "max": 0.09375,
+              "values": [
+                0.09375
+              ]
+            },
+            "comp_equiv_induction_acc": {
+              "mean": 0.640625,
+              "std": 0.0,
+              "ci95": 0.0,
+              "min": 0.640625,
+              "max": 0.640625,
+              "values": [
+                0.640625
+              ]
+            },
+            "unseen_meaning_shift_acc": {
+              "mean": 0.453125,
+              "std": 0.0,
+              "ci95": 0.0,
+              "min": 0.453125,
+              "max": 0.453125,
+              "values": [
+                0.453125
+              ]
+            },
+            "shift_shuffled_null_acc": {
+              "mean": 0.09375,
+              "std": 0.0,
+              "ci95": 0.0,
+              "min": 0.09375,
+              "max": 0.09375,
+              "values": [
+                0.09375
+              ]
+            },
+            "shift_no_mem_blind_acc": {
+              "mean": 0.0625,
+              "std": 0.0,
+              "ci95": 0.0,
+              "min": 0.0625,
+              "max": 0.0625,
+              "values": [
+                0.0625
+              ]
+            }
+          },
+          "shots_16": {
+            "lookup_acc": {
+              "mean": 0.546875,
+              "std": 0.0,
+              "ci95": 0.0,
+              "min": 0.546875,
+              "max": 0.546875,
+              "values": [
+                0.546875
+              ]
+            },
+            "shuffled_null_acc": {
+              "mean": 0.0625,
+              "std": 0.0,
+              "ci95": 0.0,
+              "min": 0.0625,
+              "max": 0.0625,
+              "values": [
+                0.0625
+              ]
+            },
+            "impossible_perm_null_acc": {
+              "mean": 0.0625,
+              "std": 0.0,
+              "ci95": 0.0,
+              "min": 0.0625,
+              "max": 0.0625,
+              "values": [
+                0.0625
+              ]
+            },
+            "comp_equiv_induction_acc": {
+              "mean": 0.640625,
+              "std": 0.0,
+              "ci95": 0.0,
+              "min": 0.640625,
+              "max": 0.640625,
+              "values": [
+                0.640625
+              ]
+            },
+            "unseen_meaning_shift_acc": {
+              "mean": 0.46875,
+              "std": 0.0,
+              "ci95": 0.0,
+              "min": 0.46875,
+              "max": 0.46875,
+              "values": [
+                0.46875
+              ]
+            },
+            "shift_shuffled_null_acc": {
+              "mean": 0.015625,
+              "std": 0.0,
+              "ci95": 0.0,
+              "min": 0.015625,
+              "max": 0.015625,
+              "values": [
+                0.015625
+              ]
+            },
+            "shift_no_mem_blind_acc": {
+              "mean": 0.0625,
+              "std": 0.0,
+              "ci95": 0.0,
+              "min": 0.0625,
+              "max": 0.0625,
+              "values": [
+                0.0625
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}

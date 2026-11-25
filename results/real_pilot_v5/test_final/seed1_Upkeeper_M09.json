@@ -1,0 +1,21 @@
+{
+  "arm": "Upkeeper_M09",
+  "teacher_informed": false,
+  "seed": 1,
+  "banking77": {
+    "intent_77_acc": 0.012987012987012988,
+    "same_vs_overlap_diff_auc": 0.5
+  },
+  "track1": {
+    "seen_acc": 0.044270833333333336,
+    "heldout_unseen_acc": 0.07291666666666667,
+    "paraphrase_acc": 0.06770833333333333,
+    "iit_causal_acc": 0.0625,
+    "episodic_fewshot_acc": 0.0625,
+    "burst_immunity_acc": 0.041666666666666664,
+    "abstain_auroc": 0.5,
+    "rollout_planning_delta": 0.0,
+    "quarantine_bytes": 10640,
+    "muon_grok_drift": 0.0
+  }
+}

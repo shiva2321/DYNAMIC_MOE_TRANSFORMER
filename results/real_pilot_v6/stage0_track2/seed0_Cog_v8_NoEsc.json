@@ -1,0 +1,79 @@
+{
+  "arm": "Cog_v8_NoEsc",
+  "teacher_informed": false,
+  "seed": 0,
+  "train_seconds": 235.24733090400696,
+  "banking77": {
+    "intent_77_acc": 0.5980519652366638,
+    "same_vs_overlap_diff_auc": 0.56455
+  },
+  "mean_nuance_flip_auc": 0.7934027777777778,
+  "heldout_families": {
+    "auc": 0.5801,
+    "selectivity": 1.0,
+    "clean_trig": 0.0,
+    "flip_trig": 0.0,
+    "esc_gain": 0.08796992897987366,
+    "esc_margin_gain": 0.04301837086677551
+  },
+  "mean_final_r5": 0.146875,
+  "per_domain_final": {
+    "wiki": {
+      "concept_r1": 0.046875,
+      "concept_r5": 0.140625,
+      "nuance_flip_auc": 0.8185763888888888,
+      "nuance_selectivity": 1.0,
+      "nuance_escalation_gain": 0.28106915950775146,
+      "nuance_esc_margin_gain": 0.13897305727005005
+    },
+    "story": {
+      "concept_r1": 0.015625,
+      "concept_r5": 0.078125,
+      "nuance_flip_auc": 0.8771701388888888,
+      "nuance_selectivity": 1.0,
+      "nuance_escalation_gain": 0.31323254108428955,
+      "nuance_esc_margin_gain": 0.2163379192352295
+    },
+    "code": {
+      "concept_r1": 0.0625,
+      "concept_r5": 0.1875,
+      "nuance_flip_auc": 0.7734375,
+      "nuance_selectivity": 1.0,
+      "nuance_escalation_gain": 0.18629837036132812,
+      "nuance_esc_margin_gain": 0.16120296716690063
+    },
+    "math": {
+      "concept_r1": 0.109375,
+      "concept_r5": 0.1875,
+      "nuance_flip_auc": 0.7126736111111112,
+      "nuance_selectivity": 1.0,
+      "nuance_escalation_gain": 0.2150251865386963,
+      "nuance_esc_margin_gain": 0.11131986975669861
+    },
+    "forum": {
+      "concept_r1": 0.046875,
+      "concept_r5": 0.140625,
+      "nuance_flip_auc": 0.78515625,
+      "nuance_selectivity": 1.0,
+      "nuance_escalation_gain": 0.2124219536781311,
+      "nuance_esc_margin_gain": 0.12880316376686096
+    }
+  },
+  "routing_diag": {
+    "mid_seq_switch_rate": 0.0,
+    "k_dist": {
+      "k0": 0.13818359375,
+      "k1": 0.86181640625,
+      "k2": 0.0
+    },
+    "mean_k": 0.86181640625,
+    "func_routing_nmi": 0.0,
+    "func_routing_ami": {
+      "ami": 0.0,
+      "null_mean": 0.0,
+      "null_max": 0.0,
+      "ami_vs_null": 0.0
+    },
+    "lesion_drops": {}
+  }
+}

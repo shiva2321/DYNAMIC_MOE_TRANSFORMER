@@ -1,0 +1,308 @@
+{
+  "arm": "Cog_v7",
+  "teacher_informed": false,
+  "seed": 100,
+  "train_seconds": 223.73781869999948,
+  "peak_vram_mb": 868.65478515625,
+  "num_experts": 6,
+  "backward_passes": 1000,
+  "skipped_steps": 0,
+  "banking77": {
+    "intent_77_acc": 0.14416666328907013,
+    "same_vs_overlap_diff_auc": 0.530525
+  },
+  "b77_muon_drift": -0.014166668057441711,
+  "heldout_families": {
+    "auc": 0.4625,
+    "selectivity": 0.8335263318852818,
+    "clean_trig": 0.08624999970197678,
+    "flip_trig": 0.07187499850988388,
+    "esc_gain": 0.05826626718044281,
+    "esc_margin_gain": -0.022916078567504883
+  },
+  "mixed_switch": {
+    "mid_seq_switch_rate": 0.625,
+    "k_dist": {
+      "k0": 0.0517578125,
+      "k1": 0.2470703125,
+      "k2": 0.701171875
+    }
+  },
+  "per_domain_final": {
+    "wiki": {
+      "concept_r1": 0.015625,
+      "concept_r5": 0.09375,
+      "nuance_flip_auc": 0.9019097222222222,
+      "nuance_selectivity": 2.423206286091034,
+      "nuance_clean_trig": 0.0611979179084301,
+      "nuance_flip_trig": 0.1484375,
+      "nuance_escalation_gain": 0.1890103816986084,
+      "nuance_esc_margin_gain": 0.1518179476261139
+    },
+    "story": {
+      "concept_r1": 0.03125,
+      "concept_r5": 0.078125,
+      "nuance_flip_auc": 0.9479166666666666,
+      "nuance_selectivity": 3.1343357452628076,
+      "nuance_clean_trig": 0.046875,
+      "nuance_flip_trig": 0.1471354216337204,
+      "nuance_escalation_gain": 0.20229876041412354,
+      "nuance_esc_margin_gain": 0.12817789614200592
+    },
+    "code": {
+      "concept_r1": 0.03125,
+      "concept_r5": 0.125,
+      "nuance_flip_auc": 0.9631076388888888,
+      "nuance_selectivity": 2.887973026429623,
+      "nuance_clean_trig": 0.0481770858168602,
+      "nuance_flip_trig": 0.1393229216337204,
+      "nuance_escalation_gain": 0.1602473258972168,
+      "nuance_esc_margin_gain": 0.12102901935577393
+    },
+    "math": {
+      "concept_r1": 0.0,
+      "concept_r5": 0.046875,
+      "nuance_flip_auc": 0.8819444444444444,
+      "nuance_selectivity": 1.7926845340077058,
+      "nuance_clean_trig": 0.08203125,
+      "nuance_flip_trig": 0.1471354216337204,
+      "nuance_escalation_gain": 0.1620086431503296,
+      "nuance_esc_margin_gain": 0.07112503051757812
+    },
+    "forum": {
+      "concept_r1": 0.03125,
+      "concept_r5": 0.046875,
+      "nuance_flip_auc": 0.8980034722222222,
+      "nuance_selectivity": 2.699350955355777,
+      "nuance_clean_trig": 0.0611979179084301,
+      "nuance_flip_trig": 0.1653645932674408,
+      "nuance_escalation_gain": 0.18880963325500488,
+      "nuance_esc_margin_gain": 0.09411931037902832
+    }
+  },
+  "mean_final_r1": 0.021875,
+  "mean_final_r5": 0.078125,
+  "mean_nuance_flip_auc": 0.9185763888888889,
+  "mean_nuance_selectivity": 2.5875101094293895,
+  "mean_escalation_gain": 0.18047494888305665,
+  "mean_esc_margin_gain": 0.11325384080410003,
+  "forgetting_r5": -0.01953125,
+  "forgetting_nuance_auc": -0.022460937499999972,
+  "gpm_mean_cap_ratio": 0.43430367140396214,
+  "gpm_at_cap_count": 0,
+  "quarantine_bytes": 4584,
+  "nuance_buf_bytes": 50176,
+  "detached_renderer_diag_bpb": 7.488513987288242,
+  "events": [
+    {
+      "step": 961,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 962,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 963,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 964,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 965,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 966,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 967,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 968,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 969,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 970,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 971,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 972,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 973,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 974,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 975,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 976,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 977,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 978,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 979,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 980,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 981,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 982,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 983,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 984,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 985,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 986,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 987,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 988,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 989,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 990,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 991,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 992,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 993,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 994,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 995,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 996,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 997,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 998,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 999,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 1000,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    }
+  ],
+  "track1": {
+    "seen_acc": 0.859375,
+    "heldout_unseen_acc": 0.2265625,
+    "paraphrase_acc": 0.1953125,
+    "burst_immunity_acc": 0.7421875,
+    "abstain_auroc": 0.70751953125,
+    "rollout_planning_delta": 0.015625,
+    "muon_grok_drift": -0.028645833333333343,
+    "quarantine_bytes": 15372
+  }
+}

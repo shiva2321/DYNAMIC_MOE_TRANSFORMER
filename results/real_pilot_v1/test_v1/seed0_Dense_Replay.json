@@ -1,0 +1,543 @@
+{
+ "arm": "Dense_Replay",
+ "seed": 0,
+ "steps_per_stream": 400,
+ "params_init": 5281792,
+ "params_final": 5281792,
+ "train_seconds": 50.13009910000255,
+ "tokens_per_sec": 81707.39881900196,
+ "forward_passes": 2000,
+ "backward_passes": 2000,
+ "peak_vram_mb": 519.9482421875,
+ "matrix": [
+  {
+   "wiki": {
+    "bpb": 2.648092934662009,
+    "top1": 0.47161865234375
+   },
+   "story": {
+    "bpb": 3.2273337274426517,
+    "top1": 0.418853759765625
+   },
+   "code": {
+    "bpb": 5.764173707996935,
+    "top1": 0.298492431640625
+   },
+   "math": {
+    "bpb": 4.503745278553098,
+    "top1": 0.34930419921875
+   },
+   "forum": {
+    "bpb": 4.861290502373494,
+    "top1": 0.33343505859375
+   },
+   "_after_stream": "wiki"
+  },
+  {
+   "wiki": {
+    "bpb": 2.8245100291903267,
+    "top1": 0.457672119140625
+   },
+   "story": {
+    "bpb": 1.7858220561786127,
+    "top1": 0.618377685546875
+   },
+   "code": {
+    "bpb": 5.743580075425996,
+    "top1": 0.287841796875
+   },
+   "math": {
+    "bpb": 4.257529498124399,
+    "top1": 0.372772216796875
+   },
+   "forum": {
+    "bpb": 4.759681260434587,
+    "top1": 0.34698486328125
+   },
+   "_after_stream": "story"
+  },
+  {
+   "wiki": {
+    "bpb": 2.9079295260607285,
+    "top1": 0.458831787109375
+   },
+   "story": {
+    "bpb": 2.1782178873655105,
+    "top1": 0.5521240234375
+   },
+   "code": {
+    "bpb": 1.5428837061317435,
+    "top1": 0.713775634765625
+   },
+   "math": {
+    "bpb": 3.7143319264026666,
+    "top1": 0.394683837890625
+   },
+   "forum": {
+    "bpb": 4.221765619886153,
+    "top1": 0.35467529296875
+   },
+   "_after_stream": "code"
+  },
+  {
+   "wiki": {
+    "bpb": 2.831308632365922,
+    "top1": 0.470184326171875
+   },
+   "story": {
+    "bpb": 2.1099284782134387,
+    "top1": 0.558197021484375
+   },
+   "code": {
+    "bpb": 1.9740540578515666,
+    "top1": 0.64276123046875
+   },
+   "math": {
+    "bpb": 1.928565506611608,
+    "top1": 0.602020263671875
+   },
+   "forum": {
+    "bpb": 4.451423426637733,
+    "top1": 0.3624267578125
+   },
+   "_after_stream": "math"
+  },
+  {
+   "wiki": {
+    "bpb": 2.6070663443116975,
+    "top1": 0.5028076171875
+   },
+   "story": {
+    "bpb": 2.082606411388456,
+    "top1": 0.5655517578125
+   },
+   "code": {
+    "bpb": 2.000747528087646,
+    "top1": 0.63726806640625
+   },
+   "math": {
+    "bpb": 2.216133526540027,
+    "top1": 0.55682373046875
+   },
+   "forum": {
+    "bpb": 3.0240728928370633,
+    "top1": 0.446533203125
+   },
+   "_after_stream": "forum"
+  }
+ ],
+ "train_loss_tail_nats": {
+  "wiki": 1.8001465618610382,
+  "story": 1.2872288882732392,
+  "code": 1.0321755766868592,
+  "math": 1.2889588117599486,
+  "forum": 1.7123764514923097
+ },
+ "train_ce_tail_nats": {
+  "wiki": 1.8001465618610382,
+  "story": 1.2872288882732392,
+  "code": 1.0321755766868592,
+  "math": 1.2889588117599486,
+  "forum": 1.7123764514923097
+ },
+ "events": [],
+ "skipped_steps": 0,
+ "meaning_probe_banking77": {
+  "trained": {
+   "intent_77_acc": 0.6785714030265808,
+   "same_vs_overlap_diff_auc": 0.17015,
+   "sim_same_intent": 0.910326922237873,
+   "sim_diff_high_overlap": 0.9453222504258156
+  },
+  "references": {
+   "chance": 0.012987012987012988
+  }
+ },
+ "context_and_noise_probe": {
+  "wiki": {
+   "suffix_clean_bpb": 2.6203297852553016,
+   "suffix_shuffled_prefix_bpb": 2.7949644191779623,
+   "suffix_noise10_prefix_bpb": 2.658642058756899,
+   "delta_shuffle": 0.17463463392266076,
+   "delta_noise10": 0.03831227350159727
+  },
+  "story": {
+   "suffix_clean_bpb": 1.9964973803693293,
+   "suffix_shuffled_prefix_bpb": 2.2088268859523117,
+   "suffix_noise10_prefix_bpb": 2.06790855642152,
+   "delta_shuffle": 0.21232950558298236,
+   "delta_noise10": 0.07141117605219072
+  },
+  "code": {
+   "suffix_clean_bpb": 1.9018596351034582,
+   "suffix_shuffled_prefix_bpb": 2.153450885423373,
+   "suffix_noise10_prefix_bpb": 1.9610350446046145,
+   "delta_shuffle": 0.2515912503199149,
+   "delta_noise10": 0.059175409501156295
+  },
+  "math": {
+   "suffix_clean_bpb": 2.1455569134994135,
+   "suffix_shuffled_prefix_bpb": 2.4072443603581517,
+   "suffix_noise10_prefix_bpb": 2.2041824865281003,
+   "delta_shuffle": 0.26168744685873824,
+   "delta_noise10": 0.05862557302868687
+  }
+ },
+ "compositional_probe": {
+  "arith_n": 300,
+  "arith_exact_match": 0.04666666666666667,
+  "arith_exact_small": 0.10144927536231885,
+  "arith_n_small": 69,
+  "arith_copy_first": 0.03333333333333333,
+  "arith_majority": 0.04666666666666667,
+  "gsm_simple_le2_bpb": 2.3570488013943507,
+  "gsm_multi_ge4_bpb": 2.325619917853752,
+  "var_binding_exact2": 0.015625,
+  "var_binding_2byte_bpb": 4.73163828533285,
+  "var_binding_shuffled_1st_byte_bpb": 4.094278836402522,
+  "code_shallow_bpb": 1.827885185965674,
+  "code_deep_bpb": 2.173609698226967
+ },
+ "generation": {
+  "wiki": [
+   {
+    "prompt": "The Long Firm ; he starred alongside actors Mark",
+    "generated_greedy": " and the area . The area of the continuing , which is the continuing to the Chicago , which is t",
+    "generated_temp08": "ey at her area. Unter the game\nan ofference and propriated stream.  What it is women beginning c",
+    "reference": " Strong and Derek Jacobi . Boulter starred as \" Darren \" , in the 2005 theatre pr",
+    "deterministic_repeat_identical": true,
+    "routed_experts_sampled": null,
+    "stats_greedy": {
+     "distinct_4gram_frac": 0.6559139784946236,
+     "max_4gram_repeat": 4,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 20
+    },
+    "stats_temp08": {
+     "distinct_4gram_frac": 1.0,
+     "max_4gram_repeat": 1,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 23
+    }
+   },
+   {
+    "prompt": "ked Gid\u014d , \" Should I learn the poetry of Du Fu",
+    "generated_greedy": "nction is \" and was to the area of the second one of the first in the area . A \" and you are the",
+    "generated_temp08": "nction to Wood.\"  The Armenians are hard a continuid and the reat in their days.\n\nThey play thos",
+    "reference": " and Li Bai ? \" Gid\u014d dared to reply , \" Yes if you do have enough capability . N",
+    "deterministic_repeat_identical": true,
+    "routed_experts_sampled": null,
+    "stats_greedy": {
+     "distinct_4gram_frac": 0.7849462365591398,
+     "max_4gram_repeat": 5,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 19
+    },
+    "stats_temp08": {
+     "distinct_4gram_frac": 0.989247311827957,
+     "max_4gram_repeat": 2,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 23
+    }
+   },
+   {
+    "prompt": " NFL season , Rifenburg came back from his injur",
+    "generated_greedy": "estion in the carries of the care in the care of the card of the care in the care in the area of",
+    "generated_temp08": "estional period.  Accent, claims reasons several cases would be formated and the jew games of th",
+    "reference": "y to play for the Detroit Lions . He played in 12 games and had ten receptions fo",
+    "deterministic_repeat_identical": true,
+    "routed_experts_sampled": null,
+    "stats_greedy": {
+     "distinct_4gram_frac": 0.44086021505376344,
+     "max_4gram_repeat": 7,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 13
+    },
+    "stats_temp08": {
+     "distinct_4gram_frac": 1.0,
+     "max_4gram_repeat": 1,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 25
+    }
+   }
+  ],
+  "story": [
+   {
+    "prompt": "land was big and sometimes dangerous. Tom knew h",
+    "generated_greedy": "as to the second of the care was to the security of the cards of the card and saying the carries",
+    "generated_temp08": "e had have a give you go do.  She say, \u00e2\u20ac smart they followed a good fit in example a finding",
+    "reference": "e had to be careful.\n\nAt last, Tom found his ball near a big tree. He was very ha",
+    "deterministic_repeat_identical": true,
+    "routed_experts_sampled": null,
+    "stats_greedy": {
+     "distinct_4gram_frac": 0.6344086021505376,
+     "max_4gram_repeat": 6,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 17
+    },
+    "stats_temp08": {
+     "distinct_4gram_frac": 0.978494623655914,
+     "max_4gram_repeat": 2,
+     "printable_frac": 0.9479166666666666,
+     "utf8_valid": true,
+     "unique_bytes": 29
+    }
+   },
+   {
+    "prompt": "ookcase to keep them in. One day, her parents su",
+    "generated_greedy": "ch a continuing to the start of the care with the comparising the carries of the card and the co",
+    "generated_temp08": "ppointed the\n                                                                         \n         ",
+    "reference": "rprised her with a big purple bookcase! Lily was so happy and excited. She quickl",
+    "deterministic_repeat_identical": true,
+    "routed_experts_sampled": null,
+    "stats_greedy": {
+     "distinct_4gram_frac": 0.7419354838709677,
+     "max_4gram_repeat": 6,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 18
+    },
+    "stats_temp08": {
+     "distinct_4gram_frac": 0.1827956989247312,
+     "max_4gram_repeat": 76,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 10
+    }
+   },
+   {
+    "prompt": "m. They licked and bit their ice cream. It was c",
+    "generated_greedy": "ared to the come to teach the car and the comparising the area.  I am not anyone was the carries",
+    "generated_temp08": "areas\nan engine you must, blue sorry to come me made on adjusted and heanged the jew \n          ",
+    "reference": "old and sweet. They were very happy.\n\nBut then they saw something. It was a big b",
+    "deterministic_repeat_identical": true,
+    "routed_experts_sampled": null,
+    "stats_greedy": {
+     "distinct_4gram_frac": 0.8172043010752689,
+     "max_4gram_repeat": 5,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 19
+    },
+    "stats_temp08": {
+     "distinct_4gram_frac": 0.9247311827956989,
+     "max_4gram_repeat": 7,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 22
+    }
+   }
+  ],
+  "code": [
+   {
+    "prompt": "ut:\n# Calculate the sum of the numbers in the li",
+    "generated_greedy": "st of two diseases and the comparising that the comparising that the comparising the comparising",
+    "generated_temp08": "st of calculates.\n\n### Indiate_add(c.b))\n\n### Instruction:\nCalculate tkind as a given the time >",
+    "reference": "st\ntotal = sum(lst)\n\n# Print the result\nprint(total) # prints 25\n\n### Instruction",
+    "deterministic_repeat_identical": true,
+    "routed_experts_sampled": null,
+    "stats_greedy": {
+     "distinct_4gram_frac": 0.46236559139784944,
+     "max_4gram_repeat": 4,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 17
+    },
+    "stats_temp08": {
+     "distinct_4gram_frac": 0.8924731182795699,
+     "max_4gram_repeat": 2,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 30
+    }
+   },
+   {
+    "prompt": "ut using any comparison operator.\n\n### Response:",
+    "generated_greedy": "\n\n### Output:\ndef calculate_sum(a, b):\n    return a + b\n\n### Instruction:\nCreate a Python progra",
+    "generated_temp08": "\n\n### Output:\nimport tkintent \n    # Calculate the disponess, and in Python can be classed an ob",
+    "reference": "\n\n### Output:\ndef maximum(x, y): \n  \n    # subtract two numbers \n    # and return",
+    "deterministic_repeat_identical": true,
+    "routed_experts_sampled": null,
+    "stats_greedy": {
+     "distinct_4gram_frac": 0.967741935483871,
+     "max_4gram_repeat": 2,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 32
+    },
+    "stats_temp08": {
+     "distinct_4gram_frac": 1.0,
+     "max_4gram_repeat": 1,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 26
+    }
+   },
+   {
+    "prompt": "# Output:\ndef calc_avg(nums):\n    total = 0\n    ",
+    "generated_greedy": "for i in range(2):\n    return celsius\n    # Initialize \n    # Initialize \n    # Initialize \n    ",
+    "generated_temp08": "for i in expression_stack_clarses = sum(n, )\n    ff, x = \n    return celsius* \n    return sum(di",
+    "reference": "for item in nums:\n        total += item\n    avg = total / len(nums)\n    return av",
+    "deterministic_repeat_identical": true,
+    "routed_experts_sampled": null,
+    "stats_greedy": {
+     "distinct_4gram_frac": 0.5698924731182796,
+     "max_4gram_repeat": 5,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 22
+    },
+    "stats_temp08": {
+     "distinct_4gram_frac": 0.8494623655913979,
+     "max_4gram_repeat": 3,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 25
+    }
+   }
+  ],
+  "math": [
+   {
+    "prompt": "nt.  How many total meters does he run a week?\nA",
+    "generated_greedy": "nswer: The control is the comparising the control of the carry of the carries of the carries and",
+    "generated_temp08": "nswer: The Teals. Ev has done is a cobson to are input, from her can this type was green it Arme",
+    "reference": "nswer: He sprints 3*3=<<3*3=9>>9 times\nSo he runs 9*60=<<9*60=540>>540 meters\n###",
+    "deterministic_repeat_identical": true,
+    "routed_experts_sampled": null,
+    "stats_greedy": {
+     "distinct_4gram_frac": 0.6021505376344086,
+     "max_4gram_repeat": 6,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 21
+    },
+    "stats_temp08": {
+     "distinct_4gram_frac": 1.0,
+     "max_4gram_repeat": 1,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 28
+    }
+   },
+   {
+    "prompt": "DVDs did Billy sell on Tuesday?\nAnswer: His firs",
+    "generated_greedy": "t the comparison of the control of the continue of the carry of the carries of the carries of th",
+    "generated_temp08": "t telectrone\n                                                                                   ",
+    "reference": "t 3 customers buy 3 * 1 = <<3*1=3>>3 DVDs.\nHis next 2 buy 2 * 2 = <<2*2=4>>4 DVDs",
+    "deterministic_repeat_identical": true,
+    "routed_experts_sampled": null,
+    "stats_greedy": {
+     "distinct_4gram_frac": 0.5053763440860215,
+     "max_4gram_repeat": 6,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 17
+    },
+    "stats_temp08": {
+     "distinct_4gram_frac": 0.15053763440860216,
+     "max_4gram_repeat": 80,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 9
+    }
+   },
+   {
+    "prompt": "4 - 14 = <<24-14=10>>10 liters of water were lef",
+    "generated_greedy": "t of the time to 100 minutes/week = <<300/4=10>>10 kilometers and the term of the term to 100 mi",
+    "generated_temp08": "t.\nYou have 30 + 50 minutes/week\n\nThe newsgram is find you mean for the names thates than been p",
+    "reference": "t.\n#### 10\n\nQuestion: Charlie had 10 stickers. He bought 21 stickers from a store",
+    "deterministic_repeat_identical": true,
+    "routed_experts_sampled": null,
+    "stats_greedy": {
+     "distinct_4gram_frac": 0.7849462365591398,
+     "max_4gram_repeat": 3,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 25
+    },
+    "stats_temp08": {
+     "distinct_4gram_frac": 0.956989247311828,
+     "max_4gram_repeat": 2,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 30
+    }
+   }
+  ],
+  "forum": [
+   {
+    "prompt": " okay I guess to hate the book, by why hate me?\n",
+    "generated_greedy": "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n                                                                      ",
+    "generated_temp08": "\n(Andream would be a total of \nan offices to amount that the department hit in the ground that c",
+    "reference": "Elisabeth, I'm going to quote from Zinsser's Microbiology, 20th Edition.\nA book t",
+    "deterministic_repeat_identical": true,
+    "routed_experts_sampled": null,
+    "stats_greedy": {
+     "distinct_4gram_frac": 0.053763440860215055,
+     "max_4gram_repeat": 67,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 2
+    },
+    "stats_temp08": {
+     "distinct_4gram_frac": 0.9354838709677419,
+     "max_4gram_repeat": 2,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 23
+    }
+   },
+   {
+    "prompt": "ome weak and atrophied by too\nmany sedentary hou",
+    "generated_greedy": "ses the area of the continuing to the continuing the area of the care , and the comparison , whi",
+    "generated_temp08": "ses that they would give to see a series are\nfor the avoid year.  From there are not about an ob",
+    "reference": "rs tapping away at my ergonomically-correct CRT keyboard.\nThere was only one opti",
+    "deterministic_repeat_identical": true,
+    "routed_experts_sampled": null,
+    "stats_greedy": {
+     "distinct_4gram_frac": 0.6236559139784946,
+     "max_4gram_repeat": 6,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 19
+    },
+    "stats_temp08": {
+     "distinct_4gram_frac": 0.967741935483871,
+     "max_4gram_repeat": 3,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 23
+    }
+   },
+   {
+    "prompt": "a\ncomputer won't see colour, because the chemist",
+    "generated_greedy": " of the car of the care is a comparison of the car of the car of the carries of the car of the c",
+    "generated_temp08": "y game time is a bick and claims.  The seleves include you must for the name to foeed to play to",
+    "reference": "ry is different. Does an\nalgorithm that sees colour have a selective advantage ov",
+    "deterministic_repeat_identical": true,
+    "routed_experts_sampled": null,
+    "stats_greedy": {
+     "distinct_4gram_frac": 0.40860215053763443,
+     "max_4gram_repeat": 7,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 14
+    },
+    "stats_temp08": {
+     "distinct_4gram_frac": 0.967741935483871,
+     "max_4gram_repeat": 2,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 24
+    }
+   }
+  ]
+ }
+}

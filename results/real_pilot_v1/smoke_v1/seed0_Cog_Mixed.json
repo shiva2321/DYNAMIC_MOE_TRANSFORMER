@@ -1,0 +1,3009 @@
+{
+ "arm": "Cog_Mixed",
+ "seed": 0,
+ "total_steps": 250,
+ "final": {
+  "wiki": {
+   "bpb": 2.8483785124033334,
+   "top1": 0.443267822265625,
+   "routes": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "mean_token_steps": 1.998291015625,
+   "active_token_frac": 0.9991455078125,
+   "unknown_frac": 0.057281494140625,
+   "pc_trigger_frac": 0.00018310546875,
+   "pc_gate_min": 0.3656356632709503,
+   "wm_cos_1step": 0.49886830151081085,
+   "wm_l1_1step": 0.335891492664814,
+   "surprise_nll_corr": 0.5743599761023039,
+   "surprise_p10_p50_p90": [
+    0.3647506833076477,
+    0.6380102634429932,
+    0.8359849452972412
+   ]
+  },
+  "story": {
+   "bpb": 2.292706351083918,
+   "top1": 0.5250244140625,
+   "routes": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "mean_token_steps": 1.999542236328125,
+   "active_token_frac": 0.9997711181640625,
+   "unknown_frac": 0.007781982421875,
+   "pc_trigger_frac": 0.00018310546875,
+   "pc_gate_min": 0.7289190888404846,
+   "wm_cos_1step": 0.5530548840761185,
+   "wm_l1_1step": 0.3055972158908844,
+   "surprise_nll_corr": 0.5746355729280238,
+   "surprise_p10_p50_p90": [
+    0.3176198899745941,
+    0.5787098407745361,
+    0.8087179660797119
+   ]
+  },
+  "code": {
+   "bpb": 2.034542677925803,
+   "top1": 0.63299560546875,
+   "routes": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "mean_token_steps": 1.987823486328125,
+   "active_token_frac": 0.9939117431640625,
+   "unknown_frac": 0.008544921875,
+   "pc_trigger_frac": 0.00079345703125,
+   "pc_gate_min": 0.03669873997569084,
+   "wm_cos_1step": 0.6173930913209915,
+   "wm_l1_1step": 0.26699163019657135,
+   "surprise_nll_corr": 0.6237204951976422,
+   "surprise_p10_p50_p90": [
+    0.26621490716934204,
+    0.5081233978271484,
+    0.7670366168022156
+   ]
+  },
+  "math": {
+   "bpb": 2.475665536664069,
+   "top1": 0.50347900390625,
+   "routes": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "mean_token_steps": 1.997161865234375,
+   "active_token_frac": 0.9985809326171875,
+   "unknown_frac": 0.010223388671875,
+   "pc_trigger_frac": 0.00048828125,
+   "pc_gate_min": 0.12168015539646149,
+   "wm_cos_1step": 0.5399144887924194,
+   "wm_l1_1step": 0.31432271748781204,
+   "surprise_nll_corr": 0.5820880513651169,
+   "surprise_p10_p50_p90": [
+    0.3017238676548004,
+    0.5915529727935791,
+    0.8061173558235168
+   ]
+  },
+  "forum": {
+   "bpb": 3.2274405286688377,
+   "top1": 0.408355712890625,
+   "routes": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "mean_token_steps": 1.99835205078125,
+   "active_token_frac": 0.999176025390625,
+   "unknown_frac": 0.07733154296875,
+   "pc_trigger_frac": 0.002532958984375,
+   "pc_gate_min": 0.06407224386930466,
+   "wm_cos_1step": 0.4619978442788124,
+   "wm_l1_1step": 0.3586268350481987,
+   "surprise_nll_corr": 0.5099980890859581,
+   "surprise_p10_p50_p90": [
+    0.3363579511642456,
+    0.6273229122161865,
+    0.8326049447059631
+   ]
+  }
+ },
+ "train_seconds": 23.98433600000135,
+ "forward_passes": 500,
+ "backward_passes": 250,
+ "peak_vram_mb": 801.47314453125,
+ "params_final": 5293397,
+ "events": [
+  {
+   "step": 39,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 40,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 41,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 42,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 43,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 44,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 45,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 46,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 47,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 48,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 49,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 52,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 53,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 54,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 55,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 56,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 57,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 58,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 62,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 63,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 64,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 65,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 66,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 67,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 68,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 69,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 72,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 73,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 74,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 75,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 76,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 77,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 78,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 79,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 80,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 81,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 82,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 83,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 84,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 85,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 86,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 87,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 88,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 89,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 90,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 91,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 92,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 93,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 94,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 95,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 96,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 97,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 98,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 99,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 100,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 101,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 102,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 103,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 104,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 105,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 106,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 107,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 108,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 109,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 110,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 111,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 112,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 113,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 114,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 115,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 116,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 117,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 118,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 119,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 120,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 121,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 122,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 123,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 124,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 125,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 126,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 127,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 128,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 129,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 130,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 131,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 132,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 133,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 134,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 135,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 136,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 137,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 138,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 139,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 140,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 141,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 142,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 143,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 144,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 145,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 146,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 147,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 148,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 149,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 150,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 151,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 152,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 153,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 154,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 155,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 156,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 157,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 158,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 159,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 160,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 161,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 162,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 163,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 164,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 165,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 166,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 167,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 168,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 169,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 170,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 171,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 172,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 173,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 174,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 175,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 176,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 177,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 178,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 179,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 180,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 181,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 182,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 183,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 184,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 185,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 186,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 187,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 188,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 189,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 190,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 191,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 192,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 193,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 194,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 195,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 196,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 197,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 198,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 199,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 200,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 201,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 202,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 203,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 204,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 205,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 206,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 207,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 208,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 209,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 210,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 211,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 212,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 213,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 214,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 215,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 216,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 217,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 218,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 219,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 220,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 221,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 222,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 223,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 224,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 225,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 226,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 227,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 228,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 229,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 230,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 231,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 232,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 233,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 234,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 235,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 236,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 237,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 238,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 239,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 240,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 241,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 242,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 243,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 244,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 245,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 246,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 247,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 248,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  },
+  {
+   "step": 249,
+   "stream": "mixed",
+   "event": "extended_expert_0"
+  }
+ ],
+ "skipped_steps": 0,
+ "num_experts": 1,
+ "routing": {
+  "confusion_domain_x_expert": {
+   "wiki": {
+    "0": 256
+   },
+   "story": {
+    "0": 256
+   },
+   "code": {
+    "0": 256
+   },
+   "math": {
+    "0": 256
+   },
+   "forum": {
+    "0": 256
+   }
+  },
+  "nmi_domain_vs_expert": 0.0
+ },
+ "meaning_probe_banking77": {
+  "trained": {
+   "intent_77_acc": 0.6016666889190674,
+   "same_vs_overlap_diff_auc": 0.2169,
+   "sim_same_intent": 0.9294294722378253,
+   "sim_diff_high_overlap": 0.9579107058048248,
+   "test_expert_routes": {
+    "0": 1200
+   }
+  },
+  "references": {
+   "chance": 0.012987012987012988
+  }
+ },
+ "context_and_noise_probe": {
+  "wiki": {
+   "suffix_clean_bpb": 2.7901679553397454,
+   "suffix_shuffled_prefix_bpb": 2.914229487368714,
+   "suffix_noise10_prefix_bpb": 2.8182001325768953,
+   "delta_shuffle": 0.12406153202896864,
+   "delta_noise10": 0.028032177237149902
+  },
+  "story": {
+   "suffix_clean_bpb": 2.2965634807411237,
+   "suffix_shuffled_prefix_bpb": 2.4863146382427357,
+   "suffix_noise10_prefix_bpb": 2.326432115183056,
+   "delta_shuffle": 0.18975115750161198,
+   "delta_noise10": 0.02986863444193233
+  },
+  "code": {
+   "suffix_clean_bpb": 1.9781482179670222,
+   "suffix_shuffled_prefix_bpb": 2.1683576007518193,
+   "suffix_noise10_prefix_bpb": 1.998847097305573,
+   "delta_shuffle": 0.19020938278479704,
+   "delta_noise10": 0.020698879338550746
+  },
+  "math": {
+   "suffix_clean_bpb": 2.3797086785128343,
+   "suffix_shuffled_prefix_bpb": 2.568847683612852,
+   "suffix_noise10_prefix_bpb": 2.4098655241269693,
+   "delta_shuffle": 0.1891390051000177,
+   "delta_noise10": 0.03015684561413501
+  }
+ },
+ "compositional_probe": {
+  "arith_n": 300,
+  "arith_exact_match": 0.02,
+  "arith_exact_small": 0.045454545454545456,
+  "arith_n_small": 66,
+  "arith_copy_first": 0.03,
+  "arith_majority": 0.04666666666666667,
+  "gsm_simple_le2_bpb": 2.5182452163429967,
+  "gsm_multi_ge4_bpb": 2.5726902800745886,
+  "var_binding_exact2": 0.0,
+  "var_binding_2byte_bpb": 8.892505020531134,
+  "var_binding_shuffled_1st_byte_bpb": 5.914283863296988,
+  "code_shallow_bpb": 1.8194064058699446,
+  "code_deep_bpb": 2.2783638779798565
+ },
+ "generation": {
+  "wiki": [
+   {
+    "prompt": "reamy white or very pale red .\n\nFemale H. gammar",
+    "generated_greedy": " was said the said the said the said the said the said the said the said the said the said the s",
+    "generated_temp08": "y happy find the see that calculate . Sommy Kamam , the frest days and it to he got was sot Aroc",
+    "reference": "us reach sexual maturity when they have grown to a carapace length of 80 \u2013 85 m",
+    "deterministic_repeat_identical": true,
+    "routed_experts_sampled": [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "stats_greedy": {
+     "distinct_4gram_frac": 0.13978494623655913,
+     "max_4gram_repeat": 10,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 9
+    },
+    "stats_temp08": {
+     "distinct_4gram_frac": 0.978494623655914,
+     "max_4gram_repeat": 2,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 25
+    }
+   },
+   {
+    "prompt": "g the southern edge of Manistee National Forest ",
+    "generated_greedy": "in Python the second to the second to the second to the second to the said the said the said the",
+    "generated_temp08": "perill , they incring to hen dof he her named by the surveryly we in dedivt can one march in the",
+    "reference": ". The current version of M @-@ 82 is actually the second in the state ; the first",
+    "deterministic_repeat_identical": true,
+    "routed_experts_sampled": [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "stats_greedy": {
+     "distinct_4gram_frac": 0.3118279569892473,
+     "max_4gram_repeat": 8,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 13
+    },
+    "stats_temp08": {
+     "distinct_4gram_frac": 0.967741935483871,
+     "max_4gram_repeat": 3,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 23
+    }
+   },
+   {
+    "prompt": "tional soloist , Elena Nikolaidi , to perform wi",
+    "generated_greedy": "th the second to the car , and the said the second to the second to the second to the second to ",
+    "generated_temp08": "th the time in pable cans clains represses , is maltes with in the sthern Mich dojee Cate so the",
+    "reference": "th the orchestra . The Orchestra helped the Meridian Public School District devel",
+    "deterministic_repeat_identical": true,
+    "routed_experts_sampled": [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "stats_greedy": {
+     "distinct_4gram_frac": 0.34408602150537637,
+     "max_4gram_repeat": 7,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 13
+    },
+    "stats_temp08": {
+     "distinct_4gram_frac": 0.956989247311828,
+     "max_4gram_repeat": 3,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 21
+    }
+   }
+  ],
+  "story": [
+   {
+    "prompt": "\"Next time, you have to share and take turns,\" M",
+    "generated_greedy": "andy was said the said, \"I was says the said, \"I was says the said, \"I was says the said, \"I was",
+    "generated_temp08": "ean to the were out  the day, San I screct was a produced the day. For it took walked to the com",
+    "reference": "om said. \"And ask me before you use the kitchen.\"\n\nLily and Ben felt sorry. They ",
+    "deterministic_repeat_identical": true,
+    "routed_experts_sampled": [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "stats_greedy": {
+     "distinct_4gram_frac": 0.3118279569892473,
+     "max_4gram_repeat": 5,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 14
+    },
+    "stats_temp08": {
+     "distinct_4gram_frac": 0.8602150537634409,
+     "max_4gram_repeat": 4,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 24
+    }
+   },
+   {
+    "prompt": "d white.\n\n\"Look, there's a landing spot,\" Lila s",
+    "generated_greedy": "ays the said, \"I'm was says the said, \"I'm was says the said, \"I'm was says the said, \"The said,",
+    "generated_temp08": "pepe can they broring to hen dow.\n\nThe said by you days who looked boys in the hange more ing ou",
+    "reference": "aid. She pointed to a patch of dirt. \"Let's go and give the crystal to the moon p",
+    "deterministic_repeat_identical": true,
+    "routed_experts_sampled": [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "stats_greedy": {
+     "distinct_4gram_frac": 0.3010752688172043,
+     "max_4gram_repeat": 5,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 16
+    },
+    "stats_temp08": {
+     "distinct_4gram_frac": 0.967741935483871,
+     "max_4gram_repeat": 2,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 24
+    }
+   },
+   {
+    "prompt": "loved to explore and play outside. One day, she ",
+    "generated_greedy": "was says the said the said the said the said the said the said the said the said the said the sa",
+    "generated_temp08": "was said he his you many, clakes to some some sim find you mom to bathey says.\n\nToer than so the",
+    "reference": "found a colorful butterfly in her backyard. She followed it until it flew into a ",
+    "deterministic_repeat_identical": true,
+    "routed_experts_sampled": [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "stats_greedy": {
+     "distinct_4gram_frac": 0.1827956989247312,
+     "max_4gram_repeat": 10,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 10
+    },
+    "stats_temp08": {
+     "distinct_4gram_frac": 0.9139784946236559,
+     "max_4gram_repeat": 2,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 24
+    }
+   }
+  ],
+  "code": [
+   {
+    "prompt": "put:\n[1, 5, 7, 10]\n\n### Response:\n\n### Output:\nd",
+    "generated_greedy": "ef calculate_sum(nums):\n                                                                        ",
+    "generated_temp08": "ef function_val_of equal_date_saw_pribs(a, end(a): \n    frest x * * _too(input())\n          A   ",
+    "reference": "ef compute_average(numbers):\n    total = 0\n    for num in numbers:\n        total ",
+    "deterministic_repeat_identical": true,
+    "routed_experts_sampled": [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "stats_greedy": {
+     "distinct_4gram_frac": 0.26881720430107525,
+     "max_4gram_repeat": 69,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 16
+    },
+    "stats_temp08": {
+     "distinct_4gram_frac": 0.9139784946236559,
+     "max_4gram_repeat": 8,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 28
+    }
+   },
+   {
+    "prompt": "es of all numbers provided in the array.\n\n### In",
+    "generated_greedy": "put:\ndef max_max_max_max_max_max_max_max________________________________________________________",
+    "generated_temp08": "pute calculate to the computed for 10 mon't probrent one was halt in 800+10 = <<60-10*20=1>>20 m",
+    "reference": "put:\n[2, 3, 4]\n\n### Response:\n\n### Output:\ndef sum_squares(arr):\n    total = 0\n  ",
+    "deterministic_repeat_identical": true,
+    "routed_experts_sampled": [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "stats_greedy": {
+     "distinct_4gram_frac": 0.17204301075268819,
+     "max_4gram_repeat": 53,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 13
+    },
+    "stats_temp08": {
+     "distinct_4gram_frac": 0.989247311827957,
+     "max_4gram_repeat": 2,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 31
+    }
+   },
+   {
+    "prompt": "\n\n### Input:\nvalues = [2,4,6,8,10]\n\n### Response",
+    "generated_greedy": ":\n\n### Output:\ndef calculate_sum_sum_sum_sum_sum_sum_sum_sum_sum_sum_sum_sum_sum_sum_sum_sum_sum",
+    "generated_temp08": ":\n\n### Output:\ndef calculates2 = 1 = <<10+10=10>>30\n#### 60\n\nQuestion: He was 10 jee first Gird ",
+    "reference": ":\n\n### Output:\n# Funciton to compute the average value in an array\ndef computeAve",
+    "deterministic_repeat_identical": true,
+    "routed_experts_sampled": [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "stats_greedy": {
+     "distinct_4gram_frac": 0.34408602150537637,
+     "max_4gram_repeat": 17,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 17
+    },
+    "stats_temp08": {
+     "distinct_4gram_frac": 0.978494623655914,
+     "max_4gram_repeat": 2,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 33
+    }
+   }
+  ],
+  "math": [
+   {
+    "prompt": "n food and travel expenses, she spends 1200*2 = ",
+    "generated_greedy": "<<10*2=10>>10 more the sell of the sales of the sales of the said the said the said the said the",
+    "generated_temp08": "<<6*90-20/100=20>>10 the days in 150.bounds Karame presseres. You said it to he got was hotes of",
+    "reference": "$<<1200*2=2400>>2400 on food and travel costs.\nWhen her friend moved in and share",
+    "deterministic_repeat_identical": true,
+    "routed_experts_sampled": [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "stats_greedy": {
+     "distinct_4gram_frac": 0.45161290322580644,
+     "max_4gram_repeat": 8,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 20
+    },
+    "stats_temp08": {
+     "distinct_4gram_frac": 1.0,
+     "max_4gram_repeat": 1,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 34
+    }
+   },
+   {
+    "prompt": "e are 4 people traveling so 8 total water bottle",
+    "generated_greedy": " the said the said the said the said the said the said the said the said the said the said the s",
+    "generated_temp08": " the cates oor rerange of the lagreentrang 200 you days who looked bods in the hange main in 17=",
+    "reference": "s for each person x 4 people = <<8*4=32>>32 total water bottles.\n#### 32\n\nQuestio",
+    "deterministic_repeat_identical": true,
+    "routed_experts_sampled": [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "stats_greedy": {
+     "distinct_4gram_frac": 0.0967741935483871,
+     "max_4gram_repeat": 11,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 8
+    },
+    "stats_temp08": {
+     "distinct_4gram_frac": 0.9139784946236559,
+     "max_4gram_repeat": 3,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 26
+    }
+   },
+   {
+    "prompt": "* (110/100) = $<<100*110/100=110>>110 in the ban",
+    "generated_greedy": "d the second to first the second to the second the second to the second to the said the said the",
+    "generated_temp08": "d x 10 ( 10 = <<2=20>>3600\n#### 250\n\nQuestion: Jomps program (revent he namer Pyther Calles 2 = ",
+    "reference": "k account.\nAt the end of the second year, there will be $110 * (110/100) = $<<110",
+    "deterministic_repeat_identical": true,
+    "routed_experts_sampled": [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "stats_greedy": {
+     "distinct_4gram_frac": 0.3010752688172043,
+     "max_4gram_repeat": 8,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 13
+    },
+    "stats_temp08": {
+     "distinct_4gram_frac": 0.989247311827957,
+     "max_4gram_repeat": 2,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 36
+    }
+   }
+  ],
+  "forum": [
+   {
+    "prompt": "eed to do more than make statements to the\neffec",
+    "generated_greedy": "t to the said the said the said the said the said the said the said the said the said the said t",
+    "generated_temp08": "ter to the were out                  be charant with the get do, \" For it to he got with the com",
+    "reference": "t that the propaganda is false. If someone wants to discuss\nthe issue more seriou",
+    "deterministic_repeat_identical": true,
+    "routed_experts_sampled": [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "stats_greedy": {
+     "distinct_4gram_frac": 0.13978494623655913,
+     "max_4gram_repeat": 10,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 9
+    },
+    "stats_temp08": {
+     "distinct_4gram_frac": 0.7204301075268817,
+     "max_4gram_repeat": 15,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 19
+    }
+   },
+   {
+    "prompt": "MAX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>",
+    "generated_greedy": "'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>",
+    "generated_temp08": "'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>",
+    "reference": "'AX>'AX>'AX>'\nMAX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'\nMAX>'",
+    "deterministic_repeat_identical": true,
+    "routed_experts_sampled": [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "stats_greedy": {
+     "distinct_4gram_frac": 0.043010752688172046,
+     "max_4gram_repeat": 24,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 4
+    },
+    "stats_temp08": {
+     "distinct_4gram_frac": 0.043010752688172046,
+     "max_4gram_repeat": 24,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 4
+    }
+   },
+   {
+    "prompt": "ave never been to court before and you think you",
+    "generated_greedy": " the said the said the said the said the said the said the said the said the said the said the s",
+    "generated_temp08": " but wanted to plence were leals rell. They have the park seemed to the nation whoer than so the",
+    "reference": " have a case,\n\t go for it. It is a very interesting process, and it is there for\n",
+    "deterministic_repeat_identical": true,
+    "routed_experts_sampled": [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "stats_greedy": {
+     "distinct_4gram_frac": 0.0967741935483871,
+     "max_4gram_repeat": 11,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 8
+    },
+    "stats_temp08": {
+     "distinct_4gram_frac": 0.9247311827956989,
+     "max_4gram_repeat": 3,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 23
+    }
+   }
+  ]
+ },
+ "thinking_ablation": {
+  "wiki": {
+   "bpb_adaptive": 2.8358092893520133,
+   "bpb_think0": 2.886330482912845,
+   "bpb_think2": 2.835804903794416,
+   "delta_adp_minus_0": -0.05052119356083162,
+   "mean_steps_adaptive": 1.99822998046875,
+   "surprise_nll_corr": 0.5764137678351194
+  },
+  "story": {
+   "bpb_adaptive": 2.2985478708074614,
+   "bpb_think0": 2.3578925482794837,
+   "bpb_think2": 2.298546408954929,
+   "delta_adp_minus_0": -0.05934467747202232,
+   "mean_steps_adaptive": 1.99969482421875,
+   "surprise_nll_corr": 0.5771598240685403
+  },
+  "code": {
+   "bpb_adaptive": 2.039700566612167,
+   "bpb_think0": 2.121542982574157,
+   "bpb_think2": 2.0397270519403996,
+   "delta_adp_minus_0": -0.08184241596199016,
+   "mean_steps_adaptive": 1.98822021484375,
+   "surprise_nll_corr": 0.610886086842492
+  },
+  "math": {
+   "bpb_adaptive": 2.439689044873693,
+   "bpb_think0": 2.5073141710368074,
+   "bpb_think2": 2.4396882709517644,
+   "delta_adp_minus_0": -0.06762512616311422,
+   "mean_steps_adaptive": 1.99737548828125,
+   "surprise_nll_corr": 0.5912801195574973
+  },
+  "forum": {
+   "bpb_adaptive": 3.1069185265971986,
+   "bpb_think0": 3.1329597956255433,
+   "bpb_think2": 3.1069149149615307,
+   "delta_adp_minus_0": -0.026041269028344693,
+   "mean_steps_adaptive": 1.99871826171875,
+   "surprise_nll_corr": 0.4917081115301361
+  }
+ }
+}

@@ -1,0 +1,543 @@
+{
+ "arm": "Dense_Replay",
+ "seed": 100,
+ "steps_per_stream": 200,
+ "params_init": 5281792,
+ "params_final": 5281792,
+ "train_seconds": 26.082822700001998,
+ "tokens_per_sec": 78519.10905332508,
+ "forward_passes": 1000,
+ "backward_passes": 1000,
+ "peak_vram_mb": 515.95068359375,
+ "matrix": [
+  {
+   "wiki": {
+    "bpb": 2.966458317837058,
+    "top1": 0.410491943359375
+   },
+   "story": {
+    "bpb": 3.377354451764256,
+    "top1": 0.387176513671875
+   },
+   "code": {
+    "bpb": 5.821985848067119,
+    "top1": 0.228485107421875
+   },
+   "math": {
+    "bpb": 4.537050922771237,
+    "top1": 0.31878662109375
+   },
+   "forum": {
+    "bpb": 4.984280111519713,
+    "top1": 0.295257568359375
+   },
+   "_after_stream": "wiki"
+  },
+  {
+   "wiki": {
+    "bpb": 3.1166899788799456,
+    "top1": 0.405426025390625
+   },
+   "story": {
+    "bpb": 2.033432959871111,
+    "top1": 0.57470703125
+   },
+   "code": {
+    "bpb": 6.085427410806237,
+    "top1": 0.228240966796875
+   },
+   "math": {
+    "bpb": 4.188803768987089,
+    "top1": 0.351409912109375
+   },
+   "forum": {
+    "bpb": 4.83707723694117,
+    "top1": 0.314483642578125
+   },
+   "_after_stream": "story"
+  },
+  {
+   "wiki": {
+    "bpb": 3.170965725691763,
+    "top1": 0.412689208984375
+   },
+   "story": {
+    "bpb": 2.416330017268205,
+    "top1": 0.510986328125
+   },
+   "code": {
+    "bpb": 1.7062315810470203,
+    "top1": 0.684814453125
+   },
+   "math": {
+    "bpb": 3.7640760163555744,
+    "top1": 0.35931396484375
+   },
+   "forum": {
+    "bpb": 4.127092266273892,
+    "top1": 0.346954345703125
+   },
+   "_after_stream": "code"
+  },
+  {
+   "wiki": {
+    "bpb": 3.0345206238986653,
+    "top1": 0.427642822265625
+   },
+   "story": {
+    "bpb": 2.2938643962635026,
+    "top1": 0.52685546875
+   },
+   "code": {
+    "bpb": 2.0682073359276183,
+    "top1": 0.62249755859375
+   },
+   "math": {
+    "bpb": 2.129919526571418,
+    "top1": 0.562255859375
+   },
+   "forum": {
+    "bpb": 4.084497667100003,
+    "top1": 0.360626220703125
+   },
+   "_after_stream": "math"
+  },
+  {
+   "wiki": {
+    "bpb": 2.7734991150311634,
+    "top1": 0.4703369140625
+   },
+   "story": {
+    "bpb": 2.2500534497913853,
+    "top1": 0.53228759765625
+   },
+   "code": {
+    "bpb": 2.0625444631826584,
+    "top1": 0.628204345703125
+   },
+   "math": {
+    "bpb": 2.4076483330526504,
+    "top1": 0.519500732421875
+   },
+   "forum": {
+    "bpb": 2.8909308038451114,
+    "top1": 0.464996337890625
+   },
+   "_after_stream": "forum"
+  }
+ ],
+ "train_loss_tail_nats": {
+  "wiki": 2.047854870557785,
+  "story": 1.4855346143245698,
+  "code": 1.3055774092674255,
+  "math": 1.49985271692276,
+  "forum": 1.9636745274066925
+ },
+ "train_ce_tail_nats": {
+  "wiki": 2.047854870557785,
+  "story": 1.4855346143245698,
+  "code": 1.3055774092674255,
+  "math": 1.49985271692276,
+  "forum": 1.9636745274066925
+ },
+ "events": [],
+ "skipped_steps": 0,
+ "meaning_probe_banking77": {
+  "trained": {
+   "intent_77_acc": 0.6183333396911621,
+   "same_vs_overlap_diff_auc": 0.1731,
+   "sim_same_intent": 0.9272625309228897,
+   "sim_diff_high_overlap": 0.9590711089968681
+  },
+  "references": {
+   "chance": 0.012987012987012988
+  }
+ },
+ "context_and_noise_probe": {
+  "wiki": {
+   "suffix_clean_bpb": 2.7233049954298556,
+   "suffix_shuffled_prefix_bpb": 2.856537806593081,
+   "suffix_noise10_prefix_bpb": 2.750905025245465,
+   "delta_shuffle": 0.1332328111632255,
+   "delta_noise10": 0.027600029815609606
+  },
+  "story": {
+   "suffix_clean_bpb": 2.2551133970039694,
+   "suffix_shuffled_prefix_bpb": 2.4553109394722044,
+   "suffix_noise10_prefix_bpb": 2.32236193672532,
+   "delta_shuffle": 0.20019754246823496,
+   "delta_noise10": 0.06724853972135048
+  },
+  "code": {
+   "suffix_clean_bpb": 1.9682079805877752,
+   "suffix_shuffled_prefix_bpb": 2.157676515030394,
+   "suffix_noise10_prefix_bpb": 2.0015639363460087,
+   "delta_shuffle": 0.18946853444261857,
+   "delta_noise10": 0.03335595575823347
+  },
+  "math": {
+   "suffix_clean_bpb": 2.3556137503737387,
+   "suffix_shuffled_prefix_bpb": 2.5399098933622235,
+   "suffix_noise10_prefix_bpb": 2.3907221723018472,
+   "delta_shuffle": 0.18429614298848485,
+   "delta_noise10": 0.03510842192810859
+  }
+ },
+ "compositional_probe": {
+  "arith_n": 300,
+  "arith_exact_match": 0.04,
+  "arith_exact_small": 0.06060606060606061,
+  "arith_n_small": 66,
+  "arith_copy_first": 0.03,
+  "arith_majority": 0.04666666666666667,
+  "gsm_simple_le2_bpb": 2.3912711131415882,
+  "gsm_multi_ge4_bpb": 2.389623433354997,
+  "var_binding_exact2": 0.0,
+  "var_binding_2byte_bpb": 6.656464674136387,
+  "var_binding_shuffled_1st_byte_bpb": 5.847518134440236,
+  "code_shallow_bpb": 1.8603051347068094,
+  "code_deep_bpb": 2.2917493564895692
+ },
+ "generation": {
+  "wiki": [
+   {
+    "prompt": "reamy white or very pale red .\n\nFemale H. gammar",
+    "generated_greedy": " the sender the season and the season of the season of the season of the season of the season of",
+    "generated_temp08": "y have to say them with advacy and courtair Kara A prohems streamber tookity headles begurtions ",
+    "reference": "us reach sexual maturity when they have grown to a carapace length of 80 \u2013 85 m",
+    "deterministic_repeat_identical": true,
+    "routed_experts_sampled": null,
+    "stats_greedy": {
+     "distinct_4gram_frac": 0.2903225806451613,
+     "max_4gram_repeat": 7,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 11
+    },
+    "stats_temp08": {
+     "distinct_4gram_frac": 1.0,
+     "max_4gram_repeat": 1,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 24
+    }
+   },
+   {
+    "prompt": "g the southern edge of Manistee National Forest ",
+    "generated_greedy": "the season of the season of the season of the season of the season of the season and the senting",
+    "generated_temp08": "peril with to be 408*3=<<60*4=5>>95\nThe nare\nMobring those seriet in the 15 can on the\nprogants ",
+    "reference": ". The current version of M @-@ 82 is actually the second in the state ; the first",
+    "deterministic_repeat_identical": true,
+    "routed_experts_sampled": null,
+    "stats_greedy": {
+     "distinct_4gram_frac": 0.26881720430107525,
+     "max_4gram_repeat": 7,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 12
+    },
+    "stats_temp08": {
+     "distinct_4gram_frac": 0.978494623655914,
+     "max_4gram_repeat": 2,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 31
+    }
+   },
+   {
+    "prompt": "tional soloist , Elena Nikolaidi , to perform wi",
+    "generated_greedy": "th the season of the season of the season of the season of the season of the season of the seaso",
+    "generated_temp08": "th the (ind is \" because,\" looked some selective this poid is regens heanger the jeggett to do t",
+    "reference": "th the orchestra . The Orchestra helped the Meridian Public School District devel",
+    "deterministic_repeat_identical": true,
+    "routed_experts_sampled": null,
+    "stats_greedy": {
+     "distinct_4gram_frac": 0.17204301075268819,
+     "max_4gram_repeat": 7,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 9
+    },
+    "stats_temp08": {
+     "distinct_4gram_frac": 0.956989247311828,
+     "max_4gram_repeat": 2,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 24
+    }
+   }
+  ],
+  "story": [
+   {
+    "prompt": "\"Next time, you have to share and take turns,\" M",
+    "generated_greedy": "atther the senting the season of the season and the season of the season of the season and the s",
+    "generated_temp08": "y have to Do and\n1.                 .bound days.                                            A on",
+    "reference": "om said. \"And ask me before you use the kitchen.\"\n\nLily and Ben felt sorry. They ",
+    "deterministic_repeat_identical": true,
+    "routed_experts_sampled": null,
+    "stats_greedy": {
+     "distinct_4gram_frac": 0.3655913978494624,
+     "max_4gram_repeat": 7,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 13
+    },
+    "stats_temp08": {
+     "distinct_4gram_frac": 0.40860215053763443,
+     "max_4gram_repeat": 55,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 18
+    }
+   },
+   {
+    "prompt": "d white.\n\n\"Look, there's a landing spot,\" Lila s",
+    "generated_greedy": "ay the same streen the season the season of the season of the season of the season of the season",
+    "generated_temp08": "pening the contror \" this to do Presser \" \" \n    I don't looked this did it and and more of the ",
+    "reference": "aid. She pointed to a patch of dirt. \"Let's go and give the crystal to the moon p",
+    "deterministic_repeat_identical": true,
+    "routed_experts_sampled": null,
+    "stats_greedy": {
+     "distinct_4gram_frac": 0.3225806451612903,
+     "max_4gram_repeat": 7,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 12
+    },
+    "stats_temp08": {
+     "distinct_4gram_frac": 0.9139784946236559,
+     "max_4gram_repeat": 2,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 23
+    }
+   },
+   {
+    "prompt": "loved to explore and play outside. One day, she ",
+    "generated_greedy": "say the same streen the season of the season of the season of the season of the season of the se",
+    "generated_temp08": "has righter is a bick some later. The pack?  This field going the bathernably the example be the",
+    "reference": "found a colorful butterfly in her backyard. She followed it until it flew into a ",
+    "deterministic_repeat_identical": true,
+    "routed_experts_sampled": null,
+    "stats_greedy": {
+     "distinct_4gram_frac": 0.3225806451612903,
+     "max_4gram_repeat": 7,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 12
+    },
+    "stats_temp08": {
+     "distinct_4gram_frac": 0.967741935483871,
+     "max_4gram_repeat": 3,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 24
+    }
+   }
+  ],
+  "code": [
+   {
+    "prompt": "put:\n[1, 5, 7, 10]\n\n### Response:\n\n### Output:\nd",
+    "generated_greedy": "ef square(x):\n                                                                                  ",
+    "generated_temp08": "ef square(1_ea = 1:\n   return zod_op.b**\n[1]\n        result = 0\n    __ if the logst/requate>A +>",
+    "reference": "ef compute_average(numbers):\n    total = 0\n    for num in numbers:\n        total ",
+    "deterministic_repeat_identical": true,
+    "routed_experts_sampled": null,
+    "stats_greedy": {
+     "distinct_4gram_frac": 0.16129032258064516,
+     "max_4gram_repeat": 79,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 13
+    },
+    "stats_temp08": {
+     "distinct_4gram_frac": 0.9032258064516129,
+     "max_4gram_repeat": 6,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 34
+    }
+   },
+   {
+    "prompt": "es of all numbers provided in the array.\n\n### In",
+    "generated_greedy": "put:\ndef square(x):\n                                                                            ",
+    "generated_temp08": "put: 5)\n\n###\n\n### Responduend \nfor numberal \n    I don't look of the didn't can and more of the ",
+    "reference": "put:\n[2, 3, 4]\n\n### Response:\n\n### Output:\ndef sum_squares(arr):\n    total = 0\n  ",
+    "deterministic_repeat_identical": true,
+    "routed_experts_sampled": null,
+    "stats_greedy": {
+     "distinct_4gram_frac": 0.22580645161290322,
+     "max_4gram_repeat": 73,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 16
+    },
+    "stats_temp08": {
+     "distinct_4gram_frac": 0.9139784946236559,
+     "max_4gram_repeat": 2,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 27
+    }
+   },
+   {
+    "prompt": "\n\n### Input:\nvalues = [2,4,6,8,10]\n\n### Response",
+    "generated_greedy": ":\n\n### Output:\ndef square(x):\n return x * x\n\n# Calculate the sum of the send of the sending of t",
+    "generated_temp08": ":\n\n### Output:\ndef calculate_tot(results):\n result = print(minute(num1, num2, num2)\n \n    self.a",
+    "reference": ":\n\n### Output:\n# Funciton to compute the average value in an array\ndef computeAve",
+    "deterministic_repeat_identical": true,
+    "routed_experts_sampled": null,
+    "stats_greedy": {
+     "distinct_4gram_frac": 0.8494623655913979,
+     "max_4gram_repeat": 3,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 28
+    },
+    "stats_temp08": {
+     "distinct_4gram_frac": 0.9354838709677419,
+     "max_4gram_repeat": 2,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 28
+    }
+   }
+  ],
+  "math": [
+   {
+    "prompt": "n food and travel expenses, she spends 1200*2 = ",
+    "generated_greedy": "<<10*2=20>>20 minutes of the season of the season of the season of the season of the season of t",
+    "generated_temp08": "<<6*90+20/100=200>>2 times and a posebracture to the 10000 seem, \" For is the logs over\n    Arme",
+    "reference": "$<<1200*2=2400>>2400 on food and travel costs.\nWhen her friend moved in and share",
+    "deterministic_repeat_identical": true,
+    "routed_experts_sampled": null,
+    "stats_greedy": {
+     "distinct_4gram_frac": 0.3763440860215054,
+     "max_4gram_repeat": 6,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 19
+    },
+    "stats_temp08": {
+     "distinct_4gram_frac": 0.978494623655914,
+     "max_4gram_repeat": 2,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 35
+    }
+   },
+   {
+    "prompt": "e are 4 people traveling so 8 total water bottle",
+    "generated_greedy": " sent the season of the season of the season of the sending the season of the season of the seas",
+    "generated_temp08": " the contric\n                                                        840 15 can been make in 17-",
+    "reference": "s for each person x 4 people = <<8*4=32>>32 total water bottles.\n#### 32\n\nQuestio",
+    "deterministic_repeat_identical": true,
+    "routed_experts_sampled": null,
+    "stats_greedy": {
+     "distinct_4gram_frac": 0.27956989247311825,
+     "max_4gram_repeat": 7,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 12
+    },
+    "stats_temp08": {
+     "distinct_4gram_frac": 0.44086021505376344,
+     "max_4gram_repeat": 53,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 21
+    }
+   },
+   {
+    "prompt": "* (110/100) = $<<100*110/100=110>>110 in the ban",
+    "generated_greedy": "ks.\nMust the season of the sending the season of the season of the season of the season of the s",
+    "generated_temp08": "d.\nYou time xper buckly seried the problem?\n\n### Response:\n\n### Output:\nnot complete than so the",
+    "reference": "k account.\nAt the end of the second year, there will be $110 * (110/100) = $<<110",
+    "deterministic_repeat_identical": true,
+    "routed_experts_sampled": null,
+    "stats_greedy": {
+     "distinct_4gram_frac": 0.3225806451612903,
+     "max_4gram_repeat": 7,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 17
+    },
+    "stats_temp08": {
+     "distinct_4gram_frac": 0.956989247311828,
+     "max_4gram_repeat": 2,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 28
+    }
+   }
+  ],
+  "forum": [
+   {
+    "prompt": "eed to do more than make statements to the\neffec",
+    "generated_greedy": "t the season of the season of the season of the season of the season of the season of the season",
+    "generated_temp08": "t of a tickets and equen dog fick of been to amount this general \" and it this will very HuiA of",
+    "reference": "t that the propaganda is false. If someone wants to discuss\nthe issue more seriou",
+    "deterministic_repeat_identical": true,
+    "routed_experts_sampled": null,
+    "stats_greedy": {
+     "distinct_4gram_frac": 0.16129032258064516,
+     "max_4gram_repeat": 7,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 9
+    },
+    "stats_temp08": {
+     "distinct_4gram_frac": 0.9247311827956989,
+     "max_4gram_repeat": 2,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 26
+    }
+   },
+   {
+    "prompt": "MAX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>",
+    "generated_greedy": "'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>",
+    "generated_temp08": "'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'\nMEW``#`5%AX>'AX>'A",
+    "reference": "'AX>'AX>'AX>'\nMAX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'\nMAX>'",
+    "deterministic_repeat_identical": true,
+    "routed_experts_sampled": null,
+    "stats_greedy": {
+     "distinct_4gram_frac": 0.043010752688172046,
+     "max_4gram_repeat": 24,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 4
+    },
+    "stats_temp08": {
+     "distinct_4gram_frac": 0.1827956989247312,
+     "max_4gram_repeat": 21,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 12
+    }
+   },
+   {
+    "prompt": "ave never been to court before and you think you",
+    "generated_greedy": " see in the season of the season of the season of the sent of the season and the season of the s",
+    "generated_temp08": " or righter is a bick , and such reasons , vaili from the\n          the not complete than so the",
+    "reference": " have a case,\n\t go for it. It is a very interesting process, and it is there for\n",
+    "deterministic_repeat_identical": true,
+    "routed_experts_sampled": null,
+    "stats_greedy": {
+     "distinct_4gram_frac": 0.34408602150537637,
+     "max_4gram_repeat": 7,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 11
+    },
+    "stats_temp08": {
+     "distinct_4gram_frac": 0.9139784946236559,
+     "max_4gram_repeat": 7,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 23
+    }
+   }
+  ]
+ }
+}

@@ -1,0 +1,543 @@
+{
+ "arm": "Dense_NoReplay",
+ "seed": 100,
+ "steps_per_stream": 200,
+ "params_init": 5281792,
+ "params_final": 5281792,
+ "train_seconds": 25.9948940999966,
+ "tokens_per_sec": 78784.70256973534,
+ "forward_passes": 1000,
+ "backward_passes": 1000,
+ "peak_vram_mb": 515.95068359375,
+ "matrix": [
+  {
+   "wiki": {
+    "bpb": 2.947076389032772,
+    "top1": 0.40838623046875
+   },
+   "story": {
+    "bpb": 3.360627333150014,
+    "top1": 0.38995361328125
+   },
+   "code": {
+    "bpb": 5.708876986178271,
+    "top1": 0.236236572265625
+   },
+   "math": {
+    "bpb": 4.510151116349785,
+    "top1": 0.3173828125
+   },
+   "forum": {
+    "bpb": 4.909987389965298,
+    "top1": 0.295135498046875
+   },
+   "_after_stream": "wiki"
+  },
+  {
+   "wiki": {
+    "bpb": 3.808682124613956,
+    "top1": 0.355743408203125
+   },
+   "story": {
+    "bpb": 1.9702611524694382,
+    "top1": 0.58447265625
+   },
+   "code": {
+    "bpb": 6.631279706726688,
+    "top1": 0.193115234375
+   },
+   "math": {
+    "bpb": 4.741109369915865,
+    "top1": 0.3236083984375
+   },
+   "forum": {
+    "bpb": 5.224449583883353,
+    "top1": 0.298675537109375
+   },
+   "_after_stream": "story"
+  },
+  {
+   "wiki": {
+    "bpb": 3.83791943323461,
+    "top1": 0.3548583984375
+   },
+   "story": {
+    "bpb": 3.558122320398439,
+    "top1": 0.342376708984375
+   },
+   "code": {
+    "bpb": 1.643846637268708,
+    "top1": 0.698211669921875
+   },
+   "math": {
+    "bpb": 4.08560635325879,
+    "top1": 0.3204345703125
+   },
+   "forum": {
+    "bpb": 4.45890854155991,
+    "top1": 0.310211181640625
+   },
+   "_after_stream": "code"
+  },
+  {
+   "wiki": {
+    "bpb": 3.402336307663286,
+    "top1": 0.40264892578125
+   },
+   "story": {
+    "bpb": 2.765498439117363,
+    "top1": 0.445709228515625
+   },
+   "code": {
+    "bpb": 3.671944566323066,
+    "top1": 0.424224853515625
+   },
+   "math": {
+    "bpb": 2.134447528798997,
+    "top1": 0.56298828125
+   },
+   "forum": {
+    "bpb": 4.296898218716056,
+    "top1": 0.338043212890625
+   },
+   "_after_stream": "math"
+  },
+  {
+   "wiki": {
+    "bpb": 3.0048254974614146,
+    "top1": 0.454620361328125
+   },
+   "story": {
+    "bpb": 2.5969099948563197,
+    "top1": 0.4683837890625
+   },
+   "code": {
+    "bpb": 3.167051400558125,
+    "top1": 0.43927001953125
+   },
+   "math": {
+    "bpb": 3.0044442979157773,
+    "top1": 0.426177978515625
+   },
+   "forum": {
+    "bpb": 2.8614546973137345,
+    "top1": 0.46533203125
+   },
+   "_after_stream": "forum"
+  }
+ ],
+ "train_loss_tail_nats": {
+  "wiki": 2.0392043948173524,
+  "story": 1.3770658850669861,
+  "code": 1.1906388640403747,
+  "math": 1.4847848117351532,
+  "forum": 2.1009272933006287
+ },
+ "train_ce_tail_nats": {
+  "wiki": 2.0392043948173524,
+  "story": 1.3770658850669861,
+  "code": 1.1906388640403747,
+  "math": 1.4847848117351532,
+  "forum": 2.1009272933006287
+ },
+ "events": [],
+ "skipped_steps": 0,
+ "meaning_probe_banking77": {
+  "trained": {
+   "intent_77_acc": 0.6200000047683716,
+   "same_vs_overlap_diff_auc": 0.22985,
+   "sim_same_intent": 0.9318643164634705,
+   "sim_diff_high_overlap": 0.957871325314045
+  },
+  "references": {
+   "chance": 0.012987012987012988
+  }
+ },
+ "context_and_noise_probe": {
+  "wiki": {
+   "suffix_clean_bpb": 2.9489150753972986,
+   "suffix_shuffled_prefix_bpb": 3.064219864690102,
+   "suffix_noise10_prefix_bpb": 2.964275951926595,
+   "delta_shuffle": 0.11530478929280363,
+   "delta_noise10": 0.015360876529296519
+  },
+  "story": {
+   "suffix_clean_bpb": 2.6030411790054657,
+   "suffix_shuffled_prefix_bpb": 2.754149517642296,
+   "suffix_noise10_prefix_bpb": 2.6281639813015953,
+   "delta_shuffle": 0.15110833863683037,
+   "delta_noise10": 0.02512280229612962
+  },
+  "code": {
+   "suffix_clean_bpb": 3.1987315070945,
+   "suffix_shuffled_prefix_bpb": 3.327127721606458,
+   "suffix_noise10_prefix_bpb": 3.225613379694298,
+   "delta_shuffle": 0.12839621451195793,
+   "delta_noise10": 0.026881872599797685
+  },
+  "math": {
+   "suffix_clean_bpb": 3.038507093108453,
+   "suffix_shuffled_prefix_bpb": 3.1840445908856303,
+   "suffix_noise10_prefix_bpb": 3.0656074101337154,
+   "delta_shuffle": 0.14553749777717728,
+   "delta_noise10": 0.027100317025262388
+  }
+ },
+ "compositional_probe": {
+  "arith_n": 300,
+  "arith_exact_match": 0.0,
+  "arith_exact_small": 0.0,
+  "arith_n_small": 66,
+  "arith_copy_first": 0.03,
+  "arith_majority": 0.04666666666666667,
+  "gsm_simple_le2_bpb": 2.6793686246563513,
+  "gsm_multi_ge4_bpb": 2.6993898989652196,
+  "var_binding_exact2": 0.0,
+  "var_binding_2byte_bpb": 6.424440128134958,
+  "var_binding_shuffled_1st_byte_bpb": 5.778013753851144,
+  "code_shallow_bpb": 2.931346982242691,
+  "code_deep_bpb": 3.4341824096493676
+ },
+ "generation": {
+  "wiki": [
+   {
+    "prompt": "reamy white or very pale red .\n\nFemale H. gammar",
+    "generated_greedy": "y and the station of the station of the station of the station of the station of the station of ",
+    "generated_temp08": "y Andretie I also Ex the doctimal of been to at prophech and depate of it\nthis world begurn.  I ",
+    "reference": "us reach sexual maturity when they have grown to a carapace length of 80 \u2013 85 m",
+    "deterministic_repeat_identical": true,
+    "routed_experts_sampled": null,
+    "stats_greedy": {
+     "distinct_4gram_frac": 0.21505376344086022,
+     "max_4gram_repeat": 6,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 12
+    },
+    "stats_temp08": {
+     "distinct_4gram_frac": 0.989247311827957,
+     "max_4gram_repeat": 2,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 27
+    }
+   },
+   {
+    "prompt": "g the southern edge of Manistee National Forest ",
+    "generated_greedy": "the station of the station of the station of the station of the station of the station of the st",
+    "generated_temp08": "people that\n\n                                         I design to that distrated the mach in the",
+    "reference": ". The current version of M @-@ 82 is actually the second in the state ; the first",
+    "deterministic_repeat_identical": true,
+    "routed_experts_sampled": null,
+    "stats_greedy": {
+     "distinct_4gram_frac": 0.16129032258064516,
+     "max_4gram_repeat": 7,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 10
+    },
+    "stats_temp08": {
+     "distinct_4gram_frac": 0.5698924731182796,
+     "max_4gram_repeat": 38,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 18
+    }
+   },
+   {
+    "prompt": "tional soloist , Elena Nikolaidi , to perform wi",
+    "generated_greedy": "th the station of the station of the station of the station of the station of the station of the",
+    "generated_temp08": "th this\n                                          find you must few the name from exactands\n    ",
+    "reference": "th the orchestra . The Orchestra helped the Meridian Public School District devel",
+    "deterministic_repeat_identical": true,
+    "routed_experts_sampled": null,
+    "stats_greedy": {
+     "distinct_4gram_frac": 0.1827956989247312,
+     "max_4gram_repeat": 7,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 10
+    },
+    "stats_temp08": {
+     "distinct_4gram_frac": 0.5591397849462365,
+     "max_4gram_repeat": 40,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 19
+    }
+   }
+  ],
+  "story": [
+   {
+    "prompt": "\"Next time, you have to share and take turns,\" M",
+    "generated_greedy": "atter that the station of the station of the station of the station of the station of the statio",
+    "generated_temp08": "ean treas DI and 1E                 .bettires to the Disfees what said it\nthis world begurn.  I ",
+    "reference": "om said. \"And ask me before you use the kitchen.\"\n\nLily and Ben felt sorry. They ",
+    "deterministic_repeat_identical": true,
+    "routed_experts_sampled": null,
+    "stats_greedy": {
+     "distinct_4gram_frac": 0.26881720430107525,
+     "max_4gram_repeat": 6,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 11
+    },
+    "stats_temp08": {
+     "distinct_4gram_frac": 0.8602150537634409,
+     "max_4gram_repeat": 14,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 23
+    }
+   },
+   {
+    "prompt": "d white.\n\n\"Look, there's a landing spot,\" Lila s",
+    "generated_greedy": "tate the station of the station of the station of the station of the station of the station the ",
+    "generated_temp08": "peciled (the\n  recurrections do dresser name\nformind) I design to that distrance where. Poing of",
+    "reference": "aid. She pointed to a patch of dirt. \"Let's go and give the crystal to the moon p",
+    "deterministic_repeat_identical": true,
+    "routed_experts_sampled": null,
+    "stats_greedy": {
+     "distinct_4gram_frac": 0.22580645161290322,
+     "max_4gram_repeat": 7,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 10
+    },
+    "stats_temp08": {
+     "distinct_4gram_frac": 1.0,
+     "max_4gram_repeat": 1,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 25
+    }
+   },
+   {
+    "prompt": "loved to explore and play outside. One day, she ",
+    "generated_greedy": "said the station of the station of the station of the station of the station of the station of t",
+    "generated_temp08": "would\nany have pably displated streas.  The tick after indered to between Mick doject\n          ",
+    "reference": "found a colorful butterfly in her backyard. She followed it until it flew into a ",
+    "deterministic_repeat_identical": true,
+    "routed_experts_sampled": null,
+    "stats_greedy": {
+     "distinct_4gram_frac": 0.20430107526881722,
+     "max_4gram_repeat": 6,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 11
+    },
+    "stats_temp08": {
+     "distinct_4gram_frac": 0.9247311827956989,
+     "max_4gram_repeat": 7,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 26
+    }
+   }
+  ],
+  "code": [
+   {
+    "prompt": "put:\n[1, 5, 7, 10]\n\n### Response:\n\n### Output:\nd",
+    "generated_greedy": "on't stated the station of the station of the station of the station of the station of the stati",
+    "generated_temp08": "on't better     U1E                  been to at prophech and deprace to his select or 19 H..A  >",
+    "reference": "ef compute_average(numbers):\n    total = 0\n    for num in numbers:\n        total ",
+    "deterministic_repeat_identical": true,
+    "routed_experts_sampled": null,
+    "stats_greedy": {
+     "distinct_4gram_frac": 0.25806451612903225,
+     "max_4gram_repeat": 7,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 12
+    },
+    "stats_temp08": {
+     "distinct_4gram_frac": 0.8172043010752689,
+     "max_4gram_repeat": 17,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 24
+    }
+   },
+   {
+    "prompt": "es of all numbers provided in the array.\n\n### In",
+    "generated_greedy": " the station of the station of the station of the station of the station of the station of the s",
+    "generated_temp08": " the catrest\nabrought to use do dresser name\nformind though look to add in the Extrem, I happend",
+    "reference": "put:\n[2, 3, 4]\n\n### Response:\n\n### Output:\ndef sum_squares(arr):\n    total = 0\n  ",
+    "deterministic_repeat_identical": true,
+    "routed_experts_sampled": null,
+    "stats_greedy": {
+     "distinct_4gram_frac": 0.16129032258064516,
+     "max_4gram_repeat": 7,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 10
+    },
+    "stats_temp08": {
+     "distinct_4gram_frac": 0.956989247311828,
+     "max_4gram_repeat": 2,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 25
+    }
+   },
+   {
+    "prompt": "\n\n### Input:\nvalues = [2,4,6,8,10]\n\n### Response",
+    "generated_greedy": "                                                                                                ",
+    "generated_temp08": "d Car\n                       2                           The (Ass-------------------------------",
+    "reference": ":\n\n### Output:\n# Funciton to compute the average value in an array\ndef computeAve",
+    "deterministic_repeat_identical": true,
+    "routed_experts_sampled": null,
+    "stats_greedy": {
+     "distinct_4gram_frac": 0.010752688172043012,
+     "max_4gram_repeat": 93,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 1
+    },
+    "stats_temp08": {
+     "distinct_4gram_frac": 0.24731182795698925,
+     "max_4gram_repeat": 44,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 14
+    }
+   }
+  ],
+  "math": [
+   {
+    "prompt": "n food and travel expenses, she spends 1200*2 = ",
+    "generated_greedy": "                                                                                                ",
+    "generated_temp08": " (A tradic Teals.1E                 .betch.enat.prophet)\nKest                               Arm>",
+    "reference": "$<<1200*2=2400>>2400 on food and travel costs.\nWhen her friend moved in and share",
+    "deterministic_repeat_identical": true,
+    "routed_experts_sampled": null,
+    "stats_greedy": {
+     "distinct_4gram_frac": 0.010752688172043012,
+     "max_4gram_repeat": 93,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 1
+    },
+    "stats_temp08": {
+     "distinct_4gram_frac": 0.5591397849462365,
+     "max_4gram_repeat": 42,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 26
+    }
+   },
+   {
+    "prompt": "e are 4 people traveling so 8 total water bottle",
+    "generated_greedy": " and the station of the station of the station of the station of the station of the station of t",
+    "generated_temp08": ". The controo or 4086  or this for 145.  I have send though a altor any intection remary\n       ",
+    "reference": "s for each person x 4 people = <<8*4=32>>32 total water bottles.\n#### 32\n\nQuestio",
+    "deterministic_repeat_identical": true,
+    "routed_experts_sampled": null,
+    "stats_greedy": {
+     "distinct_4gram_frac": 0.20430107526881722,
+     "max_4gram_repeat": 6,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 11
+    },
+    "stats_temp08": {
+     "distinct_4gram_frac": 0.956989247311828,
+     "max_4gram_repeat": 4,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 29
+    }
+   },
+   {
+    "prompt": "* (110/100) = $<<100*110/100=110>>110 in the ban",
+    "generated_greedy": "d and the station of the station of the station of the station of the station of the station of ",
+    "generated_temp08": "dogh\n\n\t(I have pable can Hels. Struct.ase, Stick (fine indered to bethern M) Prefore Cature\" - p",
+    "reference": "k account.\nAt the end of the second year, there will be $110 * (110/100) = $<<110",
+    "deterministic_repeat_identical": true,
+    "routed_experts_sampled": null,
+    "stats_greedy": {
+     "distinct_4gram_frac": 0.21505376344086022,
+     "max_4gram_repeat": 6,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 11
+    },
+    "stats_temp08": {
+     "distinct_4gram_frac": 1.0,
+     "max_4gram_repeat": 1,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 34
+    }
+   }
+  ],
+  "forum": [
+   {
+    "prompt": "eed to do more than make statements to the\neffec",
+    "generated_greedy": "t the station of the station of the station of the station of the station of the station of the ",
+    "generated_temp08": "t and have a and sys that and is a cobroc to atter pressores.  Armenian his select or the thous ",
+    "reference": "t that the propaganda is false. If someone wants to discuss\nthe issue more seriou",
+    "deterministic_repeat_identical": true,
+    "routed_experts_sampled": null,
+    "stats_greedy": {
+     "distinct_4gram_frac": 0.17204301075268819,
+     "max_4gram_repeat": 7,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 10
+    },
+    "stats_temp08": {
+     "distinct_4gram_frac": 0.946236559139785,
+     "max_4gram_repeat": 3,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 21
+    }
+   },
+   {
+    "prompt": "MAX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>",
+    "generated_greedy": "'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>",
+    "generated_temp08": "'AX>'AX>'AX>'AX>'4AX>'AX>'AX>'AX>'\nMAX>'AX>'\nMAX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'\nMP\\>:4U7%",
+    "reference": "'AX>'AX>'AX>'\nMAX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'\nMAX>'",
+    "deterministic_repeat_identical": true,
+    "routed_experts_sampled": null,
+    "stats_greedy": {
+     "distinct_4gram_frac": 0.043010752688172046,
+     "max_4gram_repeat": 24,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 4
+    },
+    "stats_temp08": {
+     "distinct_4gram_frac": 0.22580645161290322,
+     "max_4gram_repeat": 20,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 13
+    }
+   },
+   {
+    "prompt": "ave never been to court before and you think you",
+    "generated_greedy": " are the station of the station of the station of the station of the station of the station the ",
+    "generated_temp08": " don't time is a because, claims\nreasons Sever implies indered the stheynd from for a same of th",
+    "reference": " have a case,\n\t go for it. It is a very interesting process, and it is there for\n",
+    "deterministic_repeat_identical": true,
+    "routed_experts_sampled": null,
+    "stats_greedy": {
+     "distinct_4gram_frac": 0.22580645161290322,
+     "max_4gram_repeat": 7,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 11
+    },
+    "stats_temp08": {
+     "distinct_4gram_frac": 1.0,
+     "max_4gram_repeat": 1,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 24
+    }
+   }
+  ]
+ }
+}

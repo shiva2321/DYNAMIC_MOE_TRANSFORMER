@@ -3,7 +3,7 @@
   "seed": 4,
   "teacher_informed": false,
   "track1": {
-    "train_seconds": 549.5816879272461,
+    "train_seconds": 532.7167220115662,
     "seen_acc": 0.953125,
     "heldout_unseen_acc": 0.22916666666666666,
     "paraphrase_acc": 0.2578125,

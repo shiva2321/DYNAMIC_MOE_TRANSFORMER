@@ -1,0 +1,407 @@
+{
+  "meta": {
+    "utc": "2026-11-20T13:27:54.484004+00:00",
+    "mode": "smoke",
+    "eval_split": "dev",
+    "seeds": [
+      100
+    ],
+    "steps_per_dom": 25,
+    "cfg": {
+      "d_model": 192,
+      "num_heads": 6,
+      "d_ff": 256,
+      "d_ff_shared": 256,
+      "d_ff_spec": 256,
+      "initial_layers": 6,
+      "router_layer": 3,
+      "initial_experts": 1,
+      "chunk_size": 4,
+      "use_v7_core": true,
+      "use_multiscale_chunker": true,
+      "router_mode": "causal_context",
+      "d_route": 96,
+      "router_num_keys": 8,
+      "enable_memory": true,
+      "num_ltm_slots": 32,
+      "enable_three_level_attn": true,
+      "local_window": 8,
+      "chunk_stride": 4,
+      "enable_world_model": true,
+      "wm_rollout_horizon": 3,
+      "causal_attn": true,
+      "use_rope": true,
+      "enable_layer_stm": true,
+      "hybrid_mode": true,
+      "layer_stm_every": 2,
+      "enable_full_stack_adapters": true,
+      "adapter_rank": 16,
+      "enable_thinking": true,
+      "max_thinking_steps": 2,
+      "skip_threshold": 0.1,
+      "theta_halt": 0.2,
+      "abstain_threshold": 0.6,
+      "auto_lifecycle": true,
+      "max_experts": 6,
+      "min_mature_steps": 35,
+      "z_nuance_thresh": 1.8,
+      "d_sem_nuance_thresh": 0.18,
+      "nuance_cluster_min": 16,
+      "nuance_cluster_cos": 0.68,
+      "detach_decoder": true,
+      "lora_decoder_rank": 16
+    },
+    "device": "cuda",
+    "gpu": "NVIDIA GeForce RTX 3060"
+  },
+  "arms": {
+    "BagOfBytes_Null": {
+      "train_seconds": {
+        "mean": 0.16484800000034738,
+        "std": 0.0,
+        "vals": [
+          0.16484800000034738
+        ]
+      },
+      "mean_final_r1": {
+        "mean": 0.08125,
+        "std": 0.0,
+        "vals": [
+          0.08125
+        ]
+      },
+      "mean_final_r5": {
+        "mean": 0.2125,
+        "std": 0.0,
+        "vals": [
+          0.2125
+        ]
+      },
+      "mean_nuance_flip_auc": {
+        "mean": 0.026738515697137578,
+        "std": 0.0,
+        "vals": [
+          0.026738515697137578
+        ]
+      },
+      "mean_nuance_selectivity": {
+        "mean": 1.0,
+        "std": 0.0,
+        "vals": [
+          1.0
+        ]
+      },
+      "b77_acc": {
+        "mean": 0.35499998927116394
+      },
+      "b77_auc": {
+        "mean": 0.25465
+      }
+    },
+    "Upkeeper_M09": {
+      "b77_acc": {
+        "mean": 0.012987012987012988
+      },
+      "b77_auc": {
+        "mean": 0.5
+      },
+      "track1": {
+        "seen_acc": {
+          "mean": 0.036458333333333336
+        },
+        "heldout_unseen_acc": {
+          "mean": 0.020833333333333332
+        },
+        "paraphrase_acc": {
+          "mean": 0.015625
+        },
+        "burst_immunity_acc": {
+          "mean": 0.044270833333333336
+        },
+        "abstain_auroc": {
+          "mean": 0.5
+        },
+        "rollout_planning_delta": {
+          "mean": 0.0
+        },
+        "quarantine_bytes": {
+          "mean": 10692.0
+        }
+      }
+    },
+    "Dense_v7_Matched": {
+      "train_seconds": {
+        "mean": 15.920502200000556,
+        "std": 0.0,
+        "vals": [
+          15.920502200000556
+        ]
+      },
+      "peak_vram_mb": {
+        "mean": 395.22900390625,
+        "std": 0.0,
+        "vals": [
+          395.22900390625
+        ]
+      },
+      "num_experts": {
+        "mean": 1.0,
+        "std": 0.0,
+        "vals": [
+          1
+        ]
+      },
+      "backward_passes": {
+        "mean": 125.0,
+        "std": 0.0,
+        "vals": [
+          125
+        ]
+      },
+      "skipped_steps": {
+        "mean": 0.0,
+        "std": 0.0,
+        "vals": [
+          0
+        ]
+      },
+      "mean_final_r1": {
+        "mean": 0.015625,
+        "std": 0.0,
+        "vals": [
+          0.015625
+        ]
+      },
+      "mean_final_r5": {
+        "mean": 0.08125,
+        "std": 0.0,
+        "vals": [
+          0.08125
+        ]
+      },
+      "mean_nuance_flip_auc": {
+        "mean": 0.07810952122267753,
+        "std": 0.0,
+        "vals": [
+          0.07810952122267753
+        ]
+      },
+      "mean_nuance_selectivity": {
+        "mean": 1.0005332827941857,
+        "std": 0.0,
+        "vals": [
+          1.0005332827941857
+        ]
+      },
+      "mean_escalation_gain": {
+        "mean": -0.19688505530357361,
+        "std": 0.0,
+        "vals": [
+          -0.19688505530357361
+        ]
+      },
+      "forgetting_r5": {
+        "mean": -0.03125,
+        "std": 0.0,
+        "vals": [
+          -0.03125
+        ]
+      },
+      "forgetting_nuance_auc": {
+        "mean": 0.11172560207654486,
+        "std": 0.0,
+        "vals": [
+          0.11172560207654486
+        ]
+      },
+      "gpm_at_cap_count": {
+        "mean": 0.0,
+        "std": 0.0,
+        "vals": [
+          0
+        ]
+      },
+      "detached_renderer_diag_bpb": {
+        "mean": 4.313891738456484,
+        "std": 0.0,
+        "vals": [
+          4.313891738456484
+        ]
+      },
+      "b77_acc": {
+        "mean": 0.14000000059604645
+      },
+      "b77_auc": {
+        "mean": 0.316525
+      },
+      "mid_seq_switch_rate": {
+        "mean": 0.0
+      },
+      "k_dist": {
+        "k0": 0.0107421875,
+        "k1": 0.9892578125,
+        "k2": 0.0
+      },
+      "track1": {
+        "seen_acc": {
+          "mean": 0.07291666666666667
+        },
+        "heldout_unseen_acc": {
+          "mean": 0.08854166666666667
+        },
+        "paraphrase_acc": {
+          "mean": 0.08333333333333333
+        },
+        "burst_immunity_acc": {
+          "mean": 0.0703125
+        },
+        "abstain_auroc": {
+          "mean": 1.0
+        },
+        "rollout_planning_delta": {
+          "mean": -0.015625
+        },
+        "quarantine_bytes": {
+          "mean": 0.0
+        }
+      }
+    },
+    "Cog_v7": {
+      "train_seconds": {
+        "mean": 25.314232200000333,
+        "std": 0.0,
+        "vals": [
+          25.314232200000333
+        ]
+      },
+      "peak_vram_mb": {
+        "mean": 518.16015625,
+        "std": 0.0,
+        "vals": [
+          518.16015625
+        ]
+      },
+      "num_experts": {
+        "mean": 6.0,
+        "std": 0.0,
+        "vals": [
+          6
+        ]
+      },
+      "backward_passes": {
+        "mean": 125.0,
+        "std": 0.0,
+        "vals": [
+          125
+        ]
+      },
+      "skipped_steps": {
+        "mean": 0.0,
+        "std": 0.0,
+        "vals": [
+          0
+        ]
+      },
+      "mean_final_r1": {
+        "mean": 0.01875,
+        "std": 0.0,
+        "vals": [
+          0.01875
+        ]
+      },
+      "mean_final_r5": {
+        "mean": 0.0625,
+        "std": 0.0,
+        "vals": [
+          0.0625
+        ]
+      },
+      "mean_nuance_flip_auc": {
+        "mean": 0.038388029517664686,
+        "std": 0.0,
+        "vals": [
+          0.038388029517664686
+        ]
+      },
+      "mean_nuance_selectivity": {
+        "mean": 0.999737895195455,
+        "std": 0.0,
+        "vals": [
+          0.999737895195455
+        ]
+      },
+      "mean_escalation_gain": {
+        "mean": -0.19019562005996704,
+        "std": 0.0,
+        "vals": [
+          -0.19019562005996704
+        ]
+      },
+      "forgetting_r5": {
+        "mean": -0.0078125,
+        "std": 0.0,
+        "vals": [
+          -0.0078125
+        ]
+      },
+      "forgetting_nuance_auc": {
+        "mean": -0.00025517427167672706,
+        "std": 0.0,
+        "vals": [
+          -0.00025517427167672706
+        ]
+      },
+      "gpm_at_cap_count": {
+        "mean": 0.0,
+        "std": 0.0,
+        "vals": [
+          0
+        ]
+      },
+      "detached_renderer_diag_bpb": {
+        "mean": 5.692992754535907,
+        "std": 0.0,
+        "vals": [
+          5.692992754535907
+        ]
+      },
+      "b77_acc": {
+        "mean": 0.2549999952316284
+      },
+      "b77_auc": {
+        "mean": 0.1598625
+      },
+      "mid_seq_switch_rate": {
+        "mean": 0.3125
+      },
+      "k_dist": {
+        "k0": 0.00390625,
+        "k1": 0.0,
+        "k2": 0.99609375
+      },
+      "track1": {
+        "seen_acc": {
+          "mean": 0.078125
+        },
+        "heldout_unseen_acc": {
+          "mean": 0.08072916666666667
+        },
+        "paraphrase_acc": {
+          "mean": 0.08333333333333333
+        },
+        "burst_immunity_acc": {
+          "mean": 0.0625
+        },
+        "abstain_auroc": {
+          "mean": 1.0
+        },
+        "rollout_planning_delta": {
+          "mean": 0.0
+        },
+        "quarantine_bytes": {
+          "mean": 108.0
+        }
+      }
+    }
+  }
+}

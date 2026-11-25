@@ -1,0 +1,86 @@
+{
+  "arm": "Cog_v8_NoRel",
+  "teacher_informed": false,
+  "seed": 0,
+  "train_seconds": 266.8513424396515,
+  "banking77": {
+    "intent_77_acc": 0.567532479763031,
+    "same_vs_overlap_diff_auc": 0.6616
+  },
+  "mean_nuance_flip_auc": 0.8132378472222221,
+  "heldout_families": {
+    "auc": 0.4962,
+    "selectivity": 1.6059421582543012,
+    "clean_trig": 0.03187499940395355,
+    "flip_trig": 0.051249999552965164,
+    "esc_gain": -0.0407414436340332,
+    "esc_margin_gain": -0.06469482183456421
+  },
+  "mean_final_r5": 0.1375,
+  "per_domain_final": {
+    "wiki": {
+      "concept_r1": 0.015625,
+      "concept_r5": 0.125,
+      "nuance_flip_auc": 0.8224826388888888,
+      "nuance_selectivity": 1.0389222159135243,
+      "nuance_escalation_gain": 0.16985177993774414,
+      "nuance_esc_margin_gain": 0.11749842762947083
+    },
+    "story": {
+      "concept_r1": 0.0,
+      "concept_r5": 0.125,
+      "nuance_flip_auc": 0.8932291666666666,
+      "nuance_selectivity": 1.3378536712043148,
+      "nuance_escalation_gain": 0.19044923782348633,
+      "nuance_esc_margin_gain": 0.11186546087265015
+    },
+    "code": {
+      "concept_r1": 0.015625,
+      "concept_r5": 0.078125,
+      "nuance_flip_auc": 0.8049045138888888,
+      "nuance_selectivity": 1.060185248626125,
+      "nuance_escalation_gain": 0.2156764268875122,
+      "nuance_esc_margin_gain": 0.148183673620224
+    },
+    "math": {
+      "concept_r1": 0.046875,
+      "concept_r5": 0.1875,
+      "nuance_flip_auc": 0.7335069444444444,
+      "nuance_selectivity": 1.025615852784659,
+      "nuance_escalation_gain": 0.14085739850997925,
+      "nuance_esc_margin_gain": 0.08563131093978882
+    },
+    "forum": {
+      "concept_r1": 0.078125,
+      "concept_r5": 0.171875,
+      "nuance_flip_auc": 0.8120659722222222,
+      "nuance_selectivity": 1.2184877783522117,
+      "nuance_escalation_gain": 0.15439069271087646,
+      "nuance_esc_margin_gain": 0.10878059267997742
+    }
+  },
+  "routing_diag": {
+    "mid_seq_switch_rate": 0.578125,
+    "k_dist": {
+      "k0": 0.03369140625,
+      "k1": 0.55908203125,
+      "k2": 0.4072265625
+    },
+    "mean_k": 1.37353515625,
+    "func_routing_nmi": 0.2501780297636511,
+    "func_routing_ami": {
+      "ami": 0.21129289660839493,
+      "null_mean": -0.0003071347487710105,
+      "null_max": 0.03010747901048773,
+      "ami_vs_null": 0.21160003135716593
+    },
+    "lesion_drops": {
+      "expert_0": -0.011904776096343994,
+      "expert_1": 0.0,
+      "expert_2": 0.0,
+      "expert_3": 0.0,
+      "expert_4": 0.023809492588043213,
+      "expert_5": 0.0
+    }
+  }
+}

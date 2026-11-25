@@ -1,0 +1,17 @@
+{
+  "arm": "Upkeeper_M09",
+  "seed": 100,
+  "track1": {
+    "seen_acc": 0.03125,
+    "heldout_unseen_acc": 0.0234375,
+    "paraphrase_acc": 0.046875,
+    "burst_immunity_acc": 0.044270833333333336,
+    "abstain_auroc": 0.5,
+    "rollout_planning_delta": 0.0,
+    "quarantine_bytes": 10640
+  },
+  "banking77": {
+    "intent_77_acc": 0.012987012987012988,
+    "same_vs_overlap_diff_auc": 0.5
+  }
+}

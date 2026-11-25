@@ -1,0 +1,233 @@
+{
+  "arm": "Cog_v7",
+  "teacher_informed": false,
+  "seed": 100,
+  "train_seconds": 17.885994599997503,
+  "peak_vram_mb": 861.859375,
+  "num_experts": 2,
+  "backward_passes": 32,
+  "skipped_steps": 93,
+  "banking77": {
+    "intent_77_acc": 0.18833333253860474,
+    "same_vs_overlap_diff_auc": 0.40365
+  },
+  "b77_muon_drift": 0.0,
+  "heldout_families": {
+    "auc": 0.4343,
+    "selectivity": 1.0,
+    "clean_trig": 0.0,
+    "flip_trig": 0.0,
+    "esc_gain": -0.017314434051513672,
+    "esc_margin_gain": 0.004966937005519867
+  },
+  "mixed_switch": {
+    "mid_seq_switch_rate": 0.0,
+    "k_dist": {
+      "k0": 0.0,
+      "k1": 0.7314453125,
+      "k2": 0.2685546875
+    }
+  },
+  "per_domain_final": {
+    "wiki": {
+      "concept_r1": 0.015625,
+      "concept_r5": 0.0625,
+      "nuance_flip_auc": 0.7065972222222222,
+      "nuance_selectivity": 1.0,
+      "nuance_clean_trig": 0.0,
+      "nuance_flip_trig": 0.0,
+      "nuance_escalation_gain": -0.07544827461242676,
+      "nuance_esc_margin_gain": -0.047479063272476196
+    },
+    "story": {
+      "concept_r1": 0.0625,
+      "concept_r5": 0.09375,
+      "nuance_flip_auc": 0.7660590277777778,
+      "nuance_selectivity": 1.0,
+      "nuance_clean_trig": 0.0,
+      "nuance_flip_trig": 0.0,
+      "nuance_escalation_gain": -0.06458336114883423,
+      "nuance_esc_margin_gain": -0.06283283233642578
+    },
+    "code": {
+      "concept_r1": 0.015625,
+      "concept_r5": 0.046875,
+      "nuance_flip_auc": 0.7521701388888888,
+      "nuance_selectivity": 1.0,
+      "nuance_clean_trig": 0.0,
+      "nuance_flip_trig": 0.0,
+      "nuance_escalation_gain": -0.05089646577835083,
+      "nuance_esc_margin_gain": -0.03399500250816345
+    },
+    "math": {
+      "concept_r1": 0.03125,
+      "concept_r5": 0.09375,
+      "nuance_flip_auc": 0.6471354166666666,
+      "nuance_selectivity": 1.0,
+      "nuance_clean_trig": 0.0013020833721384406,
+      "nuance_flip_trig": 0.0013020833721384406,
+      "nuance_escalation_gain": -0.03481745719909668,
+      "nuance_esc_margin_gain": -0.0315912663936615
+    },
+    "forum": {
+      "concept_r1": 0.046875,
+      "concept_r5": 0.109375,
+      "nuance_flip_auc": 0.7009548611111112,
+      "nuance_selectivity": 1.0,
+      "nuance_clean_trig": 0.0013020833721384406,
+      "nuance_flip_trig": 0.0013020833721384406,
+      "nuance_escalation_gain": -0.049436986446380615,
+      "nuance_esc_margin_gain": -0.0366658940911293
+    }
+  },
+  "mean_final_r1": 0.034375,
+  "mean_final_r5": 0.08125,
+  "mean_nuance_flip_auc": 0.7145833333333333,
+  "mean_nuance_selectivity": 1.0,
+  "mean_escalation_gain": -0.055036509037017824,
+  "mean_esc_margin_gain": -0.042512811720371246,
+  "forgetting_r5": 0.0078125,
+  "forgetting_nuance_auc": -0.005099826388888867,
+  "gpm_mean_cap_ratio": 0.23540455426356588,
+  "gpm_at_cap_count": 0,
+  "quarantine_bytes": 512,
+  "nuance_buf_bytes": 36848,
+  "detached_renderer_diag_bpb": 7.911636711830579,
+  "events": [
+    {
+      "step": 8,
+      "domain": "wiki",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 9,
+      "domain": "wiki",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 11,
+      "domain": "wiki",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 12,
+      "domain": "wiki",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 14,
+      "domain": "wiki",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 15,
+      "domain": "wiki",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 16,
+      "domain": "wiki",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 17,
+      "domain": "wiki",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 18,
+      "domain": "wiki",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 19,
+      "domain": "wiki",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 20,
+      "domain": "wiki",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 21,
+      "domain": "wiki",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 22,
+      "domain": "wiki",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 23,
+      "domain": "wiki",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 24,
+      "domain": "wiki",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 25,
+      "domain": "wiki",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 26,
+      "domain": "story",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 27,
+      "domain": "story",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 28,
+      "domain": "story",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 29,
+      "domain": "story",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 30,
+      "domain": "story",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 45,
+      "domain": "story",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 73,
+      "domain": "code",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 73,
+      "domain": "code",
+      "event": "froze_expert_0"
+    },
+    {
+      "step": 73,
+      "domain": "code",
+      "event": "spawned_expert_1"
+    }
+  ],
+  "track1": {
+    "seen_acc": 0.13541666666666666,
+    "heldout_unseen_acc": 0.09114583333333333,
+    "paraphrase_acc": 0.078125,
+    "burst_immunity_acc": 0.046875,
+    "abstain_auroc": 0.93896484375,
+    "rollout_planning_delta": 0.0,
+    "muon_grok_drift": -0.04687499999999999,
+    "quarantine_bytes": 568
+  }
+}

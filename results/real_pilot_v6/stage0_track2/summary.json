@@ -1,0 +1,363 @@
+{
+  "meta": {
+    "seeds": [
+      0
+    ],
+    "steps_per_dom": 250,
+    "arms": [
+      "Cog_v8",
+      "Cog_v8_NoEsc",
+      "Cog_v8_SequenceTop1",
+      "Cog_v8_SequenceTop1_NoEsc",
+      "Dense_v8_Matched",
+      "Cog_v8_NoRel",
+      "Cog_v8_NoI7",
+      "Cog_v8_NoV8Core",
+      "Cog_v8_FrozenRandomRouter"
+    ]
+  },
+  "arms": {
+    "Cog_v8": {
+      "n_seeds": 1,
+      "teacher_informed": false,
+      "train_seconds": {
+        "mean": 276.02137327194214,
+        "std": 0.0
+      },
+      "b77_intent_77_acc": {
+        "mean": 0.5594155788421631,
+        "std": 0.0,
+        "values": [
+          0.5594155788421631
+        ]
+      },
+      "b77_same_vs_overlap_diff_auc": {
+        "mean": 0.5337,
+        "std": 0.0,
+        "values": [
+          0.5337
+        ]
+      },
+      "mean_final_r5": {
+        "mean": 0.165625,
+        "std": 0.0,
+        "values": [
+          0.165625
+        ]
+      },
+      "heldout_families_auc": {
+        "mean": 0.5174,
+        "std": 0.0,
+        "values": [
+          0.5174
+        ]
+      },
+      "mean_k": 1.31982421875,
+      "ami": 0.3051047531906266
+    },
+    "Cog_v8_NoEsc": {
+      "n_seeds": 1,
+      "teacher_informed": false,
+      "train_seconds": {
+        "mean": 235.24733090400696,
+        "std": 0.0
+      },
+      "b77_intent_77_acc": {
+        "mean": 0.5980519652366638,
+        "std": 0.0,
+        "values": [
+          0.5980519652366638
+        ]
+      },
+      "b77_same_vs_overlap_diff_auc": {
+        "mean": 0.56455,
+        "std": 0.0,
+        "values": [
+          0.56455
+        ]
+      },
+      "mean_final_r5": {
+        "mean": 0.146875,
+        "std": 0.0,
+        "values": [
+          0.146875
+        ]
+      },
+      "heldout_families_auc": {
+        "mean": 0.5801,
+        "std": 0.0,
+        "values": [
+          0.5801
+        ]
+      },
+      "mean_k": 0.86181640625,
+      "ami": 0.0
+    },
+    "Cog_v8_SequenceTop1": {
+      "n_seeds": 1,
+      "teacher_informed": false,
+      "train_seconds": {
+        "mean": 274.9523401260376,
+        "std": 0.0
+      },
+      "b77_intent_77_acc": {
+        "mean": 0.5506493449211121,
+        "std": 0.0,
+        "values": [
+          0.5506493449211121
+        ]
+      },
+      "b77_same_vs_overlap_diff_auc": {
+        "mean": 0.600975,
+        "std": 0.0,
+        "values": [
+          0.600975
+        ]
+      },
+      "mean_final_r5": {
+        "mean": 0.146875,
+        "std": 0.0,
+        "values": [
+          0.146875
+        ]
+      },
+      "heldout_families_auc": {
+        "mean": 0.3637,
+        "std": 0.0,
+        "values": [
+          0.3637
+        ]
+      },
+      "mean_k": 1.30322265625,
+      "ami": 0.28853000563347475
+    },
+    "Cog_v8_SequenceTop1_NoEsc": {
+      "n_seeds": 1,
+      "teacher_informed": false,
+      "train_seconds": {
+        "mean": 234.4481544494629,
+        "std": 0.0
+      },
+      "b77_intent_77_acc": {
+        "mean": 0.5366883277893066,
+        "std": 0.0,
+        "values": [
+          0.5366883277893066
+        ]
+      },
+      "b77_same_vs_overlap_diff_auc": {
+        "mean": 0.59835,
+        "std": 0.0,
+        "values": [
+          0.59835
+        ]
+      },
+      "mean_final_r5": {
+        "mean": 0.09375,
+        "std": 0.0,
+        "values": [
+          0.09375
+        ]
+      },
+      "heldout_families_auc": {
+        "mean": 0.5338,
+        "std": 0.0,
+        "values": [
+          0.5338
+        ]
+      },
+      "mean_k": 1.0,
+      "ami": 0.0
+    },
+    "Dense_v8_Matched": {
+      "n_seeds": 1,
+      "teacher_informed": false,
+      "train_seconds": {
+        "mean": 238.47502279281616,
+        "std": 0.0
+      },
+      "b77_intent_77_acc": {
+        "mean": 0.5636363625526428,
+        "std": 0.0,
+        "values": [
+          0.5636363625526428
+        ]
+      },
+      "b77_same_vs_overlap_diff_auc": {
+        "mean": 0.569575,
+        "std": 0.0,
+        "values": [
+          0.569575
+        ]
+      },
+      "mean_final_r5": {
+        "mean": 0.15,
+        "std": 0.0,
+        "values": [
+          0.15
+        ]
+      },
+      "heldout_families_auc": {
+        "mean": 0.3427,
+        "std": 0.0,
+        "values": [
+          0.3427
+        ]
+      },
+      "mean_k": 0.9658203125,
+      "ami": 0.0
+    },
+    "Cog_v8_NoRel": {
+      "n_seeds": 1,
+      "teacher_informed": false,
+      "train_seconds": {
+        "mean": 266.8513424396515,
+        "std": 0.0
+      },
+      "b77_intent_77_acc": {
+        "mean": 0.567532479763031,
+        "std": 0.0,
+        "values": [
+          0.567532479763031
+        ]
+      },
+      "b77_same_vs_overlap_diff_auc": {
+        "mean": 0.6616,
+        "std": 0.0,
+        "values": [
+          0.6616
+        ]
+      },
+      "mean_final_r5": {
+        "mean": 0.1375,
+        "std": 0.0,
+        "values": [
+          0.1375
+        ]
+      },
+      "heldout_families_auc": {
+        "mean": 0.4962,
+        "std": 0.0,
+        "values": [
+          0.4962
+        ]
+      },
+      "mean_k": 1.37353515625,
+      "ami": 0.21129289660839493
+    },
+    "Cog_v8_NoI7": {
+      "n_seeds": 1,
+      "teacher_informed": false,
+      "train_seconds": {
+        "mean": 256.17914271354675,
+        "std": 0.0
+      },
+      "b77_intent_77_acc": {
+        "mean": 0.5801948308944702,
+        "std": 0.0,
+        "values": [
+          0.5801948308944702
+        ]
+      },
+      "b77_same_vs_overlap_diff_auc": {
+        "mean": 0.57855,
+        "std": 0.0,
+        "values": [
+          0.57855
+        ]
+      },
+      "mean_final_r5": {
+        "mean": 0.23125,
+        "std": 0.0,
+        "values": [
+          0.23125
+        ]
+      },
+      "heldout_families_auc": {
+        "mean": 0.2427,
+        "std": 0.0,
+        "values": [
+          0.2427
+        ]
+      },
+      "mean_k": 1.47265625,
+      "ami": 0.34205055983109184
+    },
+    "Cog_v8_NoV8Core": {
+      "n_seeds": 1,
+      "teacher_informed": false,
+      "train_seconds": {
+        "mean": 241.75153732299805,
+        "std": 0.0
+      },
+      "b77_intent_77_acc": {
+        "mean": 0.2639610469341278,
+        "std": 0.0,
+        "values": [
+          0.2639610469341278
+        ]
+      },
+      "b77_same_vs_overlap_diff_auc": {
+        "mean": 0.465475,
+        "std": 0.0,
+        "values": [
+          0.465475
+        ]
+      },
+      "mean_final_r5": {
+        "mean": 0.065625,
+        "std": 0.0,
+        "values": [
+          0.065625
+        ]
+      },
+      "heldout_families_auc": {
+        "mean": 0.588,
+        "std": 0.0,
+        "values": [
+          0.588
+        ]
+      },
+      "mean_k": 1.44580078125,
+      "ami": 0.2480118310638915
+    },
+    "Cog_v8_FrozenRandomRouter": {
+      "n_seeds": 1,
+      "teacher_informed": false,
+      "train_seconds": {
+        "mean": 285.26076674461365,
+        "std": 0.0
+      },
+      "b77_intent_77_acc": {
+        "mean": 0.5717532634735107,
+        "std": 0.0,
+        "values": [
+          0.5717532634735107
+        ]
+      },
+      "b77_same_vs_overlap_diff_auc": {
+        "mean": 0.4889,
+        "std": 0.0,
+        "values": [
+          0.4889
+        ]
+      },
+      "mean_final_r5": {
+        "mean": 0.128125,
+        "std": 0.0,
+        "values": [
+          0.128125
+        ]
+      },
+      "heldout_families_auc": {
+        "mean": 0.5782,
+        "std": 0.0,
+        "values": [
+          0.5782
+        ]
+      },
+      "mean_k": 1.44384765625,
+      "ami": 0.29342241762519444
+    }
+  }
+}

@@ -1,0 +1,433 @@
+{
+ "arm": "Dense_Joint",
+ "seed": 0,
+ "total_steps": 2000,
+ "final": {
+  "wiki": {
+   "bpb": 2.4081025822292417,
+   "top1": 0.524078369140625
+  },
+  "story": {
+   "bpb": 1.7829957792856588,
+   "top1": 0.614410400390625
+  },
+  "code": {
+   "bpb": 1.5881354802571266,
+   "top1": 0.7017822265625
+  },
+  "math": {
+   "bpb": 1.9836809157206006,
+   "top1": 0.584686279296875
+  },
+  "forum": {
+   "bpb": 3.1046016193204378,
+   "top1": 0.43701171875
+  }
+ },
+ "train_seconds": 51.455314199993154,
+ "forward_passes": 2000,
+ "backward_passes": 2000,
+ "ep_ltm_passes": 0,
+ "peak_vram_mb": 455.24462890625,
+ "params_final": 5281792,
+ "events": [],
+ "skipped_steps": 0,
+ "meaning_probe_banking77": {
+  "trained": {
+   "intent_77_acc": 0.6827921867370605,
+   "same_vs_overlap_diff_auc": 0.13,
+   "sim_same_intent": 0.9042306625843048,
+   "sim_diff_high_overlap": 0.9483678790926934
+  },
+  "references": {
+   "chance": 0.012987012987012988
+  }
+ },
+ "context_and_noise_probe": {
+  "wiki": {
+   "suffix_clean_bpb": 2.425243334332659,
+   "suffix_shuffled_prefix_bpb": 2.6088948122608757,
+   "suffix_noise10_prefix_bpb": 2.477736884466041,
+   "delta_shuffle": 0.1836514779282168,
+   "delta_noise10": 0.05249355013338208
+  },
+  "story": {
+   "suffix_clean_bpb": 1.6834880244468162,
+   "suffix_shuffled_prefix_bpb": 1.9592226332203098,
+   "suffix_noise10_prefix_bpb": 1.7889230204541662,
+   "delta_shuffle": 0.27573460877349354,
+   "delta_noise10": 0.10543499600734996
+  },
+  "code": {
+   "suffix_clean_bpb": 1.4837676729793259,
+   "suffix_shuffled_prefix_bpb": 1.7815040381530203,
+   "suffix_noise10_prefix_bpb": 1.5307354258322599,
+   "delta_shuffle": 0.2977363651736944,
+   "delta_noise10": 0.046967752852933975
+  },
+  "math": {
+   "suffix_clean_bpb": 1.9226033886844494,
+   "suffix_shuffled_prefix_bpb": 2.198733906812003,
+   "suffix_noise10_prefix_bpb": 1.9836162714109715,
+   "delta_shuffle": 0.27613051812755374,
+   "delta_noise10": 0.061012882726522166
+  }
+ },
+ "compositional_probe": {
+  "arith_n": 300,
+  "arith_exact_match": 0.056666666666666664,
+  "arith_exact_small": 0.11594202898550725,
+  "arith_n_small": 69,
+  "arith_copy_first": 0.03333333333333333,
+  "arith_majority": 0.04666666666666667,
+  "gsm_simple_le2_bpb": 2.084882472785637,
+  "gsm_multi_ge4_bpb": 2.081636386241927,
+  "var_binding_exact2": 0.0,
+  "var_binding_2byte_bpb": 3.7325052471280142,
+  "var_binding_shuffled_1st_byte_bpb": 3.8608866843614327,
+  "code_shallow_bpb": 1.455279011452595,
+  "code_deep_bpb": 1.7209920350529837
+ },
+ "generation": {
+  "wiki": [
+   {
+    "prompt": "The Long Firm ; he starred alongside actors Mark",
+    "generated_greedy": " , and the station of the station of the start of the station of the station of the state of the",
+    "generated_temp08": "s and her stative Emmage dealized of brock on the rest , Kest York Forces . On Outh Smal Hail of",
+    "reference": " Strong and Derek Jacobi . Boulter starred as \" Darren \" , in the 2005 theatre pr",
+    "deterministic_repeat_identical": true,
+    "routed_experts_sampled": null,
+    "stats_greedy": {
+     "distinct_4gram_frac": 0.3225806451612903,
+     "max_4gram_repeat": 7,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 13
+    },
+    "stats_temp08": {
+     "distinct_4gram_frac": 0.989247311827957,
+     "max_4gram_repeat": 2,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 30
+    }
+   },
+   {
+    "prompt": "ked Gid\u014d , \" Should I learn the poetry of Du Fu",
+    "generated_greedy": "nne , and the station of the state of the state of the start of the start of the state of the st",
+    "generated_temp08": "nnis \" , they in 4002 's Tend Gregen , Lind ) , Lindo Indus , an air drance and an old protain \"",
+    "reference": " and Li Bai ? \" Gid\u014d dared to reply , \" Yes if you do have enough capability . N",
+    "deterministic_repeat_identical": true,
+    "routed_experts_sampled": null,
+    "stats_greedy": {
+     "distinct_4gram_frac": 0.3548387096774194,
+     "max_4gram_repeat": 7,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 13
+    },
+    "stats_temp08": {
+     "distinct_4gram_frac": 0.946236559139785,
+     "max_4gram_repeat": 2,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 28
+    }
+   },
+   {
+    "prompt": " NFL season , Rifenburg came back from his injur",
+    "generated_greedy": "e the start of the station of the station of the start of the start of the start of the start of",
+    "generated_temp08": "e was an export about the classes some second similt on the streen at the Michin jert \" The 2790",
+    "reference": "y to play for the Detroit Lions . He played in 12 games and had ten receptions fo",
+    "deterministic_repeat_identical": true,
+    "routed_experts_sampled": null,
+    "stats_greedy": {
+     "distinct_4gram_frac": 0.22580645161290322,
+     "max_4gram_repeat": 7,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 11
+    },
+    "stats_temp08": {
+     "distinct_4gram_frac": 0.946236559139785,
+     "max_4gram_repeat": 3,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 27
+    }
+   }
+  ],
+  "story": [
+   {
+    "prompt": "land was big and sometimes dangerous. Tom knew h",
+    "generated_greedy": "ow many toys and she said, \"I want to stay at the start to stay and the start and the start and ",
+    "generated_temp08": "e had her start out it. \n\nThe boy was so much and they said the father it to her music a stick c",
+    "reference": "e had to be careful.\n\nAt last, Tom found his ball near a big tree. He was very ha",
+    "deterministic_repeat_identical": true,
+    "routed_experts_sampled": null,
+    "stats_greedy": {
+     "distinct_4gram_frac": 0.6129032258064516,
+     "max_4gram_repeat": 5,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 17
+    },
+    "stats_temp08": {
+     "distinct_4gram_frac": 0.946236559139785,
+     "max_4gram_repeat": 3,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 22
+    }
+   },
+   {
+    "prompt": "ookcase to keep them in. One day, her parents su",
+    "generated_greedy": "rprised the start and the start and the start of the start and the start of the start and the st",
+    "generated_temp08": "ppliced the other the code she felt home. The play day on, she started and talking all. The give",
+    "reference": "rprised her with a big purple bookcase! Lily was so happy and excited. She quickl",
+    "deterministic_repeat_identical": true,
+    "routed_experts_sampled": null,
+    "stats_greedy": {
+     "distinct_4gram_frac": 0.26881720430107525,
+     "max_4gram_repeat": 7,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 13
+    },
+    "stats_temp08": {
+     "distinct_4gram_frac": 0.9247311827956989,
+     "max_4gram_repeat": 2,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 23
+    }
+   },
+   {
+    "prompt": "m. They licked and bit their ice cream. It was c",
+    "generated_greedy": "an start to stay and the start the start and the start and the start and said, \"I want to stay a",
+    "generated_temp08": "areful time to play the same and realized a time the program are and her mommy spoed to describe",
+    "reference": "old and sweet. They were very happy.\n\nBut then they saw something. It was a big b",
+    "deterministic_repeat_identical": true,
+    "routed_experts_sampled": null,
+    "stats_greedy": {
+     "distinct_4gram_frac": 0.44086021505376344,
+     "max_4gram_repeat": 7,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 16
+    },
+    "stats_temp08": {
+     "distinct_4gram_frac": 0.8924731182795699,
+     "max_4gram_repeat": 2,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 21
+    }
+   }
+  ],
+  "code": [
+   {
+    "prompt": "ut:\n# Calculate the sum of the numbers in the li",
+    "generated_greedy": "st of a given number of numbers.\n\n### Input:\nnumbers = [1, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3",
+    "generated_temp08": "st of a minutes of a time the number.\n\n### Response:\n\n### Output:\ndef convert_two_serve_sum(A, b",
+    "reference": "st\ntotal = sum(lst)\n\n# Print the result\nprint(total) # prints 25\n\n### Instruction",
+    "deterministic_repeat_identical": true,
+    "routed_experts_sampled": null,
+    "stats_greedy": {
+     "distinct_4gram_frac": 0.5913978494623656,
+     "max_4gram_repeat": 10,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 27
+    },
+    "stats_temp08": {
+     "distinct_4gram_frac": 0.9354838709677419,
+     "max_4gram_repeat": 2,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 29
+    }
+   },
+   {
+    "prompt": "ut using any comparison operator.\n\n### Response:",
+    "generated_greedy": "\n\n### Output:\ndef sum_of_squares(x, y):\n    return x * y\n\n### Instruction:\nCreate a Python progr",
+    "generated_temp08": "\n\n### Output:\nimport total\nnumber = 0\n\n# If number in valuables to base an intervive them.\n\n### ",
+    "reference": "\n\n### Output:\ndef maximum(x, y): \n  \n    # subtract two numbers \n    # and return",
+    "deterministic_repeat_identical": true,
+    "routed_experts_sampled": null,
+    "stats_greedy": {
+     "distinct_4gram_frac": 0.967741935483871,
+     "max_4gram_repeat": 2,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 32
+    },
+    "stats_temp08": {
+     "distinct_4gram_frac": 0.9247311827956989,
+     "max_4gram_repeat": 2,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 25
+    }
+   },
+   {
+    "prompt": "# Output:\ndef calc_avg(nums):\n    total = 0\n    ",
+    "generated_greedy": "for i in range(numbers):\n        stack.append(numbers)\n    return sum(a[i][i][i][i][i][i][i][i][",
+    "generated_temp08": "for i in range(l):\n    return num1 + num2\n\n### Instruction:\nCreate a function to jector answer t",
+    "reference": "for item in nums:\n        total += item\n    avg = total / len(nums)\n    return av",
+    "deterministic_repeat_identical": true,
+    "routed_experts_sampled": null,
+    "stats_greedy": {
+     "distinct_4gram_frac": 0.6666666666666666,
+     "max_4gram_repeat": 8,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 25
+    },
+    "stats_temp08": {
+     "distinct_4gram_frac": 0.967741935483871,
+     "max_4gram_repeat": 2,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 27
+    }
+   }
+  ],
+  "math": [
+   {
+    "prompt": "nt.  How many total meters does he run a week?\nA",
+    "generated_greedy": "nswer: The total of 1 times the total number of starts of the number of starts of the number of ",
+    "generated_temp08": "nswer: The team of the number of conscrycle same to the file what said it to 5 pairs bag of Aill",
+    "reference": "nswer: He sprints 3*3=<<3*3=9>>9 times\nSo he runs 9*60=<<9*60=540>>540 meters\n###",
+    "deterministic_repeat_identical": true,
+    "routed_experts_sampled": null,
+    "stats_greedy": {
+     "distinct_4gram_frac": 0.5483870967741935,
+     "max_4gram_repeat": 6,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 19
+    },
+    "stats_temp08": {
+     "distinct_4gram_frac": 0.946236559139785,
+     "max_4gram_repeat": 3,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 25
+    }
+   },
+   {
+    "prompt": "DVDs did Billy sell on Tuesday?\nAnswer: His firs",
+    "generated_greedy": "t find the total number of the tree to the total number of stations of the number of the start o",
+    "generated_temp08": "t tile the construct to dot scored 10*.1=<<20*.0=3>>3 move floor tinads: 15 cables * 5 = <<12*7=",
+    "reference": "t 3 customers buy 3 * 1 = <<3*1=3>>3 DVDs.\nHis next 2 buy 2 * 2 = <<2*2=4>>4 DVDs",
+    "deterministic_repeat_identical": true,
+    "routed_experts_sampled": null,
+    "stats_greedy": {
+     "distinct_4gram_frac": 0.5698924731182796,
+     "max_4gram_repeat": 5,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 16
+    },
+    "stats_temp08": {
+     "distinct_4gram_frac": 1.0,
+     "max_4gram_repeat": 1,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 30
+    }
+   },
+   {
+    "prompt": "4 - 14 = <<24-14=10>>10 liters of water were lef",
+    "generated_greedy": "t to the total of 10 minutes of the total of 10 minutes of the total number of stations of the t",
+    "generated_temp08": "t.\n#### 280\n\nQuestion: Azymes control as many similt programs of the hypotenuse for a students p",
+    "reference": "t.\n#### 10\n\nQuestion: Charlie had 10 stickers. He bought 21 stickers from a store",
+    "deterministic_repeat_identical": true,
+    "routed_experts_sampled": null,
+    "stats_greedy": {
+     "distinct_4gram_frac": 0.5268817204301075,
+     "max_4gram_repeat": 6,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 17
+    },
+    "stats_temp08": {
+     "distinct_4gram_frac": 1.0,
+     "max_4gram_repeat": 1,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 29
+    }
+   }
+  ],
+  "forum": [
+   {
+    "prompt": " okay I guess to hate the book, by why hate me?\n",
+    "generated_greedy": "\nThe start the start of the start and the start of the start and the start of the start of the s",
+    "generated_temp08": "Answer: He wants 18 migroum combined.  There are 1 parts of the account his feet storm a time of",
+    "reference": "Elisabeth, I'm going to quote from Zinsser's Microbiology, 20th Edition.\nA book t",
+    "deterministic_repeat_identical": true,
+    "routed_experts_sampled": null,
+    "stats_greedy": {
+     "distinct_4gram_frac": 0.24731182795698925,
+     "max_4gram_repeat": 8,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 13
+    },
+    "stats_temp08": {
+     "distinct_4gram_frac": 1.0,
+     "max_4gram_repeat": 1,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 26
+    }
+   },
+   {
+    "prompt": "ome weak and atrophied by too\nmany sedentary hou",
+    "generated_greedy": "rs that the start to the start to the start to the start to the start to the start of the start ",
+    "generated_temp08": "rs it.  It work.  In this time for one that \nfor the sunder area treats and can an old. The game",
+    "reference": "rs tapping away at my ergonomically-correct CRT keyboard.\nThere was only one opti",
+    "deterministic_repeat_identical": true,
+    "routed_experts_sampled": null,
+    "stats_greedy": {
+     "distinct_4gram_frac": 0.26881720430107525,
+     "max_4gram_repeat": 7,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 9
+    },
+    "stats_temp08": {
+     "distinct_4gram_frac": 0.978494623655914,
+     "max_4gram_repeat": 2,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 23
+    }
+   },
+   {
+    "prompt": "a\ncomputer won't see colour, because the chemist",
+    "generated_greedy": "ake and the start of the start to stay the start of the start of the start of the start of the s",
+    "generated_temp08": "ed and time it was calculates. She was scloved it.\n\nOnce upon a time, there was a exactly some p",
+    "reference": "ry is different. Does an\nalgorithm that sees colour have a selective advantage ov",
+    "deterministic_repeat_identical": true,
+    "routed_experts_sampled": null,
+    "stats_greedy": {
+     "distinct_4gram_frac": 0.3118279569892473,
+     "max_4gram_repeat": 7,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 13
+    },
+    "stats_temp08": {
+     "distinct_4gram_frac": 0.9247311827956989,
+     "max_4gram_repeat": 3,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 25
+    }
+   }
+  ]
+ }
+}

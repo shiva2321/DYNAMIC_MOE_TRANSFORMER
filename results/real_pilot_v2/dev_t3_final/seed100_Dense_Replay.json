@@ -1,0 +1,544 @@
+{
+ "arm": "Dense_Replay",
+ "seed": 100,
+ "steps_per_stream": 400,
+ "params_init": 5281792,
+ "params_final": 5281792,
+ "train_seconds": 50.0341488999984,
+ "tokens_per_sec": 81864.08862847932,
+ "forward_passes": 2000,
+ "backward_passes": 2000,
+ "ep_ltm_passes": 0,
+ "peak_vram_mb": 499.884765625,
+ "matrix": [
+  {
+   "wiki": {
+    "bpb": 2.642972366210882,
+    "top1": 0.4769287109375
+   },
+   "story": {
+    "bpb": 3.2510036996809,
+    "top1": 0.42437744140625
+   },
+   "code": {
+    "bpb": 5.914988992165526,
+    "top1": 0.2789306640625
+   },
+   "math": {
+    "bpb": 4.398924432591979,
+    "top1": 0.3514404296875
+   },
+   "forum": {
+    "bpb": 4.876911858534013,
+    "top1": 0.32867431640625
+   },
+   "_after_stream": "wiki"
+  },
+  {
+   "wiki": {
+    "bpb": 2.821409096003945,
+    "top1": 0.457916259765625
+   },
+   "story": {
+    "bpb": 1.758892582749887,
+    "top1": 0.622589111328125
+   },
+   "code": {
+    "bpb": 6.288526194759051,
+    "top1": 0.251495361328125
+   },
+   "math": {
+    "bpb": 4.38532722624079,
+    "top1": 0.37969970703125
+   },
+   "forum": {
+    "bpb": 4.906875191915285,
+    "top1": 0.340179443359375
+   },
+   "_after_stream": "story"
+  },
+  {
+   "wiki": {
+    "bpb": 2.980359761497624,
+    "top1": 0.4539794921875
+   },
+   "story": {
+    "bpb": 2.1474128278952542,
+    "top1": 0.560150146484375
+   },
+   "code": {
+    "bpb": 1.4498505510607615,
+    "top1": 0.72821044921875
+   },
+   "math": {
+    "bpb": 3.6807517118824253,
+    "top1": 0.395416259765625
+   },
+   "forum": {
+    "bpb": 4.142368281271479,
+    "top1": 0.37091064453125
+   },
+   "_after_stream": "code"
+  },
+  {
+   "wiki": {
+    "bpb": 2.885674412095466,
+    "top1": 0.463592529296875
+   },
+   "story": {
+    "bpb": 2.0260079958810735,
+    "top1": 0.5784912109375
+   },
+   "code": {
+    "bpb": 1.8395984083679873,
+    "top1": 0.66351318359375
+   },
+   "math": {
+    "bpb": 1.9079555356888362,
+    "top1": 0.609130859375
+   },
+   "forum": {
+    "bpb": 4.18367920193933,
+    "top1": 0.37457275390625
+   },
+   "_after_stream": "math"
+  },
+  {
+   "wiki": {
+    "bpb": 2.690342708620919,
+    "top1": 0.494415283203125
+   },
+   "story": {
+    "bpb": 2.021394217306377,
+    "top1": 0.58099365234375
+   },
+   "code": {
+    "bpb": 1.9108123395023184,
+    "top1": 0.65338134765625
+   },
+   "math": {
+    "bpb": 2.236421201975082,
+    "top1": 0.554656982421875
+   },
+   "forum": {
+    "bpb": 2.7119347004801173,
+    "top1": 0.495574951171875
+   },
+   "_after_stream": "forum"
+  }
+ ],
+ "train_loss_tail_nats": {
+  "wiki": 1.7907654345035553,
+  "story": 1.2595475494861603,
+  "code": 0.9912058889865876,
+  "math": 1.2496651887893677,
+  "forum": 1.6934806048870086
+ },
+ "train_ce_tail_nats": {
+  "wiki": 1.7907654345035553,
+  "story": 1.2595475494861603,
+  "code": 0.9912058889865876,
+  "math": 1.2496651887893677,
+  "forum": 1.6934806048870086
+ },
+ "events": [],
+ "skipped_steps": 0,
+ "meaning_probe_banking77": {
+  "trained": {
+   "intent_77_acc": 0.6175000071525574,
+   "same_vs_overlap_diff_auc": 0.147425,
+   "sim_same_intent": 0.8825354684889316,
+   "sim_diff_high_overlap": 0.9374169273674489
+  },
+  "references": {
+   "chance": 0.012987012987012988
+  }
+ },
+ "context_and_noise_probe": {
+  "wiki": {
+   "suffix_clean_bpb": 2.6490498084275207,
+   "suffix_shuffled_prefix_bpb": 2.773459327506358,
+   "suffix_noise10_prefix_bpb": 2.6698279373715885,
+   "delta_shuffle": 0.12440951907883724,
+   "delta_noise10": 0.02077812894406783
+  },
+  "story": {
+   "suffix_clean_bpb": 1.9970763427651939,
+   "suffix_shuffled_prefix_bpb": 2.2737666882342884,
+   "suffix_noise10_prefix_bpb": 2.07425817705847,
+   "delta_shuffle": 0.27669034546909455,
+   "delta_noise10": 0.07718183429327619
+  },
+  "code": {
+   "suffix_clean_bpb": 1.8352015726779196,
+   "suffix_shuffled_prefix_bpb": 2.0570667701111285,
+   "suffix_noise10_prefix_bpb": 1.867436349722196,
+   "delta_shuffle": 0.22186519743320887,
+   "delta_noise10": 0.03223477704427635
+  },
+  "math": {
+   "suffix_clean_bpb": 2.12582697912405,
+   "suffix_shuffled_prefix_bpb": 2.3476886204852163,
+   "suffix_noise10_prefix_bpb": 2.1961254433004798,
+   "delta_shuffle": 0.22186164136116648,
+   "delta_noise10": 0.07029846417642993
+  }
+ },
+ "compositional_probe": {
+  "arith_n": 300,
+  "arith_exact_match": 0.07,
+  "arith_exact_small": 0.09090909090909091,
+  "arith_n_small": 66,
+  "arith_copy_first": 0.03,
+  "arith_majority": 0.04666666666666667,
+  "gsm_simple_le2_bpb": 2.3678887818869083,
+  "gsm_multi_ge4_bpb": 2.371604725032775,
+  "var_binding_exact2": 0.015625,
+  "var_binding_2byte_bpb": 4.4666059690645765,
+  "var_binding_shuffled_1st_byte_bpb": 4.909278821443744,
+  "code_shallow_bpb": 1.7189726754663115,
+  "code_deep_bpb": 2.128231095495705
+ },
+ "generation": {
+  "wiki": [
+   {
+    "prompt": "reamy white or very pale red .\n\nFemale H. gammar",
+    "generated_greedy": "dian Loved in Suddenly , was reason in the property was reason in the fact was reason of the man",
+    "generated_temp08": "y and her was not no her deally was not could be protected by difference\n\nAccorposed by used in ",
+    "reference": "us reach sexual maturity when they have grown to a carapace length of 80 \u2013 85 m",
+    "deterministic_repeat_identical": true,
+    "routed_experts_sampled": null,
+    "stats_greedy": {
+     "distinct_4gram_frac": 0.6989247311827957,
+     "max_4gram_repeat": 3,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 23
+    },
+    "stats_temp08": {
+     "distinct_4gram_frac": 0.8709677419354839,
+     "max_4gram_repeat": 2,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 21
+    }
+   },
+   {
+    "prompt": "g the southern edge of Manistee National Forest ",
+    "generated_greedy": "on the Property of the Secret of the Armenian Property and the operating the the operation of th",
+    "generated_temp08": "period the control not one shop . So excrap was requesto , allow are probability was rappointed ",
+    "reference": ". The current version of M @-@ 82 is actually the second in the state ; the first",
+    "deterministic_repeat_identical": true,
+    "routed_experts_sampled": null,
+    "stats_greedy": {
+     "distinct_4gram_frac": 0.6666666666666666,
+     "max_4gram_repeat": 6,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 19
+    },
+    "stats_temp08": {
+     "distinct_4gram_frac": 0.967741935483871,
+     "max_4gram_repeat": 2,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 23
+    }
+   },
+   {
+    "prompt": "tional soloist , Elena Nikolaidi , to perform wi",
+    "generated_greedy": "th the first property and of the Armenian Strange 's were a complete to confusing the Armenian A",
+    "generated_temp08": "th the Pience 's brives , result as a Tacko field for the American Turken Milling exactly modes ",
+    "reference": "th the orchestra . The Orchestra helped the Meridian Public School District devel",
+    "deterministic_repeat_identical": true,
+    "routed_experts_sampled": null,
+    "stats_greedy": {
+     "distinct_4gram_frac": 0.8602150537634409,
+     "max_4gram_repeat": 3,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 23
+    },
+    "stats_temp08": {
+     "distinct_4gram_frac": 0.978494623655914,
+     "max_4gram_repeat": 2,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 28
+    }
+   }
+  ],
+  "story": [
+   {
+    "prompt": "\"Next time, you have to share and take turns,\" M",
+    "generated_greedy": "om asked the contest of the third of the third of the third was a bee and the box, but the best ",
+    "generated_temp08": "om asked him allow the rode of\nchoose, which was input logic where a third you want to get it is",
+    "reference": "om said. \"And ask me before you use the kitchen.\"\n\nLily and Ben felt sorry. They ",
+    "deterministic_repeat_identical": true,
+    "routed_experts_sampled": null,
+    "stats_greedy": {
+     "distinct_4gram_frac": 0.6451612903225806,
+     "max_4gram_repeat": 6,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 20
+    },
+    "stats_temp08": {
+     "distinct_4gram_frac": 1.0,
+     "max_4gram_repeat": 1,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 23
+    }
+   },
+   {
+    "prompt": "d white.\n\n\"Look, there's a landing spot,\" Lila s",
+    "generated_greedy": "aid, \"I will be a big bear and the boy of the box, but the book at the box, but the box, but the",
+    "generated_temp08": "aid, \"She's original, there is \"Pression and\n                                                   ",
+    "reference": "aid. She pointed to a patch of dirt. \"Let's go and give the crystal to the moon p",
+    "deterministic_repeat_identical": true,
+    "routed_experts_sampled": null,
+    "stats_greedy": {
+     "distinct_4gram_frac": 0.6129032258064516,
+     "max_4gram_repeat": 6,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 22
+    },
+    "stats_temp08": {
+     "distinct_4gram_frac": 0.4946236559139785,
+     "max_4gram_repeat": 48,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 19
+    }
+   },
+   {
+    "prompt": "loved to explore and play outside. One day, she ",
+    "generated_greedy": "was a big back and went to the box, but when he was all of the boy and should be bit and the box",
+    "generated_temp08": "was so expliing about they loved to see \"Sovething to play is the bathern the Perject\n          ",
+    "reference": "found a colorful butterfly in her backyard. She followed it until it flew into a ",
+    "deterministic_repeat_identical": true,
+    "routed_experts_sampled": null,
+    "stats_greedy": {
+     "distinct_4gram_frac": 0.8387096774193549,
+     "max_4gram_repeat": 3,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 21
+    },
+    "stats_temp08": {
+     "distinct_4gram_frac": 0.8817204301075269,
+     "max_4gram_repeat": 7,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 26
+    }
+   }
+  ],
+  "code": [
+   {
+    "prompt": "put:\n[1, 5, 7, 10]\n\n### Response:\n\n### Output:\nd",
+    "generated_greedy": "ef sqrt(x):\n    int s = x\n    if x == 0\n        return x \n    i = 10\n\n### Instruction:\nWrite a P",
+    "generated_temp08": "ef function_name____ = (\ndef}\n\nabout buf_[1]\n    print(\"fahrenhead = 0; \n                       ",
+    "reference": "ef compute_average(numbers):\n    total = 0\n    for num in numbers:\n        total ",
+    "deterministic_repeat_identical": true,
+    "routed_experts_sampled": null,
+    "stats_greedy": {
+     "distinct_4gram_frac": 0.8709677419354839,
+     "max_4gram_repeat": 8,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 25
+    },
+    "stats_temp08": {
+     "distinct_4gram_frac": 0.7741935483870968,
+     "max_4gram_repeat": 21,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 27
+    }
+   },
+   {
+    "prompt": "es of all numbers provided in the array.\n\n### In",
+    "generated_greedy": "put:\ndef sqrt(x):\n    x = x\n x = 10\n\nx2 = 10\n\nx2 = 10\n\n# the total number of point the tax rate ",
+    "generated_temp08": "put:\ndef timeit(x):\n   return x + x1\nx2 = 2 \n\nx1 = 3\nx1\n\nx2 = 10\n\nif developmentation\n\n### Outpu",
+    "reference": "put:\n[2, 3, 4]\n\n### Response:\n\n### Output:\ndef sum_squares(arr):\n    total = 0\n  ",
+    "deterministic_repeat_identical": true,
+    "routed_experts_sampled": null,
+    "stats_greedy": {
+     "distinct_4gram_frac": 0.8064516129032258,
+     "max_4gram_repeat": 3,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 28
+    },
+    "stats_temp08": {
+     "distinct_4gram_frac": 0.967741935483871,
+     "max_4gram_repeat": 2,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 28
+    }
+   },
+   {
+    "prompt": "\n\n### Input:\nvalues = [2,4,6,8,10]\n\n### Response",
+    "generated_greedy": ":\n\n### Output:\ndef sqrt(x):\n    int s = x\n    int x = x\n    i = 10\n\nthe form to start = 10\n\nthe ",
+    "generated_temp08": ":\n\n### Output:\ndef calculate_testrs(s.argv[2]]): \n    print(\"Sort(\"`ocalnat\", \", jest \"and \", st",
+    "reference": ":\n\n### Output:\n# Funciton to compute the average value in an array\ndef computeAve",
+    "deterministic_repeat_identical": true,
+    "routed_experts_sampled": null,
+    "stats_greedy": {
+     "distinct_4gram_frac": 0.7741935483870968,
+     "max_4gram_repeat": 3,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 26
+    },
+    "stats_temp08": {
+     "distinct_4gram_frac": 0.989247311827957,
+     "max_4gram_repeat": 2,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 33
+    }
+   }
+  ],
+  "math": [
+   {
+    "prompt": "n food and travel expenses, she spends 1200*2 = ",
+    "generated_greedy": "<<120*100=120>>120 miles of the total number of the total number of the total number of the tota",
+    "generated_temp08": "<<120*200/100=200>>200 d\ndef find_two, which was 20001\nxorely data = this tyst was 30/10 / 10 + ",
+    "reference": "$<<1200*2=2400>>2400 on food and travel costs.\nWhen her friend moved in and share",
+    "deterministic_repeat_identical": true,
+    "routed_experts_sampled": null,
+    "stats_greedy": {
+     "distinct_4gram_frac": 0.4731182795698925,
+     "max_4gram_repeat": 4,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 22
+    },
+    "stats_temp08": {
+     "distinct_4gram_frac": 0.967741935483871,
+     "max_4gram_repeat": 2,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 30
+    }
+   },
+   {
+    "prompt": "e are 4 people traveling so 8 total water bottle",
+    "generated_greedy": " the third was a bird to the third of the third was a bought the third of the third of the third",
+    "generated_temp08": " the connector..  In this top of her seen when you don't have altered to drive the old. Pown and",
+    "reference": "s for each person x 4 people = <<8*4=32>>32 total water bottles.\n#### 32\n\nQuestio",
+    "deterministic_repeat_identical": true,
+    "routed_experts_sampled": null,
+    "stats_greedy": {
+     "distinct_4gram_frac": 0.3870967741935484,
+     "max_4gram_repeat": 6,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 15
+    },
+    "stats_temp08": {
+     "distinct_4gram_frac": 0.978494623655914,
+     "max_4gram_repeat": 2,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 23
+    }
+   },
+   {
+    "prompt": "* (110/100) = $<<100*110/100=110>>110 in the ban",
+    "generated_greedy": "k was a $100.00\n### Response:\n\n### Output:\ndef sqrt(x, y):\n return x + 20\n\nx2 = 10\n\nx1 = 10\n\n###",
+    "generated_temp08": "dies.\nSo he hugged compound the trees as movement for the\n              not come jept\n          ",
+    "reference": "k account.\nAt the end of the second year, there will be $110 * (110/100) = $<<110",
+    "deterministic_repeat_identical": true,
+    "routed_experts_sampled": null,
+    "stats_greedy": {
+     "distinct_4gram_frac": 0.9032258064516129,
+     "max_4gram_repeat": 3,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 32
+    },
+    "stats_temp08": {
+     "distinct_4gram_frac": 0.7849462365591398,
+     "max_4gram_repeat": 18,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 22
+    }
+   }
+  ],
+  "forum": [
+   {
+    "prompt": "eed to do more than make statements to the\neffec",
+    "generated_greedy": "t of the third of the third was a lot of the third of the third was a lot of the third of the st",
+    "generated_temp08": "t of an is a the\nX         //\nX    /*b */\nX    approach from departmentians in the group of Arme",
+    "reference": "t that the propaganda is false. If someone wants to discuss\nthe issue more seriou",
+    "deterministic_repeat_identical": true,
+    "routed_experts_sampled": null,
+    "stats_greedy": {
+     "distinct_4gram_frac": 0.2903225806451613,
+     "max_4gram_repeat": 6,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 13
+    },
+    "stats_temp08": {
+     "distinct_4gram_frac": 0.8387096774193549,
+     "max_4gram_repeat": 8,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 23
+    }
+   },
+   {
+    "prompt": "MAX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>",
+    "generated_greedy": "'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>",
+    "generated_temp08": "'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'\nMEX>'AX>'AX>'AX>'A",
+    "reference": "'AX>'AX>'AX>'\nMAX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'\nMAX>'",
+    "deterministic_repeat_identical": true,
+    "routed_experts_sampled": null,
+    "stats_greedy": {
+     "distinct_4gram_frac": 0.043010752688172046,
+     "max_4gram_repeat": 24,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 4
+    },
+    "stats_temp08": {
+     "distinct_4gram_frac": 0.10752688172043011,
+     "max_4gram_repeat": 22,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 7
+    }
+   },
+   {
+    "prompt": "ave never been to court before and you think you",
+    "generated_greedy": " want to be a big and the operating a complement and the operating a complement of the third was",
+    "generated_temp08": " can't the bird about they loved to see \"something to conductor for the nod come jept\n\"and God p",
+    "reference": " have a case,\n\t go for it. It is a very interesting process, and it is there for\n",
+    "deterministic_repeat_identical": true,
+    "routed_experts_sampled": null,
+    "stats_greedy": {
+     "distinct_4gram_frac": 0.6666666666666666,
+     "max_4gram_repeat": 3,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 19
+    },
+    "stats_temp08": {
+     "distinct_4gram_frac": 0.946236559139785,
+     "max_4gram_repeat": 3,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 26
+    }
+   }
+  ]
+ }
+}

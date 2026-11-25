@@ -1,0 +1,400 @@
+{
+ "experiment": "real_pilot_v3",
+ "generated_utc": "2026-11-20T08:27:04.023538+00:00",
+ "note": "All tuning/calibration runs strictly used disjoint dev validation splits; test_windows was never accessed.",
+ "trials": [
+  {
+   "dev_run": "dev_t1_stm2",
+   "seeds": [
+    100
+   ],
+   "eval_split": "dev",
+   "steps_per_stream": 400,
+   "cog_v6_cfg": {
+    "d_model": 192,
+    "num_heads": 6,
+    "d_ff": 512,
+    "initial_layers": 6,
+    "initial_experts": 1,
+    "chunk_size": 1,
+    "enable_memory": true,
+    "num_ltm_slots": 32,
+    "enable_three_level_attn": true,
+    "local_window": 16,
+    "chunk_stride": 8,
+    "enable_layer_stm": true,
+    "signed_beta": true,
+    "use_rope": true,
+    "causal_attn": true,
+    "auto_write_ltm": false,
+    "enable_thinking": true,
+    "max_thinking_steps": 2,
+    "skip_threshold": 0.15,
+    "theta_halt": 0.22,
+    "enable_world_model": true,
+    "wm_rollout_horizon": 1,
+    "enable_pc_rectification": true,
+    "pc_thresh": 0.24,
+    "hybrid_mode": true,
+    "router_mode": "causal_proto",
+    "num_router_protos": 64,
+    "router_sim_threshold": 0.55,
+    "auto_lifecycle": true,
+    "max_experts": 6,
+    "min_mature_steps": 40,
+    "novel_confirm_steps": 3,
+    "novel_surprise_threshold": 0.45,
+    "dormant_age": 1000000000,
+    "prune_age": 1000000000,
+    "route_during_train": true,
+    "use_trunk_routing": true,
+    "router_context_blend": 0.2,
+    "extend_loss_margin": 0.25,
+    "align_wm_target_with_encoder": true,
+    "enable_full_stack_adapters": true,
+    "adapter_rank": 16,
+    "router_use_idf": true,
+    "router_center_multi": false,
+    "train_revisit_conf_margin": 0.02,
+    "preserve_input_novel_on_extend": true,
+    "defer_on_novel_streak": true,
+    "enable_mixed_split": false,
+    "mixed_split_gap": 0.18,
+    "max_coactive_experts": 4,
+    "use_marginal_drop_halt": true,
+    "halt_use_energy_only": true,
+    "skip_final_lookahead": true,
+    "pc_mode": "adaptive_rel",
+    "ltm_null_logit": 1.5,
+    "min_surprise_drop": 0.008,
+    "layer_stm_every": 1
+   },
+   "v6_proto": {
+    "step_rank_ratio": 0.26,
+    "step_rank_decay": 0.84,
+    "ep_ltm_every": 6,
+    "ep_ltm_weight": 0.45,
+    "quarantine_cap": 4,
+    "gpm_cov_every": 1,
+    "tier2_stm_every": 2,
+    "tier2_ep_ltm_every": 12,
+    "tier2_gpm_cov_every": 2
+   },
+   "arms": {
+    "Cog_v6": {
+     "train_seconds": 220.55857759999344,
+     "forward_passes": 2343.0,
+     "ep_ltm_passes": 331.0,
+     "skipped_steps": 10.0,
+     "mean_final_val_bpb": 2.351462460929025,
+     "mean_diag_val_bpb": 2.220625859565817,
+     "final_val_bpb": {
+      "wiki": 2.719796199433707,
+      "story": 2.0090806034699016,
+      "code": 1.891122389770337,
+      "math": 2.139981285568821,
+      "forum": 2.9973318264023576
+     },
+     "mean_forgetting_bpb": 0.16354575170401014,
+     "forgetting_by_domain": {
+      "wiki": 0.21757396173665766,
+      "story": 0.15935835036754953,
+      "code": 0.258247686683061,
+      "math": 0.019003008028772417
+     },
+     "experts_final": 5.0,
+     "spawns": [
+      [
+       "story@402:spawned_expert_1_from_0",
+       "code@802:spawned_expert_2_from_1",
+       "math@1202:spawned_expert_3_from_2",
+       "forum@1605:spawned_expert_4_from_3"
+      ]
+     ],
+     "nmi_domain_vs_expert": 0.627674360496108,
+     "confusion_domain_x_expert": [
+      {
+       "wiki": {
+        "0": 237,
+        "4": 9,
+        "1": 6,
+        "3": 4
+       },
+       "story": {
+        "1": 246,
+        "3": 1,
+        "0": 8,
+        "4": 1
+       },
+       "code": {
+        "2": 243,
+        "4": 8,
+        "0": 4,
+        "3": 1
+       },
+       "math": {
+        "3": 187,
+        "1": 26,
+        "0": 37,
+        "4": 6
+       },
+       "forum": {
+        "0": 97,
+        "4": 113,
+        "2": 15,
+        "1": 27,
+        "3": 4
+       }
+      }
+     ],
+     "gpm_mean_cap_ratio": 0.9369537182121221,
+     "gpm_at_cap_count": 0.0,
+     "mean_token_steps": 1.04893798828125,
+     "thinking_delta_adp_minus_0": -0.018768449490393156,
+     "ltm_gain_vs_dist": 0.0433969340698841,
+     "ltm_gain_vs_none": 0.030959722034988868,
+     "pc_clean_trig": 0.0920680658891797,
+     "pc_contra_trig": 0.10960989631712437,
+     "revisit_spawns": 0.0,
+     "banking77_acc": 0.4308333396911621,
+     "banking77_auc": 0.30745
+    },
+    "Cog_v6_Tier2": {
+     "train_seconds": 191.18219269999827,
+     "forward_passes": 2178.0,
+     "ep_ltm_passes": 166.0,
+     "skipped_steps": 10.0,
+     "mean_final_val_bpb": 2.340751691002061,
+     "mean_diag_val_bpb": 2.228350907484212,
+     "final_val_bpb": {
+      "wiki": 2.707714547197583,
+      "story": 2.004478003767511,
+      "code": 1.8516930452942515,
+      "math": 2.152835483872621,
+      "forum": 2.987037374878337
+     },
+     "mean_forgetting_bpb": 0.14050097939731082,
+     "forgetting_by_domain": {
+      "wiki": 0.1948684252087851,
+      "story": 0.14149077179977332,
+      "code": 0.1967454008646392,
+      "math": 0.028899319716045646
+     },
+     "experts_final": 5.0,
+     "spawns": [
+      [
+       "story@402:spawned_expert_1_from_0",
+       "code@802:spawned_expert_2_from_1",
+       "math@1202:spawned_expert_3_from_2",
+       "forum@1605:spawned_expert_4_from_3"
+      ]
+     ],
+     "nmi_domain_vs_expert": 0.6432379148310201,
+     "confusion_domain_x_expert": [
+      {
+       "wiki": {
+        "0": 238,
+        "4": 8,
+        "1": 6,
+        "3": 4
+       },
+       "story": {
+        "1": 246,
+        "3": 1,
+        "0": 8,
+        "4": 1
+       },
+       "code": {
+        "2": 244,
+        "4": 8,
+        "0": 4
+       },
+       "math": {
+        "3": 183,
+        "1": 26,
+        "0": 38,
+        "4": 9
+       },
+       "forum": {
+        "0": 85,
+        "4": 133,
+        "1": 27,
+        "2": 7,
+        "3": 4
+       }
+      }
+     ],
+     "gpm_mean_cap_ratio": 0.8973655149123816,
+     "gpm_at_cap_count": 0.0,
+     "mean_token_steps": 0.9943359375,
+     "thinking_delta_adp_minus_0": -0.02992336461321061,
+     "ltm_gain_vs_dist": 0.002804334773081507,
+     "ltm_gain_vs_none": 0.0030712948428832654,
+     "pc_clean_trig": 0.09649536572396755,
+     "pc_contra_trig": 0.10971381887793541,
+     "revisit_spawns": 0.0,
+     "banking77_acc": 0.4283333420753479,
+     "banking77_auc": 0.321725
+    }
+   }
+  },
+  {
+   "dev_run": "dev_t2_stm4",
+   "seeds": [
+    100
+   ],
+   "eval_split": "dev",
+   "steps_per_stream": 400,
+   "cog_v6_cfg": {
+    "d_model": 192,
+    "num_heads": 6,
+    "d_ff": 512,
+    "initial_layers": 6,
+    "initial_experts": 1,
+    "chunk_size": 1,
+    "enable_memory": true,
+    "num_ltm_slots": 32,
+    "enable_three_level_attn": true,
+    "local_window": 16,
+    "chunk_stride": 8,
+    "enable_layer_stm": true,
+    "signed_beta": true,
+    "use_rope": true,
+    "causal_attn": true,
+    "auto_write_ltm": false,
+    "enable_thinking": true,
+    "max_thinking_steps": 2,
+    "skip_threshold": 0.15,
+    "theta_halt": 0.22,
+    "enable_world_model": true,
+    "wm_rollout_horizon": 1,
+    "enable_pc_rectification": true,
+    "pc_thresh": 0.24,
+    "hybrid_mode": true,
+    "router_mode": "causal_proto",
+    "num_router_protos": 64,
+    "router_sim_threshold": 0.55,
+    "auto_lifecycle": true,
+    "max_experts": 6,
+    "min_mature_steps": 40,
+    "novel_confirm_steps": 3,
+    "novel_surprise_threshold": 0.45,
+    "dormant_age": 1000000000,
+    "prune_age": 1000000000,
+    "route_during_train": true,
+    "use_trunk_routing": true,
+    "router_context_blend": 0.2,
+    "extend_loss_margin": 0.25,
+    "align_wm_target_with_encoder": true,
+    "enable_full_stack_adapters": true,
+    "adapter_rank": 16,
+    "router_use_idf": true,
+    "router_center_multi": false,
+    "train_revisit_conf_margin": 0.02,
+    "preserve_input_novel_on_extend": true,
+    "defer_on_novel_streak": true,
+    "enable_mixed_split": false,
+    "mixed_split_gap": 0.18,
+    "max_coactive_experts": 4,
+    "use_marginal_drop_halt": true,
+    "halt_use_energy_only": true,
+    "skip_final_lookahead": true,
+    "pc_mode": "adaptive_rel",
+    "ltm_null_logit": 1.5,
+    "min_surprise_drop": 0.008,
+    "layer_stm_every": 1
+   },
+   "v6_proto": {
+    "step_rank_ratio": 0.26,
+    "step_rank_decay": 0.84,
+    "ep_ltm_every": 6,
+    "ep_ltm_weight": 0.45,
+    "quarantine_cap": 4,
+    "gpm_cov_every": 1,
+    "tier2_stm_every": 4,
+    "tier2_ep_ltm_every": 12,
+    "tier2_gpm_cov_every": 2
+   },
+   "arms": {
+    "Cog_v6_Tier2": {
+     "train_seconds": 179.5390236,
+     "forward_passes": 2178.0,
+     "ep_ltm_passes": 166.0,
+     "skipped_steps": 10.0,
+     "mean_final_val_bpb": 2.3678649708888964,
+     "mean_diag_val_bpb": 2.230212052137054,
+     "final_val_bpb": {
+      "wiki": 2.794536032884702,
+      "story": 2.0101569138946638,
+      "code": 1.836770669622501,
+      "math": 2.186636739094884,
+      "forum": 3.01122449894773
+     },
+     "mean_forgetting_bpb": 0.1720661484398026,
+     "forgetting_by_domain": {
+      "wiki": 0.25570414926812557,
+      "story": 0.16339383727872003,
+      "code": 0.2081209783276463,
+      "math": 0.06104562888471854
+     },
+     "experts_final": 5.0,
+     "spawns": [
+      [
+       "story@402:spawned_expert_1_from_0",
+       "code@802:spawned_expert_2_from_1",
+       "math@1202:spawned_expert_3_from_2",
+       "forum@1605:spawned_expert_4_from_3"
+      ]
+     ],
+     "nmi_domain_vs_expert": 0.6184238411942584,
+     "confusion_domain_x_expert": [
+      {
+       "wiki": {
+        "0": 235,
+        "4": 8,
+        "3": 6,
+        "1": 7
+       },
+       "story": {
+        "1": 244,
+        "3": 1,
+        "0": 9,
+        "4": 2
+       },
+       "code": {
+        "2": 244,
+        "4": 7,
+        "3": 2,
+        "0": 3
+       },
+       "math": {
+        "3": 186,
+        "1": 22,
+        "4": 20,
+        "0": 28
+       },
+       "forum": {
+        "0": 73,
+        "4": 130,
+        "2": 18,
+        "1": 24,
+        "3": 11
+       }
+      }
+     ],
+     "gpm_mean_cap_ratio": 0.8930901205838802,
+     "gpm_at_cap_count": 0.0,
+     "mean_token_steps": 1.059100341796875,
+     "thinking_delta_adp_minus_0": -0.03012399957370713,
+     "ltm_gain_vs_dist": -0.003096046012719178,
+     "ltm_gain_vs_none": 0.0014177103186128193,
+     "pc_clean_trig": 0.08818488474935293,
+     "pc_contra_trig": 0.11640428751707077,
+     "revisit_spawns": 0.0,
+     "banking77_acc": 0.4233333468437195,
+     "banking77_auc": 0.299025
+    }
+   }
+  }
+ ]
+}

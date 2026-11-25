@@ -1,0 +1,249 @@
+{
+  "arm": "Cog_v8",
+  "teacher_informed": false,
+  "seed": 100,
+  "train_seconds": 216.5949827999939,
+  "peak_vram_mb": 702.89208984375,
+  "num_experts": 6,
+  "backward_passes": 1000,
+  "skipped_steps": 0,
+  "banking77": {
+    "intent_77_acc": 0.4958333373069763,
+    "same_vs_overlap_diff_auc": 0.62355
+  },
+  "b77_muon_drift": 0.010833323001861572,
+  "heldout_families": {
+    "auc": 0.5585,
+    "selectivity": 1.3661513115754749,
+    "clean_trig": 0.0306249987334013,
+    "flip_trig": 0.041874997317790985,
+    "esc_gain": 0.11858591437339783,
+    "esc_margin_gain": 0.06470842659473419
+  },
+  "routing_diag": {
+    "mid_seq_switch_rate": 0.65625,
+    "k_dist": {
+      "k0": 0.01611328125,
+      "k1": 0.529296875,
+      "k2": 0.45458984375
+    },
+    "func_routing_nmi": 0.3431632433575229
+  },
+  "per_domain_final": {
+    "wiki": {
+      "concept_r1": 0.0625,
+      "concept_r5": 0.171875,
+      "nuance_flip_auc": 0.7408854166666666,
+      "nuance_selectivity": 1.7566169016108917,
+      "nuance_escalation_gain": 0.43333345651626587,
+      "nuance_esc_margin_gain": 0.23815977573394775
+    },
+    "story": {
+      "concept_r1": 0.015625,
+      "concept_r5": 0.140625,
+      "nuance_flip_auc": 0.7799479166666666,
+      "nuance_selectivity": 1.9961746893752044,
+      "nuance_escalation_gain": 0.4004397392272949,
+      "nuance_esc_margin_gain": 0.2409486174583435
+    },
+    "code": {
+      "concept_r1": 0.078125,
+      "concept_r5": 0.171875,
+      "nuance_flip_auc": 0.6870659722222222,
+      "nuance_selectivity": 1.741230678020277,
+      "nuance_escalation_gain": 0.4175242781639099,
+      "nuance_esc_margin_gain": 0.20604538917541504
+    },
+    "math": {
+      "concept_r1": 0.046875,
+      "concept_r5": 0.140625,
+      "nuance_flip_auc": 0.6263020833333334,
+      "nuance_selectivity": 1.6737064514883153,
+      "nuance_escalation_gain": 0.3179061710834503,
+      "nuance_esc_margin_gain": 0.13287930190563202
+    },
+    "forum": {
+      "concept_r1": 0.0625,
+      "concept_r5": 0.234375,
+      "nuance_flip_auc": 0.6805555555555556,
+      "nuance_selectivity": 1.6271951389005208,
+      "nuance_escalation_gain": 0.371682345867157,
+      "nuance_esc_margin_gain": 0.16550229489803314
+    }
+  },
+  "mean_final_r1": 0.053125,
+  "mean_final_r5": 0.171875,
+  "mean_nuance_flip_auc": 0.702951388888889,
+  "mean_nuance_selectivity": 1.7589847718790417,
+  "mean_escalation_gain": 0.3881771981716156,
+  "mean_esc_margin_gain": 0.1967070758342743,
+  "forgetting_r5": -0.02734375,
+  "forgetting_nuance_auc": -0.00748697916666663,
+  "gpm_at_cap_count": 0,
+  "quarantine_bytes": 3624,
+  "detached_renderer_diag_bpb": 5.186584060453297,
+  "events": [
+    {
+      "step": 971,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 972,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 973,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 974,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 975,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 976,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 977,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 978,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 979,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 980,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 981,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 982,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 983,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 984,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 985,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 986,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 987,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 988,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 989,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 990,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 991,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 992,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 993,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 994,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 995,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 996,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 997,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 998,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 999,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 1000,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    }
+  ],
+  "track1": {
+    "seen_acc": 0.1171875,
+    "heldout_unseen_acc": 0.06770833333333333,
+    "paraphrase_acc": 0.06770833333333333,
+    "iit_causal_acc": 0.03125,
+    "episodic_fewshot_acc": 0.078125,
+    "burst_immunity_acc": 0.0859375,
+    "abstain_auroc": 1.0,
+    "rollout_planning_delta": 0.015625,
+    "muon_grok_drift": -0.02083333333333333,
+    "quarantine_bytes": 1760
+  }
+}

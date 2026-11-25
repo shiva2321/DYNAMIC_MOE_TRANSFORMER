@@ -1,0 +1,192 @@
+{
+  "arm": "Cog_v6_Ref",
+  "teacher_informed": false,
+  "seed": 0,
+  "train_seconds": 14.9154819999967,
+  "peak_vram_mb": 1459.0322265625,
+  "num_experts": 2,
+  "backward_passes": 48,
+  "skipped_steps": 2,
+  "banking77": {
+    "intent_77_acc": 0.4658333361148834,
+    "same_vs_overlap_diff_auc": 0.319425
+  },
+  "b77_muon_drift": 0.0091666579246521,
+  "heldout_families": {
+    "auc": 0.24455,
+    "selectivity": 1.0,
+    "clean_trig": 0.0,
+    "flip_trig": 0.0,
+    "esc_gain": -7.547556015197188e-05,
+    "esc_margin_gain": 1.7398022464476526e-05
+  },
+  "routing_diag": {
+    "mid_seq_switch_rate": 0.0,
+    "k_dist": {
+      "k0": 0.0,
+      "k1": 1.0,
+      "k2": 0.0
+    },
+    "func_routing_nmi": 0.20384785962210183
+  },
+  "per_domain_final": {
+    "wiki": {
+      "concept_r1": 0.03125,
+      "concept_r5": 0.09375,
+      "nuance_flip_auc": 0.2287326388888889,
+      "nuance_selectivity": 1.0,
+      "nuance_escalation_gain": -8.158385753631592e-07,
+      "nuance_esc_margin_gain": 0.00041742739267647266
+    },
+    "story": {
+      "concept_r1": 0.03125,
+      "concept_r5": 0.125,
+      "nuance_flip_auc": 0.2326388888888889,
+      "nuance_selectivity": 1.0,
+      "nuance_escalation_gain": 2.8602778911590576e-05,
+      "nuance_esc_margin_gain": 0.001233675517141819
+    },
+    "code": {
+      "concept_r1": 0.015625,
+      "concept_r5": 0.125,
+      "nuance_flip_auc": 0.19791666666666666,
+      "nuance_selectivity": 1.0,
+      "nuance_escalation_gain": -4.4790387619286776e-05,
+      "nuance_esc_margin_gain": 0.0005012218025512993
+    },
+    "math": {
+      "concept_r1": 0.0,
+      "concept_r5": 0.109375,
+      "nuance_flip_auc": 0.2560763888888889,
+      "nuance_selectivity": 1.0,
+      "nuance_escalation_gain": 1.2753007467836142e-06,
+      "nuance_esc_margin_gain": 0.0005177483835723251
+    },
+    "forum": {
+      "concept_r1": 0.03125,
+      "concept_r5": 0.15625,
+      "nuance_flip_auc": 0.171875,
+      "nuance_selectivity": 1.0,
+      "nuance_escalation_gain": 8.157134288921952e-06,
+      "nuance_esc_margin_gain": 0.0006415086390916258
+    }
+  },
+  "mean_final_r1": 0.021875,
+  "mean_final_r5": 0.121875,
+  "mean_nuance_flip_auc": 0.21744791666666666,
+  "mean_nuance_selectivity": 1.0,
+  "mean_escalation_gain": -1.5142024494707584e-06,
+  "mean_esc_margin_gain": 0.0006623163470067083,
+  "forgetting_r5": -0.01171875,
+  "forgetting_nuance_auc": 0.007161458333333336,
+  "gpm_at_cap_count": 0,
+  "quarantine_bytes": 0,
+  "detached_renderer_diag_bpb": 4.017294930327408,
+  "events": [
+    {
+      "step": 15,
+      "domain": "story",
+      "event": "extended_expert_0"
+    },
+    {
+      "step": 16,
+      "domain": "story",
+      "event": "extended_expert_0"
+    },
+    {
+      "step": 17,
+      "domain": "story",
+      "event": "extended_expert_0"
+    },
+    {
+      "step": 18,
+      "domain": "story",
+      "event": "extended_expert_0"
+    },
+    {
+      "step": 19,
+      "domain": "story",
+      "event": "extended_expert_0"
+    },
+    {
+      "step": 20,
+      "domain": "story",
+      "event": "extended_expert_0"
+    },
+    {
+      "step": 23,
+      "domain": "code",
+      "event": "froze_expert_0"
+    },
+    {
+      "step": 23,
+      "domain": "code",
+      "event": "spawned_expert_1_fresh"
+    },
+    {
+      "step": 37,
+      "domain": "math",
+      "event": "extended_expert_1"
+    },
+    {
+      "step": 38,
+      "domain": "math",
+      "event": "extended_expert_1"
+    },
+    {
+      "step": 39,
+      "domain": "math",
+      "event": "extended_expert_1"
+    },
+    {
+      "step": 40,
+      "domain": "math",
+      "event": "extended_expert_1"
+    },
+    {
+      "step": 42,
+      "domain": "forum",
+      "event": "extended_expert_1"
+    },
+    {
+      "step": 43,
+      "domain": "forum",
+      "event": "extended_expert_1"
+    },
+    {
+      "step": 44,
+      "domain": "forum",
+      "event": "extended_expert_1"
+    },
+    {
+      "step": 45,
+      "domain": "forum",
+      "event": "extended_expert_1"
+    },
+    {
+      "step": 46,
+      "domain": "forum",
+      "event": "extended_expert_1"
+    },
+    {
+      "step": 47,
+      "domain": "forum",
+      "event": "extended_expert_1"
+    },
+    {
+      "step": 48,
+      "domain": "forum",
+      "event": "extended_expert_1"
+    },
+    {
+      "step": 49,
+      "domain": "forum",
+      "event": "extended_expert_1"
+    },
+    {
+      "step": 50,
+      "domain": "forum",
+      "event": "extended_expert_1"
+    }
+  ]
+}

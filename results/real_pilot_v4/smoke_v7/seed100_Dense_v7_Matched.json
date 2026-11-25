@@ -1,0 +1,90 @@
+{
+  "arm": "Dense_v7_Matched",
+  "seed": 100,
+  "train_seconds": 15.920502200000556,
+  "peak_vram_mb": 395.22900390625,
+  "num_experts": 1,
+  "backward_passes": 125,
+  "skipped_steps": 0,
+  "banking77": {
+    "intent_77_acc": 0.14000000059604645,
+    "same_vs_overlap_diff_auc": 0.316525
+  },
+  "mixed_switch": {
+    "mid_seq_switch_rate": 0.0,
+    "k_dist": {
+      "k0": 0.0107421875,
+      "k1": 0.9892578125,
+      "k2": 0.0
+    }
+  },
+  "per_domain_final": {
+    "wiki": {
+      "concept_r1": 0.0,
+      "concept_r5": 0.09375,
+      "nuance_flip_auc": 0.13504155124653738,
+      "nuance_selectivity": 1.0,
+      "nuance_clean_trig": 1.0,
+      "nuance_flip_trig": 1.0,
+      "nuance_escalation_gain": -0.19563721120357513
+    },
+    "story": {
+      "concept_r1": 0.015625,
+      "concept_r5": 0.09375,
+      "nuance_flip_auc": 0.0371900826446281,
+      "nuance_selectivity": 1.0,
+      "nuance_clean_trig": 1.0,
+      "nuance_flip_trig": 1.0,
+      "nuance_escalation_gain": -0.1879374086856842
+    },
+    "code": {
+      "concept_r1": 0.015625,
+      "concept_r5": 0.03125,
+      "nuance_flip_auc": 0.0390625,
+      "nuance_selectivity": 1.002666413970928,
+      "nuance_clean_trig": 0.9765625,
+      "nuance_flip_trig": 0.9791666865348816,
+      "nuance_escalation_gain": -0.21221469342708588
+    },
+    "math": {
+      "concept_r1": 0.015625,
+      "concept_r5": 0.09375,
+      "nuance_flip_auc": 0.1462673611111111,
+      "nuance_selectivity": 1.0,
+      "nuance_clean_trig": 1.0,
+      "nuance_flip_trig": 1.0,
+      "nuance_escalation_gain": -0.19418945908546448
+    },
+    "forum": {
+      "concept_r1": 0.03125,
+      "concept_r5": 0.09375,
+      "nuance_flip_auc": 0.03298611111111111,
+      "nuance_selectivity": 1.0,
+      "nuance_clean_trig": 0.9973958730697632,
+      "nuance_flip_trig": 0.9973958730697632,
+      "nuance_escalation_gain": -0.19444650411605835
+    }
+  },
+  "mean_final_r1": 0.015625,
+  "mean_final_r5": 0.08125,
+  "mean_nuance_flip_auc": 0.07810952122267753,
+  "mean_nuance_selectivity": 1.0005332827941857,
+  "mean_escalation_gain": -0.19688505530357361,
+  "forgetting_r5": -0.03125,
+  "forgetting_nuance_auc": 0.11172560207654486,
+  "gpm_mean_cap_ratio": 0.0,
+  "gpm_at_cap_count": 0,
+  "quarantine_bytes": 0,
+  "nuance_buf_bytes": 0,
+  "detached_renderer_diag_bpb": 4.313891738456484,
+  "events": [],
+  "track1": {
+    "seen_acc": 0.07291666666666667,
+    "heldout_unseen_acc": 0.08854166666666667,
+    "paraphrase_acc": 0.08333333333333333,
+    "burst_immunity_acc": 0.0703125,
+    "abstain_auroc": 1.0,
+    "rollout_planning_delta": -0.015625,
+    "quarantine_bytes": 0
+  }
+}

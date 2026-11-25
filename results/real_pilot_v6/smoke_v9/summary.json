@@ -1,0 +1,298 @@
+{
+  "meta": {
+    "mode": "smoke",
+    "eval_split": "dev",
+    "seeds": [
+      0
+    ],
+    "steps_per_dom": 25,
+    "tracks": "all",
+    "dense_lr": 0.003,
+    "utc": "2026-11-21T07:34:57.963077+00:00",
+    "device": "cuda",
+    "gpu": "NVIDIA GeForce RTX 3060",
+    "cfg": {
+      "d_model": 192,
+      "num_heads": 6,
+      "d_ff": 256,
+      "d_ff_shared": 256,
+      "d_ff_spec": 256,
+      "initial_layers": 6,
+      "router_layer": 3,
+      "initial_experts": 1,
+      "chunk_size": 4,
+      "use_v7_core": true,
+      "use_v8_core": true,
+      "use_multiscale_chunker": true,
+      "router_mode": "causal_context",
+      "d_route": 96,
+      "router_num_keys": 8,
+      "enable_memory": true,
+      "auto_write_ltm": true,
+      "num_ltm_slots": 32,
+      "enable_three_level_attn": true,
+      "local_window": 8,
+      "chunk_stride": 4,
+      "enable_world_model": true,
+      "wm_rollout_horizon": 3,
+      "causal_attn": true,
+      "use_rope": true,
+      "enable_layer_stm": true,
+      "hybrid_mode": true,
+      "layer_stm_every": 4,
+      "enable_full_stack_adapters": true,
+      "adapter_rank": 16,
+      "enable_thinking": true,
+      "max_thinking_steps": 2,
+      "skip_threshold": 0.1,
+      "theta_halt": 0.2,
+      "halt_use_energy_only": true,
+      "use_marginal_drop_halt": true,
+      "skip_final_lookahead": true,
+      "abstain_threshold": 0.6,
+      "auto_lifecycle": true,
+      "max_experts": 6,
+      "min_mature_steps": 160,
+      "z_nuance_thresh": 2.15,
+      "d_sem_nuance_thresh": 2.0,
+      "nuance_cluster_min": 20,
+      "nuance_cluster_cos": 0.72,
+      "detach_decoder": true,
+      "lora_decoder_rank": 16,
+      "use_iit": true,
+      "use_rel_pool": true,
+      "i7_steps": 150,
+      "enable_nuance_escalation": true,
+      "exempt_readout_heads": true,
+      "use_constant_fisher": false,
+      "target_mean_k": null,
+      "compute_penalty_weight": 0.0
+    }
+  },
+  "arms": {
+    "Cog_v8": {
+      "n_seeds": 1,
+      "teacher_informed": false,
+      "train_seconds": {
+        "mean": 56.636364221572876,
+        "std": 0.0
+      },
+      "b77_intent_77_acc": {
+        "mean": 0.48750001192092896,
+        "std": 0.0,
+        "values": [
+          0.48750001192092896
+        ]
+      },
+      "b77_same_vs_overlap_diff_auc": {
+        "mean": 0.356225,
+        "std": 0.0,
+        "values": [
+          0.356225
+        ]
+      },
+      "mean_final_r5": {
+        "mean": 0.134375,
+        "std": 0.0,
+        "values": [
+          0.134375
+        ]
+      },
+      "heldout_families_auc": {
+        "mean": 0.3832,
+        "std": 0.0,
+        "values": [
+          0.3832
+        ]
+      },
+      "mean_k": 1.98974609375,
+      "ami": 0.10425209012378521,
+      "track1": {
+        "seen_acc": {
+          "mean": 0.07552083333333333,
+          "median": 0.07552083333333333,
+          "std": 0.0,
+          "values": [
+            0.07552083333333333
+          ]
+        },
+        "heldout_unseen_acc": {
+          "mean": 0.09114583333333333,
+          "median": 0.09114583333333333,
+          "std": 0.0,
+          "values": [
+            0.09114583333333333
+          ]
+        },
+        "paraphrase_acc": {
+          "mean": 0.044270833333333336,
+          "median": 0.044270833333333336,
+          "std": 0.0,
+          "values": [
+            0.044270833333333336
+          ]
+        },
+        "iit_causal_acc": {
+          "mean": 0.03125,
+          "median": 0.03125,
+          "std": 0.0,
+          "values": [
+            0.03125
+          ]
+        },
+        "iit_heldout_acc": {
+          "mean": 0.0625,
+          "median": 0.0625,
+          "std": 0.0,
+          "values": [
+            0.0625
+          ]
+        },
+        "iit_random_slice_null": {
+          "mean": 0.03125,
+          "median": 0.03125,
+          "std": 0.0,
+          "values": [
+            0.03125
+          ]
+        },
+        "burst_immunity_acc": {
+          "mean": 0.0546875,
+          "median": 0.0546875,
+          "std": 0.0,
+          "values": [
+            0.0546875
+          ]
+        },
+        "abstain_auroc": {
+          "mean": 1.0,
+          "median": 1.0,
+          "std": 0.0,
+          "values": [
+            1.0
+          ]
+        },
+        "near_ood_abstain_auroc": {
+          "mean": 1.0,
+          "median": 1.0,
+          "std": 0.0,
+          "values": [
+            1.0
+          ]
+        }
+      }
+    },
+    "Dense_v8_Matched": {
+      "n_seeds": 1,
+      "teacher_informed": false,
+      "train_seconds": {
+        "mean": 53.38572883605957,
+        "std": 0.0
+      },
+      "b77_intent_77_acc": {
+        "mean": 0.4483333230018616,
+        "std": 0.0,
+        "values": [
+          0.4483333230018616
+        ]
+      },
+      "b77_same_vs_overlap_diff_auc": {
+        "mean": 0.300275,
+        "std": 0.0,
+        "values": [
+          0.300275
+        ]
+      },
+      "mean_final_r5": {
+        "mean": 0.153125,
+        "std": 0.0,
+        "values": [
+          0.153125
+        ]
+      },
+      "heldout_families_auc": {
+        "mean": 0.1998,
+        "std": 0.0,
+        "values": [
+          0.1998
+        ]
+      },
+      "mean_k": 0.978515625,
+      "ami": 0.0,
+      "track1": {
+        "seen_acc": {
+          "mean": 0.0703125,
+          "median": 0.0703125,
+          "std": 0.0,
+          "values": [
+            0.0703125
+          ]
+        },
+        "heldout_unseen_acc": {
+          "mean": 0.09114583333333333,
+          "median": 0.09114583333333333,
+          "std": 0.0,
+          "values": [
+            0.09114583333333333
+          ]
+        },
+        "paraphrase_acc": {
+          "mean": 0.09114583333333333,
+          "median": 0.09114583333333333,
+          "std": 0.0,
+          "values": [
+            0.09114583333333333
+          ]
+        },
+        "iit_causal_acc": {
+          "mean": 0.03125,
+          "median": 0.03125,
+          "std": 0.0,
+          "values": [
+            0.03125
+          ]
+        },
+        "iit_heldout_acc": {
+          "mean": 0.0625,
+          "median": 0.0625,
+          "std": 0.0,
+          "values": [
+            0.0625
+          ]
+        },
+        "iit_random_slice_null": {
+          "mean": 0.03125,
+          "median": 0.03125,
+          "std": 0.0,
+          "values": [
+            0.03125
+          ]
+        },
+        "burst_immunity_acc": {
+          "mean": 0.078125,
+          "median": 0.078125,
+          "std": 0.0,
+          "values": [
+            0.078125
+          ]
+        },
+        "abstain_auroc": {
+          "mean": 1.0,
+          "median": 1.0,
+          "std": 0.0,
+          "values": [
+            1.0
+          ]
+        },
+        "near_ood_abstain_auroc": {
+          "mean": 1.0,
+          "median": 1.0,
+          "std": 0.0,
+          "values": [
+            1.0
+          ]
+        }
+      }
+    }
+  }
+}

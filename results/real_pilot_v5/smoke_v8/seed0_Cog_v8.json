@@ -1,0 +1,249 @@
+{
+  "arm": "Cog_v8",
+  "teacher_informed": false,
+  "seed": 0,
+  "train_seconds": 29.02159479999682,
+  "peak_vram_mb": 710.98681640625,
+  "num_experts": 4,
+  "backward_passes": 100,
+  "skipped_steps": 0,
+  "banking77": {
+    "intent_77_acc": 0.16083332896232605,
+    "same_vs_overlap_diff_auc": 0.407625
+  },
+  "b77_muon_drift": -0.015833333134651184,
+  "heldout_families": {
+    "auc": 0.2992,
+    "selectivity": 0.6753246755131703,
+    "clean_trig": 0.0037499999161809683,
+    "flip_trig": 0.0024999999441206455,
+    "esc_gain": 0.15124152600765228,
+    "esc_margin_gain": -0.16578707098960876
+  },
+  "routing_diag": {
+    "mid_seq_switch_rate": 0.53125,
+    "k_dist": {
+      "k0": 0.20166015625,
+      "k1": 0.00048828125,
+      "k2": 0.7978515625
+    },
+    "func_routing_nmi": 0.36875957698133927
+  },
+  "per_domain_final": {
+    "wiki": {
+      "concept_r1": 0.0,
+      "concept_r5": 0.078125,
+      "nuance_flip_auc": 0.5286458333333334,
+      "nuance_selectivity": 1.9811616959982585,
+      "nuance_escalation_gain": 0.27986331284046173,
+      "nuance_esc_margin_gain": 0.13514834642410278
+    },
+    "story": {
+      "concept_r1": 0.0,
+      "concept_r5": 0.046875,
+      "nuance_flip_auc": 0.5737847222222222,
+      "nuance_selectivity": 0.7547095540697631,
+      "nuance_escalation_gain": 0.3612581640481949,
+      "nuance_esc_margin_gain": 0.1624288260936737
+    },
+    "code": {
+      "concept_r1": 0.0,
+      "concept_r5": 0.0625,
+      "nuance_flip_auc": 0.4561631944444444,
+      "nuance_selectivity": 0.6388849057954578,
+      "nuance_escalation_gain": 0.19095370173454285,
+      "nuance_esc_margin_gain": 0.04433836787939072
+    },
+    "math": {
+      "concept_r1": 0.015625,
+      "concept_r5": 0.046875,
+      "nuance_flip_auc": 0.47265625,
+      "nuance_selectivity": 1.0,
+      "nuance_escalation_gain": 0.24067381024360657,
+      "nuance_esc_margin_gain": 0.06749694049358368
+    },
+    "forum": {
+      "concept_r1": 0.03125,
+      "concept_r5": 0.078125,
+      "nuance_flip_auc": 0.3828125,
+      "nuance_selectivity": 1.071038799910335,
+      "nuance_escalation_gain": 0.16726280748844147,
+      "nuance_esc_margin_gain": -0.013629309833049774
+    }
+  },
+  "mean_final_r1": 0.009375,
+  "mean_final_r5": 0.0625,
+  "mean_nuance_flip_auc": 0.4828125,
+  "mean_nuance_selectivity": 1.089158991154763,
+  "mean_escalation_gain": 0.2480023592710495,
+  "mean_esc_margin_gain": 0.07915663421154022,
+  "forgetting_r5": 0.01953125,
+  "forgetting_nuance_auc": -0.06022135416666666,
+  "gpm_at_cap_count": 0,
+  "quarantine_bytes": 136,
+  "detached_renderer_diag_bpb": 5.108841435715636,
+  "events": [
+    {
+      "step": 73,
+      "domain": "math",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 74,
+      "domain": "math",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 75,
+      "domain": "math",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 76,
+      "domain": "math",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 77,
+      "domain": "math",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 77,
+      "domain": "math",
+      "event": "spawned_nuance_2"
+    },
+    {
+      "step": 78,
+      "domain": "math",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 79,
+      "domain": "math",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 80,
+      "domain": "math",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 81,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 82,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 83,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 84,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 85,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 86,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 87,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 88,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 89,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 90,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 91,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 92,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 93,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 94,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 95,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 96,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 97,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 97,
+      "domain": "forum",
+      "event": "spawned_nuance_3"
+    },
+    {
+      "step": 98,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 99,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 100,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    }
+  ],
+  "track1": {
+    "seen_acc": 0.8255208333333334,
+    "heldout_unseen_acc": 0.3333333333333333,
+    "paraphrase_acc": 0.3723958333333333,
+    "iit_causal_acc": 0.3125,
+    "episodic_fewshot_acc": 0.09375,
+    "burst_immunity_acc": 0.296875,
+    "abstain_auroc": 1.0,
+    "rollout_planning_delta": 0.109375,
+    "muon_grok_drift": -0.059895833333333315,
+    "quarantine_bytes": 1716
+  }
+}

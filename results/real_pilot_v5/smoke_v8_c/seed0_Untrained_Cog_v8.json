@@ -1,0 +1,74 @@
+{
+  "arm": "Untrained_Cog_v8",
+  "teacher_informed": false,
+  "train_seconds": 3.787636699998984,
+  "banking77": {
+    "intent_77_acc": 0.18916666507720947,
+    "same_vs_overlap_diff_auc": 0.326425
+  },
+  "heldout_families": {
+    "auc": 0.3212,
+    "selectivity": 1.0,
+    "clean_trig": 0.0,
+    "flip_trig": 0.0,
+    "esc_gain": -0.004799835383892059,
+    "esc_margin_gain": 0.004532657563686371
+  },
+  "routing_diag": {
+    "mid_seq_switch_rate": 0.0,
+    "k_dist": {
+      "k0": 0.00390625,
+      "k1": 0.99609375,
+      "k2": 0.0
+    },
+    "func_routing_nmi": 0.0
+  },
+  "per_domain_final": {
+    "wiki": {
+      "concept_r1": 0.0,
+      "concept_r5": 0.03125,
+      "nuance_flip_auc": 0.3511284722222222,
+      "nuance_selectivity": 1.0,
+      "nuance_escalation_gain": -0.0059390440583229065,
+      "nuance_esc_margin_gain": 0.001740574836730957
+    },
+    "story": {
+      "concept_r1": 0.0,
+      "concept_r5": 0.0625,
+      "nuance_flip_auc": 0.3923611111111111,
+      "nuance_selectivity": 1.0,
+      "nuance_escalation_gain": -0.005491688847541809,
+      "nuance_esc_margin_gain": 0.002938687801361084
+    },
+    "code": {
+      "concept_r1": 0.015625,
+      "concept_r5": 0.078125,
+      "nuance_flip_auc": 0.3394097222222222,
+      "nuance_selectivity": 1.0,
+      "nuance_escalation_gain": -0.007547788321971893,
+      "nuance_esc_margin_gain": 0.0030041486024856567
+    },
+    "math": {
+      "concept_r1": 0.0,
+      "concept_r5": 0.09375,
+      "nuance_flip_auc": 0.3806423611111111,
+      "nuance_selectivity": 1.0,
+      "nuance_escalation_gain": -0.008073501288890839,
+      "nuance_esc_margin_gain": 0.0037120282649993896
+    },
+    "forum": {
+      "concept_r1": 0.015625,
+      "concept_r5": 0.0625,
+      "nuance_flip_auc": 0.3598090277777778,
+      "nuance_selectivity": 1.0,
+      "nuance_escalation_gain": -0.00339721143245697,
+      "nuance_esc_margin_gain": 0.004127465188503265
+    }
+  },
+  "mean_final_r1": 0.00625,
+  "mean_final_r5": 0.065625,
+  "mean_nuance_flip_auc": 0.36467013888888883,
+  "mean_nuance_selectivity": 1.0,
+  "mean_escalation_gain": -0.006089846789836884,
+  "mean_esc_margin_gain": 0.0031045809388160705
+}

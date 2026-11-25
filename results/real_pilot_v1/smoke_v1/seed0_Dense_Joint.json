@@ -1,0 +1,432 @@
+{
+ "arm": "Dense_Joint",
+ "seed": 0,
+ "total_steps": 250,
+ "final": {
+  "wiki": {
+   "bpb": 3.149874719294528,
+   "top1": 0.389495849609375
+  },
+  "story": {
+   "bpb": 2.676779640825925,
+   "top1": 0.45355224609375
+  },
+  "code": {
+   "bpb": 2.492840799070797,
+   "top1": 0.55145263671875
+  },
+  "math": {
+   "bpb": 2.7922220923086685,
+   "top1": 0.44866943359375
+  },
+  "forum": {
+   "bpb": 3.473368324148667,
+   "top1": 0.366790771484375
+  }
+ },
+ "train_seconds": 6.003217899997253,
+ "forward_passes": 250,
+ "backward_passes": 250,
+ "peak_vram_mb": 393.68701171875,
+ "params_final": 5281792,
+ "events": [],
+ "skipped_steps": 0,
+ "meaning_probe_banking77": {
+  "trained": {
+   "intent_77_acc": 0.6008333563804626,
+   "same_vs_overlap_diff_auc": 0.22565,
+   "sim_same_intent": 0.9367405547201634,
+   "sim_diff_high_overlap": 0.9640373602509499
+  },
+  "references": {
+   "chance": 0.012987012987012988
+  }
+ },
+ "context_and_noise_probe": {
+  "wiki": {
+   "suffix_clean_bpb": 3.1273591091612487,
+   "suffix_shuffled_prefix_bpb": 3.2186682016586174,
+   "suffix_noise10_prefix_bpb": 3.143402412849169,
+   "delta_shuffle": 0.09130909249736874,
+   "delta_noise10": 0.016043303687920396
+  },
+  "story": {
+   "suffix_clean_bpb": 2.7106924545790854,
+   "suffix_shuffled_prefix_bpb": 2.841700519337845,
+   "suffix_noise10_prefix_bpb": 2.7373406424446642,
+   "delta_shuffle": 0.1310080647587597,
+   "delta_noise10": 0.026648187865578876
+  },
+  "code": {
+   "suffix_clean_bpb": 2.451098179459242,
+   "suffix_shuffled_prefix_bpb": 2.584203310702467,
+   "suffix_noise10_prefix_bpb": 2.4661517097620123,
+   "delta_shuffle": 0.13310513124322476,
+   "delta_noise10": 0.015053530302770124
+  },
+  "math": {
+   "suffix_clean_bpb": 2.7275541628470625,
+   "suffix_shuffled_prefix_bpb": 2.859845969613149,
+   "suffix_noise10_prefix_bpb": 2.7447934920985952,
+   "delta_shuffle": 0.13229180676608632,
+   "delta_noise10": 0.01723932925153271
+  }
+ },
+ "compositional_probe": {
+  "arith_n": 300,
+  "arith_exact_match": 0.016666666666666666,
+  "arith_exact_small": 0.045454545454545456,
+  "arith_n_small": 66,
+  "arith_copy_first": 0.03,
+  "arith_majority": 0.04666666666666667,
+  "gsm_simple_le2_bpb": 2.8674235701902417,
+  "gsm_multi_ge4_bpb": 2.907947670230395,
+  "var_binding_exact2": 0.0,
+  "var_binding_2byte_bpb": 7.4921631151742485,
+  "var_binding_shuffled_1st_byte_bpb": 6.3170293954344965,
+  "code_shallow_bpb": 2.2942700097580926,
+  "code_deep_bpb": 2.7178881522455973
+ },
+ "generation": {
+  "wiki": [
+   {
+    "prompt": "reamy white or very pale red .\n\nFemale H. gammar",
+    "generated_greedy": " was the the the said the said the said the said the said the the the the said the the said the ",
+    "generated_temp08": "s he cham want some ster doge had thebe crads to the the flom dars and it twimes of whil of Airc",
+    "reference": "us reach sexual maturity when they have grown to a carapace length of 80 \u2013 85 m",
+    "deterministic_repeat_identical": true,
+    "routed_experts_sampled": null,
+    "stats_greedy": {
+     "distinct_4gram_frac": 0.16129032258064516,
+     "max_4gram_repeat": 14,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 9
+    },
+    "stats_temp08": {
+     "distinct_4gram_frac": 0.956989247311828,
+     "max_4gram_repeat": 3,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 19
+    }
+   },
+   {
+    "prompt": "g the southern edge of Manistee National Forest ",
+    "generated_greedy": "was the said the said the said the said the the said the said the the said the said the the the ",
+    "generated_temp08": "petclects in\nAndorther oduted the sorer naw probrend the lays altures wore the hangel by than of",
+    "reference": ". The current version of M @-@ 82 is actually the second in the state ; the first",
+    "deterministic_repeat_identical": true,
+    "routed_experts_sampled": null,
+    "stats_greedy": {
+     "distinct_4gram_frac": 0.15053763440860216,
+     "max_4gram_repeat": 13,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 9
+    },
+    "stats_temp08": {
+     "distinct_4gram_frac": 0.946236559139785,
+     "max_4gram_repeat": 3,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 22
+    }
+   },
+   {
+    "prompt": "tional soloist , Elena Nikolaidi , to perform wi",
+    "generated_greedy": "th the said the said the said the said the said the the the said the the said the said the the s",
+    "generated_temp08": "th has time in whench work lakes reas. They to impling wold mares who the Mich dojer Car Mood da",
+    "reference": "th the orchestra . The Orchestra helped the Meridian Public School District devel",
+    "deterministic_repeat_identical": true,
+    "routed_experts_sampled": null,
+    "stats_greedy": {
+     "distinct_4gram_frac": 0.13978494623655913,
+     "max_4gram_repeat": 13,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 8
+    },
+    "stats_temp08": {
+     "distinct_4gram_frac": 1.0,
+     "max_4gram_repeat": 1,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 24
+    }
+   }
+  ],
+  "story": [
+   {
+    "prompt": "\"Next time, you have to share and take turns,\" M",
+    "generated_greedy": "an was the said the said the said the said the said the said the said the said the said the said",
+    "generated_temp08": "en wore men walk. Ed the day, had of. He murnate in the frest day sail if the legles bog the is ",
+    "reference": "om said. \"And ask me before you use the kitchen.\"\n\nLily and Ben felt sorry. They ",
+    "deterministic_repeat_identical": true,
+    "routed_experts_sampled": null,
+    "stats_greedy": {
+     "distinct_4gram_frac": 0.16129032258064516,
+     "max_4gram_repeat": 10,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 10
+    },
+    "stats_temp08": {
+     "distinct_4gram_frac": 0.9139784946236559,
+     "max_4gram_repeat": 4,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 24
+    }
+   },
+   {
+    "prompt": "d white.\n\n\"Look, there's a landing spot,\" Lila s",
+    "generated_greedy": "aid the said the said the said the said the said the said the said the said the said the said th",
+    "generated_temp08": "petile the coring the coduted the sorer naw probrend the lays of the dided the hangel by than of",
+    "reference": "aid. She pointed to a patch of dirt. \"Let's go and give the crystal to the moon p",
+    "deterministic_repeat_identical": true,
+    "routed_experts_sampled": null,
+    "stats_greedy": {
+     "distinct_4gram_frac": 0.0967741935483871,
+     "max_4gram_repeat": 11,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 8
+    },
+    "stats_temp08": {
+     "distinct_4gram_frac": 0.8387096774193549,
+     "max_4gram_repeat": 6,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 20
+    }
+   },
+   {
+    "prompt": "loved to explore and play outside. One day, she ",
+    "generated_greedy": "said the the total the said the the said the said the said the said the said the said the the th",
+    "generated_temp08": "soges\n             coms[==17=20>>15\n\nJases?\n\nThe cas prind the sains heynge come jeand and Got t",
+    "reference": "found a colorful butterfly in her backyard. She followed it until it flew into a ",
+    "deterministic_repeat_identical": true,
+    "routed_experts_sampled": null,
+    "stats_greedy": {
+     "distinct_4gram_frac": 0.1935483870967742,
+     "max_4gram_repeat": 12,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 10
+    },
+    "stats_temp08": {
+     "distinct_4gram_frac": 0.8817204301075269,
+     "max_4gram_repeat": 10,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 30
+    }
+   }
+  ],
+  "code": [
+   {
+    "prompt": "put:\n[1, 5, 7, 10]\n\n### Response:\n\n### Output:\nd",
+    "generated_greedy": "ef calculate and sum and the calculate the calculate the calculate the said the said the said th",
+    "generated_temp08": "ef function_values = c[+ day}\n\n### Oubstion parter prods alses prace_tookit(s):\n    return for c",
+    "reference": "ef compute_average(numbers):\n    total = 0\n    for num in numbers:\n        total ",
+    "deterministic_repeat_identical": true,
+    "routed_experts_sampled": null,
+    "stats_greedy": {
+     "distinct_4gram_frac": 0.3655913978494624,
+     "max_4gram_repeat": 6,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 14
+    },
+    "stats_temp08": {
+     "distinct_4gram_frac": 0.989247311827957,
+     "max_4gram_repeat": 2,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 30
+    }
+   },
+   {
+    "prompt": "es of all numbers provided in the array.\n\n### In",
+    "generated_greedy": "struction:\nCreate and the calculate the said the said the said the said the said the said the sa",
+    "generated_temp08": "put:\ndef the\nfor 4 = <<<50=170>>12\n10\n          rend the priles toted walk the hangel, he ing of",
+    "reference": "put:\n[2, 3, 4]\n\n### Response:\n\n### Output:\ndef sum_squares(arr):\n    total = 0\n  ",
+    "deterministic_repeat_identical": true,
+    "routed_experts_sampled": null,
+    "stats_greedy": {
+     "distinct_4gram_frac": 0.43010752688172044,
+     "max_4gram_repeat": 8,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 17
+    },
+    "stats_temp08": {
+     "distinct_4gram_frac": 0.9032258064516129,
+     "max_4gram_repeat": 7,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 30
+    }
+   },
+   {
+    "prompt": "\n\n### Input:\nvalues = [2,4,6,8,10]\n\n### Response",
+    "generated_greedy": ":\n    find the calculate the calculate the calculate of the calculate the said the said the from",
+    "generated_temp08": ":\n\n### Input:\ndef campy[,217=20>>1,2\n # Instrick = <<2 = <<1\n[200-3200\ny's from foe an and Got p",
+    "reference": ":\n\n### Output:\n# Funciton to compute the average value in an array\ndef computeAve",
+    "deterministic_repeat_identical": true,
+    "routed_experts_sampled": null,
+    "stats_greedy": {
+     "distinct_4gram_frac": 0.41935483870967744,
+     "max_4gram_repeat": 7,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 18
+    },
+    "stats_temp08": {
+     "distinct_4gram_frac": 0.967741935483871,
+     "max_4gram_repeat": 2,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 34
+    }
+   }
+  ],
+  "math": [
+   {
+    "prompt": "n food and travel expenses, she spends 1200*2 = ",
+    "generated_greedy": "<<20=10>>100 many was the said the said the said the the the the the said the said the said the ",
+    "generated_temp08": "<<6*9=22>>14 and 180 the day, had of.\nSon to was he he loges whars a tookitys angoter 10 other c",
+    "reference": "$<<1200*2=2400>>2400 on food and travel costs.\nWhen her friend moved in and share",
+    "deterministic_repeat_identical": true,
+    "routed_experts_sampled": null,
+    "stats_greedy": {
+     "distinct_4gram_frac": 0.34408602150537637,
+     "max_4gram_repeat": 11,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 18
+    },
+    "stats_temp08": {
+     "distinct_4gram_frac": 0.989247311827957,
+     "max_4gram_repeat": 2,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 33
+    }
+   },
+   {
+    "prompt": "e are 4 people traveling so 8 total water bottle",
+    "generated_greedy": " the said the said the said the said the said the said the said the said the said the the the th",
+    "generated_temp08": " the calles of rering to he half.\n\nAnswer: 200 you days whan halt in 840 15 candengell. The gaid",
+    "reference": "s for each person x 4 people = <<8*4=32>>32 total water bottles.\n#### 32\n\nQuestio",
+    "deterministic_repeat_identical": true,
+    "routed_experts_sampled": null,
+    "stats_greedy": {
+     "distinct_4gram_frac": 0.11827956989247312,
+     "max_4gram_repeat": 12,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 8
+    },
+    "stats_temp08": {
+     "distinct_4gram_frac": 0.989247311827957,
+     "max_4gram_repeat": 2,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 29
+    }
+   },
+   {
+    "prompt": "* (110/100) = $<<100*110/100=110>>110 in the ban",
+    "generated_greedy": "k of the said the said and the said and the said the said the said the said the said the said th",
+    "generated_temp08": "d gars ( 10 = 75 by (x,[7217=20>>15\n#### Instructifies ind many fens he narmes if er Careds 2 = ",
+    "reference": "k account.\nAt the end of the second year, there will be $110 * (110/100) = $<<110",
+    "deterministic_repeat_identical": true,
+    "routed_experts_sampled": null,
+    "stats_greedy": {
+     "distinct_4gram_frac": 0.1935483870967742,
+     "max_4gram_repeat": 9,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 12
+    },
+    "stats_temp08": {
+     "distinct_4gram_frac": 0.989247311827957,
+     "max_4gram_repeat": 2,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 32
+    }
+   }
+  ],
+  "forum": [
+   {
+    "prompt": "eed to do more than make statements to the\neffec",
+    "generated_greedy": "t of the said the total the the the the the the the the the the the said the the the the the the",
+    "generated_temp08": "e(number: \"I and mak the day, had to.ber murnate in the frest darces tookitys and the to the is ",
+    "reference": "t that the propaganda is false. If someone wants to discuss\nthe issue more seriou",
+    "deterministic_repeat_identical": true,
+    "routed_experts_sampled": null,
+    "stats_greedy": {
+     "distinct_4gram_frac": 0.23655913978494625,
+     "max_4gram_repeat": 19,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 11
+    },
+    "stats_temp08": {
+     "distinct_4gram_frac": 0.9139784946236559,
+     "max_4gram_repeat": 4,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 24
+    }
+   },
+   {
+    "prompt": "MAX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>",
+    "generated_greedy": "'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>",
+    "generated_temp08": "'AX>'AX>'AX>'AX>'4T8*CD<<<<AX>'TP':14&$<Z'AX>'AX>'AXLJIZH&AX>'AX>'AX>840415\ufffdQKKE\\`ZKU^\\APJ>'AX7%",
+    "reference": "'AX>'AX>'AX>'\nMAX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'AX>'\nMAX>'",
+    "deterministic_repeat_identical": true,
+    "routed_experts_sampled": null,
+    "stats_greedy": {
+     "distinct_4gram_frac": 0.043010752688172046,
+     "max_4gram_repeat": 24,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 4
+    },
+    "stats_temp08": {
+     "distinct_4gram_frac": 0.6989247311827957,
+     "max_4gram_repeat": 9,
+     "printable_frac": 0.9895833333333334,
+     "utf8_valid": false,
+     "unique_bytes": 33
+    }
+   },
+   {
+    "prompt": "ave never been to court before and you think you",
+    "generated_greedy": " the said the said the said the said the said the said the said the the said the the said the sa",
+    "generated_temp08": " twas an halling by manes clakes reas. They to impling wold mares who the Mich dojer Car pooded ",
+    "reference": " have a case,\n\t go for it. It is a very interesting process, and it is there for\n",
+    "deterministic_repeat_identical": true,
+    "routed_experts_sampled": null,
+    "stats_greedy": {
+     "distinct_4gram_frac": 0.11827956989247312,
+     "max_4gram_repeat": 12,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 8
+    },
+    "stats_temp08": {
+     "distinct_4gram_frac": 0.978494623655914,
+     "max_4gram_repeat": 2,
+     "printable_frac": 1.0,
+     "utf8_valid": true,
+     "unique_bytes": 25
+    }
+   }
+  ]
+ }
+}

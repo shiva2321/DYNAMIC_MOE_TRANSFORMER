@@ -1,0 +1,298 @@
+{
+  "arm": "Cog_v7_Mixed_I9",
+  "teacher_informed": true,
+  "seed": 100,
+  "train_seconds": 188.27818280000065,
+  "peak_vram_mb": 885.13232421875,
+  "num_experts": 6,
+  "backward_passes": 1000,
+  "skipped_steps": 0,
+  "banking77": {
+    "intent_77_acc": 0.1041666641831398,
+    "same_vs_overlap_diff_auc": 0.530575
+  },
+  "b77_muon_drift": 0.0416666641831398,
+  "heldout_families": {
+    "auc": 0.5844,
+    "selectivity": 1.2747252722250004,
+    "clean_trig": 0.04312499985098839,
+    "flip_trig": 0.054999999701976776,
+    "esc_gain": 0.07477465271949768,
+    "esc_margin_gain": 0.04787708818912506
+  },
+  "mixed_switch": {
+    "mid_seq_switch_rate": 0.390625,
+    "k_dist": {
+      "k0": 0.03271484375,
+      "k1": 0.23193359375,
+      "k2": 0.7353515625
+    }
+  },
+  "per_domain_final": {
+    "wiki": {
+      "concept_r1": 0.03125,
+      "concept_r5": 0.046875,
+      "nuance_flip_auc": 0.9075520833333334,
+      "nuance_selectivity": 2.2480031948881787,
+      "nuance_clean_trig": 0.0625,
+      "nuance_flip_trig": 0.140625,
+      "nuance_escalation_gain": 0.1394202709197998,
+      "nuance_esc_margin_gain": 0.16126152500510216
+    },
+    "story": {
+      "concept_r1": 0.0,
+      "concept_r5": 0.0625,
+      "nuance_flip_auc": 0.9778645833333334,
+      "nuance_selectivity": 2.8245677287062185,
+      "nuance_clean_trig": 0.0455729179084301,
+      "nuance_flip_trig": 0.12890625,
+      "nuance_escalation_gain": 0.1474595069885254,
+      "nuance_esc_margin_gain": 0.15150195360183716
+    },
+    "code": {
+      "concept_r1": 0.015625,
+      "concept_r5": 0.078125,
+      "nuance_flip_auc": 0.9800347222222222,
+      "nuance_selectivity": 1.8381362812689217,
+      "nuance_clean_trig": 0.0729166716337204,
+      "nuance_flip_trig": 0.1341145932674408,
+      "nuance_escalation_gain": 0.09430217742919922,
+      "nuance_esc_margin_gain": 0.1086992621421814
+    },
+    "math": {
+      "concept_r1": 0.015625,
+      "concept_r5": 0.046875,
+      "nuance_flip_auc": 0.921875,
+      "nuance_selectivity": 1.8715104011084833,
+      "nuance_clean_trig": 0.0716145858168602,
+      "nuance_flip_trig": 0.1341145932674408,
+      "nuance_escalation_gain": 0.08996069431304932,
+      "nuance_esc_margin_gain": 0.10290739685297012
+    },
+    "forum": {
+      "concept_r1": 0.03125,
+      "concept_r5": 0.09375,
+      "nuance_flip_auc": 0.8841145833333334,
+      "nuance_selectivity": 1.8855093079603011,
+      "nuance_clean_trig": 0.0690104216337204,
+      "nuance_flip_trig": 0.1302083432674408,
+      "nuance_escalation_gain": 0.15160739421844482,
+      "nuance_esc_margin_gain": 0.13126185536384583
+    }
+  },
+  "mean_final_r1": 0.01875,
+  "mean_final_r5": 0.065625,
+  "mean_nuance_flip_auc": 0.9342881944444444,
+  "mean_nuance_selectivity": 2.1335453827864206,
+  "mean_escalation_gain": 0.1245500087738037,
+  "mean_esc_margin_gain": 0.13112639859318734,
+  "forgetting_r5": null,
+  "forgetting_nuance_auc": null,
+  "gpm_mean_cap_ratio": 0.23795825258397935,
+  "gpm_at_cap_count": 0,
+  "quarantine_bytes": 0,
+  "nuance_buf_bytes": 50176,
+  "detached_renderer_diag_bpb": 6.991858360543002,
+  "events": [
+    {
+      "step": 961,
+      "domain": "code",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 962,
+      "domain": "code",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 963,
+      "domain": "wiki",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 964,
+      "domain": "code",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 965,
+      "domain": "math",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 966,
+      "domain": "story",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 967,
+      "domain": "story",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 968,
+      "domain": "wiki",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 969,
+      "domain": "math",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 970,
+      "domain": "code",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 971,
+      "domain": "code",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 972,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 973,
+      "domain": "wiki",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 974,
+      "domain": "code",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 975,
+      "domain": "story",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 976,
+      "domain": "code",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 977,
+      "domain": "wiki",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 978,
+      "domain": "code",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 979,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 980,
+      "domain": "code",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 981,
+      "domain": "math",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 982,
+      "domain": "code",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 983,
+      "domain": "story",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 984,
+      "domain": "math",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 985,
+      "domain": "math",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 986,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 987,
+      "domain": "story",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 988,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 989,
+      "domain": "story",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 990,
+      "domain": "math",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 991,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 992,
+      "domain": "story",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 993,
+      "domain": "wiki",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 994,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 995,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 996,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 997,
+      "domain": "code",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 998,
+      "domain": "code",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 999,
+      "domain": "story",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 1000,
+      "domain": "code",
+      "event": "local_nuance_detected"
+    }
+  ]
+}

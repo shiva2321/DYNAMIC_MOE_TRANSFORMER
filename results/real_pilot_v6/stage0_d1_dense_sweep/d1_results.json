@@ -1,0 +1,240 @@
+{
+  "Dense_AdamW_lr_0.001": {
+    "seen_acc": 0.07291666666666667,
+    "heldout_unseen_acc": 0.0625,
+    "paraphrase_acc": 0.06770833333333333,
+    "iit_causal_acc": 0.03125,
+    "iit_heldout_acc": 0.09375,
+    "iit_random_slice_null": 0.015625,
+    "episodic_honest": {
+      "shots_4": {
+        "lookup_acc": 0.046875,
+        "shuffled_null_acc": 0.046875,
+        "novel_induction_acc": 0.0625
+      },
+      "shots_8": {
+        "lookup_acc": 0.078125,
+        "shuffled_null_acc": 0.078125,
+        "novel_induction_acc": 0.015625
+      },
+      "shots_16": {
+        "lookup_acc": 0.09375,
+        "shuffled_null_acc": 0.09375,
+        "novel_induction_acc": 0.0
+      }
+    },
+    "burst_immunity_acc": 0.09375,
+    "abstain_auroc": 0.8779296875,
+    "near_ood_abstain_auroc": 0.4150390625,
+    "basis_saturation": {},
+    "grokking_curve": [
+      0.044270833333333336,
+      0.046875,
+      0.0625,
+      0.07291666666666667,
+      0.057291666666666664,
+      0.044270833333333336,
+      0.041666666666666664,
+      0.052083333333333336,
+      0.06510416666666667,
+      0.078125,
+      0.044270833333333336,
+      0.08333333333333333,
+      0.0390625
+    ]
+  },
+  "Dense_AdamW_lr_0.003": {
+    "seen_acc": 0.08072916666666667,
+    "heldout_unseen_acc": 0.078125,
+    "paraphrase_acc": 0.06770833333333333,
+    "iit_causal_acc": 0.078125,
+    "iit_heldout_acc": 0.078125,
+    "iit_random_slice_null": 0.078125,
+    "episodic_honest": {
+      "shots_4": {
+        "lookup_acc": 0.09375,
+        "shuffled_null_acc": 0.09375,
+        "novel_induction_acc": 0.109375
+      },
+      "shots_8": {
+        "lookup_acc": 0.09375,
+        "shuffled_null_acc": 0.09375,
+        "novel_induction_acc": 0.125
+      },
+      "shots_16": {
+        "lookup_acc": 0.109375,
+        "shuffled_null_acc": 0.109375,
+        "novel_induction_acc": 0.0625
+      }
+    },
+    "burst_immunity_acc": 0.046875,
+    "abstain_auroc": 0.56298828125,
+    "near_ood_abstain_auroc": 0.38330078125,
+    "basis_saturation": {},
+    "grokking_curve": [
+      0.041666666666666664,
+      0.06770833333333333,
+      0.0625,
+      0.0390625,
+      0.044270833333333336,
+      0.0703125,
+      0.041666666666666664,
+      0.046875,
+      0.0703125,
+      0.0546875,
+      0.06770833333333333,
+      0.059895833333333336,
+      0.044270833333333336
+    ]
+  },
+  "Dense_AdamW_lr_0.008": {
+    "seen_acc": 0.09375,
+    "heldout_unseen_acc": 0.109375,
+    "paraphrase_acc": 0.125,
+    "iit_causal_acc": 0.078125,
+    "iit_heldout_acc": 0.09375,
+    "iit_random_slice_null": 0.078125,
+    "episodic_honest": {
+      "shots_4": {
+        "lookup_acc": 0.09375,
+        "shuffled_null_acc": 0.09375,
+        "novel_induction_acc": 0.15625
+      },
+      "shots_8": {
+        "lookup_acc": 0.078125,
+        "shuffled_null_acc": 0.078125,
+        "novel_induction_acc": 0.03125
+      },
+      "shots_16": {
+        "lookup_acc": 0.0625,
+        "shuffled_null_acc": 0.0625,
+        "novel_induction_acc": 0.0625
+      }
+    },
+    "burst_immunity_acc": 0.078125,
+    "abstain_auroc": 0.990234375,
+    "near_ood_abstain_auroc": 0.328369140625,
+    "basis_saturation": {},
+    "grokking_curve": [
+      0.057291666666666664,
+      0.09375,
+      0.08072916666666667,
+      0.059895833333333336,
+      0.0703125,
+      0.06770833333333333,
+      0.044270833333333336,
+      0.06770833333333333,
+      0.06510416666666667,
+      0.07291666666666667,
+      0.0546875,
+      0.046875,
+      0.08333333333333333
+    ]
+  },
+  "Dense_v8_Matched_MuonBONG": {
+    "seen_acc": 0.9296875,
+    "heldout_unseen_acc": 0.23958333333333334,
+    "paraphrase_acc": 0.21614583333333334,
+    "iit_causal_acc": 0.96875,
+    "iit_heldout_acc": 0.25,
+    "iit_random_slice_null": 0.21875,
+    "episodic_honest": {
+      "shots_4": {
+        "lookup_acc": 0.25,
+        "shuffled_null_acc": 0.03125,
+        "novel_induction_acc": 0.0625
+      },
+      "shots_8": {
+        "lookup_acc": 0.15625,
+        "shuffled_null_acc": 0.0625,
+        "novel_induction_acc": 0.0
+      },
+      "shots_16": {
+        "lookup_acc": 0.09375,
+        "shuffled_null_acc": 0.109375,
+        "novel_induction_acc": 0.015625
+      }
+    },
+    "burst_immunity_acc": 0.9140625,
+    "abstain_auroc": 1.0,
+    "near_ood_abstain_auroc": 1.0,
+    "basis_saturation": {
+      "rel_pool_proj": 0.0,
+      "wm_ret_proj": 0.0,
+      "i7_struct_head": 0.0,
+      "expr_proj": 0.0,
+      "expr_head": 0.0,
+      "ctx_head": 0.0,
+      "fsp_head": 0.0,
+      "abstain_head": 0.0
+    },
+    "grokking_curve": [
+      0.078125,
+      0.057291666666666664,
+      0.08072916666666667,
+      0.0390625,
+      0.046875,
+      0.044270833333333336,
+      0.12760416666666666,
+      0.3255208333333333,
+      0.34375,
+      0.3723958333333333,
+      0.3307291666666667,
+      0.3072916666666667,
+      0.22916666666666666
+    ]
+  },
+  "Cog_v8_FrozenRandomRouter": {
+    "seen_acc": 0.9348958333333334,
+    "heldout_unseen_acc": 0.052083333333333336,
+    "paraphrase_acc": 0.041666666666666664,
+    "iit_causal_acc": 1.0,
+    "iit_heldout_acc": 0.015625,
+    "iit_random_slice_null": 0.359375,
+    "episodic_honest": {
+      "shots_4": {
+        "lookup_acc": 0.234375,
+        "shuffled_null_acc": 0.046875,
+        "novel_induction_acc": 0.078125
+      },
+      "shots_8": {
+        "lookup_acc": 0.15625,
+        "shuffled_null_acc": 0.09375,
+        "novel_induction_acc": 0.03125
+      },
+      "shots_16": {
+        "lookup_acc": 0.09375,
+        "shuffled_null_acc": 0.046875,
+        "novel_induction_acc": 0.046875
+      }
+    },
+    "burst_immunity_acc": 0.9921875,
+    "abstain_auroc": 1.0,
+    "near_ood_abstain_auroc": 1.0,
+    "basis_saturation": {
+      "rel_pool_proj": 0.0,
+      "wm_ret_proj": 0.0,
+      "i7_struct_head": 0.0,
+      "expr_proj": 0.0,
+      "expr_head": 0.0,
+      "ctx_head": 0.0,
+      "fsp_head": 0.0,
+      "abstain_head": 0.0
+    },
+    "grokking_curve": [
+      0.07291666666666667,
+      0.07291666666666667,
+      0.057291666666666664,
+      0.046875,
+      0.06510416666666667,
+      0.07291666666666667,
+      0.059895833333333336,
+      0.06770833333333333,
+      0.044270833333333336,
+      0.015625,
+      0.0234375,
+      0.033854166666666664,
+      0.018229166666666668
+    ]
+  }
+}

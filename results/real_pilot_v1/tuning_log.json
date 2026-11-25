@@ -1,0 +1,419 @@
+{
+  "experiment": "real_pilot_v1",
+  "generated_utc": "2026-11-19T19:22:45.557261+00:00",
+  "note": "All tuning/calibration runs strictly used disjoint dev validation splits; test_windows was never accessed.",
+  "trials": [
+    {
+      "dev_run": "smoke_v1",
+      "seed": 0,
+      "eval_split": "dev",
+      "steps_per_stream": 50,
+      "overrides": {
+        "gpm_energy": 0.97,
+        "spgc_lr": 0.002
+      },
+      "arms": {
+        "Cog_Full": {
+          "train_seconds": 41.41477659999509,
+          "mean_final_val_bpb": 3.049615334785713,
+          "final_val_bpb": {
+            "wiki": 3.5801882964434153,
+            "story": 2.3798450157748907,
+            "code": 2.5274513616523575,
+            "math": 2.998262897478466,
+            "forum": 3.7623291025794354
+          },
+          "peak_val_bpb": {
+            "wiki": 3.2855994717544865,
+            "story": 2.376093257241981,
+            "code": 2.4752148131318203,
+            "math": 2.9972282498508758,
+            "forum": 3.7623291025794354
+          },
+          "experts_final": 4,
+          "gpm_mean_cap_ratio": 0.941286267227668,
+          "gpm_at_cap_count": 82,
+          "nmi_domain_vs_expert": 0.46387490411167576,
+          "banking77_acc": 0.47333332896232605,
+          "banking77_auc": 0.395375
+        },
+        "Cog_Mixed": {
+          "train_seconds": 23.98433600000135,
+          "mean_final_val_bpb": 2.575746721349192,
+          "final_val_bpb": {
+            "wiki": 2.8483785124033334,
+            "story": 2.292706351083918,
+            "code": 2.034542677925803,
+            "math": 2.475665536664069,
+            "forum": 3.2274405286688377
+          },
+          "peak_val_bpb": {
+            "wiki": 2.8483785124033334,
+            "story": 2.292706351083918,
+            "code": 2.034542677925803,
+            "math": 2.475665536664069,
+            "forum": 3.2274405286688377
+          },
+          "experts_final": 1,
+          "gpm_mean_cap_ratio": null,
+          "gpm_at_cap_count": null,
+          "nmi_domain_vs_expert": 0.0,
+          "banking77_acc": 0.6016666889190674,
+          "banking77_auc": 0.2169
+        },
+        "Cog_NoGPM": {
+          "train_seconds": 33.829563999999664,
+          "mean_final_val_bpb": 3.342144177080004,
+          "final_val_bpb": {
+            "wiki": 3.4717851378561493,
+            "story": 2.8683562751015335,
+            "code": 3.5566484290805445,
+            "math": 3.2789478707497164,
+            "forum": 3.5349831726120784
+          },
+          "peak_val_bpb": {
+            "wiki": 3.2858202974781943,
+            "story": 2.377879168084203,
+            "code": 2.3485417225650846,
+            "math": 2.757003227091006,
+            "forum": 3.5349831726120784
+          },
+          "experts_final": 4,
+          "gpm_mean_cap_ratio": null,
+          "gpm_at_cap_count": null,
+          "nmi_domain_vs_expert": 0.47519981429430797,
+          "banking77_acc": 0.5350000262260437,
+          "banking77_auc": 0.342175
+        },
+        "Cog_SingleExpert": {
+          "train_seconds": 26.086934300001303,
+          "mean_final_val_bpb": 3.218086856641567,
+          "final_val_bpb": {
+            "wiki": 3.2568843024618523,
+            "story": 2.8444781608600787,
+            "code": 3.4490951227625173,
+            "math": 3.2881510063626873,
+            "forum": 3.251825690760699
+          },
+          "peak_val_bpb": {
+            "wiki": 3.2568843024618523,
+            "story": 2.3796370457543348,
+            "code": 2.2007504523422776,
+            "math": 2.52427260631646,
+            "forum": 3.251825690760699
+          },
+          "experts_final": 1,
+          "gpm_mean_cap_ratio": null,
+          "gpm_at_cap_count": null,
+          "nmi_domain_vs_expert": null,
+          "banking77_acc": 0.6075000166893005,
+          "banking77_auc": 0.27075
+        },
+        "Cog_SPGC": {
+          "train_seconds": 46.01275220000389,
+          "mean_final_val_bpb": 3.720244793128921,
+          "final_val_bpb": {
+            "wiki": 3.891969710791146,
+            "story": 3.570542133521822,
+            "code": 3.8250246040295437,
+            "math": 3.2591585150455367,
+            "forum": 4.0545290022565545
+          },
+          "peak_val_bpb": {
+            "wiki": 3.2611755275748555,
+            "story": 2.439449344054053,
+            "code": 2.559894727854733,
+            "math": 3.169426137001239,
+            "forum": 4.0545290022565545
+          },
+          "experts_final": 4,
+          "gpm_mean_cap_ratio": 0.9107757641288423,
+          "gpm_at_cap_count": 66,
+          "nmi_domain_vs_expert": 0.473085948497114,
+          "banking77_acc": 0.41333332657814026,
+          "banking77_auc": 0.34065
+        },
+        "Dense_Joint": {
+          "train_seconds": 6.003217899997253,
+          "mean_final_val_bpb": 2.917017115129717,
+          "final_val_bpb": {
+            "wiki": 3.149874719294528,
+            "story": 2.676779640825925,
+            "code": 2.492840799070797,
+            "math": 2.7922220923086685,
+            "forum": 3.473368324148667
+          },
+          "peak_val_bpb": {
+            "wiki": 3.149874719294528,
+            "story": 2.676779640825925,
+            "code": 2.492840799070797,
+            "math": 2.7922220923086685,
+            "forum": 3.473368324148667
+          },
+          "experts_final": null,
+          "gpm_mean_cap_ratio": null,
+          "gpm_at_cap_count": null,
+          "nmi_domain_vs_expert": null,
+          "banking77_acc": 0.6008333563804626,
+          "banking77_auc": 0.22565
+        },
+        "Dense_Large": {
+          "train_seconds": 11.66970329999458,
+          "mean_final_val_bpb": 3.626083380273483,
+          "final_val_bpb": {
+            "wiki": 3.562274755512196,
+            "story": 3.2925027693687943,
+            "code": 4.025181796721999,
+            "math": 3.656923171640081,
+            "forum": 3.5935344081243454
+          },
+          "peak_val_bpb": {
+            "wiki": 3.562274755512196,
+            "story": 2.9974676497008765,
+            "code": 3.048993049960096,
+            "math": 3.0906072620327425,
+            "forum": 3.5935344081243454
+          },
+          "experts_final": null,
+          "gpm_mean_cap_ratio": null,
+          "gpm_at_cap_count": null,
+          "nmi_domain_vs_expert": null,
+          "banking77_acc": 0.5866666436195374,
+          "banking77_auc": 0.290825
+        },
+        "Dense_NoReplay": {
+          "train_seconds": 8.503718400002981,
+          "mean_final_val_bpb": 3.5797394045263986,
+          "final_val_bpb": {
+            "wiki": 3.5548313463828536,
+            "story": 3.2562672287105565,
+            "code": 3.919474208213032,
+            "math": 3.601580014505684,
+            "forum": 3.566544224819865
+          },
+          "peak_val_bpb": {
+            "wiki": 3.5548313463828536,
+            "story": 2.97802475304686,
+            "code": 2.872852073577738,
+            "math": 2.997734996731643,
+            "forum": 3.566544224819865
+          },
+          "experts_final": null,
+          "gpm_mean_cap_ratio": null,
+          "gpm_at_cap_count": null,
+          "nmi_domain_vs_expert": null,
+          "banking77_acc": 0.6158333420753479,
+          "banking77_auc": 0.265575
+        }
+      }
+    },
+    {
+      "dev_run": "dev_steps200_g97",
+      "seed": 100,
+      "eval_split": "dev",
+      "steps_per_stream": 200,
+      "overrides": {
+        "gpm_energy": 0.97,
+        "spgc_lr": 0.0005
+      },
+      "arms": {
+        "Cog_Full": {
+          "train_seconds": 125.448973999999,
+          "mean_final_val_bpb": 2.4789701231064702,
+          "final_val_bpb": {
+            "wiki": 2.974464368208698,
+            "story": 1.9814014576660648,
+            "code": 1.9346598838275826,
+            "math": 2.494040979999843,
+            "forum": 3.0102839258301612
+          },
+          "peak_val_bpb": {
+            "wiki": 2.601012211036025,
+            "story": 1.7383732896797826,
+            "code": 1.5794485935663836,
+            "math": 2.175005595412695,
+            "forum": 3.0102839258301612
+          },
+          "experts_final": 4,
+          "gpm_mean_cap_ratio": 0.9812542603953645,
+          "gpm_at_cap_count": 94,
+          "nmi_domain_vs_expert": 0.487051877531817,
+          "banking77_acc": 0.5183333158493042,
+          "banking77_auc": 0.36855
+        },
+        "Cog_SPGC": {
+          "train_seconds": 130.9160852999994,
+          "mean_final_val_bpb": 3.2149359366977115,
+          "final_val_bpb": {
+            "wiki": 3.340756457669325,
+            "story": 2.5579605249718043,
+            "code": 2.805184338712873,
+            "math": 3.635865185911812,
+            "forum": 3.7349131762227445
+          },
+          "peak_val_bpb": {
+            "wiki": 2.985835517118445,
+            "story": 2.5126651532444275,
+            "code": 2.708298127327623,
+            "math": 3.1786910143858695,
+            "forum": 3.7349131762227445
+          },
+          "experts_final": 3,
+          "gpm_mean_cap_ratio": 0.8627509552426699,
+          "gpm_at_cap_count": 58,
+          "nmi_domain_vs_expert": 0.39368147998853914,
+          "banking77_acc": 0.4958333373069763,
+          "banking77_auc": 0.310075
+        },
+        "Dense_NoReplay": {
+          "train_seconds": 25.9948940999966,
+          "mean_final_val_bpb": 2.9269371776210744,
+          "final_val_bpb": {
+            "wiki": 3.0048254974614146,
+            "story": 2.5969099948563197,
+            "code": 3.167051400558125,
+            "math": 3.0044442979157773,
+            "forum": 2.8614546973137345
+          },
+          "peak_val_bpb": {
+            "wiki": 2.947076389032772,
+            "story": 1.9702611524694382,
+            "code": 1.643846637268708,
+            "math": 2.134447528798997,
+            "forum": 2.8614546973137345
+          },
+          "experts_final": null,
+          "gpm_mean_cap_ratio": null,
+          "gpm_at_cap_count": null,
+          "nmi_domain_vs_expert": null,
+          "banking77_acc": 0.6200000047683716,
+          "banking77_auc": 0.22985
+        },
+        "Dense_Replay": {
+          "train_seconds": 26.082822700001998,
+          "mean_final_val_bpb": 2.4769352329805936,
+          "final_val_bpb": {
+            "wiki": 2.7734991150311634,
+            "story": 2.2500534497913853,
+            "code": 2.0625444631826584,
+            "math": 2.4076483330526504,
+            "forum": 2.8909308038451114
+          },
+          "peak_val_bpb": {
+            "wiki": 2.7734991150311634,
+            "story": 2.033432959871111,
+            "code": 1.7062315810470203,
+            "math": 2.129919526571418,
+            "forum": 2.8909308038451114
+          },
+          "experts_final": null,
+          "gpm_mean_cap_ratio": null,
+          "gpm_at_cap_count": null,
+          "nmi_domain_vs_expert": null,
+          "banking77_acc": 0.6183333396911621,
+          "banking77_auc": 0.1731
+        }
+      }
+    },
+    {
+      "dev_run": "dev_steps200_g90",
+      "seed": 100,
+      "eval_split": "dev",
+      "steps_per_stream": 200,
+      "overrides": {
+        "gpm_energy": 0.9
+      },
+      "arms": {
+        "Cog_Full": {
+          "train_seconds": 126.23129840000183,
+          "mean_final_val_bpb": 2.5124901694963073,
+          "final_val_bpb": {
+            "wiki": 2.990598834608067,
+            "story": 2.0438633636806385,
+            "code": 1.7661062660533393,
+            "math": 2.7435790352865843,
+            "forum": 3.018303347852906
+          },
+          "peak_val_bpb": {
+            "wiki": 2.609154170697509,
+            "story": 1.752603048220846,
+            "code": 1.520195109894981,
+            "math": 2.1169148004524505,
+            "forum": 3.018303347852906
+          },
+          "experts_final": 4,
+          "gpm_mean_cap_ratio": 0.903490455408515,
+          "gpm_at_cap_count": 62,
+          "nmi_domain_vs_expert": 0.4957664517305927,
+          "banking77_acc": 0.54666668176651,
+          "banking77_auc": 0.29575
+        }
+      }
+    },
+    {
+      "dev_run": "dev_steps400_g97",
+      "seed": 100,
+      "eval_split": "dev",
+      "steps_per_stream": 400,
+      "overrides": {
+        "gpm_energy": 0.97
+      },
+      "arms": {
+        "Cog_Full": {
+          "train_seconds": 254.4860109000001,
+          "mean_final_val_bpb": 2.6031970356369234,
+          "final_val_bpb": {
+            "wiki": 2.607621418317357,
+            "story": 1.9212613174381392,
+            "code": 2.553657046094927,
+            "math": 3.0753735547672676,
+            "forum": 2.8580718415669257
+          },
+          "peak_val_bpb": {
+            "wiki": 2.3866983954247853,
+            "story": 1.634262904049378,
+            "code": 1.4391000230444841,
+            "math": 2.032989201636222,
+            "forum": 2.8580718415669257
+          },
+          "experts_final": 5,
+          "gpm_mean_cap_ratio": 0.9918768461713248,
+          "gpm_at_cap_count": 95,
+          "nmi_domain_vs_expert": 0.4886027996477994,
+          "banking77_acc": 0.5066666603088379,
+          "banking77_auc": 0.3594
+        },
+        "Dense_Replay": {
+          "train_seconds": 49.98735560000205,
+          "mean_final_val_bpb": 2.3141810335769626,
+          "final_val_bpb": {
+            "wiki": 2.690342708620919,
+            "story": 2.021394217306377,
+            "code": 1.9108123395023184,
+            "math": 2.236421201975082,
+            "forum": 2.7119347004801173
+          },
+          "peak_val_bpb": {
+            "wiki": 2.642972366210882,
+            "story": 1.758892582749887,
+            "code": 1.4498505510607615,
+            "math": 1.9079555356888362,
+            "forum": 2.7119347004801173
+          },
+          "experts_final": null,
+          "gpm_mean_cap_ratio": null,
+          "gpm_at_cap_count": null,
+          "nmi_domain_vs_expert": null,
+          "banking77_acc": 0.6175000071525574,
+          "banking77_auc": 0.147425
+        }
+      }
+    }
+  ],
+  "selection_rationale": {
+    "gpm_energy": "Selected 0.97 (v5 default) over 0.90 because 0.97 achieved lower mean validation BPB on dev_steps200 (2.479 vs 2.513), half the math forgetting (+0.319 vs +0.627), and higher banking77 semantic discrimination AUC (0.369 vs 0.296).",
+    "steps_per_stream": "Selected 400 steps/stream over 200 because at 400 steps Cog_Full separates wiki vs story into 5 specialists (1->5 experts instead of 4), keeps wiki/story ahead of Dense_Replay, Dense_Replay reaches multi-line Python & 7% gsm8k arithmetic, and dev_steps400 cleanly exposes real GPM rank-cap saturation (~255s Cog_Full train time, ~30 min/seed across all 9 arms).",
+    "spgc_lr": "Adjusted from 0.002 (smoke_v1 overshoot) to 0.0005 with acquire->consolidate transition at step=400 to match transformer scale without instability.",
+    "defaults_preserved_uncalibrated": "Preserved v5 COG_CFG defaults (theta_halt=0.10, skip_threshold=0.08, pc_thresh=0.65, auto_write_ltm=False, extend_loss_margin=0.25) intentionally rather than tuning them on dev so real failure modes and calibration gaps are measured honestly in test_v1."
+  }
+}

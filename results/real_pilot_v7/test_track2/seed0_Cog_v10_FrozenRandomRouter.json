@@ -1,0 +1,295 @@
+{
+  "meta": {
+    "exp_id": "real_pilot_v7",
+    "mode": "test",
+    "eval_split": "test",
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "steps_per_dom": 250,
+    "tracks": "track2",
+    "git_commit": "6cae249d033a24e9e2ce7175ab7803dbf1505695",
+    "git_dirty": true,
+    "utc": "2026-11-24T09:02:10.353815+00:00",
+    "python_version": "3.12.10",
+    "torch_version": "2.6.0+cu124",
+    "device": "cuda",
+    "gpu": "NVIDIA GeForce RTX 3060",
+    "command": "experiments/run_v10_cognitive_pilot.py --mode test --tracks track2 --seeds 0 1 2 --arms Cog_v10 Cog_v10_NoSIP Cog_v10_FrozenRandomRouter Cog_v9 Dense_v8_Matched --out_name test_track2",
+    "cfg": {
+      "d_model": 192,
+      "num_heads": 6,
+      "d_ff": 256,
+      "d_ff_shared": 256,
+      "d_ff_spec": 256,
+      "initial_layers": 6,
+      "router_layer": 3,
+      "initial_experts": 1,
+      "chunk_size": 4,
+      "use_v7_core": true,
+      "use_v8_core": true,
+      "use_multiscale_chunker": true,
+      "router_mode": "causal_context",
+      "d_route": 96,
+      "router_num_keys": 8,
+      "enable_memory": true,
+      "auto_write_ltm": true,
+      "num_ltm_slots": 32,
+      "enable_three_level_attn": true,
+      "local_window": 8,
+      "chunk_stride": 4,
+      "enable_world_model": true,
+      "wm_rollout_horizon": 3,
+      "causal_attn": true,
+      "use_rope": true,
+      "enable_layer_stm": true,
+      "hybrid_mode": true,
+      "layer_stm_every": 4,
+      "enable_full_stack_adapters": true,
+      "adapter_rank": 16,
+      "enable_thinking": true,
+      "max_thinking_steps": 2,
+      "skip_threshold": 0.1,
+      "theta_halt": 0.2,
+      "halt_use_energy_only": true,
+      "use_marginal_drop_halt": true,
+      "skip_final_lookahead": true,
+      "abstain_threshold": 0.6,
+      "auto_lifecycle": true,
+      "max_experts": 6,
+      "min_mature_steps": 160,
+      "z_nuance_thresh": 2.15,
+      "d_sem_nuance_thresh": 2.0,
+      "nuance_cluster_min": 16,
+      "nuance_cluster_cos": 0.68,
+      "detach_decoder": true,
+      "lora_decoder_rank": 16,
+      "use_iit": true,
+      "use_rel_pool": false,
+      "i7_steps": 150,
+      "enable_nuance_escalation": false,
+      "exempt_readout_heads": true,
+      "use_constant_fisher": true,
+      "target_mean_k": null,
+      "compute_penalty_weight": 0.0,
+      "enable_surface_whitening": true,
+      "enable_cris_loss": true,
+      "enable_dual_ridge_ep": true,
+      "dual_ridge_op_rank": 48,
+      "decouple_nuance_lifecycle": true,
+      "specialist_init_scale": 0.25,
+      "shared_dropout_prob": 0.18,
+      "cris_weight": 0.75,
+      "exp_orth_weight": 0.15
+    }
+  },
+  "arm": "Cog_v10_FrozenRandomRouter",
+  "seed": 0,
+  "teacher_informed": false,
+  "train_seconds": 290.86353397369385,
+  "total_spawns": 5,
+  "banking77": {
+    "intent_77_acc": 0.5224025845527649,
+    "same_vs_overlap_diff_auc": 0.681675
+  },
+  "mean_nuance_flip_auc": 0.7662326388888889,
+  "heldout_families": {
+    "auc": 0.4959,
+    "selectivity": 1.0,
+    "clean_trig": 0.0,
+    "flip_trig": 0.0,
+    "esc_gain": 0.04801207780838013,
+    "esc_margin_gain": -0.04724298417568207
+  },
+  "mean_final_r5": 0.171875,
+  "per_domain_final": {
+    "wiki": {
+      "concept_r1": 0.03125,
+      "concept_r5": 0.171875,
+      "nuance_flip_auc": 0.8003472222222222,
+      "nuance_selectivity": 1.0,
+      "nuance_escalation_gain": 0.14499759674072266,
+      "nuance_esc_margin_gain": 0.10149183869361877
+    },
+    "story": {
+      "concept_r1": 0.03125,
+      "concept_r5": 0.109375,
+      "nuance_flip_auc": 0.87890625,
+      "nuance_selectivity": 1.0,
+      "nuance_escalation_gain": 0.20318472385406494,
+      "nuance_esc_margin_gain": 0.22193282842636108
+    },
+    "code": {
+      "concept_r1": 0.09375,
+      "concept_r5": 0.171875,
+      "nuance_flip_auc": 0.7243923611111112,
+      "nuance_selectivity": 1.0,
+      "nuance_escalation_gain": 0.14524602890014648,
+      "nuance_esc_margin_gain": 0.14655855298042297
+    },
+    "math": {
+      "concept_r1": 0.0625,
+      "concept_r5": 0.171875,
+      "nuance_flip_auc": 0.6805555555555556,
+      "nuance_selectivity": 1.0,
+      "nuance_escalation_gain": 0.1379724144935608,
+      "nuance_esc_margin_gain": 0.13274693489074707
+    },
+    "forum": {
+      "concept_r1": 0.109375,
+      "concept_r5": 0.234375,
+      "nuance_flip_auc": 0.7469618055555556,
+      "nuance_selectivity": 1.0,
+      "nuance_escalation_gain": 0.18743300437927246,
+      "nuance_esc_margin_gain": 0.17058783769607544
+    }
+  },
+  "routing_diag": {
+    "mid_seq_switch_rate": 0.640625,
+    "k_dist": {
+      "k0": 0.00146484375,
+      "k1": 0.9619140625,
+      "k2": 0.03662109375
+    },
+    "mean_k": 1.03515625,
+    "num_experts": 6,
+    "func_routing_nmi": 0.151858426085307,
+    "func_routing_ami": {
+      "ami": 0.12420294768917164,
+      "null_mean": 0.002325380657119853,
+      "null_max": 0.035221410674384515,
+      "ami_vs_null": 0.1218775670320518
+    },
+    "length_matched_role_ami": {
+      "ami": 0.0940495276189126,
+      "null_mean": 0.001729174052878249,
+      "null_max": 0.027512545158416793,
+      "ami_vs_null": 0.09232035356603435
+    },
+    "routing_length_ami": 0.20162896712520162,
+    "routing_perturb_agree": 0.34523809523809523,
+    "lesion_base_test_acc": 0.8571428656578064,
+    "lesion_acc_drops": {
+      "expert_0": 0.011904776096343994,
+      "expert_1": 0.0,
+      "expert_2": 0.0,
+      "expert_3": 0.0,
+      "expert_4": 0.0,
+      "expert_5": 0.0
+    },
+    "lesion_rel_deltas": {
+      "expert_0": 0.007782109547406435,
+      "expert_1": 0.012552725151181221,
+      "expert_2": 0.04036873206496239,
+      "expert_3": 0.01797788217663765,
+      "expert_4": 0.007659020833671093,
+      "expert_5": 0.011997682973742485
+    },
+    "lesion_role_deltas": {
+      "expert_0": [
+        0.019027601927518845,
+        0.019387012347579002,
+        0.002895220648497343,
+        0.0022601261734962463,
+        0.0022498962935060263,
+        0.0008727983804419637
+      ],
+      "expert_1": [
+        0.034208450466394424,
+        0.02551465854048729,
+        0.003508245339617133,
+        0.0036006623413413763,
+        0.002636431949213147,
+        0.0058479043655097485
+      ],
+      "expert_2": [
+        0.0715712159872055,
+        0.10762431472539902,
+        0.02542126178741455,
+        0.017968328669667244,
+        0.019086550921201706,
+        0.0005407141288742423
+      ],
+      "expert_3": [
+        0.021346857771277428,
+        0.057401418685913086,
+        0.007247392553836107,
+        0.008281459100544453,
+        0.007275647949427366,
+        0.006314505357295275
+      ],
+      "expert_4": [
+        0.010369290597736835,
+        0.018426382914185524,
+        0.005456829909235239,
+        0.0056549315340816975,
+        0.004820223432034254,
+        0.0012264682445675135
+      ],
+      "expert_5": [
+        0.031815480440855026,
+        0.03224027529358864,
+        0.00311560882255435,
+        0.0018317928770557046,
+        0.0027363577391952276,
+        0.0002465837460476905
+      ]
+    },
+    "lesion_role_acc_drops": {
+      "expert_0": [
+        0.0,
+        0.0714285671710968,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "expert_1": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "expert_2": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "expert_3": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "expert_4": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "expert_5": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "lesion_max_acc_drop": 0.011904776096343994,
+    "lesion_max_role_drop": 0.0714285671710968,
+    "lesion_mean_rel_delta": 0.016389692124600213,
+    "lesion_role_specificity": 2.6947302531984914
+  }
+}

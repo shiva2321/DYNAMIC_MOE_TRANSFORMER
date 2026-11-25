@@ -1,0 +1,105 @@
+{
+  "meta": {
+    "exp_id": "real_pilot_v8",
+    "mode": "test",
+    "eval_split": "test",
+    "seeds": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "steps_per_dom": 250,
+    "tracks": "track1",
+    "git_commit": "164f787dfb73febda23f3fb3ac4ae29cf578e5dd",
+    "git_dirty": true,
+    "utc": "2026-11-24T16:57:43.733522+00:00",
+    "python_version": "3.12.10",
+    "torch_version": "2.6.0+cu124",
+    "device": "cuda",
+    "gpu": "NVIDIA GeForce RTX 3060",
+    "command": "experiments/run_v11_consolidated_eval.py --mode test --tracks track1 --seeds 0 1 2 3 4 --arms CognitiveDMoE CognitiveDMoE_NoDualOp Cog_v10 Dense_Matched --out_name test_track1",
+    "cfg": {
+      "t1_lr_muon": 0.009,
+      "t1_lr_adam": 0.0035,
+      "t1_wd_trunk": 0.14,
+      "t1_grokfast_alpha": 0.98,
+      "t1_grokfast_lamb": 2.0,
+      "t1_ep_start_frac": 0.5,
+      "t1_cooldown": false,
+      "dual_ridge_op_rank": 48,
+      "dual_ridge_op_rank_low": 12,
+      "dual_ridge_v_mlp": true,
+      "cris_weight": 0.25,
+      "exp_orth_weight": 0.15,
+      "pert_every": 4,
+      "shared_dropout_prob": 0.15,
+      "specialist_init_scale": 0.25,
+      "z_nuance_thresh": 1.6,
+      "d_sem_nuance_thresh": 1.6,
+      "shift_invariant_pool": false,
+      "frozen_exempt_balance": true,
+      "residual_ortho_router": true,
+      "i7_steps": 150
+    }
+  },
+  "arm": "Dense_Matched",
+  "seed": 1,
+  "track1": {
+    "train_seconds": 443.4164741039276,
+    "seen_acc": 0.9401041666666666,
+    "heldout_unseen_acc": 0.7317708333333334,
+    "paraphrase_acc": 0.6744791666666666,
+    "iit_causal_acc": 0.921875,
+    "iit_heldout_acc": 0.6875,
+    "iit_random_slice_null": 0.125,
+    "episodic_v10": {
+      "shots_4": {
+        "lookup_acc": 0.8125,
+        "shuffled_null_acc": 0.0625,
+        "impossible_perm_null_acc": 0.046875,
+        "comp_equiv_induction_acc": 0.109375,
+        "unseen_meaning_shift_acc": 0.046875,
+        "shift_shuffled_null_acc": 0.0625,
+        "shift_no_mem_blind_acc": 0.09375
+      },
+      "shots_8": {
+        "lookup_acc": 0.796875,
+        "shuffled_null_acc": 0.109375,
+        "impossible_perm_null_acc": 0.09375,
+        "comp_equiv_induction_acc": 0.09375,
+        "unseen_meaning_shift_acc": 0.03125,
+        "shift_shuffled_null_acc": 0.0625,
+        "shift_no_mem_blind_acc": 0.0625
+      },
+      "shots_16": {
+        "lookup_acc": 0.765625,
+        "shuffled_null_acc": 0.078125,
+        "impossible_perm_null_acc": 0.0625,
+        "comp_equiv_induction_acc": 0.09375,
+        "unseen_meaning_shift_acc": 0.03125,
+        "shift_shuffled_null_acc": 0.0625,
+        "shift_no_mem_blind_acc": 0.03125
+      }
+    },
+    "burst_immunity_acc": 0.7421875,
+    "abstain_auroc": 1.0,
+    "near_ood_abstain_auroc": 0.980224609375,
+    "grokking_curve": [
+      0.0859375,
+      0.08333333333333333,
+      0.059895833333333336,
+      0.09375,
+      0.20052083333333334,
+      0.4401041666666667,
+      0.5364583333333334,
+      0.5572916666666666,
+      0.6145833333333334,
+      0.6614583333333334,
+      0.6302083333333334,
+      0.703125,
+      0.6848958333333334
+    ]
+  }
+}

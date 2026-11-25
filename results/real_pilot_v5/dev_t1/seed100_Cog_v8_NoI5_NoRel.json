@@ -1,0 +1,249 @@
+{
+  "arm": "Cog_v8_NoI5_NoRel",
+  "teacher_informed": false,
+  "seed": 100,
+  "train_seconds": 180.76856769999722,
+  "peak_vram_mb": 822.98046875,
+  "num_experts": 6,
+  "backward_passes": 1000,
+  "skipped_steps": 0,
+  "banking77": {
+    "intent_77_acc": 0.18666666746139526,
+    "same_vs_overlap_diff_auc": 0.39795
+  },
+  "b77_muon_drift": 0.013333335518836975,
+  "heldout_families": {
+    "auc": 0.3392,
+    "selectivity": 1.0399148102578106,
+    "clean_trig": 0.046875,
+    "flip_trig": 0.04874999821186066,
+    "esc_gain": 0.08344456553459167,
+    "esc_margin_gain": -0.10972318053245544
+  },
+  "routing_diag": {
+    "mid_seq_switch_rate": 0.53125,
+    "k_dist": {
+      "k0": 0.0048828125,
+      "k1": 0.44775390625,
+      "k2": 0.54736328125
+    },
+    "func_routing_nmi": 0.44358257274909096
+  },
+  "per_domain_final": {
+    "wiki": {
+      "concept_r1": 0.0,
+      "concept_r5": 0.015625,
+      "nuance_flip_auc": 0.7921006944444444,
+      "nuance_selectivity": 1.1664299662701936,
+      "nuance_escalation_gain": 0.13468658924102783,
+      "nuance_esc_margin_gain": 0.05620679259300232
+    },
+    "story": {
+      "concept_r1": 0.0,
+      "concept_r5": 0.03125,
+      "nuance_flip_auc": 0.8046875,
+      "nuance_selectivity": 1.0,
+      "nuance_escalation_gain": 0.10910022258758545,
+      "nuance_esc_margin_gain": 0.005278229713439941
+    },
+    "code": {
+      "concept_r1": 0.015625,
+      "concept_r5": 0.03125,
+      "nuance_flip_auc": 0.6970486111111112,
+      "nuance_selectivity": 1.1558759229417976,
+      "nuance_escalation_gain": 0.1484745740890503,
+      "nuance_esc_margin_gain": 0.07013621926307678
+    },
+    "math": {
+      "concept_r1": 0.0,
+      "concept_r5": 0.015625,
+      "nuance_flip_auc": 0.6827256944444444,
+      "nuance_selectivity": 1.1736231196934586,
+      "nuance_escalation_gain": 0.10917407274246216,
+      "nuance_esc_margin_gain": 0.03558129072189331
+    },
+    "forum": {
+      "concept_r1": 0.0,
+      "concept_r5": 0.109375,
+      "nuance_flip_auc": 0.6940104166666666,
+      "nuance_selectivity": 1.23494032515741,
+      "nuance_escalation_gain": 0.1675431728363037,
+      "nuance_esc_margin_gain": 0.05451565980911255
+    }
+  },
+  "mean_final_r1": 0.003125,
+  "mean_final_r5": 0.040625,
+  "mean_nuance_flip_auc": 0.7341145833333333,
+  "mean_nuance_selectivity": 1.146173866812572,
+  "mean_escalation_gain": 0.13379572629928588,
+  "mean_esc_margin_gain": 0.04434363842010498,
+  "forgetting_r5": 0.02734375,
+  "forgetting_nuance_auc": -0.04242621527777779,
+  "gpm_at_cap_count": 0,
+  "quarantine_bytes": 4536,
+  "detached_renderer_diag_bpb": 5.1850589183054465,
+  "events": [
+    {
+      "step": 971,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 972,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 973,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 974,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 975,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 976,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 977,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 978,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 979,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 980,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 981,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 982,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 983,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 984,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 985,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 986,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 987,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 988,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 989,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 990,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 991,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 992,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 993,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 994,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 995,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 996,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 997,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 998,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 999,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    },
+    {
+      "step": 1000,
+      "domain": "forum",
+      "event": "local_nuance_detected"
+    }
+  ],
+  "track1": {
+    "seen_acc": 0.9505208333333334,
+    "heldout_unseen_acc": 0.2682291666666667,
+    "paraphrase_acc": 0.2942708333333333,
+    "iit_causal_acc": 0.125,
+    "episodic_fewshot_acc": 0.0625,
+    "burst_immunity_acc": 1.0,
+    "abstain_auroc": 1.0,
+    "rollout_planning_delta": 0.109375,
+    "muon_grok_drift": 0.07552083333333331,
+    "quarantine_bytes": 2640
+  }
+}

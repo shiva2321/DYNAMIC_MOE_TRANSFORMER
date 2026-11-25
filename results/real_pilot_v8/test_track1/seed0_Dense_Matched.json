@@ -1,0 +1,105 @@
+{
+  "meta": {
+    "exp_id": "real_pilot_v8",
+    "mode": "test",
+    "eval_split": "test",
+    "seeds": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "steps_per_dom": 250,
+    "tracks": "track1",
+    "git_commit": "164f787dfb73febda23f3fb3ac4ae29cf578e5dd",
+    "git_dirty": true,
+    "utc": "2026-11-24T16:57:43.733522+00:00",
+    "python_version": "3.12.10",
+    "torch_version": "2.6.0+cu124",
+    "device": "cuda",
+    "gpu": "NVIDIA GeForce RTX 3060",
+    "command": "experiments/run_v11_consolidated_eval.py --mode test --tracks track1 --seeds 0 1 2 3 4 --arms CognitiveDMoE CognitiveDMoE_NoDualOp Cog_v10 Dense_Matched --out_name test_track1",
+    "cfg": {
+      "t1_lr_muon": 0.009,
+      "t1_lr_adam": 0.0035,
+      "t1_wd_trunk": 0.14,
+      "t1_grokfast_alpha": 0.98,
+      "t1_grokfast_lamb": 2.0,
+      "t1_ep_start_frac": 0.5,
+      "t1_cooldown": false,
+      "dual_ridge_op_rank": 48,
+      "dual_ridge_op_rank_low": 12,
+      "dual_ridge_v_mlp": true,
+      "cris_weight": 0.25,
+      "exp_orth_weight": 0.15,
+      "pert_every": 4,
+      "shared_dropout_prob": 0.15,
+      "specialist_init_scale": 0.25,
+      "z_nuance_thresh": 1.6,
+      "d_sem_nuance_thresh": 1.6,
+      "shift_invariant_pool": false,
+      "frozen_exempt_balance": true,
+      "residual_ortho_router": true,
+      "i7_steps": 150
+    }
+  },
+  "arm": "Dense_Matched",
+  "seed": 0,
+  "track1": {
+    "train_seconds": 515.289511680603,
+    "seen_acc": 0.9453125,
+    "heldout_unseen_acc": 0.8307291666666666,
+    "paraphrase_acc": 0.828125,
+    "iit_causal_acc": 0.96875,
+    "iit_heldout_acc": 0.890625,
+    "iit_random_slice_null": 0.171875,
+    "episodic_v10": {
+      "shots_4": {
+        "lookup_acc": 0.046875,
+        "shuffled_null_acc": 0.046875,
+        "impossible_perm_null_acc": 0.03125,
+        "comp_equiv_induction_acc": 0.1875,
+        "unseen_meaning_shift_acc": 0.0625,
+        "shift_shuffled_null_acc": 0.0625,
+        "shift_no_mem_blind_acc": 0.046875
+      },
+      "shots_8": {
+        "lookup_acc": 0.03125,
+        "shuffled_null_acc": 0.03125,
+        "impossible_perm_null_acc": 0.09375,
+        "comp_equiv_induction_acc": 0.140625,
+        "unseen_meaning_shift_acc": 0.078125,
+        "shift_shuffled_null_acc": 0.078125,
+        "shift_no_mem_blind_acc": 0.09375
+      },
+      "shots_16": {
+        "lookup_acc": 0.078125,
+        "shuffled_null_acc": 0.078125,
+        "impossible_perm_null_acc": 0.046875,
+        "comp_equiv_induction_acc": 0.0625,
+        "unseen_meaning_shift_acc": 0.046875,
+        "shift_shuffled_null_acc": 0.046875,
+        "shift_no_mem_blind_acc": 0.09375
+      }
+    },
+    "burst_immunity_acc": 0.3984375,
+    "abstain_auroc": 1.0,
+    "near_ood_abstain_auroc": 1.0,
+    "grokking_curve": [
+      0.057291666666666664,
+      0.06770833333333333,
+      0.0625,
+      0.08333333333333333,
+      0.036458333333333336,
+      0.06510416666666667,
+      0.044270833333333336,
+      0.0546875,
+      0.044270833333333336,
+      0.09635416666666667,
+      0.140625,
+      0.5885416666666666,
+      0.7890625
+    ]
+  }
+}

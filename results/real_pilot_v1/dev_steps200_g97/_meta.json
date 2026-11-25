@@ -1,0 +1,161 @@
+{
+ "meta": {
+  "exp_id": "real_pilot_v1",
+  "mode": "dev",
+  "eval_split": "dev",
+  "seeds": [
+   100
+  ],
+  "steps_per_stream": 200,
+  "domains": [
+   "wiki",
+   "story",
+   "code",
+   "math",
+   "forum"
+  ],
+  "proto": {
+   "batch": 16,
+   "lr": 0.001,
+   "wd": 0.01,
+   "clip": 1.0,
+   "warmup": 30,
+   "wm_weight": 0.15,
+   "spgc_lr": 0.0005,
+   "gpm_energy": 0.97
+  },
+  "cog_cfg": {
+   "d_model": 192,
+   "num_heads": 6,
+   "d_ff": 512,
+   "initial_layers": 6,
+   "initial_experts": 1,
+   "chunk_size": 1,
+   "enable_memory": true,
+   "num_ltm_slots": 32,
+   "enable_three_level_attn": true,
+   "local_window": 16,
+   "chunk_stride": 8,
+   "enable_layer_stm": true,
+   "signed_beta": true,
+   "use_rope": true,
+   "causal_attn": true,
+   "auto_write_ltm": false,
+   "enable_thinking": true,
+   "max_thinking_steps": 2,
+   "skip_threshold": 0.08,
+   "theta_halt": 0.1,
+   "enable_world_model": true,
+   "wm_rollout_horizon": 1,
+   "enable_pc_rectification": true,
+   "pc_thresh": 0.65,
+   "hybrid_mode": true,
+   "router_mode": "causal_proto",
+   "num_router_protos": 64,
+   "router_sim_threshold": 0.55,
+   "auto_lifecycle": true,
+   "max_experts": 6,
+   "min_mature_steps": 40,
+   "novel_confirm_steps": 3,
+   "novel_surprise_threshold": 0.45,
+   "dormant_age": 1000000000,
+   "prune_age": 1000000000,
+   "route_during_train": true,
+   "use_trunk_routing": true,
+   "router_context_blend": 0.2,
+   "extend_loss_margin": 0.25,
+   "align_wm_target_with_encoder": true
+  },
+  "dense": {
+   "d_model": 192,
+   "layers": 6,
+   "heads": 6,
+   "d_ff": 1856,
+   "params": 5281792,
+   "d_ff_large": 4000,
+   "params_large": 10234432
+  },
+  "cog_params_init": 5293397,
+  "cog_params_grown_5exp": 10226517,
+  "replay": {
+   "windows": 512,
+   "frac": 0.25
+  },
+  "arms": [
+   "Cog_Full",
+   "Dense_NoReplay",
+   "Dense_Replay",
+   "Cog_SPGC"
+  ],
+  "git": {
+   "commit": "9eec10248a73b545fbc26c573c6ae6b5b221f98b",
+   "dirty": true
+  },
+  "utc": "2026-11-19T18:50:38.833352+00:00",
+  "torch": "2.6.0+cu124",
+  "python": "3.12.10",
+  "device": "NVIDIA GeForce RTX 3060",
+  "command": "experiments\\run_real_pilot.py --mode dev --seeds 100 --steps 200 --out_name dev_steps200_g97 --arms Cog_Full Dense_NoReplay Dense_Replay Cog_SPGC --spgc_lr 0.0005 --gpm_energy 0.97",
+  "data_meta": {
+   "eval_split": "dev",
+   "wiki_train_bytes": 3000000,
+   "wiki_eval_bytes": 1124136,
+   "story_train_bytes": 3000000,
+   "story_eval_bytes": 3000000,
+   "code_split_stats": {
+    "rows": 2169,
+    "train_rows": 1753,
+    "val_rows_after_dedup": 200
+   },
+   "code_train_bytes": 705234,
+   "code_eval_bytes": 72527,
+   "math_train_bytes": 3000000,
+   "math_eval_bytes": 797949,
+   "forum_train_bytes": 3000000,
+   "forum_eval_bytes": 2644016,
+   "leakage_audit": {
+    "wiki": 0.0,
+    "story": 0.00390625,
+    "code": 0.0,
+    "math": 0.0,
+    "forum": 0.02421875
+   }
+  },
+  "note_nondeterminism": "CUDA kernels not forced deterministic; PYTHONHASHSEED not pinned"
+ },
+ "null_and_trivial": {
+  "ngram_baselines_bpb": {
+   "unigram": {
+    "wiki": 4.5818856164020225,
+    "story": 4.448478924393098,
+    "code": 4.84785426276762,
+    "math": 4.946519318547686,
+    "forum": 5.051130746897465
+   },
+   "bigram": {
+    "wiki": 3.5426970662362502,
+    "story": 3.3123246533733823,
+    "code": 3.5684049826326367,
+    "math": 3.5215451355196934,
+    "forum": 3.978462532156472
+   }
+  },
+  "untrained_eval": {
+   "cog_bpb": {
+    "wiki": 8.304333985608777,
+    "story": 8.281890937601784,
+    "code": 8.316594800771437,
+    "math": 8.25444474229854,
+    "forum": 8.346276082605293
+   },
+   "dense_bpb": {
+    "wiki": 8.222137285386008,
+    "story": 8.236265488171737,
+    "code": 8.174741446547982,
+    "math": 8.310430598599211,
+    "forum": 8.227892856779784
+   }
+  },
+  "bag_of_bytes_domain_accuracy_with_true_labels": 0.68515625
+ }
+}
