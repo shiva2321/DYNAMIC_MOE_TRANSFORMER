@@ -1,0 +1,61 @@
+{
+  "arm": "CognitiveDMoE_v12",
+  "seed": 3,
+  "teacher_informed": false,
+  "track1": {
+    "train_seconds": 734.0921823978424,
+    "seen_acc": 0.6041666666666666,
+    "heldout_unseen_acc": 0.22135416666666666,
+    "paraphrase_acc": 0.25,
+    "iit_causal_acc": 0.609375,
+    "iit_heldout_acc": 0.234375,
+    "iit_random_slice_null": 0.125,
+    "episodic_v10": {
+      "shots_4": {
+        "lookup_acc": 0.515625,
+        "shuffled_null_acc": 0.03125,
+        "impossible_perm_null_acc": 0.046875,
+        "comp_equiv_induction_acc": 0.46875,
+        "unseen_meaning_shift_acc": 0.453125,
+        "shift_shuffled_null_acc": 0.0625,
+        "shift_no_mem_blind_acc": 0.046875
+      },
+      "shots_8": {
+        "lookup_acc": 0.46875,
+        "shuffled_null_acc": 0.0625,
+        "impossible_perm_null_acc": 0.03125,
+        "comp_equiv_induction_acc": 0.5,
+        "unseen_meaning_shift_acc": 0.4375,
+        "shift_shuffled_null_acc": 0.046875,
+        "shift_no_mem_blind_acc": 0.0625
+      },
+      "shots_16": {
+        "lookup_acc": 0.4375,
+        "shuffled_null_acc": 0.078125,
+        "impossible_perm_null_acc": 0.046875,
+        "comp_equiv_induction_acc": 0.5,
+        "unseen_meaning_shift_acc": 0.46875,
+        "shift_shuffled_null_acc": 0.046875,
+        "shift_no_mem_blind_acc": 0.140625
+      }
+    },
+    "burst_immunity_acc": 0.6953125,
+    "abstain_auroc": 1.0,
+    "near_ood_abstain_auroc": 1.0,
+    "grokking_curve": [
+      0.052083333333333336,
+      0.015625,
+      0.036458333333333336,
+      0.052083333333333336,
+      0.09635416666666667,
+      0.21875,
+      0.390625,
+      0.46875,
+      0.359375,
+      0.3645833333333333,
+      0.3151041666666667,
+      0.3385416666666667,
+      0.20833333333333334
+    ]
+  }
+}

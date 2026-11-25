@@ -464,6 +464,8 @@ class LongTermSlotMemory(nn.Module):
         op_rank: int = 48,
         op_rank_low: int = 8,
         op_v_low_mlp: bool = False,
+        enable_procrustes_op: bool = False,
+        op_procrustes_planes: int = 8,
     ):
         super().__init__()
         self.d_model = d_model
@@ -474,6 +476,8 @@ class LongTermSlotMemory(nn.Module):
         self.enable_dual_ridge_op = bool(enable_dual_ridge_op)
         self.op_rank = int(op_rank)
         self.op_v_low_mlp = bool(op_v_low_mlp)
+        self.enable_procrustes_op = bool(enable_procrustes_op) and self.enable_dual_ridge_op
+        self.op_procrustes_planes = max(2, int(op_procrustes_planes))
 
         self.q_proj = nn.Linear(d_model, d_model)
         self.k_proj = nn.Linear(d_model, d_model)
@@ -482,10 +486,10 @@ class LongTermSlotMemory(nn.Module):
         self.out_proj = nn.Linear(d_model, d_model, bias=False)
 
         if self.enable_dual_ridge_op:
-            # Dual-Head Closed-Form Ridge Operator:
-            #  - High-rank nonlinear head (`op_rank`): sharp discrete/compositional permutation binding
-            #  - Low-rank linear-key head (`op_rank_low`): continuous group/cyclic shift induction on unseen meanings
-            self.op_rank_low = min(int(op_rank_low), self.op_rank)
+            # Dual-Head Closed-Form Episodic Operator:
+            #  - Head 1 (`op_rank`): High-rank nonlinear kernel Ridge for discrete/compositional permutation binding
+            #  - Head 2: Either Multi-Plane Complex SO(2)^p Orthogonal Procrustes (`enable_procrustes_op=True`)
+            #    for exact few-shot group/cyclic shift induction on unseen meanings, OR legacy low-rank Ridge.
             self.op_lin = nn.Linear(d_model, self.op_rank, bias=True)
             self.op_mlp = nn.Sequential(
                 nn.Linear(d_model, self.op_rank),
@@ -501,19 +505,46 @@ class LongTermSlotMemory(nn.Module):
             self.op_gate = nn.Parameter(torch.tensor(0.85))
             self.op_override_logit = nn.Parameter(torch.tensor(0.5))
 
-            self.op_lin_low = nn.Linear(d_model, self.op_rank_low, bias=False)
-            if self.op_v_low_mlp:
-                h_v = max(32, self.op_rank_low * 3)
+            if self.enable_procrustes_op:
+                p_dim = 2 * self.op_procrustes_planes
+                h_rot = max(64, 4 * self.op_procrustes_planes)
+                self.op_rank_low = p_dim
+                self.op_lin_low = nn.Linear(d_model, p_dim, bias=False)
                 self.op_v_low: nn.Module = nn.Sequential(
-                    nn.Linear(d_model, h_v),
+                    nn.Linear(d_model, h_rot),
                     nn.GELU(),
-                    nn.Linear(h_v, self.op_rank_low, bias=False),
+                    nn.Linear(h_rot, p_dim, bias=False),
                 )
+                self.op_out_low = nn.Sequential(
+                    nn.Linear(p_dim, h_rot),
+                    nn.GELU(),
+                    nn.Linear(h_rot, d_model, bias=False),
+                )
+                self.op_mix_gate: Optional[nn.Module] = nn.Sequential(
+                    nn.Linear(2, 16),
+                    nn.GELU(),
+                    nn.Linear(16, 2),
+                )
+                with torch.no_grad():
+                    self.op_mix_gate[2].bias.fill_(0.5)
+                self.op_log_lambda_low = None
+                self.op_gate_low = nn.Parameter(torch.tensor(1.0))
             else:
-                self.op_v_low = nn.Linear(d_model, self.op_rank_low, bias=False)
-            self.op_out_low = nn.Linear(self.op_rank_low, d_model, bias=False)
-            self.op_log_lambda_low = nn.Parameter(torch.tensor(-3.0))
-            self.op_gate_low = nn.Parameter(torch.tensor(0.85))
+                self.op_rank_low = min(int(op_rank_low), self.op_rank)
+                self.op_lin_low = nn.Linear(d_model, self.op_rank_low, bias=False)
+                if self.op_v_low_mlp:
+                    h_v = max(32, self.op_rank_low * 3)
+                    self.op_v_low = nn.Sequential(
+                        nn.Linear(d_model, h_v),
+                        nn.GELU(),
+                        nn.Linear(h_v, self.op_rank_low, bias=False),
+                    )
+                else:
+                    self.op_v_low = nn.Linear(d_model, self.op_rank_low, bias=False)
+                self.op_out_low = nn.Linear(self.op_rank_low, d_model, bias=False)
+                self.op_mix_gate = None
+                self.op_log_lambda_low = nn.Parameter(torch.tensor(-3.0))
+                self.op_gate_low = nn.Parameter(torch.tensor(0.85))
         else:
             self.op_rank_low = 0
             self.op_lin = None
@@ -526,6 +557,7 @@ class LongTermSlotMemory(nn.Module):
             self.op_lin_low = None
             self.op_v_low = None
             self.op_out_low = None
+            self.op_mix_gate = None
             self.op_log_lambda_low = None
             self.op_gate_low = None
 
@@ -596,25 +628,38 @@ class LongTermSlotMemory(nn.Module):
         feat = self.op_lin(x_in) + self.op_mlp(x_in)
         return F.normalize(feat.float(), p=2, dim=-1, eps=1e-6)
 
+    def _normalize_planes(self, vec: torch.Tensor) -> torch.Tensor:
+        """Normalize `[..., 2*P]` vector into unit 2D complex vectors per plane."""
+        orig_shape = vec.shape
+        p_vec = vec.float().view(*orig_shape[:-1], self.op_procrustes_planes, 2)
+        p_norm = F.normalize(p_vec, p=2, dim=-1, eps=1e-6)
+        return p_norm.reshape(orig_shape)
+
     def encode_op_kv(
         self,
         key_latents: torch.Tensor,
         value_latents: torch.Tensor,
     ) -> Tuple[torch.Tensor, torch.Tensor]:
         """
-        Project support shot deep keys and answer values for Dual-Head Closed-Form Ridge Induction.
-        Packs `[high_rank_key, low_rank_key]` and `[high_rank_val, low_rank_val]` along the last dim
-        so the external `(op_keys, op_vals)` contract stays unchanged.
+        Project support shot deep keys and answer values for Dual-Head Closed-Form Induction.
+        Packs `[high_rank_key, low_rank_or_procrustes_key]` and `[high_rank_val, low_rank_or_procrustes_val]`
+        along the last dim so the external `(op_keys, op_vals)` contract stays unchanged.
         """
         if not self.enable_dual_ridge_op or self.op_v_proj is None or self.op_lin_low is None or self.op_v_low is None:
             raise RuntimeError("Dual ridge operator is disabled on this LongTermSlotMemory.")
         k_hi = self._encode_op_feat(key_latents)
         v_hi = self.op_v_proj(value_latents.to(dtype=self.op_v_proj.weight.dtype)).float()
-        k_lo = F.normalize(self.op_lin_low(key_latents.to(dtype=self.op_lin_low.weight.dtype)).float(), p=2, dim=-1, eps=1e-6)
+        k_lo_raw = self.op_lin_low(key_latents.to(dtype=self.op_lin_low.weight.dtype)).float()
         v_low_dtype = (
             self.op_v_low[0].weight.dtype if isinstance(self.op_v_low, nn.Sequential) else self.op_v_low.weight.dtype
         )
-        v_lo = self.op_v_low(value_latents.to(dtype=v_low_dtype)).float()
+        v_lo_raw = self.op_v_low(value_latents.to(dtype=v_low_dtype)).float()
+        if self.enable_procrustes_op:
+            k_lo = self._normalize_planes(k_lo_raw)
+            v_lo = self._normalize_planes(v_lo_raw)
+        else:
+            k_lo = F.normalize(k_lo_raw, p=2, dim=-1, eps=1e-6)
+            v_lo = v_lo_raw
         return torch.cat([k_hi, k_lo], dim=-1), torch.cat([v_hi, v_lo], dim=-1)
 
     def read_dual_operator(
@@ -625,11 +670,13 @@ class LongTermSlotMemory(nn.Module):
         op_mask: Optional[torch.Tensor] = None,
     ) -> torch.Tensor:
         """
-        Dual-Head Closed-Form In-Context Ridge Operator:
-            W_ep = K^T (K K^T + lambda I)^(-1) V
-            y_q  = (phi(q) K^T) (K K^T + lambda I)^(-1) V
-        Combines a high-rank nonlinear head (discrete/compositional binding) with a low-rank
-        linear head (continuous cyclic/group operator induction on unseen meanings).
+        Dual-Head Closed-Form In-Context Episodic Operator:
+          - Head 1 (High-Rank Kernel Ridge):
+              W_ep = K^T (K K^T + lambda I)^(-1) V  (discrete/compositional permutation binding)
+          - Head 2 (Multi-Plane Complex SO(2)^p Orthogonal Procrustes when `enable_procrustes_op=True`):
+              S_j = mean_m(conj(k_{m,j}) * v_{m,j}), c_j = |S_j|, z_j = S_j / (c_j + eps) in SO(2),
+              v_hat_{q,j} = c_j * (z_j * k_{q,j})  (exact few-shot group rotation on unseen meanings)
+            combined with Head 1 via learned `[s_max_hi, mean_coherence]` Rayleigh arbitration.
         """
         if not self.enable_dual_ridge_op or self.op_out_proj is None or self.op_log_lambda is None or self.op_gate is None:
             return query_latents.new_zeros(query_latents.shape)
@@ -647,7 +694,7 @@ class LongTermSlotMemory(nn.Module):
                 k_f: torch.Tensor,
                 v_f: torch.Tensor,
                 log_lam: torch.Tensor,
-            ) -> torch.Tensor:
+            ) -> Tuple[torch.Tensor, torch.Tensor]:
                 if m_f is not None:
                     k_f = k_f * m_f
                     v_f = v_f * m_f
@@ -655,19 +702,86 @@ class LongTermSlotMemory(nn.Module):
                 lam = F.softplus(log_lam.float()).clamp(1e-3, 10.0)
                 A = torch.linalg.solve(gram + lam * eye_m, v_f)
                 k_q = torch.bmm(q_f, k_f.transpose(1, 2))
+                if op_mask is not None:
+                    k_q_masked = k_q.masked_fill(~op_mask.to(device=dev).unsqueeze(1), -1.0)
+                else:
+                    k_q_masked = k_q
+                s_max = k_q_masked.max(dim=-1, keepdim=True).values
                 pred_v = torch.bmm(k_q, A)
                 v_norm = pred_v.norm(dim=-1, keepdim=True).clamp_min(1e-6)
-                return pred_v * torch.clamp(12.0 / v_norm, max=1.0)
+                return pred_v * torch.clamp(12.0 / v_norm, max=1.0), s_max
 
-            # High-rank head
+            # Head 1: High-rank nonlinear kernel Ridge
             k_hi = op_keys[..., : self.op_rank].float()
             v_hi = op_vals[..., : self.d_model].float()
             q_hi = self._encode_op_feat(query_latents.float())
-            pred_hi = _solve_head(q_hi, k_hi, v_hi, self.op_log_lambda)
-            out = F.linear(pred_hi, self.op_out_proj.weight.float()) * self.op_gate.float()
+            pred_hi, s_max_hi = _solve_head(q_hi, k_hi, v_hi, self.op_log_lambda)
+            out_hi = F.linear(pred_hi, self.op_out_proj.weight.float()) * self.op_gate.float()
 
-            # Low-rank linear group head
+            # Head 2: Multi-Plane Complex SO(2)^p Orthogonal Procrustes OR legacy low-rank Ridge
             if (
+                self.enable_procrustes_op
+                and self.op_lin_low is not None
+                and self.op_out_low is not None
+                and self.op_gate_low is not None
+                and op_keys.size(-1) >= self.op_rank + self.op_rank_low
+                and op_vals.size(-1) >= self.d_model + self.op_rank_low
+            ):
+                P = self.op_procrustes_planes
+                k_lo = op_keys[..., self.op_rank : self.op_rank + self.op_rank_low].float().view(B, M, P, 2)
+                v_lo = op_vals[..., self.d_model : self.d_model + self.op_rank_low].float().view(B, M, P, 2)
+                if m_f is not None:
+                    mw = m_f.unsqueeze(-1)  # [B, M, 1, 1]
+                    k_lo = k_lo * mw
+                    v_lo = v_lo * mw
+                    m_cnt = m_f.sum(dim=1, keepdim=True).clamp_min(1.0)  # [B, 1, 1]
+                else:
+                    m_cnt = k_lo.new_full((B, 1, 1), float(M))
+
+                # Complex cross-correlation S_j = mean_m(conj(k_{m,j}) * v_{m,j})
+                kr, ki = k_lo[..., 0], k_lo[..., 1]  # [B, M, P]
+                vr, vi = v_lo[..., 0], v_lo[..., 1]
+                sr = (kr * vr + ki * vi).sum(dim=1) / m_cnt.squeeze(-1)  # [B, P]
+                si = (kr * vi - ki * vr).sum(dim=1) / m_cnt.squeeze(-1)  # [B, P]
+                coh = torch.sqrt(sr * sr + si * si + 1e-8)  # Rayleigh coherence in [0, 1], [B, P]
+                zr = sr / coh  # unit SO(2) real part [B, P]
+                zi = si / coh  # unit SO(2) imag part [B, P]
+
+                T_q = query_latents.size(1)
+                q_lo_raw = F.linear(query_latents.float(), self.op_lin_low.weight.float())
+                q_lo = self._normalize_planes(q_lo_raw).view(B, T_q, P, 2)
+                qr, qi = q_lo[..., 0], q_lo[..., 1]  # [B, T, P]
+
+                # Apply coherence-weighted 2D rotation per plane
+                coh_u = coh.unsqueeze(1)  # [B, 1, P]
+                zr_u, zi_u = zr.unsqueeze(1), zi.unsqueeze(1)
+                pr = coh_u * (zr_u * qr - zi_u * qi)
+                pi = coh_u * (zi_u * qr + zr_u * qi)
+                pred_rot = torch.stack([pr, pi], dim=-1).reshape(B, T_q, 2 * P)
+
+                # Project rotated harmonic state back to deep latent space in FP32
+                h_r = pred_rot
+                for mod in self.op_out_low:
+                    if isinstance(mod, nn.Linear):
+                        h_r = F.linear(h_r, mod.weight.float(), mod.bias.float() if mod.bias is not None else None)
+                    else:
+                        h_r = mod(h_r)
+                out_rot = h_r * self.op_gate_low.float()
+
+                if self.op_mix_gate is not None:
+                    coh_mean = coh.mean(dim=-1, keepdim=True).unsqueeze(1).expand(B, T_q, 1)
+                    gate_in = torch.cat([s_max_hi, coh_mean], dim=-1)  # [B, T, 2]
+                    g_h = gate_in
+                    for mod in self.op_mix_gate:
+                        if isinstance(mod, nn.Linear):
+                            g_h = F.linear(g_h, mod.weight.float(), mod.bias.float() if mod.bias is not None else None)
+                        else:
+                            g_h = mod(g_h)
+                    gates = torch.sigmoid(g_h)
+                    out = gates[..., :1] * out_hi + gates[..., 1:2] * out_rot
+                else:
+                    out = out_hi + out_rot
+            elif (
                 self.op_lin_low is not None
                 and self.op_out_low is not None
                 and self.op_log_lambda_low is not None
@@ -678,8 +792,10 @@ class LongTermSlotMemory(nn.Module):
                 k_lo = op_keys[..., self.op_rank : self.op_rank + self.op_rank_low].float()
                 v_lo = op_vals[..., self.d_model : self.d_model + self.op_rank_low].float()
                 q_lo = F.normalize(F.linear(query_latents.float(), self.op_lin_low.weight.float()), p=2, dim=-1, eps=1e-6)
-                pred_lo = _solve_head(q_lo, k_lo, v_lo, self.op_log_lambda_low)
-                out = out + F.linear(pred_lo, self.op_out_low.weight.float()) * self.op_gate_low.float()
+                pred_lo, _ = _solve_head(q_lo, k_lo, v_lo, self.op_log_lambda_low)
+                out = out_hi + F.linear(pred_lo, self.op_out_low.weight.float()) * self.op_gate_low.float()
+            else:
+                out = out_hi
 
         return out.to(dtype=query_latents.dtype)
 
@@ -889,6 +1005,8 @@ class DualTimescaleMemory(nn.Module):
         op_rank: int = 48,
         op_rank_low: int = 8,
         op_v_low_mlp: bool = False,
+        enable_procrustes_op: bool = False,
+        op_procrustes_planes: int = 8,
     ):
         super().__init__()
         self.in_norm = nn.LayerNorm(d_model)
@@ -907,6 +1025,8 @@ class DualTimescaleMemory(nn.Module):
             op_rank=op_rank,
             op_rank_low=op_rank_low,
             op_v_low_mlp=op_v_low_mlp,
+            enable_procrustes_op=enable_procrustes_op,
+            op_procrustes_planes=op_procrustes_planes,
         )
         self.stm_gate = nn.Linear(d_model, 1)
         # Contextual LTM gate sees causal short-term state so prefix rules/tasks can suppress

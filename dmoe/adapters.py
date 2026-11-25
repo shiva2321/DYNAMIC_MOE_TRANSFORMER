@@ -61,9 +61,30 @@ class RoutedAdapterBank(nn.Module):
     def dispatch_sparse(
         self,
         x: torch.Tensor,
-        dispatch_plan: Tuple[torch.Tensor, torch.Tensor, List[int]],
+        dispatch_plan: object,
     ) -> torch.Tensor:
-        """Apply per-token weighted sparse adapters using cached `(tok_idx, weights, counts)`."""
+        """Apply per-token weighted sparse adapters using vectorized masked-GEMM (`E <= 8`) or sorted scatter-add."""
+        if isinstance(dispatch_plan, dict) and dispatch_plan.get("mode") == "dense_mask":
+            one_hot_w = dispatch_plan["one_hot_w"]
+            E = len(self.adapters)
+            if E == 0:
+                return torch.zeros_like(x)
+            x_flat = x.reshape(-1, self.d_model)
+            w = one_hot_w[:, :E].to(dtype=x.dtype)
+            if E == 1:
+                return (self.adapters[0](x_flat) * w[:, :1]).view_as(x)
+            x_n = F.layer_norm(x_flat, (self.d_model,), eps=1e-5)
+            norm_w = torch.stack([a.norm.weight for a in self.adapters], dim=0)  # [E, D]
+            norm_b = torch.stack([a.norm.bias for a in self.adapters], dim=0)    # [E, D]
+            down_w = torch.stack([a.down.weight for a in self.adapters], dim=0)  # [E, R, D]
+            down_b = torch.stack([a.down.bias for a in self.adapters], dim=0)    # [E, R]
+            up_w = torch.cat([a.up.weight for a in self.adapters], dim=1)        # [D, E*R]
+            up_b = torch.stack([a.up.bias for a in self.adapters], dim=0)        # [E, D]
+            x_e = x_n.unsqueeze(1) * norm_w.unsqueeze(0) + norm_b.unsqueeze(0)   # [N, E, D]
+            h = self.adapters[0].act(torch.einsum("ned,erd->ner", x_e, down_w) + down_b.unsqueeze(0))
+            h_m = (h * w.unsqueeze(-1)).reshape(x_flat.size(0), E * self.rank)
+            out = F.linear(h_m, up_w) + torch.matmul(w, up_b)
+            return out.to(dtype=x.dtype).view_as(x)
         res = sparse_weighted_expert_dispatch(
             x.reshape(-1, self.d_model),
             self.adapters,

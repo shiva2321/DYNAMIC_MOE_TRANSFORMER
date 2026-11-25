@@ -23,6 +23,7 @@ class MultiScaleByteChunker(nn.Module):
         chunk_size: int = 4,
         kernel_sizes: Tuple[int, ...] = (1, 2, 4, 8),
         shift_invariant_pool: bool = False,
+        enable_hnet_boundary: bool = False,
     ):
         super().__init__()
         if chunk_size <= 0:
@@ -31,6 +32,7 @@ class MultiScaleByteChunker(nn.Module):
         self.chunk_size = chunk_size
         self.kernel_sizes = tuple(kernel_sizes)
         self.shift_invariant_pool = bool(shift_invariant_pool)
+        self.enable_hnet_boundary = bool(enable_hnet_boundary)
 
         # 0..255 for raw UTF-8/binary bytes, 256 for BYTE_MASK_ID, 257 for BYTE_PAD_ID
         self.byte_embed = nn.Embedding(258, d_model, padding_idx=BYTE_PAD_ID)
@@ -63,6 +65,8 @@ class MultiScaleByteChunker(nn.Module):
             self.register_buffer("blur_kernel", bw.view(1, 1, chunk_size))
         self.last_byte_features: Optional[torch.Tensor] = None
         self.last_pos_chunks: Optional[torch.Tensor] = None
+        self.last_causal_byte_summary: Optional[torch.Tensor] = None
+        self.last_boundary_probs: Optional[torch.Tensor] = None
 
     @staticmethod
     def text_to_bytes(
@@ -152,11 +156,32 @@ class MultiScaleByteChunker(nn.Module):
         num_chunks = ms_features.size(1) // self.chunk_size
         clean_slots = ms_features.reshape(bsz, num_chunks, self.chunk_size, self.d_model)
         pool_slots = ms_pool_src.reshape(bsz, num_chunks, self.chunk_size, self.d_model)
+
+        if self.enable_hnet_boundary:
+            # Parameter-free strictly causal H-Net cosine-dissimilarity boundary salience at byte resolution:
+            # position t sees strictly <= t; keeps main trunk chunk_proj/pre_phase_mean 100% crisp while
+            # producing a shift-resilient, length-normalized causal byte summary side-channel for routing.
+            mf_n = F.normalize(ms_features.float(), p=2, dim=-1, eps=1e-6)
+            mf_prev = F.pad(mf_n[:, :-1, :], (0, 0, 1, 0))
+            diss = (1.0 - (mf_n * mf_prev).sum(dim=-1)).clamp(0.0, 2.0)
+            p_bound = torch.sigmoid(4.0 * diss - 1.5)  # [B, L_pad]
+            vm_flat = valid_mask.squeeze(-1).float()
+            w_b = vm_flat * (0.25 + p_bound)
+            self.last_boundary_probs = p_bound.detach()
+            cum_num = torch.cumsum(ms_features.float() * w_b.unsqueeze(-1), dim=1)
+            cum_den = torch.cumsum(w_b, dim=1).clamp_min(1e-5).unsqueeze(-1)
+            byte_running = (cum_num / cum_den).to(dtype=ms_features.dtype)
+            self.last_causal_byte_summary = byte_running[:, self.chunk_size - 1 :: self.chunk_size, :]
+        else:
+            self.last_boundary_probs = None
+            self.last_causal_byte_summary = None
+
         if self.shift_invariant_pool:
             vm_slots = valid_mask.reshape(bsz, num_chunks, self.chunk_size, 1)
             pre_phase_mean = (pool_slots * vm_slots).sum(dim=2) / vm_slots.sum(dim=2).clamp_min(1.0)
         else:
             pre_phase_mean = clean_slots.mean(dim=2)
+
         pos_slots = pos_pool_src.reshape(bsz, num_chunks, self.chunk_size, self.d_model)
         self.last_pos_chunks = 0.5 * pos_slots.mean(dim=2) + 0.5 * pos_slots.max(dim=2).values
         # Apply gated intra-chunk phase-rotation + cyclic roll binding per byte slot

@@ -28,6 +28,26 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 
+def stablemax_cross_entropy(
+    logits: torch.Tensor,
+    targets: torch.Tensor,
+    eps: float = 1e-12,
+) -> torch.Tensor:
+    """
+    StableMax cross-entropy (Prieto et al., 2025, arXiv:2501.04697).
+    Replaces exp(x) with s(x) = x + 1 for x >= 0, 1 / (1 - x) for x < 0 in FP32
+    to prevent Softmax Collapse and Naïve Loss Minimization during modular grokking.
+    """
+    x = logits.float()
+    # Safe double-where: avoid evaluating 1/(1-x) at x==1.0 during autograd backward (0 * inf = NaN)!
+    safe_neg = torch.where(x < 0.0, x, torch.zeros_like(x))
+    s = torch.where(x >= 0.0, x + 1.0, 1.0 / (1.0 - safe_neg))
+    probs = s / s.sum(dim=-1, keepdim=True).clamp_min(eps)
+    tgt = targets.long().unsqueeze(-1)
+    p_y = probs.gather(-1, tgt).squeeze(-1).clamp_min(eps)
+    return -torch.log(p_y).mean()
+
+
 @torch.no_grad()
 def zeropower_via_newtonschulz5(G: torch.Tensor, steps: int = 5) -> torch.Tensor:
     """
@@ -238,6 +258,7 @@ class MuonBONGOptimizer:
         track_fisher: bool = True,
         disable_muon: bool = False,
         disable_bong: bool = False,
+        ortho_grad: bool = False,
     ):
         self.param_groups = [dict(g) for g in param_groups if len(g.get("params", [])) > 0]
         self.muon_momentum = float(muon_momentum)
@@ -257,6 +278,7 @@ class MuonBONGOptimizer:
         self.track_fisher = bool(track_fisher)
         self.disable_muon = bool(disable_muon)
         self.disable_bong = bool(disable_bong)
+        self.ortho_grad = bool(ortho_grad)
         self.step_count = 0
 
         self.exp_avg: Dict[int, torch.Tensor] = {}
@@ -444,6 +466,25 @@ class MuonBONGOptimizer:
                 grads.append(p.grad)
         if not params:
             return
+
+        if self.ortho_grad and (not use_consolidate_lr):
+            # OrthoGrad (Prieto et al., 2025): remove radial NLM gradient component parallel to weights
+            # without host-device syncs so updates rotate features instead of inflating weight norms.
+            ortho_grads: List[torch.Tensor] = []
+            for p, gr in zip(params, grads):
+                if (not p.is_complex()) and p.numel() > 1:
+                    w_f = p.data.float()
+                    g_f = gr.float()
+                    w_norm_sq = (w_f * w_f).sum()
+                    g_norm = g_f.norm()
+                    proj = (w_f * g_f).sum() / w_norm_sq.clamp_min(1e-12)
+                    g_perp = torch.where(w_norm_sq > 1e-12, g_f - proj * w_f, g_f)
+                    # Suppress float32 cancellation dust so AdamW 1/sqrt(v) cannot amplify pure-radial zeros
+                    g_perp = torch.where(g_perp.norm() > 1e-5 * g_norm.clamp_min(1e-12), g_perp, torch.zeros_like(g_perp))
+                    ortho_grads.append(g_perp.to(dtype=gr.dtype))
+                else:
+                    ortho_grads.append(gr)
+            grads = ortho_grads
 
         if use_gf:
             g_emas = []

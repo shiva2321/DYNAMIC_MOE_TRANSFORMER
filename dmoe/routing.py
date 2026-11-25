@@ -624,6 +624,25 @@ def _causal_ema_weights(seq_len: int, decay: float, device_str: str, dtype_str: 
     return weights.to(dtype=dtype)
 
 
+def build_vectorized_dispatch_plan(
+    top_ids: torch.Tensor,
+    top_w: torch.Tensor,
+    num_experts: int,
+) -> Dict[str, Any]:
+    """
+    Zero-sync GPU-only sparse dispatch plan for small `E <= 8`:
+    builds `[N, E]` exact top-k weight matrix `one_hot_w` via `scatter_add_` with
+    ZERO `.nonzero()`, `.argsort()`, `.bincount()`, or `.tolist()` host-device syncs.
+    Non-selected experts receive exact weight 0.0 (mathematically equivalent forward & backward).
+    """
+    E = max(1, int(num_experts))
+    flat_ids = top_ids.reshape(-1, top_ids.size(-1)).clamp(0, E - 1)
+    flat_w = top_w.reshape(-1, top_w.size(-1))
+    one_hot_w = flat_w.new_zeros((flat_ids.size(0), E))
+    one_hot_w.scatter_add_(1, flat_ids, flat_w)
+    return {"mode": "dense_mask", "one_hot_w": one_hot_w, "num_experts": E}
+
+
 def build_token_dispatch_plan(
     top_ids: torch.Tensor,
     top_w: torch.Tensor,
@@ -815,6 +834,7 @@ class CausalContextTokenRouter(nn.Module):
         surface_ridge: float = 0.05,
         frozen_exempt_balance: bool = False,
         residual_ortho_router: bool = False,
+        dual_granularity: bool = False,
     ):
         super().__init__()
         self.d_model = int(d_model)
@@ -840,10 +860,17 @@ class CausalContextTokenRouter(nn.Module):
         self.surface_ridge = float(surface_ridge)
         self.frozen_exempt_balance = bool(frozen_exempt_balance)
         self.residual_ortho_router = bool(residual_ortho_router)
+        self.dual_granularity = bool(dual_granularity)
 
         self.route_norm = nn.LayerNorm(self.d_model)
         self.q_proj = nn.Linear(self.d_model, self.d_route, bias=False)
         self.ctx_proj = nn.Linear(self.d_model, self.d_route, bias=False)
+        if self.dual_granularity:
+            self.byte_route_norm: Optional[nn.LayerNorm] = nn.LayerNorm(self.d_model)
+            self.byte_proj: Optional[nn.Linear] = nn.Linear(self.d_model, self.d_route, bias=False)
+        else:
+            self.byte_route_norm = None
+            self.byte_proj = None
         if self.residual_ortho_router:
             # Frozen semi-orthogonal routing anchor preserves full linear separability of h_attn3;
             # learnable q_proj / ctx_proj act as bounded semantic refinement residuals.
@@ -857,6 +884,13 @@ class CausalContextTokenRouter(nn.Module):
             with torch.no_grad():
                 self.q_proj.weight.mul_(0.15)
                 self.ctx_proj.weight.mul_(0.15)
+            if self.dual_granularity and self.byte_proj is not None:
+                raw_b = torch.randn(self.d_model, self.d_route, generator=gen_o)
+                b_orth, _ = torch.linalg.qr(raw_b, mode="reduced") if self.d_model >= self.d_route else (F.normalize(raw_b, dim=0), None)
+                self.register_buffer("byte_ortho_base", b_orth.t().contiguous())
+                with torch.no_grad():
+                    self.byte_proj.weight.mul_(0.15)
+        self._router_anchors: Dict[str, torch.Tensor] = {}
         hidden_need = max(32, self.d_model // 2)
         self.need_head = nn.Sequential(
             nn.Linear(self.d_model, hidden_need),
@@ -968,6 +1002,26 @@ class CausalContextTokenRouter(nn.Module):
             active = (sv > 0.05).to(dtype=U.dtype)
             self.surf_proj_basis.copy_(U * active.unsqueeze(0))
 
+    @torch.no_grad()
+    def snapshot_router_anchor(self) -> None:
+        """Snapshot learned router projection weights to prevent continual coordinate drift vs frozen keys."""
+        self._router_anchors["q_proj"] = self.q_proj.weight.detach().clone()
+        self._router_anchors["ctx_proj"] = self.ctx_proj.weight.detach().clone()
+        if self.byte_proj is not None:
+            self._router_anchors["byte_proj"] = self.byte_proj.weight.detach().clone()
+
+    def router_anchor_loss(self) -> torch.Tensor:
+        """Proximal consistency penalty keeping router query frame aligned with frozen expert keys."""
+        zero = self.q_proj.weight.sum() * 0.0
+        if not self._router_anchors:
+            return zero
+        terms: List[torch.Tensor] = []
+        for name, mod in (("q_proj", self.q_proj), ("ctx_proj", self.ctx_proj), ("byte_proj", self.byte_proj)):
+            if mod is not None and name in self._router_anchors and mod.weight.requires_grad:
+                anch = self._router_anchors[name].to(device=mod.weight.device, dtype=torch.float32)
+                terms.append((mod.weight.float() - anch).pow(2).mean())
+        return torch.stack(terms).mean() if terms else zero
+
     def compute_queries(
         self,
         h_attn3: torch.Tensor,
@@ -975,6 +1029,7 @@ class CausalContextTokenRouter(nn.Module):
         surface_feats: Optional[torch.Tensor] = None,
         update_surface_stats: bool = False,
         content_mask: Optional[torch.Tensor] = None,
+        byte_summary: Optional[torch.Tensor] = None,
     ) -> Dict[str, torch.Tensor]:
         """Compute strictly causal query representations `q_tok`, `need`, `d_ctx`, and `probs`."""
         B, T, _ = h_attn3.shape
@@ -1014,44 +1069,58 @@ class CausalContextTokenRouter(nn.Module):
         if self.residual_ortho_router:
             q_base = F.linear(h_route, self.q_ortho_base.to(dtype=h_route.dtype))
             c_base = F.linear(h_ema, self.ctx_ortho_base.to(dtype=h_ema.dtype))
-            q_tok = F.normalize(
-                0.20 * (q_base + self.q_proj(h_route)) + 0.80 * (c_base + self.ctx_proj(h_ema)),
-                p=2,
-                dim=-1,
-            )
+            q_combined = 0.20 * (q_base + self.q_proj(h_route)) + 0.80 * (c_base + self.ctx_proj(h_ema))
+            if (
+                self.dual_granularity
+                and byte_summary is not None
+                and self.byte_route_norm is not None
+                and self.byte_proj is not None
+                and hasattr(self, "byte_ortho_base")
+            ):
+                hb = self.byte_route_norm(byte_summary.detach().to(dtype=h_route.dtype))
+                b_base = F.linear(hb, self.byte_ortho_base.to(dtype=hb.dtype))
+                q_combined = 0.50 * q_combined + 0.50 * (b_base + self.byte_proj(hb))
+            q_tok = F.normalize(q_combined, p=2, dim=-1)
         else:
-            q_tok = F.normalize(self.q_proj(h_route) + self.ctx_proj(h_ema), p=2, dim=-1)
+            q_combined = self.q_proj(h_route) + self.ctx_proj(h_ema)
+            if (
+                self.dual_granularity
+                and byte_summary is not None
+                and self.byte_route_norm is not None
+                and self.byte_proj is not None
+            ):
+                hb = self.byte_route_norm(byte_summary.detach().to(dtype=h_route.dtype))
+                q_combined = 0.70 * q_combined + 0.30 * self.byte_proj(hb)
+            q_tok = F.normalize(q_combined, p=2, dim=-1)
         need = torch.sigmoid(self.need_head(h_route).squeeze(-1))
 
         E = self.num_experts
         keys_e = F.normalize(self.expert_keys[:E].float(), dim=-1)  # [E, M_k, d_r]
         key_sims = torch.einsum("btd,emd->btem", q_tok.float(), keys_e)
         init_mask = self.key_initialized[:E]
-        # Prefer initialized slots once an expert has at least one initialized key; before init use full bank
-        has_init = init_mask.any(dim=-1)  # [E]
-        for e in range(E):
-            if bool(has_init[e].item()):
-                key_sims[:, :, e, ~init_mask[e]] = -1.0
+        # Vectorized (zero CPU-GPU sync!): prefer initialized slots once an expert has >=1 initialized key
+        has_init = init_mask.any(dim=-1, keepdim=True)  # [E, 1]
+        invalid_slot = has_init & (~init_mask)  # [E, M_k]
+        key_sims = key_sims.masked_fill(invalid_slot.view(1, 1, E, self.num_keys), -1.0)
 
         max_key_sim = key_sims.max(dim=-1).values  # [B, T, E]
         dormant_mask = self.expert_dormant[:E].clone()
         if expert_states is not None:
-            for e in range(min(E, len(expert_states))):
-                if int(expert_states[e]) == 2:
-                    dormant_mask[e] = True
-        if bool(dormant_mask.any().item()):
-            max_key_sim = max_key_sim.masked_fill(dormant_mask.view(1, 1, E), -2.0)
+            dorm_list = [
+                bool(e < len(expert_states) and int(expert_states[e]) == 2)
+                for e in range(E)
+            ]
+            if any(dorm_list):
+                dormant_mask = dormant_mask | torch.tensor(dorm_list, dtype=torch.bool, device=q_tok.device)
+        d_mask_3d = dormant_mask.view(1, 1, E)
+        max_key_sim = max_key_sim.masked_fill(d_mask_3d, -2.0)
 
         d_ctx = (1.0 - max_key_sim.max(dim=-1).values).clamp(0.0, 2.0)
-        logits_r = self.scale * max_key_sim
-        if bool(dormant_mask.any().item()):
-            logits_r = logits_r.masked_fill(dormant_mask.view(1, 1, E), -1e4)
+        logits_r = (self.scale * max_key_sim).masked_fill(d_mask_3d, -1e4)
         probs = F.softmax(logits_r, dim=-1)
 
         if self.use_loss_free_balance and E > 1:
-            biased_sim = max_key_sim + self.expert_bias[:E].view(1, 1, E)
-            if bool(dormant_mask.any().item()):
-                biased_sim = biased_sim.masked_fill(dormant_mask.view(1, 1, E), -2.0)
+            biased_sim = (max_key_sim + self.expert_bias[:E].view(1, 1, E)).masked_fill(d_mask_3d, -2.0)
             routing_scores = F.softmax(self.scale * biased_sim, dim=-1)
         else:
             routing_scores = probs
@@ -1240,8 +1309,10 @@ class CausalContextTokenRouter(nn.Module):
                             if valid_mask[e]:
                                 self.expert_bias[e] = (self.expert_bias[e] - mean_b).clamp(-0.35, 0.35)
 
+        # Fast path: cache frozen flags on CPU list to skip frozen experts without per-expert CUDA .item() syncs
+        frozen_list = self.expert_frozen[:E].tolist()
         for e in range(E):
-            if bool(self.expert_frozen[e].item()):
+            if frozen_list[e]:
                 continue
             if expert_states is not None and e < len(expert_states) and int(expert_states[e]) != 0:
                 continue

@@ -221,22 +221,38 @@ class RealDynamicMorphicMoE(nn.Module):
     def forward_sparse(
         self,
         x: torch.Tensor,
-        dispatch_plan: Optional[Tuple[torch.Tensor, torch.Tensor, List[int]]] = None,
+        dispatch_plan: Optional[Any] = None,
         update_stats: bool = True,
     ) -> Tuple[torch.Tensor, torch.Tensor]:
-        """Run shared always-on FFN + per-token sparse sorted specialist dispatch `(k in 0..2)`."""
+        """Run shared always-on FFN + per-token sparse specialist dispatch `(k in 0..2)`."""
         base = self.shared_expert(x) if self.shared_expert is not None else torch.zeros_like(x)
         if self.v7_trunk_only or dispatch_plan is None or len(self.experts) == 0:
             return base, self._zero_entropy
-        spec = sparse_weighted_expert_dispatch(
-            x.reshape(-1, self.d_model),
-            self.experts,
-            dispatch_plan,
-            out_dim=self.d_model,
-        )
-        if spec is None:
-            return base, self._zero_entropy
-        spec_3d = spec.to(dtype=x.dtype).view_as(x)
+        E = len(self.experts)
+        if isinstance(dispatch_plan, dict) and dispatch_plan.get("mode") == "dense_mask":
+            one_hot_w = dispatch_plan["one_hot_w"][:, :E].to(dtype=x.dtype)  # [N, E]
+            x_flat = x.reshape(-1, self.d_model)
+            if E == 1:
+                spec = self.experts[0](x_flat) * one_hot_w[:, :1]
+            else:
+                w1 = torch.cat([e.linear1.weight for e in self.experts], dim=0)  # [E*d_ff, D]
+                b1 = torch.cat([e.linear1.bias for e in self.experts], dim=0)    # [E*d_ff]
+                h_all = self.experts[0].act(F.linear(x_flat, w1, b1)).view(-1, E, self.d_ff)
+                h_masked = (h_all * one_hot_w.unsqueeze(-1)).reshape(-1, E * self.d_ff)
+                w2 = torch.cat([e.linear2.weight for e in self.experts], dim=1)  # [D, E*d_ff]
+                b2 = torch.stack([e.linear2.bias for e in self.experts], dim=0)  # [E, D]
+                spec = F.linear(h_masked, w2) + torch.matmul(one_hot_w, b2)
+            spec_3d = spec.to(dtype=x.dtype).view_as(x)
+        else:
+            spec = sparse_weighted_expert_dispatch(
+                x.reshape(-1, self.d_model),
+                self.experts,
+                dispatch_plan,
+                out_dim=self.d_model,
+            )
+            if spec is None:
+                return base, self._zero_entropy
+            spec_3d = spec.to(dtype=x.dtype).view_as(x)
         if self.training and self.shared_dropout_prob > 0.0 and len(self.experts) >= 2 and self.shared_expert is not None:
             has_spec = spec_3d.detach().abs().sum(dim=-1, keepdim=True) > 1e-8
             drop_mask = (torch.rand(has_spec.shape, device=x.device) < self.shared_dropout_prob) & has_spec
@@ -580,15 +596,30 @@ class RealDecoder(nn.Module):
         if self.enable_lora_residual and self.shared_base is not None:
             base = self.shared_base(h_norm)  # [B, seq_chunks, V_out]
             if dispatch_plan is not None:
-                res = sparse_weighted_expert_dispatch(
-                    h_norm.reshape(-1, D),
-                    self.lora_a,
-                    dispatch_plan,
-                    fn_call=lambda la, c, idx: self.lora_b[idx](la(c)),
-                    out_dim=base.size(-1),
-                )
-                if res is not None:
-                    base = base + res.to(dtype=base.dtype).view_as(base)
+                if isinstance(dispatch_plan, dict) and dispatch_plan.get("mode") == "dense_mask":
+                    E = len(self.lora_a)
+                    if E > 0:
+                        w = dispatch_plan["one_hot_w"][:, :E].to(dtype=h_norm.dtype)
+                        hf = h_norm.reshape(-1, D)
+                        if E == 1:
+                            res = self.lora_b[0](self.lora_a[0](hf)) * w[:, :1]
+                        else:
+                            wa = torch.cat([la.weight for la in self.lora_a], dim=0)  # [E*R, D]
+                            wb = torch.cat([lb.weight for lb in self.lora_b], dim=1)  # [V_out, E*R]
+                            ha = F.linear(hf, wa).view(-1, E, self.lora_rank)
+                            hm = (ha * w.unsqueeze(-1)).reshape(-1, E * self.lora_rank)
+                            res = F.linear(hm, wb)
+                        base = base + res.to(dtype=base.dtype).view_as(base)
+                else:
+                    res = sparse_weighted_expert_dispatch(
+                        h_norm.reshape(-1, D),
+                        self.lora_a,
+                        dispatch_plan,
+                        fn_call=lambda la, c, idx: self.lora_b[idx](la(c)),
+                        out_dim=base.size(-1),
+                    )
+                    if res is not None:
+                        base = base + res.to(dtype=base.dtype).view_as(base)
             return base.view(B, seq_chunks, self.chunk_size, self.vocab_size)
 
         if len(self.expert_heads) == 1:

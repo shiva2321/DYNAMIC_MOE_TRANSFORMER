@@ -12,11 +12,13 @@ from dmoe.continual import ContinualLearner
 from dmoe.jepa import JEPAModule, MASK_TOKEN_ID
 from dmoe.chunker import MultiScaleByteChunker, BYTE_MASK_ID, BYTE_PAD_ID
 from dmoe.cognitive_dmoe import CognitiveDMoE, CognitiveDMoEConfig, CognitiveTrainer
+from dmoe.spgc import stablemax_cross_entropy
 
 __all__ = [
     "CognitiveDMoE",
     "CognitiveDMoEConfig",
     "CognitiveTrainer",
+    "stablemax_cross_entropy",
     "SelfStabilizingDynamicMorphicMoE",
     "rebuild_optimizer_preserving_state",
     "DynamicMorphicTransformerLayer",

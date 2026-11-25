@@ -68,12 +68,14 @@ from dmoe.real_model import RealDecoder, RealDynamicMorphicLayer
 from dmoe.routing import (
     CausalContextTokenRouter,
     build_token_dispatch_plan,
+    build_vectorized_dispatch_plan,
     compute_chunk_surface_features,
 )
 from dmoe.spgc import (
     LatentQuarantineGate,
     MuonBONGOptimizer,
     classify_v7_spgc_param_groups,
+    stablemax_cross_entropy,
 )
 from dmoe.thinking import SurpriseDrivenLatentThinker
 from dmoe.world_model import LatentWorldModel
@@ -92,6 +94,7 @@ class CognitiveDMoEConfig:
     d_ff_spec: int = 256
     chunk_size: int = 4
     shift_invariant_pool: bool = False
+    enable_hnet_boundary: bool = False
 
     # Attention & working memory
     local_window: int = 4
@@ -101,11 +104,13 @@ class CognitiveDMoEConfig:
     ltm_null_logit: float = 3.2
     auto_write_ltm: bool = True
 
-    # Dual-Head Closed-Form Ridge Episodic Induction
+    # Dual-Head Closed-Form Episodic Induction (High-Rank Ridge + optional Multi-Plane SO(2)^p Procrustes)
     enable_dual_ridge_ep: bool = True
     dual_ridge_op_rank: int = 48
     dual_ridge_op_rank_low: int = 12
     dual_ridge_v_mlp: bool = True
+    enable_procrustes_op: bool = False
+    op_procrustes_planes: int = 8
 
     # Continual-safe semantic routing & autonomous lifecycle
     d_route: int = 96
@@ -115,6 +120,10 @@ class CognitiveDMoEConfig:
     enable_surface_whitening: bool = True
     frozen_exempt_balance: bool = True
     residual_ortho_router: bool = True
+    dual_granularity_router: bool = False
+    use_vectorized_dispatch: bool = True
+    use_infonce_cris: bool = False
+    router_anchor_weight: float = 0.0
     use_loss_free_balance: bool = True
     enable_cris_loss: bool = True
     specialist_init_scale: float = 0.25
@@ -167,6 +176,9 @@ class CognitiveDMoE(nn.Module):
         self.enable_dual_ridge_ep = bool(c.enable_dual_ridge_ep)
         self.enable_surface_whitening = bool(c.enable_surface_whitening)
         self.enable_cris_loss = bool(c.enable_cris_loss)
+        self.use_vectorized_dispatch = bool(c.use_vectorized_dispatch)
+        self.use_infonce_cris = bool(c.use_infonce_cris)
+        self.router_anchor_weight = float(c.router_anchor_weight)
         self.z_nuance_thresh = float(c.z_nuance_thresh)
         self.d_sem_nuance_thresh = float(c.d_sem_nuance_thresh)
         self.nuance_cluster_min = int(c.nuance_cluster_min)
@@ -176,14 +188,15 @@ class CognitiveDMoE(nn.Module):
         self.use_v8_core = True
         self.null_space_projector: Optional[NullSpaceProjector] = None
 
-        # 1. Tokenizer-Free Shift-Resilient Multi-Scale Byte Chunker
+        # 1. Tokenizer-Free Shift-Resilient Multi-Scale Byte Chunker (+ optional H-Net boundary salience)
         self.ms_chunker = MultiScaleByteChunker(
             d_model=self.d_model,
             chunk_size=self.chunk_size,
             shift_invariant_pool=c.shift_invariant_pool,
+            enable_hnet_boundary=c.enable_hnet_boundary,
         )
 
-        # 2. Dual-Timescale Working + Persistent LTM + Dual-Head Closed-Form Ridge Operator
+        # 2. Dual-Timescale Working + Persistent LTM + Dual-Head Ridge / SO(2)^p Procrustes Operator
         self.memory = DualTimescaleMemory(
             d_model=self.d_model,
             num_heads=self.num_heads,
@@ -194,6 +207,8 @@ class CognitiveDMoE(nn.Module):
             op_rank=c.dual_ridge_op_rank,
             op_rank_low=c.dual_ridge_op_rank_low,
             op_v_low_mlp=c.dual_ridge_v_mlp,
+            enable_procrustes_op=c.enable_procrustes_op,
+            op_procrustes_planes=c.op_procrustes_planes,
         )
 
         # 3. Hierarchical Hybrid Backbone (Lower Shared Trunk + Mid Router + Upper Sparse MoE)
@@ -246,6 +261,7 @@ class CognitiveDMoE(nn.Module):
             surface_dim=6,
             frozen_exempt_balance=c.frozen_exempt_balance,
             residual_ortho_router=c.residual_ortho_router,
+            dual_granularity=c.dual_granularity_router,
         )
         self.nuance_buffer = NuanceClusterBuffer(cap=128, d_route=c.d_route)
         self.context_nuance_detector = UnifiedNoveltyDetector(d_model=self.d_model)
@@ -257,9 +273,11 @@ class CognitiveDMoE(nn.Module):
         )
 
         # 5. Internal Latent World Model (EMA Deep Target + Multi-Step Imagination + Retrieval)
+        # Keep WM and Thinker compact (<= 384) even when shared FFN scales to 512 for fast convergence & speed.
+        d_ff_cog = min(int(c.d_ff_shared), 384)
         self.world_model = LatentWorldModel(
             d_model=self.d_model,
-            d_ff=c.d_ff_shared,
+            d_ff=d_ff_cog,
             ema_decay=c.wm_ema_decay,
             max_rollout_horizon=c.wm_rollout_horizon,
         )
@@ -278,7 +296,7 @@ class CognitiveDMoE(nn.Module):
         self.thinker = SurpriseDrivenLatentThinker(
             d_model=self.d_model,
             num_heads=self.num_heads,
-            d_ff=c.d_ff_shared,
+            d_ff=d_ff_cog,
             max_thinking_steps=c.max_thinking_steps,
             skip_threshold=c.skip_threshold,
             theta_halt=c.theta_halt,
@@ -425,6 +443,11 @@ class CognitiveDMoE(nn.Module):
             return F.normalize(alpha * F.normalize(pos_pre.float(), dim=-1) + (1.0 - alpha) * delta, dim=-1)
         return base.to(dtype=z_pred_raw.dtype)
 
+    def _build_dispatch(self, top_ids: torch.Tensor, top_w: torch.Tensor, num_experts: int) -> Any:
+        if self.use_vectorized_dispatch and num_experts <= 8:
+            return build_vectorized_dispatch_plan(top_ids, top_w, num_experts=num_experts)
+        return build_token_dispatch_plan(top_ids, top_w, num_experts=num_experts)
+
     def _forward_trunk_to_post_thinker(
         self,
         x: torch.Tensor,
@@ -432,6 +455,7 @@ class CognitiveDMoE(nn.Module):
     ) -> torch.Tensor:
         """Strictly causal deep forward through memory, backbone layers, WM, and Thinker (no stats)."""
         h = self.encode(x) if h_enc is None else h_enc
+        byte_summary = self.ms_chunker.last_causal_byte_summary if h_enc is None else None
         T = h.size(1)
         _, content_mask = self._compute_chunk_masks(x, T)
         h = self.memory(h, update_ltm=False, return_stm_state=False)["fused"]
@@ -451,13 +475,14 @@ class CognitiveDMoE(nn.Module):
             surface_feats=surface_feats,
             update_surface_stats=False,
             content_mask=content_mask,
+            byte_summary=byte_summary,
         )
         route_res = self.context_router.select_experts(
             q_state,
             nuance_mask=None,
             content_mask=content_mask,
         )
-        dispatch_plan = build_token_dispatch_plan(
+        dispatch_plan = self._build_dispatch(
             route_res["top_ids"], route_res["top_w"], num_experts=len(r_layer.moe.experts)
         )
         h, _ = r_layer.forward_moe(h_attn3, update_stats=False, dispatch_plan=dispatch_plan)
@@ -484,6 +509,7 @@ class CognitiveDMoE(nn.Module):
         """
         with torch.no_grad():
             h = self.encode(x)
+            byte_summary = self.ms_chunker.last_causal_byte_summary
             T = h.size(1)
             _, content_mask = self._compute_chunk_masks(x, T)
             h = self.memory(h, update_ltm=False, return_stm_state=False)["fused"]
@@ -501,6 +527,7 @@ class CognitiveDMoE(nn.Module):
             surface_feats=surface_feats,
             update_surface_stats=False,
             content_mask=content_mask,
+            byte_summary=byte_summary,
         )
         q_tok = q_state["q_tok"]
         w_cm = content_mask.unsqueeze(-1).float()
@@ -633,6 +660,7 @@ class CognitiveDMoE(nn.Module):
         h = self.encode(x)
         h_embed_seq = h
         pos_chunks_seq = self.ms_chunker.last_pos_chunks
+        byte_summary_seq = self.ms_chunker.last_causal_byte_summary
         T = h.size(1)
         pad_mask, content_mask = self._compute_chunk_masks(x, T)
 
@@ -708,6 +736,7 @@ class CognitiveDMoE(nn.Module):
             surface_feats=surface_feats,
             update_surface_stats=update_stats,
             content_mask=content_mask,
+            byte_summary=byte_summary_seq,
         )
         nuance_info = self.context_nuance_detector.evaluate_contextual_chunks(
             d_ctx=q_state["d_ctx"],
@@ -732,7 +761,7 @@ class CognitiveDMoE(nn.Module):
         top_w = route_res["top_w"]
         k_used = route_res["k_used"]
         moe_ref = r_layer.moe
-        dispatch_plan = build_token_dispatch_plan(top_ids, top_w, num_experts=len(moe_ref.experts))
+        dispatch_plan = self._build_dispatch(top_ids, top_w, num_experts=len(moe_ref.experts))
 
         # 6. Upper dynamic shared-core + sparse specialist MoE layers
         h, _ = r_layer.forward_moe(h_attn3, update_stats=update_stats, dispatch_plan=dispatch_plan)
@@ -934,7 +963,7 @@ class CognitiveDMoE(nn.Module):
             nuance_mask=None,
             content_mask=content_mask,
         )
-        dispatch_plan = build_token_dispatch_plan(
+        dispatch_plan = self._build_dispatch(
             route_res["top_ids"], route_res["top_w"], num_experts=len(r_layer.moe.experts)
         )
         h, _ = r_layer.forward_moe(h_int, update_stats=False, dispatch_plan=dispatch_plan)
@@ -965,7 +994,7 @@ class CognitiveDMoE(nn.Module):
     def render_text_detached(self, out: Dict[str, Any]) -> torch.Tensor:
         """Render byte-chunk logits strictly behind stop_gradient from converged cognitive state."""
         h_fin = out["latent"].detach()
-        dispatch_plan = build_token_dispatch_plan(
+        dispatch_plan = self._build_dispatch(
             out["top_ids"].detach(),
             out["top_w"].detach(),
             num_experts=int(out.get("num_experts", 1)),
@@ -1453,6 +1482,11 @@ class CognitiveDMoE(nn.Module):
                         l_cris_route = l_cris_route + ((1.0 - cos_rq) * same_eq.float()).sum() / same_eq.float().sum().clamp_min(1.0)
                     diff_labeled = (y_eq.unsqueeze(1) != y_eq.unsqueeze(0)) & (y_eq.unsqueeze(1) >= 0) & (y_eq.unsqueeze(0) >= 0)
                     diff_labeled.fill_diagonal_(False)
+                    if self.use_infonce_cris and c_mask is not None and c_mask.size(0) == y_eq.size(0):
+                        # Length-matched distinct-intent repulsion prevents length-shortcut routing!
+                        c_lens = c_mask.float().sum(dim=-1)
+                        same_len_band = (c_lens.unsqueeze(1) - c_lens.unsqueeze(0)).abs() <= 2.5
+                        diff_labeled = diff_labeled & same_len_band
                     if bool(diff_labeled.any().item()):
                         l_cris_route = l_cris_route + 0.30 * (F.relu(cos_rq - 0.30).pow(2) * diff_labeled.float()).sum() / diff_labeled.float().sum().clamp_min(1.0)
 
@@ -1461,12 +1495,21 @@ class CognitiveDMoE(nn.Module):
                     if ha_r.numel() > 0:
                         l_cris_route = l_cris_route + 0.45 * F.relu((rq_pool[ha_r] * rq_pool[hb_r]).sum(dim=-1) - 0.15).pow(2).mean()
 
-                # 2. Surface formatting perturbation invariance (query cosine + symmetric KL on expert routing probs)
+                # 2. Surface formatting perturbation invariance (SimCLR InfoNCE + SIGReg when use_infonce_cris=True)
                 if router_q_perturbed is not None:
                     rq_pert = F.normalize(router_q_perturbed.to(dev).float(), dim=-1)
                     rq_ref = rq_pool[router_q_pert_idx.to(dev)] if router_q_pert_idx is not None else rq_pool[: rq_pert.size(0)]
                     if rq_ref.size(0) == rq_pert.size(0) and rq_pert.size(0) > 0:
-                        l_cris_route = l_cris_route + 2.5 * (1.0 - (rq_ref * rq_pert).sum(dim=-1)).mean()
+                        if self.use_infonce_cris and rq_pert.size(0) >= 4:
+                            # Symmetric Perturbation InfoNCE + strong positive alignment + SIGReg dispersion
+                            sim_cp = (rq_ref @ rq_pert.t()) / 0.25
+                            lbl_p = torch.arange(rq_pert.size(0), device=dev)
+                            l_nce_p = 0.5 * (F.cross_entropy(sim_cp, lbl_p) + F.cross_entropy(sim_cp.t(), lbl_p))
+                            l_pos_p = (1.0 - (rq_ref * rq_pert).sum(dim=-1)).mean()
+                            l_sig_r = sigreg_loss(F.layer_norm(rq_pool, (rq_pool.size(-1),))) if rq_pool.size(0) >= 4 else zero
+                            l_cris_route = l_cris_route + 0.50 * l_nce_p + 2.50 * l_pos_p + 0.20 * l_sig_r
+                        else:
+                            l_cris_route = l_cris_route + 2.5 * (1.0 - (rq_ref * rq_pert).sum(dim=-1)).mean()
                         if self.context_router.num_experts > 1:
                             E_cur = self.context_router.num_experts
                             k_e = F.normalize(self.context_router.expert_keys[:E_cur].float(), dim=-1)
@@ -1478,7 +1521,10 @@ class CognitiveDMoE(nn.Module):
                                 (p_c * (p_c.clamp_min(1e-6).log() - F.log_softmax(s_pert, dim=-1))).sum(dim=-1)
                                 + (p_p * (p_p.clamp_min(1e-6).log() - F.log_softmax(s_clean, dim=-1))).sum(dim=-1)
                             ).mean()
-                            l_cris_route = l_cris_route + 0.65 * sym_kl
+                            l_cris_route = l_cris_route + 1.40 * sym_kl
+
+                if self.router_anchor_weight > 0.0:
+                    l_cris_route = l_cris_route + self.router_anchor_weight * self.context_router.router_anchor_loss()
 
             # 3. Permutation-invariant expert output subspace orthogonality (every 4th step to save wall-clock)
             if exp_orth_weight > 0.0 and (self._step_ctr % 4 == 0):
@@ -1607,6 +1653,7 @@ class CognitiveTrainer:
         trunk_prec_scale: float = 0.85,
         grokfast_alpha: float = 0.0,
         grokfast_lamb: float = 0.0,
+        ortho_grad: bool = False,
         bong_prior_pull: float = 0.02,
         bong_max_prec: float = 100.0,
         grad_clip: float = 2.5,
@@ -1652,6 +1699,7 @@ class CognitiveTrainer:
             mode="acquire",
             grokfast_alpha=grokfast_alpha,
             grokfast_lamb=grokfast_lamb,
+            ortho_grad=ortho_grad,
             bong_prior_pull=bong_prior_pull,
             bong_max_prec=bong_max_prec,
             grad_clip=max(4.5, grad_clip),
@@ -1693,9 +1741,11 @@ class CognitiveTrainer:
         return False
 
     def consolidate_domain(self, domain_id: int) -> None:
-        """Commit GPM null-space basis for completed domain and shift shared trunk to BONG consolidate."""
+        """Commit GPM null-space basis for completed domain, snapshot router anchor, and shift trunk to BONG."""
         if self.gpm is not None:
             self.gpm.update_basis_for_domain(domain_id)
+        if domain_id == 0 and self.model.router_anchor_weight > 0.0:
+            self.model.context_router.snapshot_router_anchor()
         self.shared_mode = "consolidate"
         self.opt.set_group_mode("trunk", "consolidate")
 
@@ -1714,10 +1764,23 @@ class CognitiveTrainer:
         loss.backward()
         if self.gpm is not None and self.gpm.p_null:
             self.gpm.project_gradients()
-        clip_params = [p for p in self.model.parameters() if p.requires_grad]
+        # Clip context_router gradients independently from trunk/specialist gradients so
+        # CRIS/InfoNCE routing gradients NEVER attenuate cognitive trunk updates via global norm clipping!
+        router_params: List[nn.Parameter] = []
+        trunk_params: List[nn.Parameter] = []
+        for name, p in self.model.named_parameters():
+            if not p.requires_grad:
+                continue
+            if name.startswith("context_router."):
+                router_params.append(p)
+            else:
+                trunk_params.append(p)
         if extra_clip_params:
-            clip_params.extend(list(extra_clip_params))
-        nn.utils.clip_grad_norm_(clip_params, self.grad_clip)
+            trunk_params.extend(list(extra_clip_params))
+        if trunk_params:
+            nn.utils.clip_grad_norm_(trunk_params, self.grad_clip)
+        if router_params:
+            nn.utils.clip_grad_norm_(router_params, self.grad_clip)
         self.opt.step(fisher_scale=fisher_scale)
         if saved_weights is not None and self.gpm is not None:
             self.gpm.project_parameter_deltas(saved_weights)

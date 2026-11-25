@@ -1,0 +1,232 @@
+{
+  "arm": "CognitiveDMoE_v12",
+  "seed": 0,
+  "teacher_informed": false,
+  "train_seconds": 294.4191701412201,
+  "total_spawns": 5,
+  "arch_summary": {
+    "total_params": 9709586,
+    "cognitive_core_params": 9394834,
+    "active_core_params_k1": 7812514,
+    "num_experts": 6,
+    "subsystems": {
+      "sensory_chunker": 752069,
+      "dual_memory_and_ridge": 500663,
+      "shared_trunk_layers": 3245235,
+      "router_and_lifecycle": 74690,
+      "specialist_moe_and_adapters": 1898784,
+      "world_model_and_retrieval": 1955867,
+      "thinker_and_abstain": 744867,
+      "meaning_and_fsp_heads": 222659,
+      "detached_decoder": 314752
+    }
+  },
+  "detached_decoder_diag": {
+    "decoder_nll_start": 5.736026287078857,
+    "decoder_nll_end": 2.112403154373169,
+    "core_weight_max_drift": 0.0,
+    "generated_byte_len": 32
+  },
+  "banking77": {
+    "intent_77_acc": 0.5392857193946838,
+    "same_vs_overlap_diff_auc": 0.5395
+  },
+  "mean_nuance_flip_auc": 0.7047743055555555,
+  "heldout_families": {
+    "auc": 0.3894,
+    "selectivity": 1.0,
+    "clean_trig": 0.0,
+    "flip_trig": 0.0,
+    "esc_gain": 0.3403838872909546,
+    "esc_margin_gain": 0.030768781900405884
+  },
+  "mean_final_r5": 0.178125,
+  "per_domain_final": {
+    "wiki": {
+      "concept_r1": 0.046875,
+      "concept_r5": 0.171875,
+      "nuance_flip_auc": 0.7326388888888888,
+      "nuance_selectivity": 1.0,
+      "nuance_escalation_gain": 0.28577470779418945,
+      "nuance_esc_margin_gain": 0.2020823359489441
+    },
+    "story": {
+      "concept_r1": 0.0,
+      "concept_r5": 0.0625,
+      "nuance_flip_auc": 0.7434895833333334,
+      "nuance_selectivity": 1.0,
+      "nuance_escalation_gain": 0.23165583610534668,
+      "nuance_esc_margin_gain": 0.16285616159439087
+    },
+    "code": {
+      "concept_r1": 0.078125,
+      "concept_r5": 0.171875,
+      "nuance_flip_auc": 0.7048611111111112,
+      "nuance_selectivity": 1.0,
+      "nuance_escalation_gain": 0.263041615486145,
+      "nuance_esc_margin_gain": 0.21204933524131775
+    },
+    "math": {
+      "concept_r1": 0.078125,
+      "concept_r5": 0.28125,
+      "nuance_flip_auc": 0.6449652777777778,
+      "nuance_selectivity": 1.0,
+      "nuance_escalation_gain": 0.22022634744644165,
+      "nuance_esc_margin_gain": 0.13953648507595062
+    },
+    "forum": {
+      "concept_r1": 0.078125,
+      "concept_r5": 0.203125,
+      "nuance_flip_auc": 0.6979166666666666,
+      "nuance_selectivity": 1.0,
+      "nuance_escalation_gain": 0.2518249750137329,
+      "nuance_esc_margin_gain": 0.16754934191703796
+    }
+  },
+  "routing_diag": {
+    "mid_seq_switch_rate": 0.4375,
+    "k_dist": {
+      "k0": 0.01220703125,
+      "k1": 0.98779296875,
+      "k2": 0.0
+    },
+    "mean_k": 0.98779296875,
+    "num_experts": 6,
+    "func_routing_nmi": 0.14417154581647623,
+    "func_routing_ami": {
+      "ami": 0.11029243328849021,
+      "null_mean": -4.044391805139297e-06,
+      "null_max": 0.04288077388467288,
+      "ami_vs_null": 0.11029647768029535
+    },
+    "length_matched_role_ami": {
+      "ami": 0.06439068322678437,
+      "null_mean": -0.000660951755863039,
+      "null_max": 0.025943541877730607,
+      "ami_vs_null": 0.06505163498264742
+    },
+    "routing_length_ami": 0.10310432361943768,
+    "routing_perturb_agree": 0.4226190476190476,
+    "lesion_base_test_acc": 0.8214285969734192,
+    "lesion_acc_drops": {
+      "expert_0": 0.0,
+      "expert_1": 0.0,
+      "expert_2": 0.0,
+      "expert_3": 0.0,
+      "expert_4": -0.023809492588043213,
+      "expert_5": 0.03571432828903198
+    },
+    "lesion_rel_deltas": {
+      "expert_0": 0.00022842099133413285,
+      "expert_1": 0.0014581700088456273,
+      "expert_2": 0.025097012519836426,
+      "expert_3": 0.008825656957924366,
+      "expert_4": 0.052427757531404495,
+      "expert_5": 0.06288818269968033
+    },
+    "lesion_role_deltas": {
+      "expert_0": [
+        0.0002732968714553863,
+        5.337726543075405e-05,
+        0.00012971195974387228,
+        8.514937508152798e-05,
+        0.00022020387405063957,
+        0.0006087865331210196
+      ],
+      "expert_1": [
+        0.001289518317207694,
+        0.0050549558363854885,
+        0.0005442479741759598,
+        0.0005383818643167615,
+        0.0006658835336565971,
+        0.0006560321198776364
+      ],
+      "expert_2": [
+        0.043524499982595444,
+        0.03272601589560509,
+        0.06014416739344597,
+        0.0051954654045403,
+        0.004441259428858757,
+        0.004550658166408539
+      ],
+      "expert_3": [
+        0.013709009625017643,
+        0.00852616410702467,
+        0.021931195631623268,
+        0.00230713514611125,
+        0.00235730386339128,
+        0.004123142454773188
+      ],
+      "expert_4": [
+        0.08225364983081818,
+        0.12242148816585541,
+        0.09539056569337845,
+        0.006158983800560236,
+        0.006988263223320246,
+        0.0013536174083128572
+      ],
+      "expert_5": [
+        0.16427290439605713,
+        0.19340889155864716,
+        0.008782913908362389,
+        0.0033697946928441525,
+        0.002859070897102356,
+        0.004635506309568882
+      ]
+    },
+    "lesion_role_acc_drops": {
+      "expert_0": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "expert_1": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "expert_2": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "expert_3": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "expert_4": [
+        0.0,
+        -0.1428571343421936,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "expert_5": [
+        0.1428571343421936,
+        0.0714285671710968,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "lesion_max_acc_drop": 0.03571432828903198,
+    "lesion_max_role_drop": 0.1428571343421936,
+    "lesion_mean_rel_delta": 0.025154200118170895,
+    "lesion_role_specificity": 2.737289054877069
+  }
+}

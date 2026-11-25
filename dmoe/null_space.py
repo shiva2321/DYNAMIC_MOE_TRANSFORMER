@@ -48,6 +48,7 @@ _READOUT_HEAD_NAMES = (
     "long_term.op_",
     "context_router.q_proj",
     "context_router.ctx_proj",
+    "context_router.byte_proj",
 )
 
 
@@ -415,8 +416,8 @@ class NullSpaceProjector:
                     # SVD of covariance strictly in FP32
                     try:
                         U_mat, S, _ = torch.linalg.svd(C_res, full_matrices=False)
-                    except torch.cuda.CudaError:
-                        # Fallback to CPU SVD if CUDA SVD hits numerical corner case
+                    except (torch.cuda.CudaError, RuntimeError):
+                        # Fallback to exact CPU FP32 SVD if CUDA cuSOLVER hits a rank-deficient corner case
                         U_mat, S, _ = torch.linalg.svd(C_res.cpu(), full_matrices=False)
                         U_mat = U_mat.to(C.device)
                         S = S.to(C.device)
